@@ -1,0 +1,136 @@
+{
+  "package_version": "1.0",
+  "created_at": "2026-09-25T04:32:59Z",
+  "documentation": {
+    "specifications": 10,
+    "rendered_pages": 59,
+    "all_pages_visually_inspected": true,
+    "automated_a11y_findings": 0,
+    "workbook_tabs": 10,
+    "workbook_formula_errors": 0,
+    "placeholder_errors": 0,
+    "all_backlog_case_references_resolve": true
+  },
+  "contracts": {
+    "format": "OpenAPI 3.1.1",
+    "api_version": "1.1.0",
+    "validator": "openapi-spec-validator 0.9.0",
+    "status": "Pass",
+    "paths": 162,
+    "operations": 235,
+    "named_schemas": 453
+  },
+  "sql": {
+    "status": "Syntax parsed",
+    "parser": "pglast 8.4",
+    "migration_files": 3,
+    "seed_files": 1,
+    "applied_to_postgresql": false
+  },
+  "tests": {
+    "preparation": {
+      "suite": "Contract and control preparation",
+      "status": "Pass",
+      "executed": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 0.964,
+      "run_at": "2026-09-25T04:29:10Z",
+      "python": "3.12.14",
+      "product_validated": false,
+      "scope": "Schemas, SQL syntax, fixture/reference consistency and isolated control functions; no live database or application"
+    },
+    "reference": {
+      "suite": "reference",
+      "status": "Pass",
+      "planned": 143,
+      "executed": 143,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.003,
+      "product_validated": false,
+      "scope": "Design reference only",
+      "run_at": "2026-09-25T04:30:12Z",
+      "details": {
+        "failed": [],
+        "errors": [],
+        "blocked": []
+      }
+    },
+    "database": {
+      "status": "BLOCKED",
+      "reason": "IMPACT_TEST_DSN and PostgreSQL 17 required",
+      "executed": 0,
+      "suite": "Database runtime role qualification",
+      "planned": 12,
+      "product_validated": false,
+      "run_at": "2026-09-25T04:32:59Z"
+    },
+    "integration": {
+      "suite": "integration",
+      "status": "Blocked",
+      "planned": 18,
+      "executed": 0,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.0,
+      "product_validated": false,
+      "scope": "Configured API assertions only; not full release qualification",
+      "run_at": "2026-09-25T04:32:59Z",
+      "details": {
+        "failed": [],
+        "errors": [],
+        "blocked": [
+          {
+            "test": "setUpClass (test_integration.Integration)",
+            "reason": "Set IMPACT_BASE_URL and IMPACT_FIXTURE_FILE for an isolated provisioned API fixture"
+          }
+        ]
+      }
+    },
+    "smoke": {
+      "suite": "smoke",
+      "status": "Blocked",
+      "planned": 12,
+      "executed": 0,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 0.0,
+      "product_validated": false,
+      "scope": "Configured API assertions only; not full release qualification",
+      "run_at": "2026-09-25T04:32:59Z",
+      "details": {
+        "failed": [],
+        "errors": [],
+        "blocked": [
+          {
+            "test": "setUpClass (test_smoke.Smoke)",
+            "reason": "Set IMPACT_BASE_URL and IMPACT_FIXTURE_FILE for an isolated provisioned API fixture"
+          }
+        ]
+      }
+    }
+  },
+  "passed_preparation_and_reference_methods": 181,
+  "application_implemented": false,
+  "production_qualified": false,
+  "not_executed": [
+    "PostgreSQL migration application and database runtime qualification",
+    "Running API integration and smoke assertions",
+    "Browser workflows and accessibility",
+    "Android device, offline durability and cryptographic qualification",
+    "Concurrent transactions and interrupted workers",
+    "Provider and identity integration qualification",
+    "Load, capacity and disaster recovery exercises",
+    "Independent application security assessment"
+  ],
+  "notes": [
+    "The delivery completes the ten pending implementation specifications; actual code implementation and environment-specific qualification remain engineering work.",
+    "Dependency lock resolution is not application build or security qualification.",
+    "Workbook progress remains Not started; no reference test pass marks a product requirement complete."
+  ]
+}

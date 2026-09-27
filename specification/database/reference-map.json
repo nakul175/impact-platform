@@ -1,0 +1,613 @@
+[
+  {
+    "entity": "Tenant",
+    "table": "tenant_current",
+    "field": "owner_membership_id",
+    "reference": "O:Membership"
+  },
+  {
+    "entity": "Tenant",
+    "table": "tenant_current",
+    "field": "hosting_policy_id",
+    "reference": "O:HostingPolicy"
+  },
+  {
+    "entity": "Tenant",
+    "table": "tenant_current",
+    "field": "privacy_policy_id",
+    "reference": "O:PrivacyPolicy"
+  },
+  {
+    "entity": "Tenant",
+    "table": "tenant_current",
+    "field": "retention_policy_id",
+    "reference": "O:RetentionPolicy"
+  },
+  {
+    "entity": "Membership",
+    "table": "membership_current",
+    "field": "identity_id",
+    "reference": "G"
+  },
+  {
+    "entity": "Grant",
+    "table": "grant_current",
+    "field": "subject_id",
+    "reference": "P"
+  },
+  {
+    "entity": "Grant",
+    "table": "grant_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "Grant",
+    "table": "grant_current",
+    "field": "issuer_id",
+    "reference": "P",
+    "server_owned": true
+  },
+  {
+    "entity": "OrganisationUnit",
+    "table": "organisation_unit_current",
+    "field": "parent_id",
+    "reference": "O:OrganisationUnit"
+  },
+  {
+    "entity": "Programme",
+    "table": "programme_current",
+    "field": "reporting_calendar_id",
+    "reference": "O:ReportingCalendar"
+  },
+  {
+    "entity": "Programme",
+    "table": "programme_current",
+    "field": "geography_id",
+    "reference": "O:Geography"
+  },
+  {
+    "entity": "Framework",
+    "table": "framework_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "IndicatorInstance",
+    "table": "indicator_instance_current",
+    "field": "definition_version",
+    "reference": "R:IndicatorDefinition"
+  },
+  {
+    "entity": "IndicatorInstance",
+    "table": "indicator_instance_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "IndicatorInstance",
+    "table": "indicator_instance_current",
+    "field": "collector_id",
+    "reference": "P"
+  },
+  {
+    "entity": "IndicatorInstance",
+    "table": "indicator_instance_current",
+    "field": "reviewer_id",
+    "reference": "P"
+  },
+  {
+    "entity": "IndicatorInstance",
+    "table": "indicator_instance_current",
+    "field": "schedule_id",
+    "reference": "O:Schedule"
+  },
+  {
+    "entity": "Target",
+    "table": "target_current",
+    "field": "indicator_version",
+    "reference": "R:IndicatorDefinition"
+  },
+  {
+    "entity": "Target",
+    "table": "target_current",
+    "field": "period_id",
+    "reference": "O:Period"
+  },
+  {
+    "entity": "Period",
+    "table": "period_current",
+    "field": "calendar_version",
+    "reference": "R:ReportingCalendar"
+  },
+  {
+    "entity": "Observation",
+    "table": "observation_current",
+    "field": "indicator_id",
+    "reference": "O:IndicatorInstance"
+  },
+  {
+    "entity": "Observation",
+    "table": "observation_current",
+    "field": "dataset_id",
+    "reference": "O:Dataset"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "indicator_version",
+    "reference": "R:IndicatorDefinition"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "period_id",
+    "reference": "O:Period"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "rule_version",
+    "reference": "R:CalculationRule"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "input_snapshot_id",
+    "reference": "O:Snapshot"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "run_id",
+    "reference": "T:job.job_id"
+  },
+  {
+    "entity": "CalculatedResult",
+    "table": "calculated_result_current",
+    "field": "lineage_manifest_id",
+    "reference": "O:LineageManifest"
+  },
+  {
+    "entity": "FormField",
+    "table": "form_field_current",
+    "field": "form_id",
+    "reference": "O:Form"
+  },
+  {
+    "entity": "FormField",
+    "table": "form_field_current",
+    "field": "parent_field_id",
+    "reference": "O:FormField"
+  },
+  {
+    "entity": "Assignment",
+    "table": "assignment_current",
+    "field": "round_id",
+    "reference": "O:CollectionRound"
+  },
+  {
+    "entity": "Assignment",
+    "table": "assignment_current",
+    "field": "form_version",
+    "reference": "R:Form"
+  },
+  {
+    "entity": "Assignment",
+    "table": "assignment_current",
+    "field": "assignee_id",
+    "reference": "P"
+  },
+  {
+    "entity": "Assignment",
+    "table": "assignment_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "submission_id",
+    "reference": "I"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "form_version",
+    "reference": "R:Form"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "assignment_id",
+    "reference": "O:Assignment"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "respondent_scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "offline_grant_id",
+    "reference": "T:offline_grant.grant_id"
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "authenticated_uploader_id",
+    "reference": "P",
+    "server_owned": true
+  },
+  {
+    "entity": "Submission",
+    "table": "submission_current",
+    "field": "original_author_id",
+    "reference": "P",
+    "server_owned": true
+  },
+  {
+    "entity": "Participant",
+    "table": "participant_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "ServiceEvent",
+    "table": "service_event_current",
+    "field": "subject_id",
+    "reference": "O:Participant"
+  },
+  {
+    "entity": "ServiceEvent",
+    "table": "service_event_current",
+    "field": "related_subject_id",
+    "reference": "O:Participant"
+  },
+  {
+    "entity": "HandlingRecord",
+    "table": "handling_record_current",
+    "field": "subject_id",
+    "reference": "O:Participant"
+  },
+  {
+    "entity": "HandlingRecord",
+    "table": "handling_record_current",
+    "field": "notice_version",
+    "reference": "R:Notice"
+  },
+  {
+    "entity": "HandlingRecord",
+    "table": "handling_record_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "HandlingRecord",
+    "table": "handling_record_current",
+    "field": "recorder_id",
+    "reference": "P",
+    "server_owned": true
+  },
+  {
+    "entity": "Dataset",
+    "table": "dataset_current",
+    "field": "transformation_id",
+    "reference": "O:Transformation"
+  },
+  {
+    "entity": "ImportJob",
+    "table": "import_job_current",
+    "field": "upload_id",
+    "reference": "T:upload_session.upload_id"
+  },
+  {
+    "entity": "ImportJob",
+    "table": "import_job_current",
+    "field": "mapping_version",
+    "reference": "R:ImportMapping"
+  },
+  {
+    "entity": "QualityIssue",
+    "table": "quality_issue_current",
+    "field": "rule_version",
+    "reference": "R:QualityRule"
+  },
+  {
+    "entity": "QualityIssue",
+    "table": "quality_issue_current",
+    "field": "affected_object_id",
+    "reference": "O:*"
+  },
+  {
+    "entity": "QualityIssue",
+    "table": "quality_issue_current",
+    "field": "affected_revision_id",
+    "reference": "R:*"
+  },
+  {
+    "entity": "Evidence",
+    "table": "evidence_current",
+    "field": "upload_id",
+    "reference": "T:upload_session.upload_id"
+  },
+  {
+    "entity": "Evidence",
+    "table": "evidence_current",
+    "field": "publication_handling_id",
+    "reference": "O:HandlingRecord"
+  },
+  {
+    "entity": "Workflow",
+    "table": "workflow_current",
+    "field": "candidate_id",
+    "reference": "O:*"
+  },
+  {
+    "entity": "Workflow",
+    "table": "workflow_current",
+    "field": "candidate_revision",
+    "reference": "R:*"
+  },
+  {
+    "entity": "Workflow",
+    "table": "workflow_current",
+    "field": "workflow_version",
+    "reference": "R:WorkflowTemplate"
+  },
+  {
+    "entity": "Decision",
+    "table": "decision_current",
+    "field": "candidate_revision",
+    "reference": "R:*"
+  },
+  {
+    "entity": "Decision",
+    "table": "decision_current",
+    "field": "workflow_version",
+    "reference": "R:WorkflowTemplate"
+  },
+  {
+    "entity": "Decision",
+    "table": "decision_current",
+    "field": "actor_id",
+    "reference": "P",
+    "server_owned": true
+  },
+  {
+    "entity": "Snapshot",
+    "table": "snapshot_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "Snapshot",
+    "table": "snapshot_current",
+    "field": "period_id",
+    "reference": "O:Period"
+  },
+  {
+    "entity": "Report",
+    "table": "report_current",
+    "field": "template_version",
+    "reference": "R:ReportTemplate"
+  },
+  {
+    "entity": "Report",
+    "table": "report_current",
+    "field": "snapshot_id",
+    "reference": "O:Snapshot"
+  },
+  {
+    "entity": "Disclosure",
+    "table": "disclosure_current",
+    "field": "artifact_version",
+    "reference": "R:*"
+  },
+  {
+    "entity": "Disclosure",
+    "table": "disclosure_current",
+    "field": "policy_review_id",
+    "reference": "O:DisclosureReview"
+  },
+  {
+    "entity": "BudgetLine",
+    "table": "budget_line_current",
+    "field": "agreement_id",
+    "reference": "O:FundingAgreement"
+  },
+  {
+    "entity": "BudgetLine",
+    "table": "budget_line_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "BudgetLine",
+    "table": "budget_line_current",
+    "field": "period_id",
+    "reference": "O:Period"
+  },
+  {
+    "entity": "BudgetLine",
+    "table": "budget_line_current",
+    "field": "rate_version",
+    "reference": "R:ExchangeRate"
+  },
+  {
+    "entity": "Connection",
+    "table": "connection_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "Connection",
+    "table": "connection_current",
+    "field": "credential_reference",
+    "reference": "O:CredentialReference"
+  },
+  {
+    "entity": "Connection",
+    "table": "connection_current",
+    "field": "mapping_version",
+    "reference": "R:ImportMapping"
+  },
+  {
+    "entity": "Connection",
+    "table": "connection_current",
+    "field": "schedule_id",
+    "reference": "O:Schedule"
+  },
+  {
+    "entity": "AITask",
+    "table": "a_i_task_current",
+    "field": "configuration_version",
+    "reference": "R:AIConfiguration"
+  },
+  {
+    "entity": "AITask",
+    "table": "a_i_task_current",
+    "field": "budget_context",
+    "reference": "O:AIBudget"
+  },
+  {
+    "entity": "PrivacyCase",
+    "table": "privacy_case_current",
+    "field": "requester_reference",
+    "reference": "O:VerifiedRequester"
+  },
+  {
+    "entity": "PrivacyCase",
+    "table": "privacy_case_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "AuditEvent",
+    "table": "audit_event_current",
+    "field": "real_actor_id",
+    "reference": "P"
+  },
+  {
+    "entity": "AuditEvent",
+    "table": "audit_event_current",
+    "field": "effective_actor_id",
+    "reference": "P"
+  },
+  {
+    "entity": "AuditEvent",
+    "table": "audit_event_current",
+    "field": "object_reference",
+    "reference": "O:*"
+  },
+  {
+    "entity": "AuditEvent",
+    "table": "audit_event_current",
+    "field": "correlation_id",
+    "reference": "I"
+  },
+  {
+    "entity": "Evaluation",
+    "table": "evaluation_current",
+    "field": "programme_baseline",
+    "reference": "R:Programme"
+  },
+  {
+    "entity": "Evaluation",
+    "table": "evaluation_current",
+    "field": "evaluator_id",
+    "reference": "P"
+  },
+  {
+    "entity": "Subscription",
+    "table": "subscription_current",
+    "field": "billing_contact_id",
+    "reference": "O:VerifiedContact"
+  },
+  {
+    "entity": "FinanceTransaction",
+    "table": "finance_transaction_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "FinanceTransaction",
+    "table": "finance_transaction_current",
+    "field": "reversal_of",
+    "reference": "O:FinanceTransaction"
+  },
+  {
+    "entity": "WorkItem",
+    "table": "work_item_current",
+    "field": "programme_id",
+    "reference": "O:Programme"
+  },
+  {
+    "entity": "WorkItem",
+    "table": "work_item_current",
+    "field": "parent_id",
+    "reference": "O:WorkItem"
+  },
+  {
+    "entity": "WorkItem",
+    "table": "work_item_current",
+    "field": "assignee_id",
+    "reference": "P"
+  },
+  {
+    "entity": "Notification",
+    "table": "notification_current",
+    "field": "event_id",
+    "reference": "T:outbox_event.event_id"
+  },
+  {
+    "entity": "Notification",
+    "table": "notification_current",
+    "field": "recipient_id",
+    "reference": "P"
+  },
+  {
+    "entity": "Notification",
+    "table": "notification_current",
+    "field": "safe_reference",
+    "reference": "O:*"
+  },
+  {
+    "entity": "Schedule",
+    "table": "schedule_current",
+    "field": "service_identity_id",
+    "reference": "T:service_identity.service_identity_id"
+  },
+  {
+    "entity": "Schedule",
+    "table": "schedule_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  },
+  {
+    "entity": "QualitativeExtract",
+    "table": "qualitative_extract_current",
+    "field": "evidence_version",
+    "reference": "R:Evidence"
+  },
+  {
+    "entity": "QualitativeExtract",
+    "table": "qualitative_extract_current",
+    "field": "codebook_version",
+    "reference": "R:Codebook"
+  },
+  {
+    "entity": "Device",
+    "table": "device_current",
+    "field": "attestation_reference",
+    "reference": "O:Attestation"
+  },
+  {
+    "entity": "SupportRequest",
+    "table": "support_request_current",
+    "field": "scope_id",
+    "reference": "T:scope_definition.scope_id"
+  }
+]

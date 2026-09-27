@@ -1,0 +1,13 @@
+{
+  "suite": "Contract and control preparation",
+  "status": "Pass",
+  "executed": 38,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 0.964,
+  "run_at": "2026-09-25T04:29:10Z",
+  "python": "3.12.14",
+  "product_validated": false,
+  "scope": "Schemas, SQL syntax, fixture/reference consistency and isolated control functions; no live database or application"
+}

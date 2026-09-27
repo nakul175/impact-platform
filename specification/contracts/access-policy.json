@@ -1,0 +1,4330 @@
+{
+  "version": "1.0",
+  "roles": [
+    "OWNER",
+    "TENANT_ADMIN",
+    "MEL_ADMIN",
+    "PROGRAMME_MANAGER",
+    "AUTHOR",
+    "REVIEWER",
+    "ENUMERATOR",
+    "DATA_STEWARD",
+    "ANALYST",
+    "FINANCE",
+    "PRIVACY",
+    "OPERATOR",
+    "SUPPORT",
+    "SERVICE",
+    "EXTERNAL"
+  ],
+  "default": "DENY",
+  "evaluation_order": [
+    "identity",
+    "tenant lifecycle",
+    "membership and expiry",
+    "explicit capability grant",
+    "scope",
+    "purpose and classification",
+    "assurance",
+    "current epochs",
+    "independence",
+    "lifecycle and revision",
+    "audit obligation"
+  ],
+  "role_templates_are_not_grants": true,
+  "operations": [
+    {
+      "operation_id": "list_tenants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/tenants",
+      "capability": "tenants.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_tenants",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/tenants",
+      "capability": "tenants.draft.create",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_tenants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/tenants/{object_id}",
+      "capability": "tenants.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_tenants",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/tenants/{object_id}",
+      "capability": "tenants.draft.edit",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_memberships",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/memberships",
+      "capability": "memberships.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_memberships",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/memberships/{object_id}",
+      "capability": "memberships.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_grants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/grants",
+      "capability": "grants.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_grants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/grants/{object_id}",
+      "capability": "grants.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_organisation_units",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/organisation-units",
+      "capability": "organisation-units.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_organisation_units",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/organisation-units",
+      "capability": "organisation-units.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_organisation_units",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/organisation-units/{object_id}",
+      "capability": "organisation-units.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_organisation_units",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/organisation-units/{object_id}",
+      "capability": "organisation-units.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_programmes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/programmes",
+      "capability": "programmes.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_programmes",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/programmes",
+      "capability": "programmes.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_programmes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}",
+      "capability": "programmes.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_programmes",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}",
+      "capability": "programmes.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_frameworks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/frameworks",
+      "capability": "frameworks.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_frameworks",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/frameworks",
+      "capability": "frameworks.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_frameworks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}",
+      "capability": "frameworks.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_frameworks",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}",
+      "capability": "frameworks.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_indicator_definitions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions",
+      "capability": "indicator-definitions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_indicator_definitions",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions",
+      "capability": "indicator-definitions.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_indicator_definitions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions/{object_id}",
+      "capability": "indicator-definitions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_indicator_definitions",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions/{object_id}",
+      "capability": "indicator-definitions.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_indicator_instances",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances",
+      "capability": "indicator-instances.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_indicator_instances",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances",
+      "capability": "indicator-instances.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_indicator_instances",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances/{object_id}",
+      "capability": "indicator-instances.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_indicator_instances",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances/{object_id}",
+      "capability": "indicator-instances.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_targets",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/targets",
+      "capability": "targets.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_targets",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/targets",
+      "capability": "targets.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_targets",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/targets/{object_id}",
+      "capability": "targets.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_targets",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/targets/{object_id}",
+      "capability": "targets.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_dimensions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dimensions",
+      "capability": "dimensions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_dimensions",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dimensions",
+      "capability": "dimensions.draft.create",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_dimensions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dimensions/{object_id}",
+      "capability": "dimensions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_dimensions",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/dimensions/{object_id}",
+      "capability": "dimensions.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_periods",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/periods",
+      "capability": "periods.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_periods",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/periods",
+      "capability": "periods.draft.create",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_periods",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/periods/{object_id}",
+      "capability": "periods.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_periods",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/periods/{object_id}",
+      "capability": "periods.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_observations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/observations",
+      "capability": "observations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_observations",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/observations",
+      "capability": "observations.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_observations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/observations/{object_id}",
+      "capability": "observations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_observations",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/observations/{object_id}",
+      "capability": "observations.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_calculated_results",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_calculated_results",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_forms",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_forms",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/forms",
+      "capability": "forms.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_forms",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_forms",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}",
+      "capability": "forms.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_form_fields",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/form-fields",
+      "capability": "form-fields.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_form_fields",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/form-fields",
+      "capability": "form-fields.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_form_fields",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/form-fields/{object_id}",
+      "capability": "form-fields.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_form_fields",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/form-fields/{object_id}",
+      "capability": "form-fields.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_assignments",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/assignments",
+      "capability": "assignments.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_assignments",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/assignments",
+      "capability": "assignments.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_assignments",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/assignments/{object_id}",
+      "capability": "assignments.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_assignments",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/assignments/{object_id}",
+      "capability": "assignments.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_submissions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/submissions",
+      "capability": "submissions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_submissions",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/submissions",
+      "capability": "submissions.draft.create",
+      "role_templates": [
+        "ENUMERATOR",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_submissions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/submissions/{object_id}",
+      "capability": "submissions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_submissions",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/submissions/{object_id}",
+      "capability": "submissions.draft.edit",
+      "role_templates": [
+        "ENUMERATOR",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_participants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/participants",
+      "capability": "participants.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_participants",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/participants",
+      "capability": "participants.draft.create",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_participants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/participants/{object_id}",
+      "capability": "participants.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_participants",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/participants/{object_id}",
+      "capability": "participants.draft.edit",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_service_events",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/service-events",
+      "capability": "service-events.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_service_events",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/service-events",
+      "capability": "service-events.draft.create",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_service_events",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/service-events/{object_id}",
+      "capability": "service-events.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_service_events",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/service-events/{object_id}",
+      "capability": "service-events.draft.edit",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_handling_records",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/handling-records",
+      "capability": "handling-records.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "record_handling",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/handling-records",
+      "capability": "handling.record",
+      "role_templates": [
+        "AUTHOR",
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_handling_records",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/handling-records/{object_id}",
+      "capability": "handling-records.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_datasets",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/datasets",
+      "capability": "datasets.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_datasets",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/datasets",
+      "capability": "datasets.draft.create",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_datasets",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/datasets/{object_id}",
+      "capability": "datasets.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_datasets",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/datasets/{object_id}",
+      "capability": "datasets.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_imports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/imports",
+      "capability": "imports.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_imports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}",
+      "capability": "imports.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_quality_issues",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/quality-issues",
+      "capability": "quality-issues.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_quality_issues",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/quality-issues",
+      "capability": "quality-issues.draft.create",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_quality_issues",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/quality-issues/{object_id}",
+      "capability": "quality-issues.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_quality_issues",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/quality-issues/{object_id}",
+      "capability": "quality-issues.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evidence",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_evidence",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evidence",
+      "capability": "evidence.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_evidence",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}",
+      "capability": "evidence.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_workflows",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/workflows",
+      "capability": "workflows.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_workflows",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/workflows/{object_id}",
+      "capability": "workflows.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_decisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/decisions",
+      "capability": "decisions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_decisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/decisions/{object_id}",
+      "capability": "decisions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_snapshots",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/snapshots",
+      "capability": "snapshots.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_snapshots",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/snapshots/{object_id}",
+      "capability": "snapshots.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_reports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports",
+      "capability": "reports.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_reports",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports",
+      "capability": "reports.draft.create",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_reports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_reports",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}",
+      "capability": "reports.draft.edit",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_disclosures",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/disclosures",
+      "capability": "disclosures.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_disclosures",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/disclosures/{object_id}",
+      "capability": "disclosures.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_disclosures",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/disclosures/{object_id}",
+      "capability": "disclosures.draft.edit",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_budget_lines",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/budget-lines",
+      "capability": "budget-lines.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_budget_lines",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/budget-lines",
+      "capability": "budget-lines.draft.create",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_budget_lines",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/budget-lines/{object_id}",
+      "capability": "budget-lines.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_budget_lines",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/budget-lines/{object_id}",
+      "capability": "budget-lines.draft.edit",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_connections",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/connections",
+      "capability": "connections.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_connections",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections",
+      "capability": "connections.draft.create",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_connections",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}",
+      "capability": "connections.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_connections",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}",
+      "capability": "connections.draft.edit",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_tasks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-tasks",
+      "capability": "ai-tasks.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_tasks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-tasks/{object_id}",
+      "capability": "ai-tasks.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_privacy_cases",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.draft.create",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_privacy_cases",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.draft.edit",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_audit_events",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/audit-events",
+      "capability": "audit-events.read",
+      "role_templates": [
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_audit_events",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/audit-events/{object_id}",
+      "capability": "audit-events.read",
+      "role_templates": [
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_evaluations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluations",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_evaluations",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluations",
+      "capability": "evaluations.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_evaluations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_evaluations",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_retention_policies",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.draft.create",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_retention_policies",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.draft.edit",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_subscriptions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/subscriptions",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_subscriptions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/subscriptions/{object_id}",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_funding_agreements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/funding-agreements",
+      "capability": "funding-agreements.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_funding_agreements",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/funding-agreements",
+      "capability": "funding-agreements.draft.create",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_funding_agreements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/funding-agreements/{object_id}",
+      "capability": "funding-agreements.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_funding_agreements",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/funding-agreements/{object_id}",
+      "capability": "funding-agreements.draft.edit",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_finance_transactions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/finance-transactions",
+      "capability": "finance-transactions.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_finance_transactions",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/finance-transactions",
+      "capability": "finance-transactions.draft.create",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_finance_transactions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/finance-transactions/{object_id}",
+      "capability": "finance-transactions.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_finance_transactions",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/finance-transactions/{object_id}",
+      "capability": "finance-transactions.draft.edit",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_exchange_rates",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/exchange-rates",
+      "capability": "exchange-rates.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_exchange_rates",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/exchange-rates",
+      "capability": "exchange-rates.draft.create",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_exchange_rates",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/exchange-rates/{object_id}",
+      "capability": "exchange-rates.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_exchange_rates",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/exchange-rates/{object_id}",
+      "capability": "exchange-rates.draft.edit",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_allocation_rules",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/allocation-rules",
+      "capability": "allocation-rules.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_allocation_rules",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/allocation-rules",
+      "capability": "allocation-rules.draft.create",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_allocation_rules",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/allocation-rules/{object_id}",
+      "capability": "allocation-rules.read",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_allocation_rules",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/allocation-rules/{object_id}",
+      "capability": "allocation-rules.draft.edit",
+      "role_templates": [
+        "FINANCE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_work_items",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/work-items",
+      "capability": "work-items.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_work_items",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/work-items",
+      "capability": "work-items.draft.create",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_work_items",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/work-items/{object_id}",
+      "capability": "work-items.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_work_items",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/work-items/{object_id}",
+      "capability": "work-items.draft.edit",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_dashboards",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_dashboards",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_dashboards",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_dashboards",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_report_templates",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/report-templates",
+      "capability": "report-templates.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_report_templates",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/report-templates",
+      "capability": "report-templates.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_report_templates",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/report-templates/{object_id}",
+      "capability": "report-templates.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_report_templates",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/report-templates/{object_id}",
+      "capability": "report-templates.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_notifications",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/notifications",
+      "capability": "notifications.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_notifications",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/notifications/{object_id}",
+      "capability": "notifications.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "list_schedules",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/schedules",
+      "capability": "schedules.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_schedules",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/schedules",
+      "capability": "schedules.draft.create",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_schedules",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/schedules/{object_id}",
+      "capability": "schedules.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_schedules",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/schedules/{object_id}",
+      "capability": "schedules.draft.edit",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_qualitative_extracts",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/qualitative-extracts",
+      "capability": "qualitative-extracts.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_qualitative_extracts",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/qualitative-extracts",
+      "capability": "qualitative-extracts.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_qualitative_extracts",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/qualitative-extracts/{object_id}",
+      "capability": "qualitative-extracts.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_qualitative_extracts",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/qualitative-extracts/{object_id}",
+      "capability": "qualitative-extracts.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_devices",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/devices",
+      "capability": "devices.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_devices",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/devices",
+      "capability": "devices.draft.create",
+      "role_templates": [
+        "ENUMERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_devices",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/devices/{object_id}",
+      "capability": "devices.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "patch_devices",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/devices/{object_id}",
+      "capability": "devices.draft.edit",
+      "role_templates": [
+        "ENUMERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_support_requests",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/support-requests",
+      "capability": "support-requests.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "request_support",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/support-requests",
+      "capability": "support.request",
+      "role_templates": [
+        "SUPPORT"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_support_requests",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/support-requests/{object_id}",
+      "capability": "support-requests.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "action_programmes_activate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}/actions/activate",
+      "capability": "programme.activate",
+      "role_templates": [
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_programmes_archive",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}/actions/archive",
+      "capability": "programme.archive",
+      "role_templates": [
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_frameworks_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}/actions/submit",
+      "capability": "framework.submit",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_indicator_definitions_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/actions/submit",
+      "capability": "indicator.submit",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_targets_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit",
+      "capability": "target.submit",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_forms_test",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/test",
+      "capability": "form.test",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_forms_publish",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish",
+      "capability": "form.publish",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_assignments_reassign",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/assignments/{object_id}/actions/reassign",
+      "capability": "assignment.reassign",
+      "role_templates": [
+        "PROGRAMME_MANAGER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_submissions_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit",
+      "capability": "submission.submit",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_observations_correct",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/observations/{object_id}/actions/correct",
+      "capability": "observation.correct",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_imports_preview",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview",
+      "capability": "import.preview",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_imports_commit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit",
+      "capability": "import.commit",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_imports_cancel",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel",
+      "capability": "import.cancel",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_quality_issues_revalidate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/quality-issues/{object_id}/actions/revalidate",
+      "capability": "quality.revalidate",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_quality_issues_except",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/quality-issues/{object_id}/actions/except",
+      "capability": "quality.except",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_evidence_verify",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}/actions/verify",
+      "capability": "evidence.verify",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_workflows_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/workflows/{object_id}/actions/approve",
+      "capability": "workflow.approve",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_workflows_return",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/workflows/{object_id}/actions/return",
+      "capability": "workflow.return",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_workflows_reject",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/workflows/{object_id}/actions/reject",
+      "capability": "workflow.reject",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_periods_close",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/periods/{object_id}/actions/close",
+      "capability": "period.close",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_periods_restate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/periods/{object_id}/actions/restate",
+      "capability": "period.restate",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_reports_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/submit",
+      "capability": "report.submit",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_reports_publish",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/publish",
+      "capability": "report.publish",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_reports_withdraw",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/withdraw",
+      "capability": "report.withdraw",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_connections_test",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}/actions/test",
+      "capability": "connection.test",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_connections_activate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}/actions/activate",
+      "capability": "connection.activate",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_connections_pause",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}/actions/pause",
+      "capability": "connection.pause",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_connections_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}/actions/run",
+      "capability": "connection.run",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "SERVICE"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_connections_rotate_credential",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/connections/{object_id}/actions/rotate-credential",
+      "capability": "connection.rotate",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_ai_tasks_confirm",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-tasks/{object_id}/actions/confirm",
+      "capability": "ai.confirm",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_ai_tasks_cancel",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-tasks/{object_id}/actions/cancel",
+      "capability": "ai.cancel",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_privacy_cases_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve",
+      "capability": "privacy.approve",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_privacy_cases_execute",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute",
+      "capability": "privacy.execute",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_participants_restrict",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/participants/{object_id}/actions/restrict",
+      "capability": "participant.restrict",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_participants_withdraw_purpose",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/participants/{object_id}/actions/withdraw-purpose",
+      "capability": "participant.withdraw",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_memberships_suspend",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/memberships/{object_id}/actions/suspend",
+      "capability": "membership.suspend",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_memberships_revoke",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/memberships/{object_id}/actions/revoke",
+      "capability": "membership.revoke",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_grants_revoke",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/grants/{object_id}/actions/revoke",
+      "capability": "grant.revoke",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_support_requests_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/support-requests/{object_id}/actions/approve",
+      "capability": "support.approve",
+      "role_templates": [
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_support_requests_revoke",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/support-requests/{object_id}/actions/revoke",
+      "capability": "support.revoke",
+      "role_templates": [
+        "OWNER",
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_subscriptions_change_entitlement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/subscriptions/{object_id}/actions/change-entitlement",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "OPERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_schedules_pause",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/schedules/{object_id}/actions/pause",
+      "capability": "schedule.pause",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "invite_member",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/member-invitations",
+      "capability": "member.invite",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "accept_invitation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/invitation-acceptances",
+      "capability": "invitation.accept",
+      "role_templates": [
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authenticated intended identity may accept before active membership exists. Validate tenant-bound token hash, single use, expiry, original inviter current authority and intended issuer/subject; consume atomically. Safe enumeration responses.",
+      "audit": true
+    },
+    {
+      "operation_id": "transfer_owner",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/actions/transfer-owner",
+      "capability": "tenant.transfer_owner",
+      "role_templates": [
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Fresh assurance, independent approval and explicit successor acceptance. Lock tenant custody and memberships. Compare expected owner, recheck successor eligibility, assign and append custody event atomically. Never remove final eligible owner.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_grant",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/grant-requests",
+      "capability": "grant.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "offline_sync",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/offline-sync",
+      "capability": "submission.sync",
+      "role_templates": [
+        "ENUMERATOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_import",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/import-requests",
+      "capability": "import.create",
+      "role_templates": [
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_ai",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-requests",
+      "capability": "ai.request",
+      "role_templates": [
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_disclosure",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/disclosure-requests",
+      "capability": "disclosure.request",
+      "role_templates": [
+        "AUTHOR",
+        "PRIVACY"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_tenant_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/tenant-exports",
+      "capability": "tenant.export",
+      "role_templates": [
+        "OWNER"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "request_recalculation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/recalculations",
+      "capability": "calculation.run",
+      "role_templates": [
+        "MEL_ADMIN",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "get_effective_access",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/me/access",
+      "capability": "context.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "runtime_manifest",
+      "method": "GET",
+      "path": "/v1/runtime-manifest",
+      "capability": "runtime.read",
+      "role_templates": [
+        "OPERATOR",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "readiness",
+      "method": "GET",
+      "path": "/health/ready",
+      "capability": "public",
+      "role_templates": [
+        "ANONYMOUS"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_jobs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/jobs/{object_id}",
+      "capability": "jobs.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_operations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/operations/{object_id}",
+      "capability": "operations.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_uploads",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/uploads/{object_id}",
+      "capability": "uploads.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR",
+        "DATA_STEWARD",
+        "ANALYST",
+        "FINANCE",
+        "PRIVACY",
+        "OPERATOR",
+        "SUPPORT",
+        "SERVICE",
+        "EXTERNAL"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_upload",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/uploads",
+      "capability": "upload.create",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "audit": true
+    },
+    {
+      "operation_id": "put_upload_content",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/uploads/{object_id}/content",
+      "capability": "upload.write",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "WHOLE mode only. Check current owner, tenant, byte count and SHA256; immutable first write, identical replay returns same receipt. MULTIPART mode uses numbered parts and exact completion manifest. Media max 25,000,000 bytes; imports max 100,000,000 bytes.",
+      "audit": true
+    },
+    {
+      "operation_id": "complete_upload",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete",
+      "capability": "upload.write",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Seal exact ordered part manifest and whole-file digest under upload lock. Missing/changed/extra parts conflict. Freeze new parts, queue assembly and scan. Blob remains quarantined until verified CLEAN. Job generation fences stale workers.",
+      "audit": true
+    },
+    {
+      "operation_id": "read_evidence_content",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}/content",
+      "capability": "evidence.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": true,
+      "state_guard": "Mediated content response. Reauthorise before stream and at bounded intervals/chunks; Range requests independently checked. No signed redirect. Current restrictions override historical access.",
+      "audit": false
+    },
+    {
+      "operation_id": "put_upload_part",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/uploads/{object_id}/parts/{part_number}",
+      "capability": "upload.write",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Owner and current tenant authority required. Part offset is (part_number-1)*1048576. Exactly one MiB except final part. Identical replay returns original receipt; different digest conflicts. Never overwrite a committed part.",
+      "audit": true
+    },
+    {
+      "operation_id": "cancel_upload",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/uploads/{object_id}/actions/cancel",
+      "capability": "upload.write",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR",
+        "DATA_STEWARD"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Current object revision and lifecycle command guard apply.",
+      "audit": true
+    }
+  ],
+  "limits": {
+    "online_revocation_seconds": 60,
+    "positive_cache_seconds": 30,
+    "session_absolute_seconds": 28800,
+    "session_idle_seconds": 1800,
+    "privileged_idle_seconds": 900,
+    "assurance_seconds": 300,
+    "support_max_seconds": 3600,
+    "ordinary_offline_seconds": 86400,
+    "restricted_offline_seconds": 28800
+  }
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "event_type": "tenant.lifecycle_changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "tenant",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "membership.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "membership",
+    "consumers": [
+      "access-cache",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "grant.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "grant",
+    "consumers": [
+      "access-cache",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "programme.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "programme",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "framework.submitted",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "framework",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "indicator.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "indicator",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "form.published",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "form",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "submission.received",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "submission",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "observation.corrected",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "observation",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "import.completed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "import",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "quality.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "quality",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "evidence.scan_completed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "evidence",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "workflow.decided",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "workflow",
+    "consumers": [
+      "calculation",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "period.closed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "period",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "period.restated",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "period",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "report.generated",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "report",
+    "consumers": [
+      "delivery",
+      "audit-checkpoint"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "report.published",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "report",
+    "consumers": [
+      "delivery",
+      "audit-checkpoint"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "report.withdrawn",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "report",
+    "consumers": [
+      "delivery",
+      "audit-checkpoint"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "connection.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "connection",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "ai.proposal_created",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "ai",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "ai.proposal_applied",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "ai",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "privacy.store_completed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "privacy",
+    "consumers": [
+      "store-executor",
+      "cache-invalidator"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "job.completed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "job",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  },
+  {
+    "event_type": "support.changed",
+    "delivery": "at_least_once",
+    "ordering": "aggregate_id + aggregate_sequence; reload on gap",
+    "producer": "support",
+    "consumers": [
+      "projection",
+      "notification"
+    ],
+    "payload": "reference_only",
+    "deduplication": "tenant_id + consumer + event_id",
+    "retention_days": 7,
+    "replay": "current-authority-and-domain-idempotency-required"
+  }
+]

@@ -1,0 +1,166 @@
+{
+  "original_application_files": {
+    "count": 239,
+    "changed": []
+  },
+  "requirements": {
+    "PARTIAL": 74,
+    "PENDING": 233
+  },
+  "missing_requirement_evidence_paths": [],
+  "Test-Catalogue": {
+    "original_sheets": [
+      "Overview",
+      "Functional",
+      "Nonfunctional",
+      "Journeys",
+      "Unit",
+      "Integration",
+      "Smoke",
+      "Security Boundaries",
+      "Scenarios",
+      "Traceability",
+      "Fixtures"
+    ],
+    "current_sheets": [
+      "Overview",
+      "Functional",
+      "Nonfunctional",
+      "Journeys",
+      "Unit",
+      "Integration",
+      "Smoke",
+      "Security Boundaries",
+      "Scenarios",
+      "Traceability",
+      "Fixtures",
+      "Execution records"
+    ],
+    "lost_baseline_cells": [],
+    "changed_baseline_formulas": [],
+    "lost_validation_sheets": []
+  },
+  "test_catalogue_status": {
+    "In progress": 176,
+    "Not run": 619,
+    "Pass": 29,
+    "Blocked": 1
+  },
+  "Implementation-Register": {
+    "original_sheets": [
+      "Overview",
+      "Requirements",
+      "Foundations",
+      "Work packages",
+      "API operations",
+      "Role templates",
+      "Threats",
+      "UI screens",
+      "Release gates",
+      "Deployment inputs"
+    ],
+    "current_sheets": [
+      "Overview",
+      "Requirements",
+      "Foundations",
+      "Work packages",
+      "API operations",
+      "Role templates",
+      "Threats",
+      "UI screens",
+      "Release gates",
+      "Deployment inputs",
+      "Current API",
+      "Execution records"
+    ],
+    "lost_baseline_cells": [],
+    "changed_baseline_formulas": [],
+    "lost_validation_sheets": []
+  },
+  "registered_screens": 34,
+  "Impact-Management-Platform-BRD-v1.1.docx": {
+    "paragraphs": 1528,
+    "tables": 22,
+    "version": "1.1"
+  },
+  "BRD_requirement_ids_missing": [],
+  "Impact-Management-API-and-Event-Contracts-v1.1.docx": {
+    "paragraphs": 58,
+    "tables": 2,
+    "version": "1.1"
+  },
+  "Impact-Management-UI-Component-and-Interaction-Specification-v1.1.docx": {
+    "paragraphs": 198,
+    "tables": 1,
+    "version": "1.1"
+  },
+  "Impact-Management-HLD-v1.1.docx": {
+    "paragraphs": 135,
+    "tables": 4,
+    "version": "1.1"
+  },
+  "Impact-Management-Development-and-CI-Specification-v1.1.docx": {
+    "paragraphs": 50,
+    "tables": 3,
+    "version": "1.1"
+  },
+  "Impact-Management-Engineering-Implementation-Plan-v1.1.docx": {
+    "paragraphs": 55,
+    "tables": 4,
+    "version": "1.1"
+  },
+  "Impact-Management-Platform-FSD-v1.1.docx": {
+    "paragraphs": 2348,
+    "tables": 19,
+    "version": "1.1"
+  },
+  "FSD_requirement_ids_missing": [],
+  "Impact-Management-Test-Strategy-v1.1.docx": {
+    "paragraphs": 101,
+    "tables": 2,
+    "version": "1.1"
+  },
+  "Impact-Management-LLD-v1.1.docx": {
+    "paragraphs": 173,
+    "tables": 6,
+    "version": "1.1"
+  },
+  "Impact-Management-Security-Threat-Model-v1.1.docx": {
+    "paragraphs": 205,
+    "tables": 0,
+    "version": "1.1"
+  },
+  "Impact-Management-Architecture-Decision-Records-v1.1.docx": {
+    "paragraphs": 57,
+    "tables": 0,
+    "version": "1.1"
+  },
+  "Impact-Management-Fixture-and-Acceptance-Specification-v1.1.docx": {
+    "paragraphs": 51,
+    "tables": 2,
+    "version": "1.1"
+  },
+  "Impact-Management-Database-Migration-Specification-v1.1.docx": {
+    "paragraphs": 58,
+    "tables": 3,
+    "version": "1.1"
+  },
+  "Impact-Management-Access-Control-Specification-v1.1.docx": {
+    "paragraphs": 51,
+    "tables": 2,
+    "version": "1.1"
+  },
+  "Impact-Management-Operational-Runbooks-v1.1.docx": {
+    "paragraphs": 73,
+    "tables": 0,
+    "version": "1.1"
+  },
+  "execution_rows": 407,
+  "screen_coverage_rows": 34,
+  "implemented_contract_operations": [
+    138,
+    21
+  ],
+  "migration_files": 15,
+  "failed_checks": []
+}

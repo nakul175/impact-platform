@@ -1,0 +1,112 @@
+[
+  {
+    "component": "Application shell",
+    "contract": "Tenant and scope, navigation, account menu",
+    "acceptance": "Current context is always visible; tenant switch clears old state."
+  },
+  {
+    "component": "Data table",
+    "contract": "Sort, cursor paging, row selection and bulk actions",
+    "acceptance": "Keyboard-accessible headers; hidden totals omitted; selected count is explicit."
+  },
+  {
+    "component": "Filter bar",
+    "contract": "Typed filter terms and saved views",
+    "acceptance": "No match differs from no data; changing scope resets incompatible filters."
+  },
+  {
+    "component": "Record header",
+    "contract": "Title, revision, owner, lifecycle and permitted actions",
+    "acceptance": "Status text is explicit; stale revisions cannot be silently acted upon."
+  },
+  {
+    "component": "Field control",
+    "contract": "Label, unit, requiredness, hint and error",
+    "acceptance": "Linked error summary; correct input type and no placeholder-only labels."
+  },
+  {
+    "component": "Decimal input",
+    "contract": "Canonical decimal string and locale display",
+    "acceptance": "No float coercion; missing and zero remain distinct."
+  },
+  {
+    "component": "Date and period selector",
+    "contract": "Source zone, reporting zone and interval",
+    "acceptance": "Exclusive end semantics; retain zone and reject ambiguous parsing."
+  },
+  {
+    "component": "Choice and repeat editor",
+    "contract": "Stable choice codes and row IDs",
+    "acceptance": "Accessible add/remove, bounded repeat count, row error summary."
+  },
+  {
+    "component": "File uploader",
+    "contract": "Progress, per-part receipt, manifest and scan state",
+    "acceptance": "Transfer completion is distinct from CLEAN; resume queries server receipts."
+  },
+  {
+    "component": "Save status",
+    "contract": "Local draft, pending server confirmation and receipt",
+    "acceptance": "Never show server success from a local write or lost response."
+  },
+  {
+    "component": "Version comparison",
+    "contract": "Base, candidate and current permitted fields",
+    "acceptance": "No hidden field leaks; changed candidate invalidates confirmation."
+  },
+  {
+    "component": "Review panel",
+    "contract": "Candidate, evidence, author conflict and decisions",
+    "acceptance": "Independent identity and current authority; reasons and audit receipt."
+  },
+  {
+    "component": "Result card",
+    "contract": "Value state, unit, approval, freshness and coverage",
+    "acceptance": "Suppression hides raw payload; chart has a data equivalent."
+  },
+  {
+    "component": "Lineage explorer",
+    "contract": "Included/excluded sources and rule version",
+    "acceptance": "Scope-safe traversal; clear contribution identity and exclusion reason."
+  },
+  {
+    "component": "Job progress",
+    "contract": "Stage, known denominator, outcomes and cancellation",
+    "acceptance": "No invented percent when total unknown; committed items remain visible."
+  },
+  {
+    "component": "Confirmation dialog",
+    "contract": "Exact scope, version, effect and recovery",
+    "acceptance": "Focus trap and return; pending action preserves operation identity."
+  },
+  {
+    "component": "Notification centre",
+    "contract": "Safe reference, event class, due date and read state",
+    "acceptance": "Current authority checked on open; no sensitive email content by default."
+  },
+  {
+    "component": "Error boundary",
+    "contract": "Safe message, correlation reference and recovery",
+    "acceptance": "Retain safe drafts; never show stack traces, raw queries or tokens."
+  },
+  {
+    "component": "AI proposal panel",
+    "contract": "Sources, exact diff, expiry and confirmation",
+    "acceptance": "Target/source changes invalidate proposal; only typed draft effects."
+  },
+  {
+    "component": "Offline lease indicator",
+    "contract": "Device authority, trusted expiry and last sync",
+    "acceptance": "Locked state is enforceable; stale identity or time trust is explicit."
+  },
+  {
+    "component": "Disclosure preview",
+    "contract": "Audience, purpose, cell suppression and expiry",
+    "acceptance": "Prior slices considered; approval version and download rights are fixed."
+  },
+  {
+    "component": "Accessible chart",
+    "contract": "Typed bindings, axes, legend, filters and table",
+    "acceptance": "Colour is supplementary; suppressed data absent from every representation."
+  }
+]

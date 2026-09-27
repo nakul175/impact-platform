@@ -1,0 +1,23 @@
+{
+  "suite": "integration",
+  "status": "Blocked",
+  "planned": 18,
+  "executed": 0,
+  "skipped": 1,
+  "failures": 0,
+  "errors": 0,
+  "duration_seconds": 0.0,
+  "product_validated": false,
+  "scope": "Configured API assertions only; not full release qualification",
+  "run_at": "2026-09-25T04:32:59Z",
+  "details": {
+    "failed": [],
+    "errors": [],
+    "blocked": [
+      {
+        "test": "setUpClass (test_integration.Integration)",
+        "reason": "Set IMPACT_BASE_URL and IMPACT_FIXTURE_FILE for an isolated provisioned API fixture"
+      }
+    ]
+  }
+}

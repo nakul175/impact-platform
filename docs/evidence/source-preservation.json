@@ -1,0 +1,7 @@
+{
+  "baseline": "Impact-Platform-Source-v0.11.0.zip",
+  "baseline_sha256": "1ba63de34c748f493ca65e3ebdb1a0ae64863cbff47ee884169e390dcbf48359",
+  "specification_files_unchanged": 66,
+  "prior_migrations_unchanged": 14,
+  "new_migration": "0015_recovery_contacts.sql"
+}

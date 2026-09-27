@@ -1,0 +1,31 @@
+name: impact-development
+services:
+  postgres:
+    image: postgres:17.11
+    environment:
+      POSTGRES_DB: impact_dev
+      POSTGRES_USER: impact_bootstrap
+      POSTGRES_PASSWORD: ${IMPACT_DEV_DB_PASSWORD:?Set a generated local development password}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - impact_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U impact_bootstrap -d impact_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: impact-local-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${IMPACT_DEV_IDP_PASSWORD:?Set a generated local identity administrator password}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./keycloak-dev-realm.json:/opt/keycloak/data/import/impact-dev-realm.json:ro
+      - impact_idp:/opt/keycloak/data
+volumes:
+  impact_pg:
+  impact_idp:

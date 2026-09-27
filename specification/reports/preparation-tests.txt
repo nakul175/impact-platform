@@ -1,0 +1,43 @@
+test_backlog_has_every_requirement_once (test_contracts.Contracts.test_backlog_has_every_requirement_once) ... ok
+test_cookie_mutations_require_csrf (test_contracts.Contracts.test_cookie_mutations_require_csrf) ... ok
+test_decimal_string_boundaries (test_contracts.Contracts.test_decimal_string_boundaries) ... ok
+test_dependency_graph_acyclic (test_contracts.Contracts.test_dependency_graph_acyclic) ... ok
+test_event_rejects_secrets_and_missing_sequence (test_contracts.Contracts.test_event_rejects_secrets_and_missing_sequence) ... ok
+test_fixture_entity_data_schemas (test_contracts.Contracts.test_fixture_entity_data_schemas) ... ok
+test_fixture_reference_types_and_tenants (test_contracts.Contracts.test_fixture_reference_types_and_tenants) ... ok
+test_local_refs_resolve (test_contracts.Contracts.test_local_refs_resolve) ... ok
+test_missing_is_not_zero (test_contracts.Contracts.test_missing_is_not_zero) ... ok
+test_no_untyped_collections (test_contracts.Contracts.test_no_untyped_collections) ... ok
+test_permission_inventory_exact (test_contracts.Contracts.test_permission_inventory_exact) ... ok
+test_recipient_exactly_one_identity (test_contracts.Contracts.test_recipient_exactly_one_identity) ... ok
+test_repeat_row_bounds (test_contracts.Contracts.test_repeat_row_bounds) ... ok
+test_rls_and_privileges_cover_tables (test_contracts.Contracts.test_rls_and_privileges_cover_tables) ... ok
+test_schema_metaschemas (test_contracts.Contracts.test_schema_metaschemas) ... ok
+test_server_fields_cannot_be_forged (test_contracts.Contracts.test_server_fields_cannot_be_forged) ... ok
+test_sql_parses (test_contracts.Contracts.test_sql_parses) ... ok
+test_typed_answers (test_contracts.Contracts.test_typed_answers) ... ok
+test_unique_operation_ids (test_contracts.Contracts.test_unique_operation_ids) ... ok
+test_ai_has_no_approval_or_grant_capability (test_controls.Controls.test_ai_has_no_approval_or_grant_capability) ... ok
+test_assurance_edges (test_controls.Controls.test_assurance_edges) ... ok
+test_bad_digest (test_controls.Controls.test_bad_digest) ... ok
+test_bad_part_size (test_controls.Controls.test_bad_part_size) ... ok
+test_binary_float_rejected (test_controls.Controls.test_binary_float_rejected) ... ok
+test_canonical_command_order (test_controls.Controls.test_canonical_command_order) ... ok
+test_chunk_replay_and_authority (test_controls.Controls.test_chunk_replay_and_authority) ... ok
+test_import_maximum (test_controls.Controls.test_import_maximum) ... ok
+test_invitation_exception_is_bounded (test_controls.Controls.test_invitation_exception_is_bounded) ... ok
+test_missing_part (test_controls.Controls.test_missing_part) ... ok
+test_natural_person_self_approval (test_controls.Controls.test_natural_person_self_approval) ... ok
+test_no_grant (test_controls.Controls.test_no_grant) ... ok
+test_permitted_review (test_controls.Controls.test_permitted_review) ... ok
+test_policy_boundary_vectors (test_controls.Controls.test_policy_boundary_vectors) ... ok
+test_public_readiness (test_controls.Controls.test_public_readiness) ... ok
+test_purpose_required (test_controls.Controls.test_purpose_required) ... ok
+test_reordered_manifest (test_controls.Controls.test_reordered_manifest) ... ok
+test_upload_oversize (test_controls.Controls.test_upload_oversize) ... ok
+test_upload_valid_boundaries (test_controls.Controls.test_upload_valid_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.964s
+
+OK

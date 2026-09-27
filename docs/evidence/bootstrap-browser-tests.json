@@ -1,0 +1,38 @@
+{
+  "engine": "Chromium",
+  "results": [
+    {
+      "name": "Owner proposes explicit administration and selected business delegation",
+      "status": "passed"
+    },
+    {
+      "name": "Unrelated identity cannot see the access review",
+      "status": "passed"
+    },
+    {
+      "name": "Nominated administrator accepts without receiving tenant access",
+      "status": "passed"
+    },
+    {
+      "name": "Independent operator reviews and provisions the exact package",
+      "status": "passed"
+    },
+    {
+      "name": "New administrators can manage access but cannot read programmes",
+      "status": "passed"
+    },
+    {
+      "name": "Second administrator requests business access and owner approves",
+      "status": "passed"
+    },
+    {
+      "name": "Reviewed programme manager creates the first programme in the new tenant",
+      "status": "passed"
+    },
+    {
+      "name": "Initial access review fits a mobile viewport",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

@@ -1,0 +1,9 @@
+{
+  "status": "BLOCKED",
+  "reason": "IMPACT_TEST_DSN and PostgreSQL 17 required",
+  "executed": 0,
+  "suite": "Database runtime role qualification",
+  "planned": 12,
+  "product_validated": false,
+  "run_at": "2026-09-25T04:32:59Z"
+}

@@ -1,0 +1,134 @@
+{
+  "realm": "impact-dev",
+  "enabled": true,
+  "registrationAllowed": false,
+  "sslRequired": "external",
+  "resetPasswordAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 28800,
+  "clients": [
+    {
+      "clientId": "impact-web",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:5173/auth/callback"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:5173"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "69407b72-0f5f-5126-8d04-a1355db5a9c5",
+      "username": "author@impact.example.invalid",
+      "email": "author@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "26888494-31e0-54c4-b3a2-46d602ee68d7",
+      "username": "admin@impact.example.invalid",
+      "email": "admin@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "8bc004cc-36e1-5ac1-804d-fcd8f9b4562f",
+      "username": "partner@impact.example.invalid",
+      "email": "partner@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "da727c2c-5eb0-5204-b5bd-7ca54a972d97",
+      "username": "reviewer@impact.example.invalid",
+      "email": "reviewer@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "d45e1402-b485-5b55-9b1b-dbcf8ee8af07",
+      "username": "revoked@impact.example.invalid",
+      "email": "revoked@impact.example.invalid",
+      "enabled": false,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "c78dc100-b61e-53cd-92f1-28b5ae8a138f",
+      "username": "enumerator@impact.example.invalid",
+      "email": "enumerator@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "ea3beada-dea2-51e3-af9f-7b1b0c1c09ae",
+      "username": "owner@impact.example.invalid",
+      "email": "owner@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "33fd7584-0fe3-5329-87ef-ac6f4c9fd013",
+      "username": "privacy@impact.example.invalid",
+      "email": "privacy@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "4ccb362a-1621-5986-8af3-eaf20718b8d6",
+      "username": "operator@impact.example.invalid",
+      "email": "operator@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    },
+    {
+      "id": "f648fd56-e51a-565e-a490-28ee68efcc54",
+      "username": "other_tenant@impact.example.invalid",
+      "email": "other_tenant@impact.example.invalid",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [
+        "UPDATE_PASSWORD"
+      ]
+    }
+  ]
+}

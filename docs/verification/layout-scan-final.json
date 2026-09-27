@@ -1,0 +1,77 @@
+[
+  {
+    "document": "Impact-Management-API-and-Event-Contracts-v1.1",
+    "pages": 6,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Access-Control-Specification-v1.1",
+    "pages": 6,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Architecture-Decision-Records-v1.1",
+    "pages": 5,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Database-Migration-Specification-v1.1",
+    "pages": 6,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Development-and-CI-Specification-v1.1",
+    "pages": 7,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Engineering-Implementation-Plan-v1.1",
+    "pages": 8,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Fixture-and-Acceptance-Specification-v1.1",
+    "pages": 5,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-HLD-v1.1",
+    "pages": 19,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-LLD-v1.1",
+    "pages": 22,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Operational-Runbooks-v1.1",
+    "pages": 6,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Platform-BRD-v1.1",
+    "pages": 83,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Platform-FSD-v1.1",
+    "pages": 130,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Security-Threat-Model-v1.1",
+    "pages": 11,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-Test-Strategy-v1.1",
+    "pages": 11,
+    "issues": []
+  },
+  {
+    "document": "Impact-Management-UI-Component-and-Interaction-Specification-v1.1",
+    "pages": 12,
+    "issues": []
+  }
+]

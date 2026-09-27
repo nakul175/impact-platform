@@ -1,0 +1,129 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "tenant.lifecycle_changed",
+        "membership.changed",
+        "grant.changed",
+        "programme.changed",
+        "framework.submitted",
+        "indicator.changed",
+        "form.published",
+        "submission.received",
+        "observation.corrected",
+        "import.completed",
+        "quality.changed",
+        "evidence.scan_completed",
+        "workflow.decided",
+        "period.closed",
+        "period.restated",
+        "report.generated",
+        "report.published",
+        "report.withdrawn",
+        "connection.changed",
+        "ai.proposal_created",
+        "ai.proposal_applied",
+        "privacy.store_completed",
+        "job.completed",
+        "support.changed",
+        "object.changed"
+      ]
+    },
+    "schema_version": {
+      "const": "1.1"
+    },
+    "aggregate_type": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "aggregate_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "aggregate_revision": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "revision_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "previous_revision": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "state": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reason_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "object_id",
+        "revision_id",
+        "state"
+      ]
+    },
+    "aggregate_sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "event_id",
+    "tenant_id",
+    "event_type",
+    "schema_version",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_revision",
+    "occurred_at",
+    "actor_id",
+    "correlation_id",
+    "payload",
+    "aggregate_sequence"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://impact.example.invalid/contracts/event.schema.json"
+}

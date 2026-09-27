@@ -1,0 +1,9 @@
+{
+  "name": "impact-local-database",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@electric-sql/pglite": "0.3.15",
+    "@electric-sql/pglite-socket": "0.0.20"
+  }
+}

@@ -1,0 +1,15 @@
+-- Run once using a deployment administrator authorised to create roles. No login credentials are stored here.
+BEGIN;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_owner') THEN CREATE ROLE impact_owner NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_app') THEN CREATE ROLE impact_app NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_worker') THEN CREATE ROLE impact_worker NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_identity') THEN CREATE ROLE impact_identity NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_sensitive') THEN CREATE ROLE impact_sensitive NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_privacy') THEN CREATE ROLE impact_privacy NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='impact_observer') THEN CREATE ROLE impact_observer NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS; END IF; END $$;
+CREATE SCHEMA IF NOT EXISTS impact AUTHORIZATION impact_owner;
+DO $$ BEGIN IF (SELECT pg_get_userbyid(nspowner) FROM pg_namespace WHERE nspname='impact')<>'impact_owner' THEN RAISE EXCEPTION 'unexpected schema owner'; END IF; END $$;
+REVOKE ALL ON SCHEMA impact FROM PUBLIC;
+GRANT USAGE ON SCHEMA impact TO impact_app,impact_worker,impact_identity,impact_sensitive,impact_privacy,impact_observer;
+SET LOCAL ROLE impact_owner; CREATE TABLE IF NOT EXISTS impact.schema_migration(version integer PRIMARY KEY, sha256 char(64) NOT NULL, applied_at timestamptz NOT NULL DEFAULT now());
+COMMIT;

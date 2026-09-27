@@ -1,0 +1,1 @@
+{"name":"impact-browser-qualification","private":true,"type":"module","dependencies":{"@sparticuz/chromium":"153.0.0","playwright-core":"1.58.0"}}

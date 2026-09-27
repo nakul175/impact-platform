@@ -1,0 +1,121 @@
+[
+  {
+    "name": "IMPACT_REGION",
+    "meaning": "Actual deployment region",
+    "owner_role": "Platform lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_ALLOWED_REGIONS",
+    "meaning": "Permitted region allowlist approved for the data",
+    "owner_role": "Privacy and platform",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_PUBLIC_ORIGIN",
+    "meaning": "Actual HTTPS web origin",
+    "owner_role": "Platform lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_OIDC_ISSUER",
+    "meaning": "Configured identity issuer and audience contract",
+    "owner_role": "Identity lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_RUNTIME_SECRET_REFERENCE",
+    "meaning": "Runtime database credential secret reference",
+    "owner_role": "Platform lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_PRIVACY_SECRET_REFERENCE",
+    "meaning": "Separate privacy executor credential reference",
+    "owner_role": "Privacy engineering",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_KMS_KEY_REFERENCE",
+    "meaning": "Governed encryption key identity",
+    "owner_role": "Security lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_ONCALL_ROUTE",
+    "meaning": "Actual incident routing and accountable rota",
+    "owner_role": "Operations owner",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_RELEASE_EVIDENCE_FILE",
+    "meaning": "Qualified release evidence manifest path",
+    "owner_role": "QA lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_POSTGRES_IMAGE",
+    "meaning": "Verified immutable database image digest",
+    "owner_role": "Platform lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_IDP_IMAGE",
+    "meaning": "Verified immutable identity image digest",
+    "owner_role": "Identity lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_MIGRATION_DSN",
+    "meaning": "Privileged deployment connection supplied securely",
+    "owner_role": "Database lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_FIXTURE_DSN",
+    "meaning": "Disposable fixture database connection",
+    "owner_role": "QA lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_TEST_DSN",
+    "meaning": "Disposable runtime-role qualification connection",
+    "owner_role": "QA lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_BASE_URL",
+    "meaning": "Running application API origin",
+    "owner_role": "QA lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_FIXTURE_FILE",
+    "meaning": "Provisioned manifest path",
+    "owner_role": "QA lead",
+    "status": "Environment supplied",
+    "value": ""
+  },
+  {
+    "name": "IMPACT_MODEL_DESTINATIONS",
+    "meaning": "Qualified provider models, regions, retention and egress",
+    "owner_role": "AI and privacy leads",
+    "status": "Environment supplied",
+    "value": ""
+  }
+]

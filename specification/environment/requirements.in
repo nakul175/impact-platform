@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+psycopg[binary,pool]
+pydantic
+httpx
+jsonschema==4.26.0
+pglast==8.4
+PyYAML

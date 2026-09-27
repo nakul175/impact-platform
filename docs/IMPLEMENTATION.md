@@ -1,0 +1,92 @@
+# Implementation boundary · v0.12.0
+
+Version 0.12 adds identity-bound recovery-contact nomination, verification, independent approval, replacement/renewal and revocation. Activation/reactivation require current contact eligibility. Contact registration grants no access or account-recovery capability. Read RELEASE-0.12.md for exact boundaries and COMPLETION-LEDGER.json for requirements. There are 138 domain operations (API 1.10.0), 21 separately documented control-plane operations (API 1.2.0) and migrations through 0015. Release 1 and the full product remain incomplete.
+
+Status: functional development delivery, qualified locally on 27 September 2026. This document distinguishes delivered behaviour from the complete design. The original specifications remain authoritative for the full product; this is an incremental implementation record, not a declaration that all requirements have been met.
+
+## Delivered behaviour
+
+| Area | Behaviour implemented | Boundary |
+|---|---|---|
+| Sign-in | Generated local credentials; RS256 bearer verification; issuer, audience, expiry and authorised-party checks; provisioned identity lookup | Local development identity is qualified. The production OIDC path requires provider testing |
+| Browser sessions | Opaque HttpOnly sessions, Origin/CSRF checks, 15-minute idle/eight-hour absolute expiry, active-device inventory, individual/global revocation and identity authentication cutoff | Provider logout, shared-device mode, idle draft warning, recovery and refresh-token lifecycle remain pending |
+| Identity federation | OIDC authorization-code flow with PKCE S256, state, browser binding, nonce, one-use callback records, fixed provider configuration | No completed integration with a live IdP; no self-service provisioning, SCIM, or configured MFA policy |
+| Initial tenant access | Fixed role profile, owner proposal, second-admin acceptance, independent operator review, expiry/scope ceilings, one-time atomic provision and separately approved business grants | Managed new tenants and registered verified identities only; authority renewal, additional authority recipients, external invitations, external recovery-channel verification and full measurement setup remain pending |
+| Recovery contacts | Owner nomination, registered-account/MFA confirmation, independent approval, one primary contact, explicit expiry, exact replacement/renewal, immediate revocation, current eligibility and activation/reactivation gates | No new email/SMS challenge, external notice delivery, account/factor reset or unavailable-owner bypass; local verification is synthetic |
+| Tenant boundary | Tenant derived from validated identity membership and explicit URL context; forced database row-level security; active tenant/principal/membership checks | Production role topology and operational isolation remain release gates |
+| Permissions | Explicit capabilities, expiry/scopes, delegation ceilings, independent direct/group assignments, immutable custom roles and revocation; JWT roles confer no authority | Whole-assignment replacement, authority renewal/extension, certification and simulation remain pending; restricted purposes remain denied |
+| Programmes | Draft editing, readiness checks and Draft → Ready → Active for the manual measurement profile; Ready → Draft with reason; independently reviewed period close and scoped restatement | Full policy/privacy readiness, archives, hierarchy, templates, scheduled close and bulk restatement remain pending |
+| Indicator definitions | Designer UI, draft editing, independent review, manual flow counts/decimals/ratios/percentages and component meanings | Advanced types, approved-definition replacement, multi-stage workflow administration and exports remain pending |
+| Indicator instances | Designer UI, approved definition pin, active independent assignments, approved-plan checks, activation and governed reassignment | Escalation, targets and automatic schedule generation remain pending |
+| Observations | Manual create/edit draft, required submission fields, explicit value states, decimal strings, unique source keys, independent review and governed approved-value correction | No dataset ingestion, disaggregation, offline sync, file attachment or bulk imports |
+| Review | Single independent stage for domain records, plan eligibility exceptions, corrections, period close, restatement, access changes, reports and disclosure requests; exact candidate revision; natural-person independence; eligibility/capability checks; approve/return/reject; immutable decisions | No delegation, multi-stage quorum, deadlines, external notification delivery or workflow-template editing |
+| Calculation | SUM for FLOW measures; pooled ratios and percentages; decimal arithmetic, one-time display rounding, explicit undefined results | No stock sums, median, unique-count, currencies, expression graphs or multi-grain reconciliation |
+| Coverage | Independently approved immutable obligations and additive amendments; expected, required and excepted denominators; received, valid, approved, pending, missing, excluded, overdue and unplanned counts; visible exception evidence; blocker-controlled close | Prospective obligation scheduling, partner-lifecycle automation and configurable late-source policies remain pending |
+| Lineage/freshness | Immutable source and plan pins, source digest, inclusion/exclusion edges, result binding, transactional invalidation records, visible stale state, replacement provisional revisions, atomic OFFICIAL revisions, locked versioned snapshots and immutable supersession | No background fan-out, cross-period aggregates, distributed artifact inventory or lineage graph UI |
+| Personal work | Principal-filtered recalculation tasks, safe event-linked in-app notices, independent acknowledgement, exact retry and automatic task resolution after manual recalculation | No returned-work/due-obligation aggregation, preferences, digests, provider attempts or escalation engine |
+| Reports/publication | Internal draft/edit; approved-template and locked-snapshot reconciliation; permitted immutable result/evidence bindings; bound numeric narrative; independent report and disclosure approval; append-only package binding; deterministic authenticated semantic HTML/CSV; named active recipients, per-recipient download control, access logging and withdrawal | No anonymous/public link, external contacts, provider delivery, schedules, charts, signatures, PDF/DOCX/XLSX, correction notices or recall of downloaded bytes |
+| People/access | Masked directory, invitations/verified-identity acceptance, independent access and renewal requests, suspension/reactivation/offboarding, owner nomination/acceptance, preferences | External email, identity provisioning, further onboarding acceptance, unavailable-owner recovery and bulk administration remain pending |
+| Other objects | Authorized read/list for evidence, forms, connections, audit events, grants and decisions | Those read surfaces do not imply their management or execution modules are complete |
+| Operational support | Correlation IDs, safe structured errors, readiness/liveness, bounded requests, keyset pagination, security headers | Distributed observability, alerts, queues, backups, disaster recovery and load targets are not qualified |
+
+## Components and transaction design
+
+`auth.py` establishes identity. `store.py` creates transaction-local database roles and tenant context, evaluates scopes, reads immutable revisions, writes current projections and records audit/outbox entries. `contracts.py` validates requests against the versioned JSON schemas. `service.py` implements measurement/domain commands. `administration.py` implements access changes; `period_governance.py` owns close/restatement reconciliation; `reporting.py` owns frozen-package reconciliation, deterministic rendering, disclosure validation, publication access and withdrawal; `work.py` owns personal visibility, durable calculation invalidation, safe notices and recalculation resolution. Their additive schemas and policies live in the matching contract modules, including `publication_contracts.py`. `identity_profile.py` normalizes verified email identifiers. `domain.py` keeps numeric rules independent of persistence. `tenant_lifecycle.py`, `access_bootstrap.py` and `recovery_contacts.py` implement the separately privileged control plane; `bootstrap_profile.json` freezes its reviewed capability catalogue. `main.py` exposes a bounded HTTP surface and serves the compiled web client.
+
+The React client carries no bearer tokens in browser storage. It uses HttpOnly session cookies and keeps the CSRF token in memory. Forms retain an operation ID for retry. Server authorization runs independently of the visibility of buttons. An error after changing an already committed command requires reopening the form with a new operation ID; the server never silently changes the original receipt.
+
+Every successful domain command commits these records together: current registry head and projection, immutable revision, audit event, reference-only outbox event and delivery marker, and an operation receipt. Workflow/calculation commands also commit their related candidate, workflow, decision, job, or lineage records in the same transaction. The receipt is retained for seven days. Exact retries return its original content after current access is checked; changed content under the same operation ID returns a conflict.
+
+Tenant writes take an advisory lock to serialize domain changes within a tenant. This keeps a calculation source set consistent with this implementation's writes, but limits write throughput. The local PGlite runner additionally serializes database transactions because it exposes one backend. Neither mechanism is evidence of meeting enterprise concurrency targets. Native PostgreSQL tests and later lock refinement are required before scale claims.
+
+Version 0.2 takes that lock before resolving current write authority, so a command waiting behind revocation re-evaluates the changed authority. Previously admitted reads and delivered bytes are not retroactively cancelled. Suspension/revocation cancels queued work, marks running jobs for cancellation and pauses active owned schedules. There is no worker implementation to prove external side-effect interruption, and reactivation does not resume work.
+
+Sensitive administrative writes require both a trusted authentication timestamp within five minutes and the configured provider assurance class. Exact ACR enforcement is tested locally; live-provider MFA, enrolment, recovery and action-bound step-up remain unqualified. Sessions retain a verified-email snapshot; provider email changes and account recovery need lifecycle integration before production.
+
+Reads combine current grants, classification, restriction state and RLS. Cross-tenant, missing and unavailable objects return the same resource-unavailable response. Cursors are HMAC protected, bound to the current tenant/principal/route/access state and expire after 15 minutes. Lists default to 50 and are capped at 100. Calculation inputs are capped at 10,000 and requests at 256 KiB. The new setup UI follows paginated results up to an explicit 500-record cap per type; legacy selectors display at most 100 choices and still need pagination. See RELEASE-0.3.md for other configuration limits.
+
+## Data and contract changes
+
+Migration 0012 adds tenant-fenced group entitlements, unique organisation codes, session identifiers/assurance, identity preferences/security events/cutoff and the constrained custody-acceptance function. The bytes of migrations 0001–0011 are unchanged. Organisation moves are immediate and preserve history; future-effective impact planning is still open.
+
+Migrations 0001–0005 are unchanged. Migration 0004 added sessions, natural authorship, result bindings and receipt immutability. Migration 0005 added access administration. Migration 0006 adds measurement configuration; 0007 adds governed amendments and responsibility reassignment; 0008 adds programme-period state, close/restatement state and immutable snapshot membership; 0009 adds append-only report-package bindings; 0010 adds immutable calculation-invalidation identity and per-recipient notice acknowledgement; 0011 adds controlled-publication timestamps plus immutable publication artifacts and append-only access events. Tenant-owned additions have forced RLS. Identity-directory and tenant-bound natural-person functions have fixed search paths and no PUBLIC execution privilege. The ordinary app role cannot manufacture custody or delegation authority, update/delete approved plan or snapshot bindings, mutate an approved report package or publication artifact, rewrite invalidation trigger identity, or read back the publication-access log.
+
+The additive API contract is version 1.10.0, with 138 implemented domain operations including access administration, measurement configuration, period governance, frozen internal reporting, controlled publication and personal recalculation work. `openapi.json` still contains the broader design. Use `openapi-implemented.json` and `API-INVENTORY.md` for the implemented surface. Unsupported operations fail closed. Supplementary implemented routes are:
+
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/health/live`, `/health/ready` | Liveness and database schema readiness |
+| GET | `/auth/mode` | Local sign-in availability |
+| POST | `/auth/development-login` | Loopback development sign-in only |
+| GET | `/auth/login`, `/auth/callback` | Configured OIDC initiation/callback |
+| GET | `/auth/me` | Current identity, CSRF token and permitted workspaces |
+| POST | `/auth/logout` | Revoke the current browser session |
+| GET, PUT | `/auth/preferences` | Read/versioned update of own presentation preferences |
+| GET | `/auth/sessions` | Own active browser sessions and provider account-management link |
+| POST | `/auth/sessions/{id}/revoke`, `/auth/sessions/revoke-all` | Fresh-assurance individual/global revocation |
+| GET | `/v1/runtime-manifest` | Authenticated build and fixture metadata |
+| GET | `/v1/tenants` | Permitted workspace directory |
+| GET | `/v1/tenants/{tenant}/me/access` | Current effective capabilities |
+| GET | `/v1/tenants/{tenant}/operations/{id}?command_type=...` | Actor-owned durable receipt under current authority |
+
+The outbox event version is 1.1 with an `object.changed` event. It contains identifiers and state, not source payloads. Work-centre notices link to an event identity and an opaque task reference. There is no outbox dispatcher or external provider yet, so no claim of email, SMS, push or downstream delivery is made.
+
+## Development fixture adaptation
+
+The original records and SQL under `specification/fixtures` are preserved. The explicit bootstrap appends revisions to correct these development mismatches:
+
+- General fixture grants originally carry purpose `QUALIFICATION`. Non-purpose operations receive revised grants with that purpose removed; purpose-required grants remain constrained. No authorization bypass is added.
+- Additive capabilities are provisioned as actual grant objects for matching fixture role templates. Runtime JWT roles still have no authority. Active managed fixture role templates receive immutable revisions when their capability bundles change; pinned pending invitations may require reissue.
+- The seeded dataset-mode indicator receives a new manual definition revision and a new instance revision for this delivery. The original dataset definition and original official-result fixture remain intact.
+- Seed content authorship is backfilled using only the exact preserved fixture revisions. Restarting the local runner does not turn later review decisions into content authorship.
+- Access administration receives actual grants, six constrained role bundles and separately provisioned delegation ceilings for the synthetic administrator/owner. A designated custodian is recorded. The `invitee` identity has no membership before acceptance. Runtime role labels never create authority. Bootstrap does not restore revoked original or additive administrative capabilities.
+
+Fixture loading is allowed only with an explicit flag and database names `impact_dev` or `impact_test`. The local socket runs on loopback and uses development-only authentication assumptions. Test grants have fixed dates and will expire. No generated credentials, private keys or local data are shipped in the archive.
+
+## Production release gates still open
+
+This build must not be represented as enterprise-ready. Pending gates include native PostgreSQL qualification; separate least-privilege app/identity/worker login roles; real OIDC/MFA; production email and identity provisioning; remaining tenant-onboarding acceptance, authority renewal and unavailable-owner recovery; provider-wide logout and refresh-token revocation; shared-device handling and draft timeout warnings; distributed rate limits; tested key rotation; encrypted managed artifact storage; secrets management; penetration testing; dependency/SBOM review; backup/restore and disaster recovery exercises; SLO/load tests; accessibility review; deployment/rollback automation; and the missing functional modules above. Implemented membership and controlled-publication lifecycles are not substitutes for that full identity and operational programme.
+
+Staging/production configuration rejects development identity, fixture flags, local serialization and non-HTTPS identity endpoints. Runtime production connections reject superuser, BYPASSRLS and schema-owner membership. Those guards support future deployment; they do not replace completion of the release gates.
+
+Staging/production also requires a distinct invitation signing secret of at least 48 characters. Key rotation is not automated: revoke and reissue pending invitations under a coordinated rotation procedure. Replacing the key alone does not revoke stored token hashes; retry-link regeneration requires the original key. See `RELEASE-0.2.md` through `RELEASE-0.9.md` for the access, measurement, amendment, period-governance, reporting, work-centre and controlled-publication increments and their bounded implementation profiles.

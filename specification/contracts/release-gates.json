@@ -1,0 +1,114 @@
+[
+  {
+    "id": "G01",
+    "name": "Requirements",
+    "criterion": "All release-assigned requirements meet source acceptance and recovery behaviours.",
+    "owner_role": "Product and QA",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G02",
+    "name": "Contracts",
+    "criterion": "Closed schemas, generated types, compatibility and policy coverage pass.",
+    "owner_role": "API lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G03",
+    "name": "Database",
+    "criterion": "Fresh install, upgrade, checksums, real-role isolation and concurrent transactions pass.",
+    "owner_role": "Database lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G04",
+    "name": "Identity and access",
+    "criterion": "Federation, recovery, grant issuance, revocation, purpose and independence pass.",
+    "owner_role": "Security lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G05",
+    "name": "Measurement",
+    "criterion": "Golden corpus, source lineage and official report reconciliation pass.",
+    "owner_role": "Measurement lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G06",
+    "name": "Web",
+    "criterion": "Complete workflows, browser matrix, keyboard, screen reader and responsive checks pass.",
+    "owner_role": "Frontend and QA",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G07",
+    "name": "Android",
+    "criterion": "Qualified device matrix proves expiry, encryption, account isolation and durable sync.",
+    "owner_role": "Mobile and QA",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G08",
+    "name": "Integration",
+    "criterion": "Provider scope, checkpoint, credential rotation, retry and replay tests pass.",
+    "owner_role": "Integration lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G09",
+    "name": "Performance",
+    "criterion": "FSD peak, burst, soak and largest-tenant bounds pass with background work.",
+    "owner_role": "Platform lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G10",
+    "name": "Recovery",
+    "criterion": "RPO and RTO measured; deletion and identity restrictions survive restore.",
+    "owner_role": "Platform and privacy",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G11",
+    "name": "Security",
+    "criterion": "Independent assessment has no unresolved critical/high access or integrity failure without verified mitigation.",
+    "owner_role": "Security lead",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G12",
+    "name": "AI",
+    "criterion": "Released use cases pass grounding, correctness, privacy, injection, confirmation and budget evaluation.",
+    "owner_role": "AI and domain leads",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G13",
+    "name": "Operations",
+    "criterion": "Alerts, on-call route, runbooks, limits and support custody exercised.",
+    "owner_role": "Operations owner",
+    "status": "Not run",
+    "evidence": ""
+  },
+  {
+    "id": "G14",
+    "name": "Release",
+    "criterion": "Artifact, schema, policy, fixture, SBOM and evidence manifest match the release candidate.",
+    "owner_role": "Release manager",
+    "status": "Not run",
+    "evidence": ""
+  }
+]

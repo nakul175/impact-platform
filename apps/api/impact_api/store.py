@@ -5,6 +5,7 @@ from threading import RLock
 from uuid import uuid4
 import hashlib
 import json
+import logging
 import re
 import psycopg
 from psycopg import sql
@@ -16,10 +17,65 @@ from .contracts import ENTITIES, REFERENCES, OPERATIONS, validate
 from .domain import DomainError, unavailable
 
 
+PRIVILEGE_QUERY = "SELECT current_user AS login,rolsuper,rolbypassrls,pg_has_role(current_user,'impact_owner','MEMBER') AS owns_schema FROM pg_roles WHERE rolname=current_user"
+LOG = logging.getLogger("impact")
+
+
 class Database:
     def __init__(self, s):
         self.s = s
         self.lock = RLock() if s.dev_db_serial else None
+        self.topology_verified = None
+
+    def topology(self):
+        """Resolve the three runtime connections to their login identities and privilege flags."""
+        result = {}
+        for name, dsn in [
+            ("app", self.s.app_dsn),
+            ("identity", self.s.identity_dsn),
+            ("platform", self.s.platform_dsn),
+        ]:
+            if not dsn:
+                result[name] = None
+                continue
+            with psycopg.connect(dsn, row_factory=dict_row, connect_timeout=5, prepare_threshold=None) as c:
+                row = c.execute(PRIVILEGE_QUERY).fetchone()
+                row["server_version"] = c.execute("SHOW server_version").fetchone()["server_version"]
+                result[name] = row
+        return result
+
+    def verify_topology(self):
+        """When unprivileged connections are required, the app, identity and platform connections
+        must be three distinct logins, none of them superuser, BYPASSRLS or a member of impact_owner.
+        The first successful check is cached; a failure is logged and reported on every readiness call."""
+        if self.topology_verified or not self.s.unprivileged_db_required:
+            return self.topology_verified
+        topology = self.topology()
+        missing = [name for name, row in topology.items() if row is None]
+        privileged = [
+            name
+            for name, row in topology.items()
+            if row and (row["rolsuper"] or row["rolbypassrls"] or row["owns_schema"])
+        ]
+        logins = [row["login"] for row in topology.values() if row]
+        if missing or privileged or len(set(logins)) != 3:
+            reason = (
+                "PLATFORM_NOT_CONFIGURED"
+                if missing
+                else "PRIVILEGED_RUNTIME_CONNECTION"
+                if privileged
+                else "SHARED_RUNTIME_LOGIN"
+            )
+            LOG.error(
+                "database topology refused reason=%s missing=%s privileged=%s logins=%s",
+                reason,
+                missing,
+                privileged,
+                logins,
+            )
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason=reason)
+        self.topology_verified = topology
+        return topology
 
     @contextmanager
     def transaction(self, tenant=None, identity=False, platform=False):
@@ -32,12 +88,10 @@ class Database:
                 connect_timeout=5,
                 prepare_threshold=None,
             ) as c:
-                if self.s.environment in {"staging", "production"}:
-                    row = c.execute(
-                        "SELECT rolsuper,rolbypassrls,pg_has_role(current_user,'impact_owner','MEMBER') AS owns_schema FROM pg_roles WHERE rolname=current_user"
-                    ).fetchone()
-                    if any(row.values()):
-                        raise RuntimeError("Privileged runtime connection refused")
+                if self.s.unprivileged_db_required:
+                    row = c.execute(PRIVILEGE_QUERY).fetchone()
+                    if row["rolsuper"] or row["rolbypassrls"] or row["owns_schema"]:
+                        raise RuntimeError("Privileged runtime connection refused: " + row["login"])
                 c.execute(
                     sql.SQL("SET LOCAL ROLE {}").format(
                         sql.Identifier(

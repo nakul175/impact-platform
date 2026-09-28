@@ -29,6 +29,13 @@ class Settings:
     required_acr: str = ""
     provider_account_url: str = ""
     platform_dsn: str = ""
+    # Refuse superuser, BYPASSRLS or owner database connections outside staging/production too;
+    # native qualification sets it so the API runs on the provisioned login roles only.
+    require_unprivileged_db: bool = False
+
+    @property
+    def unprivileged_db_required(self):
+        return self.environment in {"staging", "production"} or self.require_unprivileged_db
 
     @property
     def secure(self):
@@ -48,7 +55,11 @@ class Settings:
         for name in cls.__dataclass_fields__:
             value = os.environ.get("IMPACT_" + name.upper())
             if value is not None:
-                data[name] = value == "1" if name in {"dev_auth", "dev_db_serial"} else value
+                data[name] = (
+                    value == "1"
+                    if name in {"dev_auth", "dev_db_serial", "require_unprivileged_db"}
+                    else value
+                )
         s = cls(**data)
         if s.environment not in {"development", "test", "staging", "production"} or len(s.cookie_secret) < 48:
             raise ValueError("Invalid environment or cookie secret")

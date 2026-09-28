@@ -166,6 +166,9 @@ def create_app():
 
     @app.get("/health/ready")
     def ready():
+        # With unprivileged connections required, readiness first proves the app, identity and
+        # platform connections are three distinct non-privileged logins (see Database.verify_topology).
+        db.verify_topology()
         with db.transaction() as c:
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"

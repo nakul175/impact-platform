@@ -8,7 +8,7 @@ fixture over the wire exactly as it does on native PostgreSQL. Native mode (--na
 the four login roles on the disposable server named by IMPACT_FIXTURE_DSN, migrates as
 impact_migrator, loads the fixture as the superuser, and starts the API on the app, identity and
 platform logins only: the API process never receives the fixture, migration or administrator
-connection or the login passwords. After the native suite the
+connection, the login passwords, or any libpq PG* variable. After the native suite the
 runner stops the API and starts a fresh process against the same database between the two phases
 of qualification/test_native_restart.py (--skip-restart-check), runs scripts/restore_drill.py on
 the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
@@ -371,8 +371,13 @@ def main():
         os.environ.update({k: v for k, v in env.items() if k.startswith("IMPACT_")})
         config = bootstrap(local)
         env["IMPACT_CONFIG_FILE"] = str(local / "config.json")
+        # The API reads its three connection strings from config.json; it inherits neither the
+        # privileged connections nor any libpq variable (PGPASSWORD, PGPASSFILE, PGSERVICE,
+        # PGHOST, ...) that could add a credential or redirect a connection.
         api_env = {
-            k: v for k, v in env.items() if k not in PRIVILEGED_ENV and not k.startswith("IMPACT_LOGIN_")
+            k: v
+            for k, v in env.items()
+            if k not in PRIVILEGED_ENV and not k.startswith("IMPACT_LOGIN_") and not k.startswith("PG")
         }
         base = config["public_origin"]
         (local / "api.log").write_text("")

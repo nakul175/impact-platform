@@ -14,6 +14,7 @@ them, so the ordinary suite collects them as skipped.
 import hashlib
 import json
 import os
+from pathlib import Path
 
 import httpx
 import pytest
@@ -85,10 +86,52 @@ def session_hash(cookie):
     return hashlib.sha256(cookie.split("=", 1)[1].encode()).digest()
 
 
+# Never in the API process environment: the privileged connections and passwords the runner
+# holds, and any libpq variable that could supply a credential or redirect a connection.
+FORBIDDEN_API_ENVIRONMENT = [
+    "IMPACT_FIXTURE_DSN",
+    "IMPACT_MIGRATION_DSN",
+    "IMPACT_ADMIN_DSN",
+    "IMPACT_LOGIN_",
+    "PGPASSWORD",
+    "PGPASSFILE",
+    "PGSERVICE",
+    "PGHOST",
+    "PGPORT",
+    "PGUSER",
+    "PGDATABASE",
+    "PGOPTIONS",
+]
+
+
+def api_environment(pid):
+    """The environment of the running API process, as the kernel reports it."""
+    raw = Path("/proc/" + str(pid) + "/environ").read_bytes()
+    return [entry.decode(errors="replace") for entry in raw.split(b"\0") if entry]
+
+
+def assert_api_process_holds_no_privileged_connection(live, pid):
+    environment = api_environment(pid)
+    leaked = [
+        entry.split("=", 1)[0]
+        for entry in environment
+        if entry.split("=", 1)[0].startswith(("PG", *FORBIDDEN_API_ENVIRONMENT))
+    ]
+    assert not leaked, leaked
+    assert "IMPACT_CONFIG_FILE=" + str(live.local / "config.json") in environment
+    # The configuration file names the three provisioned logins and never the fixture connection.
+    fixture_dsn = os.environ["IMPACT_FIXTURE_DSN"]
+    for name, login in [("app", "APP"), ("identity", "IDENTITY"), ("platform", "PLATFORM")]:
+        dsn = live.config[name + "_dsn"]
+        assert dsn == os.environ["IMPACT_LOGIN_DSN_" + login], name
+        assert dsn != fixture_dsn and "user=impact_" + login.lower() + "_login" in dsn, name
+
+
 @phase(1)
 def test_phase_1(live):
     """Writes on the first API process, recorded for phase 2."""
     assert os.environ.get("IMPACT_API_PID"), "scripts/run.py exports the API process id"
+    assert_api_process_holds_no_privileged_connection(live, int(os.environ["IMPACT_API_PID"]))
     programme = cmd({"title": "Survives an API restart", "code": "RESTART"})
     programme_receipt = expect(live.request(live.path("programmes"), method="POST", body=programme), 201)
     observation = cmd(draft(live))
@@ -138,6 +181,7 @@ def test_phase_2(live):
     assert state_path(live).exists(), "phase 1 must have run first"
     state = json.loads(state_path(live).read_text())
     assert int(os.environ["IMPACT_API_PID"]) != state["api_pid"], "a fresh API process is required"
+    assert_api_process_holds_no_privileged_connection(live, int(os.environ["IMPACT_API_PID"]))
     assert expect(live.request("/health/ready", actor=None), 200) == state["ready"]
     assert expect(live.request("/v1/runtime-manifest"), 200) == state["manifest"]
     # Exact retries replay the receipts recorded by the previous process, byte for byte.

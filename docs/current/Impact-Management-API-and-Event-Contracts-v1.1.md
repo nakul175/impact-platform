@@ -8,6 +8,8 @@ This specification defines the transport contracts needed to implement the domai
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): openapi-platform.json is control-plane API 1.3.0 with 28 operations; the seven additions are GET /v1/platform/authority-renewals, GET /v1/platform/tenants/{tenant_id}/authority, POST /v1/platform/tenants/{tenant_id}/authority-renewal and POST /v1/platform/authority-renewals/{request_id}/actions/{accept|approve|reject|cancel}. Schemas are closed; a proposal carries the current tenant revision and pinned authority hash, an action the exact request revision. Proposal, consent and approval append authority-renewal-request, -accept and -approve platform events with seven-day receipts; no external delivery is implemented. The 138 domain operations and API 1.10.0 are unchanged; current control-plane clients must adopt 1.3.0. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -18,7 +20,7 @@ The sections explicitly marked current implementation describe this build. Retai
 
 ## Implemented interface authority
 
-Use packages/contracts/openapi-implemented.json for the 138 domain operations at API 1.10.0, and openapi-platform.json for the 21 control-plane operations at API 1.2.0. CURRENT-API-INVENTORY.md lists method, path and operation identity directly from those files. The original broad OpenAPI contract describes future scope and is not a declaration of implemented routes.
+Use packages/contracts/openapi-implemented.json for the 138 domain operations at API 1.10.0, and openapi-platform.json for the 28 control-plane operations at API 1.3.0. CURRENT-API-INVENTORY.md lists method, path and operation identity directly from those files. The original broad OpenAPI contract describes future scope and is not a declaration of implemented routes.
 
 Managed-tenant operations cover request, owner acceptance, readiness, independent activation, suspension, reactivation and closing. Initial-access operations cover proposal, acceptance, independent provision and pending withdrawal or rejection. Recovery adds a participant-filtered list, owner nomination and verify, approve, reject, cancel, decline and revoke commands.
 
@@ -28,7 +30,7 @@ Tenant responses now expose recovery_contact and the recovery_contact_verified r
 
 The current domain outbox uses object.changed version 1.1 and carries identifiers rather than source payloads. Control-plane changes append platform_event records and separate seven-day platform_receipt entries. Replacement emits old-contact replacement and new-contact approval events atomically. No external event dispatcher, email, SMS, webhook delivery or real worker execution is implemented. Delivery state must never be inferred solely from an outbox record.
 
-Error responses carry safe codes and correlation IDs. Resource-unavailable behavior avoids revealing restricted objects. HTTP success does not imply a full business requirement is accepted. Compatibility changes require regenerated contracts, affected test execution and an explicit release note; current control-plane clients must adopt API 1.2.0.
+Error responses carry safe codes and correlation IDs. Resource-unavailable behavior avoids revealing restricted objects. HTTP success does not imply a full business requirement is accepted. Compatibility changes require regenerated contracts, affected test execution and an explicit release note; current control-plane clients must adopt API 1.3.0.
 
 ## Retained requirements and target design
 

@@ -64,7 +64,17 @@ async function confirm(p) {
     .click();
 }
 async function change(p, name, action) {
-  await p.getByRole("button", { name: "Refresh tenants", exact: true }).click();
+  // Wait for the refreshed directory before acting, so the action carries the
+  // current revision rather than racing the in-flight refresh.
+  const [refreshed] = await Promise.all([
+    p.waitForResponse(
+      (r) =>
+        r.request().method() === "GET" &&
+        new URL(r.url()).pathname === "/v1/platform/tenants",
+    ),
+    p.getByRole("button", { name: "Refresh tenants", exact: true }).click(),
+  ]);
+  await refreshed.finished();
   const card = p.getByRole("article", { name, exact: true });
   await card.getByRole("button", { name: action, exact: true }).click();
   await confirm(p);

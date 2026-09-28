@@ -1,6 +1,6 @@
 {
-  "build": "0.12.0",
-  "assessment_date": "2026-09-27",
+  "build": "0.13.0",
+  "assessment_date": "2026-09-28",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
   "summary": {
@@ -19,7 +19,7 @@
       "acceptance": "Suspend tenant A with a running import and a report schedule; accepted rows remain recorded, future writes stop at the cancellation boundary and tenant B continues normally.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.10\u20130.12 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. Partial: external channel verification/invitations, unavailable-owner recovery, authority renewal, support/exit access, workers, credential rechecks, archival/deletion and native concurrency remain open.",
+      "assessment": "v0.10\u20130.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks, archival/deletion and native concurrency remain open.",
       "evidence_paths": [
         "apps/api/impact_api/tenant_lifecycle.py",
         "qualification/test_tenant_lifecycle.py",
@@ -32,7 +32,11 @@
         "apps/api/impact_api/recovery_contacts.py",
         "qualification/test_recovery_contacts.py",
         "tools/browser/recovery-check.mjs",
-        "docs/RELEASE-0.12.md"
+        "docs/RELEASE-0.12.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -47,13 +51,17 @@
       "acceptance": "Move project P from office East to West on 1 July; June retains East and the preview identifies every access grant that would change.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -177,13 +185,17 @@
       "acceptance": "Attempt to revoke the sole owner, then complete a two actor transfer; the first action fails and the second preserves a complete custody history.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -236,13 +248,17 @@
       "acceptance": "Attempt public publication after session login but before step up, then complete a valid challenge; only the reviewed pending action becomes eligible.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -287,13 +303,17 @@
       "acceptance": "Open two sessions, revoke one, then use browser back and a queued export from that session; neither returns protected data.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -323,13 +343,17 @@
       "acceptance": "Expire a reviewer in tenant A while retaining tenant B membership; A approvals fail and B authorised work continues.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -344,11 +368,15 @@
       "acceptance": "A project administrator creates a group and attempts to add tenant administration through it; the indirect escalation fails.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. Federation assurance, recovery, all identity providers and full departure inventory are not qualified.",
+      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. v0.13 adds reviewed renewal/extension of unexpired delegated authority within the existing ceilings: owner proposal, second-administrator consent and independent operator approval, with no capability widening and no resurrection of revoked grants. Federation assurance, recovery, all identity providers, renewal of expired authority, administrator replacement and full departure inventory are not qualified.",
       "evidence_paths": [
         "apps/api/impact_api/administration.py",
         "qualification/test_administration.py",
-        "docs/RELEASE-0.2.md"
+        "docs/RELEASE-0.2.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -363,13 +391,17 @@
       "acceptance": "Remove an analyst from a reporting group; existing report links, AI citations and scheduled exports are denied within the defined bound.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -414,13 +446,17 @@
       "acceptance": "Change the display name and zone after an approval; the approval still resolves to the same actor and original absolute timestamp.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -473,13 +509,17 @@
       "acceptance": "Grant a reviewer access to one candidate and necessary evidence; attempts to edit the source or export the registry fail.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
         "qualification/test_workspace_administration.py",
         "tools/browser/workspace-check.mjs",
-        "docs/RELEASE-0.9.md"
+        "docs/RELEASE-0.9.md",
+        "apps/api/impact_api/authority_renewal.py",
+        "qualification/test_authority_renewal.py",
+        "tools/browser/renewal-check.mjs",
+        "docs/RELEASE-0.13.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },

@@ -9,7 +9,7 @@ catalogue = json.loads((ROOT / "specification/contracts/fsd-requirements.json").
 groups = [
     (
         "FR-TEN-001",
-        "v0.10–0.12 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. Partial: external channel verification/invitations, unavailable-owner recovery, authority renewal, support/exit access, workers, credential rechecks, archival/deletion and native concurrency remain open.",
+        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks, archival/deletion and native concurrency remain open.",
         [
             "apps/api/impact_api/tenant_lifecycle.py",
             "qualification/test_tenant_lifecycle.py",
@@ -23,10 +23,27 @@ groups = [
             "qualification/test_recovery_contacts.py",
             "tools/browser/recovery-check.mjs",
             "docs/RELEASE-0.12.md",
+            "apps/api/impact_api/authority_renewal.py",
+            "qualification/test_authority_renewal.py",
+            "tools/browser/renewal-check.mjs",
+            "docs/RELEASE-0.13.md",
         ],
     ),
     (
-        "FR-TEN-003 FR-IAM-001 FR-IAM-002 FR-IAM-006 FR-IAM-008 FR-IAM-009 FR-IAM-013 FR-IAM-014 FR-ACC-003 FR-ACC-006 FR-ACC-012",
+        "FR-IAM-009",
+        "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. v0.13 adds reviewed renewal/extension of unexpired delegated authority within the existing ceilings: owner proposal, second-administrator consent and independent operator approval, with no capability widening and no resurrection of revoked grants. Federation assurance, recovery, all identity providers, renewal of expired authority, administrator replacement and full departure inventory are not qualified.",
+        [
+            "apps/api/impact_api/administration.py",
+            "qualification/test_administration.py",
+            "docs/RELEASE-0.2.md",
+            "apps/api/impact_api/authority_renewal.py",
+            "qualification/test_authority_renewal.py",
+            "tools/browser/renewal-check.mjs",
+            "docs/RELEASE-0.13.md",
+        ],
+    ),
+    (
+        "FR-TEN-003 FR-IAM-001 FR-IAM-002 FR-IAM-006 FR-IAM-008 FR-IAM-013 FR-IAM-014 FR-ACC-003 FR-ACC-006 FR-ACC-012",
         "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. Federation assurance, recovery, all identity providers and full departure inventory are not qualified.",
         [
             "apps/api/impact_api/administration.py",
@@ -94,13 +111,17 @@ groups = [
     ),
     (
         "FR-TEN-002 FR-TEN-010 FR-IAM-003 FR-IAM-006 FR-IAM-008 FR-IAM-010 FR-IAM-013 FR-ACC-002",
-        "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. Further onboarding acceptance, authority renewal, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+        "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
         [
             "apps/api/impact_api/workspace_administration.py",
             "apps/api/impact_api/account.py",
             "qualification/test_workspace_administration.py",
             "tools/browser/workspace-check.mjs",
             "docs/RELEASE-0.9.md",
+            "apps/api/impact_api/authority_renewal.py",
+            "qualification/test_authority_renewal.py",
+            "tools/browser/renewal-check.mjs",
+            "docs/RELEASE-0.13.md",
         ],
     ),
 ]
@@ -132,8 +153,8 @@ for requirement in requirements:
         assert (ROOT / path).is_file(), path
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
-    "build": "0.12.0",
-    "assessment_date": "2026-09-27",
+    "build": "0.13.0",
+    "assessment_date": "2026-09-28",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
     "summary": summary,

@@ -1,6 +1,6 @@
 # Impact Platform documentation index
 
-Edition **1.1**, 27 September 2026. Reconciled to application **0.12.0**, domain API **1.10.0**, platform API **1.2.0** and schema **15**.
+Edition **1.1**, 27 September 2026. Reconciled to application **0.12.0**, domain API **1.10.0**, platform API **1.2.0** and schema **15**. Build **0.13.0** (28 September 2026; schema **16**, platform API **1.3.0**) is recorded in [RELEASE-0.13.md](../RELEASE-0.13.md); the Markdown reading copies, guides, registers and inventories below are updated to it, while the Word and workbook editable copies remain at edition 1.1. The sequenced plan for the remaining work is [DELIVERY-PLAN.md](../DELIVERY-PLAN.md).
 
 This set describes the full target product and the current development implementation. Requirements and acceptance conditions are retained; current implementation profiles identify delivered subsets and limitations. The original editions are in [history/v1.0](../history/v1.0/).
 
@@ -9,6 +9,7 @@ This set describes the full target product and the current development implement
 | Need | Document |
 | --- | --- |
 | Understand current behavior and limits | [Implementation record](../IMPLEMENTATION.md) and [current architecture](ARCHITECTURE-CURRENT.md) |
+| Plan and sequence the remaining work | [Delivery plan](../DELIVERY-PLAN.md) and [remaining work](../NEXT-DELIVERY.md) |
 | Use the implemented workflows | [User guide](USER-GUIDE.md) |
 | Onboard and administer a tenant | [Administrator guide](ADMINISTRATOR-GUIDE.md) |
 | Run and diagnose the development build | [Operations guide](OPERATIONS-GUIDE.md) |
@@ -42,12 +43,12 @@ Each Word document has a Markdown reading copy for GitHub. The editable Word fil
 | Artifact | Coverage |
 | --- | --- |
 | [Wireframes](Impact-Management-Wireframes-v1.1.html) | 30 original target screens and 4 current workflow additions; synthetic interaction only. Download and open locally; GitHub displays source. |
-| [Screen coverage](SCREEN-COVERAGE.csv) | Every screen mapped to current support and limits. |
+| [Screen coverage](SCREEN-COVERAGE.csv) | Every screen (34 baseline and UI35 authority renewal) mapped to current support and limits. |
 | [Test catalogue](Impact-Management-Test-Catalogue-v1.1.xlsx) | All 825 baseline cases, scenarios, fixtures and 307 requirement links, with current execution evidence. |
 | [Implementation register](Impact-Management-Implementation-Register-v1.1.xlsx) | Requirements, foundations, packages, contracts, roles, threats, screens, release gates and deployment inputs. |
-| [Execution register](EXECUTION-REGISTER.csv) | 325 application and 81 browser case identities; one reference-run row represents 143 assertions. |
-| [API inventory](CURRENT-API-INVENTORY.md) | Exact 138 domain and 21 platform operations. Authentication and health routes are separately listed in the implementation record. |
-| [Data dictionary and migration ledger](CURRENT-DATA-DICTIONARY.md) | Exact SQL for all 15 migrations and their checksums; JSON payload contracts remain in source. |
+| [Execution register](EXECUTION-REGISTER.csv) | 353 application and 91 browser case identities; one reference-run row represents 143 assertions. |
+| [API inventory](CURRENT-API-INVENTORY.md) | Exact 138 domain and 28 platform operations. Authentication and health routes are separately listed in the implementation record. |
+| [Data dictionary and migration ledger](CURRENT-DATA-DICTIONARY.md) | Exact SQL for all 16 migrations and their checksums; JSON payload contracts remain in source. |
 | [Data governance](DATA-GOVERNANCE.md) | Data classes, implemented boundaries and unresolved policy decisions. |
 
 ## Status and acceptance

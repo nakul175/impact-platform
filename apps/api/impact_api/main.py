@@ -19,6 +19,7 @@ from .reporting import REPORT_CSP
 from .store import Database
 from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
+from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 
 LOG = logging.getLogger("impact")
@@ -71,8 +72,9 @@ def create_app():
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
+    authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.12.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version="0.13.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -168,7 +170,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 15:
+        if version != 16:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -214,6 +216,28 @@ def create_app():
         body = await strict_body(request)
         return await run_in_threadpool(
             bootstrap_access.command, auth.resolve(request), action, body, None, uuid(request_id)
+        )
+
+    @app.get("/v1/platform/authority-renewals")
+    def authority_renewal_directory(request: Request, cursor: str | None = None):
+        return authority_renewal.directory(auth.resolve(request), uuid(cursor) if cursor else None)
+
+    @app.get("/v1/platform/tenants/{tenant_id}/authority")
+    def delegated_authority(request: Request, tenant_id: str):
+        return authority_renewal.authority(auth.resolve(request), uuid(tenant_id))
+
+    @app.post("/v1/platform/tenants/{tenant_id}/authority-renewal")
+    async def request_authority_renewal(request: Request, tenant_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            authority_renewal.command, auth.resolve(request), "request", body, uuid(tenant_id)
+        )
+
+    @app.post("/v1/platform/authority-renewals/{request_id}/actions/{action}")
+    async def authority_renewal_action(request: Request, request_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            authority_renewal.command, auth.resolve(request), action, body, None, uuid(request_id)
         )
 
     @app.post("/v1/platform/tenants")
@@ -290,8 +314,8 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.12.0",
-            "schema_version": "15",
+            "build_id": "impact-0.13.0",
+            "schema_version": "16",
             "api_version": "1.10.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),

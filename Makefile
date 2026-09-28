@@ -28,6 +28,7 @@ browser:
 	$(PY) scripts/run.py tenant-browser
 	$(PY) scripts/run.py bootstrap-browser
 	$(PY) scripts/run.py recovery-browser
+	$(PY) scripts/run.py renewal-browser
 lint:
 	.venv/bin/ruff check apps/api scripts qualification
 	.venv/bin/ruff format --check apps/api scripts qualification

@@ -101,6 +101,8 @@ The governing source is Impact Management Platform BRD version 1.0 dated 24 Sept
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): reviewed renewal of unexpired delegated authority is implemented. The current owner proposes an extension ending after the current expiry and at most 90 days ahead, pinning the exact ceilings, managed TENANT_ADMIN grants, assignments and membership of the owner and exactly one second administrator; that administrator consents; an independent platform operator approves. Readiness, Active tenant state, fresh configured assurance, independence, expected revisions and the pinned hash are rechecked at each step; only the pinned rows are extended. Expired authority is not renewable, single-administrator tenants are unsupported, and administrator replacement, external notices and operator-initiated renewal remain pending. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -111,7 +113,7 @@ The sections explicitly marked current implementation describe this build. Retai
 
 ## Current functional contract
 
-The implemented domain OpenAPI contract is packages/contracts/openapi-implemented.json, API version 1.10.0 with 138 operations. The separate privileged control-plane contract is packages/contracts/openapi-platform.json, API version 1.2.0 with 21 operations. The broad design contract remains a target and must not be used to imply that unsupported operations are available. Authentication and health routes are listed separately in API-INVENTORY.md.
+The implemented domain OpenAPI contract is packages/contracts/openapi-implemented.json, API version 1.10.0 with 138 operations. The separate privileged control-plane contract is packages/contracts/openapi-platform.json, API version 1.3.0 with 28 operations. The broad design contract remains a target and must not be used to imply that unsupported operations are available. Authentication and health routes are listed separately in API-INVENTORY.md.
 
 ## Managed tenant and recovery behavior
 
@@ -119,7 +121,7 @@ An operator requests a tenant with the registered owner identity and deployment 
 
 A nomination expires within seven days, the contact expiry is bounded to 90 days, and approval must occur within 24 hours of nominee verification. Writes require configured assurance authenticated within five minutes. Tenant, owner, nominee email hash and replacement revisions are pinned. Pending replacement preserves the old contact until atomic approval. Revocation or expiry removes readiness but does not automatically suspend existing business access. Account-wide revocation invalidates the contact proof. Tenant-membership revocation alone does not revoke the separately nominated relationship.
 
-Initial access is another reviewed workflow: owner proposal, acceptance by the distinct nominated administrator, and independent operator provisioning of the exact capability and expiry ceilings. Initial administration is not programme-data access. Business grants require their normal independent review. One-time bootstrap cannot resurrect revoked authority; reviewed authority renewal remains pending.
+Initial access is another reviewed workflow: owner proposal, acceptance by the distinct nominated administrator, and independent operator provisioning of the exact capability and expiry ceilings. Initial administration is not programme-data access. Business grants require their normal independent review. One-time bootstrap cannot resurrect revoked authority; reviewed renewal of unexpired delegated authority is implemented in build 0.13; renewal of expired authority and administrator replacement remain pending.
 
 ## Measurement and publication boundary
 

@@ -167,9 +167,29 @@ function explain(e: unknown) {
   if (e instanceof ApiError) {
     if (
       e.code === "ASSURANCE_REQUIRED" ||
-      e.reason === "REAUTHENTICATION_REQUIRED"
+      ["REAUTHENTICATION_REQUIRED", "FRESH_MFA_REQUIRED"].includes(
+        e.reason || "",
+      )
     )
       return "Sign out and sign in again. This action requires recent authentication.";
+    if (e.reason === "PLATFORM_OPERATOR_REQUIRED")
+      return "Only an independent platform operator can perform this review.";
+    if (e.reason === "AUTHORITY_UNAVAILABLE")
+      return "Delegated authority is not available for renewal. Initial access must be applied and the owner must still hold its administration ceiling.";
+    if (e.reason === "RENEWAL_PENDING")
+      return "An authority renewal is already pending. Complete, withdraw or reject it before proposing another.";
+    if (e.reason === "RENEWAL_EXPIRED")
+      return "This renewal review has expired. Withdraw or reject it, then propose a fresh renewal.";
+    if (
+      ["AUTHORITY_CHANGED", "RENEWAL_CONTEXT_CHANGED"].includes(e.reason || "")
+    )
+      return "The delegated authority, tenant or owner record changed after this proposal was pinned. Refresh the authority panel; withdraw or reject the proposal and review a fresh one.";
+    if (e.reason === "INVALID_RENEWAL_TRANSITION")
+      return "This renewal has already been decided or is not ready for that action. Refresh the list before continuing.";
+    if (e.reason === "OPERATION_REUSE")
+      return "This operation was already submitted with different content, or its receipt has expired. Close the form and submit the change again.";
+    if (e.reason === "OWNER_UNAVAILABLE")
+      return "The tenant owner’s custody membership is no longer active. Only the current owner can propose or withdraw a renewal.";
     if (e.reason === "DELEGATION_NOT_PERMITTED")
       return "The requested role, scope or expiry exceeds your delegated authority.";
     if (e.reason === "INITIAL_ACCESS_ALREADY_PROVISIONED")
@@ -185,9 +205,9 @@ function explain(e: unknown) {
     )
       return "The tenant configuration or access profile changed. Withdraw or reject this proposal and review a new one.";
     if (e.reason === "SECOND_ADMIN_UNAVAILABLE")
-      return "Choose a different eligible administrator. Existing or inactive memberships cannot be restored through initial access.";
+      return "Choose a different eligible administrator. Existing or inactive memberships cannot be restored through initial access, and a renewal requires a second administrator who still holds delegated authority.";
     if (e.reason === "GRANT_EXPIRY_BOUNDS")
-      return "Choose an expiry in the future and within 90 days.";
+      return "Choose an expiry in the future, after any current expiry, and within 90 days.";
     if (e.reason === "RECOVERY_EXPIRY_BOUNDS")
       return "Choose a contact expiry in the future and within 90 days.";
     if (e.reason === "RECOVERY_PENDING")
@@ -211,7 +231,7 @@ function explain(e: unknown) {
     if (e.reason === "RECOVERY_TENANT_UNAVAILABLE")
       return "Recovery contacts can be configured after ownership acceptance and before closure.";
     if (e.reason === "TENANT_NOT_ACTIVE")
-      return "The tenant must be active before initial access can be accepted or approved.";
+      return "The tenant must be active before initial access or an authority renewal can be proposed, accepted or approved.";
     if (e.reason === "TENANT_NOT_READY")
       return "The tenant no longer passes its deployment and ownership checks. Review tenant readiness before continuing.";
     if (e.reason === "LAST_OWNER_PROTECTED")

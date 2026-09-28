@@ -1,0 +1,46 @@
+{
+  "engine": "Chromium",
+  "results": [
+    {
+      "name": "Owner inspects the pinned delegated authority of both administrators",
+      "status": "passed"
+    },
+    {
+      "name": "Proposal form pins the second administrator and rejects an expiry inside the current ceiling",
+      "status": "passed"
+    },
+    {
+      "name": "Owner proposes a bounded renewal pinned to the current authority",
+      "status": "passed"
+    },
+    {
+      "name": "Unrelated account sees neither delegated authority nor the proposal",
+      "status": "passed"
+    },
+    {
+      "name": "Second administrator accepts the exact proposal without a proposal form",
+      "status": "passed"
+    },
+    {
+      "name": "Tenant owner cannot approve: the operator-only denial is enforced and explained",
+      "status": "passed"
+    },
+    {
+      "name": "Independent operator approves and every pinned ceiling extends to the renewed expiry",
+      "status": "passed"
+    },
+    {
+      "name": "Owner’s authority panel shows the renewed expiry",
+      "status": "passed"
+    },
+    {
+      "name": "A later proposal is withdrawn by the owner and kept in history",
+      "status": "passed"
+    },
+    {
+      "name": "Authority renewal review and history fit a mobile viewport",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

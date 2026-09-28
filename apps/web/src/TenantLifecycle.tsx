@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
+import { AuthorityRenewal } from "./AuthorityRenewal";
 
 type Props = {
   development: boolean;
@@ -27,6 +28,7 @@ export function TenantLifecycle({
   const [creating, setCreating] = useState(false);
   const [initialAccess, setInitialAccess] = useState(false);
   const [recoveryContacts, setRecoveryContacts] = useState(false);
+  const [authorityRenewal, setAuthorityRenewal] = useState(false);
   const retry = useRef({ key: "", operation: "" });
   const base = "/v1/platform/tenants";
   async function refresh(after?: string) {
@@ -116,6 +118,18 @@ export function TenantLifecycle({
         close={() => setInitialAccess(false)}
       />
     );
+  if (authorityRenewal)
+    return (
+      <AuthorityRenewal
+        request={request}
+        explain={explain}
+        identity={identity}
+        close={() => {
+          setAuthorityRenewal(false);
+          refresh().catch((e) => setError(explain(e)));
+        }}
+      />
+    );
   return (
     <main className="tenant-console">
       <div className="toolbar">
@@ -132,6 +146,9 @@ export function TenantLifecycle({
       </button>
       <button className="secondary" onClick={() => setInitialAccess(true)}>
         Initial access
+      </button>
+      <button className="secondary" onClick={() => setAuthorityRenewal(true)}>
+        Authority renewal
       </button>
       <p>
         Review ownership and deployment policy before activation. Ownership does

@@ -8,6 +8,8 @@ This specification defines reproducible synthetic data, identity prerequisites a
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): the runner now applies sixteen migrations. The regenerated full application run has 353 passing tests and one deselected offline test; the reference report has 143 passing design assertions; nine browser groups contain 91 passing workflows without uncaught page errors. Renewal qualification (qualification/test_authority_renewal.py, 28 cases; tools/browser/renewal-check.mjs, ten workflows) covers owner-only proposal, second-administrator eligibility and alias independence, expiry bounds, removed and revoked ceilings, drifted pins, expired review windows, operator independence, exact retry, one live request per tenant, suspension and missing recovery evidence, runtime-role privilege boundaries and rollback after an injected failure. Edition 1.1 figures elsewhere describe build 0.12.0. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -20,7 +22,7 @@ The sections explicitly marked current implementation describe this build. Retai
 
 The preserved specification fixture is the source of stable synthetic identities and records. scripts/bootstrap.py adapts it with explicit additional revisions, system roles, grants, managed-tenant operator qualification and local sign-in configuration. This is a development fixture, not a real identity-provider deployment or production data migration.
 
-The runner starts a fresh isolated in-memory PGlite instance for qualification, applies all fifteen migrations and creates the application. Current tests use the actual HTTP service, SQL roles, RLS, immutable revisions and transaction rollback. Browser checks use the compiled client. Credentials, private keys, local databases and tokens are excluded from release archives.
+The runner starts a fresh isolated in-memory PGlite instance for qualification, applies all sixteen migrations and creates the application. Current tests use the actual HTTP service, SQL roles, RLS, immutable revisions and transaction rollback. Browser checks use the compiled client. Credentials, private keys, local databases and tokens are excluded from release archives.
 
 ## Recorded acceptance evidence
 

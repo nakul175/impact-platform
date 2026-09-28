@@ -1,12 +1,12 @@
 # Current roadmap and next delivery
 
-Roadmap Release 1 is **in progress**. Build v0.12 adds recovery-contact evidence management and readiness gates to the v0.11 initial-access increment. A build number does not mean a roadmap release is accepted. The original 307-requirement ledger has 74 PARTIAL and 233 PENDING requirements; none is declared fully accepted.
+Roadmap Release 1 is **in progress**. Build v0.13 adds reviewed renewal of unexpired delegated authority to the v0.11 initial-access and v0.12 recovery-contact increments. The sequenced plan for the remaining increments, infrastructure tracks and quality backlog is in [DELIVERY-PLAN.md](DELIVERY-PLAN.md). A build number does not mean a roadmap release is accepted. The original 307-requirement ledger has 74 PARTIAL and 233 PENDING requirements; none is declared fully accepted.
 
 ## Finish Release 1 before moving to Release 2
 
 | Priority | Remaining work | Acceptance evidence |
 |---|---|---|
-| 1 | Complete onboarding: authority renewal/extension, external recovery-channel verification/invitations and legacy tenant adoption | New tenant can run a business workflow only through explicitly reviewed grants; verified contacts and provider evidence are recorded |
+| 1 | Complete onboarding: administrator replacement and renewal of expired authority (v0.14), external recovery-channel verification/invitations (v0.15) and legacy tenant adoption (v0.16) | New tenant can run a business workflow only through explicitly reviewed grants; verified contacts and provider evidence are recorded |
 | 2 | Complete lifecycle: real worker cancellation, source-credential rechecks, support/exit access, closure export/archive/deletion | v0.10 already fences access and holds work; live cancellation boundaries, governed exit and recovery still need acceptance |
 | 3 | Live OIDC/MFA/passkeys and provider recovery | PKCE/state/nonce replay and disabled-account tests; actual assurance policy; enrolment/last-factor safeguards; action-bound step-up |
 | 4 | Unavailable-owner recovery | Independently verified contacts/evidence, separate approvers and audited fail-closed custody transition |
@@ -14,15 +14,15 @@ Roadmap Release 1 is **in progress**. Build v0.12 adds recovery-contact evidence
 | 6 | Organisation reorganisation acceptance | Future-effective moves, affected-obligation preview, historical context and documented scope semantics |
 | 7 | Native persistence and real service roles | v0.8 upgrade, duplicate-code preflight, RLS under separate app/identity roles, simultaneous approval/revocation, restart and backup/restore |
 
-Already delivered: custom role create/revise/retire; independently reviewed flat group access; immediate member removal; organisation create/rename/move; renewal that removes old access; owner nomination/acceptance; own-session inventory/revocation; identity authentication cutoff; preferences; configured ACR enforcement. Extend these capabilities rather than rebuilding them. Exact limits are in RELEASE-0.9.md.
+Already delivered: custom role create/revise/retire; independently reviewed flat group access; immediate member removal; organisation create/rename/move; renewal that removes old access; owner nomination/acceptance; own-session inventory/revocation; identity authentication cutoff; preferences; configured ACR enforcement; reviewed extension of unexpired delegated authority (v0.13). Extend these capabilities rather than rebuilding them. Exact limits are in RELEASE-0.9.md.
 
-The next coding slice is reviewed delegation-authority renewal and extension. Initial authority expires within 90 days; extend it through an explicit, independently reviewed proposal that rechecks current source authority, recovery readiness, exact capability/scope ceilings and expiry. Preserve existing revocations and the one-time bootstrap marker. v0.12 supplies registered-account recovery-contact nomination, verification, replacement/renewal, revocation and live eligibility checks; it does not deliver account recovery or a new email/SMS challenge. External delivery/provider qualification, unavailable-owner recovery and operational acceptance still require further work.
+v0.13 delivers the reviewed extension of unexpired delegated authority: the owner's proposal pins the current ceilings, grants and assignments of both administrators, the second administrator confirms, an independent operator approves within the review window, and a database-owned applicator re-dates only the pinned rows; revocations are preserved and the bootstrap marker is untouched. The next coding slice is v0.14, administrator replacement and renewal of expired authority: replace a revoked, expired or unavailable second administrator, admit a further reviewed authority holder, and re-establish authority that has lapsed through the same three-party review, without resurrecting revoked grants or re-running the one-time bootstrap. v0.12 supplies registered-account recovery-contact evidence; it does not deliver account recovery or a new email/SMS challenge. External delivery/provider qualification, unavailable-owner recovery and operational acceptance still require further work.
 
 ## Retained release sequence
 
 | Release | Scope | State |
 |---|---|---|
-| 1 | Tenant and user administration | In progress; v0.12 increment delivered |
+| 1 | Tenant and user administration | In progress; v0.13 increment delivered |
 | 2 | Security and privacy foundations | Planned |
 | 3 | Programme planning | Planned |
 | 4 | Advanced measurement | Planned |

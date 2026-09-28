@@ -1,6 +1,6 @@
 # Current implemented API inventory
 
-Build 0.12.0. Domain and control-plane operations are distinct. Authentication and health supplements are listed in ../API-INVENTORY.md and ../IMPLEMENTATION.md. No broad-design operation is implied by this inventory.
+Build 0.13.0. Domain and control-plane operations are distinct. Authentication and health supplements are listed in ../API-INVENTORY.md and ../IMPLEMENTATION.md. No broad-design operation is implied by this inventory.
 
 ## Domain API
 
@@ -149,7 +149,7 @@ Contract version 1.10.0. Source: packages/contracts/openapi-implemented.json.
 
 ## Privileged control plane
 
-Contract version 1.2.0. Source: packages/contracts/openapi-platform.json.
+Contract version 1.3.0. Source: packages/contracts/openapi-platform.json.
 
 | Method | Path | Operation |
 | --- | --- | --- |
@@ -174,4 +174,10 @@ Contract version 1.2.0. Source: packages/contracts/openapi-platform.json.
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/reject` | recovery_contact_reject |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/revoke` | recovery_contact_revoke |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/verify` | recovery_contact_verify |
-
+| GET | `/v1/platform/authority-renewals` | list_authority_renewals |
+| GET | `/v1/platform/tenants/{tenant_id}/authority` | get_delegated_authority |
+| POST | `/v1/platform/tenants/{tenant_id}/authority-renewal` | request_authority_renewal |
+| POST | `/v1/platform/authority-renewals/{request_id}/actions/accept` | authority_renewal_accept |
+| POST | `/v1/platform/authority-renewals/{request_id}/actions/approve` | authority_renewal_approve |
+| POST | `/v1/platform/authority-renewals/{request_id}/actions/cancel` | authority_renewal_cancel |
+| POST | `/v1/platform/authority-renewals/{request_id}/actions/reject` | authority_renewal_reject |

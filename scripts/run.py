@@ -33,6 +33,7 @@ def main():
             "tenant-browser",
             "bootstrap-browser",
             "recovery-browser",
+            "renewal-browser",
         ],
     )
     parser.add_argument(
@@ -187,6 +188,8 @@ def main():
             return subprocess.call(["node", "tools/browser/bootstrap-check.mjs"], cwd=ROOT, env=env)
         if args.mode == "recovery-browser":
             return subprocess.call(["node", "tools/browser/recovery-check.mjs"], cwd=ROOT, env=env)
+        if args.mode == "renewal-browser":
+            return subprocess.call(["node", "tools/browser/renewal-check.mjs"], cwd=ROOT, env=env)
         targets = args.pytest_path or [
             "qualification",
             "specification/reference-v1/tests/test_smoke.py",

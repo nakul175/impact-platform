@@ -119,6 +119,7 @@ DIRECTORY = obj(
 def openapi():
     from .bootstrap_contracts import add_paths
     from .recovery_contracts import add_paths as add_recovery_paths
+    from .renewal_contracts import add_paths as add_renewal_paths
 
     def operation(name, request_schema=None, response_schema=DIRECTORY):
         node = {
@@ -152,9 +153,10 @@ def openapi():
         }
     add_paths(paths, operation)
     add_recovery_paths(paths, operation)
+    add_renewal_paths(paths, operation)
     return {
         "openapi": "3.1.0",
-        "info": {"title": "Impact control-plane API", "version": "1.2.0"},
+        "info": {"title": "Impact control-plane API", "version": "1.3.0"},
         "paths": paths,
         "components": {
             "securitySchemes": {

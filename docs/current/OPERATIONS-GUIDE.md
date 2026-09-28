@@ -1,6 +1,6 @@
 # Impact Platform operations guide
 
-Build 0.12.0 is qualified locally for bounded development workflows. This guide distinguishes commands that can be reproduced now from production procedures that require an actual environment, assigned owner and verified evidence.
+Build 0.13.0 is qualified locally for bounded development workflows. This guide distinguishes commands that can be reproduced now from production procedures that require an actual environment, assigned owner and verified evidence.
 
 ## Reproduce the development environment
 
@@ -11,7 +11,7 @@ make setup
 make dev
 ```
 
-The default origin is http://127.0.0.1:8000. Startup applies fifteen migrations and provisions synthetic development records. Local credentials, keys and data are under .local and are excluded from source archives. Stop the process tree normally with Ctrl+C. Do not expose development sign-in or the local database publicly.
+The default origin is http://127.0.0.1:8000. Startup applies sixteen migrations and provisions synthetic development records. Local credentials, keys and data are under .local and are excluded from source archives. Stop the process tree normally with Ctrl+C. Do not expose development sign-in or the local database publicly.
 
 The browser preparation path is Linux x86_64 specific. Development can run on the documented desktop prerequisites, but alternate browser platforms need their own setup and qualification. The local filesystem-backed database previously encountered consistency errors in this environment; final recorded test runs use fresh in-memory PGlite. Production persistence is not qualified.
 
@@ -24,7 +24,7 @@ make reference
 make browser
 ```
 
-The full saved application run has 325 passing checks and one explicitly deselected offline case. Reference tests have 143 passing assertions. Eight browser groups have 81 passing workflows. Focused test commands may replace the same JUnit output path; do not retain a full-suite count after replacing its report with a focused run.
+The full saved application run has 353 passing checks and one explicitly deselected offline case. Reference tests have 143 passing assertions. Nine browser groups have 91 passing workflows. Focused reproduction of the latest increment: `.venv/bin/python scripts/run.py test --pytest-path qualification/test_authority_renewal.py` and `.venv/bin/python scripts/run.py renewal-browser`. Focused test commands may replace the same JUnit output path; do not retain a full-suite count after replacing its report with a focused run.
 
 The native runner is a separate gate:
 

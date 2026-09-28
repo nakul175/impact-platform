@@ -40,6 +40,10 @@ import migrate
 ROOT = Path(__file__).resolve().parents[1]
 # The documented development port; the test and browser runners let the operating system choose.
 PGLITE_DEFAULT_PORT = "55432"
+# The suites create fixture-relative authority (recovery contacts, initial access, renewals) that
+# expires up to 60 days from now and must stay inside the fixture's delegation ceilings, so the
+# runner refuses to start once the fixture's own expiry is closer than this.
+FIXTURE_PREFLIGHT_DAYS = 90
 # Never handed to the API process: fixture, migration and administrator connections and passwords.
 PRIVILEGED_ENV = {"IMPACT_FIXTURE_DSN", "IMPACT_MIGRATION_DSN", "IMPACT_ADMIN_DSN"}
 BROWSER_MODES = {
@@ -122,7 +126,13 @@ def preflight_fixture():
     stamped = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text()).get(
         "fixture_expires_at"
     )
-    if stamped and stamped != FIXTURE_EXPIRES_AT:
+    if not stamped:
+        raise SystemExit(
+            "api-fixture.json carries no fixture_expires_at stamp; regenerate the fixture with "
+            + "scripts/redate_fixture.py rather than editing it, so that the stamp and "
+            + "scripts/fixture_support.py agree."
+        )
+    if stamped != FIXTURE_EXPIRES_AT:
         raise SystemExit(
             "api-fixture.json says the fixture expires at "
             + stamped
@@ -131,14 +141,18 @@ def preflight_fixture():
             + "; regenerate the fixture with scripts/redate_fixture.py rather than editing one of them."
         )
     days = fixture_days_remaining()
-    if days < 30:
+    if days < FIXTURE_PREFLIGHT_DAYS:
         raise SystemExit(
             "The synthetic fixture expires at "
             + FIXTURE_EXPIRES_AT
             + " ("
             + str(int(days))
-            + " days away). Regenerate it with scripts/redate_fixture.py --expires <instant> "
-            + "and rerun the full suites before continuing."
+            + " days away), inside the "
+            + str(FIXTURE_PREFLIGHT_DAYS)
+            + "-day margin: the suites nominate contacts, initial access and renewals that expire "
+            + "up to 60 days from now, which the fixture's delegation ceilings must still cover. "
+            + "Regenerate it with scripts/redate_fixture.py --expires <instant> and rerun the full "
+            + "suites before continuing."
         )
 
 

@@ -10,8 +10,10 @@ recomputes every existing payload hash in seed.sql and stops unless all of them 
 
     scripts/redate_fixture.py --expires 2027-09-01T00:00:00Z [--membership-expires <instant>]
 
---membership-expires moves the one external membership expiry (2026-12-23 in the 2026-09-25
-fixture), which is the same kind of time bomb; it defaults to the new authority expiry.
+--membership-expires moves the one external membership expiry (the `member_partner` record of
+records.json, whose current value is read from there rather than assumed), which is the same
+kind of time bomb; it defaults to the new authority expiry. When neither instant would change,
+the script verifies the hashes, reports that there is nothing to change and writes nothing.
 """
 
 import argparse
@@ -25,15 +27,16 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
 sys.path.insert(0, str(ROOT / "scripts"))
 from impact_api.store import hash_data  # noqa: E402
-import fixture_support  # noqa: E402
 
 FIXTURES = ROOT / "specification/fixtures"
+SUPPORT = ROOT / "scripts/fixture_support.py"
+CONSTANT = re.compile(r'^FIXTURE_EXPIRES_AT = "(?P<instant>[^"]+)"$', re.M)
 REVISION = re.compile(
     r"^(?P<head>INSERT INTO impact\.object_revision\([^)]*\) VALUES\(.*?)'(?P<payload>\{.*\})'(?P<cast>::jsonb)?,decode\('(?P<sha>[0-9a-f]{64})','hex'\)(?P<tail>.*)$",
     re.M,
 )
 INSTANT = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
-MEMBERSHIP_EXPIRES_AT = "2026-12-23T00:00:00Z"
+MEMBERSHIP_RECORD = "member_partner"
 
 
 def instant(value):
@@ -62,12 +65,32 @@ def write_like(path, text):
     path.write_text(text if original.endswith("\n") else text.rstrip("\n"))
 
 
-def redate_seed(seed, mapping):
+def current_expiry():
+    """The constant as written in scripts/fixture_support.py, read from the source text rather
+    than imported: a stale bytecode cache must never decide what the fixture currently says."""
+    match = CONSTANT.search(SUPPORT.read_text())
+    if not match:
+        raise SystemExit("fixture_support.py does not carry the FIXTURE_EXPIRES_AT constant")
+    return instant(match.group("instant"))
+
+
+def membership_expiry(records):
+    """The external membership record and its current expiry, read from records.json."""
+    record = next((r for r in records if r["key"] == MEMBERSHIP_RECORD), None)
+    if not record or not record["data"].get("expires_at"):
+        raise SystemExit("records.json carries no " + MEMBERSHIP_RECORD + " record with an expires_at")
+    return record["object_id"], record["data"]["expires_at"]
+
+
+def redate_seed(seed, mapping, membership_object, membership_mapping):
+    """Rewrite seed.sql line by line: the external membership's own rows (its revision and its
+    projection carry the object id) take the membership mapping, every other line the authority
+    mapping, so the two instants move independently even when they currently coincide."""
     changed = []
 
-    def rewrite(match):
+    def rewrite(match, line_mapping):
         payload = match.group("payload")
-        for old, new in mapping.items():
+        for old, new in line_mapping.items():
             payload = payload.replace(old, new)
         if payload == match.group("payload"):
             return match.group(0)
@@ -85,12 +108,16 @@ def redate_seed(seed, mapping):
             + match.group("tail")
         )
 
-    seed = REVISION.sub(rewrite, seed)
     column_changes = 0
-    for old, new in mapping.items():
-        seed, n = re.subn("'" + re.escape(old) + "'", "'" + new + "'", seed)
-        column_changes += n
-    return seed, len(changed), column_changes
+    lines = []
+    for line in seed.split("\n"):
+        line_mapping = membership_mapping if membership_object in line else mapping
+        line = REVISION.sub(lambda match: rewrite(match, line_mapping), line)
+        for old, new in line_mapping.items():
+            line, n = re.subn("'" + re.escape(old) + "'", "'" + new + "'", line)
+            column_changes += n
+        lines.append(line)
+    return "\n".join(lines), len(changed), column_changes
 
 
 def redate_json(value, mapping):
@@ -109,18 +136,24 @@ def main():
     parser.add_argument("--membership-expires", help="New expiry for the external fixture membership")
     parser.add_argument("--version", help="fixture_version stamp; defaults to today's UTC date")
     args = parser.parse_args()
-    current = fixture_support.FIXTURE_EXPIRES_AT
+    current = current_expiry()
     new = instant(args.expires)
     membership_new = instant(args.membership_expires or new)
-    if new <= current:
-        raise SystemExit("The new expiry must be later than the current one, " + current)
-    mapping = {current: new}
+    if new < current:
+        raise SystemExit("The new expiry must not be earlier than the current one, " + current)
     seed_path = FIXTURES / "seed.sql"
     seed = seed_path.read_text()
-    if MEMBERSHIP_EXPIRES_AT in seed and membership_new != MEMBERSHIP_EXPIRES_AT:
-        mapping[MEMBERSHIP_EXPIRES_AT] = membership_new
-    else:
-        print("No external membership expiry " + MEMBERSHIP_EXPIRES_AT + " to move")
+    records_path = FIXTURES / "records.json"
+    records = json.loads(records_path.read_text())
+    membership_object, membership_current = membership_expiry(records)
+    if membership_current not in seed:
+        raise SystemExit(
+            "records.json says the external membership expires at "
+            + membership_current
+            + " but seed.sql carries no such instant"
+        )
+    mapping = {current: new} if new != current else {}
+    membership_mapping = {membership_current: membership_new} if membership_new != membership_current else {}
     rows, mismatches = verify_hashes(seed)
     if not rows or mismatches:
         raise SystemExit(
@@ -131,7 +164,20 @@ def main():
             + " revision hashes do not match the canonical payload hash"
         )
     print("Verified " + str(rows) + "/" + str(rows) + " revision payload hashes in seed.sql")
-    seed, payload_rows, column_changes = redate_seed(seed, mapping)
+    if not mapping and not membership_mapping:
+        print(
+            "Nothing to change: the fixture authority already expires at "
+            + current
+            + " and the external membership at "
+            + membership_current
+        )
+        return 0
+    print(
+        "External membership expiry "
+        + membership_current
+        + (" -> " + membership_new if membership_mapping else " unchanged")
+    )
+    seed, payload_rows, column_changes = redate_seed(seed, mapping, membership_object, membership_mapping)
     for old in mapping:
         if old in seed:
             raise SystemExit("An occurrence of " + old + " survived in seed.sql")
@@ -146,34 +192,40 @@ def main():
         + str(column_changes)
         + " column values moved"
     )
-    records_path = FIXTURES / "records.json"
-    records = json.loads(records_path.read_text())
-    before = json.dumps(records)
-    records = redate_json(records, mapping)
-    changed = sum(before.count(old) for old in mapping)
-    write_like(records_path, json.dumps(records, indent=2) + "\n")
-    print("records.json: " + str(changed) + " values moved")
-    support = ROOT / "scripts/fixture_support.py"
-    text = support.read_text()
+    redated = [
+        redate_json(record, membership_mapping if record["key"] == MEMBERSHIP_RECORD else mapping)
+        for record in records
+    ]
+    changed = sum(1 for before, after in zip(records, redated) if before != after)
+    write_like(records_path, json.dumps(redated, indent=2) + "\n")
+    print("records.json: " + str(changed) + " records moved")
+    text = SUPPORT.read_text()
     line = 'FIXTURE_EXPIRES_AT = "' + current + '"'
     if text.count(line) != 1:
         raise SystemExit("fixture_support.py does not carry the expected constant")
-    support.write_text(text.replace(line, 'FIXTURE_EXPIRES_AT = "' + new + '"'))
+    SUPPORT.write_text(text.replace(line, 'FIXTURE_EXPIRES_AT = "' + new + '"'))
     # The rewritten line has the same length, so a cached module compiled within the same
-    # second would still validate; drop the cache rather than trust the mtime check.
+    # second would still validate for the scripts that import it; drop the cache rather than
+    # trust the mtime check.
     for cached in (ROOT / "scripts/__pycache__").glob("fixture_support.*.pyc"):
         cached.unlink()
     print("fixture_support.py: FIXTURE_EXPIRES_AT " + current + " -> " + new)
     api_path = FIXTURES / "api-fixture.json"
     api = json.loads(api_path.read_text())
+    version = args.version or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    # The stamp follows fixture_id on a first stamping and keeps its place afterwards; an
+    # existing stamp is replaced, never copied back over the new one.
     stamped = {}
     for key, value in api.items():
+        if key in {"fixture_version", "fixture_expires_at"}:
+            continue
         stamped[key] = value
         if key == "fixture_id":
-            stamped["fixture_version"] = args.version or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-            stamped["fixture_expires_at"] = new
+            stamped["fixture_version"], stamped["fixture_expires_at"] = version, new
+    if stamped.get("fixture_expires_at") != new:
+        raise SystemExit("api-fixture.json carries no fixture_id to stamp after")
     write_like(api_path, json.dumps(stamped, indent=2) + "\n")
-    print("api-fixture.json: fixture_version " + stamped["fixture_version"] + ", fixture_expires_at " + new)
+    print("api-fixture.json: fixture_version " + version + ", fixture_expires_at " + new)
     return 0
 
 

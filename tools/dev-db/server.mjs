@@ -1,8 +1,7 @@
 import { PGlite } from "@electric-sql/pglite";
 import { PGLiteSocketServer } from "@electric-sql/pglite-socket";
 import path from "node:path";
-import { mkdir, readdir, readFile } from "node:fs/promises";
-import { createHash } from "node:crypto";
+import { mkdir } from "node:fs/promises";
 const dir = process.env.IMPACT_DEV_DATA || path.resolve(".local/development");
 await mkdir(path.dirname(dir), { recursive: true });
 // Disposable qualification uses memory storage: filesystem-backed PGlite showed
@@ -19,46 +18,9 @@ await db.close();
 db = ephemeral
   ? await PGlite.create({ database: "impact_dev", loadDataDir: initialData })
   : await PGlite.create(dir, { database: "impact_dev" });
-if (process.env.IMPACT_DEV_BOOTSTRAP === "1") {
-  const present = (
-    await db.query("SELECT to_regclass('impact.schema_migration') AS present")
-  ).rows[0].present;
-  const applied = present
-    ? (await db.query("SELECT version,sha256 FROM impact.schema_migration"))
-        .rows
-    : [];
-  for (const file of (await readdir("infrastructure/migrations"))
-    .filter((x) => x.endsWith(".sql"))
-    .sort()) {
-    const bytes = await readFile("infrastructure/migrations/" + file),
-      version = Number(file.slice(0, 4)),
-      sha = createHash("sha256").update(bytes).digest("hex"),
-      old = applied.find((x) => x.version === version);
-    if (old) {
-      if (old.sha256 !== sha)
-        throw Error("Migration checksum changed: " + file);
-      continue;
-    }
-    await db.exec(
-      "BEGIN;" +
-        bytes
-          .toString()
-          .replace(/^BEGIN;\s*$/m, "")
-          .replace(/COMMIT;\s*$/, ""),
-    );
-    await db.query(
-      "INSERT INTO impact.schema_migration(version,sha256) VALUES($1,$2)",
-      [version, sha],
-    );
-    await db.exec("COMMIT");
-  }
-  if (
-    !(await db.query("SELECT 1 FROM impact.tenant_root LIMIT 1")).rows.length
-  ) {
-    await db.exec("SELECT set_config('impact.allow_fixtures','true',false)");
-    await db.exec(await readFile("specification/fixtures/seed.sql", "utf8"));
-  }
-}
+// This process only serves the database. Migrations and the fixture are applied
+// over the wire by scripts/migrate.py, the single migration runner, exactly as on
+// native PostgreSQL; nothing here interprets migration files.
 // Unauthenticated development socket: loopback only. Never deploy this service.
 // PGlite returns a view into a reused wire-response buffer. Copy it before any
 // filesystem await and serialize protocol packets across connection handoffs.

@@ -1,5 +1,5 @@
 BEGIN;
-DO $$ BEGIN IF current_database() NOT IN ('impact_dev','impact_test') OR current_setting('impact.allow_fixtures',true) IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'fixture target refused'; END IF; IF EXISTS(SELECT 1 FROM impact.tenant_root) THEN RAISE EXCEPTION 'fixture requires an empty disposable database'; END IF; END $$;
+DO $$ BEGIN IF (current_database() NOT IN ('impact_dev','impact_test') AND current_database() !~ '^impact_test_[a-z0-9_]+$') OR current_setting('impact.allow_fixtures',true) IS DISTINCT FROM 'true' THEN RAISE EXCEPTION 'fixture target refused'; END IF; IF EXISTS(SELECT 1 FROM impact.tenant_root) THEN RAISE EXCEPTION 'fixture requires an empty disposable database'; END IF; END $$;
 SET CONSTRAINTS ALL DEFERRED;
 INSERT INTO impact.tenant_root VALUES('ce56220a-32a5-5ca5-a45f-860dc3d9c958','TEST_LOCAL','Active',0);
 INSERT INTO impact.tenant_root VALUES('91a8cd3f-ed2a-53cd-8569-d4f715d2b4d4','TEST_LOCAL','Active',0);

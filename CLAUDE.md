@@ -81,7 +81,7 @@ Engineering invariants (HLD/LLD/MIG; verified in code):
 
 ## 5. Architecture as built
 
-`make dev` starts one process tree (`scripts/run.py dev`): PGlite via `tools/dev-db/server.mjs` on `127.0.0.1:55432` (database `impact_dev`, applies migrations with checksum check, seeds `specification/fixtures/seed.sql`), then `scripts/bootstrap.py` (fixture grants, role templates, custody, platform operators, RS256 keypair, `passwords.json`), then uvicorn `impact_api.main:create_app` on `127.0.0.1:8000` serving the compiled React client from `apps/web/dist`. The Vite dev server cannot perform writes (Origin must equal `public_origin`); build first. Persistent state under `.local/dev/`; tests use `.local/test-<hex>/` in-memory; `--ephemeral` for a disposable demo.
+`make dev` starts one process tree (`scripts/run.py dev`): PGlite via `tools/dev-db/server.mjs` on `127.0.0.1:55432` (database `impact_dev`; the server only serves the socket), then `scripts/migrate.py` over the wire (the single migration runner: checksum-ledgered migrations, then `specification/fixtures/seed.sql` when `tenant_root` is empty), then `scripts/bootstrap.py` (fixture grants, role templates, custody, platform operators, RS256 keypair, `passwords.json`), then uvicorn `impact_api.main:create_app` on `127.0.0.1:8000` serving the compiled React client from `apps/web/dist`. The Vite dev server cannot perform writes (Origin must equal `public_origin`); build first. Persistent state under `.local/dev/`; tests use `.local/test-<hex>/` in-memory; `--ephemeral` for a disposable demo.
 
 Request path for a domain command (`apps/api/impact_api/main.py` → `service.py` → `store.py`):
 1. Middleware: correlation ID, Host allow-list, 256 KiB body cap, security headers (CSP, no-store, nosniff, HSTS when HTTPS).
@@ -116,14 +116,14 @@ make test             # fresh in-memory PGlite + API; writes docs/evidence/appli
 make reference        # preserved reference-v1 suite (143 assertions) → docs/evidence/reference-tests.json
 make browser          # Linux x86_64 only; Chromium 153 via playwright-core; 9 workflow groups → docs/evidence/*-browser-tests.json + PNGs
 make ledger           # regenerates docs/COMPLETION-LEDGER.{json,md}
-make package          # Impact-Platform-Source-v0.13.0.zip + SHA256SUMS.json
+make package          # Impact-Platform-Source-v0.14.0.zip + SHA256SUMS.json
 .venv/bin/python scripts/run.py test --pytest-path qualification/test_authority_renewal.py   # one file
-.venv/bin/python scripts/run.py test --native   # needs IMPACT_FIXTURE_DSN to an empty disposable impact_test; the only native gate, not executed in saved evidence
+.venv/bin/python scripts/run.py test --native   # needs IMPACT_FIXTURE_DSN (superuser) to an empty disposable impact_test or impact_test_<suffix>; provisions the four login roles (scripts/provision_logins.py), migrates as impact_migrator, runs the API on the app/identity/platform logins with IMPACT_REQUIRE_UNPRIVILEGED_DB=1, then scripts/native_upgrade_check.py; writes docs/evidence/native-application-tests.xml and native-qualification.json (not application-tests.xml)
 ```
 
 Rules: a focused run overwrites the same JUnit path, so never keep a full-suite count after a focused run; restore `docs/evidence/` from git unless you intend to publish new evidence; `.local/test-*` directories accumulate.
 
-Fixture identities (tenant A unless stated; all grants, operators and qualification expire **2026-12-01** — regenerate and version the fixture rather than extending silently): `author` (AUTHOR + PROGRAMME_MANAGER + REVIEWER, so self-approval fails on independence, not capability), `reviewer` (REVIEWER + MEL_ADMIN, distinct natural person), `admin` (TENANT_ADMIN; platform operator in dev), `owner` (OWNER/custodian; platform operator in dev), `partner` (EXTERNAL), `privacy`, `operator`, `enumerator`, `revoked`, `other_tenant` (tenant B), `invitee` (identity, no membership). Bearer tokens for tests come from `IMPACT_TOKEN_<ACTOR>`; browser checks log in with `passwords.json`.
+Fixture identities (tenant A unless stated; all grants, ceilings, operators and qualification expire at `FIXTURE_EXPIRES_AT` in `scripts/fixture_support.py`, **2027-09-01** since the 2026-09-28 regeneration — move it only with `scripts/redate_fixture.py --expires <instant>`, which re-hashes every changed revision payload; `scripts/run.py` refuses to start within 30 days of expiry): `author` (AUTHOR + PROGRAMME_MANAGER + REVIEWER, so self-approval fails on independence, not capability), `reviewer` (REVIEWER + MEL_ADMIN, distinct natural person), `admin` (TENANT_ADMIN; platform operator in dev), `owner` (OWNER/custodian; platform operator in dev), `partner` (EXTERNAL), `privacy`, `operator`, `enumerator`, `revoked`, `other_tenant` (tenant B), `invitee` (identity, no membership). The qualification suite mints a fresh RS256 token per actor (`qualification/conftest.py`, reused for at most 60 s); `IMPACT_TOKEN_<ACTOR>` suite-start tokens remain for the reference-v1 suite and browser tooling; browser checks log in with `passwords.json`.
 
 Golden numbers: seed 50/100 + 1/10 → 51/110, stored 46.363636363636, displayed 46.36 (the seeded OFFICIAL 46.36 is fixture data, not a calculation by this build); adding an approved 8/10 gives **59/120 = 49.17 PROVISIONAL**; FR-CAL-008 five-contributor vector → expected 5, received 4, valid 4, approved 3, pending 1, missing 1, `approval_percent 60.00`.
 
@@ -161,7 +161,6 @@ Documentation:
 - FR-WFL-004 (delegation/escalation) is PARTIAL although `docs/IMPLEMENTATION.md` says "No delegation"; read it as blocked-reassignment only. BR-TEN-010 is PARTIAL while unavailable-owner recovery is expressly not delivered.
 - `WorkCenter.tsx` (recalculate, acknowledge) and `Changes.tsx` submit mint a new `crypto.randomUUID()` per click, so their retries are not exact; `docs/IMPLEMENTATION.md` now says so (fix planned in v0.15).
 - Notice acknowledgement (`work.py`) writes audit, outbox and receipt but no new revision; `docs/IMPLEMENTATION.md` now says so.
-- Fixture bearer tokens are minted at suite start and fresh-assurance operations need `auth_time` within 300 s; the full suite takes about 175–190 s, so there is little headroom before assurance-gated tests fail on timing alone (fix planned in v0.14: per-test signed tokens).
 
 Code:
 - `packages/contracts/access-policy.json` keeps an orphan baseline row `create_organisation_units` (`organisation-units.draft.create`) beside the implemented `create_organisation_unit` (`organisation-units.manage`); inert, but `WorkspaceAdministration.role` treats every non-purpose capability in the policy, including ~170 unimplemented design operations, as delegable in custom roles.
@@ -169,7 +168,6 @@ Code:
 - Duplicated helpers (`now/deny/timestamp`, cursor decoding, control-plane `validate_body`) and function-local imports to break cycles (`from .service import revision` in several modules).
 - `Service.command` derives the schema name by walking `openapi.json`; a route present in code but missing from the regenerated contract raises KeyError → 503 rather than 404.
 - `store.write` validates only catalogue kinds; RoleTemplate, AccessGroup, EntitlementApproval, CustodyTransfer, Predicate and LineageManifest payloads are written unvalidated unless the caller validates.
-- Two migration runners with different BEGIN/COMMIT stripping (`scripts/migrate.py` via pglast vs `tools/dev-db/server.mjs` regex).
-- Cookie sessions update `last_seen_at` under `FOR UPDATE` on every request, serialising a browser's parallel requests.
+- Cookie sessions are read without a row lock and `last_seen_at` is advanced at most every 30 s (`auth.py`), so the effective idle limit lies between 14.5 and 15 minutes of true inactivity; the absolute 8-hour limit is unaffected.
 - Dev-mode `RLock` serialises all transactions, so lock ordering and deadlocks are exercised only by the un-run native CI job.
 - `tenant_lifecycle.py` ~210–213 compares a UUID with a str before repeating with `str()` (first clause always false); `tools/browser/prepare.mjs` calls `python` not `python3`.

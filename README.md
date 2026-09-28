@@ -1,4 +1,4 @@
-# Impact Platform · v0.13.0
+# Impact Platform · v0.14.0
 
 Documentation edition **1.1** is available in the [master documentation index](docs/current/DOCUMENTATION-INDEX.md): BRD, FSD, HLD, LLD, wireframes, test cases/scenarios, engineering specifications and handover guides. Original editions are preserved in `docs/history/v1.0`. This documentation update does not declare product or production acceptance.
 
@@ -131,4 +131,4 @@ Evidence from this build is in [docs/evidence](docs/evidence). Native PostgreSQL
 
 Read [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md), [docs/API-INVENTORY.md](docs/API-INVENTORY.md), [docs/QUALIFICATION.md](docs/QUALIFICATION.md), and [docs/NEXT-DELIVERY.md](docs/NEXT-DELIVERY.md). The original requirement and architecture documents remain under `specification/docs`.
 
-Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.13.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.
+Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.14.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.

@@ -52,6 +52,17 @@ def now():
 
 
 def preflight_fixture():
+    stamped = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text()).get(
+        "fixture_expires_at"
+    )
+    if stamped and stamped != FIXTURE_EXPIRES_AT:
+        raise SystemExit(
+            "api-fixture.json says the fixture expires at "
+            + stamped
+            + " but scripts/fixture_support.py says "
+            + FIXTURE_EXPIRES_AT
+            + "; regenerate the fixture with scripts/redate_fixture.py rather than editing one of them."
+        )
     days = fixture_days_remaining()
     if days < 30:
         raise SystemExit(

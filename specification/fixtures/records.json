@@ -42,7 +42,7 @@
       "identity_id": "8bc004cc-36e1-5ac1-804d-fcd8f9b4562f",
       "authority_source": "LOCAL_TEST",
       "external": true,
-      "expires_at": "2026-12-23T00:00:00Z"
+      "expires_at": "2027-09-01T00:00:00Z"
     }
   },
   {
@@ -679,7 +679,7 @@
       "capability": "ai-tasks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -698,7 +698,7 @@
       "capability": "ai.cancel",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -717,7 +717,7 @@
       "capability": "ai.confirm",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -736,7 +736,7 @@
       "capability": "ai.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -755,7 +755,7 @@
       "capability": "assignment.reassign",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -774,7 +774,7 @@
       "capability": "assignments.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -793,7 +793,7 @@
       "capability": "assignments.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -812,7 +812,7 @@
       "capability": "assignments.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -831,7 +831,7 @@
       "capability": "calculated-results.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -850,7 +850,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -869,7 +869,7 @@
       "capability": "dashboards.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -888,7 +888,7 @@
       "capability": "datasets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -907,7 +907,7 @@
       "capability": "decisions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -926,7 +926,7 @@
       "capability": "devices.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -945,7 +945,7 @@
       "capability": "dimensions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -964,7 +964,7 @@
       "capability": "disclosure.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -983,7 +983,7 @@
       "capability": "evaluations.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1002,7 +1002,7 @@
       "capability": "evaluations.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1021,7 +1021,7 @@
       "capability": "evaluations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1040,7 +1040,7 @@
       "capability": "evidence.download",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1059,7 +1059,7 @@
       "capability": "evidence.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1078,7 +1078,7 @@
       "capability": "evidence.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1097,7 +1097,7 @@
       "capability": "evidence.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1116,7 +1116,7 @@
       "capability": "evidence.verify",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1135,7 +1135,7 @@
       "capability": "form-fields.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1154,7 +1154,7 @@
       "capability": "form-fields.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1173,7 +1173,7 @@
       "capability": "form-fields.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1192,7 +1192,7 @@
       "capability": "form.test",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1211,7 +1211,7 @@
       "capability": "forms.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1230,7 +1230,7 @@
       "capability": "forms.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1249,7 +1249,7 @@
       "capability": "forms.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1268,7 +1268,7 @@
       "capability": "framework.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1287,7 +1287,7 @@
       "capability": "frameworks.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1306,7 +1306,7 @@
       "capability": "frameworks.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1325,7 +1325,7 @@
       "capability": "frameworks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1344,7 +1344,7 @@
       "capability": "handling.record",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1363,7 +1363,7 @@
       "capability": "imports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1382,7 +1382,7 @@
       "capability": "indicator-definitions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1401,7 +1401,7 @@
       "capability": "indicator-definitions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1420,7 +1420,7 @@
       "capability": "indicator-definitions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1439,7 +1439,7 @@
       "capability": "indicator-instances.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1458,7 +1458,7 @@
       "capability": "indicator-instances.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1477,7 +1477,7 @@
       "capability": "indicator-instances.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1496,7 +1496,7 @@
       "capability": "indicator.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1515,7 +1515,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1534,7 +1534,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1553,7 +1553,7 @@
       "capability": "observation.correct",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1572,7 +1572,7 @@
       "capability": "observations.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1591,7 +1591,7 @@
       "capability": "observations.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1610,7 +1610,7 @@
       "capability": "observations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1629,7 +1629,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1648,7 +1648,7 @@
       "capability": "organisation-units.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1667,7 +1667,7 @@
       "capability": "organisation-units.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1686,7 +1686,7 @@
       "capability": "organisation-units.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1705,7 +1705,7 @@
       "capability": "participants.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1724,7 +1724,7 @@
       "capability": "participants.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1743,7 +1743,7 @@
       "capability": "participants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1762,7 +1762,7 @@
       "capability": "periods.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1781,7 +1781,7 @@
       "capability": "programme.activate",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1800,7 +1800,7 @@
       "capability": "programme.archive",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1819,7 +1819,7 @@
       "capability": "programmes.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1838,7 +1838,7 @@
       "capability": "programmes.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1857,7 +1857,7 @@
       "capability": "programmes.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1876,7 +1876,7 @@
       "capability": "qualitative-extracts.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1895,7 +1895,7 @@
       "capability": "qualitative-extracts.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1914,7 +1914,7 @@
       "capability": "qualitative-extracts.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1933,7 +1933,7 @@
       "capability": "quality-issues.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1952,7 +1952,7 @@
       "capability": "quality.except",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1971,7 +1971,7 @@
       "capability": "report-templates.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -1990,7 +1990,7 @@
       "capability": "report-templates.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2009,7 +2009,7 @@
       "capability": "report-templates.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2028,7 +2028,7 @@
       "capability": "report.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2047,7 +2047,7 @@
       "capability": "reports.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2066,7 +2066,7 @@
       "capability": "reports.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2085,7 +2085,7 @@
       "capability": "reports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2104,7 +2104,7 @@
       "capability": "service-events.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2123,7 +2123,7 @@
       "capability": "service-events.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2142,7 +2142,7 @@
       "capability": "service-events.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2161,7 +2161,7 @@
       "capability": "snapshots.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2180,7 +2180,7 @@
       "capability": "submission.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2199,7 +2199,7 @@
       "capability": "submissions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2218,7 +2218,7 @@
       "capability": "submissions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2237,7 +2237,7 @@
       "capability": "submissions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2256,7 +2256,7 @@
       "capability": "target.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2275,7 +2275,7 @@
       "capability": "targets.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2294,7 +2294,7 @@
       "capability": "targets.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2313,7 +2313,7 @@
       "capability": "targets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2332,7 +2332,7 @@
       "capability": "upload.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2351,7 +2351,7 @@
       "capability": "upload.write",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2370,7 +2370,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2389,7 +2389,7 @@
       "capability": "work-items.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2408,7 +2408,7 @@
       "capability": "work-items.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2427,7 +2427,7 @@
       "capability": "work-items.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2446,7 +2446,7 @@
       "capability": "workflow.approve",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2465,7 +2465,7 @@
       "capability": "workflow.reject",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2484,7 +2484,7 @@
       "capability": "workflow.return",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2503,7 +2503,7 @@
       "capability": "workflows.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2522,7 +2522,7 @@
       "capability": "connection.activate",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2541,7 +2541,7 @@
       "capability": "connection.pause",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2560,7 +2560,7 @@
       "capability": "connection.rotate",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2579,7 +2579,7 @@
       "capability": "connection.run",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2598,7 +2598,7 @@
       "capability": "connection.test",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2617,7 +2617,7 @@
       "capability": "connections.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2636,7 +2636,7 @@
       "capability": "connections.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2655,7 +2655,7 @@
       "capability": "connections.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2674,7 +2674,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2693,7 +2693,7 @@
       "capability": "grant.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2712,7 +2712,7 @@
       "capability": "grant.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2731,7 +2731,7 @@
       "capability": "grants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2750,7 +2750,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2769,7 +2769,7 @@
       "capability": "member.invite",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2788,7 +2788,7 @@
       "capability": "membership.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2807,7 +2807,7 @@
       "capability": "membership.suspend",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2826,7 +2826,7 @@
       "capability": "memberships.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2845,7 +2845,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2864,7 +2864,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2883,7 +2883,7 @@
       "capability": "runtime.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2902,7 +2902,7 @@
       "capability": "schedule.pause",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2921,7 +2921,7 @@
       "capability": "schedules.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2940,7 +2940,7 @@
       "capability": "schedules.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2959,7 +2959,7 @@
       "capability": "schedules.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2978,7 +2978,7 @@
       "capability": "support-requests.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -2997,7 +2997,7 @@
       "capability": "tenants.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3016,7 +3016,7 @@
       "capability": "tenants.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3035,7 +3035,7 @@
       "capability": "tenants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3054,7 +3054,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3073,7 +3073,7 @@
       "capability": "ai-tasks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3092,7 +3092,7 @@
       "capability": "calculated-results.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3111,7 +3111,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3130,7 +3130,7 @@
       "capability": "dashboards.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3149,7 +3149,7 @@
       "capability": "datasets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3168,7 +3168,7 @@
       "capability": "decisions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3187,7 +3187,7 @@
       "capability": "dimensions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3206,7 +3206,7 @@
       "capability": "evaluations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3225,7 +3225,7 @@
       "capability": "evidence.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3244,7 +3244,7 @@
       "capability": "frameworks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3263,7 +3263,7 @@
       "capability": "imports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3282,7 +3282,7 @@
       "capability": "indicator-definitions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3301,7 +3301,7 @@
       "capability": "indicator-instances.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3320,7 +3320,7 @@
       "capability": "invitation.accept",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3339,7 +3339,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3358,7 +3358,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3377,7 +3377,7 @@
       "capability": "observations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3396,7 +3396,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3415,7 +3415,7 @@
       "capability": "organisation-units.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3434,7 +3434,7 @@
       "capability": "periods.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3453,7 +3453,7 @@
       "capability": "programmes.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3472,7 +3472,7 @@
       "capability": "qualitative-extracts.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3491,7 +3491,7 @@
       "capability": "quality-issues.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3510,7 +3510,7 @@
       "capability": "report-templates.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3529,7 +3529,7 @@
       "capability": "reports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3548,7 +3548,7 @@
       "capability": "snapshots.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3567,7 +3567,7 @@
       "capability": "targets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3586,7 +3586,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3605,7 +3605,7 @@
       "capability": "work-items.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3624,7 +3624,7 @@
       "capability": "workflows.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3643,7 +3643,7 @@
       "capability": "ai-tasks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3662,7 +3662,7 @@
       "capability": "assignments.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3681,7 +3681,7 @@
       "capability": "assignments.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3700,7 +3700,7 @@
       "capability": "assignments.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3719,7 +3719,7 @@
       "capability": "calculated-results.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3738,7 +3738,7 @@
       "capability": "calculation.run",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3757,7 +3757,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3776,7 +3776,7 @@
       "capability": "dashboards.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3795,7 +3795,7 @@
       "capability": "datasets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3814,7 +3814,7 @@
       "capability": "decisions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3833,7 +3833,7 @@
       "capability": "devices.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3852,7 +3852,7 @@
       "capability": "dimensions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3871,7 +3871,7 @@
       "capability": "dimensions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3890,7 +3890,7 @@
       "capability": "dimensions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3909,7 +3909,7 @@
       "capability": "evaluations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3928,7 +3928,7 @@
       "capability": "evidence.download",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3947,7 +3947,7 @@
       "capability": "evidence.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3966,7 +3966,7 @@
       "capability": "evidence.verify",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -3985,7 +3985,7 @@
       "capability": "form-fields.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4004,7 +4004,7 @@
       "capability": "form-fields.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4023,7 +4023,7 @@
       "capability": "form-fields.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4042,7 +4042,7 @@
       "capability": "form.publish",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4061,7 +4061,7 @@
       "capability": "form.test",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4080,7 +4080,7 @@
       "capability": "forms.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4099,7 +4099,7 @@
       "capability": "forms.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4118,7 +4118,7 @@
       "capability": "forms.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4137,7 +4137,7 @@
       "capability": "framework.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4156,7 +4156,7 @@
       "capability": "frameworks.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4175,7 +4175,7 @@
       "capability": "frameworks.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4194,7 +4194,7 @@
       "capability": "frameworks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4213,7 +4213,7 @@
       "capability": "imports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4232,7 +4232,7 @@
       "capability": "indicator-definitions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4251,7 +4251,7 @@
       "capability": "indicator-definitions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4270,7 +4270,7 @@
       "capability": "indicator-definitions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4289,7 +4289,7 @@
       "capability": "indicator-instances.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4308,7 +4308,7 @@
       "capability": "indicator-instances.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4327,7 +4327,7 @@
       "capability": "indicator-instances.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4346,7 +4346,7 @@
       "capability": "indicator.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4365,7 +4365,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4384,7 +4384,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4403,7 +4403,7 @@
       "capability": "observations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4422,7 +4422,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4441,7 +4441,7 @@
       "capability": "organisation-units.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4460,7 +4460,7 @@
       "capability": "organisation-units.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4479,7 +4479,7 @@
       "capability": "organisation-units.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4498,7 +4498,7 @@
       "capability": "participants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4517,7 +4517,7 @@
       "capability": "period.close",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4536,7 +4536,7 @@
       "capability": "period.restate",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4555,7 +4555,7 @@
       "capability": "periods.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4574,7 +4574,7 @@
       "capability": "periods.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4593,7 +4593,7 @@
       "capability": "periods.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4612,7 +4612,7 @@
       "capability": "programmes.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4631,7 +4631,7 @@
       "capability": "programmes.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4650,7 +4650,7 @@
       "capability": "programmes.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4669,7 +4669,7 @@
       "capability": "qualitative-extracts.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4688,7 +4688,7 @@
       "capability": "quality-issues.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4707,7 +4707,7 @@
       "capability": "quality.except",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4726,7 +4726,7 @@
       "capability": "report-templates.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4745,7 +4745,7 @@
       "capability": "report-templates.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4764,7 +4764,7 @@
       "capability": "report-templates.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4783,7 +4783,7 @@
       "capability": "report.publish",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4802,7 +4802,7 @@
       "capability": "report.withdraw",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4821,7 +4821,7 @@
       "capability": "reports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4840,7 +4840,7 @@
       "capability": "service-events.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4859,7 +4859,7 @@
       "capability": "snapshots.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4878,7 +4878,7 @@
       "capability": "submissions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4897,7 +4897,7 @@
       "capability": "target.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4916,7 +4916,7 @@
       "capability": "targets.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4935,7 +4935,7 @@
       "capability": "targets.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4954,7 +4954,7 @@
       "capability": "targets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4973,7 +4973,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -4992,7 +4992,7 @@
       "capability": "work-items.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5011,7 +5011,7 @@
       "capability": "workflow.approve",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5030,7 +5030,7 @@
       "capability": "workflow.reject",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5049,7 +5049,7 @@
       "capability": "workflow.return",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5068,7 +5068,7 @@
       "capability": "workflows.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5087,7 +5087,7 @@
       "capability": "ai-tasks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5106,7 +5106,7 @@
       "capability": "ai.cancel",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5125,7 +5125,7 @@
       "capability": "ai.confirm",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5144,7 +5144,7 @@
       "capability": "ai.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5163,7 +5163,7 @@
       "capability": "assignments.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5182,7 +5182,7 @@
       "capability": "calculated-results.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5201,7 +5201,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5220,7 +5220,7 @@
       "capability": "dashboards.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5239,7 +5239,7 @@
       "capability": "datasets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5258,7 +5258,7 @@
       "capability": "decisions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5277,7 +5277,7 @@
       "capability": "devices.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5296,7 +5296,7 @@
       "capability": "dimensions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5315,7 +5315,7 @@
       "capability": "disclosure.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5334,7 +5334,7 @@
       "capability": "evaluations.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5353,7 +5353,7 @@
       "capability": "evaluations.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5372,7 +5372,7 @@
       "capability": "evaluations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5391,7 +5391,7 @@
       "capability": "evidence.download",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5410,7 +5410,7 @@
       "capability": "evidence.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5429,7 +5429,7 @@
       "capability": "evidence.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5448,7 +5448,7 @@
       "capability": "evidence.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5467,7 +5467,7 @@
       "capability": "form-fields.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5486,7 +5486,7 @@
       "capability": "form-fields.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5505,7 +5505,7 @@
       "capability": "form-fields.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5524,7 +5524,7 @@
       "capability": "form.test",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5543,7 +5543,7 @@
       "capability": "forms.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5562,7 +5562,7 @@
       "capability": "forms.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5581,7 +5581,7 @@
       "capability": "forms.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5600,7 +5600,7 @@
       "capability": "framework.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5619,7 +5619,7 @@
       "capability": "frameworks.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5638,7 +5638,7 @@
       "capability": "frameworks.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5657,7 +5657,7 @@
       "capability": "frameworks.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5676,7 +5676,7 @@
       "capability": "handling.record",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5695,7 +5695,7 @@
       "capability": "imports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5714,7 +5714,7 @@
       "capability": "indicator-definitions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5733,7 +5733,7 @@
       "capability": "indicator-definitions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5752,7 +5752,7 @@
       "capability": "indicator-definitions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5771,7 +5771,7 @@
       "capability": "indicator-instances.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5790,7 +5790,7 @@
       "capability": "indicator-instances.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5809,7 +5809,7 @@
       "capability": "indicator-instances.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5828,7 +5828,7 @@
       "capability": "indicator.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5847,7 +5847,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5866,7 +5866,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5885,7 +5885,7 @@
       "capability": "observation.correct",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5904,7 +5904,7 @@
       "capability": "observations.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5923,7 +5923,7 @@
       "capability": "observations.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5942,7 +5942,7 @@
       "capability": "observations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5961,7 +5961,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5980,7 +5980,7 @@
       "capability": "organisation-units.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -5999,7 +5999,7 @@
       "capability": "participants.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6018,7 +6018,7 @@
       "capability": "participants.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6037,7 +6037,7 @@
       "capability": "participants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6056,7 +6056,7 @@
       "capability": "periods.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6075,7 +6075,7 @@
       "capability": "programmes.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6094,7 +6094,7 @@
       "capability": "qualitative-extracts.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6113,7 +6113,7 @@
       "capability": "qualitative-extracts.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6132,7 +6132,7 @@
       "capability": "qualitative-extracts.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6151,7 +6151,7 @@
       "capability": "quality-issues.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6170,7 +6170,7 @@
       "capability": "report-templates.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6189,7 +6189,7 @@
       "capability": "report-templates.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6208,7 +6208,7 @@
       "capability": "report-templates.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6227,7 +6227,7 @@
       "capability": "report.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6246,7 +6246,7 @@
       "capability": "reports.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6265,7 +6265,7 @@
       "capability": "reports.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6284,7 +6284,7 @@
       "capability": "reports.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6303,7 +6303,7 @@
       "capability": "service-events.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6322,7 +6322,7 @@
       "capability": "service-events.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6341,7 +6341,7 @@
       "capability": "service-events.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6360,7 +6360,7 @@
       "capability": "snapshots.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6379,7 +6379,7 @@
       "capability": "submission.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6398,7 +6398,7 @@
       "capability": "submissions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6417,7 +6417,7 @@
       "capability": "submissions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6436,7 +6436,7 @@
       "capability": "submissions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6455,7 +6455,7 @@
       "capability": "target.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6474,7 +6474,7 @@
       "capability": "targets.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6493,7 +6493,7 @@
       "capability": "targets.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6512,7 +6512,7 @@
       "capability": "targets.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6531,7 +6531,7 @@
       "capability": "upload.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6550,7 +6550,7 @@
       "capability": "upload.write",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6569,7 +6569,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6588,7 +6588,7 @@
       "capability": "work-items.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6607,7 +6607,7 @@
       "capability": "work-items.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6626,7 +6626,7 @@
       "capability": "work-items.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6645,7 +6645,7 @@
       "capability": "workflows.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6664,7 +6664,7 @@
       "capability": "assignments.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6683,7 +6683,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6702,7 +6702,7 @@
       "capability": "devices.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6721,7 +6721,7 @@
       "capability": "devices.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6740,7 +6740,7 @@
       "capability": "devices.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6759,7 +6759,7 @@
       "capability": "form-fields.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6778,7 +6778,7 @@
       "capability": "forms.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6797,7 +6797,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6816,7 +6816,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6835,7 +6835,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6854,7 +6854,7 @@
       "capability": "participants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6873,7 +6873,7 @@
       "capability": "service-events.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6892,7 +6892,7 @@
       "capability": "submission.submit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6911,7 +6911,7 @@
       "capability": "submission.sync",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6930,7 +6930,7 @@
       "capability": "submissions.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6949,7 +6949,7 @@
       "capability": "submissions.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6968,7 +6968,7 @@
       "capability": "submissions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -6987,7 +6987,7 @@
       "capability": "upload.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7006,7 +7006,7 @@
       "capability": "upload.write",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7025,7 +7025,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7044,7 +7044,7 @@
       "capability": "connections.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7063,7 +7063,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7082,7 +7082,7 @@
       "capability": "grant.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7101,7 +7101,7 @@
       "capability": "grant.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7120,7 +7120,7 @@
       "capability": "grants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7139,7 +7139,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7158,7 +7158,7 @@
       "capability": "member.invite",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7177,7 +7177,7 @@
       "capability": "membership.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7196,7 +7196,7 @@
       "capability": "membership.suspend",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7215,7 +7215,7 @@
       "capability": "memberships.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7234,7 +7234,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7253,7 +7253,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7272,7 +7272,7 @@
       "capability": "schedules.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7291,7 +7291,7 @@
       "capability": "support-requests.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7310,7 +7310,7 @@
       "capability": "support.approve",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7329,7 +7329,7 @@
       "capability": "support.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7348,7 +7348,7 @@
       "capability": "tenant.export",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7367,7 +7367,7 @@
       "capability": "tenant.transfer_owner",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7386,7 +7386,7 @@
       "capability": "tenants.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7405,7 +7405,7 @@
       "capability": "tenants.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7424,7 +7424,7 @@
       "capability": "tenants.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7443,7 +7443,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7462,7 +7462,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7481,7 +7481,7 @@
       "capability": "disclosure.request",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7500,7 +7500,7 @@
       "capability": "disclosures.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7519,7 +7519,7 @@
       "capability": "disclosures.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7538,7 +7538,7 @@
       "capability": "handling-records.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7557,7 +7557,7 @@
       "capability": "handling.record",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7576,7 +7576,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7595,7 +7595,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7614,7 +7614,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7633,7 +7633,7 @@
       "capability": "participant.restrict",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7652,7 +7652,7 @@
       "capability": "participant.withdraw",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7671,7 +7671,7 @@
       "capability": "privacy-cases.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7690,7 +7690,7 @@
       "capability": "privacy-cases.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7709,7 +7709,7 @@
       "capability": "privacy-cases.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7728,7 +7728,7 @@
       "capability": "privacy.approve",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7747,7 +7747,7 @@
       "capability": "privacy.execute",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7766,7 +7766,7 @@
       "capability": "report.withdraw",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7785,7 +7785,7 @@
       "capability": "retention-policies.draft.create",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7804,7 +7804,7 @@
       "capability": "retention-policies.draft.edit",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7823,7 +7823,7 @@
       "capability": "retention-policies.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7842,7 +7842,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7861,7 +7861,7 @@
       "capability": "audit-events.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7880,7 +7880,7 @@
       "capability": "context.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7899,7 +7899,7 @@
       "capability": "jobs.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7918,7 +7918,7 @@
       "capability": "notifications.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7937,7 +7937,7 @@
       "capability": "operations.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7956,7 +7956,7 @@
       "capability": "runtime.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7975,7 +7975,7 @@
       "capability": "subscription.admin",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -7994,7 +7994,7 @@
       "capability": "subscriptions.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -8013,7 +8013,7 @@
       "capability": "support.revoke",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -8032,7 +8032,7 @@
       "capability": "uploads.read",
       "scope_id": "5e0c8f94-02cb-56da-8a57-080ca947fe31",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "b944755f-825f-5fb8-b1d2-0f1699ef38a3"
     }
@@ -8051,7 +8051,7 @@
       "capability": "ai-tasks.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8070,7 +8070,7 @@
       "capability": "ai.cancel",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8089,7 +8089,7 @@
       "capability": "ai.confirm",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8108,7 +8108,7 @@
       "capability": "ai.request",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8127,7 +8127,7 @@
       "capability": "assignments.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8146,7 +8146,7 @@
       "capability": "calculated-results.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8165,7 +8165,7 @@
       "capability": "context.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8184,7 +8184,7 @@
       "capability": "dashboards.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8203,7 +8203,7 @@
       "capability": "datasets.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8222,7 +8222,7 @@
       "capability": "decisions.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8241,7 +8241,7 @@
       "capability": "devices.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8260,7 +8260,7 @@
       "capability": "dimensions.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8279,7 +8279,7 @@
       "capability": "disclosure.request",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8298,7 +8298,7 @@
       "capability": "evaluations.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8317,7 +8317,7 @@
       "capability": "evaluations.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8336,7 +8336,7 @@
       "capability": "evaluations.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8355,7 +8355,7 @@
       "capability": "evidence.download",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8374,7 +8374,7 @@
       "capability": "evidence.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8393,7 +8393,7 @@
       "capability": "evidence.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8412,7 +8412,7 @@
       "capability": "evidence.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8431,7 +8431,7 @@
       "capability": "form-fields.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8450,7 +8450,7 @@
       "capability": "form-fields.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8469,7 +8469,7 @@
       "capability": "form-fields.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8488,7 +8488,7 @@
       "capability": "form.test",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8507,7 +8507,7 @@
       "capability": "forms.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8526,7 +8526,7 @@
       "capability": "forms.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8545,7 +8545,7 @@
       "capability": "forms.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8564,7 +8564,7 @@
       "capability": "framework.submit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8583,7 +8583,7 @@
       "capability": "frameworks.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8602,7 +8602,7 @@
       "capability": "frameworks.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8621,7 +8621,7 @@
       "capability": "frameworks.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8640,7 +8640,7 @@
       "capability": "handling.record",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8659,7 +8659,7 @@
       "capability": "imports.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8678,7 +8678,7 @@
       "capability": "indicator-definitions.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8697,7 +8697,7 @@
       "capability": "indicator-definitions.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8716,7 +8716,7 @@
       "capability": "indicator-definitions.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8735,7 +8735,7 @@
       "capability": "indicator-instances.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8754,7 +8754,7 @@
       "capability": "indicator-instances.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8773,7 +8773,7 @@
       "capability": "indicator-instances.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8792,7 +8792,7 @@
       "capability": "indicator.submit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8811,7 +8811,7 @@
       "capability": "jobs.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8830,7 +8830,7 @@
       "capability": "notifications.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8849,7 +8849,7 @@
       "capability": "observation.correct",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8868,7 +8868,7 @@
       "capability": "observations.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8887,7 +8887,7 @@
       "capability": "observations.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8906,7 +8906,7 @@
       "capability": "observations.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8925,7 +8925,7 @@
       "capability": "operations.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8944,7 +8944,7 @@
       "capability": "organisation-units.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8963,7 +8963,7 @@
       "capability": "participants.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -8982,7 +8982,7 @@
       "capability": "participants.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9001,7 +9001,7 @@
       "capability": "participants.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9020,7 +9020,7 @@
       "capability": "periods.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9039,7 +9039,7 @@
       "capability": "programmes.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9058,7 +9058,7 @@
       "capability": "qualitative-extracts.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9077,7 +9077,7 @@
       "capability": "qualitative-extracts.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9096,7 +9096,7 @@
       "capability": "qualitative-extracts.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9115,7 +9115,7 @@
       "capability": "quality-issues.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9134,7 +9134,7 @@
       "capability": "report-templates.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9153,7 +9153,7 @@
       "capability": "report-templates.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9172,7 +9172,7 @@
       "capability": "report-templates.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9191,7 +9191,7 @@
       "capability": "report.submit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9210,7 +9210,7 @@
       "capability": "reports.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9229,7 +9229,7 @@
       "capability": "reports.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9248,7 +9248,7 @@
       "capability": "reports.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9267,7 +9267,7 @@
       "capability": "service-events.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9286,7 +9286,7 @@
       "capability": "service-events.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9305,7 +9305,7 @@
       "capability": "service-events.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9324,7 +9324,7 @@
       "capability": "snapshots.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9343,7 +9343,7 @@
       "capability": "submission.submit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9362,7 +9362,7 @@
       "capability": "submissions.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9381,7 +9381,7 @@
       "capability": "submissions.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9400,7 +9400,7 @@
       "capability": "submissions.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9419,7 +9419,7 @@
       "capability": "target.submit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9438,7 +9438,7 @@
       "capability": "targets.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9457,7 +9457,7 @@
       "capability": "targets.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9476,7 +9476,7 @@
       "capability": "targets.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9495,7 +9495,7 @@
       "capability": "upload.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9514,7 +9514,7 @@
       "capability": "upload.write",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9533,7 +9533,7 @@
       "capability": "uploads.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9552,7 +9552,7 @@
       "capability": "work-items.draft.create",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9571,7 +9571,7 @@
       "capability": "work-items.draft.edit",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9590,7 +9590,7 @@
       "capability": "work-items.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }
@@ -9609,7 +9609,7 @@
       "capability": "workflows.read",
       "scope_id": "2e6d94f5-4df4-5835-b5ea-0faaecd39d0e",
       "starts_at": "2026-09-01T00:00:00Z",
-      "expires_at": "2026-12-01T00:00:00Z",
+      "expires_at": "2027-09-01T00:00:00Z",
       "purpose": "QUALIFICATION",
       "issuer_id": "f8a036c0-63f8-5242-bb82-3e915c00a0ca"
     }

@@ -8,7 +8,7 @@ rewrites `specification/fixtures/` together with this constant; nothing extends 
 import re
 from datetime import datetime, timezone
 
-FIXTURE_EXPIRES_AT = "2026-12-01T00:00:00Z"
+FIXTURE_EXPIRES_AT = "2027-09-01T00:00:00Z"
 FIXTURE_STARTS_AT = "2026-01-01T00:00:00Z"
 
 # Disposable fixture targets: the two fixed development/test names plus parallel test databases.

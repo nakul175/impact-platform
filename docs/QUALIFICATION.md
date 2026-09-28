@@ -1,6 +1,6 @@
-# Qualification record · v0.12.0
+# Qualification record · v0.13.0
 
-Executed on 27 September 2026 against the rebuilt source in this archive. These are development qualification results, not full product acceptance or production certification.
+Executed on 28 September 2026 against the source on the release branch. These are development qualification results, not full product acceptance or production certification.
 
 ## Results
 
@@ -18,6 +18,7 @@ Executed on 27 September 2026 against the rebuilt source in this archive. These 
 | Tenant lifecycle integration/security tests | 14 | Passed | `evidence/application-tests.xml` |
 | Reviewed initial access integration/security tests | 25 | Passed | `evidence/application-tests.xml` |
 | Recovery-contact integration/security tests | 29 | Passed | `evidence/application-tests.xml` |
+| Authority-renewal integration/security tests | 28 | Passed | `evidence/application-tests.xml` |
 | Preserved API integration assertions | 17 | Passed | `evidence/application-tests.xml` |
 | Preserved smoke assertions | 12 | Passed | `evidence/application-tests.xml` |
 | Preserved design/reference tests | 143 | Passed | `evidence/reference-tests.json` |
@@ -29,19 +30,20 @@ Executed on 27 September 2026 against the rebuilt source in this archive. These 
 | Rendered tenant lifecycle workflows | 7 | Passed | `evidence/tenant-browser-tests.json` |
 | Rendered initial-access and first-programme workflows | 8 | Passed | `evidence/bootstrap-browser-tests.json` |
 | Rendered recovery-contact workflows | 9 | Passed | `evidence/recovery-browser-tests.json` |
+| Rendered authority-renewal workflows | 10 | Passed | `evidence/renewal-browser-tests.json` |
 | Python lint/format, client formatting, TypeScript and Vite build | — | Passed | Reproduce with `make lint build` |
-| Native PostgreSQL CI | — | Not executed here | `.github/workflows/qualification.yml` |
+| Native PostgreSQL CI | — | Passed on GitHub Actions (first recorded native run) | `.github/workflows/qualification.yml`, run 36453508807 |
 | Live external identity provider | — | Not executed | Required release gate |
 
-The 325 application/API checks, 143 reference checks and 81 browser checks are distinct groups. Reference checks exercise the saved reference implementation, including future product concepts; passing does not imply those concepts are delivered. Counts are tests, not percentage requirement coverage.
+The 353 application/API checks, 143 reference checks and 91 browser checks are distinct groups. Reference checks exercise the saved reference implementation, including future product concepts; passing does not imply those concepts are delivered. Counts are tests, not percentage requirement coverage.
 
 One preserved test, **IT_018 (expired offline grant)**, is explicitly deselected because offline sync is not implemented. It is not counted as passed. The broader specification's unimplemented features and NFRs remain pending.
 
 ## Environment and limits
 
-Application checks ran against a real HTTP FastAPI service backed by PGlite's PostgreSQL 17.5 engine and fifteen SQL migrations. Checks execute SQL, constraints, database roles, RLS, immutable revisions and transaction rollbacks. Final qualification uses fresh in-memory PGlite. Filesystem-backed runs in this managed filesystem intermittently produced EOF/page-consistency errors and were not counted as passing evidence. PGlite is a single-backend embedded engine. The runner serializes transactions; passing concurrent-request tests here does not qualify native PostgreSQL scheduling or production concurrency.
+Application checks ran against a real HTTP FastAPI service backed by PGlite's PostgreSQL 17.5 engine and sixteen SQL migrations. Checks execute SQL, constraints, database roles, RLS, immutable revisions and transaction rollbacks. Final qualification uses fresh in-memory PGlite. Filesystem-backed runs in this managed filesystem intermittently produced EOF/page-consistency errors and were not counted as passing evidence. PGlite is a single-backend embedded engine. The runner serializes transactions; passing concurrent-request tests here does not qualify native PostgreSQL scheduling or production concurrency.
 
-Browser checks used Chromium 153 through Playwright Core on Linux x86_64. They exercised the compiled React client and API across author/reviewer/partner, administrator/invited-member/owner, configuration, close/restatement, report-package, controlled-publication, tenant onboarding and recovery-contact workflows. No uncaught page errors were recorded in the final runs. Screenshots show synthetic fixtures only; invitation tokens are hidden before capture. Responsive checks use a 390-pixel viewport without document overflow; this is not a complete accessibility audit.
+Browser checks used Chromium 153 through Playwright Core on Linux x86_64. They exercised the compiled React client and API across author/reviewer/partner, administrator/invited-member/owner, configuration, close/restatement, report-package, controlled-publication, tenant onboarding, recovery-contact and authority-renewal workflows. No uncaught page errors were recorded in the final runs. Screenshots show synthetic fixtures only; invitation tokens are hidden before capture. Responsive checks use a 390-pixel viewport without document overflow; this is not a complete accessibility audit.
 
 ## What the tests establish
 
@@ -76,13 +78,15 @@ Browser checks used Chromium 153 through Playwright Core on Linux x86_64. They e
 
 ## Evidence files
 
-- `application-tests.xml`: 325 passing pytest/unittest checks, zero failures/errors/skips among executed tests; one offline test deselected separately.
+- `application-tests.xml`: 353 passing pytest/unittest checks, zero failures/errors/skips among executed tests; one offline test deselected separately.
 - `reference-tests.json`: 143 passing preserved reference assertions; product validation explicitly false.
 - `browser-tests.json`: eight passing UI workflows and the uncaught-error list.
 - `admin-browser-tests.json`: 12 passing access-administration workflows and the uncaught-error list.
 - `measurement-browser-tests.json`: 17 passing configuration, collection, reviewed-exclusion and personal work-centre workflows, with no uncaught errors.
 - `reporting-browser-tests.json`: ten passing period-governance, frozen-reporting and controlled-publication workflows, with no uncaught errors.
 - `recovery-browser-tests.json`: nine passing nomination, consent, independent approval, replacement, revocation and mobile workflows, with no uncaught errors.
+- `renewal-browser-tests.json`: ten passing authority inspection, proposal bounds, proposal, privacy, consent, server-side denial of a non-operator, independent approval, renewed expiry, withdrawal and mobile workflows, with no uncaught errors.
+- `authority-renewal.png`, `authority-renewal-mobile.png`: approved renewal and history, visually inspected during this build.
 - `recovery-contact-verified.png`, `recovery-contact-mobile.png`: approved contact and replacement/revocation history, visually inspected during this build.
 - `measurement-setup.png`, `programme-readiness.png`, `collection-coverage.png`, `work-center.png`, `measurement-mobile.png`: rendered setup, readiness, coverage and recalculation-work evidence.
 - `period-close.png`, `reporting-package.png`: programme-period status and independently approved internal package evidence.
@@ -129,3 +133,12 @@ Nine browser checks exercise readiness refusal, owner nomination, unrelated-acco
 Workspace regression exposed an initialization race when permissions arrived after the settings page mounted. The page now selects the first permitted section once capabilities arrive and retains any valid selection. The browser check holds the initial permissions response until the settings page is open, then creates a role successfully.
 
 All eight browser groups passed with no uncaught page errors. The original 66 specification files and fourteen prior migrations are byte-identical to the saved v0.11 archive; see `evidence/source-preservation.json`. Migration 0015 is additive. Reviewed authority renewal, external-channel verification, unavailable-owner recovery, native PostgreSQL and operational acceptance remain open as detailed in RELEASE-0.12.md and NEXT-DELIVERY.md. No requirement is newly declared fully accepted.
+
+## v0.13 authority-renewal evidence
+
+Twenty-eight live checks cover the end-to-end proposal, confirmation and approval that extend every pinned ceiling, grant, assignment and the second administrator's membership while readiness, epochs and the bootstrap marker are verified; owner-only proposal and closed fields; second-administrator eligibility and natural-person independence; expiry bounds (not after the current ceiling, in the past, beyond 90 days, malformed, without offset); removed ceilings and revoked grants excluded before a proposal and never resurrected by approval or replay; a grant revoked through the ordinary administration path after consent invalidating approval; pinned tenant, owner, qualification and review-deadline drift; owner and second-administrator authentication cutoffs; operator-only review and operator independence; exact retries, operation reuse, fresh assurance and invalid transitions; one live proposal per tenant and closure of an expired pending proposal by withdrawal or rejection; suspension and a revoked recovery contact blocking renewal until evidence is restored; private inboxes and cross-tenant isolation; runtime role boundaries (application and identity roles cannot read the review table, update ceilings or assignments, or execute the applicator; the control-plane role cannot delete proposals or write ceilings directly); and an injected failure after extension that leaves every expiry, revision, epoch and state unchanged with no receipt, followed by one successful exact retry.
+
+Ten browser checks exercise the owner's authority panel, client-side expiry bounds, proposal, an unrelated account's privacy, second-administrator consent, the server's denial of a non-operator whose client gate was bypassed, independent operator approval, the renewed expiry, withdrawal of a later proposal and the mobile layout. Desktop and mobile screenshots were visually inspected. During regression a timing race in the tenant lifecycle browser check (an action clicked before the tenant refresh completed) was corrected by awaiting the refresh; no assertion was weakened.
+
+All nine browser groups passed with no uncaught page errors. Separately, the `native-postgresql-gate` job of `.github/workflows/qualification.yml` ran `scripts/run.py test --native` against a PostgreSQL 17.11 service container for commit cc3c683 and completed successfully (GitHub Actions run 36453508807, job 109033872546, 28 September 2026): the first recorded native execution of the live suite. Its JUnit artifact (`native-postgresql-qualification`) was not inspected from the development environment; the job used the disposable fixture connection, so separate least-privilege login roles, persistence across restarts, upgrades and concurrent approval/revocation under native scheduling remain open. Migrations 0001–0015 and every existing test file are unchanged. Migration 0016 is additive. Renewal of expired authority, administrator replacement, external-channel verification, unavailable-owner recovery, native PostgreSQL and operational acceptance remain open as detailed in RELEASE-0.13.md, NEXT-DELIVERY.md and DELIVERY-PLAN.md. No requirement is newly declared fully accepted.
+

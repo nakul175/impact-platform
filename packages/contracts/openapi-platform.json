@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.2.0"
+    "version": "1.3.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -6071,6 +6071,1990 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/authority-renewals": {
+      "get": {
+        "operationId": "list_authority_renewals",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operator": {
+                      "type": "boolean"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "request_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "tenant_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "operating_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "bootstrap_request_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "owner_identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "second_identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "state": {
+                            "enum": [
+                              "Requested",
+                              "Accepted",
+                              "Applied",
+                              "Rejected",
+                              "Cancelled"
+                            ]
+                          },
+                          "manifest": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "version": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 80,
+                                "pattern": "\\S"
+                              },
+                              "authority_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 1000
+                              },
+                              "principals": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "principal_id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "identity_id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "membership_id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "scope_id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "capabilities": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 64,
+                                        "pattern": "\\S"
+                                      },
+                                      "uniqueItems": true,
+                                      "maxItems": 500
+                                    },
+                                    "expires_at": {
+                                      "type": "string",
+                                      "format": "date-time"
+                                    },
+                                    "assignment_ids": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "uniqueItems": true,
+                                      "maxItems": 50
+                                    },
+                                    "grant_ids": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "uniqueItems": true,
+                                      "maxItems": 500
+                                    }
+                                  },
+                                  "required": [
+                                    "principal_id",
+                                    "identity_id",
+                                    "membership_id",
+                                    "scope_id",
+                                    "capabilities",
+                                    "expires_at",
+                                    "assignment_ids",
+                                    "grant_ids"
+                                  ]
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            },
+                            "required": [
+                              "version",
+                              "authority_ids",
+                              "principals"
+                            ]
+                          },
+                          "authority_hash": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "previous_expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "review_expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1000,
+                            "pattern": "\\S"
+                          },
+                          "accepted_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "approved_by": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "applied_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "request_id",
+                          "tenant_id",
+                          "revision_id",
+                          "operating_name",
+                          "bootstrap_request_id",
+                          "owner_identity_id",
+                          "second_identity_id",
+                          "state",
+                          "manifest",
+                          "authority_hash",
+                          "previous_expires_at",
+                          "expires_at",
+                          "review_expires_at",
+                          "reason",
+                          "accepted_at",
+                          "approved_by",
+                          "applied_at"
+                        ]
+                      },
+                      "maxItems": 50
+                    },
+                    "next_cursor": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "operator",
+                    "items",
+                    "next_cursor"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/authority": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_delegated_authority",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_revision": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "bootstrap_request_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "authority_hash": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "earliest_expires_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "principals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "principal_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "membership_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "scope_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "capabilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 64,
+                              "pattern": "\\S"
+                            },
+                            "uniqueItems": true,
+                            "maxItems": 500
+                          },
+                          "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "assignment_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "uniqueItems": true,
+                            "maxItems": 50
+                          },
+                          "grant_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "uniqueItems": true,
+                            "maxItems": 500
+                          }
+                        },
+                        "required": [
+                          "principal_id",
+                          "identity_id",
+                          "membership_id",
+                          "scope_id",
+                          "capabilities",
+                          "expires_at",
+                          "assignment_ids",
+                          "grant_ids"
+                        ]
+                      },
+                      "maxItems": 2
+                    },
+                    "renewable": {
+                      "type": "boolean"
+                    },
+                    "reason_unavailable": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "AUTHORITY_UNAVAILABLE",
+                            "SECOND_ADMIN_UNAVAILABLE",
+                            "TENANT_NOT_ACTIVE",
+                            "TENANT_NOT_READY",
+                            "RENEWAL_PENDING"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "tenant_id",
+                    "tenant_revision",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "authority_hash",
+                    "earliest_expires_at",
+                    "principals",
+                    "renewable",
+                    "reason_unavailable"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/authority-renewal": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "request_authority_renewal",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "bootstrap_request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Requested",
+                        "Accepted",
+                        "Applied",
+                        "Rejected",
+                        "Cancelled"
+                      ]
+                    },
+                    "manifest": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 80,
+                          "pattern": "\\S"
+                        },
+                        "authority_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 1000
+                        },
+                        "principals": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "principal_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "identity_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "membership_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "scope_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "capabilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "assignment_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 50
+                              },
+                              "grant_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              }
+                            },
+                            "required": [
+                              "principal_id",
+                              "identity_id",
+                              "membership_id",
+                              "scope_id",
+                              "capabilities",
+                              "expires_at",
+                              "assignment_ids",
+                              "grant_ids"
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "authority_ids",
+                        "principals"
+                      ]
+                    },
+                    "authority_hash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "previous_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "applied_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "state",
+                    "manifest",
+                    "authority_hash",
+                    "previous_expires_at",
+                    "expires_at",
+                    "review_expires_at",
+                    "reason",
+                    "accepted_at",
+                    "approved_by",
+                    "applied_at",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "second_identity_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "authority_hash": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "expires_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "second_identity_id",
+                      "authority_hash",
+                      "expires_at",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/authority-renewals/{request_id}/actions/accept": {
+      "parameters": [
+        {
+          "name": "request_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "authority_renewal_accept",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "bootstrap_request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Requested",
+                        "Accepted",
+                        "Applied",
+                        "Rejected",
+                        "Cancelled"
+                      ]
+                    },
+                    "manifest": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 80,
+                          "pattern": "\\S"
+                        },
+                        "authority_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 1000
+                        },
+                        "principals": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "principal_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "identity_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "membership_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "scope_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "capabilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "assignment_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 50
+                              },
+                              "grant_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              }
+                            },
+                            "required": [
+                              "principal_id",
+                              "identity_id",
+                              "membership_id",
+                              "scope_id",
+                              "capabilities",
+                              "expires_at",
+                              "assignment_ids",
+                              "grant_ids"
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "authority_ids",
+                        "principals"
+                      ]
+                    },
+                    "authority_hash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "previous_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "applied_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "state",
+                    "manifest",
+                    "authority_hash",
+                    "previous_expires_at",
+                    "expires_at",
+                    "review_expires_at",
+                    "reason",
+                    "accepted_at",
+                    "approved_by",
+                    "applied_at",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/authority-renewals/{request_id}/actions/approve": {
+      "parameters": [
+        {
+          "name": "request_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "authority_renewal_approve",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "bootstrap_request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Requested",
+                        "Accepted",
+                        "Applied",
+                        "Rejected",
+                        "Cancelled"
+                      ]
+                    },
+                    "manifest": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 80,
+                          "pattern": "\\S"
+                        },
+                        "authority_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 1000
+                        },
+                        "principals": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "principal_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "identity_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "membership_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "scope_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "capabilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "assignment_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 50
+                              },
+                              "grant_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              }
+                            },
+                            "required": [
+                              "principal_id",
+                              "identity_id",
+                              "membership_id",
+                              "scope_id",
+                              "capabilities",
+                              "expires_at",
+                              "assignment_ids",
+                              "grant_ids"
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "authority_ids",
+                        "principals"
+                      ]
+                    },
+                    "authority_hash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "previous_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "applied_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "state",
+                    "manifest",
+                    "authority_hash",
+                    "previous_expires_at",
+                    "expires_at",
+                    "review_expires_at",
+                    "reason",
+                    "accepted_at",
+                    "approved_by",
+                    "applied_at",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/authority-renewals/{request_id}/actions/cancel": {
+      "parameters": [
+        {
+          "name": "request_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "authority_renewal_cancel",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "bootstrap_request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Requested",
+                        "Accepted",
+                        "Applied",
+                        "Rejected",
+                        "Cancelled"
+                      ]
+                    },
+                    "manifest": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 80,
+                          "pattern": "\\S"
+                        },
+                        "authority_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 1000
+                        },
+                        "principals": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "principal_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "identity_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "membership_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "scope_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "capabilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "assignment_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 50
+                              },
+                              "grant_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              }
+                            },
+                            "required": [
+                              "principal_id",
+                              "identity_id",
+                              "membership_id",
+                              "scope_id",
+                              "capabilities",
+                              "expires_at",
+                              "assignment_ids",
+                              "grant_ids"
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "authority_ids",
+                        "principals"
+                      ]
+                    },
+                    "authority_hash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "previous_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "applied_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "state",
+                    "manifest",
+                    "authority_hash",
+                    "previous_expires_at",
+                    "expires_at",
+                    "review_expires_at",
+                    "reason",
+                    "accepted_at",
+                    "approved_by",
+                    "applied_at",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/authority-renewals/{request_id}/actions/reject": {
+      "parameters": [
+        {
+          "name": "request_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "authority_renewal_reject",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "bootstrap_request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "second_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Requested",
+                        "Accepted",
+                        "Applied",
+                        "Rejected",
+                        "Cancelled"
+                      ]
+                    },
+                    "manifest": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 80,
+                          "pattern": "\\S"
+                        },
+                        "authority_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 1000
+                        },
+                        "principals": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "principal_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "identity_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "membership_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "scope_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "capabilities": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              },
+                              "expires_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "assignment_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 50
+                              },
+                              "grant_ids": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 500
+                              }
+                            },
+                            "required": [
+                              "principal_id",
+                              "identity_id",
+                              "membership_id",
+                              "scope_id",
+                              "capabilities",
+                              "expires_at",
+                              "assignment_ids",
+                              "grant_ids"
+                            ]
+                          },
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "authority_ids",
+                        "principals"
+                      ]
+                    },
+                    "authority_hash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "previous_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "applied_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "request_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "bootstrap_request_id",
+                    "owner_identity_id",
+                    "second_identity_id",
+                    "state",
+                    "manifest",
+                    "authority_hash",
+                    "previous_expires_at",
+                    "expires_at",
+                    "review_expires_at",
+                    "reason",
+                    "accepted_at",
+                    "approved_by",
+                    "applied_at",
                     "operation_id"
                   ]
                 }

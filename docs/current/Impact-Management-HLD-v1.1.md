@@ -53,6 +53,8 @@ The FSD remains a proposed functional baseline rather than evidence of sponsor a
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): the control-plane component list gains authority_renewal.py in the API and AuthorityRenewal.tsx in the client, mounted from TenantLifecycle.tsx. Migration 0016 adds tenant_authority_renewal and apply_authority_renewal, a SECURITY DEFINER applicator executable only by the control-plane role, which re-dates exactly the pinned delegation ceilings and administrative role assignments of an approved request; the pinned managed grants and the second administrator's membership are extended as new revisions in the same transaction under the tenant advisory lock. Application and identity roles cannot read renewals or extend authority. Edition 1.1 figures elsewhere in this document describe build 0.12.0. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -75,7 +77,7 @@ Domain writes commit head and immutable revision, audit, outbox marker and opera
 
 ## Architecture decisions requiring later qualification
 
-The target deployment, Android, queues, managed blobs, federation, provider delivery, privacy deletion, restore replay, distributed observability and AI mediation remain requirements. Their baseline descriptions below are design contracts. Current development evidence cannot establish their effectiveness. The current schema is migration 0015; detailed table ownership and evolution are in the revised database specification and CURRENT-DATA-DICTIONARY.md.
+The target deployment, Android, queues, managed blobs, federation, provider delivery, privacy deletion, restore replay, distributed observability and AI mediation remain requirements. Their baseline descriptions below are design contracts. Current development evidence cannot establish their effectiveness. The current schema is migration 0016; detailed table ownership and evolution are in the revised database specification and CURRENT-DATA-DICTIONARY.md.
 
 The existing tenant write lock is a deliberate correctness-first implementation constraint. Replacing it requires tests for approval versus revision drift, revocation while waiting, replacement rollback and source consistency. Deployment-region selection, named operations owners, service identities, costs and capacity remain unresolved organizational inputs.
 

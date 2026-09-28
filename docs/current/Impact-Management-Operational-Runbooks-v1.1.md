@@ -8,6 +8,8 @@ These runbooks define the actions, owners, verification and evidence required to
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): startup applies sixteen migrations and /health/ready requires schema 16. The Tenant lifecycle panel gains Authority renewal: when delegated administrative authority approaches expiry, the current owner proposes a bounded extension, the second administrator consents and an independent operator approves; expired authority cannot be renewed, and an expired pending proposal must be withdrawn or rejected before a new one. Focused reproduction: .venv/bin/python scripts/run.py test --pytest-path qualification/test_authority_renewal.py and .venv/bin/python scripts/run.py renewal-browser. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -22,7 +24,7 @@ The runnable environment is local development with synthetic data. The reference
 
 ## Local start and diagnosis
 
-From a fresh source checkout, run make setup and make dev. Confirm /health/live and /health/ready, which checks schema 15, then sign in using the generated local account credentials. If startup fails, inspect the specific runner directory under .local, check dependency and migration errors, and preserve the failure evidence. Do not commit that directory because it contains credentials, keys and data.
+From a fresh source checkout, run make setup and make dev. Confirm /health/live and /health/ready, which checks schema 16, then sign in using the generated local account credentials. If startup fails, inspect the specific runner directory under .local, check dependency and migration errors, and preserve the failure evidence. Do not commit that directory because it contains credentials, keys and data.
 
 For an uncertain write, preserve the operation identifier and reconcile its receipt under current authority. Retry the identical command; do not invent a new operation identifier until the outcome is known. A stale revision requires reloading and reviewing the change. For denied access, check current workspace, membership, grant, scope, purpose, tenant state and recent configured assurance. Do not expand privileges merely to clear an error.
 

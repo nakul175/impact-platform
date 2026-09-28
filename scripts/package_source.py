@@ -25,7 +25,7 @@ files = [
 manifest = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}
 (ROOT / "SHA256SUMS.json").write_text(json.dumps(manifest, indent=2))
 files.append(ROOT / "SHA256SUMS.json")
-archive = ROOT.parent / "Impact-Platform-Source-v0.12.0.zip"
+archive = ROOT.parent / "Impact-Platform-Source-v0.13.0.zip"
 with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     for p in sorted(files):
         z.write(p, Path("impact-platform") / p.relative_to(ROOT))

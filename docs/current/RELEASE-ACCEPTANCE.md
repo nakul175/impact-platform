@@ -1,14 +1,14 @@
 # Impact Platform release acceptance record
 
-Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15. Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
+Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15; the counts below are updated to the build 0.13.0 run of 28 September 2026 (schema 16). Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
 
 ## Recorded development evidence
 
 | Group | Executed and passed | Boundary |
 | --- | ---: | --- |
-| Application | 325 | Fresh in-memory PGlite, actual HTTP/SQL; one offline test deselected |
+| Application | 353 | Fresh in-memory PGlite, actual HTTP/SQL; one offline test deselected |
 | Design reference | 143 | Reference implementation only; product_validated is false |
-| Browser | 81 | Compiled client, eight workflow groups; no uncaught errors in saved runs |
+| Browser | 91 | Compiled client, nine workflow groups; no uncaught errors in saved runs |
 | Complete requirements accepted | 0 | 74 partial and 233 pending across 307 |
 
 Evidence files remain the original run reports, with their recorded timestamps. The documentation reconciliation does not claim a new application run. These counts overlap the exact 17 integration and 12 smoke cases shown in the test catalogue; do not add those 29 again to the application total.

@@ -1,6 +1,6 @@
 # Impact Platform user guide
 
-Documentation 1.1 applies to application 0.12.0. This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
+Documentation 1.1 applies to application 0.12.0; build 0.13.0 adds the administrator-only authority renewal described in the administrator guide and changes no user workflow in this guide. This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
 
 ## Sign in and select a workspace
 

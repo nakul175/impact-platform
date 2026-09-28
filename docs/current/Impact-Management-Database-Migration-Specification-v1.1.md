@@ -8,6 +8,8 @@ This specification defines the physical database baseline, reference integrity, 
 
 Documentation edition 1.1 is reconciled with application build 0.12.0 on 27 September 2026. The document edition and application build use different version sequences. The original business requirements and their acceptance conditions remain authoritative. No requirement has been removed or weakened to match the current code.
 
+Build 0.13.0 increment (28 September 2026): the current schema is sixteen migrations; 0016_authority_renewal.sql is additive (SHA-256 2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc, recorded in CURRENT-DATA-DICTIONARY.md) and migrations 0001 through 0015 are unchanged. It creates tenant_authority_renewal, readable and writable only by impact_platform, with a partial unique index allowing one Requested or Accepted request per tenant, and apply_authority_renewal, a fixed-search-path SECURITY DEFINER function revoked from PUBLIC and granted only to impact_platform; it re-dates exactly the pinned grant_authority and member_role_assignment rows of an Applied, independently approved request for an Active tenant whose bootstrap marker is the pinned one, and aborts with 42501 otherwise. The Word copy is unchanged and will be regenerated at the next documentation edition.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -18,7 +20,7 @@ The sections explicitly marked current implementation describe this build. Retai
 
 ## Current schema and source preservation
 
-The executed application schema contains fifteen additive migrations in infrastructure/migrations. The original specification database with three migrations remains a historical design asset. CURRENT-DATA-DICTIONARY.md records the current migration inventory, table definitions, columns and constraints from the executable SQL, including later ALTER statements. Do not provision the current application from the historical three-file design alone.
+The executed application schema contains sixteen additive migrations in infrastructure/migrations. The original specification database with three migrations remains a historical design asset. CURRENT-DATA-DICTIONARY.md records the current migration inventory, table definitions, columns and constraints from the executable SQL, including later ALTER statements. Do not provision the current application from the historical three-file design alone.
 
 The current series adds application sessions and receipts, access administration, measurement configuration and amendments, period governance, report packages, work invalidation, controlled publication, workspace administration, managed tenants, initial access and recovery contacts. Original migrations 0001 through 0014 are unchanged by v0.12.
 

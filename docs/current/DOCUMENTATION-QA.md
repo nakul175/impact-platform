@@ -15,6 +15,8 @@ Edition 1.1, reconciled on 27 September 2026 to build 0.12.0. These checks valid
 
 The wireframe checks use minimal document stubs, not a live visual browser. Cloud Browser blocks local-file URLs, so no new browser visual or accessibility qualification is claimed for the updated HTML prototype. Existing 81 application-browser results remain historical build evidence and are not prototype test results.
 
+Build 0.13.0 increment (28 September 2026): the Markdown reading copies, guides, registers, inventories and dictionary were updated to build 0.13.0 (353 application, 143 reference and 91 browser checks; 28 control-plane operations; 16 migrations) and every relative link in the changed documents was checked. The Word and workbook editable copies, the interactive wireframes and the machine-readable edition-1.1 verification records are unchanged and describe build 0.12.0.
+
 Machine-readable check details are in [verification](../verification/). The original application manifest is preserved there separately from the augmented package manifest. Original v1.0 documents and archives are retained in [history](../history/v1.0/).
 
 Publication to GitHub is version control, not sponsor, security, privacy, UAT or production release approval. Those decisions remain in the release-acceptance record.

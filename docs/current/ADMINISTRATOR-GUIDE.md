@@ -1,6 +1,6 @@
 # Impact Platform administrator guide
 
-This guide describes build 0.12.0. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
+This guide describes build 0.13.0. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
 
 ## Managed tenant onboarding
 
@@ -30,6 +30,14 @@ To replace or renew a contact, the owner creates a proposal pinned to the curren
 The owner may cancel pending nominations, the nominee may decline, and an operator may reject. An owner, nominee or operator may revoke an Active contact. Revocation removes future readiness but does not automatically suspend the tenant. Expired pending proposals must be withdrawn, declined or rejected before a new proposal can be created.
 
 A freshly authenticated current owner can repair contact evidence while the tenant is Suspended. An unavailable owner cannot be bypassed by an operator. Contact records confer no reset, custody, membership or grant rights. Account-wide revocation invalidates contact proof; tenant-membership revocation alone does not automatically revoke this separate relationship.
+
+## Renew delegated authority
+
+Open Tenant lifecycle, then Authority renewal. The panel shows the delegated authority of the owner and the second administrator as it currently stands: the exact capability ceilings, the grants and assignments they back, and their expiry. It states whether a renewal can be proposed now and, if not, why (no applied initial access, no second holder, tenant not Active, readiness not met, or a proposal already pending).
+
+Only the current owner proposes. Choose an expiry later than the current one and no more than 90 days ahead, give a reason, and confirm. The proposal pins the exact current authority; anything revoked before the proposal is not included. The second administrator confirms the exact proposal from their inbox. A platform operator who is a different natural person from both approves it within seven days. Every step requires authentication within the previous five minutes and the configured assurance.
+
+Approval extends only the pinned ceilings, grants, assignments and the second administrator's membership. Nothing is widened, business grants are not extended, and a grant revoked after the proposal makes approval fail; withdraw and propose again. Authority that has already expired cannot be renewed in this build; that case, and replacing an administrator, are planned as v0.14.
 
 ## Manage members and grants
 

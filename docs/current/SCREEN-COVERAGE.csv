@@ -33,3 +33,4 @@ UI31,Managed tenant onboarding,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, 
 UI32,Reviewed initial access,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
 UI33,Recovery contacts,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
 UI34,Workspace and account settings,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
+UI35,Authority renewal,PARTIAL,"TenantLifecycle.tsx, AuthorityRenewal.tsx","Owner proposal, second-administrator consent, independent operator review and history for unexpired delegated authority; expired authority, administrator replacement and external notices remain open"

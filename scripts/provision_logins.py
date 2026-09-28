@@ -62,6 +62,20 @@ def login_dsn(admin_dsn, login, password):
     return make_conninfo(**params)
 
 
+def grant_database_access(c, database):
+    """The database-level privileges provisioning gives, and nothing about roles or passwords:
+    CONNECT on the database for the four logins and CREATE for impact_owner. The drill tools call
+    this on the disposable copies they create, since a dump of one database carries no database
+    ACL and the cluster-level logins already exist with their passwords."""
+    for login in LOGINS:
+        c.execute(
+            sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(
+                sql.Identifier(database), sql.Identifier(login)
+            )
+        )
+    c.execute(sql.SQL("GRANT CREATE ON DATABASE {} TO impact_owner").format(sql.Identifier(database)))
+
+
 def provision(admin_dsn, passwords, database=None, verify=True):
     with psycopg.connect(admin_dsn, autocommit=True, prepare_threshold=None) as c:
         me = c.execute(
@@ -96,12 +110,7 @@ def provision(admin_dsn, passwords, database=None, verify=True):
                 (login, group),
             ).fetchall():
                 c.execute(sql.SQL("REVOKE {} FROM {}").format(sql.Identifier(other), sql.Identifier(login)))
-            c.execute(
-                sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(
-                    sql.Identifier(database), sql.Identifier(login)
-                )
-            )
-        c.execute(sql.SQL("GRANT CREATE ON DATABASE {} TO impact_owner").format(sql.Identifier(database)))
+        grant_database_access(c, database)
         topology = {
             row[0]: {
                 "login": row[1],

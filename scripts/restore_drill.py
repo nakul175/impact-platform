@@ -14,19 +14,22 @@ docs/evidence/native-restore-drill.json and, with --report, merged under `restor
 
     IMPACT_FIXTURE_DSN                 superuser connection to the source database (required)
     IMPACT_ADMIN_DSN                   superuser connection used to create and drop the copy (default: fixture)
-    IMPACT_LOGIN_PASSWORD_*            the provisioned login passwords; when absent, throwaway ones are
-                                       generated and the four logins are re-provisioned with them
+    IMPACT_LOGIN_PASSWORD_APP          the passwords the four provisioned logins already have
+    IMPACT_LOGIN_PASSWORD_IDENTITY     (all four required; the drill never generates, sets or
+    IMPACT_LOGIN_PASSWORD_PLATFORM     rotates a credential and never alters a role: the copy
+    IMPACT_LOGIN_PASSWORD_MIGRATOR     only receives the database-level CONNECT/CREATE grants)
     IMPACT_PG_BIN                      directory holding pg_dump and pg_restore (default: PATH)
 
 pg_dump must be at least as new as the server: an older client refuses a newer server. Both
-binaries are recorded with their versions so the evidence shows which client did the work.
+binaries are recorded with their versions so the evidence shows which client did the work. The
+superuser password never appears on a command line: pg_dump and pg_restore receive host, port,
+user and database as arguments and the password through PGPASSWORD in their environment.
 """
 
 import argparse
 import json
 import os
 import re
-import secrets
 import shutil
 import subprocess
 import sys
@@ -37,7 +40,7 @@ from pathlib import Path
 
 import psycopg
 from psycopg import sql
-from psycopg.conninfo import conninfo_to_dict
+from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from psycopg.errors import InsufficientPrivilege
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,7 +48,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import migrate  # noqa: E402
 from fixture_support import fixture_database_allowed  # noqa: E402
 from native_upgrade_check import ledgered_checksums, with_database  # noqa: E402
-from provision_logins import LOGINS, login_dsn, passwords_from_env, provision  # noqa: E402
+from provision_logins import LOGINS, grant_database_access, login_dsn, passwords_from_env  # noqa: E402
 
 EVIDENCE = ROOT / "docs/evidence/native-restore-drill.json"
 FIXTURE = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text())
@@ -74,6 +77,24 @@ def timed(command, env=None):
             command[0] + " failed (" + str(completed.returncode) + "): " + completed.stderr.strip()[-2000:]
         )
     return seconds, completed.stderr.strip()
+
+
+def client_connection(dsn):
+    """Split a DSN for the client tools: a conninfo string of everything but the password (host,
+    port, user, dbname and any connection option) for the command line, and the password, if the
+    DSN carries one, for PGPASSWORD in the tool's environment."""
+    params = conninfo_to_dict(dsn)
+    password = params.pop("password", None)
+    return make_conninfo(**params), password
+
+
+def tool_environment(dsn):
+    env = {**os.environ, "PGCONNECT_TIMEOUT": "10"}
+    env.pop("PGPASSWORD", None)
+    password = client_connection(dsn)[1]
+    if password:
+        env["PGPASSWORD"] = password
+    return env
 
 
 def table_counts(dsn):
@@ -220,7 +241,7 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
         "golden": golden(fixture_dsn),
         "security": security_map(fixture_dsn),
     }
-    tool_env = {**os.environ, "PGCONNECT_TIMEOUT": "10"}
+    tool_env = tool_environment(fixture_dsn)
     with tempfile.TemporaryDirectory(prefix="impact-restore-drill-") as workdir:
         archive = Path(workdir) / (source + ".dump")
         seconds, notes = timed(
@@ -228,7 +249,7 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
                 pg_dump["path"],
                 "--format=custom",
                 "--no-password",
-                "--dbname=" + fixture_dsn,
+                "--dbname=" + client_connection(fixture_dsn)[0],
                 "--file=" + str(archive),
             ],
             tool_env,
@@ -244,13 +265,21 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
             c.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(target)))
         target_dsn = with_database(fixture_dsn, target)
         seconds, notes = timed(
-            [pg_restore["path"], "--no-password", "--exit-on-error", "--dbname=" + target_dsn, str(archive)],
+            [
+                pg_restore["path"],
+                "--no-password",
+                "--exit-on-error",
+                "--dbname=" + client_connection(target_dsn)[0],
+                str(archive),
+            ],
             tool_env,
         )
         result["restore"] = {"seconds": seconds, "warnings": notes or None}
-    # The login roles are cluster-level and survive; the copy needs its own CONNECT grants, which
-    # provisioning gives with the same passwords (or generated ones when none were supplied).
-    provision(admin_dsn, passwords, target, verify=False)
+    # The login roles are cluster-level and survive with their passwords; a dump of one database
+    # carries no database ACL, so the copy receives only the CONNECT/CREATE grants. No role is
+    # created or altered and no password is set here.
+    with psycopg.connect(admin_dsn, autocommit=True, prepare_threshold=None) as c:
+        grant_database_access(c, target)
     migrator = login_dsn(target_dsn, "impact_migrator", passwords["impact_migrator"])
     migration = migrate.run(migrator)
     register = ledgered_checksums()
@@ -344,14 +373,19 @@ def main():
     if not fixture_dsn:
         raise RuntimeError("IMPACT_FIXTURE_DSN (and optionally IMPACT_ADMIN_DSN) are required")
     try:
-        passwords = passwords_from_env()
-        generated = False
-    except RuntimeError:
-        passwords = {login: secrets.token_urlsafe(24) for login in LOGINS}
-        generated = True
-    try:
+        try:
+            passwords = passwords_from_env()
+        except RuntimeError:
+            # The drill only connects as the provisioned logins; it never generates or sets a
+            # password, so the operator must supply the ones the roles already have.
+            raise RuntimeError(
+                "The restore drill needs the passwords of the four provisioned logins in "
+                + ", ".join("IMPACT_LOGIN_PASSWORD_" + suffix for _, suffix in LOGINS.values())
+                + "; it does not generate or rotate credentials (scripts/run.py test --native exports "
+                + "them, and scripts/provision_logins.py sets them)"
+            ) from None
         result = run(admin_dsn, fixture_dsn, passwords, os.environ.get("IMPACT_PG_BIN") or None, args.keep)
-        result["login_passwords_generated"] = generated
+        result["credentials_altered"] = False
         code = 0
     except Exception as exc:  # recorded, then reported through the exit code
         result = {"outcome": "FAIL", "error": type(exc).__name__ + ": " + str(exc)}

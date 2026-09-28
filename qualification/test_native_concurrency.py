@@ -10,7 +10,6 @@ every command, the operation lock and receipt replay, the expected-revision chec
 Each case asserts the HTTP outcomes and the database state through the superuser fixture
 connection, and every case uses fresh objects so the rest of the suite stays order-independent.
 """
-# ruff: noqa: F811
 
 import json
 import os
@@ -26,7 +25,7 @@ from impact_api.store import hash_data
 from test_administration import command, expect, invitation_token, invite, provision_identity, request_as
 from test_authority_renewal import action as renewal_action, authority, bootstrapped_tenant, propose, snapshot
 from test_live_application import cmd, draft
-from test_measurement import action, approve, create, get, setup, submit  # noqa: F401
+from test_measurement import create, get, measurement_builder, submit
 from test_measurement_unit import definition
 from test_period_governance import complete_period, request_close
 
@@ -36,6 +35,9 @@ pytestmark = pytest.mark.skipif(
     "behind one process lock, so simultaneous commands cannot contend there (run scripts/run.py test --native)",
 )
 LOCK_TIMEOUT_SECONDS = 3  # SET LOCAL lock_timeout='3s' in store.Database.transaction
+# A read that runs beside a held tenant lock must return well inside the lock timeout; the bound
+# is generous for slow runners because the claim is completion while the lock is held, not speed.
+READ_SECONDS = 2.5
 # Five repetitions of the renewal race: three unbiased, then one per forced order so that both
 # outcomes are asserted in every run whatever the unbiased races happened to produce.
 RENEWAL_RACE_MODES = ["race", "race", "race", "revocation_first", "approval_first"]
@@ -263,13 +265,13 @@ def test_same_operation_with_different_payloads_admits_exactly_one(live):
     assert sender(live, token, "POST", path, winner[1])()["body"] == winner[0]["body"]
 
 
-def test_simultaneous_period_close_reviews_lock_the_period_once(live, setup):
+def test_simultaneous_period_close_reviews_lock_the_period_once(live):
     """Two independent close reviews of one programme period are approved at once. The first
     applies the close and locks the period; the second, serialised behind it, re-runs the preview
     inside apply_close and is refused with INVALID_STATE / PERIOD_ALREADY_SNAPSHOTTED. No second
     snapshot version, official result or close job survives."""
     tenant = live.fixture["tenant_a"]
-    programme, _, _, period, _, _ = complete_period(live, setup)
+    programme, _, _, period, _, _ = complete_period(live, measurement_builder(live))
     workflows = [request_close(live, programme, period) for _ in range(2)]
     bodies = [approval(workflow, "Independent close review") for workflow in workflows]
     paths = [live.path("workflows", workflow["object_id"]) + "/actions/approve" for workflow in workflows]
@@ -458,8 +460,9 @@ def test_renewal_approval_raced_with_pinned_grant_revocation(live, repetition, m
 
 def test_reads_are_not_blocked_by_a_write_holding_the_tenant_advisory_lock(live):
     """While a transaction holds the tenant advisory lock every command takes first, a write queues
-    behind it and ten parallel reads complete at once; a write that waits longer than lock_timeout
-    is refused with CONFLICT_VERSION (sqlstate 55P03) and leaves no receipt."""
+    behind it and ten parallel reads all complete before the lock is released, each inside a
+    generous bound; a write that waits longer than lock_timeout is refused with CONFLICT_VERSION
+    (sqlstate 55P03) and leaves no receipt."""
     tenant = live.fixture["tenant_a"]
     token = live.token("author")
     read_paths = [
@@ -477,15 +480,15 @@ def test_reads_are_not_blocked_by_a_write_holding_the_tenant_advisory_lock(live)
             write = pool.submit(sender(live, token, "POST", live.path("programmes"), queued))
             time.sleep(0.5)
             assert not write.done(), "the write must wait for the tenant advisory lock"
-            started = time.monotonic()
             reads = list(pool.map(lambda call: call(), [sender(live, token, "GET", p) for p in read_paths]))
-            elapsed = time.monotonic() - started
-            assert not write.done()
+            # The claim: every read has returned while the lock is still held, which the write,
+            # still queued at this instant (it can only finish once the lock is released or its
+            # lock_timeout expires), proves; the holder releases only after this assertion.
+            assert not write.done(), "the write must still be queued when the reads have completed"
             holder.rollback()
             held = time.monotonic() - submitted
         assert [r["status"] for r in reads] == [200] * len(read_paths), reads
-        assert elapsed < LOCK_TIMEOUT_SECONDS / 3, elapsed
-        assert max(r["seconds"] for r in reads) < 1.0, reads
+        assert max(r["seconds"] for r in reads) < READ_SECONDS, reads
         result = write.result(timeout=10)
         assert result["status"] == 201, result
         # The write completed only after the lock was released: it waited at least as long as
@@ -622,10 +625,15 @@ class Worker:
 
 
 def test_mixed_writes_on_both_tenants_complete_without_deadlock(live):
-    """Eight threads, four per fixture tenant, each running rounds of creates, patches, a submitted
-    and independently approved definition review and reads at once: every response is the expected
-    2xx, PostgreSQL records no deadlock for the database, and the API log gains no deadlock
-    (40P01), database-failure or unexpected-failure line."""
+    """No-regression smoke test, not lock-order evidence. Eight threads, four per fixture tenant,
+    each running rounds of creates, patches, a submitted and independently approved definition
+    review and reads at once: every response is the expected 2xx, PostgreSQL records no deadlock
+    for the database, and the API log gains no deadlock (40P01), database-failure or
+    unexpected-failure line. By construction the case cannot deadlock: every write serialises on
+    its tenant's advisory lock before touching a row, and the two tenants share no rows, so a
+    deadlock here could only come from a regression that takes a row or a second advisory lock
+    before the tenant lock. The lock order across objects within one tenant is not exercised by
+    concurrent writers, because there are none once the tenant lock is held."""
     workers, rounds = 8, 3
     for actor in ["author", "reviewer", "other_tenant"]:
         live.token(actor)

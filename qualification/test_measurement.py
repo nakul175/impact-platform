@@ -155,8 +155,12 @@ def approve(live, workflow):
     )
 
 
-@pytest.fixture
-def setup(live):
+def measurement_builder(live):
+    """What the `setup` fixture hands to a test: a builder of one configured measurement (programme,
+    approved definition pinned by an indicator instance, five-obligation collection plan on the
+    fixture period), activated end to end unless `activate` is false. A plain function so that a
+    module can build a measurement without importing the fixture under a name it then shadows."""
+
     def build(activate=True):
         calendar = get(live, "reporting-calendars")["items"][0]
         geography = get(live, "geographies")["items"][0]
@@ -219,6 +223,11 @@ def setup(live):
         return programme, indicator, plan, period
 
     return build
+
+
+@pytest.fixture
+def setup(live):
+    return measurement_builder(live)
 
 
 def observation(live, indicator, source):

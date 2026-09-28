@@ -52,12 +52,27 @@ jobs:
           done
       - name: Provision the login roles as the postgres superuser
         run: .venv/bin/python scripts/provision_logins.py
-      - name: Qualification suite on the provisioned login roles
-        run: .venv/bin/python scripts/run.py test --native --skip-upgrade-check
+      - name: Qualification suite on the provisioned login roles, then the API restart check
+        run: .venv/bin/python scripts/run.py test --native --skip-upgrade-check --skip-restore-drill
+      - name: Install PostgreSQL 17 client tools from the PGDG repository
+        # The service container runs PostgreSQL 17 while the runner image ships the 16 client;
+        # pg_dump refuses a server newer than itself, so the drill uses the 17 binaries.
+        if: always()
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl --fail --silent --show-error -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client-17
+          /usr/lib/postgresql/17/bin/pg_dump --version
+      - name: Backup and restore drill of the database the suite used
+        if: always()
+        env:
+          IMPACT_PG_BIN: /usr/lib/postgresql/17/bin
+        run: .venv/bin/python scripts/restore_drill.py --report docs/evidence/native-qualification.json
       - name: Upgrade a populated schema-15 database to schema 16
         if: always()
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
-      # Backup and restore drill: scripts/restore_drill.py (separate increment) runs here once it lands.
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -65,3 +80,4 @@ jobs:
           path: |
             docs/evidence/native-application-tests.xml
             docs/evidence/native-qualification.json
+            docs/evidence/native-restore-drill.json

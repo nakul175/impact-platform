@@ -14,6 +14,8 @@ dev:
 test:
 	$(PY) scripts/run.py test
 # Needs IMPACT_FIXTURE_DSN: a superuser connection to an empty disposable impact_test[_suffix] database.
+# Runs the suite on the provisioned logins, the API restart check, the backup and restore drill of
+# that database, and the schema-15 upgrade check; see scripts/run.py for the --skip-* flags.
 native:
 	$(PY) scripts/run.py test --native
 unit:

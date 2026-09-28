@@ -5,7 +5,11 @@ database; scripts/migrate.py then applies the migrations and the fixture over th
 it does on native PostgreSQL. Native mode (--native) provisions the four login roles on the
 disposable server named by IMPACT_FIXTURE_DSN, migrates as impact_migrator, loads the fixture as
 the superuser, and starts the API on the app, identity and platform logins only: the API process
-never receives the fixture, migration or administrator connection.
+never receives the fixture, migration or administrator connection. After the native suite the
+runner stops the API and starts a fresh process against the same database between the two phases
+of qualification/test_native_restart.py (--skip-restart-check), runs scripts/restore_drill.py on
+the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
+fresh one (--skip-upgrade-check); all three merge into docs/evidence/native-qualification.json.
 """
 
 import argparse
@@ -75,6 +79,114 @@ def preflight_fixture():
         )
 
 
+def start_api(local, api_env, base):
+    """Start uvicorn on the API environment and wait for readiness; returns (process, seconds)."""
+    api_log = open(local / "api.log", "a")
+    started = time.monotonic()
+    api = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "impact_api.main:create_app",
+            "--factory",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            str(os.environ.get("IMPACT_PORT", "8000")),
+            "--no-access-log",
+        ],
+        cwd=ROOT,
+        env=api_env,
+        stdout=api_log,
+        stderr=subprocess.STDOUT,
+    )
+    with httpx.Client(trust_env=False) as client:
+        for _ in range(120):
+            if api.poll() is not None:
+                raise RuntimeError("API failed; see " + str(local / "api.log"))
+            try:
+                if client.get(base + "/health/ready", timeout=2).status_code == 200:
+                    break
+            except httpx.HTTPError:
+                pass
+            time.sleep(0.25)
+        else:
+            api.kill()
+            api.wait()
+            raise RuntimeError("API startup timeout; see " + str(local / "api.log"))
+    return api, round(time.monotonic() - started, 2)
+
+
+def stop_api(local, api):
+    """Clean shutdown (SIGTERM, then SIGKILL after 10 s). Uvicorn re-raises the captured signal
+    once its lifespan shutdown has completed, so the exit code is -15; the log line it writes
+    last is the evidence that the shutdown ran. Returns (exit code, clean, seconds)."""
+    started = time.monotonic()
+    if api.poll() is None:
+        api.terminate()
+        try:
+            api.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            api.kill()
+            api.wait()
+    clean = "Finished server process [" + str(api.pid) + "]" in (local / "api.log").read_text()
+    return api.returncode, clean, round(time.monotonic() - started, 2)
+
+
+def restart_phase(local, env, api, phase):
+    """One phase of qualification/test_native_restart.py against the running API process."""
+    junit = local / ("restart-phase-" + str(phase) + ".xml")
+    started = time.monotonic()
+    code = subprocess.call(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "qualification/test_native_restart.py::test_phase_" + str(phase),
+            "--junitxml=" + str(junit),
+        ],
+        cwd=ROOT,
+        env={**env, "IMPACT_RESTART_PHASE": str(phase), "IMPACT_API_PID": str(api.pid)},
+    )
+    return {
+        "api_pid": api.pid,
+        "exit_code": code,
+        "duration_seconds": round(time.monotonic() - started, 1),
+        "junit": str(junit.relative_to(ROOT)),
+        **junit_summary(junit),
+    }
+
+
+def restart_check(local, env, api_env, base, api):
+    """Writes through the running API, a clean stop, a fresh process on the same database and
+    configuration, then the assertions of phase 2. Returns (evidence, replacement process)."""
+    result = {"phase_1": restart_phase(local, env, api, 1)}
+    exit_code, clean, stop_seconds = stop_api(local, api)
+    result["first_api"] = {
+        "pid": api.pid,
+        "exit_code": exit_code,
+        "clean_shutdown": clean,
+        "stop_seconds": stop_seconds,
+    }
+    replacement, ready_seconds = start_api(local, api_env, base)
+    result["second_api"] = {"pid": replacement.pid, "ready_seconds": ready_seconds}
+    result["phase_2"] = restart_phase(local, env, replacement, 2)
+    state = local / "restart-state.json"
+    result["state_file"] = str(state.relative_to(ROOT)) if state.exists() else None
+    result["outcome"] = (
+        "PASS"
+        if all(
+            result[phase]["exit_code"] == 0 and result[phase]["tests"] == 1 and not result[phase]["skipped"]
+            for phase in ["phase_1", "phase_2"]
+        )
+        and clean
+        and api.pid != replacement.pid
+        else "FAIL"
+    )
+    return result, replacement
+
+
 def junit_summary(path):
     root = ElementTree.parse(path).getroot()
     suites = [root] if root.tag == "testsuite" else list(root.iter("testsuite"))
@@ -105,6 +217,16 @@ def main():
         "--skip-upgrade-check",
         action="store_true",
         help="Native test mode: do not run scripts/native_upgrade_check.py after the suite",
+    )
+    parser.add_argument(
+        "--skip-restart-check",
+        action="store_true",
+        help="Native test mode: do not restart the API between the two phases of test_native_restart.py",
+    )
+    parser.add_argument(
+        "--skip-restore-drill",
+        action="store_true",
+        help="Native test mode: do not run scripts/restore_drill.py on the suite database afterwards",
     )
     args = parser.parse_args()
     preflight_fixture()
@@ -206,41 +328,10 @@ def main():
         api_env = {
             k: v for k, v in env.items() if k not in PRIVILEGED_ENV and not k.startswith("IMPACT_LOGIN_")
         }
-        api_log = open(local / "api.log", "w")
-        api_started = time.monotonic()
-        api = subprocess.Popen(
-            [
-                sys.executable,
-                "-m",
-                "uvicorn",
-                "impact_api.main:create_app",
-                "--factory",
-                "--host",
-                "127.0.0.1",
-                "--port",
-                str(os.environ.get("IMPACT_PORT", "8000")),
-                "--no-access-log",
-            ],
-            cwd=ROOT,
-            env=api_env,
-            stdout=api_log,
-            stderr=subprocess.STDOUT,
-        )
-        services.append(api)
         base = config["public_origin"]
-        with httpx.Client(trust_env=False) as client:
-            for _ in range(120):
-                if api.poll() is not None:
-                    raise RuntimeError("API failed; see " + str(local / "api.log"))
-                try:
-                    if client.get(base + "/health/ready", timeout=2).status_code == 200:
-                        break
-                except httpx.HTTPError:
-                    pass
-                time.sleep(0.25)
-            else:
-                raise RuntimeError("API startup timeout; see " + str(local / "api.log"))
-        evidence["api_ready_seconds"] = round(time.monotonic() - api_started, 2)
+        (local / "api.log").write_text("")
+        api, evidence["api_ready_seconds"] = start_api(local, api_env, base)
+        services.append(api)
         # Suite-start tokens remain for the reference-v1 suite and the browser tooling; the
         # qualification suite mints its own per-actor tokens (qualification/conftest.py).
         fixture = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text())
@@ -316,10 +407,25 @@ def main():
             "duration_seconds": round(time.monotonic() - started, 1),
             **junit_summary(junit),
         }
+        winners = local / "renewal-race-winners.json"
+        if winners.exists():
+            # Observed order of each renewal-versus-revocation race (test_native_concurrency.py).
+            evidence["tests"]["renewal_race_winners"] = json.loads(winners.read_text())
+        if not args.skip_restart_check:
+            evidence["restart_check"], api = restart_check(local, env, api_env, base, api)
+            services.append(api)
+            code = code or (0 if evidence["restart_check"]["outcome"] == "PASS" else 1)
         stop()
         evidence["finished_at"] = now()
         report = ROOT / "docs/evidence/native-qualification.json"
         report.write_text(json.dumps(evidence, indent=2, default=str) + "\n")
+        if not args.skip_restore_drill:
+            # The drill dumps the database the suite just used, restores it beside it and merges
+            # its result into the report; the API is already stopped.
+            drill = subprocess.call(
+                [sys.executable, "scripts/restore_drill.py", "--report", str(report)], cwd=ROOT, env=env
+            )
+            code = code or drill
         if not args.skip_upgrade_check:
             # The upgrade check runs on its own fresh database and merges its result into the report.
             upgrade = subprocess.call(

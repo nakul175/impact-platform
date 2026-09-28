@@ -40,7 +40,7 @@ Only authority that has not yet expired can be extended. Once either administrat
 
 No expiry reminder, external notice, email, SMS, worker or operator-initiated renewal exists; the owner must notice the approaching expiry. Consent is registered-account, fresh-assurance confirmation, not a new external challenge. An unavailable owner cannot be bypassed. Business grants, custody, recovery contacts and memberships other than the second administrator's are outside this flow.
 
-Tests run against fresh in-memory PGlite with serialised transactions and synthetic local identities. Native PostgreSQL scheduling, service-login topology, persistence, upgrades and live provider assurance remain release gates. No deployment occurred.
+Tests run against fresh in-memory PGlite with serialised transactions and synthetic local identities. The continuous-integration native PostgreSQL job also passed for this commit (see QUALIFICATION.md), the first recorded native execution; service-login topology, persistence, upgrades, native concurrency evidence and live provider assurance remain release gates. No deployment occurred.
 
 The specification Markdown reading copies carry a build 0.13.0 increment note; the Word and workbook editable copies and the interactive wireframes are unchanged and will be regenerated at the next documentation edition.
 

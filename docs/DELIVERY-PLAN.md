@@ -59,7 +59,7 @@ These are gates and shared capabilities. Each has an owner role in the release a
 
 | Track | First deliverable | Unblocks |
 |---|---|---|
-| Native PostgreSQL qualification (G03) | Run the existing `native-postgresql-gate` CI job against PostgreSQL 17 with separate app/identity/platform login roles; fix what it finds; record persistence, upgrade and concurrent approval/revocation results | every claim about concurrency; Release 1 exit |
+| Native PostgreSQL qualification (G03) | The `native-postgresql-gate` CI job first passed on 28 September 2026 for build 0.13.0 (single fixture connection). Next: separate app/identity/platform login roles, persistence across restarts, upgrade from an earlier schema, and concurrent approval/revocation under native scheduling, each recorded as evidence | every claim about concurrency; Release 1 exit |
 | Live identity provider (G04) | Keycloak realm from `specification/environment/keycloak-dev-realm.json`; PKCE, nonce, ACR, disabled-account and logout tests; MFA enrolment policy | v0.19, Release 1 exit |
 | Worker runtime and outbox dispatcher | One worker process consuming `outbox_delivery` with generation-fenced leases, retries and dead-lettering; first consumer: in-app notices and cancellation | v0.15, v0.18, Releases 5–6, 11 |
 | Object store and mediated downloads | Private bucket, upload sessions (tables exist), quarantine and scanning, authorising stream service | Releases 5–8, 12 |

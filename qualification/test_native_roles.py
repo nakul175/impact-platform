@@ -343,6 +343,79 @@ def free_port():
         return s.getsockname()[1]
 
 
+def test_revoke_public_connect_refuses_a_login_without_a_grant(live):
+    """On a scratch database of the suite's cluster, a throwaway login with no grant at all opens
+    the database (PUBLIC keeps PostgreSQL's default CONNECT), scripts/provision_logins.py
+    --revoke-public-connect then makes the same connection fail with 'permission denied for
+    database' while the four provisioned logins, granted CONNECT explicitly, still open it; a
+    CREATEROLE-only administrator is refused by the script before it changes anything. The scratch
+    database and both throwaway roles are dropped afterwards."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from provision_logins import LOGINS, login_dsn, passwords_from_env
+    from native_upgrade_check import with_database
+
+    superuser = os.environ["IMPACT_FIXTURE_DSN"]
+    suffix = uuid.uuid4().hex[:8]
+    scratch, bystander, weak_admin = (
+        "impact_test_public_" + suffix,
+        "bystander_" + suffix,
+        "weak_admin_" + suffix,
+    )
+    secret = uuid.uuid4().hex
+    scratch_dsn = with_database(superuser, scratch)
+    passwords = passwords_from_env()
+
+    def opens(login, password):
+        try:
+            with psycopg.connect(login_dsn(scratch_dsn, login, password), connect_timeout=5) as c:
+                return c.execute("SELECT current_user").fetchone()[0] == login
+        except psycopg.OperationalError as exc:
+            assert "permission denied for database" in str(exc), exc
+            return False
+
+    def provision_cli(admin_dsn, *flags):
+        return subprocess.run(
+            [sys.executable, "scripts/provision_logins.py", "--database", scratch, "--no-verify", *flags],
+            cwd=ROOT,
+            env={**os.environ, "IMPACT_ADMIN_DSN": admin_dsn},
+            capture_output=True,
+            text=True,
+        )
+
+    with psycopg.connect(superuser, autocommit=True, prepare_threshold=None) as c:
+        c.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(scratch)))
+        for role in [bystander, weak_admin]:
+            c.execute(
+                sql.SQL("CREATE ROLE {} LOGIN NOSUPERUSER NOBYPASSRLS NOINHERIT {} PASSWORD {}").format(
+                    sql.Identifier(role),
+                    sql.SQL("CREATEROLE" if role == weak_admin else "NOCREATEROLE"),
+                    sql.Literal(secret),
+                )
+            )
+    try:
+        assert opens(bystander, secret), "PUBLIC's default CONNECT admits a login with no grant"
+        # CREATEROLE alone cannot provision: no ADMIN OPTION on the privilege roles, no ownership.
+        refused = provision_cli(login_dsn(scratch_dsn, weak_admin, secret))
+        assert refused.returncode != 0 and "ADMIN OPTION" in refused.stderr, refused.stderr
+        assert opens(bystander, secret)
+        # Default off: provisioning alone leaves PUBLIC's CONNECT in place.
+        kept = provision_cli(superuser)
+        assert kept.returncode == 0, kept.stderr
+        assert json.loads(kept.stdout)["public_connect"] is True
+        assert opens(bystander, secret)
+        revoked = provision_cli(superuser, "--revoke-public-connect")
+        assert revoked.returncode == 0, revoked.stderr
+        assert json.loads(revoked.stdout)["public_connect"] is False
+        assert not opens(bystander, secret), "a login without a grant must be refused after the revocation"
+        for login in LOGINS:
+            assert opens(login, passwords[login]), login
+    finally:
+        with psycopg.connect(superuser, autocommit=True, prepare_threshold=None) as c:
+            c.execute(sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)").format(sql.Identifier(scratch)))
+            for role in [bystander, weak_admin]:
+                c.execute(sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(role)))
+
+
 def test_api_on_a_shared_login_refuses_requests_not_only_readiness(live):
     """A second API process started on the suite's configuration with the app login for all three
     connections: readiness reports SHARED_RUNTIME_LOGIN, and so does a domain read with a valid

@@ -1,6 +1,6 @@
 # Impact Platform — working brief for engineering sessions
 
-Build 0.13.0 · schema migration 0016 · domain API 1.10.0 · platform (control-plane) API 1.3.0 · documentation edition 1.1 (27 Sep 2026) plus the build 0.13.0 records (28 Sep 2026).
+Build 0.14.0 · schema migration 0016 · domain API 1.10.0 · platform (control-plane) API 1.3.0 · documentation edition 1.1 (27 Sep 2026) plus the build 0.14.0 records (28 Sep 2026).
 This brief condenses roughly 200,000 words of specification, release notes and code into what a session needs before touching the repository. Every claim below was checked against the documents or the source on 28 Sep 2026; where the two disagree, the discrepancy is listed in §11. The authoritative documents remain those under `docs/`; this file is a map, not a replacement.
 
 ## 1. What this is, and its true status
@@ -48,7 +48,7 @@ Historical editions live in `docs/history/v1.0` and `specification/`; never edit
 - **Report package** binds an approved template and a locked snapshot; numeric narrative uses `{{binding}}` placeholders and bare numbers are rejected. **Controlled publication**: independently reviewed disclosure to named active recipients, immutable HTML/CSV artifacts, per-recipient download flag, access log, withdrawal (downloaded bytes are never "recalled").
 - **Operation ID / expected revision**: every mutation carries `operation_id` (in the JSON body) and, for existing objects, `expected_revision`. Same ID + same payload → original receipt; same ID + different payload → `CONFLICT_OPERATION`; stale revision → `CONFLICT_VERSION`. Receipts last 7 days.
 - **Recovery contact** (v0.12): a registered person the owner nominates, who consents with fresh assurance, approved by an independent platform operator. It is activation-readiness evidence only; it cannot reset accounts, assume custody or bypass an unavailable owner.
-- **Authority renewal** (v0.13): owner proposal → second-administrator confirmation → independent operator approval extends the pinned delegation ceilings, administrative grants, assignments and the second administrator's membership before they expire. The proposal pins the current authority and its hash; anything revoked before is absent, anything revoked after fails approval with `AUTHORITY_CHANGED`. Expired authority cannot be renewed (v0.14).
+- **Authority renewal** (v0.13): owner proposal → second-administrator confirmation → independent operator approval extends the pinned delegation ceilings, administrative grants, assignments and the second administrator's membership before they expire. The proposal pins the current authority and its hash; anything revoked before is absent, anything revoked after fails approval with `AUTHORITY_CHANGED`. Expired authority cannot be renewed; administrator replacement and expired-authority renewal are deferred to Release 2 (SD-01).
 
 ## 4. Rules that must never be broken
 
@@ -169,5 +169,5 @@ Code:
 - `Service.command` derives the schema name by walking `openapi.json`; a route present in code but missing from the regenerated contract raises KeyError → 503 rather than 404.
 - `store.write` validates only catalogue kinds; RoleTemplate, AccessGroup, EntitlementApproval, CustodyTransfer, Predicate and LineageManifest payloads are written unvalidated unless the caller validates.
 - Cookie sessions are read without a row lock and `last_seen_at` is advanced at most every 30 s (`auth.py`), so the effective idle limit lies between 14.5 and 15 minutes of true inactivity; the absolute 8-hour limit is unaffected.
-- Dev-mode `RLock` serialises all transactions, so lock ordering and deadlocks are exercised only by the un-run native CI job.
+- Dev-mode `RLock` serialises all transactions on PGlite, so contention is exercised only by the native-only concurrency tests (`qualification/test_native_concurrency.py`), which run in `make native` and the CI native job: simultaneous approvals, exact and conflicting operation replays, period-close races, renewal-versus-revocation races and reads beside a held tenant lock. The mixed-write case there is a no-regression smoke test (every write serialises on its tenant advisory lock and the tenants share no rows), not lock-order evidence; the LLD lock order across objects has no concurrent-writer test.
 - `tenant_lifecycle.py` ~210–213 compares a UUID with a str before repeating with `str()` (first clause always false); `tools/browser/prepare.mjs` calls `python` not `python3`.

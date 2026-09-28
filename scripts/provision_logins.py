@@ -5,17 +5,30 @@ carry a credential or a cluster-wide login. This script is what the deployment a
 instead: it creates four LOGIN roles, each a member of exactly one privilege role, with CONNECT on
 one database and nothing else. Passwords arrive through the environment and are never printed.
 
-    IMPACT_ADMIN_DSN                 superuser (or CREATEROLE) connection to the target database
+    IMPACT_ADMIN_DSN                 superuser connection to the target database (see below)
     IMPACT_LOGIN_PASSWORD_APP        impact_app_login       -> impact_app       (domain requests)
     IMPACT_LOGIN_PASSWORD_IDENTITY   impact_identity_login  -> impact_identity  (identity tables)
     IMPACT_LOGIN_PASSWORD_PLATFORM   impact_platform_login  -> impact_platform  (control plane)
     IMPACT_LOGIN_PASSWORD_MIGRATOR   impact_migrator        -> impact_owner     (scripts/migrate.py)
+
+Who may run it: a superuser, or an administrator that holds CREATEROLE, owns the target database
+and holds ADMIN OPTION on all eight privilege roles. CREATEROLE alone is not enough:
+`GRANT impact_app TO impact_app_login` (and the REVOKE of any other membership) needs ADMIN
+OPTION on the privilege role being granted, and `GRANT CONNECT/CREATE ON DATABASE` needs
+ownership of the database. The script checks this before changing anything.
 
 The privilege roles are created here only when absent, with exactly the attributes migration
 0001/0013 give them, so that a fresh cluster can be provisioned before the first migration runs.
 `impact_owner` additionally receives CREATE on the database: migration 0001 creates the `impact`
 schema with that role as its owner, and a non-superuser migration session needs the database
 privilege to do so. The API never receives the administrator or migrator credential.
+
+PUBLIC keeps PostgreSQL's default CONNECT privilege on every database of the cluster, so the
+explicit CONNECT grants above narrow nothing by themselves: any login role of the cluster can
+still open the database. Real provisioning should also run
+`REVOKE CONNECT ON DATABASE <database> FROM PUBLIC`, which --revoke-public-connect does (off by
+default, since the disposable qualification clusters share their database with the superuser
+fixture connection and other tooling).
 """
 
 import argparse
@@ -76,14 +89,38 @@ def grant_database_access(c, database):
     c.execute(sql.SQL("GRANT CREATE ON DATABASE {} TO impact_owner").format(sql.Identifier(database)))
 
 
-def provision(admin_dsn, passwords, database=None, verify=True):
+def revoke_public_connect(c, database):
+    """Remove PostgreSQL's default CONNECT privilege of PUBLIC on the database, so that only the
+    explicitly granted logins (and superusers) can open it."""
+    c.execute(sql.SQL("REVOKE CONNECT ON DATABASE {} FROM PUBLIC").format(sql.Identifier(database)))
+
+
+def may_provision(c, database):
+    """Superuser, or CREATEROLE plus ownership of the database plus ADMIN OPTION on every privilege
+    role that already exists (a role created here is administered by its creator)."""
+    superuser, createrole = c.execute(
+        "SELECT rolsuper,rolcreaterole FROM pg_roles WHERE rolname=current_user"
+    ).fetchone()
+    if superuser:
+        return True
+    owns = c.execute(
+        "SELECT pg_get_userbyid(datdba)=current_user FROM pg_database WHERE datname=%s", (database,)
+    ).fetchone()
+    administers = c.execute(
+        "SELECT bool_and(pg_has_role(current_user,rolname,'MEMBER WITH ADMIN OPTION')) FROM pg_roles WHERE rolname=ANY(%s)",
+        (list(PRIVILEGE_ROLES),),
+    ).fetchone()[0]
+    return bool(createrole and owns and owns[0] and administers is not False)
+
+
+def provision(admin_dsn, passwords, database=None, verify=True, revoke_public=False):
     with psycopg.connect(admin_dsn, autocommit=True, prepare_threshold=None) as c:
-        me = c.execute(
-            "SELECT rolsuper OR rolcreaterole AS may_provision, current_database() AS db FROM pg_roles WHERE rolname=current_user"
-        ).fetchone()
-        if not me[0]:
-            raise RuntimeError("IMPACT_ADMIN_DSN must identify a superuser or CREATEROLE administrator")
-        database = database or me[1]
+        database = database or c.execute("SELECT current_database()").fetchone()[0]
+        if not may_provision(c, database):
+            raise RuntimeError(
+                "IMPACT_ADMIN_DSN must identify a superuser, or an administrator holding CREATEROLE, "
+                "ownership of the database " + database + " and ADMIN OPTION on the eight privilege roles"
+            )
         created = []
         for role in PRIVILEGE_ROLES:
             if not c.execute("SELECT 1 FROM pg_roles WHERE rolname=%s", (role,)).fetchone():
@@ -111,6 +148,13 @@ def provision(admin_dsn, passwords, database=None, verify=True):
             ).fetchall():
                 c.execute(sql.SQL("REVOKE {} FROM {}").format(sql.Identifier(other), sql.Identifier(login)))
         grant_database_access(c, database)
+        if revoke_public:
+            revoke_public_connect(c, database)
+        # A NULL ACL means the defaults, which include CONNECT for PUBLIC (grantee 0).
+        public_connect = c.execute(
+            "SELECT CASE WHEN d.datacl IS NULL THEN true ELSE EXISTS(SELECT 1 FROM aclexplode(d.datacl) a WHERE a.grantee=0 AND a.privilege_type='CONNECT') END FROM pg_database d WHERE d.datname=%s",
+            (database,),
+        ).fetchone()[0]
         topology = {
             row[0]: {
                 "login": row[1],
@@ -137,6 +181,7 @@ def provision(admin_dsn, passwords, database=None, verify=True):
     return {
         "database": database,
         "privilege_roles_created": created,
+        "public_connect": public_connect,
         "logins": topology,
         "verified": verified,
     }
@@ -175,11 +220,22 @@ def main():
     )
     parser.add_argument("--database", help="Database granted CONNECT; defaults to the administrator's")
     parser.add_argument("--no-verify", action="store_true", help="Skip the login round-trip checks")
+    parser.add_argument(
+        "--revoke-public-connect",
+        action="store_true",
+        help="Also REVOKE CONNECT ON DATABASE FROM PUBLIC, so only the granted logins can open it",
+    )
     args = parser.parse_args()
     admin = os.environ.get("IMPACT_ADMIN_DSN")
     if not admin:
         raise RuntimeError("IMPACT_ADMIN_DSN is required")
-    result = provision(admin, passwords_from_env(), args.database, verify=not args.no_verify)
+    result = provision(
+        admin,
+        passwords_from_env(),
+        args.database,
+        verify=not args.no_verify,
+        revoke_public=args.revoke_public_connect,
+    )
     print(json.dumps(result, indent=2, default=str))
     return 0
 

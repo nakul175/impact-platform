@@ -45,7 +45,9 @@ export function PeriodGovernancePanel({
     [busy, setBusy] = useState(false),
     [epoch, setEpoch] = useState(0);
   const operation = useRef(crypto.randomUUID()),
-    can = (cap: string) => capabilities.includes(cap);
+    can = (cap: string) => capabilities.includes(cap),
+    // Capabilities arrive asynchronously after sign-in; the load below re-runs when they do.
+    capabilityKey = capabilities.join(" ");
   useEffect(() => {
     const controller = new AbortController(),
       routes = [
@@ -88,7 +90,7 @@ export function PeriodGovernancePanel({
         if (e.name !== "AbortError") setError(explain(e));
       });
     return () => controller.abort();
-  }, [base, epoch]);
+  }, [base, epoch, capabilityKey]);
   function open(next: "close" | "restate") {
     setMode(next);
     setProgramme(null);

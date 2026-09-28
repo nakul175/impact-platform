@@ -1,5 +1,13 @@
 # Documentation change record
 
+## Scope decision SD-01 — 28 September 2026
+
+Reorganised the delivery sequence from the 16-stage family roadmap into three releases (Release 1 Usable core, Release 2 Field and partners, Release 3 Intelligence) so that the first release is usable on its own by one organisation. No requirement, priority, release tag (R1/R2/R3) or acceptance condition changed; the ledger remains 74 PARTIAL and 233 PENDING with none accepted.
+
+- Rewrote DELIVERY-PLAN.md §2–§7 (increments v0.14–v0.26, deferred items, decision record) and NEXT-DELIVERY.md; updated the engineering brief (CLAUDE.md §2 and §10).
+- The next coding slice is v0.14, native PostgreSQL qualification; administrator replacement and renewal of expired authority move to Release 2.
+- Recorded the owner decisions that gate later increments: hosting provider, identity-provider deployment model, email provider.
+
 ## Build 0.13.0 — 28 September 2026
 
 Recorded increment v0.13, reviewed renewal of unexpired delegated authority, without changing any requirement, priority, release assignment or expected outcome.

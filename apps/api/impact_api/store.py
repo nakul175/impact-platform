@@ -1,7 +1,8 @@
 from contextlib import contextmanager, nullcontext
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from threading import RLock
+from threading import Lock, RLock
+from time import monotonic
 from uuid import uuid4
 import hashlib
 import json
@@ -18,6 +19,9 @@ from .domain import DomainError, unavailable
 
 
 PRIVILEGE_QUERY = "SELECT current_user AS login,rolsuper,rolbypassrls,pg_has_role(current_user,'impact_owner','MEMBER') AS owns_schema FROM pg_roles WHERE rolname=current_user"
+# A verified login topology is trusted for this long before the three connections are resolved
+# again; a refused topology is never cached, so every later transaction re-checks it.
+TOPOLOGY_REVERIFY_SECONDS = 60
 LOG = logging.getLogger("impact")
 
 
@@ -26,6 +30,8 @@ class Database:
         self.s = s
         self.lock = RLock() if s.dev_db_serial else None
         self.topology_verified = None
+        self.topology_verified_at = None
+        self.topology_lock = Lock()
 
     def topology(self):
         """Resolve the three runtime connections to their login identities and privilege flags."""
@@ -47,40 +53,49 @@ class Database:
     def verify_topology(self):
         """When unprivileged connections are required, the app, identity and platform connections
         must be three distinct logins, none of them superuser, BYPASSRLS or a member of impact_owner.
-        The first successful check is cached; a failure is logged and reported on every readiness call."""
-        if self.topology_verified or not self.s.unprivileged_db_required:
-            return self.topology_verified
-        topology = self.topology()
-        missing = [name for name, row in topology.items() if row is None]
-        privileged = [
-            name
-            for name, row in topology.items()
-            if row and (row["rolsuper"] or row["rolbypassrls"] or row["owns_schema"])
-        ]
-        logins = [row["login"] for row in topology.values() if row]
-        if missing or privileged or len(set(logins)) != 3:
-            reason = (
-                "PLATFORM_NOT_CONFIGURED"
-                if missing
-                else "PRIVILEGED_RUNTIME_CONNECTION"
-                if privileged
-                else "SHARED_RUNTIME_LOGIN"
-            )
-            LOG.error(
-                "database topology refused reason=%s missing=%s privileged=%s logins=%s",
-                reason,
-                missing,
-                privileged,
-                logins,
-            )
-            raise DomainError("SERVICE_UNAVAILABLE", 503, reason=reason)
-        self.topology_verified = topology
-        return topology
+        Readiness and every transaction call this: a successful check is trusted for
+        TOPOLOGY_REVERIFY_SECONDS and then repeated; a refusal is never cached, is logged with the
+        login names, and reaches the caller as SERVICE_UNAVAILABLE with the reason code only."""
+        if not self.s.unprivileged_db_required:
+            return None
+        with self.topology_lock:
+            if self.topology_verified and monotonic() - self.topology_verified_at < TOPOLOGY_REVERIFY_SECONDS:
+                return self.topology_verified
+            self.topology_verified, self.topology_verified_at = None, None
+            topology = self.topology()
+            missing = [name for name, row in topology.items() if row is None]
+            privileged = [
+                name
+                for name, row in topology.items()
+                if row and (row["rolsuper"] or row["rolbypassrls"] or row["owns_schema"])
+            ]
+            logins = [row["login"] for row in topology.values() if row]
+            if missing or privileged or len(set(logins)) != 3:
+                reason = (
+                    "PLATFORM_NOT_CONFIGURED"
+                    if missing
+                    else "PRIVILEGED_RUNTIME_CONNECTION"
+                    if privileged
+                    else "SHARED_RUNTIME_LOGIN"
+                )
+                LOG.error(
+                    "database topology refused reason=%s missing=%s privileged=%s logins=%s",
+                    reason,
+                    missing,
+                    privileged,
+                    logins,
+                )
+                raise DomainError("SERVICE_UNAVAILABLE", 503, reason=reason)
+            self.topology_verified, self.topology_verified_at = topology, monotonic()
+            return topology
 
     @contextmanager
     def transaction(self, tenant=None, identity=False, platform=False):
         if platform and not self.s.platform_dsn:
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="PLATFORM_NOT_CONFIGURED")
+        # The topology is enforced on the request path, not only by readiness: a shared or
+        # privileged login refuses every transaction before a connection is yielded.
+        self.verify_topology()
         with self.lock if self.lock else nullcontext():
             with psycopg.connect(
                 self.s.platform_dsn if platform else self.s.identity_dsn if identity else self.s.app_dsn,

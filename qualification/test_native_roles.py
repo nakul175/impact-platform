@@ -9,17 +9,21 @@ or, for a fence, as an empty result; nothing here is a status code of the API.
 
 import json
 import os
+import socket
 import subprocess
 import sys
+import time
 import uuid
 from pathlib import Path
 
+import httpx
 import psycopg
 import pytest
 from psycopg import sql
 from psycopg.errors import InsufficientPrivilege
 
 ROOT = Path(__file__).resolve().parents[1]
+LOGIN_NAMES = ["impact_app_login", "impact_identity_login", "impact_platform_login", "impact_migrator"]
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
     reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role "
@@ -281,7 +285,8 @@ def test_migrator_assumes_owner_only_and_runs_the_migration_runner(connect, live
 def test_runtime_guard_refuses_privileged_and_shared_connections(live):
     """The API runs with IMPACT_REQUIRE_UNPRIVILEGED_DB=1 and passed readiness, so its three
     connections are distinct unprivileged logins. The same guard, given the superuser fixture
-    connection or one login for all three purposes, refuses."""
+    connection or one login for all three purposes, refuses: readiness and, on the request path,
+    every transaction before a connection is yielded. A refusal is never cached."""
     from impact_api.config import Settings
     from impact_api.domain import DomainError
     from impact_api.store import Database
@@ -289,19 +294,25 @@ def test_runtime_guard_refuses_privileged_and_shared_connections(live):
     superuser = os.environ.get("IMPACT_FIXTURE_DSN")
     assert superuser and live.config["require_unprivileged_db"] is True
     assert live.request("/health/ready", actor=None).status_code == 200
-    topology = Database(Settings(**live.config)).verify_topology()
+    verified = Database(Settings(**live.config))
+    topology = verified.verify_topology()
     assert {name: row["login"] for name, row in topology.items()} == {
         "app": "impact_app_login",
         "identity": "impact_identity_login",
         "platform": "impact_platform_login",
     }
+    assert verified.topology_verified is topology and verified.topology_verified_at
+    with verified.transaction() as c:
+        assert c.execute("SELECT current_user").fetchone()["current_user"] == "impact_app"
     privileged = Database(Settings(**{**live.config, "app_dsn": superuser}))
     with pytest.raises(DomainError) as refused:
         privileged.verify_topology()
     assert refused.value.reason == "PRIVILEGED_RUNTIME_CONNECTION"
-    with pytest.raises(RuntimeError, match="Privileged runtime connection refused"):
+    assert privileged.topology_verified is None and privileged.topology_verified_at is None
+    with pytest.raises(DomainError) as refused_transaction:
         with privileged.transaction():
-            pass
+            raise AssertionError("a connection was yielded on a privileged login")
+    assert refused_transaction.value.reason == "PRIVILEGED_RUNTIME_CONNECTION"
     shared = Database(
         Settings(
             **{**live.config, "identity_dsn": live.config["app_dsn"], "platform_dsn": live.config["app_dsn"]}
@@ -310,7 +321,102 @@ def test_runtime_guard_refuses_privileged_and_shared_connections(live):
     with pytest.raises(DomainError) as same:
         shared.verify_topology()
     assert same.value.reason == "SHARED_RUNTIME_LOGIN"
+    assert shared.topology_verified is None
+    for kwargs in [{}, {"identity": True}, {"platform": True}, {"tenant": live.fixture["tenant_a"]}]:
+        with pytest.raises(DomainError) as same_transaction:
+            with shared.transaction(**kwargs):
+                raise AssertionError("a connection was yielded on a shared login")
+        assert same_transaction.value.reason == "SHARED_RUNTIME_LOGIN", kwargs
     unconfigured = Database(Settings(**{**live.config, "platform_dsn": ""}))
     with pytest.raises(DomainError) as missing:
         unconfigured.verify_topology()
     assert missing.value.reason == "PLATFORM_NOT_CONFIGURED"
+    with pytest.raises(DomainError) as missing_transaction:
+        with unconfigured.transaction():
+            raise AssertionError("a connection was yielded without a platform login")
+    assert missing_transaction.value.reason == "PLATFORM_NOT_CONFIGURED"
+
+
+def free_port():
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+def test_api_on_a_shared_login_refuses_requests_not_only_readiness(live):
+    """A second API process started on the suite's configuration with the app login for all three
+    connections: readiness reports SHARED_RUNTIME_LOGIN, and so does a domain read with a valid
+    token, since the guard runs before any transaction yields a connection. No login name reaches
+    a response. The process is stopped before the test returns."""
+    config_path = live.local / "shared-login-config.json"
+    config_path.write_text(
+        json.dumps(
+            {**live.config, "identity_dsn": live.config["app_dsn"], "platform_dsn": live.config["app_dsn"]}
+        )
+    )
+    config_path.chmod(0o600)
+    port = free_port()
+    base = "http://127.0.0.1:" + str(port)
+    log = (live.local / "shared-login-api.log").open("w")
+    api = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "impact_api.main:create_app",
+            "--factory",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            str(port),
+            "--no-access-log",
+        ],
+        cwd=ROOT,
+        # Only the configuration file: no IMPACT_* override, fixture or migration connection.
+        env={
+            "PATH": os.environ.get("PATH", ""),
+            "HOME": os.environ.get("HOME", str(live.local)),
+            "PYTHONPATH": str(ROOT / "apps/api"),
+            "IMPACT_CONFIG_FILE": str(config_path),
+            "NO_PROXY": "127.0.0.1,localhost",
+            "no_proxy": "127.0.0.1,localhost",
+        },
+        stdout=log,
+        stderr=subprocess.STDOUT,
+    )
+    try:
+        with httpx.Client(base_url=base, trust_env=False, timeout=5) as client:
+            for _ in range(240):
+                assert api.poll() is None, "the shared-login API process exited; see shared-login-api.log"
+                try:
+                    if client.get("/health/live").status_code == 200:
+                        break
+                except httpx.HTTPError:
+                    pass
+                time.sleep(0.25)
+            else:
+                raise AssertionError("the shared-login API process did not start")
+            ready = client.get("/health/ready")
+            programmes = client.get(
+                live.path("programmes"), headers={"Authorization": "Bearer " + live.token("author")}
+            )
+            # The cookie path opens the identity transaction before looking the session up.
+            me = client.get("/auth/me", headers={"Cookie": "impact_dev_session=" + str(uuid.uuid4())})
+        for response in [ready, programmes, me]:
+            assert response.status_code == 503, response.text
+            body = response.json()
+            assert body["code"] == "SERVICE_UNAVAILABLE" and body["reason_code"] == "SHARED_RUNTIME_LOGIN"
+            assert body["retryable"] is True and body["message"] == "The request could not be completed."
+            assert not any(name in response.text for name in LOGIN_NAMES), response.text
+        assert live.request("/health/ready", actor=None).status_code == 200
+    finally:
+        if api.poll() is None:
+            api.terminate()
+            try:
+                api.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                api.kill()
+                api.wait()
+        log.close()
+    assert api.poll() is not None
+    assert "SHARED_RUNTIME_LOGIN" in (live.local / "shared-login-api.log").read_text()

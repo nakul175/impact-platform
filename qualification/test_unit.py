@@ -133,3 +133,47 @@ def test_production_refuses_development_identity(monkeypatch, tmp_path):
     monkeypatch.delenv("IMPACT_ENVIRONMENT", raising=False)
     with pytest.raises(ValueError, match="Development settings"):
         Settings.load()
+
+
+def test_boolean_environment_flags_accept_spellings_and_refuse_the_rest(monkeypatch, tmp_path):
+    """IMPACT_REQUIRE_UNPRIVILEGED_DB (and the other boolean fields) accept 1/true/yes/on and
+    0/false/no/off case-insensitively; any other spelling is a configuration error, never a
+    silent False."""
+    import json
+    from impact_api.config import Settings, boolean
+
+    for value in ["1", "true", "YES", "On"]:
+        assert boolean("require_unprivileged_db", value) is True, value
+    for value in ["0", "false", "No", "off", ""]:
+        assert boolean("require_unprivileged_db", value) is False, value
+    with pytest.raises(ValueError, match="IMPACT_REQUIRE_UNPRIVILEGED_DB must be one of"):
+        boolean("require_unprivileged_db", "yes please")
+    config = {
+        "environment": "test",
+        "app_dsn": "postgresql://app",
+        "identity_dsn": "postgresql://identity",
+        "public_origin": "http://127.0.0.1:8000",
+        "issuer": "http://127.0.0.1:8080/realms/impact-dev",
+        "client_id": "web",
+        "audience": "api",
+        "jwks_url": "",
+        "authorization_url": "",
+        "token_url": "",
+        "cookie_secret": "x" * 64,
+    }
+    path = tmp_path / "config.json"
+    path.write_text(json.dumps(config))
+    monkeypatch.setenv("IMPACT_CONFIG_FILE", str(path))
+    for name in ["IMPACT_ENVIRONMENT", "IMPACT_DEV_AUTH", "IMPACT_DEV_DB_SERIAL"]:
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("IMPACT_REQUIRE_UNPRIVILEGED_DB", "True")
+    assert Settings.load().unprivileged_db_required is True
+    monkeypatch.setenv("IMPACT_REQUIRE_UNPRIVILEGED_DB", "no")
+    assert Settings.load().unprivileged_db_required is False
+    monkeypatch.setenv("IMPACT_REQUIRE_UNPRIVILEGED_DB", "enabled")
+    with pytest.raises(ValueError, match="IMPACT_REQUIRE_UNPRIVILEGED_DB"):
+        Settings.load()
+    monkeypatch.delenv("IMPACT_REQUIRE_UNPRIVILEGED_DB")
+    path.write_text(json.dumps({**config, "require_unprivileged_db": "1"}))
+    with pytest.raises(ValueError, match="must be a JSON boolean"):
+        Settings.load()

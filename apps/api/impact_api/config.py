@@ -5,6 +5,22 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[3]
+BOOLEAN_FIELDS = {"dev_auth", "dev_db_serial", "require_unprivileged_db"}
+TRUE_VALUES = {"1", "true", "yes", "on"}
+FALSE_VALUES = {"0", "false", "no", "off", ""}
+
+
+def boolean(name, value):
+    """An environment flag: 1/true/yes/on or 0/false/no/off, case-insensitively; anything else is
+    a configuration error rather than a silent False."""
+    lowered = value.strip().lower()
+    if lowered in TRUE_VALUES:
+        return True
+    if lowered in FALSE_VALUES:
+        return False
+    raise ValueError(
+        "IMPACT_" + name.upper() + " must be one of 1/true/yes/on or 0/false/no/off, not " + repr(value)
+    )
 
 
 @dataclass(frozen=True)
@@ -55,11 +71,10 @@ class Settings:
         for name in cls.__dataclass_fields__:
             value = os.environ.get("IMPACT_" + name.upper())
             if value is not None:
-                data[name] = (
-                    value == "1"
-                    if name in {"dev_auth", "dev_db_serial", "require_unprivileged_db"}
-                    else value
-                )
+                data[name] = boolean(name, value) if name in BOOLEAN_FIELDS else value
+        for name in BOOLEAN_FIELDS:
+            if name in data and not isinstance(data[name], bool):
+                raise ValueError("Configuration field " + name + " must be a JSON boolean")
         s = cls(**data)
         if s.environment not in {"development", "test", "staging", "production"} or len(s.cookie_secret) < 48:
             raise ValueError("Invalid environment or cookie secret")

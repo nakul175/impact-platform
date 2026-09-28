@@ -81,7 +81,7 @@ Engineering invariants (HLD/LLD/MIG; verified in code):
 
 ## 5. Architecture as built
 
-`make dev` starts one process tree (`scripts/run.py dev`): PGlite via `tools/dev-db/server.mjs` on `127.0.0.1:55432` (database `impact_dev`; the server only serves the socket), then `scripts/migrate.py` over the wire (the single migration runner: checksum-ledgered migrations, then `specification/fixtures/seed.sql` when `tenant_root` is empty), then `scripts/bootstrap.py` (fixture grants, role templates, custody, platform operators, RS256 keypair, `passwords.json`), then uvicorn `impact_api.main:create_app` on `127.0.0.1:8000` serving the compiled React client from `apps/web/dist`. The Vite dev server cannot perform writes (Origin must equal `public_origin`); build first. Persistent state under `.local/dev/`; tests use `.local/test-<hex>/` in-memory; `--ephemeral` for a disposable demo.
+`make dev` starts one process tree (`scripts/run.py dev`): PGlite via `tools/dev-db/server.mjs` on `127.0.0.1:55432` (database `impact_dev`; the server only serves the socket; `IMPACT_DEV_DB_PORT` overrides the port, `0` lets the OS choose, and the server reports the actual port in one JSON status line that `scripts/run.py` parses to build every connection string), then `scripts/migrate.py` over the wire (the single migration runner: checksum-ledgered migrations, then `specification/fixtures/seed.sql` when `tenant_root` is empty), then `scripts/bootstrap.py` (fixture grants, role templates, custody, platform operators, RS256 keypair, `passwords.json`), then uvicorn `impact_api.main:create_app` on `127.0.0.1:8000` serving the compiled React client from `apps/web/dist`. The Vite dev server cannot perform writes (Origin must equal `public_origin`); build first. Persistent state under `.local/dev/`; tests use `.local/test-<hex>/` in-memory; `--ephemeral` for a disposable demo.
 
 Request path for a domain command (`apps/api/impact_api/main.py` → `service.py` → `store.py`):
 1. Middleware: correlation ID, Host allow-list, 256 KiB body cap, security headers (CSP, no-store, nosniff, HSTS when HTTPS).
@@ -112,7 +112,7 @@ make setup            # venv + npm ci (apps/web, tools/dev-db) + build; needs Py
 make dev              # http://127.0.0.1:8000 ; passwords in .local/dev/passwords.json
 make lint             # ruff check + ruff format --check (line length 110) ; prettier --check
 make unit             # pytest without a database
-make test             # fresh in-memory PGlite + API; writes docs/evidence/application-tests.xml (overwrites it)
+make test             # fresh in-memory PGlite on an OS-chosen port (IMPACT_DEV_DB_PORT pins one; the browser modes choose the same way) + API; writes docs/evidence/application-tests.xml (overwrites it)
 make reference        # preserved reference-v1 suite (143 assertions) → docs/evidence/reference-tests.json
 make browser          # Linux x86_64 only; Chromium 153 via playwright-core; 9 workflow groups → docs/evidence/*-browser-tests.json + PNGs
 make ledger           # regenerates docs/COMPLETION-LEDGER.{json,md}

@@ -1,11 +1,14 @@
 """Single process tree keeps local services reachable in sandboxed workspaces.
 
 PGlite modes (dev, test, browser checks) start tools/dev-db/server.mjs, which only serves the
-database; scripts/migrate.py then applies the migrations and the fixture over the wire exactly as
-it does on native PostgreSQL. Native mode (--native) provisions the four login roles on the
-disposable server named by IMPACT_FIXTURE_DSN, migrates as impact_migrator, loads the fixture as
-the superuser, and starts the API on the app, identity and platform logins only: the API process
-never receives the fixture, migration or administrator connection. After the native suite the
+database on IMPACT_DEV_DB_PORT (55432 in dev mode; a port chosen by the operating system in test
+and browser modes, so parallel runners and orphaned servers never collide) and reports the
+actual port in one JSON status line; scripts/migrate.py then applies the migrations and the
+fixture over the wire exactly as it does on native PostgreSQL. Native mode (--native) provisions
+the four login roles on the disposable server named by IMPACT_FIXTURE_DSN, migrates as
+impact_migrator, loads the fixture as the superuser, and starts the API on the app, identity and
+platform logins only: the API process never receives the fixture, migration or administrator
+connection or the login passwords. After the native suite the
 runner stops the API and starts a fresh process against the same database between the two phases
 of qualification/test_native_restart.py (--skip-restart-check), runs scripts/restore_drill.py on
 the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
@@ -35,7 +38,8 @@ from provision_logins import LOGINS, login_dsn, passwords_from_env, provision
 import migrate
 
 ROOT = Path(__file__).resolve().parents[1]
-PGLITE_DSN = "postgresql://postgres:development@127.0.0.1:55432/impact_dev?sslmode=disable"
+# The documented development port; the test and browser runners let the operating system choose.
+PGLITE_DEFAULT_PORT = "55432"
 # Never handed to the API process: fixture, migration and administrator connections and passwords.
 PRIVILEGED_ENV = {"IMPACT_FIXTURE_DSN", "IMPACT_MIGRATION_DSN", "IMPACT_ADMIN_DSN"}
 BROWSER_MODES = {
@@ -53,6 +57,65 @@ BROWSER_MODES = {
 
 def now():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def pglite_dsn(port):
+    """The unauthenticated loopback connection to the development database on the reported port."""
+    return "postgresql://postgres:development@127.0.0.1:" + str(port) + "/impact_dev?sslmode=disable"
+
+
+def database_status(log):
+    """The JSON status line tools/dev-db/server.mjs prints once it listens (or fails), parsed
+    line by line: a substring such as "ready" inside Node's "address already in use" text is
+    never a match."""
+    for line in log.read_text().splitlines():
+        line = line.strip()
+        if not line.startswith("{"):
+            continue
+        try:
+            status = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(status, dict) and status.get("status") in {"ready", "failed"}:
+            return status
+    return None
+
+
+def start_database(local, env, mode):
+    """Start the PGlite server on IMPACT_DEV_DB_PORT (the documented 55432 in dev mode, a port
+    chosen by the operating system elsewhere) and return (process, port) once it listens."""
+    port = env.get("IMPACT_DEV_DB_PORT") or (PGLITE_DEFAULT_PORT if mode == "dev" else "0")
+    if not port.isdigit() or int(port) > 65535:
+        raise RuntimeError("IMPACT_DEV_DB_PORT must be a port number, or 0 for one chosen by the system")
+    log = local / "database.log"
+    db = subprocess.Popen(
+        ["node", "tools/dev-db/server.mjs"],
+        cwd=ROOT,
+        env={**env, "IMPACT_DEV_DB_PORT": port},
+        stdout=open(log, "w"),
+        stderr=subprocess.STDOUT,
+    )
+    for _ in range(240):
+        status = database_status(log)
+        if status and status["status"] == "ready" and isinstance(status.get("port"), int):
+            return db, status["port"]
+        if status or db.poll() is not None:
+            break
+        time.sleep(0.25)
+    if db.poll() is None:
+        db.terminate()
+    db.wait()
+    raise RuntimeError(
+        (
+            "Development database failed: " + str(status.get("error", status))
+            if status
+            else "Development database failed"
+            if db.returncode
+            else "Database startup timeout"
+        )
+        + "; see "
+        + str(log)
+    )
 
 
 def preflight_fixture():
@@ -297,31 +360,14 @@ def main():
                 api_requires_unprivileged_db=True,
             )
         else:
-            env.update(IMPACT_FIXTURE_DSN=PGLITE_DSN, IMPACT_MIGRATION_DSN=PGLITE_DSN)
-            db_log = open(local / "database.log", "w")
-            db = subprocess.Popen(
-                ["node", "tools/dev-db/server.mjs"],
-                cwd=ROOT,
-                env=env,
-                stdout=db_log,
-                stderr=subprocess.STDOUT,
-            )
+            db, port = start_database(local, env, args.mode)
             services.append(db)
-            for _ in range(240):
-                if db.poll() is not None:
-                    raise RuntimeError("Development database failed; see " + str(local / "database.log"))
-                if "ready" in (local / "database.log").read_text():
-                    break
-                time.sleep(0.25)
-            else:
-                raise RuntimeError("Database startup timeout")
+            # Every connection string, including the API's, derives from the port the server
+            # reported: scripts/bootstrap.py reads IMPACT_FIXTURE_DSN and writes it into config.json.
+            dsn = pglite_dsn(port)
+            env.update(IMPACT_FIXTURE_DSN=dsn, IMPACT_MIGRATION_DSN=dsn)
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
-            migrate.run(
-                PGLITE_DSN,
-                PGLITE_DSN,
-                fixture=args.mode != "dev",
-                fixture_if_empty=args.mode == "dev",
-            )
+            migrate.run(dsn, dsn, fixture=args.mode != "dev", fixture_if_empty=args.mode == "dev")
         os.environ.update({k: v for k, v in env.items() if k.startswith("IMPACT_")})
         config = bootstrap(local)
         env["IMPACT_CONFIG_FILE"] = str(local / "config.json")

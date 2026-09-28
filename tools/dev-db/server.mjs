@@ -35,11 +35,49 @@ db.execProtocolRaw = (message, { syncToFs = true } = {}) => {
   protocolTail = next.catch(() => {});
   return next;
 };
-const server = new PGLiteSocketServer({ db, host: "127.0.0.1", port: 55432 });
-await server.start();
+// IMPACT_DEV_DB_PORT selects the loopback port: 55432 by default (make dev), 0 lets the
+// operating system choose a free one (the test and browser runners), so two runners or an
+// orphaned server never collide. The one JSON status line below carries the actual port;
+// scripts/run.py parses that line and builds every connection string from it.
+const requestedPort = Number(process.env.IMPACT_DEV_DB_PORT ?? "55432");
+if (
+  !Number.isInteger(requestedPort) ||
+  requestedPort < 0 ||
+  requestedPort > 65535
+) {
+  console.log(
+    JSON.stringify({
+      status: "failed",
+      error: "IMPACT_DEV_DB_PORT must be an integer from 0 to 65535",
+    }),
+  );
+  process.exit(2);
+}
+const server = new PGLiteSocketServer({
+  db,
+  host: "127.0.0.1",
+  port: requestedPort,
+});
+let listeningPort = null;
+server.addEventListener("listening", (event) => {
+  listeningPort = event.detail?.port ?? null;
+});
+try {
+  await server.start();
+} catch (error) {
+  console.log(
+    JSON.stringify({
+      status: "failed",
+      error: String(error?.message ?? error),
+    }),
+  );
+  await db.close();
+  process.exit(1);
+}
 console.log(
   JSON.stringify({
     status: "ready",
+    port: listeningPort ?? server.port,
     engine: "PGlite",
     postgres: (await db.query("SHOW server_version")).rows[0].server_version,
   }),

@@ -5,8 +5,10 @@ migrations 0001-0015 as the provisioned `impact_migrator` login, loads the accep
 superuser (the fixture touches only migration 0002/0003 tables, so it is loaded before 0016 as a
 genuinely populated pre-upgrade database), applies the remaining migration as the migrator, and
 then verifies with direct queries, starting no service, that `impact.schema_migration` holds all 16
-rows with exactly the SHA-256 values ledgered in docs/current/CURRENT-DATA-DICTIONARY.md and that
-`max(version)` is 16. The result is merged into the JSON report named by --report.
+rows with exactly the SHA-256 values ledgered in docs/current/CURRENT-DATA-DICTIONARY.md, that
+`max(version)` is 16, that the table 0016 adds exists, and that the tenant and revision counts
+loaded at schema 15 are unchanged (`data_preserved`); any of these failing fails the check. The
+result is merged into the JSON report named by --report.
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
@@ -118,7 +120,13 @@ def run(admin_dsn, fixture_dsn, passwords):
         "data_preserved": tenants == result["schema_15"]["tenants"]
         and revisions == result["schema_15"]["revisions"],
     }
-    if mismatches or len(rows) != 16 or max_version != 16 or renewal_table is None:
+    if (
+        mismatches
+        or len(rows) != 16
+        or max_version != 16
+        or renewal_table is None
+        or not result["verification"]["data_preserved"]
+    ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))
     with psycopg.connect(admin_dsn, autocommit=True, prepare_threshold=None) as c:
         c.execute(sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)").format(sql.Identifier(target)))

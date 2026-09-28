@@ -32,17 +32,7 @@ def expiry(days=20):
 
 
 def signed(live, identity, **overrides):
-    claims = {
-        "iss": live.config["issuer"],
-        "sub": identity,
-        "aud": live.config["audience"],
-        "azp": live.config["client_id"],
-        "iat": int(time.time()),
-        "exp": int(time.time()) + 600,
-        "auth_time": time.time(),
-        **overrides,
-    }
-    return jwt.encode(claims, (live.local / "private.pem").read_bytes(), algorithm="RS256")
+    return live.signed(identity, **overrides)
 
 
 def request_as(live, identity, path, method="GET", body=None, token=None):

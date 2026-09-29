@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
+import { PlanningPanel } from "./Planning";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
@@ -71,6 +72,7 @@ const nav = [
   ["programmes", "Portfolio", "◫"],
   ["observations", "Measurement", "↗"],
   ["configuration", "Measurement setup", "⚙"],
+  ["planning", "Results framework", "◇"],
   ["changes", "Change requests", "⇄"],
   ["period-governance", "Period close", "▣"],
   ["work", "My work", "◷"],
@@ -101,6 +103,10 @@ const titles: Record<string, [string, string]> = {
   work: [
     "My work",
     "Resolve assigned recalculations and acknowledge safe in-app notices.",
+  ],
+  planning: [
+    "Results framework",
+    "Plan results, place indicators and govern targets against actuals.",
   ],
   configuration: [
     "Measurement setup",
@@ -587,6 +593,7 @@ function Workspace({
       route === "workspace-settings" ||
       route === "account" ||
       route === "configuration" ||
+      route === "planning" ||
       route === "changes" ||
       route === "period-governance" ||
       route === "work"
@@ -758,6 +765,15 @@ function Workspace({
             />
           ) : route === "changes" ? (
             <ChangesPanel
+              base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
+              Dialog={Dialog}
+            />
+          ) : route === "planning" ? (
+            <PlanningPanel
+              key={tenant}
               base={base}
               capabilities={access.capabilities}
               request={api}

@@ -1,12 +1,18 @@
 """Identity-bound recovery-contact evidence; never a grant or account recovery action."""
 
+import hmac
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from psycopg.types.json import Jsonb
+from .delivery import channel_code, channel_code_hash, seal_recipient
 from .domain import DomainError, unavailable
+from .identity_profile import email_hash
 from .platform_security import current_owner, registered_person
-from .recovery_contracts import ACTIONS, validate_body
+from .recovery_contracts import ACTIONS, CHANNEL_ACTIONS, validate_body
 from .store import hash_data
+
+CHANNEL_CODE_TTL = timedelta(minutes=15)
+CHANNEL_CODE_ATTEMPTS = 5
 
 
 def now():
@@ -112,6 +118,37 @@ class RecoveryContacts:
             "approved_by": str(row["approved_by"]) if row["approved_by"] else None,
             "verification_method": "REGISTERED_IDENTITY_MFA",
             "verification": status_for(c, row, tenant, self.s.issuer),
+            "channel_verification": self.channel_status(c, row),
+        }
+
+    def channel_status(self, c, row):
+        """The latest mailbox-control challenge of this contact (the caller has set the tenant
+        context). VERIFIED is evidence only; it grants and unlocks nothing."""
+        challenge = (
+            c.execute(
+                "SELECT * FROM impact.recovery_channel_challenge WHERE tenant_id=%s AND challenge_id=%s",
+                (row["tenant_id"], row["channel_challenge_id"]),
+            ).fetchone()
+            if row.get("channel_challenge_id")
+            else None
+        )
+        if not challenge:
+            return {
+                "state": "NONE",
+                "challenge_id": None,
+                "expires_at": None,
+                "verified_at": None,
+                "attempts_remaining": CHANNEL_CODE_ATTEMPTS,
+            }
+        state = challenge["state"]
+        if state == "PENDING" and challenge["expires_at"] <= now():
+            state = "EXPIRED"
+        return {
+            "state": state,
+            "challenge_id": str(challenge["challenge_id"]),
+            "expires_at": challenge["expires_at"].isoformat(),
+            "verified_at": challenge["consumed_at"].isoformat() if challenge["consumed_at"] else None,
+            "attempts_remaining": CHANNEL_CODE_ATTEMPTS - challenge["attempts"],
         }
 
     def directory(self, identity, after=None):
@@ -151,9 +188,9 @@ class RecoveryContacts:
         return payload
 
     def command(self, identity, action, body, tenant_id=None, contact_id=None):
-        if action not in ACTIONS | {"nominate"}:
+        if action not in ACTIONS | set(CHANNEL_ACTIONS) | {"nominate"}:
             unavailable()
-        validate_body(body, create=action == "nominate")
+        validate_body(body, create=action == "nominate", action=action)
         self.lifecycle.assurance(identity)
         fingerprint = hash_data(
             {"recovery_action": action, "tenant": tenant_id, "contact": contact_id, "body": body}
@@ -184,7 +221,7 @@ class RecoveryContacts:
                 owner
                 if action in {"nominate", "cancel"}
                 else nominee
-                if action in {"verify", "decline"}
+                if action in {"verify", "decline"} | set(CHANNEL_ACTIONS)
                 else operator
                 if action in {"approve", "reject"}
                 else owner or nominee or operator
@@ -204,7 +241,9 @@ class RecoveryContacts:
             caller = registered_person(c, identity.identity_id, self.s.issuer)
             if caller["auth_not_before"] and identity.auth_time <= caller["auth_not_before"]:
                 denied("REAUTHENTICATION_REQUIRED")
-            if action in {"nominate", "verify", "approve"} and tenant["lifecycle_state"] not in {
+            if action in {"nominate", "verify", "approve", "channel-request"} and tenant[
+                "lifecycle_state"
+            ] not in {
                 "Provisioning",
                 "Active",
                 "Suspended",
@@ -224,29 +263,148 @@ class RecoveryContacts:
                 return old["response"]
             if str((row or tenant)["revision_id"]) != body["expected_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
+            failure = None
             if action == "nominate":
                 contact_id = self.nominate(c, identity, tenant, body["data"])
+            elif action in CHANNEL_ACTIONS:
+                failure = self.channel(c, identity, tenant, row, action, body["data"])
             else:
                 self.transition(c, identity, tenant, row, action, body["data"]["reason"])
+            if failure:
+                # A wrong or expired code is refused, but the spent attempt (or the expiry) is
+                # committed with an event; no receipt is written, so no revision advances.
+                self.event(
+                    c,
+                    identity,
+                    action + "-refused",
+                    self.entry(c, contact_id),
+                    tenant,
+                    body["data"]["reason"],
+                )
+            else:
+                c.execute(
+                    "UPDATE impact.tenant_recovery_contact SET revision_id=%s,updated_at=now() WHERE contact_id=%s",
+                    (str(uuid4()), contact_id),
+                )
+                response = {
+                    **self.event(
+                        c, identity, action, self.entry(c, contact_id), tenant, body["data"]["reason"]
+                    ),
+                    "operation_id": body["operation_id"],
+                }
+                c.execute(
+                    "INSERT INTO impact.platform_receipt VALUES(%s,%s,%s,%s,%s)",
+                    (
+                        identity.identity_id,
+                        body["operation_id"],
+                        fingerprint,
+                        Jsonb(response),
+                        now() + timedelta(days=7),
+                    ),
+                )
+        if failure:
+            raise failure
+        return response
+
+    def channel(self, c, identity, tenant, row, action, data):
+        """Request or confirm mailbox control for the nominee's registered address. Returns a
+        DomainError to raise after commit (a spent attempt or an expiry must persist), or None."""
+        if row["state"] not in {"Nominated", "Verified", "Active"}:
+            raise DomainError("CONFLICT_VERSION", 409, reason="INVALID_RECOVERY_TRANSITION")
+        if not self.s.delivery_secret:
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="DELIVERY_NOT_CONFIGURED")
+        secret, at = self.s.delivery_secret, now()
+        lock_people(c, [row["nominee_identity_id"]])
+        person = registered_person(c, row["nominee_identity_id"], self.s.issuer)
+        if action == "channel-request":
+            digest = email_hash(data["email"])
+            if digest != bytes(row["email_hash"]) or digest != bytes(person["verified_email_hash"]):
+                denied("CHANNEL_ADDRESS_MISMATCH")
             c.execute(
-                "UPDATE impact.tenant_recovery_contact SET revision_id=%s,updated_at=now() WHERE contact_id=%s",
-                (str(uuid4()), contact_id),
+                "UPDATE impact.recovery_channel_challenge SET state='SUPERSEDED' WHERE tenant_id=%s AND contact_id=%s AND state='PENDING'",
+                (row["tenant_id"], row["contact_id"]),
             )
-            response = {
-                **self.event(c, identity, action, self.entry(c, contact_id), tenant, body["data"]["reason"]),
-                "operation_id": body["operation_id"],
-            }
+            challenge = str(uuid4())
             c.execute(
-                "INSERT INTO impact.platform_receipt VALUES(%s,%s,%s,%s,%s)",
+                "INSERT INTO impact.recovery_channel_challenge(tenant_id,challenge_id,contact_id,contact_revision,requested_by,email_hash,code_hash,state,created_at,expires_at) VALUES(%s,%s,%s,%s,%s,%s,%s,'PENDING',%s,%s)",
                 (
+                    row["tenant_id"],
+                    challenge,
+                    row["contact_id"],
+                    row["revision_id"],
                     identity.identity_id,
-                    body["operation_id"],
-                    fingerprint,
-                    Jsonb(response),
-                    now() + timedelta(days=7),
+                    digest,
+                    channel_code_hash(secret, challenge, channel_code(secret, challenge)),
+                    at,
+                    at + CHANNEL_CODE_TTL,
                 ),
             )
-            return response
+            # The worker sends the code; the intent carries the challenge and the sealed address only.
+            c.execute(
+                "SELECT impact.enqueue_recovery_channel_delivery(%s,%s)",
+                (
+                    challenge,
+                    seal_recipient(
+                        secret, row["tenant_id"], "RECOVERY_CHANNEL_VERIFICATION", challenge, data["email"]
+                    ),
+                ),
+            )
+            c.execute(
+                "UPDATE impact.tenant_recovery_contact SET channel_challenge_id=%s WHERE contact_id=%s",
+                (challenge, row["contact_id"]),
+            )
+            return None
+        challenge = c.execute(
+            "SELECT * FROM impact.recovery_channel_challenge WHERE tenant_id=%s AND challenge_id=%s AND contact_id=%s FOR UPDATE",
+            (row["tenant_id"], data["challenge_id"], row["contact_id"]),
+        ).fetchone()
+        if not challenge:
+            unavailable()
+        if challenge["state"] == "VERIFIED":
+            raise DomainError("CONFLICT_VERSION", 409, reason="CHANNEL_CODE_USED")
+        if challenge["state"] != "PENDING":
+            raise DomainError("CONFLICT_VERSION", 409, reason="CHANNEL_CHALLENGE_CLOSED")
+        if challenge["expires_at"] <= at:
+            c.execute(
+                "UPDATE impact.recovery_channel_challenge SET state='EXPIRED' WHERE tenant_id=%s AND challenge_id=%s",
+                (row["tenant_id"], challenge["challenge_id"]),
+            )
+            return DomainError("POLICY_DENIED", 403, reason="CHANNEL_CODE_EXPIRED")
+        if not hmac.compare_digest(
+            channel_code_hash(secret, challenge["challenge_id"], data["code"]), bytes(challenge["code_hash"])
+        ):
+            attempts = challenge["attempts"] + 1
+            c.execute(
+                "UPDATE impact.recovery_channel_challenge SET attempts=%s,state=%s WHERE tenant_id=%s AND challenge_id=%s",
+                (
+                    attempts,
+                    "FAILED" if attempts >= CHANNEL_CODE_ATTEMPTS else "PENDING",
+                    row["tenant_id"],
+                    challenge["challenge_id"],
+                ),
+            )
+            return DomainError(
+                "POLICY_DENIED",
+                403,
+                reason="CHANNEL_CODE_ATTEMPTS_EXCEEDED"
+                if attempts >= CHANNEL_CODE_ATTEMPTS
+                else "CHANNEL_CODE_INVALID",
+            )
+        if bytes(person["verified_email_hash"]) != bytes(challenge["email_hash"]):
+            c.execute(
+                "UPDATE impact.recovery_channel_challenge SET state='SUPERSEDED' WHERE tenant_id=%s AND challenge_id=%s",
+                (row["tenant_id"], challenge["challenge_id"]),
+            )
+            return DomainError("POLICY_DENIED", 403, reason="RECOVERY_IDENTITY_CHANGED")
+        c.execute(
+            "UPDATE impact.recovery_channel_challenge SET state='VERIFIED',consumed_at=%s WHERE tenant_id=%s AND challenge_id=%s",
+            (at, row["tenant_id"], challenge["challenge_id"]),
+        )
+        c.execute(
+            "UPDATE impact.tenant_recovery_contact SET channel_verified_at=%s,channel_challenge_id=%s WHERE contact_id=%s",
+            (at, challenge["challenge_id"], row["contact_id"]),
+        )
+        return None
 
     def current(self, c, tenant_id):
         return c.execute(

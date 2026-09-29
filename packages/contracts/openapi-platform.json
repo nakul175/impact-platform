@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -4081,6 +4081,67 @@
                               "reason",
                               "expires_at"
                             ]
+                          },
+                          "channel_verification": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "state": {
+                                "enum": [
+                                  "NONE",
+                                  "PENDING",
+                                  "VERIFIED",
+                                  "EXPIRED",
+                                  "FAILED",
+                                  "SUPERSEDED"
+                                ]
+                              },
+                              "challenge_id": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "expires_at": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "verified_at": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "attempts_remaining": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 5
+                              }
+                            },
+                            "required": [
+                              "state",
+                              "challenge_id",
+                              "expires_at",
+                              "verified_at",
+                              "attempts_remaining"
+                            ]
                           }
                         },
                         "required": [
@@ -4101,7 +4162,8 @@
                           "approved_at",
                           "approved_by",
                           "verification_method",
-                          "verification"
+                          "verification",
+                          "channel_verification"
                         ]
                       }
                     },
@@ -4345,6 +4407,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -4369,6 +4492,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -4647,6 +4771,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -4671,6 +4856,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -4927,6 +5113,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -4951,6 +5198,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -4989,6 +5237,706 @@
                       }
                     },
                     "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/recovery-contacts/{contact_id}/actions/channel-confirm": {
+      "parameters": [
+        {
+          "name": "contact_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "recovery_contact_channel_confirm",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "contact_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominee_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Verified",
+                        "Active",
+                        "Replaced",
+                        "Revoked",
+                        "Declined",
+                        "Cancelled",
+                        "Rejected"
+                      ]
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300,
+                      "pattern": "\\S"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "replaces_contact_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "verified_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "verification_method": {
+                      "const": "REGISTERED_IDENTITY_MFA"
+                    },
+                    "verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "contact_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "revision_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "eligible": {
+                          "type": "boolean"
+                        },
+                        "reason": {
+                          "enum": [
+                            "VERIFIED",
+                            "NONE",
+                            "NOT_ACTIVE",
+                            "EXPIRED",
+                            "OWNER_CHANGED",
+                            "IDENTITY_CHANGED",
+                            "AUTHENTICATION_REVOKED"
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "contact_id",
+                        "revision_id",
+                        "eligible",
+                        "reason",
+                        "expires_at"
+                      ]
+                    },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "contact_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "owner_identity_id",
+                    "nominee_identity_id",
+                    "state",
+                    "display_name",
+                    "email_mask",
+                    "reason",
+                    "replaces_contact_id",
+                    "expires_at",
+                    "review_expires_at",
+                    "verified_at",
+                    "approved_at",
+                    "approved_by",
+                    "verification_method",
+                    "verification",
+                    "channel_verification",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "challenge_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "code": {
+                        "type": "string",
+                        "pattern": "^[0-9]{8}$"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "challenge_id",
+                      "code",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/recovery-contacts/{contact_id}/actions/channel-request": {
+      "parameters": [
+        {
+          "name": "contact_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "recovery_contact_channel_request",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "contact_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "operating_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "owner_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominee_identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Verified",
+                        "Active",
+                        "Replaced",
+                        "Revoked",
+                        "Declined",
+                        "Cancelled",
+                        "Rejected"
+                      ]
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300,
+                      "pattern": "\\S"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "replaces_contact_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "review_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "verified_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "approved_by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "verification_method": {
+                      "const": "REGISTERED_IDENTITY_MFA"
+                    },
+                    "verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "contact_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "revision_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "eligible": {
+                          "type": "boolean"
+                        },
+                        "reason": {
+                          "enum": [
+                            "VERIFIED",
+                            "NONE",
+                            "NOT_ACTIVE",
+                            "EXPIRED",
+                            "OWNER_CHANGED",
+                            "IDENTITY_CHANGED",
+                            "AUTHENTICATION_REVOKED"
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "contact_id",
+                        "revision_id",
+                        "eligible",
+                        "reason",
+                        "expires_at"
+                      ]
+                    },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "contact_id",
+                    "tenant_id",
+                    "revision_id",
+                    "operating_name",
+                    "owner_identity_id",
+                    "nominee_identity_id",
+                    "state",
+                    "display_name",
+                    "email_mask",
+                    "reason",
+                    "replaces_contact_id",
+                    "expires_at",
+                    "review_expires_at",
+                    "verified_at",
+                    "approved_at",
+                    "approved_by",
+                    "verification_method",
+                    "verification",
+                    "channel_verification",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "email",
                       "reason"
                     ]
                   }
@@ -5207,6 +6155,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -5231,6 +6240,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -5487,6 +6497,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -5511,6 +6582,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -5767,6 +6839,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -5791,6 +6924,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -6047,6 +7181,67 @@
                         "expires_at"
                       ]
                     },
+                    "channel_verification": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "state": {
+                          "enum": [
+                            "NONE",
+                            "PENDING",
+                            "VERIFIED",
+                            "EXPIRED",
+                            "FAILED",
+                            "SUPERSEDED"
+                          ]
+                        },
+                        "challenge_id": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "expires_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "verified_at": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "attempts_remaining": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 5
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "challenge_id",
+                        "expires_at",
+                        "verified_at",
+                        "attempts_remaining"
+                      ]
+                    },
                     "operation_id": {
                       "type": "string",
                       "format": "uuid"
@@ -6071,6 +7266,7 @@
                     "approved_by",
                     "verification_method",
                     "verification",
+                    "channel_verification",
                     "operation_id"
                   ]
                 }
@@ -8104,6 +9300,126 @@
                 ]
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/platform/workers": {
+      "get": {
+        "operationId": "list_workers",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "stale_after_seconds": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "worker_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128,
+                            "pattern": "\\S"
+                          },
+                          "build": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 32,
+                            "pattern": "\\S"
+                          },
+                          "state": {
+                            "enum": [
+                              "RUNNING",
+                              "STOPPING",
+                              "STOPPED"
+                            ]
+                          },
+                          "started_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "beat_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "stopped_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "stale": {
+                            "type": "boolean"
+                          },
+                          "iterations": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "sent": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "retried": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "dead": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "worker_id",
+                          "build",
+                          "state",
+                          "started_at",
+                          "beat_at",
+                          "stopped_at",
+                          "stale",
+                          "iterations",
+                          "sent",
+                          "retried",
+                          "dead"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "stale_after_seconds",
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
           }
         }
       }

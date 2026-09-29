@@ -2,12 +2,14 @@
 # ruff: noqa: F811
 
 from decimal import Decimal
+import os
 import uuid
 
 import pytest
 from test_live_application import cmd, expect
 from test_measurement import setup, get, create, action, submit, approve, observation, result  # noqa: F401
 from test_period_governance import complete_period, request_close
+from test_native_roles import connect, denied, query  # noqa: F401
 
 TODAY = "2026-12-31"
 
@@ -767,3 +769,57 @@ def test_listing_is_permission_filtered(live, route):
     page = get(live, route)
     assert set(page) == {"items", "next_cursor", "scope_label"}
     expect(live.request(live.path(route), actor="enumerator"), 403)
+
+
+@pytest.mark.skipif(
+    os.environ.get("IMPACT_NATIVE_TEST") != "1",
+    reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role "
+    "topology to test (run scripts/run.py test --native)",
+)
+def test_native_planning_registers_are_fenced_and_insert_only(connect, live, setup):
+    """0019 grants SELECT and INSERT (no UPDATE or DELETE) on framework_baseline and target_binding
+    to impact_app only, and forces the tenant fence on both."""
+    programme, indicator, _, period = setup(False)
+    goal, _ = approved(live, "targets", target(live, indicator, period))
+    tenant_a, tenant_b = live.fixture["tenant_a"], live.fixture["tenant_b"]
+    c = connect("APP")
+    for table in ["framework_baseline", "target_binding"]:
+        assert query(c, "SELECT count(*) FROM impact." + table, role="impact_app") == [(0,)], table
+        for statement in ["UPDATE impact." + table + " SET approved_at=now()", "DELETE FROM impact." + table]:
+            assert "permission denied" in denied(c, statement, role="impact_app", tenant=tenant_a)
+    assert query(
+        c,
+        "SELECT count(*) FROM impact.target_binding WHERE target_revision=%s",
+        (goal["revision_id"],),
+        role="impact_app",
+        tenant=tenant_a,
+    ) == [(1,)]
+    assert query(
+        c,
+        "SELECT count(*) FROM impact.target_binding WHERE target_revision=%s",
+        (goal["revision_id"],),
+        role="impact_app",
+        tenant=tenant_b,
+    ) == [(0,)]
+    message = denied(
+        c,
+        "INSERT INTO impact.target_binding VALUES(%s,%s,%s,'TARGET',1,%s,%s,NULL,%s,%s,now())",
+        (
+            tenant_b,
+            indicator["object_id"],
+            period["object_id"],
+            goal["object_id"],
+            goal["revision_id"],
+            str(uuid.uuid4()),
+            live.fixture["actors"]["author"]["principal_id"],
+        ),
+        role="impact_app",
+        tenant=tenant_a,
+    )
+    assert "row-level security" in message
+    for login, role in [("PLATFORM", "impact_platform"), ("IDENTITY", "impact_identity")]:
+        other = connect(login)
+        for table in ["framework_baseline", "target_binding"]:
+            assert "permission denied" in denied(
+                other, "SELECT count(*) FROM impact." + table, role=role, tenant=tenant_a
+            )

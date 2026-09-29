@@ -690,6 +690,14 @@ class Planning:
 
         framework = framework_at(current)
         results_visible = scopes(c, ctx, "calculated-results.read")
+        unbound_results = (
+            c.execute(
+                "SELECT s.object_id AS snapshot_id,v.object_id,v.revision_id,v.payload,d.object_id AS definition_id FROM impact.snapshot_current s JOIN impact.object_registry r ON r.tenant_id=s.tenant_id AND r.object_id=s.object_id CROSS JOIN LATERAL jsonb_array_elements_text(s.result_versions) AS member(revision) JOIN impact.object_revision v ON v.tenant_id=s.tenant_id AND v.revision_id=member.revision::uuid AND v.object_type='CalculatedResult' AND v.restriction_state='AVAILABLE' JOIN impact.object_revision d ON d.tenant_id=v.tenant_id AND d.revision_id=(v.payload->>'indicator_version')::uuid WHERE s.tenant_id=%s AND s.programme_id IS NULL AND r.lifecycle_state='Locked' AND v.payload->>'mode'='OFFICIAL' ORDER BY s.object_id,v.revision_id LIMIT 1000",
+                (ctx.tenant_id,),
+            ).fetchall()
+            if results_visible and scopes(c, ctx, "snapshots.read")
+            else []
+        )
         indicators = c.execute(
             "SELECT object_id FROM impact.indicator_instance_current WHERE tenant_id=%s AND programme_id=%s ORDER BY object_id LIMIT %s",
             (ctx.tenant_id, pid, MAX_INDICATORS + 1),
@@ -721,25 +729,13 @@ class Planning:
             # Fixture-era locked snapshots carry no programme; their OFFICIAL results are matched
             # to this instance through the same governed definition and labelled as unbound.
             unbound = {}
-            if results_visible and scopes(c, ctx, "snapshots.read"):
-                for snap in c.execute(
-                    "SELECT s.object_id,s.period_id,s.result_versions FROM impact.snapshot_current s JOIN impact.object_registry r ON r.tenant_id=s.tenant_id AND r.object_id=s.object_id WHERE s.tenant_id=%s AND s.programme_id IS NULL AND r.lifecycle_state='Locked' ORDER BY s.object_id LIMIT 100",
-                    (ctx.tenant_id,),
-                ).fetchall():
-                    for rev in snap["result_versions"] or []:
-                        result = c.execute(
-                            "SELECT v.object_id,v.revision_id,v.payload,d.object_id AS definition_id FROM impact.object_revision v JOIN impact.object_revision d ON d.tenant_id=v.tenant_id AND d.revision_id=(v.payload->>'indicator_version')::uuid WHERE v.tenant_id=%s AND v.revision_id=%s AND v.object_type='CalculatedResult' AND v.restriction_state='AVAILABLE'",
-                            (ctx.tenant_id, rev),
-                        ).fetchone()
-                        if (
-                            result
-                            and result["payload"].get("mode") == "OFFICIAL"
-                            and result["definition_id"] == definition_rev["object_id"]
-                            and scopes(c, ctx, "calculated-results.read", result["object_id"])
-                        ):
-                            period = str(result["payload"]["period_id"])
-                            unbound[period] = (result, str(snap["object_id"]))
-                            periods.add(period)
+            for result in unbound_results:
+                if result["definition_id"] == definition_rev["object_id"] and scopes(
+                    c, ctx, "calculated-results.read", result["object_id"]
+                ):
+                    period = str(result["payload"]["period_id"])
+                    unbound[period] = (result, str(result["snapshot_id"]))
+                    periods.add(period)
             period_rows = []
             for period_id in periods:
                 if scopes(c, ctx, "periods.read", period_id):

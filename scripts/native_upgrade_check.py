@@ -1,18 +1,21 @@
 """Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
 
-LATEST is the number of migration files (18 since build 0.16.0) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (19 since build 0.18.0) and BASELINE is LATEST - 1. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row
-and one outbox event with its delivery row so that the ALTER TABLE of `impact.outbox_delivery` in
-0018 runs on a populated table, applies the remaining migration as the migrator, and then verifies
-with direct queries, starting no service, that `impact.schema_migration` holds LATEST rows with
-exactly the SHA-256 values ledgered in docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)`
-is LATEST, that the columns and tables 0017 and 0018 add exist, and that the tenant, revision,
-session and outbox counts loaded at the baseline are unchanged, with the pre-existing session's new
-columns NULL and the pre-existing delivery row left undispatchable (no channel, PENDING, lease
-generation 0) (`data_preserved`); any of these failing fails the check. The result is merged into
-the JSON report named by --report under `upgrade_check`.
+and one outbox event with its delivery row, and (since 0.18.0) one draft framework and one blank
+draft target with their registry and revision rows so that the ALTER TABLE of
+`impact.framework_current` and `impact.target_current` in 0019 runs on populated tables, applies the
+remaining migration as the migrator, and then verifies with direct queries, starting no service,
+that `impact.schema_migration` holds LATEST rows with exactly the SHA-256 values ledgered in
+docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the columns and tables
+0017, 0018 and 0019 add exist, and that the tenant, revision, session and outbox counts loaded at
+the baseline are unchanged, with the pre-existing session's new columns NULL, the pre-existing
+delivery row left undispatchable (no channel, PENDING, lease generation 0) and the pre-existing
+framework and target projections present with their new columns NULL (`data_preserved`); any of
+these failing fails the check. The result is merged into the JSON report named by --report under
+`upgrade_check`.
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
@@ -30,6 +33,7 @@ from pathlib import Path
 
 import psycopg
 from psycopg import sql
+from psycopg.types.json import Jsonb
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +50,45 @@ SESSION_IDENTITY = "69407b72-0f5f-5126-8d04-a1355db5a9c5"
 # The outbox row inserted at the baseline, in fixture tenant A.
 OUTBOX_TENANT = "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
 OUTBOX_EVENT = "7b0c6a39-4f0f-4bb5-9c38-9f2d4f7e0a18"
+# The planning rows inserted at the baseline (fixture tenant A, author, programme WATER-A and the
+# 2026-Q3 period); synthetic identifiers.
+AUTHOR_PRINCIPAL = "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c"
+PROGRAMME = "67bdb368-3aa8-5924-8275-52460bd936f2"
+PERIOD = "13f1e2c4-1faa-55d3-b904-ed90e67406f5"
+FRAMEWORK = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a01", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a02")
+TARGET = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a03", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a04")
+
+
+def insert_planning_rows(c):
+    """A draft framework and a blank draft target in the projections 0019 alters."""
+    for kind, (obj, rev), payload in [
+        ("Framework", FRAMEWORK, {"programme_id": PROGRAMME, "version_label": "Legacy draft", "nodes": []}),
+        ("Target", TARGET, {"period_id": PERIOD, "value_state": "MISSING", "value": None}),
+    ]:
+        c.execute(
+            "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_at,created_by,updated_at) VALUES(%s,%s,%s,%s,'Draft','INTERNAL',%s,now(),%s,now())",
+            (OUTBOX_TENANT, obj, kind, rev, AUTHOR_PRINCIPAL, AUTHOR_PRINCIPAL),
+        )
+        c.execute(
+            "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,author_id,created_at) VALUES(%s,%s,%s,%s,'1.2',%s,%s,%s,now())",
+            (
+                OUTBOX_TENANT,
+                obj,
+                rev,
+                kind,
+                Jsonb(payload),
+                hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).digest(),
+                AUTHOR_PRINCIPAL,
+            ),
+        )
+    c.execute(
+        "INSERT INTO impact.framework_current(tenant_id,object_id,revision_id,programme_id,version_label,nodes) VALUES(%s,%s,%s,%s,'Legacy draft','[]'::jsonb)",
+        (OUTBOX_TENANT, *FRAMEWORK, PROGRAMME),
+    )
+    c.execute(
+        "INSERT INTO impact.target_current(tenant_id,object_id,revision_id,period_id,value_state) VALUES(%s,%s,%s,%s,'MISSING')",
+        (OUTBOX_TENANT, *TARGET, PERIOD),
+    )
 
 
 def ledgered_checksums():
@@ -115,6 +158,8 @@ def run(admin_dsn, fixture_dsn, passwords):
             "INSERT INTO impact.outbox_delivery(tenant_id,event_id) VALUES(%s,%s)",
             (OUTBOX_TENANT, OUTBOX_EVENT),
         )
+        insert_planning_rows(c)
+        result["baseline"]["revisions"] += 2
         result["baseline"]["outbox_deliveries"] = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery"
         ).fetchone()[0]
@@ -153,6 +198,17 @@ def run(admin_dsn, fixture_dsn, passwords):
             c.execute("SELECT to_regclass(%s)", ("impact." + name,)).fetchone()[0]
             for name in ["notification_delivery", "recovery_channel_challenge", "worker_heartbeat"]
         ]
+        planning_columns = c.execute(
+            "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND ((table_name='framework_current' AND column_name IN ('effective_from','supersedes_revision','supersedes_revision_kind','exceptions')) OR (table_name='target_current' AND column_name IN ('indicator_id','indicator_id_kind','milestone_label','due_at','supersedes_revision','supersedes_revision_kind','reason')))"
+        ).fetchone()[0]
+        planning_tables = [
+            c.execute("SELECT to_regclass(%s)", ("impact." + name,)).fetchone()[0]
+            for name in ["framework_baseline", "target_binding"]
+        ]
+        legacy_planning = c.execute(
+            "SELECT (SELECT count(*) FROM impact.framework_current WHERE tenant_id=%s AND object_id=%s AND effective_from IS NULL AND supersedes_revision IS NULL AND exceptions IS NULL)+(SELECT count(*) FROM impact.target_current WHERE tenant_id=%s AND object_id=%s AND indicator_id IS NULL AND value IS NULL AND value_state='MISSING')",
+            (OUTBOX_TENANT, FRAMEWORK[0], OUTBOX_TENANT, TARGET[0]),
+        ).fetchone()[0]
         legacy_delivery = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
             (OUTBOX_TENANT, OUTBOX_EVENT),
@@ -172,12 +228,15 @@ def run(admin_dsn, fixture_dsn, passwords):
         "outbox_deliveries_after_upgrade": deliveries,
         "dispatch_columns_present": dispatch_columns == 8,
         "worker_tables_present": all(worker_tables),
+        "planning_columns_present": planning_columns == 11,
+        "planning_tables_present": all(planning_tables),
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
         and deliveries == result["baseline"]["outbox_deliveries"]
         and untouched == 1
-        and legacy_delivery == 1,
+        and legacy_delivery == 1
+        and legacy_planning == 2,
     }
     if (
         mismatches
@@ -187,6 +246,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         or replay_table is None
         or dispatch_columns != 8
         or not all(worker_tables)
+        or planning_columns != 11
+        or not all(planning_tables)
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

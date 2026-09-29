@@ -536,6 +536,8 @@ def main():
         return 0
     local = ROOT / ".local/idp"
     local.mkdir(parents=True, exist_ok=True)
+    # SIGTERM must also stop Keycloak: the finally below runs only on an exception or exit.
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
     process, details = start(local, args.origin)
     print("Keycloak " + KEYCLOAK_VERSION + " issuer " + details["issuer"] + "; credentials in " + str(local))
     try:

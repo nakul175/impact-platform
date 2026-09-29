@@ -1,4 +1,4 @@
-# Impact Platform · v0.14.0
+# Impact Platform · v0.15.0
 
 Documentation edition **1.1** is available in the [master documentation index](docs/current/DOCUMENTATION-INDEX.md): BRD, FSD, HLD, LLD, wireframes, test cases/scenarios, engineering specifications and handover guides. Original editions are preserved in `docs/history/v1.0`. This documentation update does not declare product or production acceptance.
 
@@ -19,7 +19,7 @@ make setup
 make dev
 ```
 
-Open **http://127.0.0.1:8000**. The first startup applies sixteen migrations, loads synthetic records and generates local passwords. Find the `author`, `reviewer`, `partner`, `admin`, `owner` and `invitee` passwords in `.local/dev/passwords.json`; they are generated on your machine and are not included in this source archive. Stop with Ctrl+C. Running `make dev` again preserves the development database, passwords and signing secrets. Existing databases receive the additive migrations; they are not reset.
+Open **http://127.0.0.1:8000**. The first startup applies seventeen migrations, loads synthetic records and generates local passwords. Find the `author`, `reviewer`, `partner`, `admin`, `owner` and `invitee` passwords in `.local/dev/passwords.json`; they are generated on your machine and are not included in this source archive. Stop with Ctrl+C. Running `make dev` again preserves the development database, passwords and signing secrets. Existing databases receive the additive migrations; they are not reset.
 
 The managed execution filesystem produced intermittent EOF/page-consistency errors with filesystem-backed PGlite. The test runners therefore use disposable memory storage. For a disposable local demonstration use `.venv/bin/python scripts/run.py dev --ephemeral`; records in that mode disappear on shutdown. Native PostgreSQL is a separate gate (`make native`, below); persistence across a database restart, a connection pooler and any load profile remain open.
 
@@ -132,4 +132,4 @@ Evidence from this build is in [docs/evidence](docs/evidence): the PGlite gate o
 
 Read [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md), [docs/API-INVENTORY.md](docs/API-INVENTORY.md), [docs/QUALIFICATION.md](docs/QUALIFICATION.md), and [docs/NEXT-DELIVERY.md](docs/NEXT-DELIVERY.md). The original requirement and architecture documents remain under `specification/docs`.
 
-Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.14.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.
+Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.15.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.

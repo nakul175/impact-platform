@@ -74,7 +74,7 @@ def create_app():
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.14.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version="0.15.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -325,7 +325,7 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.14.0",
+            "build_id": "impact-0.15.0",
             "schema_version": "17",
             "api_version": "1.10.0",
             "fixture_id": s.fixture_id,

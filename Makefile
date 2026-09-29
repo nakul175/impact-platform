@@ -28,7 +28,7 @@ idp:
 	node tools/browser/prepare.mjs
 	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
-	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py
+	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py
 reference:
 	$(PY) specification/reference-v1/run_tests.py reference --report docs/evidence/reference-tests.json
 browser:

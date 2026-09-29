@@ -410,6 +410,7 @@ class Worker:
         signal.signal(signal.SIGTERM, request_stop)
         signal.signal(signal.SIGINT, request_stop)
         LOG.info("worker %s started build=%s adapter=%s", self.worker_id, BUILD, self.adapter.name)
+        self.heartbeat("RUNNING")
         while not self.stopping:
             try:
                 summary = self.run_once()

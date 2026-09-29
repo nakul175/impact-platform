@@ -102,7 +102,7 @@ def test_native_worker_process_sends_over_smtp_with_no_transaction_open(live):
             email, receipt = invitation(live)
             wait_for(lambda: deliveries(live, receipt["object_id"])[0]["state"] == "SENT")
             [message] = wait_for(lambda: smtp.for_recipient(email))
-            running = heartbeat(live, name)
+            running = wait_for(lambda: heartbeat(live, name))
             assert running["state"] == "RUNNING" and running["build"] == "0.16.0"
         finally:
             code = stop(process)

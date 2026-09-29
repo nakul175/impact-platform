@@ -183,23 +183,6 @@
       "audit": false
     },
     {
-      "operation_id": "create_organisation_units",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/organisation-units",
-      "capability": "organisation-units.draft.create",
-      "role_templates": [
-        "MEL_ADMIN",
-        "PROGRAMME_MANAGER"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
       "operation_id": "get_organisation_units",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/organisation-units/{object_id}",

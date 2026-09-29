@@ -20,7 +20,7 @@ from test_administration import (
 )
 from impact_api.auth import Auth
 from impact_api.config import Settings
-from impact_api.contracts import validate
+from impact_api.contracts import DELEGABLE_CAPABILITIES, IMPLEMENTED_OPERATIONS, OPERATIONS, validate
 from impact_api.store import Database
 
 
@@ -93,6 +93,66 @@ def test_custom_role_ceiling_system_protection_and_immutable_versions(live):
     assert len(revisions) == 2
     act(live, "role-templates", revised, "retire")
     assert created["object_id"] not in {r["object_id"] for r in listing(live, "role-templates")}
+
+
+def test_custom_roles_delegate_only_implemented_capabilities(live):
+    """#19: a capability of a design-only operation is not delegable, even inside the creator's
+    delegation ceiling; the orphan baseline policy row is gone from the generated policy."""
+    assert "create_organisation_units" not in OPERATIONS
+    assert "create_organisation_unit" in OPERATIONS
+    design_only = {
+        p["capability"]
+        for p in OPERATIONS.values()
+        if not p.get("purpose_required") and p["capability"] not in DELEGABLE_CAPABILITIES
+    }
+    assert design_only and all(
+        p["operation_id"] not in IMPLEMENTED_OPERATIONS
+        for p in OPERATIONS.values()
+        if p["capability"] in design_only
+    )
+    admin = live.fixture["actors"]["admin"]
+    with live.db() as c:
+        ceilings = {
+            r["capability"]
+            for r in c.execute(
+                "SELECT capability FROM impact.grant_authority WHERE tenant_id=%s AND principal_id=%s AND expires_at>now()",
+                (admin["tenant_id"], admin["principal_id"]),
+            ).fetchall()
+        }
+    # The fixture administrator holds no ceiling for a design-only capability, so give it one for
+    # the duration of the check: before #19 that alone made the capability delegable.
+    target = sorted(design_only - ceilings)[0]
+    ceiling, scope = str(uuid4()), tenant_scope(live)
+    with live.db() as c:
+        c.execute(
+            "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,now()+interval '1 day')",
+            (admin["tenant_id"], ceiling, admin["principal_id"], target, scope),
+        )
+    try:
+        refused = create(
+            live,
+            "role-templates",
+            {"name": "Design only " + str(uuid4())[:8], "capabilities": ["programmes.read", target]},
+            status=403,
+        )
+        assert refused["code"] == "POLICY_DENIED" and refused["reason_code"] == "CAPABILITY_NOT_DELEGABLE"
+        implemented = sorted(DELEGABLE_CAPABILITIES & ceilings)
+        assert "programmes.read" in implemented
+        created = custom_role(live, implemented[:3])
+        act(
+            live,
+            "role-templates",
+            created,
+            "revise",
+            {"name": "Revised " + str(uuid4())[:8], "capabilities": [target]},
+            status=403,
+        )
+    finally:
+        with live.db() as c:
+            c.execute(
+                "DELETE FROM impact.grant_authority WHERE tenant_id=%s AND authority_id=%s",
+                (admin["tenant_id"], ceiling),
+            )
 
 
 def unit(live, parent=None):

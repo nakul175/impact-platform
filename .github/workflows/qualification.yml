@@ -21,6 +21,48 @@ jobs:
         with:
           name: local-qualification
           path: docs/evidence/
+  live-identity-provider:
+    runs-on: ubuntu-24.04
+    env:
+      # Keep in step with KEYCLOAK_VERSION in scripts/idp.py; the script verifies the pinned SHA-256
+      # of the cached or downloaded archive before unpacking it.
+      KEYCLOAK_VERSION: 26.7.4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Cache the Keycloak distribution
+        uses: actions/cache@v4
+        with:
+          path: .local/keycloak/keycloak-${{ env.KEYCLOAK_VERSION }}.tar.gz
+          key: keycloak-${{ env.KEYCLOAK_VERSION }}
+      - run: make setup
+      - name: Fetch and verify Keycloak
+        run: .venv/bin/python scripts/idp.py fetch
+      - name: Live identity-provider qualification on PGlite
+        run: .venv/bin/python scripts/run.py test --idp keycloak --pytest-path qualification/test_live_idp.py
+      - name: Live identity-provider browser check
+        if: always()
+        run: |
+          npm ci --prefix tools/browser
+          node tools/browser/prepare.mjs
+          .venv/bin/python scripts/run.py idp-browser --idp keycloak
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-identity-provider-qualification
+          path: |
+            docs/evidence/idp-tests.xml
+            docs/evidence/idp-qualification.json
+            docs/evidence/idp-browser-tests.json
   native-postgresql-gate:
     runs-on: ubuntu-24.04
     services:

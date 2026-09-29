@@ -1,4 +1,4 @@
-.PHONY: setup dev test native unit reference browser lint build package ledger
+.PHONY: setup dev test native idp unit reference browser lint build package ledger
 PYTHON ?= python3
 PY = .venv/bin/python
 setup:
@@ -18,6 +18,12 @@ test:
 # that database, and the schema-15 upgrade check; see scripts/run.py for the --skip-* flags.
 native:
 	$(PY) scripts/run.py test --native
+# Needs Java 21+; downloads the pinned Keycloak into .local/keycloak on first use (scripts/idp.py).
+idp:
+	$(PY) scripts/run.py test --idp keycloak
+	npm ci --prefix tools/browser
+	node tools/browser/prepare.mjs
+	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
 	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py
 reference:

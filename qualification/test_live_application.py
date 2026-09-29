@@ -390,8 +390,7 @@ def test_logout_without_a_live_session_clears_the_cookie(live):
     """L5 with the development login: a dead or unknown session cookie is deleted, no provider URL."""
     response = live.client.post(
         "/auth/logout",
-        headers={"Origin": live.config["public_origin"]},
-        cookies={"impact_dev_session": "gone"},
+        headers={"Origin": live.config["public_origin"], "Cookie": "impact_dev_session=gone"},
     )
     assert response.status_code == 200 and response.json() == {"authenticated": False, "logout_url": None}
     assert 'impact_dev_session=""' in response.headers["set-cookie"]

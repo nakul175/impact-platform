@@ -129,6 +129,27 @@ jobs:
       - name: Upgrade a populated database at the previous schema to the latest
         if: always()
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
+      - uses: actions/setup-java@v4
+        if: always()
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Cache the Keycloak distribution
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: .local/keycloak/keycloak-26.7.4.tar.gz
+          key: keycloak-26.7.4
+      - name: Live identity-provider checks on the provisioned login roles (separate empty database)
+        # Callback, logout and back-channel SQL on the impact_identity login under
+        # IMPACT_REQUIRE_UNPRIVILEGED_DB; the job's service has no Keycloak, the runner starts it.
+        if: always()
+        env:
+          IMPACT_FIXTURE_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test_idp
+        run: |
+          .venv/bin/python -c "import psycopg; c = psycopg.connect('postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test', autocommit=True); c.execute('DROP DATABASE IF EXISTS impact_test_idp WITH (FORCE)'); c.execute('CREATE DATABASE impact_test_idp')"
+          .venv/bin/python scripts/idp.py fetch
+          .venv/bin/python scripts/run.py test --native --idp keycloak
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -137,3 +158,5 @@ jobs:
             docs/evidence/native-application-tests.xml
             docs/evidence/native-qualification.json
             docs/evidence/native-restore-drill.json
+            docs/evidence/idp-native-tests.xml
+            docs/evidence/idp-qualification.json

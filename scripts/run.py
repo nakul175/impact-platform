@@ -14,12 +14,16 @@ of qualification/test_native_restart.py (--skip-restart-check), runs scripts/res
 the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
 fresh one (--skip-upgrade-check); all three merge into docs/evidence/native-qualification.json.
 
-With --idp keycloak (test mode and the idp-browser mode) the runner starts the pinned Keycloak of
+With --idp keycloak (test mode, on PGlite or --native, and the idp-browser mode) the runner starts the pinned Keycloak of
 scripts/idp.py on an OS-chosen loopback port after the migrations, bootstraps the API for that live
 provider (dev_auth off, discovery endpoints, required ACR) with the fixture identities re-pointed
 to the realm's issuer, and stops Keycloak on exit. The test mode then runs
-qualification/test_live_idp.py (or --pytest-path) and writes docs/evidence/idp-tests.xml and
-docs/evidence/idp-qualification.json; it never touches application-tests.xml.
+qualification/test_live_idp.py (or --pytest-path) and writes docs/evidence/idp-tests.xml
+(idp-native-tests.xml with --native) and merges its run into docs/evidence/idp-qualification.json
+under runs.pglite or runs.native; it never touches application-tests.xml. With --native the API
+runs on the provisioned login roles under IMPACT_REQUIRE_UNPRIVILEGED_DB exactly as in the native
+suite, the fixture identities are re-pointed through the superuser fixture connection, and the
+restart check, restore drill and upgrade check are not run (they belong to the full native run).
 """
 
 import argparse
@@ -299,12 +303,44 @@ def junit_cases(path):
     return cases
 
 
-def write_idp_evidence(evidence, idp, targets, junit, code, seconds):
-    """docs/evidence/idp-qualification.json: provider version, realm, checks and timings. It names
-    no credential, secret or token; the issuer port is the one the operating system chose."""
-    evidence.update(
-        finished_at=now(),
-        identity_provider={
+def write_idp_evidence(evidence, idp, targets, junit, code, seconds, native):
+    """docs/evidence/idp-qualification.json: provider version and realm, then one entry per
+    database under "runs" ("pglite" or "native", merged with an existing report so both runs of
+    a gate are kept) with checks and timings; "database" names the latest run. It names no
+    credential, secret or token; the issuer port is the one the operating system chose."""
+    database = "native" if native else "pglite"
+    report = ROOT / "docs/evidence/idp-qualification.json"
+    try:
+        existing = json.loads(report.read_text())
+    except (OSError, ValueError):
+        existing = {}
+    run = {
+        "database": database,
+        **{
+            k: evidence[k]
+            for k in [
+                "started_at",
+                "api_ready_seconds",
+                "engine",
+                "server_version",
+                "api_requires_unprivileged_db",
+            ]
+            if k in evidence
+        },
+        "finished_at": now(),
+        "keycloak_ready_seconds": idp["ready_seconds"],
+        "keycloak_imported_seconds": idp["imported_seconds"],
+        "tests": {
+            "junit": str(junit.relative_to(ROOT)),
+            "targets": targets,
+            "exit_code": code,
+            "duration_seconds": round(seconds, 1),
+            **junit_summary(junit),
+        },
+        "checks": junit_cases(junit),
+    }
+    result = {
+        "identity_provider": {
             "product": "Keycloak",
             "version": idp["keycloak_version"],
             "distribution_sha256": idp["keycloak_sha256"],
@@ -315,21 +351,12 @@ def write_idp_evidence(evidence, idp, targets, junit, code, seconds):
             "client_id": idp["client_id"],
             "audience": idp["audience"],
             "required_acr": idp["required_acr"],
-            "database": "dev-mem (in-memory H2)",
-            "ready_seconds": idp["ready_seconds"],
-            "imported_seconds": idp["imported_seconds"],
+            "provider_database": "dev-mem (in-memory H2)",
         },
-        tests={
-            "junit": str(junit.relative_to(ROOT)),
-            "targets": targets,
-            "exit_code": code,
-            "duration_seconds": round(seconds, 1),
-            **junit_summary(junit),
-        },
-        checks=junit_cases(junit),
-    )
-    report = ROOT / "docs/evidence/idp-qualification.json"
-    report.write_text(json.dumps(evidence, indent=2, default=str) + "\n")
+        "database": database,
+        "runs": {**existing.get("runs", {}), database: run},
+    }
+    report.write_text(json.dumps(result, indent=2, default=str) + "\n")
     print("Identity-provider evidence: " + str(report.relative_to(ROOT)))
 
 
@@ -368,8 +395,8 @@ def main():
         help="Test or idp-browser mode: qualify against a live Keycloak instead of the development login",
     )
     args = parser.parse_args()
-    if args.idp and (args.mode not in {"test", *IDP_ONLY_MODES} or args.native):
-        parser.error("--idp keycloak is available in test and idp-browser modes on PGlite")
+    if args.idp and (args.mode not in {"test", *IDP_ONLY_MODES} or (args.native and args.mode != "test")):
+        parser.error("--idp keycloak is available in test mode (PGlite or --native) and idp-browser mode")
     if args.mode in IDP_ONLY_MODES and not args.idp:
         parser.error(args.mode + " needs --idp keycloak")
     preflight_fixture()
@@ -493,7 +520,7 @@ def main():
             IMPACT_ALLOW_MUTATIONS="1",
             IMPACT_TEST_LOCAL=str(local),
         )
-        if args.native:
+        if args.native and not args.idp:
             with httpx.Client(trust_env=False) as client:
                 manifest = client.get(
                     base + "/v1/runtime-manifest",
@@ -533,7 +560,7 @@ def main():
             ROOT
             / "docs/evidence"
             / (
-                "idp-tests.xml"
+                ("idp-native-tests.xml" if args.native else "idp-tests.xml")
                 if args.idp
                 else "native-application-tests.xml"
                 if args.native
@@ -547,7 +574,9 @@ def main():
             env=env,
         )
         if args.idp:
-            write_idp_evidence(evidence, idp_details, targets, junit, code, time.monotonic() - started)
+            write_idp_evidence(
+                evidence, idp_details, targets, junit, code, time.monotonic() - started, args.native
+            )
             return code
         if not args.native:
             return code

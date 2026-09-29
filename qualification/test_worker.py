@@ -34,7 +34,7 @@ from smtp_sink import SmtpSink
 from test_administration import action as admin_action, command, expect, invitation_token, invite
 from test_changes import propose
 from test_measurement import setup, get, submit, approve, observation, result  # noqa: F401
-from test_recovery_contacts import BASE as CONTACTS, action as contact_action, nominate
+from test_recovery_contacts import BASE as CONTACTS, action as contact_action, listing, nominate
 
 NATIVE = os.environ.get("IMPACT_NATIVE_TEST") == "1"
 FIXTURE_EXPIRES_AT = datetime.fromisoformat("2027-09-01T00:00:00+00:00")
@@ -672,9 +672,7 @@ def test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts(live)
     )
     assert locked["reason_code"] == "CHANNEL_CHALLENGE_CLOSED"
     current = next(
-        item
-        for item in expect(live.request(CONTACTS, actor="partner"), 200)["items"]
-        if item["contact_id"] == row["contact_id"]
+        item for item in listing(live, "partner")["items"] if item["contact_id"] == row["contact_id"]
     )
     assert current["channel_verification"]["state"] == "FAILED"
     assert current["channel_verification"]["attempts_remaining"] == 0

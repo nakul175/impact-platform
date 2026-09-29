@@ -205,3 +205,66 @@ def test_route_missing_from_contract_is_not_found(monkeypatch):
             None, "00000000-0000-4000-8000-000000000001", "programmes", body, None, obj="x", action="activate"
         )
     assert refused.value.status == 404
+
+
+def test_production_requires_a_separate_delivery_secret(monkeypatch, tmp_path):
+    import json
+    from impact_api.config import Settings
+
+    config = {
+        name: "https://example.test"
+        for name in ["public_origin", "issuer", "jwks_url", "authorization_url", "token_url"]
+    }
+    config.update(
+        environment="production",
+        app_dsn="postgresql://app",
+        identity_dsn="postgresql://identity",
+        client_id="web",
+        audience="api",
+        cookie_secret="x" * 64,
+        invitation_secret="y" * 64,
+        required_acr="urn:impact:acr:mfa",
+    )
+    monkeypatch.delenv("IMPACT_ENVIRONMENT", raising=False)
+    monkeypatch.delenv("IMPACT_DELIVERY_SECRET", raising=False)
+    for secret in ["", "y" * 64, "short"]:
+        path = tmp_path / "config.json"
+        path.write_text(json.dumps({**config, "delivery_secret": secret}))
+        monkeypatch.setenv("IMPACT_CONFIG_FILE", str(path))
+        with pytest.raises(ValueError, match="delivery secret"):
+            Settings.load()
+    path.write_text(json.dumps({**config, "delivery_secret": "z" * 64}))
+    assert Settings.load().delivery_secret == "z" * 64
+
+
+def test_delivery_sealing_is_bound_to_its_intent_and_codes_are_derived():
+    from cryptography.exceptions import InvalidTag
+    from impact_api.delivery import channel_code, channel_code_hash, render, seal_recipient, unseal_recipient
+
+    secret = "s" * 64
+    sealed = seal_recipient(secret, "tenant-a", "MEMBER_INVITATION", "ref-1", "Person@Example.test")
+    assert b"person" not in sealed.lower()
+    assert unseal_recipient(secret, "tenant-a", "MEMBER_INVITATION", "ref-1", sealed) == "person@example.test"
+    for tenant, template, reference, key in [
+        ("tenant-b", "MEMBER_INVITATION", "ref-1", secret),
+        ("tenant-a", "RECOVERY_CHANNEL_VERIFICATION", "ref-1", secret),
+        ("tenant-a", "MEMBER_INVITATION", "ref-2", secret),
+        ("tenant-a", "MEMBER_INVITATION", "ref-1", "t" * 64),
+    ]:
+        with pytest.raises(InvalidTag):
+            unseal_recipient(key, tenant, template, reference, sealed)
+    code = channel_code(secret, "challenge-1")
+    assert len(code) == 8 and code.isdigit() and code == channel_code(secret, "challenge-1")
+    assert code != channel_code("t" * 64, "challenge-1")
+    assert channel_code_hash(secret, "challenge-1", code) != channel_code_hash(secret, "challenge-2", code)
+    subject, body = render("RECOVERY_CHANNEL_VERIFICATION", code=code, expires_at="2026-09-29 12:00")
+    assert code in body and "<" not in body
+    for fields in [
+        {"code": "<b>1</b>", "expires_at": "x"},
+        {"code": "1\r\nBcc: x", "expires_at": "x"},
+        {"code": "1"},
+    ]:
+        with pytest.raises(ValueError):
+            render("RECOVERY_CHANNEL_VERIFICATION", **fields)
+    with pytest.raises(ValueError):
+        render("CUSTOM_HTML", url="x", expires_at="x")

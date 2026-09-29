@@ -90,10 +90,10 @@ class Settings:
         if s.environment in {"staging", "production"}:
             if len(s.invitation_secret) < 48 or s.invitation_secret == s.cookie_secret:
                 raise ValueError("A separate invitation signing secret is required")
-            if len(s.delivery_secret) < 48 or s.delivery_secret in {s.cookie_secret, s.invitation_secret}:
-                raise ValueError("A separate delivery secret is required")
             if s.dev_auth or s.dev_db_serial or s.fixture_id:
                 raise ValueError("Development settings are forbidden in production")
+            if len(s.delivery_secret) < 48 or s.delivery_secret in {s.cookie_secret, s.invitation_secret}:
+                raise ValueError("A separate delivery secret is required")
             if not s.required_acr or len(s.required_acr) > 200:
                 raise ValueError("A provider-verified MFA assurance class is required")
             if any(

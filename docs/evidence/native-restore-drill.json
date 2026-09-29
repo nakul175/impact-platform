@@ -1,7 +1,7 @@
 {
-  "started_at": "2026-09-29T10:24:23+00:00",
-  "source_database": "impact_test",
-  "restored_database": "impact_test_restored",
+  "started_at": "2026-09-29T22:18:16+00:00",
+  "source_database": "impact_test_v015",
+  "restored_database": "impact_test_v015_restored",
   "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
   "client": {
     "pg_dump": {
@@ -40,20 +40,20 @@
   },
   "dump": {
     "format": "custom",
-    "seconds": 0.45,
-    "bytes": 3427234,
+    "seconds": 0.44,
+    "bytes": 3446937,
     "warnings": null
   },
   "restore": {
-    "seconds": 1.56,
+    "seconds": 1.61,
     "warnings": null
   },
   "migration": {
     "session_user": "impact_migrator",
     "migration_role": "impact_owner",
     "applied": [],
-    "schema_version": 16,
-    "checksums_verified": 16,
+    "schema_version": 17,
+    "checksums_verified": 17,
     "checksum_mismatches": []
   },
   "restored": {
@@ -80,19 +80,19 @@
     }
   },
   "row_counts": {
-    "tables_compared": 151,
-    "rows_compared": 30016,
+    "tables_compared": 152,
+    "rows_compared": 30006,
     "named": {
-      "object_revision": 7201,
-      "operation_receipt": 828,
-      "outbox_event": 874,
-      "outbox_delivery": 874,
-      "platform_event": 745
+      "object_revision": 7154,
+      "operation_receipt": 829,
+      "outbox_event": 875,
+      "outbox_delivery": 875,
+      "platform_event": 744
     },
     "differing": {}
   },
   "security": {
-    "tables": 151,
+    "tables": 152,
     "owners": [
       "impact_owner"
     ],
@@ -101,7 +101,7 @@
     "grants_identical": true,
     "fenced_reads": {
       "rows_without_tenant": 0,
-      "rows_with_tenant_a": 2857,
+      "rows_with_tenant_a": 2859,
       "tenants_visible_with_tenant_a": [
         "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
       ],
@@ -122,8 +122,8 @@
     "rls_survived": true
   },
   "restored_database_dropped": true,
-  "duration_seconds": 2.39,
-  "finished_at": "2026-09-29T10:24:25+00:00",
+  "duration_seconds": 2.38,
+  "finished_at": "2026-09-29T22:18:19+00:00",
   "outcome": "PASS",
   "credentials_altered": false
 }

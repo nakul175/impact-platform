@@ -7,8 +7,8 @@ the superuser (the fixture touches only migration 0002/0003 tables), adds one br
 so that the ALTER TABLE of `impact.web_session` in 0017 runs on a populated table, applies the
 remaining migration as the migrator, and then verifies with direct queries, starting no service,
 that `impact.schema_migration` holds LATEST rows with exactly the SHA-256 values ledgered in
-docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the two columns 0017
-adds exist, and that the tenant, revision and session counts loaded at the baseline are unchanged
+docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the two columns and the
+replay table 0017 adds exist, and that the tenant, revision and session counts loaded at the baseline are unchanged
 with the pre-existing session's new columns NULL (`data_preserved`); any of these failing fails the
 check. The result is merged into the JSON report named by --report under `upgrade_check`.
 
@@ -124,6 +124,7 @@ def run(admin_dsn, fixture_dsn, passwords):
         added = c.execute(
             "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND table_name='web_session' AND column_name IN ('provider_sid','provider_logout_hint')"
         ).fetchone()[0]
+        replay_table = c.execute("SELECT to_regclass('impact.oidc_logout_token')").fetchone()[0]
         untouched = c.execute(
             "SELECT count(*) FROM impact.web_session WHERE session_hash=%s AND provider_sid IS NULL AND provider_logout_hint IS NULL",
             (hashlib.sha256(b"upgrade-check-session").digest(),),
@@ -139,6 +140,7 @@ def run(admin_dsn, fixture_dsn, passwords):
         "revisions_after_upgrade": revisions,
         "sessions_after_upgrade": sessions,
         "provider_logout_columns_present": added == 2,
+        "logout_token_table_present": replay_table is not None,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -149,6 +151,7 @@ def run(admin_dsn, fixture_dsn, passwords):
         or len(rows) != LATEST
         or max_version != LATEST
         or added != 2
+        or replay_table is None
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

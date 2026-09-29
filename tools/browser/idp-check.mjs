@@ -89,7 +89,19 @@ try {
     assert.ok(me.identity_id);
   });
   await test("Sign-out ends the platform and the provider session", async () => {
+    const endSession = idp.discovery.end_session_endpoint;
+    const providerLogout = page.waitForRequest((r) =>
+      r.url().startsWith(endSession + "?"),
+    );
     await page.getByRole("button", { name: "Sign out" }).first().click();
+    // The browser itself visits the provider's end-session endpoint with the ID token hint ...
+    const visited = new URL((await providerLogout).url());
+    assert.ok(visited.searchParams.get("id_token_hint"));
+    assert.equal(
+      visited.searchParams.get("post_logout_redirect_uri"),
+      base + "/",
+    );
+    // ... and the provider sends it back to the platform front page.
     await page.waitForURL((u) => u.toString() === base + "/");
     await page
       .getByRole("link", { name: "Continue with your organisation →" })
@@ -98,7 +110,28 @@ try {
       async () => (await fetch("/auth/me")).status,
     );
     assert.equal(status, 401);
+    // The provider session is gone: a silent authorization request (prompt=none) from this
+    // browser comes back to the callback with error=login_required instead of a code.
+    const callback = page.waitForRequest((r) =>
+      r.url().startsWith(base + "/auth/callback?"),
+    );
+    const silent = new URL(idp.discovery.authorization_endpoint);
+    silent.search = new URLSearchParams({
+      response_type: "code",
+      client_id: idp.client_id,
+      redirect_uri: base + "/auth/callback",
+      scope: "openid",
+      prompt: "none",
+      state: "silent-check",
+      code_challenge: "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+      code_challenge_method: "S256",
+    }).toString();
+    await page.goto(silent.toString());
+    const returned = new URL((await callback).url());
+    assert.equal(returned.searchParams.get("error"), "login_required");
+    assert.equal(returned.searchParams.get("code"), null);
     // A new sign-in asks the provider for credentials again.
+    await page.goto(base);
     await page
       .getByRole("link", { name: "Continue with your organisation →" })
       .click();

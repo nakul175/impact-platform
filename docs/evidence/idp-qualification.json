@@ -1,0 +1,226 @@
+{
+  "identity_provider": {
+    "product": "Keycloak",
+    "version": "26.7.4",
+    "distribution_sha256": "04823c336b797a7e18889a44262a7a64e6bf624cbbcc518c85e2622176ff2eee",
+    "realm": "impact-qualification",
+    "realm_source": "tools/idp/qualification-realm.json (derived from specification/environment/keycloak-dev-realm.json)",
+    "foreign_realm": "impact-foreign",
+    "client_id": "impact-web",
+    "audience": "impact-api",
+    "required_acr": "urn:impact:acr:mfa",
+    "provider_database": "dev-mem (in-memory H2)"
+  },
+  "database": "native",
+  "runs": {
+    "pglite": {
+      "database": "pglite",
+      "started_at": "2026-09-29T22:35:00+00:00",
+      "api_ready_seconds": 0.79,
+      "finished_at": "2026-09-29T22:36:01+00:00",
+      "keycloak_ready_seconds": 14.62,
+      "keycloak_imported_seconds": 18.07,
+      "tests": {
+        "junit": "docs/evidence/idp-tests.xml",
+        "targets": [
+          "qualification/test_live_idp.py"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 33.2,
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "reported_seconds": 32.722
+      },
+      "checks": [
+        {
+          "name": "test_platform_runs_against_the_live_provider",
+          "outcome": "passed",
+          "seconds": 0.053
+        },
+        {
+          "name": "test_authorization_code_with_pkce_establishes_a_session",
+          "outcome": "passed",
+          "seconds": 1.036
+        },
+        {
+          "name": "test_state_replay_and_browser_binding_are_refused",
+          "outcome": "passed",
+          "seconds": 0.408
+        },
+        {
+          "name": "test_nonce_mismatch_is_refused",
+          "outcome": "passed",
+          "seconds": 0.544
+        },
+        {
+          "name": "test_pkce_verifier_mismatch_is_refused",
+          "outcome": "passed",
+          "seconds": 0.537
+        },
+        {
+          "name": "test_disabled_provider_account_cannot_sign_in",
+          "outcome": "passed",
+          "seconds": 0.174
+        },
+        {
+          "name": "test_password_only_session_cannot_perform_fresh_assurance_operations",
+          "outcome": "passed",
+          "seconds": 0.577
+        },
+        {
+          "name": "test_totp_step_up_allows_fresh_assurance_until_300_seconds",
+          "outcome": "passed",
+          "seconds": 0.439
+        },
+        {
+          "name": "test_bearer_tokens_are_validated_through_the_provider_jwks",
+          "outcome": "passed",
+          "seconds": 0.604
+        },
+        {
+          "name": "test_expired_provider_token_is_refused",
+          "outcome": "passed",
+          "seconds": 11.582
+        },
+        {
+          "name": "test_provider_role_claims_grant_nothing",
+          "outcome": "passed",
+          "seconds": 0.555
+        },
+        {
+          "name": "test_logout_revokes_the_session_and_ends_the_provider_session",
+          "outcome": "passed",
+          "seconds": 0.608
+        },
+        {
+          "name": "test_provider_administrator_logout_revokes_exactly_that_session",
+          "outcome": "passed",
+          "seconds": 14.819
+        },
+        {
+          "name": "test_backchannel_logout_refuses_unverified_tokens",
+          "outcome": "passed",
+          "seconds": 0.389
+        },
+        {
+          "name": "test_backchannel_logout_body_is_bounded",
+          "outcome": "passed",
+          "seconds": 0.023
+        },
+        {
+          "name": "test_logout_after_idle_timeout_still_clears_the_cookie",
+          "outcome": "passed",
+          "seconds": 0.322
+        }
+      ]
+    },
+    "native": {
+      "database": "native",
+      "started_at": "2026-09-29T22:39:40+00:00",
+      "api_ready_seconds": 0.81,
+      "engine": "PostgreSQL",
+      "server_version": "PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+      "api_requires_unprivileged_db": true,
+      "finished_at": "2026-09-29T22:40:31+00:00",
+      "keycloak_ready_seconds": 14.05,
+      "keycloak_imported_seconds": 16.96,
+      "tests": {
+        "junit": "docs/evidence/idp-native-tests.xml",
+        "targets": [
+          "qualification/test_live_idp.py"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 29.2,
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "reported_seconds": 28.801
+      },
+      "checks": [
+        {
+          "name": "test_platform_runs_against_the_live_provider",
+          "outcome": "passed",
+          "seconds": 0.051
+        },
+        {
+          "name": "test_authorization_code_with_pkce_establishes_a_session",
+          "outcome": "passed",
+          "seconds": 1.03
+        },
+        {
+          "name": "test_state_replay_and_browser_binding_are_refused",
+          "outcome": "passed",
+          "seconds": 0.443
+        },
+        {
+          "name": "test_nonce_mismatch_is_refused",
+          "outcome": "passed",
+          "seconds": 0.443
+        },
+        {
+          "name": "test_pkce_verifier_mismatch_is_refused",
+          "outcome": "passed",
+          "seconds": 0.384
+        },
+        {
+          "name": "test_disabled_provider_account_cannot_sign_in",
+          "outcome": "passed",
+          "seconds": 0.145
+        },
+        {
+          "name": "test_password_only_session_cannot_perform_fresh_assurance_operations",
+          "outcome": "passed",
+          "seconds": 0.557
+        },
+        {
+          "name": "test_totp_step_up_allows_fresh_assurance_until_300_seconds",
+          "outcome": "passed",
+          "seconds": 0.479
+        },
+        {
+          "name": "test_bearer_tokens_are_validated_through_the_provider_jwks",
+          "outcome": "passed",
+          "seconds": 0.523
+        },
+        {
+          "name": "test_expired_provider_token_is_refused",
+          "outcome": "passed",
+          "seconds": 12.068
+        },
+        {
+          "name": "test_provider_role_claims_grant_nothing",
+          "outcome": "passed",
+          "seconds": 0.54
+        },
+        {
+          "name": "test_logout_revokes_the_session_and_ends_the_provider_session",
+          "outcome": "passed",
+          "seconds": 0.59
+        },
+        {
+          "name": "test_provider_administrator_logout_revokes_exactly_that_session",
+          "outcome": "passed",
+          "seconds": 10.859
+        },
+        {
+          "name": "test_backchannel_logout_refuses_unverified_tokens",
+          "outcome": "passed",
+          "seconds": 0.313
+        },
+        {
+          "name": "test_backchannel_logout_body_is_bounded",
+          "outcome": "passed",
+          "seconds": 0.022
+        },
+        {
+          "name": "test_logout_after_idle_timeout_still_clears_the_cookie",
+          "outcome": "passed",
+          "seconds": 0.307
+        }
+      ]
+    }
+  }
+}

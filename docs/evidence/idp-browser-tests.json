@@ -1,0 +1,15 @@
+{
+  "engine": "Chromium",
+  "identity_provider": "Keycloak 26.7.4",
+  "results": [
+    {
+      "name": "Sign-in goes through the provider with a TOTP step",
+      "status": "passed"
+    },
+    {
+      "name": "Sign-out ends the platform and the provider session",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

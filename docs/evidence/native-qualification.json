@@ -1,10 +1,10 @@
 {
-  "started_at": "2026-09-29T22:15:40+00:00",
+  "started_at": "2026-09-29T22:36:44+00:00",
   "engine": "PostgreSQL",
   "server_version": "PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
-  "database": "impact_test_v015",
+  "database": "impact_test_g15",
   "login_topology": {
-    "database": "impact_test_v015",
+    "database": "impact_test_g15",
     "privilege_roles_created": [],
     "public_connect": true,
     "logins": {
@@ -101,7 +101,7 @@
     }
   },
   "migration": {
-    "database": "impact_test_v015",
+    "database": "impact_test_g15",
     "session_user": "impact_migrator",
     "migration_role": "impact_owner",
     "applied": [
@@ -143,12 +143,12 @@
       "specification/reference-v1/tests/test_integration.py"
     ],
     "exit_code": 0,
-    "duration_seconds": 147.2,
+    "duration_seconds": 148.5,
     "tests": 415,
     "failures": 0,
     "errors": 0,
     "skipped": 18,
-    "reported_seconds": 146.666,
+    "reported_seconds": 147.92,
     "renewal_race_winners": {
       "0": {
         "mode": "race",
@@ -156,7 +156,7 @@
       },
       "1": {
         "mode": "race",
-        "winner": "revocation"
+        "winner": "approval"
       },
       "2": {
         "mode": "race",
@@ -174,45 +174,45 @@
   },
   "restart_check": {
     "phase_1": {
-      "api_pid": 32679,
+      "api_pid": 25989,
       "exit_code": 0,
       "duration_seconds": 1.2,
-      "junit": ".local/test-421c21a3/restart-phase-1.xml",
+      "junit": ".local/test-a627d8f2/restart-phase-1.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.7
+      "reported_seconds": 0.722
     },
     "first_api": {
-      "pid": 32679,
+      "pid": 25989,
       "exit_code": -15,
       "clean_shutdown": true,
       "stop_seconds": 0.16
     },
     "second_api": {
-      "pid": 11315,
+      "pid": 4644,
       "ready_seconds": 0.81
     },
     "phase_2": {
-      "api_pid": 11315,
+      "api_pid": 4644,
       "exit_code": 0,
-      "duration_seconds": 1.0,
-      "junit": ".local/test-421c21a3/restart-phase-2.xml",
+      "duration_seconds": 0.9,
+      "junit": ".local/test-a627d8f2/restart-phase-2.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.512
+      "reported_seconds": 0.472
     },
-    "state_file": ".local/test-421c21a3/restart-state.json",
+    "state_file": ".local/test-a627d8f2/restart-state.json",
     "outcome": "PASS"
   },
-  "finished_at": "2026-09-29T22:18:16+00:00",
+  "finished_at": "2026-09-29T22:39:20+00:00",
   "restore_drill": {
-    "started_at": "2026-09-29T22:18:16+00:00",
-    "source_database": "impact_test_v015",
-    "restored_database": "impact_test_v015_restored",
+    "started_at": "2026-09-29T22:39:21+00:00",
+    "source_database": "impact_test_g15",
+    "restored_database": "impact_test_g15_restored",
     "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
     "client": {
       "pg_dump": {
@@ -251,12 +251,12 @@
     },
     "dump": {
       "format": "custom",
-      "seconds": 0.44,
-      "bytes": 3446937,
+      "seconds": 0.43,
+      "bytes": 3441463,
       "warnings": null
     },
     "restore": {
-      "seconds": 1.61,
+      "seconds": 1.6,
       "warnings": null
     },
     "migration": {
@@ -292,13 +292,13 @@
     },
     "row_counts": {
       "tables_compared": 152,
-      "rows_compared": 30006,
+      "rows_compared": 30055,
       "named": {
-        "object_revision": 7154,
+        "object_revision": 7201,
         "operation_receipt": 829,
         "outbox_event": 875,
         "outbox_delivery": 875,
-        "platform_event": 744
+        "platform_event": 745
       },
       "differing": {}
     },
@@ -333,14 +333,14 @@
       "rls_survived": true
     },
     "restored_database_dropped": true,
-    "duration_seconds": 2.38,
-    "finished_at": "2026-09-29T22:18:19+00:00",
+    "duration_seconds": 2.37,
+    "finished_at": "2026-09-29T22:39:23+00:00",
     "outcome": "PASS",
     "credentials_altered": false
   },
   "upgrade_check": {
-    "database": "impact_test_v015_upgrade",
-    "started_at": "2026-09-29T22:18:19+00:00",
+    "database": "impact_test_g15_upgrade",
+    "started_at": "2026-09-29T22:39:23+00:00",
     "baseline": {
       "applied": [
         "0001_roles.sql",
@@ -385,9 +385,10 @@
       "revisions_after_upgrade": 507,
       "sessions_after_upgrade": 1,
       "provider_logout_columns_present": true,
+      "logout_token_table_present": true,
       "data_preserved": true
     },
-    "duration_seconds": 1.15,
+    "duration_seconds": 1.2,
     "outcome": "PASS"
   }
 }

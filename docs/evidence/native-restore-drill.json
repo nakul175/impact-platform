@@ -1,7 +1,7 @@
 {
-  "started_at": "2026-09-29T22:18:16+00:00",
-  "source_database": "impact_test_v015",
-  "restored_database": "impact_test_v015_restored",
+  "started_at": "2026-09-29T22:39:21+00:00",
+  "source_database": "impact_test_g15",
+  "restored_database": "impact_test_g15_restored",
   "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
   "client": {
     "pg_dump": {
@@ -40,12 +40,12 @@
   },
   "dump": {
     "format": "custom",
-    "seconds": 0.44,
-    "bytes": 3446937,
+    "seconds": 0.43,
+    "bytes": 3441463,
     "warnings": null
   },
   "restore": {
-    "seconds": 1.61,
+    "seconds": 1.6,
     "warnings": null
   },
   "migration": {
@@ -81,13 +81,13 @@
   },
   "row_counts": {
     "tables_compared": 152,
-    "rows_compared": 30006,
+    "rows_compared": 30055,
     "named": {
-      "object_revision": 7154,
+      "object_revision": 7201,
       "operation_receipt": 829,
       "outbox_event": 875,
       "outbox_delivery": 875,
-      "platform_event": 744
+      "platform_event": 745
     },
     "differing": {}
   },
@@ -122,8 +122,8 @@
     "rls_survived": true
   },
   "restored_database_dropped": true,
-  "duration_seconds": 2.38,
-  "finished_at": "2026-09-29T22:18:19+00:00",
+  "duration_seconds": 2.37,
+  "finished_at": "2026-09-29T22:39:23+00:00",
   "outcome": "PASS",
   "credentials_altered": false
 }

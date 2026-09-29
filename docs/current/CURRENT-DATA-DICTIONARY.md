@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Build 0.14.0; schema 16 (no migration added since 0.13.0; the sixteen checksums below were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.15.0; schema 17 (0.15.0 adds 0017, two nullable provider-logout columns and an index on `web_session`; the first sixteen checksums below were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 
@@ -22,6 +22,7 @@ Build 0.14.0; schema 16 (no migration added since 0.13.0; the sixteen checksums 
 | 0014_initial_access.sql | b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468 |
 | 0015_recovery_contacts.sql | 2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42 |
 | 0016_authority_renewal.sql | 2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc |
+| 0017_provider_logout.sql | f68fd0a22f3b277f6429697badb99abc7ec55b0d14326b4c346fbb5cd525b1a0 |
 
 ## Executable schema definitions
 
@@ -2677,5 +2678,25 @@ BEGIN
 END $$;
 REVOKE ALL ON FUNCTION impact.apply_authority_renewal(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION impact.apply_authority_renewal(uuid) TO impact_platform;
+COMMIT;
+```
+
+### 0017 provider logout
+
+Source: infrastructure/migrations/0017_provider_logout.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Live identity provider (v0.15). A browser session created from an OIDC sign-in records the
+-- provider's session identifier (the ID token's sid claim) so that a verified back-channel logout
+-- token revokes exactly the platform sessions of that provider session, and a sealed logout hint:
+-- the ID token encrypted (AES-256-GCM) under a key derived from the session cookie value, which
+-- the database never stores, so the hint is usable only by a request that presents the session.
+-- No provider access or refresh token is stored anywhere. Development sign-in leaves both NULL.
+ALTER TABLE impact.web_session ADD COLUMN provider_sid varchar(255);
+ALTER TABLE impact.web_session ADD COLUMN provider_logout_hint bytea
+ CHECK(octet_length(provider_logout_hint) BETWEEN 29 AND 16412);
+CREATE INDEX web_session_provider_sid ON impact.web_session(provider_sid) WHERE provider_sid IS NOT NULL;
 COMMIT;
 ```

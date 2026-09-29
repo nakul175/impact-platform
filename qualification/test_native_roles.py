@@ -271,7 +271,9 @@ def test_migrator_assumes_owner_only_and_runs_the_migration_runner(connect, live
     summary = json.loads(completed.stdout.strip().splitlines()[-1])
     assert summary["session_user"] == "impact_migrator"
     assert summary["migration_role"] == "impact_owner"
-    assert summary["applied"] == [] and summary["schema_version"] == 16
+    assert summary["applied"] == [] and summary["schema_version"] == len(
+        list((ROOT / "infrastructure/migrations").glob("*.sql"))
+    )
     refused = subprocess.run(
         [sys.executable, "scripts/migrate.py"],
         cwd=ROOT,

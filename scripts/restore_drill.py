@@ -4,7 +4,7 @@ Given IMPACT_FIXTURE_DSN (a superuser connection to a disposable impact_test[_su
 the drill dumps that database with `pg_dump -Fc` to a temporary file, creates `<database>_restored`
 beside it, restores the archive with `pg_restore`, grants the provisioned login roles CONNECT on the
 copy, runs scripts/migrate.py against it as `impact_migrator` (which must apply nothing and find
-all 16 ledgered checksums in place), and verifies by direct query that the seeded OFFICIAL result
+all ledgered checksums in place, one per migration file), and verifies by direct query that the seeded OFFICIAL result
 46.36 is present, that every table of the `impact` schema holds exactly as many rows as the
 source, and that ownership and row-level security survived: every table is owned by
 `impact_owner`, the forced tenant fences are in place, `impact_app` reads nothing without a
@@ -338,8 +338,9 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
     }
     del result["source"]["security"], result["source"]["tables"]
     checks = {
-        "migration_applied_nothing": migration["applied"] == [] and migration["schema_version"] == 16,
-        "checksums_ok": len(recorded) == 16 and not result["migration"]["checksum_mismatches"],
+        "migration_applied_nothing": migration["applied"] == []
+        and migration["schema_version"] == migrate.LATEST,
+        "checksums_ok": len(recorded) == migrate.LATEST and not result["migration"]["checksum_mismatches"],
         "golden_official_result": restored["golden"]["ok"] and result["source"]["golden"]["ok"],
         "row_counts_equal": not differing,
         "owned_by_impact_owner": owners == {"impact_owner"},

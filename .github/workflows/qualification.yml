@@ -84,7 +84,7 @@ jobs:
         env:
           IMPACT_PG_BIN: /usr/lib/postgresql/17/bin
         run: .venv/bin/python scripts/restore_drill.py --report docs/evidence/native-qualification.json
-      - name: Upgrade a populated schema-15 database to schema 16
+      - name: Upgrade a populated database at the previous schema to the latest
         if: always()
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
       - uses: actions/upload-artifact@v4

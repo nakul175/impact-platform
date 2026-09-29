@@ -18,6 +18,8 @@ import psycopg
 from pglast import split
 
 ROOT = Path(__file__).resolve().parents[1]
+# The schema version this build expects: one migration file per version.
+LATEST = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
 sys.path.insert(0, str(ROOT / "scripts"))
 from fixture_support import fixture_database_allowed  # noqa: E402
 

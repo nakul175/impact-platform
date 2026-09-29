@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.10.0",
+    "version": "1.11.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -1958,7 +1958,7 @@
             }
           }
         ],
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.11.0"
       },
       "post": {
         "operationId": "create_frameworks",
@@ -2066,7 +2066,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -2178,7 +2178,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.11.0"
       },
       "patch": {
         "operationId": "patch_frameworks",
@@ -2286,7 +2286,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -3311,7 +3311,7 @@
             }
           }
         ],
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.11.0"
       },
       "post": {
         "operationId": "create_targets",
@@ -3419,7 +3419,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -3531,7 +3531,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.11.0"
       },
       "patch": {
         "operationId": "patch_targets",
@@ -3639,7 +3639,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -19783,7 +19783,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -20045,7 +20045,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.11.0",
         "x-audit-required": true
       }
     },
@@ -35903,6 +35903,228 @@
         },
         "x-contract-version": "1.9.0"
       }
+    },
+    "/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "framework_completeness",
+        "summary": "framework completeness",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "frameworks.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameworkCompleteness"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.11.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "programme_targets_vs_actuals",
+        "summary": "programme targets vs actuals",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "targets.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TargetsVersusActuals"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.11.0"
+      }
     }
   },
   "components": {
@@ -37160,21 +37382,64 @@
           "version_label": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
           "nodes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FrameworkNode"
             },
-            "maxItems": 10000
+            "maxItems": 500
           },
           "relationships": {
             "type": "array",
+            "maxItems": 0
+          },
+          "effective_from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "supersedes_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "exceptions": {
+            "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FrameworkRelationship"
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "rule": {
+                  "enum": [
+                    "UNMEASURED_RESULT",
+                    "ORPHAN_NODE",
+                    "ORPHAN_INDICATOR"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "review_date": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": [
+                "object_id",
+                "rule",
+                "reason",
+                "review_date"
+              ]
             },
-            "maxItems": 20000
+            "maxItems": 500
           }
         },
         "required": []
@@ -37281,21 +37546,64 @@
           "version_label": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
           "nodes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FrameworkNode"
             },
-            "maxItems": 10000
+            "maxItems": 500
           },
           "relationships": {
             "type": "array",
+            "maxItems": 0
+          },
+          "effective_from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "supersedes_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "exceptions": {
+            "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FrameworkRelationship"
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "rule": {
+                  "enum": [
+                    "UNMEASURED_RESULT",
+                    "ORPHAN_NODE",
+                    "ORPHAN_INDICATOR"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "review_date": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": [
+                "object_id",
+                "rule",
+                "reason",
+                "review_date"
+              ]
             },
-            "maxItems": 20000
+            "maxItems": 500
           }
         },
         "required": []
@@ -37879,7 +38187,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "indicator_version": {
+          "indicator_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -37888,7 +38196,6 @@
             "format": "uuid"
           },
           "target_kind": {
-            "type": "string",
             "enum": [
               "VALUE",
               "RANGE",
@@ -37896,7 +38203,6 @@
             ]
           },
           "value_state": {
-            "type": "string",
             "enum": [
               "PRESENT",
               "MISSING",
@@ -37928,7 +38234,6 @@
             "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
           },
           "direction": {
-            "type": "string",
             "enum": [
               "HIGHER",
               "LOWER",
@@ -37937,12 +38242,45 @@
             ]
           },
           "target_basis": {
-            "type": "string",
             "enum": [
               "ORIGINAL",
               "REVISED",
               "BASELINE"
             ]
+          },
+          "milestone_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "due_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "supersedes_revision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "indicator_version": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [],
@@ -37958,20 +38296,16 @@
                 "value_state"
               ]
             },
-            "then": {
-              "required": [
-                "value"
-              ],
-              "properties": {
-                "value": {
-                  "type": "string",
-                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
-                }
-              }
-            },
+            "then": {},
             "else": {
               "properties": {
                 "value": {
+                  "type": "null"
+                },
+                "low": {
+                  "type": "null"
+                },
+                "high": {
                   "type": "null"
                 }
               }
@@ -38074,7 +38408,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "indicator_version": {
+          "indicator_id": {
             "type": "string",
             "format": "uuid"
           },
@@ -38083,7 +38417,6 @@
             "format": "uuid"
           },
           "target_kind": {
-            "type": "string",
             "enum": [
               "VALUE",
               "RANGE",
@@ -38091,7 +38424,6 @@
             ]
           },
           "value_state": {
-            "type": "string",
             "enum": [
               "PRESENT",
               "MISSING",
@@ -38123,7 +38455,6 @@
             "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
           },
           "direction": {
-            "type": "string",
             "enum": [
               "HIGHER",
               "LOWER",
@@ -38132,12 +38463,41 @@
             ]
           },
           "target_basis": {
-            "type": "string",
             "enum": [
               "ORIGINAL",
               "REVISED",
               "BASELINE"
             ]
+          },
+          "milestone_label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "due_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "supersedes_revision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
           }
         },
         "required": [],
@@ -38153,20 +38513,16 @@
                 "value_state"
               ]
             },
-            "then": {
-              "required": [
-                "value"
-              ],
-              "properties": {
-                "value": {
-                  "type": "string",
-                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
-                }
-              }
-            },
+            "then": {},
             "else": {
               "properties": {
                 "value": {
+                  "type": "null"
+                },
+                "low": {
+                  "type": "null"
+                },
+                "high": {
                   "type": "null"
                 }
               }
@@ -48800,23 +49156,24 @@
             "format": "uuid"
           },
           "node_type": {
-            "type": "string",
             "enum": [
-              "INPUT",
-              "ACTIVITY",
-              "OUTPUT",
-              "OUTCOME",
               "IMPACT",
-              "ASSUMPTION"
+              "OUTCOME",
+              "OUTPUT",
+              "ACTIVITY"
             ]
           },
           "title": {
             "type": "string",
-            "maxLength": 200
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
           },
           "definition": {
             "type": "string",
-            "maxLength": 2000
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           },
           "parent_node_id": {
             "type": [
@@ -48824,6 +49181,22 @@
               "null"
             ],
             "format": "uuid"
+          },
+          "owner_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "indicator_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "uniqueItems": true
           }
         },
         "required": [
@@ -54039,7 +54412,9 @@
               "PeriodClose",
               "RestatementRequest",
               "Report",
-              "Disclosure"
+              "Disclosure",
+              "Framework",
+              "Target"
             ]
           },
           "record": {
@@ -54067,6 +54442,12 @@
               },
               {
                 "$ref": "#/components/schemas/Disclosure"
+              },
+              {
+                "$ref": "#/components/schemas/Framework"
+              },
+              {
+                "$ref": "#/components/schemas/Target"
               }
             ]
           },
@@ -54085,6 +54466,19 @@
                 "$ref": "#/components/schemas/Period"
               }
             ]
+          },
+          "superseded": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Framework"
+              },
+              {
+                "$ref": "#/components/schemas/Target"
+              }
+            ]
+          },
+          "completeness": {
+            "$ref": "#/components/schemas/FrameworkCompleteness"
           }
         },
         "required": [
@@ -55481,6 +55875,723 @@
         },
         "required": [
           "items"
+        ]
+      },
+      "FrameworkCompleteness": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "framework_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ready": {
+            "type": "boolean"
+          },
+          "issues": {
+            "type": "array",
+            "maxItems": 2000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "severity": {
+                  "enum": [
+                    "ERROR",
+                    "WARNING"
+                  ]
+                },
+                "rule": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "resolver_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "exceptable": {
+                  "type": "boolean"
+                },
+                "excepted": {
+                  "type": "boolean"
+                },
+                "exception": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "object_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "rule": {
+                          "enum": [
+                            "UNMEASURED_RESULT",
+                            "ORPHAN_NODE",
+                            "ORPHAN_INDICATOR"
+                          ]
+                        },
+                        "reason": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000,
+                          "pattern": "\\S"
+                        },
+                        "review_date": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      },
+                      "required": [
+                        "object_id",
+                        "rule",
+                        "reason",
+                        "review_date"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "severity",
+                "rule",
+                "object_id",
+                "message",
+                "resolver_id",
+                "exceptable",
+                "excepted"
+              ]
+            }
+          },
+          "comparison": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "base_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "base_version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "added": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "removed": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "changed": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "affected_indicator_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                },
+                "required": [
+                  "base_revision",
+                  "base_version",
+                  "added",
+                  "removed",
+                  "changed",
+                  "affected_indicator_ids"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "framework_id",
+          "revision_id",
+          "ready",
+          "issues",
+          "comparison"
+        ]
+      },
+      "TargetsVersusActuals": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "programme_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "framework": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "framework_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "baseline_version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "effective_from": {
+                    "type": "string"
+                  },
+                  "version_label": {
+                    "type": "string"
+                  },
+                  "nodes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FrameworkNode"
+                    }
+                  }
+                },
+                "required": [
+                  "framework_id",
+                  "revision_id",
+                  "baseline_version",
+                  "effective_from",
+                  "nodes"
+                ]
+              }
+            ]
+          },
+          "rows": {
+            "type": "array",
+            "maxItems": 500,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "indicator_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "indicator_label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "display_decimals": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "period_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "period_code": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "period_state": {
+                  "enum": [
+                    "Open",
+                    "Locked",
+                    "RestatementOpen"
+                  ]
+                },
+                "framework_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "node_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "baseline": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "target_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "revision_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "target_kind": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "target_basis": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "value_state": {
+                          "enum": [
+                            "PRESENT",
+                            "MISSING",
+                            "NOT_COLLECTED",
+                            "NOT_APPLICABLE",
+                            "INVALID",
+                            "UNDEFINED"
+                          ]
+                        },
+                        "value": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "low": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "high": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "milestone_label": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "due_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "binding_version": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": [
+                        "target_id",
+                        "revision_id",
+                        "target_kind",
+                        "target_basis",
+                        "direction",
+                        "value_state"
+                      ]
+                    }
+                  ]
+                },
+                "target": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "target_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "revision_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "target_kind": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "target_basis": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "value_state": {
+                          "enum": [
+                            "PRESENT",
+                            "MISSING",
+                            "NOT_COLLECTED",
+                            "NOT_APPLICABLE",
+                            "INVALID",
+                            "UNDEFINED"
+                          ]
+                        },
+                        "value": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "low": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "high": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "milestone_label": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "due_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "binding_version": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      },
+                      "required": [
+                        "target_id",
+                        "revision_id",
+                        "target_kind",
+                        "target_basis",
+                        "direction",
+                        "value_state"
+                      ]
+                    }
+                  ]
+                },
+                "milestones": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "target_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "revision_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "target_kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "pattern": "\\S"
+                      },
+                      "target_basis": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "pattern": "\\S"
+                      },
+                      "direction": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "pattern": "\\S"
+                      },
+                      "value_state": {
+                        "enum": [
+                          "PRESENT",
+                          "MISSING",
+                          "NOT_COLLECTED",
+                          "NOT_APPLICABLE",
+                          "INVALID",
+                          "UNDEFINED"
+                        ]
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      },
+                      "low": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      },
+                      "high": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      },
+                      "milestone_label": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "due_at": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "binding_version": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    },
+                    "required": [
+                      "target_id",
+                      "revision_id",
+                      "target_kind",
+                      "target_basis",
+                      "direction",
+                      "value_state"
+                    ]
+                  }
+                },
+                "actual": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "OFFICIAL",
+                        "PROVISIONAL",
+                        "NONE"
+                      ]
+                    },
+                    "source": {
+                      "enum": [
+                        "PROGRAMME_SNAPSHOT",
+                        "UNBOUND_SNAPSHOT",
+                        "CALCULATION",
+                        "NONE"
+                      ]
+                    },
+                    "value_state": {
+                      "enum": [
+                        "PRESENT",
+                        "MISSING",
+                        "NOT_COLLECTED",
+                        "NOT_APPLICABLE",
+                        "INVALID",
+                        "UNDEFINED"
+                      ]
+                    },
+                    "value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "displayed_value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "result_id": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid"
+                    },
+                    "result_revision": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid"
+                    },
+                    "snapshot_id": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid"
+                    },
+                    "stale": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "mode",
+                    "source",
+                    "value_state",
+                    "value",
+                    "displayed_value",
+                    "stale"
+                  ]
+                },
+                "progress": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "\\S"
+                    },
+                    "attainment_percent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "deviation": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "displayed_deviation": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "change_from_baseline": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "change_from_baseline_percent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "reason_code": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "attainment_percent",
+                    "deviation",
+                    "reason_code"
+                  ]
+                }
+              },
+              "required": [
+                "indicator_id",
+                "period_id",
+                "period_state",
+                "node_ids",
+                "baseline",
+                "target",
+                "milestones",
+                "actual",
+                "progress"
+              ]
+            }
+          }
+        },
+        "required": [
+          "programme_id",
+          "framework",
+          "rows"
         ]
       }
     }

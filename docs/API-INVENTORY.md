@@ -32,6 +32,12 @@
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |
+| GET | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.read` |
+| POST | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | `frameworks.read` |
+| PATCH | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | `frameworks.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/frameworks/{object_id}/actions/submit` | `framework.submit` |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness` | `frameworks.read` |
 | GET | `/v1/tenants/{tenant_id}/geographies` | `geographies.read` |
 | GET | `/v1/tenants/{tenant_id}/geographies/{object_id}` | `geographies.read` |
 | GET | `/v1/tenants/{tenant_id}/grants` | `grants.read` |
@@ -101,6 +107,7 @@
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/ready` | `programme.activate` |
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/revise` | `programme.activate` |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/readiness` | `programmes.read` |
+| GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals` | `targets.read` |
 | GET | `/v1/tenants/{tenant_id}/publication-recipients` | `disclosure.request` |
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.csv` | `publication.download` |
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/view` | `publication.download` |
@@ -129,6 +136,11 @@
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/revise` | `roles.manage` |
 | GET | `/v1/tenants/{tenant_id}/snapshots` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots/{object_id}` | `snapshots.read` |
+| GET | `/v1/tenants/{tenant_id}/targets` | `targets.read` |
+| POST | `/v1/tenants/{tenant_id}/targets` | `targets.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.read` |
+| PATCH | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | `target.submit` |
 | GET | `/v1/tenants/{tenant_id}/work-items` | `work-items.read` |
 | GET | `/v1/tenants/{tenant_id}/work-items/{object_id}` | `work-items.read` |
 | POST | `/v1/tenants/{tenant_id}/work-items/{object_id}/actions/recalculate` | `indicator.calculate` |

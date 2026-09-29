@@ -45,6 +45,12 @@ class Settings:
     required_acr: str = ""
     provider_account_url: str = ""
     platform_dsn: str = ""
+    # A live provider (dev_auth off): the RP-initiated logout endpoint the browser is sent to after
+    # the local session is revoked, and the client secret for a confidential client (normally
+    # supplied as IMPACT_CLIENT_SECRET; a public client with S256 PKCE leaves it empty). The
+    # platform holds no provider refresh token, so no revocation endpoint is configured.
+    end_session_url: str = ""
+    client_secret: str = ""
     # Refuse superuser, BYPASSRLS or owner database connections outside staging/production too;
     # native qualification sets it so the API runs on the provisioned login roles only.
     require_unprivileged_db: bool = False
@@ -88,8 +94,20 @@ class Settings:
             if any(
                 urlparse(u).scheme != "https"
                 for u in [s.public_origin, s.issuer, s.jwks_url, s.authorization_url, s.token_url]
+                + ([s.end_session_url] if s.end_session_url else [])
             ):
                 raise ValueError("HTTPS required")
+        if s.client_secret and (len(s.client_secret) < 32 or s.dev_auth):
+            raise ValueError("A client secret must be at least 32 characters and needs a live provider")
+        if not s.dev_auth and s.environment in {"development", "test"} and s.jwks_url:
+            for u in [s.issuer, s.jwks_url, s.authorization_url, s.token_url] + (
+                [s.end_session_url] if s.end_session_url else []
+            ):
+                parsed = urlparse(u)
+                if parsed.scheme != "https" and not (
+                    parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost"}
+                ):
+                    raise ValueError("A plain-HTTP identity provider is allowed only on loopback")
         if s.provider_account_url and (
             urlparse(s.provider_account_url).scheme != "https"
             or urlparse(s.provider_account_url).username

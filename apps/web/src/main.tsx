@@ -316,9 +316,12 @@ function App() {
   }, []);
   async function logout() {
     try {
-      await api("/auth/logout", { method: "POST" });
+      const result = await api("/auth/logout", { method: "POST" });
       csrf = "";
       setSession(null);
+      // With a live identity provider the provider session is ended too: the browser visits
+      // its logout endpoint, which returns to the platform's front page.
+      if (result?.logout_url) window.location.assign(result.logout_url);
     } catch (e) {
       setError(explain(e));
     }

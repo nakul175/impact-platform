@@ -10,12 +10,19 @@ import time
 import base64
 import httpx
 import jwt
+from cryptography.exceptions import InvalidTag
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from fastapi.responses import JSONResponse, RedirectResponse
 from .domain import DomainError, unavailable
 from .identity_profile import normalize_email, email_hash, masked_email
 
 
 SESSION_ACTIVITY_INTERVAL_SECONDS = 30
+# OpenID Connect Back-Channel Logout 1.0, section 2.4.
+BACKCHANNEL_LOGOUT_EVENT = "http://schemas.openid.net/event/backchannel-logout"
+# A logout token older than this is refused; the provider sends it at the moment of logout.
+LOGOUT_TOKEN_MAX_AGE_SECONDS = 300
+LOGOUT_HINT_CONTEXT = b"impact-provider-logout-hint"
 
 
 def digest(value):
@@ -153,7 +160,12 @@ class Auth:
         if bearer:
             if not bearer.startswith("Bearer "):
                 raise DomainError("AUTH_REQUIRED", 401)
-            return self.identity(self.claims(bearer[7:]))
+            claims = self.claims(bearer[7:])
+            # A provider marks its tokens by type; only an access token is a bearer credential
+            # here, never an ID or logout token, whatever audience the deployment configures.
+            if claims.get("typ", "Bearer") != "Bearer":
+                raise DomainError("AUTH_REQUIRED", 401)
+            return self.identity(claims)
         if not session or len(session) > 256:
             raise DomainError("AUTH_REQUIRED", 401)
         now = datetime.now(timezone.utc)
@@ -201,7 +213,29 @@ class Auth:
             row["assurance_acr"] == self.s.required_acr if self.s.required_acr else self.s.dev_auth,
         )
 
-    def session(self, identity, redirect=False, device_label="Browser session"):
+    def hint_key(self, session):
+        return hmac.new(
+            self.s.cookie_secret.encode(), b"logout-hint:" + session.encode(), hashlib.sha256
+        ).digest()
+
+    def seal_hint(self, session, id_token):
+        """The ID token for the provider's logout request, encrypted under a key derived from the
+        session cookie value (never stored) and the cookie secret."""
+        nonce = secrets.token_bytes(12)
+        return nonce + AESGCM(self.hint_key(session)).encrypt(nonce, id_token.encode(), LOGOUT_HINT_CONTEXT)
+
+    def open_hint(self, session, sealed):
+        try:
+            sealed = bytes(sealed)
+            return (
+                AESGCM(self.hint_key(session)).decrypt(sealed[:12], sealed[12:], LOGOUT_HINT_CONTEXT).decode()
+            )
+        except (InvalidTag, ValueError, UnicodeDecodeError):
+            return None
+
+    def session(
+        self, identity, redirect=False, device_label="Browser session", provider_sid=None, id_token=None
+    ):
         session = secrets.token_urlsafe(48)
         now = datetime.now(timezone.utc)
         with self.db.transaction(identity=True) as c:
@@ -224,7 +258,7 @@ class Auth:
             ):
                 raise DomainError("LIMIT_EXCEEDED", 429, reason="SESSION_LIMIT")
             c.execute(
-                "INSERT INTO impact.web_session(session_hash,identity_id,created_at,last_seen_at,expires_at,auth_time,verified_email_hash,display_name,email_mask,assurance_acr,assurance_amr,device_label) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                "INSERT INTO impact.web_session(session_hash,identity_id,created_at,last_seen_at,expires_at,auth_time,verified_email_hash,display_name,email_mask,assurance_acr,assurance_amr,device_label,provider_sid,provider_logout_hint) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                 (
                     digest(session),
                     identity.identity_id,
@@ -238,6 +272,8 @@ class Auth:
                     identity.assurance_acr,
                     list(identity.assurance_amr),
                     device_label,
+                    provider_sid,
+                    self.seal_hint(session, id_token) if id_token else None,
                 ),
             )
         response = RedirectResponse("/", 303) if redirect else JSONResponse({"authenticated": True})
@@ -383,6 +419,9 @@ class Auth:
             ):
                 raise DomainError("AUTH_REQUIRED", 401)
             c.execute("UPDATE impact.oidc_login SET consumed_at=now() WHERE state_hash=%s", (digest(state),))
+        # The code exchange is an external call and runs after the state row is committed as
+        # consumed, never inside a database transaction. Only the ID token is read from the
+        # response; an access or refresh token the provider may return is discarded unread.
         try:
             response = httpx.post(
                 self.s.token_url,
@@ -393,18 +432,100 @@ class Auth:
                     "redirect_uri": self.s.public_origin + "/auth/callback",
                     "code_verifier": login["verifier"],
                 },
+                auth=(self.s.client_id, self.s.client_secret) if self.s.client_secret else None,
                 timeout=8,
                 follow_redirects=False,
+                trust_env=False,
             )
             response.raise_for_status()
-            claims = self.claims(response.json()["id_token"], self.s.client_id)
-            if not hmac.compare_digest(claims.get("nonce", ""), login["nonce"]):
+            id_token = response.json()["id_token"]
+            claims = self.claims(id_token, self.s.client_id)
+            if not isinstance(claims.get("nonce"), str) or not hmac.compare_digest(
+                claims["nonce"], login["nonce"]
+            ):
+                raise ValueError
+            sid = claims.get("sid")
+            if sid is not None and (not isinstance(sid, str) or not sid or len(sid) > 255):
                 raise ValueError
         except (httpx.HTTPError, KeyError, ValueError, TypeError):
             raise DomainError("AUTH_REQUIRED", 401) from None
         identity = self.identity(claims)
         if (datetime.now(timezone.utc) - identity.auth_time).total_seconds() > 300:
             raise DomainError("AUTH_REQUIRED", 401)
-        response = self.session(identity, True, self.device_label(request))
+        response = self.session(identity, True, self.device_label(request), sid, id_token)
         response.delete_cookie("impact_oidc", path="/auth")
+        return response
+
+    def logout(self, request):
+        """Revoke the presented browser session and, with a live provider, return the provider's
+        RP-initiated logout URL for the browser to visit (the ID token hint is unsealed with the
+        session cookie). Nothing is sent to the provider from here."""
+        identity = self.resolve(request)
+        sealed = None
+        if identity.session_id:
+            with self.db.transaction(identity=True) as c:
+                row = c.execute(
+                    "UPDATE impact.web_session SET revoked_at=COALESCE(revoked_at,now()) WHERE session_hash=%s RETURNING provider_logout_hint",
+                    (digest(identity.session_id),),
+                ).fetchone()
+                sealed = row["provider_logout_hint"] if row else None
+        url = None
+        if identity.session_id and not self.s.dev_auth and self.s.end_session_url:
+            params = {"client_id": self.s.client_id, "post_logout_redirect_uri": self.s.public_origin + "/"}
+            hint = self.open_hint(identity.session_id, sealed) if sealed else None
+            if hint:
+                params["id_token_hint"] = hint
+            url = self.s.end_session_url + "?" + urlencode(params)
+        response = JSONResponse({"authenticated": False, "logout_url": url})
+        response.delete_cookie(self.s.cookie_name, path="/")
+        return response
+
+    def backchannel_logout(self, token):
+        """OpenID Connect Back-Channel Logout: a logout token signed by the configured provider for
+        this client revokes the platform sessions created from the named provider session (sid,
+        and the subject when present). The signing key is fetched before any transaction."""
+        if self.s.dev_auth or not self.jwks:
+            unavailable()
+        try:
+            if not isinstance(token, str) or len(token) > 16384:
+                raise ValueError
+            claims = jwt.decode(
+                token,
+                self.jwks.get_signing_key_from_jwt(token).key,
+                algorithms=["RS256"],
+                issuer=self.s.issuer,
+                audience=self.s.client_id,
+                options={"require": ["iat", "iss", "aud", "jti"]},
+                leeway=5,
+            )
+            events = claims.get("events")
+            if (
+                not isinstance(events, dict)
+                or not isinstance(events.get(BACKCHANNEL_LOGOUT_EVENT), dict)
+                or "nonce" in claims
+                or not isinstance(claims["iat"], (int, float))
+                or claims["iat"] < time.time() - LOGOUT_TOKEN_MAX_AGE_SECONDS
+            ):
+                raise ValueError
+            sid, subject = claims.get("sid"), claims.get("sub")
+            # This client registers with session-required back-channel logout, so a token
+            # without a provider session identifier is refused rather than widened to a subject.
+            if not isinstance(sid, str) or not sid or len(sid) > 255:
+                raise ValueError
+            if subject is not None and (not isinstance(subject, str) or not subject or len(subject) > 255):
+                raise ValueError
+        except (jwt.PyJWTError, ValueError, TypeError, KeyError):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None
+        with self.db.transaction(identity=True) as c:
+            rows = c.execute(
+                "UPDATE impact.web_session s SET revoked_at=now() FROM impact.auth_identity i WHERE i.identity_id=s.identity_id AND i.issuer=%s AND s.provider_sid=%s AND (%s::text IS NULL OR i.provider_subject=%s) AND s.revoked_at IS NULL RETURNING s.identity_id,s.session_id",
+                (self.s.issuer, sid, subject, subject),
+            ).fetchall()
+            for row in rows:
+                c.execute(
+                    "INSERT INTO impact.identity_security_event(event_id,identity_id,action,target_session) VALUES(gen_random_uuid(),%s,'session.provider_logout',%s)",
+                    (row["identity_id"], row["session_id"]),
+                )
+        response = JSONResponse({"revoked": len(rows)})
+        response.headers["Cache-Control"] = "no-store"
         return response

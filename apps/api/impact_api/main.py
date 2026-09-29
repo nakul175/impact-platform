@@ -1,6 +1,6 @@
 import json
 import logging
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 from uuid import UUID, uuid4
 import psycopg
 from fastapi import FastAPI, Request
@@ -9,7 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.concurrency import run_in_threadpool
 from starlette.staticfiles import StaticFiles
 from .config import Settings, ROOT
-from .auth import Auth, digest
+from .auth import Auth
 from .account import Account
 from .domain import DomainError
 from .service import Service
@@ -173,7 +173,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 16:
+        if version != 17:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -280,16 +280,24 @@ def create_app():
 
     @app.post("/auth/logout")
     def logout(request: Request):
-        identity = auth.resolve(request)
-        if identity.session_id:
-            with db.transaction(identity=True) as c:
-                c.execute(
-                    "UPDATE impact.web_session SET revoked_at=now() WHERE session_hash=%s",
-                    (digest(identity.session_id),),
-                )
-        response = JSONResponse({"authenticated": False})
-        response.delete_cookie(s.cookie_name, path="/")
-        return response
+        return auth.logout(request)
+
+    @app.post("/auth/backchannel-logout")
+    async def backchannel_logout(request: Request):
+        # Server-to-server from the provider: a form body with exactly one logout_token, no
+        # cookie, no Origin; the token signature is the only authentication.
+        if (
+            request.headers.get("content-type", "").split(";")[0].strip()
+            != "application/x-www-form-urlencoded"
+        ):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
+        try:
+            form = parse_qs((await request.body()).decode("ascii"), strict_parsing=True)
+        except (UnicodeDecodeError, ValueError):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None
+        if set(form) != {"logout_token"} or len(form["logout_token"]) != 1:
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
+        return await run_in_threadpool(auth.backchannel_logout, form["logout_token"][0])
 
     @app.get("/auth/preferences")
     def preferences(request: Request):
@@ -318,7 +326,7 @@ def create_app():
         return {
             "environment": s.environment,
             "build_id": "impact-0.14.0",
-            "schema_version": "16",
+            "schema_version": "17",
             "api_version": "1.10.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),

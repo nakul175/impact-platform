@@ -1,5 +1,5 @@
 {
-  "build": "0.14.0",
+  "build": "0.15.0",
   "assessment_date": "2026-09-29",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
@@ -230,11 +230,19 @@
       "acceptance": "Enforce federation, expire the old certificate and interrupt the provider; ordinary local passwords cannot become an unreviewed bypass.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. Federation assurance, recovery, all identity providers and full departure inventory are not qualified.",
+      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. v0.15 qualifies the login binding against a live provider (Keycloak 26.7.4, development mode, in-memory database, qualification/test_live_idp.py: 16 cases on PGlite and 16 on native PostgreSQL 16.13 login roles, 29 September 2026): sign-in binds the provider issuer and stable subject to the fixture identity (the fixture's auth_identity rows are re-pointed to the realm issuer by subject); tokens of another issuer (a second realm with the same client and a user carrying the same subject), a tampered signature, a key outside the provider JWKS, an expired token, an ID token presented as a bearer credential (typ check) and provider role claims are refused or confer nothing; a disabled provider account cannot sign in; missing assurance fails safely (a password-only session is refused every fresh-assurance operation). Not covered: an administrator-facing provider configuration, tenant binding and designated-account test mode, certificate or key expiry display and overlapping rotation, provider interruption, emergency local recovery, SAML or any provider other than one Keycloak realm, and a managed or customer-provided provider.",
       "evidence_paths": [
         "apps/api/impact_api/administration.py",
         "qualification/test_administration.py",
-        "docs/RELEASE-0.2.md"
+        "docs/RELEASE-0.2.md",
+        "apps/api/impact_api/auth.py",
+        "scripts/idp.py",
+        "tools/idp/qualification-realm.json",
+        "qualification/test_live_idp.py",
+        "docs/evidence/idp-tests.xml",
+        "docs/evidence/idp-native-tests.xml",
+        "docs/evidence/idp-qualification.json",
+        "docs/RELEASE-0.15.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -249,7 +257,7 @@
       "acceptance": "Attempt public publication after session login but before step up, then complete a valid challenge; only the reviewed pending action becomes eligible.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. v0.15 exercises step-up against a live provider: the qualification realm's browser flow is level 1 password and level 2 TOTP with an ACR map, the platform requests urn:impact:acr:mfa with max_age=0, a session at the password level reads normally but is refused every tenant and account fresh-assurance operation, a user without a second factor is sent to TOTP enrolment before any code is issued, and after TOTP a fresh-assurance operation succeeds until 300 s after the provider's own auth_time (FRESH_AUTHENTICATION_REQUIRED at 301 s, emulated by moving the recorded auth_time back) in qualification/test_live_idp.py and the idp-browser check. Not covered: completion of enrolment, passkeys, a challenge bound to the intended action (step-up is per session, not per pending action), blocking removal of the last qualifying factor, SMS exclusion, authenticator synchronisation disclosure and provider-side recovery.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
@@ -259,7 +267,17 @@
         "apps/api/impact_api/authority_renewal.py",
         "qualification/test_authority_renewal.py",
         "tools/browser/renewal-check.mjs",
-        "docs/RELEASE-0.13.md"
+        "docs/RELEASE-0.13.md",
+        "apps/api/impact_api/auth.py",
+        "scripts/idp.py",
+        "tools/idp/qualification-realm.json",
+        "qualification/test_live_idp.py",
+        "docs/evidence/idp-tests.xml",
+        "docs/evidence/idp-native-tests.xml",
+        "docs/evidence/idp-qualification.json",
+        "docs/RELEASE-0.15.md",
+        "tools/browser/idp-check.mjs",
+        "docs/evidence/idp-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -304,7 +322,7 @@
       "acceptance": "Open two sessions, revoke one, then use browser back and a queued export from that session; neither returns protected data.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. Further onboarding acceptance, provider MFA/recovery qualification, action-bound step-up, future-effective organisation impact and full access certification remain open.",
+      "assessment": "v0.9 adds versioned custom roles, independently reviewed flat group access, immediate organisation moves with cycle checks, renewal without old-access resurrection, nominated custody transfer, self-service session revocation/preferences and configured ACR enforcement. v0.13 adds reviewed renewal/extension of unexpired delegated authority (owner proposal pinning the exact current ceilings, second-administrator acceptance, independent operator approval, database-owned re-dating of only the pinned rows); expired authority is not renewable and single-administrator tenants are unsupported. v0.15 adds live-provider logout (qualification/test_live_idp.py, qualification/test_backchannel_logout.py, idp-browser check): POST /auth/logout revokes the server session at once (the old cookie then gets 401) and returns the provider end-session URL with a sealed id_token_hint, after which the provider session is gone (prompt=none returns login_required); a logout after idle or absolute timeout still clears the cookie; a verified back-channel logout token revokes exactly the platform sessions of that provider session and a replayed token is refused. Server authority is therefore invalidated independently of what the browser still shows. Not covered: clearing in-memory client state and cached navigation, browser back and a queued export from a revoked session (no export job exists), shared-device mode, the idle warning that preserves drafts, and bearer access tokens, which remain valid until exp (120 s in the realm) after a provider logout.",
       "evidence_paths": [
         "apps/api/impact_api/workspace_administration.py",
         "apps/api/impact_api/account.py",
@@ -314,7 +332,18 @@
         "apps/api/impact_api/authority_renewal.py",
         "qualification/test_authority_renewal.py",
         "tools/browser/renewal-check.mjs",
-        "docs/RELEASE-0.13.md"
+        "docs/RELEASE-0.13.md",
+        "apps/api/impact_api/auth.py",
+        "scripts/idp.py",
+        "tools/idp/qualification-realm.json",
+        "qualification/test_live_idp.py",
+        "docs/evidence/idp-tests.xml",
+        "docs/evidence/idp-native-tests.xml",
+        "docs/evidence/idp-qualification.json",
+        "docs/RELEASE-0.15.md",
+        "qualification/test_backchannel_logout.py",
+        "tools/browser/idp-check.mjs",
+        "docs/evidence/idp-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -369,7 +398,7 @@
       "acceptance": "A project administrator creates a group and attempts to add tenant administration through it; the indirect escalation fails.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. v0.13 adds reviewed renewal/extension of unexpired delegated authority within the existing ceilings: owner proposal, second-administrator consent and independent operator approval, with no capability widening and no resurrection of revoked grants. Federation assurance, recovery, all identity providers, renewal of expired authority, administrator replacement and full departure inventory are not qualified.",
+      "assessment": "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. v0.13 adds reviewed renewal/extension of unexpired delegated authority within the existing ceilings: owner proposal, second-administrator consent and independent operator approval, with no capability widening and no resurrection of revoked grants. v0.15 (#19) narrows what is delegable to capabilities of the 138 implemented operations (84 capabilities): a custom role naming a design-only capability is refused with CAPABILITY_NOT_DELEGABLE at create and at revise even when the creator holds a delegation ceiling for it (test_workspace_administration.py::test_custom_roles_delegate_only_implemented_capabilities), and the orphan create_organisation_units policy row is gone. Custom roles created before v0.15 are not re-checked. Federation assurance, recovery, all identity providers, renewal of expired authority, administrator replacement and full departure inventory are not qualified.",
       "evidence_paths": [
         "apps/api/impact_api/administration.py",
         "qualification/test_administration.py",
@@ -377,7 +406,11 @@
         "apps/api/impact_api/authority_renewal.py",
         "qualification/test_authority_renewal.py",
         "tools/browser/renewal-check.mjs",
-        "docs/RELEASE-0.13.md"
+        "docs/RELEASE-0.13.md",
+        "apps/api/impact_api/contracts.py",
+        "apps/api/impact_api/workspace_administration.py",
+        "qualification/test_workspace_administration.py",
+        "docs/RELEASE-0.15.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4706,7 +4739,7 @@
       "failure": "The sixty-second bound is a maximum, not a percentile allowance. Any protected access after it fails the gate; execution reauthorisation remains mandatory.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },

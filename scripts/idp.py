@@ -500,10 +500,20 @@ def start(local, origin, log=None):
         "foreign_users": foreign_credentials,
         "otp": OTP_POLICY,
     }
-    path = local / "idp.json"
-    path.write_text(json.dumps(details, indent=2))
-    path.chmod(0o600)
+    write_private(local / "idp.json", json.dumps(details, indent=2))
     return process, details
+
+
+def write_private(path, text):
+    """Write a credential file that is 0600 from its creation: a stale file is removed first, and
+    O_EXCL|O_CREAT with mode 0600 leaves no window in which another user could read it."""
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "w") as f:
+        f.write(text)
 
 
 def stop(process):

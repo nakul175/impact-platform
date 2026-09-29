@@ -19,9 +19,10 @@ OPERATIONS = {
 }
 # Operations this build serves (scripts/export_implemented_api.py). Only their capabilities can
 # be delegated through custom roles; the rest of the policy describes the design contract.
+IMPLEMENTED = json.loads((ROOT / "packages/contracts/openapi-implemented.json").read_text())
 IMPLEMENTED_OPERATIONS = {
     operation["operationId"]
-    for node in json.loads((ROOT / "packages/contracts/openapi-implemented.json").read_text())["paths"].values()
+    for node in IMPLEMENTED["paths"].values()
     for operation in node.values()
     if isinstance(operation, dict) and "operationId" in operation
 }

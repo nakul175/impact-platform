@@ -257,6 +257,7 @@ class PeriodGovernance:
                 }
             )
             blockers.extend(entry_blockers)
+        targets = self.service.planning.approved_targets(c, ctx, programme_id, period["object_id"])
         core = {
             "period_revision": str(period["head_revision"]),
             "programme_period_state": state["lifecycle_state"],
@@ -269,7 +270,9 @@ class PeriodGovernance:
             "period_id": str(period["object_id"]),
             "programme_id": str(programme_id),
             "previewed_at": previewed.isoformat(),
-            "fingerprint": hash_data(core).hex(),
+            # Approved targets are pinned into the snapshot; a target approved after the preview
+            # makes the close request stale. Without targets the fingerprint is unchanged.
+            "fingerprint": hash_data({**core, "target_versions": targets} if targets else core).hex(),
         }
 
     def close_request(self, c, ctx, period, data):
@@ -481,7 +484,9 @@ class PeriodGovernance:
                 "programme_id": data["programme_id"],
                 "period_id": str(period["object_id"]),
                 "definition_versions": sorted(set(definitions)),
-                "target_versions": [],
+                "target_versions": self.service.planning.approved_targets(
+                    c, ctx, data["programme_id"], period["object_id"]
+                ),
                 "result_versions": [item["revision_id"] for item in official],
                 "evidence_versions": [],
                 "policy_context": {

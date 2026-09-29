@@ -16,6 +16,7 @@ from .changes import Changes
 from .period_governance import PeriodGovernance
 from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
+from .planning import PLANNING_KINDS, Planning
 from .work import WorkCenter
 from .store import (
     context,
@@ -57,6 +58,8 @@ READ_ROUTES = {
     "measurement-changes",
     "snapshots",
     *PERIOD_READS,
+    "frameworks",
+    "targets",
 }
 
 
@@ -79,6 +82,8 @@ WRITE_ROUTES = {
     "reports",
     "collection-plans",
     "measurement-changes",
+    "frameworks",
+    "targets",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -100,6 +105,8 @@ ACTIONS = {
     "reports": {"submit", "publish", "withdraw"},
     "work-items": {"recalculate"},
     "notifications": {"acknowledge"},
+    "frameworks": {"submit"},
+    "targets": {"submit"},
 }
 
 
@@ -148,6 +155,7 @@ class Service:
         self.periods = PeriodGovernance(self)
         self.reporting = Reporting(self)
         self.work = WorkCenter(self)
+        self.planning = Planning(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -318,9 +326,11 @@ class Service:
                 "scope_label": "Records permitted by your current access",
             }
 
-    def validate_data(self, c, ctx, kind, data):
+    def validate_data(self, c, ctx, kind, data, owner_id=None):
         validate(kind + "Data", data)
         references(c, ctx, kind, data)
+        if kind in PLANNING_KINDS:
+            self.planning.validate(c, ctx, kind, data, owner_id)
         if kind == "MeasurementChange":
             self.changes.validate(c, ctx, data)
         if kind == "CollectionPlan":
@@ -463,7 +473,12 @@ class Service:
                 data = {**(previous["payload"] if previous else {}), **body["data"]}
                 if kind == "Observation":
                     data["approval_state"] = "DRAFT"
-                self.validate_data(c, ctx, kind, data)
+                if kind == "Target":
+                    # Pinned again by the next submission; never carried into an edited draft.
+                    data.pop("indicator_version", None)
+                self.validate_data(
+                    c, ctx, kind, data, str(previous["owner_id"]) if previous else ctx.principal_id
+                )
                 if kind == "Observation" and data.get("source_namespace") and data.get("source_key"):
                     existing = c.execute(
                         "SELECT object_id FROM impact.source_key_registry WHERE tenant_id=%s AND namespace=%s AND source_key=%s",
@@ -530,6 +545,11 @@ class Service:
             required = ["target_kind", "target_id", "target_revision", "reason", "proposed_data"]
         if kind == "Report":
             required = ["template_version", "snapshot_id", "language", "audience_class", "sections"]
+        if kind in PLANNING_KINDS:
+            # Framework completeness and target rules are checked, and the target's definition
+            # revision pinned, by the planning module.
+            required = []
+            payload = self.planning.prepare_submit(c, ctx, kind, row)
         if any(k not in payload or payload[k] in (None, "") for k in required):
             raise DomainError("VALIDATION_FAILED", reason="SUBMISSION_INCOMPLETE")
         if kind == "CollectionPlan":
@@ -538,7 +558,7 @@ class Service:
                     "head_revision"
                 ]
             )
-        self.validate_data(c, ctx, kind, payload)
+        self.validate_data(c, ctx, kind, payload, str(row["owner_id"]))
         candidate_memberships = []
         if kind == "IndicatorDefinition":
             definition_ready(payload)
@@ -652,6 +672,7 @@ class Service:
             "RestatementRequest",
             "Report",
             "Disclosure",
+            *PLANNING_KINDS,
         }:
             raise DomainError("INVALID_STATE", 409)
         candidate_route = next(r for r, k in READ_KINDS.items() if k == candidate["object_type"])
@@ -681,6 +702,8 @@ class Service:
             self.reporting.reconcile(c, ctx, candidate["payload"], complete=True)
         if action == "approve" and candidate["object_type"] == "Disclosure":
             self.reporting.validate_disclosure(c, ctx, candidate["payload"])
+        if action == "approve" and candidate["object_type"] in PLANNING_KINDS:
+            self.planning.check_approval(c, ctx, candidate)
         decision_id = str(uuid4())
         now = datetime.now(timezone.utc)
         c.execute(
@@ -749,6 +772,8 @@ class Service:
             )
         if action == "approve" and candidate["object_type"] == "Report":
             self.reporting.bind(c, ctx, candidate, approved)
+        if action == "approve" and candidate["object_type"] in PLANNING_KINDS:
+            self.planning.record_approval(c, ctx, candidate, approved, row)
         return write(c, ctx, "Workflow", workflow, state, row, track_author=False)
 
     def calculate(self, c, ctx, indicator, data, correlation=None):

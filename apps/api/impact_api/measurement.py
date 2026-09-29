@@ -403,6 +403,8 @@ class Measurement:
                         "RestatementRequest",
                         "Report",
                         "Disclosure",
+                        "Framework",
+                        "Target",
                     }
                     or not route
                     or not scopes(c, ctx, route + ".read", row["object_id"])
@@ -424,6 +426,8 @@ class Measurement:
                             target_route + ".read",
                         )
                     )
+                if row["object_type"] in {"Framework", "Target"}:
+                    result.update(self.service.planning.candidate_context(c, ctx, row))
                 if row["object_type"] in {"PeriodClose", "RestatementRequest"}:
                     result["current_target"] = envelope(
                         load(c, ctx, row["payload"]["period_id"], "Period", "periods.read")

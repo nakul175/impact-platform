@@ -13,6 +13,13 @@ runner stops the API and starts a fresh process against the same database betwee
 of qualification/test_native_restart.py (--skip-restart-check), runs scripts/restore_drill.py on
 the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
 fresh one (--skip-upgrade-check); all three merge into docs/evidence/native-qualification.json.
+
+With --idp keycloak (test mode and the idp-browser mode) the runner starts the pinned Keycloak of
+scripts/idp.py on an OS-chosen loopback port after the migrations, bootstraps the API for that live
+provider (dev_auth off, discovery endpoints, required ACR) with the fixture identities re-pointed
+to the realm's issuer, and stops Keycloak on exit. The test mode then runs
+qualification/test_live_idp.py (or --pytest-path) and writes docs/evidence/idp-tests.xml and
+docs/evidence/idp-qualification.json; it never touches application-tests.xml.
 """
 
 import argparse
@@ -36,6 +43,7 @@ from bootstrap import bootstrap
 from fixture_support import FIXTURE_EXPIRES_AT, fixture_days_remaining
 from provision_logins import LOGINS, login_dsn, passwords_from_env, provision
 import migrate
+import idp as identity_provider
 
 ROOT = Path(__file__).resolve().parents[1]
 # The documented development port; the test and browser runners let the operating system choose.
@@ -56,7 +64,10 @@ BROWSER_MODES = {
     "bootstrap-browser": "bootstrap-check.mjs",
     "recovery-browser": "recovery-check.mjs",
     "renewal-browser": "renewal-check.mjs",
+    "idp-browser": "idp-check.mjs",
 }
+# Browser modes that sign in through the live provider rather than the development login.
+IDP_ONLY_MODES = {"idp-browser"}
 
 
 def now():
@@ -276,6 +287,52 @@ def junit_summary(path):
     }
 
 
+def junit_cases(path):
+    """Each test case of a JUnit file as {name, outcome, seconds}."""
+    cases = []
+    for case in ElementTree.parse(path).getroot().iter("testcase"):
+        outcome = "passed"
+        for tag in ["failure", "error", "skipped"]:
+            if case.find(tag) is not None:
+                outcome = {"failure": "failed", "error": "error", "skipped": "skipped"}[tag]
+        cases.append({"name": case.get("name"), "outcome": outcome, "seconds": float(case.get("time", 0))})
+    return cases
+
+
+def write_idp_evidence(evidence, idp, targets, junit, code, seconds):
+    """docs/evidence/idp-qualification.json: provider version, realm, checks and timings. It names
+    no credential, secret or token; the issuer port is the one the operating system chose."""
+    evidence.update(
+        finished_at=now(),
+        identity_provider={
+            "product": "Keycloak",
+            "version": idp["keycloak_version"],
+            "distribution_sha256": idp["keycloak_sha256"],
+            "realm": idp["realm"],
+            "realm_source": "tools/idp/qualification-realm.json (derived from "
+            + "specification/environment/keycloak-dev-realm.json)",
+            "foreign_realm": idp["foreign_realm"],
+            "client_id": idp["client_id"],
+            "audience": idp["audience"],
+            "required_acr": idp["required_acr"],
+            "database": "dev-mem (in-memory H2)",
+            "ready_seconds": idp["ready_seconds"],
+            "imported_seconds": idp["imported_seconds"],
+        },
+        tests={
+            "junit": str(junit.relative_to(ROOT)),
+            "targets": targets,
+            "exit_code": code,
+            "duration_seconds": round(seconds, 1),
+            **junit_summary(junit),
+        },
+        checks=junit_cases(junit),
+    )
+    report = ROOT / "docs/evidence/idp-qualification.json"
+    report.write_text(json.dumps(evidence, indent=2, default=str) + "\n")
+    print("Identity-provider evidence: " + str(report.relative_to(ROOT)))
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", choices=["dev", "check", "test", *BROWSER_MODES])
@@ -305,7 +362,16 @@ def main():
         action="store_true",
         help="Native test mode: do not run scripts/restore_drill.py on the suite database afterwards",
     )
+    parser.add_argument(
+        "--idp",
+        choices=["keycloak"],
+        help="Test or idp-browser mode: qualify against a live Keycloak instead of the development login",
+    )
     args = parser.parse_args()
+    if args.idp and (args.mode not in {"test", *IDP_ONLY_MODES} or args.native):
+        parser.error("--idp keycloak is available in test and idp-browser modes on PGlite")
+    if args.mode in IDP_ONLY_MODES and not args.idp:
+        parser.error(args.mode + " needs --idp keycloak")
     preflight_fixture()
     local = ROOT / ".local" / ("dev" if args.mode == "dev" else "test-" + str(uuid.uuid4())[:8])
     local.mkdir(parents=True, exist_ok=True)
@@ -321,6 +387,7 @@ def main():
     )
     services = []
     evidence = {"started_at": now()}
+    keycloak = None
 
     def stop(*_):
         for p in reversed(services):
@@ -334,6 +401,7 @@ def main():
 
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
     try:
+        idp_details = None
         db = None
         if args.native:
             if args.mode == "dev" or not env.get("IMPACT_FIXTURE_DSN"):
@@ -382,8 +450,13 @@ def main():
             env.update(IMPACT_FIXTURE_DSN=dsn, IMPACT_MIGRATION_DSN=dsn)
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migrate.run(dsn, dsn, fixture=args.mode != "dev", fixture_if_empty=args.mode == "dev")
+        if args.idp:
+            keycloak, idp_details = identity_provider.start(
+                local, "http://127.0.0.1:" + str(os.environ.get("IMPACT_PORT", "8000"))
+            )
+            env.update(IMPACT_IDP="keycloak", IMPACT_IDP_FILE=str(local / "idp.json"))
         os.environ.update({k: v for k, v in env.items() if k.startswith("IMPACT_")})
-        config = bootstrap(local)
+        config = bootstrap(local, idp_details)
         env["IMPACT_CONFIG_FILE"] = str(local / "config.json")
         # The API reads its three connection strings from config.json; it inherits neither the
         # privileged connections nor any libpq variable (PGPASSWORD, PGPASSFILE, PGSERVICE,
@@ -400,7 +473,7 @@ def main():
         # Suite-start tokens remain for the reference-v1 suite and the browser tooling; the
         # qualification suite mints its own per-actor tokens (qualification/conftest.py).
         fixture = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text())
-        for actor in fixture["actors"].values():
+        for actor in fixture["actors"].values() if not args.idp else []:
             env[actor["token_env"]] = jwt.encode(
                 {
                     "iss": config["issuer"],
@@ -447,15 +520,25 @@ def main():
             return 0
         if args.mode in BROWSER_MODES:
             return subprocess.call(["node", "tools/browser/" + BROWSER_MODES[args.mode]], cwd=ROOT, env=env)
-        targets = args.pytest_path or [
-            "qualification",
-            "specification/reference-v1/tests/test_smoke.py",
-            "specification/reference-v1/tests/test_integration.py",
-        ]
+        targets = args.pytest_path or (
+            ["qualification/test_live_idp.py"]
+            if args.idp
+            else [
+                "qualification",
+                "specification/reference-v1/tests/test_smoke.py",
+                "specification/reference-v1/tests/test_integration.py",
+            ]
+        )
         junit = (
             ROOT
             / "docs/evidence"
-            / ("native-application-tests.xml" if args.native else "application-tests.xml")
+            / (
+                "idp-tests.xml"
+                if args.idp
+                else "native-application-tests.xml"
+                if args.native
+                else "application-tests.xml"
+            )
         )
         started = time.monotonic()
         code = subprocess.call(
@@ -463,6 +546,9 @@ def main():
             cwd=ROOT,
             env=env,
         )
+        if args.idp:
+            write_idp_evidence(evidence, idp_details, targets, junit, code, time.monotonic() - started)
+            return code
         if not args.native:
             return code
         evidence["tests"] = {
@@ -503,6 +589,8 @@ def main():
         return code
     finally:
         stop()
+        if keycloak is not None:
+            identity_provider.stop(keycloak)
 
 
 if __name__ == "__main__":

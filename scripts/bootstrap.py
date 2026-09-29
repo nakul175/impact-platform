@@ -24,7 +24,14 @@ from bootstrap_platform import provision_platform  # noqa: E402
 from fixture_support import FIXTURE_EXPIRES_AT, FIXTURE_STARTS_AT, fixture_database_allowed  # noqa: E402
 
 
-def bootstrap(local):
+# The issuer the fixture's auth_identity rows carry (specification/fixtures/seed.sql).
+FIXTURE_ISSUER = "http://127.0.0.1:8080/realms/impact-dev"
+
+
+def bootstrap(local, idp=None):
+    """idp: the details scripts/idp.py start() returned; the API is then configured for that live
+    provider (dev_auth off) and the fixture identities whose subjects exist in the qualification
+    realm are re-pointed to its issuer, so each Keycloak user signs in as its fixture actor."""
     if os.environ.get("IMPACT_ALLOW_FIXTURE_LOAD") != "1":
         raise RuntimeError("Explicit local fixture flag is required")
     dsn = os.environ.get(
@@ -161,6 +168,15 @@ def bootstrap(local):
         )
         extra_users = provision(c, fixture)
         provision_platform(c, fixture)
+        if idp:
+            # Keycloak user IDs are the fixture subjects (the realm is derived from the
+            # specification realm), so only the issuer changes; identity IDs, natural persons,
+            # memberships and grants stay exactly as the fixture defines them.
+            subjects = [u["subject"] for u in idp["users"].values()]
+            c.execute(
+                "UPDATE impact.auth_identity SET issuer=%s WHERE issuer=%s AND provider_subject=ANY(%s)",
+                (idp["issuer"], FIXTURE_ISSUER, subjects),
+            )
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
         geography = str(uuid5(NAMESPACE_URL, "impact-measurement:geography:demonstration"))
         if not current(geography):
@@ -211,7 +227,7 @@ def bootstrap(local):
         "identity_dsn": os.environ.get("IMPACT_IDENTITY_DSN", dsn),
         "platform_dsn": os.environ.get("IMPACT_PLATFORM_DSN", dsn),
         "public_origin": "http://127.0.0.1:" + os.environ.get("IMPACT_PORT", "8000"),
-        "issuer": "http://127.0.0.1:8080/realms/impact-dev",
+        "issuer": FIXTURE_ISSUER,
         "client_id": "impact-web",
         "audience": "impact-api",
         "jwks_url": "",
@@ -228,6 +244,20 @@ def bootstrap(local):
         "dev_public_key": str(local / "public.pem"),
         "fixture_id": fixture["fixture_id"],
     }
+    if idp:
+        config.update(
+            issuer=idp["issuer"],
+            client_id=idp["client_id"],
+            audience=idp["audience"],
+            jwks_url=idp["discovery"]["jwks_uri"],
+            authorization_url=idp["discovery"]["authorization_endpoint"],
+            token_url=idp["discovery"]["token_endpoint"],
+            end_session_url=idp["discovery"]["end_session_endpoint"],
+            required_acr=idp["required_acr"],
+            dev_auth=False,
+            dev_users_file="",
+            dev_public_key="",
+        )
     (local / "config.json").write_text(json.dumps(config, indent=2))
     for path in local.iterdir():
         if path.is_file():

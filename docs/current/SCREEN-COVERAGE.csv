@@ -1,5 +1,5 @@
 Screen,Title,Coverage,Current source or panel,Limits
-UI01,Sign in and recovery,PARTIAL,main.tsx and auth.py,"Local sign-in and OIDC transport; live federation, MFA and actual recovery unqualified"
+UI01,Sign in and recovery,PARTIAL,main.tsx and auth.py,"Local development sign-in; OIDC sign-in with TOTP step-up and sign-out through a live Keycloak 26.7.4 (idp-browser check, v0.15); provider recovery, MFA enrolment completion and the owner's chosen provider unqualified"
 UI02,Tenant switch and profile,PARTIAL,main.tsx and WorkspaceSettings.tsx,"Workspace switching, preferences and own sessions; broader identity lifecycle pending"
 UI03,My work,PARTIAL,WorkCenter.tsx,Recalculation tasks and safe notices; complete assigned work aggregation pending
 UI04,Tenant settings,PARTIAL,TenantLifecycle.tsx and WorkspaceSettings.tsx,Managed-tenant lifecycle and workspace administration; full policy editing pending

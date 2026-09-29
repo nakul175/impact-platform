@@ -1,6 +1,6 @@
 # Current implemented API inventory
 
-Build 0.14.0 (no operation added or changed since 0.13.0). Domain and control-plane operations are distinct. Authentication and health supplements are listed in ../API-INVENTORY.md and ../IMPLEMENTATION.md. No broad-design operation is implied by this inventory.
+Build 0.15.0 (no operation added or changed since 0.13.0; `access-policy.json` lost the orphan design row `create_organisation_units`, whose path is served by `create_organisation_unit`, leaving 305 policy rows and 218 capabilities). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"). Build 0.15.0 adds one such route, `POST /auth/backchannel-logout` (live provider only; 404 otherwise), and `POST /auth/logout` now also returns `logout_url`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
 
 ## Domain API
 

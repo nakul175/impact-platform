@@ -435,7 +435,6 @@ class Auth:
                 auth=(self.s.client_id, self.s.client_secret) if self.s.client_secret else None,
                 timeout=8,
                 follow_redirects=False,
-                trust_env=False,
             )
             response.raise_for_status()
             id_token = response.json()["id_token"]

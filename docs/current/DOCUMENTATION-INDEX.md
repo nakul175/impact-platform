@@ -1,6 +1,6 @@
 # Impact Platform documentation index
 
-Edition **1.1**, 27 September 2026. Reconciled to application **0.12.0**, domain API **1.10.0**, platform API **1.2.0** and schema **15**. Build **0.13.0** (28 September 2026; schema **16**, platform API **1.3.0**) is recorded in [RELEASE-0.13.md](../RELEASE-0.13.md); the Markdown reading copies, guides, registers and inventories below are updated to it, while the Word and workbook editable copies remain at edition 1.1. The sequenced plan for the remaining work is [DELIVERY-PLAN.md](../DELIVERY-PLAN.md).
+Edition **1.1**, 27 September 2026. Reconciled to application **0.12.0**, domain API **1.10.0**, platform API **1.2.0** and schema **15**. Build **0.13.0** (28 September 2026; schema **16**, platform API **1.3.0**) is recorded in [RELEASE-0.13.md](../RELEASE-0.13.md) and build **0.14.0** (28–29 September 2026; native PostgreSQL qualification; schema and both APIs unchanged) in [RELEASE-0.14.md](../RELEASE-0.14.md); the Markdown reading copies, guides, registers and inventories below are updated to build 0.14.0, while the Word and workbook editable copies remain at edition 1.1. The sequenced plan for the remaining work is [DELIVERY-PLAN.md](../DELIVERY-PLAN.md).
 
 This set describes the full target product and the current development implementation. Requirements and acceptance conditions are retained; current implementation profiles identify delivered subsets and limitations. The original editions are in [history/v1.0](../history/v1.0/).
 
@@ -46,16 +46,16 @@ Each Word document has a Markdown reading copy for GitHub. The editable Word fil
 | [Screen coverage](SCREEN-COVERAGE.csv) | Every screen (34 baseline and UI35 authority renewal) mapped to current support and limits. |
 | [Test catalogue](Impact-Management-Test-Catalogue-v1.1.xlsx) | All 825 baseline cases, scenarios, fixtures and 307 requirement links, with current execution evidence. |
 | [Implementation register](Impact-Management-Implementation-Register-v1.1.xlsx) | Requirements, foundations, packages, contracts, roles, threats, screens, release gates and deployment inputs. |
-| [Execution register](EXECUTION-REGISTER.csv) | 353 application and 91 browser case identities; one reference-run row represents 143 assertions. |
+| [Execution register](EXECUTION-REGISTER.csv) | 381 application case identities (354 executed on PGlite on 28 September 2026 and 27 native-only cases executed on PostgreSQL 16.13 on 29 September 2026) and 91 browser case identities; one reference-run row represents 143 assertions. |
 | [API inventory](CURRENT-API-INVENTORY.md) | Exact 138 domain and 28 platform operations. Authentication and health routes are separately listed in the implementation record. |
 | [Data dictionary and migration ledger](CURRENT-DATA-DICTIONARY.md) | Exact SQL for all 16 migrations and their checksums; JSON payload contracts remain in source. |
 | [Data governance](DATA-GOVERNANCE.md) | Data classes, implemented boundaries and unresolved policy decisions. |
 
 ## Status and acceptance
 
-The ledger has **74 PARTIAL**, **233 PENDING** and **0 fully accepted** requirements. The workbook records 29 exact integration/smoke passes, one blocked offline case, 176 cases with partial supporting coverage and 619 not run as full product cases. Those 29 passes already belong to the 325 application checks; they are not additional executions.
+The ledger has **76 PARTIAL**, **231 PENDING** and **0 fully accepted** requirements (build 0.14.0, assessed 29 September 2026). The workbook records 29 exact integration/smoke passes, one blocked offline case, 176 cases with partial supporting coverage and 619 not run as full product cases. Those 29 passes already belong to the application checks (325 at edition 1.1; 354 on PGlite and 379 on native PostgreSQL at build 0.14.0); they are not additional executions.
 
-The recorded runs used fresh in-memory PGlite and local identity/assurance. Native PostgreSQL, live providers, production operations, full UAT and formal approvals remain open. This edition adds no fabricated signoffs or test results. The baseline R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap.
+The recorded runs used fresh in-memory PGlite and local identity/assurance, and since build 0.14.0 also single-node native PostgreSQL (16.13 locally, 17.11 in CI) with separately provisioned login roles, an API restart check, a CI-scale restore drill and a schema-15 upgrade check. A connection pooler, database restart persistence, a backup regime, live providers, production operations, full UAT and formal approvals remain open. This edition adds no fabricated signoffs or test results. The baseline R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap.
 
 ## Governance and maintenance
 
@@ -63,6 +63,6 @@ The functional baseline defines the required outcome; the implementation profile
 
 For each delivery, update the requirement ledger, implemented OpenAPI contracts, migration inventory, current implementation profile, user/admin workflow instructions, screen coverage, exact test evidence and release decision together. Preserve historical run dates, migration bytes and requirement IDs. A named reviewer and approval date must be supplied by the actual accountable person.
 
-Required release records still to be completed include sponsor/UAT approval, named ownership/RACI, environment-specific data/privacy decisions, native database and live identity qualification, performance/accessibility/security assessments, backup/restore and incident drills, deployment/rollback evidence and the final release signoff. [Release acceptance](RELEASE-ACCEPTANCE.md) assigns role-level accountability and evidence expectations; it does not invent the missing results.
+Required release records still to be completed include sponsor/UAT approval, named ownership/RACI, environment-specific data/privacy decisions, the remaining native database qualification (pooling, database restart, scale) and live identity qualification, performance/accessibility/security assessments, backup and incident drills on a deployed environment (the CI-scale restore drill is recorded but is not one), deployment/rollback evidence and the final release signoff. [Release acceptance](RELEASE-ACCEPTANCE.md) assigns role-level accountability and evidence expectations; it does not invent the missing results.
 
 See [change record](CHANGELOG.md), [documentation verification](DOCUMENTATION-QA.md) and [open next-delivery work](../NEXT-DELIVERY.md).

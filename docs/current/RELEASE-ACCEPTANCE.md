@@ -1,15 +1,16 @@
 # Impact Platform release acceptance record
 
-Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15; the counts below are updated to the build 0.13.0 run of 28 September 2026 (schema 16). Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
+Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15; the counts below are updated to the build 0.14.0 runs of 28–29 September 2026 (schema 16, unchanged since 0.13.0). Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
 
 ## Recorded development evidence
 
 | Group | Executed and passed | Boundary |
 | --- | ---: | --- |
-| Application | 353 | Fresh in-memory PGlite, actual HTTP/SQL; one offline test deselected |
+| Application (PGlite) | 354 | Fresh in-memory PGlite, actual HTTP/SQL, 28 September 2026; 27 native-only tests skipped with a stated reason; one offline test deselected |
+| Application (native PostgreSQL) | 379 | PostgreSQL 16.13, single node, API on three provisioned login roles, 29 September 2026; two restart phases executed separately (PASS); one offline test deselected. Restore drill and schema-15 upgrade check PASS; CI job on PostgreSQL 17.11 passed for commit c759e9e |
 | Design reference | 143 | Reference implementation only; product_validated is false |
 | Browser | 91 | Compiled client, nine workflow groups; no uncaught errors in saved runs |
-| Complete requirements accepted | 0 | 74 partial and 233 pending across 307 |
+| Complete requirements accepted | 0 | 76 partial and 231 pending across 307 |
 
 Evidence files remain the original run reports, with their recorded timestamps. The documentation reconciliation does not claim a new application run. These counts overlap the exact 17 integration and 12 smoke cases shown in the test catalogue; do not add those 29 again to the application total.
 
@@ -19,14 +20,14 @@ Evidence files remain the original run reports, with their recorded timestamps. 
 | --- | --- | --- | --- |
 | G01 Requirements | Partial | Full release-assigned outcomes, recovery conditions and reviewed UAT | Product and QA |
 | G02 Contracts | Partial | Complete released-scope DTO, compatibility and policy coverage | API lead |
-| G03 Database | Partial local evidence | Native install/upgrade, real-role topology, concurrency, restart and restore | Database lead |
+| G03 Database | Partial native evidence (v0.14): provisioned login roles, 0015→0016 upgrade on a populated database, raced approvals/replays/close/renewal, API restart, CI-scale restore drill | Database restart persistence, connection pooler, lock order across objects, scale, migrations that rewrite populated tables | Database lead |
 | G04 Identity and access | Partial | Live federation/MFA, actual recovery, provider revocation and departure inventory | Security lead |
 | G05 Measurement | Partial | Full required measure types, golden corpus and reconciliation | Measurement lead |
 | G06 Web | Partial | Full workflows, supported browser/device matrix and accessibility review | Frontend and QA |
 | G07 Android | Pending | Device authority expiry, encryption, account isolation and durable sync | Mobile and QA |
 | G08 Integration | Pending | Qualified providers, scopes, credential rotation, checkpoints and replay | Integration lead |
 | G09 Performance | Pending | Peak/burst/soak and largest-tenant bounds with background work | Platform lead |
-| G10 Recovery | Pending | Measured RPO/RTO, deletion/grant state after restore and failure drills | Platform and privacy |
+| G10 Recovery | Pending (a scripted restore drill exists and ran at CI scale; no backup regime) | Measured RPO/RTO on a deployed environment, deletion/grant state after restore and failure drills | Platform and privacy |
 | G11 Security | Pending independent assessment | Remediated penetration test, dependency/SBOM and deployment control evidence | Security lead |
 | G12 AI | Pending | Actual use-case evaluation, grounding, privacy, injection, confirmation and budget gates | AI and domain leads |
 | G13 Operations | Pending | Named on-call, exercised alerts/runbooks, support custody and production limits | Operations owner |
@@ -45,4 +46,4 @@ Named assignees, reviewers, approval dates and accepted evidence references rema
 
 ## Known limitations and issue handling
 
-The current implementation profile and NEXT-DELIVERY.md remain the detailed backlog. High-impact open boundaries include native database qualification, live identity/MFA, real recovery, authority renewal, closure, external delivery, actual worker effects and the unimplemented product modules. Documentation annotations are not issue closure. New regressions need reproducible steps, expected/actual results, affected build, safe evidence, owner and verification outcome.
+The current implementation profile and NEXT-DELIVERY.md remain the detailed backlog. High-impact open boundaries include the remainder of native database qualification (pooling, database restart, scale), live identity/MFA, real recovery, renewal of expired authority and administrator replacement, closure, external delivery, actual worker effects and the unimplemented product modules. Documentation annotations are not issue closure. New regressions need reproducible steps, expected/actual results, affected build, safe evidence, owner and verification outcome.

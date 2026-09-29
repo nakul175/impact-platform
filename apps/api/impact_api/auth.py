@@ -482,40 +482,26 @@ class Auth:
     def backchannel_logout(self, token):
         """OpenID Connect Back-Channel Logout: a logout token signed by the configured provider for
         this client revokes the platform sessions created from the named provider session (sid,
-        and the subject when present). The signing key is fetched before any transaction."""
+        and the subject when present). Each token (issuer, jti) is accepted once. The signing key
+        is fetched before any transaction."""
         if self.s.dev_auth or not self.jwks:
             unavailable()
-        try:
-            if not isinstance(token, str) or len(token) > 16384:
-                raise ValueError
-            claims = jwt.decode(
-                token,
-                self.jwks.get_signing_key_from_jwt(token).key,
-                algorithms=["RS256"],
-                issuer=self.s.issuer,
-                audience=self.s.client_id,
-                options={"require": ["iat", "iss", "aud", "jti"]},
-                leeway=5,
-            )
-            events = claims.get("events")
-            if (
-                not isinstance(events, dict)
-                or not isinstance(events.get(BACKCHANNEL_LOGOUT_EVENT), dict)
-                or "nonce" in claims
-                or not isinstance(claims["iat"], (int, float))
-                or claims["iat"] < time.time() - LOGOUT_TOKEN_MAX_AGE_SECONDS
-            ):
-                raise ValueError
-            sid, subject = claims.get("sid"), claims.get("sub")
-            # This client registers with session-required back-channel logout, so a token
-            # without a provider session identifier is refused rather than widened to a subject.
-            if not isinstance(sid, str) or not sid or len(sid) > 255:
-                raise ValueError
-            if subject is not None and (not isinstance(subject, str) or not subject or len(subject) > 255):
-                raise ValueError
-        except (jwt.PyJWTError, ValueError, TypeError, KeyError):
-            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None
+        claims = self.logout_claims(token)
+        sid, subject = claims["sid"], claims.get("sub")
         with self.db.transaction(identity=True) as c:
+            # Opportunistic, bounded purge of replay records whose tokens have expired.
+            c.execute(
+                "DELETE FROM impact.oidc_logout_token WHERE ctid IN (SELECT ctid FROM impact.oidc_logout_token WHERE expires_at<now()-interval '5 minutes' LIMIT 100)"
+            )
+            if not c.execute(
+                "INSERT INTO impact.oidc_logout_token(issuer,jti,expires_at) VALUES(%s,%s,%s) ON CONFLICT DO NOTHING RETURNING jti",
+                (
+                    self.s.issuer,
+                    claims["jti"],
+                    datetime.fromtimestamp(claims["exp"], timezone.utc),
+                ),
+            ).fetchone():
+                raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
             rows = c.execute(
                 "UPDATE impact.web_session s SET revoked_at=now() FROM impact.auth_identity i WHERE i.identity_id=s.identity_id AND i.issuer=%s AND s.provider_sid=%s AND (%s::text IS NULL OR i.provider_subject=%s) AND s.revoked_at IS NULL RETURNING s.identity_id,s.session_id",
                 (self.s.issuer, sid, subject, subject),
@@ -528,3 +514,47 @@ class Auth:
         response = JSONResponse({"revoked": len(rows)})
         response.headers["Cache-Control"] = "no-store"
         return response
+
+    def logout_claims(self, token):
+        """The verified claims of a logout token, or VALIDATION_FAILED 400: RS256 signature from the
+        provider JWKS, header typ logout+jwt, issuer, audience = client_id, iat (at most 300 s old),
+        exp, jti, the back-channel event, no nonce, and a provider session identifier."""
+        try:
+            if not isinstance(token, str) or len(token) > 16384:
+                raise ValueError
+            if jwt.get_unverified_header(token).get("typ") != "logout+jwt":
+                raise ValueError
+            claims = jwt.decode(
+                token,
+                self.jwks.get_signing_key_from_jwt(token).key,
+                algorithms=["RS256"],
+                issuer=self.s.issuer,
+                audience=self.s.client_id,
+                options={"require": ["iat", "exp", "iss", "aud", "jti"]},
+                leeway=5,
+            )
+            events = claims.get("events")
+            if (
+                not isinstance(events, dict)
+                or not isinstance(events.get(BACKCHANNEL_LOGOUT_EVENT), dict)
+                or "nonce" in claims
+                or not isinstance(claims["iat"], (int, float))
+                or isinstance(claims["iat"], bool)
+                or claims["iat"] < time.time() - LOGOUT_TOKEN_MAX_AGE_SECONDS
+                or not isinstance(claims["exp"], (int, float))
+                or isinstance(claims["exp"], bool)
+                or not isinstance(claims["jti"], str)
+                or not claims["jti"]
+                or len(claims["jti"]) > 255
+            ):
+                raise ValueError
+            sid, subject = claims.get("sid"), claims.get("sub")
+            # This client registers with session-required back-channel logout, so a token
+            # without a provider session identifier is refused rather than widened to a subject.
+            if not isinstance(sid, str) or not sid or len(sid) > 255:
+                raise ValueError
+            if subject is not None and (not isinstance(subject, str) or not subject or len(subject) > 255):
+                raise ValueError
+            return claims
+        except (jwt.PyJWTError, ValueError, TypeError, KeyError, OverflowError, OSError):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None

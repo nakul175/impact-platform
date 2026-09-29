@@ -10,4 +10,14 @@ ALTER TABLE impact.web_session ADD COLUMN provider_sid varchar(255);
 ALTER TABLE impact.web_session ADD COLUMN provider_logout_hint bytea
  CHECK(octet_length(provider_logout_hint) BETWEEN 29 AND 16412);
 CREATE INDEX web_session_provider_sid ON impact.web_session(provider_sid) WHERE provider_sid IS NOT NULL;
+-- Back-channel logout tokens already accepted, per issuer and jti, until the token expires: a
+-- replayed token is refused. Insert-once (no UPDATE grant); expired rows are purged by the
+-- identity role in bounded batches. Identity table: no tenant_id, reached only via impact_identity.
+CREATE TABLE impact.oidc_logout_token(
+ issuer varchar(512) NOT NULL, jti varchar(255) NOT NULL, expires_at timestamptz NOT NULL,
+ accepted_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(issuer,jti)
+);
+CREATE INDEX oidc_logout_token_expiry ON impact.oidc_logout_token(expires_at);
+GRANT SELECT,INSERT,DELETE ON impact.oidc_logout_token TO impact_identity;
 COMMIT;

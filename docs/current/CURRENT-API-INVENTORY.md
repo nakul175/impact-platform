@@ -1,6 +1,6 @@
 # Current implemented API inventory
 
-Build 0.13.0. Domain and control-plane operations are distinct. Authentication and health supplements are listed in ../API-INVENTORY.md and ../IMPLEMENTATION.md. No broad-design operation is implied by this inventory.
+Build 0.14.0 (no operation added or changed since 0.13.0). Domain and control-plane operations are distinct. Authentication and health supplements are listed in ../API-INVENTORY.md and ../IMPLEMENTATION.md. No broad-design operation is implied by this inventory.
 
 ## Domain API
 

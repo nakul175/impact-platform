@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Build 0.13.0; schema 16. Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.14.0; schema 16 (no migration added since 0.13.0; the sixteen checksums below were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 

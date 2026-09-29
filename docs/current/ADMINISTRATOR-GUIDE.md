@@ -1,6 +1,6 @@
 # Impact Platform administrator guide
 
-This guide describes build 0.13.0. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
+This guide describes build 0.14.0, which changes no administrator workflow; the native PostgreSQL provisioning and guard it adds are operator concerns covered in the operations guide. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
 
 ## Managed tenant onboarding
 

@@ -7,7 +7,7 @@ A working development delivery of the Impact Management platform described in th
 
 This release is a development build. It does not implement the complete enterprise product. The exact boundary and remaining work are documented in [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
 
-Version 0.13 adds reviewed renewal of unexpired delegated authority: the owner proposes an extension, the second administrator confirms it and an independent operator approves it, with revocations preserved and the one-time bootstrap marker untouched. Version 0.12 added recovery-contact nomination, verification, independent approval, replacement/renewal, revocation and expiry checks. All prior capabilities remain included. Release 1 remains incomplete: renewal of expired authority, administrator replacement, external recovery-channel verification, live provider acceptance, full closure and native database qualification remain open. See [0.13 release details](docs/RELEASE-0.13.md), [remaining work](docs/NEXT-DELIVERY.md), the [sequenced delivery plan](docs/DELIVERY-PLAN.md) and the [307-requirement ledger](docs/COMPLETION-LEDGER.md).
+Version 0.14 qualifies the platform on native PostgreSQL: four provisioned login roles instead of one superuser session, a runtime guard that refuses privileged or shared database connections, one migration runner, an API restart persistence check, a backup and restore drill, a populated schema-15 to schema-16 upgrade check, native-only concurrency and login-role tests, a fixture regenerated to expire on 2027-09-01 and per-actor signed test tokens; no contract or schema changed. Version 0.13 added reviewed renewal of unexpired delegated authority; version 0.12 added recovery contacts. All prior capabilities remain included. Release 1 remains incomplete: a live identity provider, workers and email, a deployment with backups and monitoring, renewal of expired authority, administrator replacement, external recovery-channel verification and full closure remain open, and the native evidence is single-node and CI-scale. See [0.14 release details](docs/RELEASE-0.14.md), [remaining work](docs/NEXT-DELIVERY.md), the [sequenced delivery plan](docs/DELIVERY-PLAN.md) and the [307-requirement ledger](docs/COMPLETION-LEDGER.md) (76 PARTIAL, 231 PENDING, 0 accepted).
 
 ## Start locally
 
@@ -21,7 +21,7 @@ make dev
 
 Open **http://127.0.0.1:8000**. The first startup applies sixteen migrations, loads synthetic records and generates local passwords. Find the `author`, `reviewer`, `partner`, `admin`, `owner` and `invitee` passwords in `.local/dev/passwords.json`; they are generated on your machine and are not included in this source archive. Stop with Ctrl+C. Running `make dev` again preserves the development database, passwords and signing secrets. Existing databases receive the additive migrations; they are not reset.
 
-The managed execution filesystem produced intermittent EOF/page-consistency errors with filesystem-backed PGlite. The test runners therefore use disposable memory storage. For a disposable local demonstration use `.venv/bin/python scripts/run.py dev --ephemeral`; records in that mode disappear on shutdown. Native PostgreSQL persistence, upgrade and concurrency qualification remain open.
+The managed execution filesystem produced intermittent EOF/page-consistency errors with filesystem-backed PGlite. The test runners therefore use disposable memory storage. For a disposable local demonstration use `.venv/bin/python scripts/run.py dev --ephemeral`; records in that mode disappear on shutdown. Native PostgreSQL is a separate gate (`make native`, below); persistence across a database restart, a connection pooler and any load profile remain open.
 
 For this increment, sign in as `admin` and open **Workspace settings**. Custom roles do not grant access on creation; use **People & access → Access requests** or submit a group proposal. Sign in separately as `owner` to review a proposal independently. **My account** shows preferences and active sessions. Ownership nomination must originate from the current owner and be accepted by the nominated administrator.
 
@@ -106,11 +106,12 @@ make unit
 make test
 make reference
 make browser
+IMPACT_FIXTURE_DSN=postgresql://postgres:<password>@127.0.0.1:5432/impact_test make native
 ```
 
-`make test` creates a fresh, isolated in-memory fixture and runs unit, live integration, and smoke tests. It does not reset your development workspace. `make browser` installs the Linux browser dependencies and exercises the actual rendered UI. Test configuration and logs stay under `.local/test-*` for diagnosis; disposable database contents are not retained. These directories are excluded from packages.
+`make test` creates a fresh, isolated in-memory fixture on an operating-system-chosen port and runs unit, live integration, and smoke tests; the native-only tests skip there with a stated reason. It does not reset your development workspace. `make browser` installs the Linux browser dependencies and exercises the actual rendered UI. `make native` needs a superuser connection to an empty disposable `impact_test` or `impact_test_<suffix>` database: it provisions the four login roles (`scripts/provision_logins.py`), migrates as `impact_migrator`, runs the whole suite against the API on the app, identity and platform logins with `IMPACT_REQUIRE_UNPRIVILEGED_DB=1`, restarts the API between the two phases of the persistence check, runs the backup and restore drill on that database and the schema-15 upgrade check on a fresh one, and writes `docs/evidence/native-application-tests.xml`, `native-qualification.json` and `native-restore-drill.json`. Test configuration and logs stay under `.local/test-*` for diagnosis; disposable database contents are not retained. These directories are excluded from packages.
 
-Evidence from this build is in [docs/evidence](docs/evidence). Native PostgreSQL qualification is configured in `.github/workflows/qualification.yml` but was **not executed in this environment**. Local PGlite checks do not establish native concurrency, throughput, or operational readiness.
+Evidence from this build is in [docs/evidence](docs/evidence): the PGlite gate of 28 September 2026 (354 passed, 27 native-only skipped, 1 deselected), the nine browser groups of 29 September 2026 (91 checks) and the native run of 29 September 2026 on PostgreSQL 16.13 (379 passed, 2 restart phases run separately, 1 deselected; restart, restore and upgrade checks PASS). The `native-postgresql-gate` job in `.github/workflows/qualification.yml` runs the same sequence against PostgreSQL 17.11. Neither run establishes throughput, behaviour behind a connection pooler, persistence across a database restart or operational readiness.
 
 ## Structure
 
@@ -124,7 +125,7 @@ Evidence from this build is in [docs/evidence](docs/evidence). Native PostgreSQL
 | `specification` | Preserved engineering package, fixtures, reference models and source requirements |
 | `tools/dev-db` | Local PostgreSQL-compatible PGlite process |
 | `tools/browser` | Real-browser qualification and screenshots |
-| `scripts` | Setup support, runners, migration, contract export and packaging |
+| `scripts` | Setup support, runners, the single migration runner, login provisioning, restore drill, upgrade check, fixture redating, contract export and packaging |
 | `docs` | Implementation boundary, qualification results and next delivery tasks |
 
 ## Continue development

@@ -177,3 +177,31 @@ def test_boolean_environment_flags_accept_spellings_and_refuse_the_rest(monkeypa
     path.write_text(json.dumps({**config, "require_unprivileged_db": "1"}))
     with pytest.raises(ValueError, match="must be a JSON boolean"):
         Settings.load()
+
+
+def test_route_missing_from_contract_is_not_found(monkeypatch):
+    """#22: a route present in code but absent from the regenerated contract answers the
+    not-found envelope (RESOURCE_UNAVAILABLE 404) before any database work, not a 503."""
+    import impact_api.service as service
+
+    path = "/v1/tenants/{tenant_id}/programmes"
+    assert "programmes" in service.WRITE_ROUTES and service.request_schema(path, "post")
+    monkeypatch.setattr(
+        service, "SPEC", {**SPEC, "paths": {k: v for k, v in SPEC["paths"].items() if k != path}}
+    )
+    assert service.request_schema(path, "post") is None
+    # No settings or database: reaching either would raise something other than DomainError.
+    unconfigured = service.Service.__new__(service.Service)
+    body = {"operation_id": "00000000-0000-4000-8000-000000000000", "data": {}}
+    with pytest.raises(DomainError) as refused:
+        unconfigured.command(None, "00000000-0000-4000-8000-000000000001", "programmes", body, None)
+    assert refused.value.code == "RESOURCE_UNAVAILABLE" and refused.value.status == 404
+    action = "/v1/tenants/{tenant_id}/programmes/{object_id}/actions/activate"
+    monkeypatch.setattr(
+        service, "SPEC", {**SPEC, "paths": {k: v for k, v in SPEC["paths"].items() if k != action}}
+    )
+    with pytest.raises(DomainError) as refused:
+        unconfigured.command(
+            None, "00000000-0000-4000-8000-000000000001", "programmes", body, None, obj="x", action="activate"
+        )
+    assert refused.value.status == 404

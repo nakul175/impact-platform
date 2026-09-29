@@ -58,6 +58,19 @@ READ_ROUTES = {
     "snapshots",
     *PERIOD_READS,
 }
+
+
+def request_schema(path, method):
+    """The request-body schema name the contract gives this path and method, or None when the
+    contract does not describe it."""
+    try:
+        return SPEC["paths"][path][method]["requestBody"]["content"]["application/json"]["schema"][
+            "$ref"
+        ].split("/")[-1]
+    except (KeyError, TypeError, AttributeError):
+        return None
+
+
 WRITE_ROUTES = {
     "programmes",
     "indicator-definitions",
@@ -375,9 +388,11 @@ class Service:
             + ("/{object_id}" if obj else "")
             + ("/actions/" + action if action else "")
         )
-        contract = SPEC["paths"][path]["post" if action or not obj else "patch"]["requestBody"]["content"][
-            "application/json"
-        ]["schema"]["$ref"].split("/")[-1]
+        contract = request_schema(path, "post" if action or not obj else "patch")
+        if contract is None or op not in OPERATIONS:
+            # A route the code knows but the regenerated contract or policy does not describe is
+            # not served: the same not-found envelope as any other unknown route, never a 503.
+            unavailable()
         validate(contract, body)
         fingerprint = hash_data([op, obj, body])
         now = datetime.now(timezone.utc)

@@ -695,3 +695,20 @@ def test_backchannel_logout_refuses_unverified_tokens(idp):
     ]:
         assert response.status_code == 400, response.text
         assert response.json()["code"] == "VALIDATION_FAILED"
+
+
+def test_backchannel_logout_body_is_bounded(idp):
+    """A chunked body carries no Content-Length for the middleware to check; the route reads at
+    most 16 KiB + 64 bytes and answers 413."""
+
+    def chunks():
+        for _ in range(16):
+            yield b"logout_token=" + b"a" * 4096
+
+    response = httpx.post(
+        idp["origin"] + "/auth/backchannel-logout",
+        content=chunks(),
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        trust_env=False,
+    )
+    assert response.status_code == 413 and response.json()["code"] == "LIMIT_EXCEEDED", response.text

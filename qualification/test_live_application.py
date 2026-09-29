@@ -372,3 +372,15 @@ def test_purpose_restricted_grant_does_not_authorize_general_reads(live):
                 "UPDATE impact.grant_current SET purpose=%s WHERE tenant_id=%s AND object_id=%s",
                 (grant["purpose"], tenant, grant["object_id"]),
             )
+
+
+def test_backchannel_logout_absent_with_development_login(live):
+    """Without a live provider the back-channel logout route does not exist and never reads a body."""
+    response = live.request(
+        "/auth/backchannel-logout",
+        actor=None,
+        method="POST",
+        content=b"logout_token=x",
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    assert response.status_code == 404

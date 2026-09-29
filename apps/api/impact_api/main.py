@@ -24,16 +24,25 @@ from .recovery_contacts import RecoveryContacts
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
+# A logout token is at most 16 KiB (Auth.backchannel_logout); the form adds "logout_token=".
+MAX_LOGOUT_BODY = 16384 + 64
+
+
+async def bounded_body(request, limit):
+    """The request body read chunk by chunk and refused once it exceeds `limit`: the middleware's
+    Content-Length check does not bound a chunked body."""
+    raw = bytearray()
+    async for chunk in request.stream():
+        raw.extend(chunk)
+        if len(raw) > limit:
+            raise DomainError("LIMIT_EXCEEDED", 413)
+    return bytes(raw)
 
 
 async def strict_body(request):
     if request.headers.get("content-type", "").split(";")[0] != "application/json":
         raise DomainError("VALIDATION_FAILED", 415)
-    raw = bytearray()
-    async for chunk in request.stream():
-        raw.extend(chunk)
-        if len(raw) > MAX_BODY:
-            raise DomainError("LIMIT_EXCEEDED", 413)
+    raw = await bounded_body(request, MAX_BODY)
 
     def pairs(items):
         result = {}
@@ -47,7 +56,7 @@ async def strict_body(request):
         raise ValueError
 
     try:
-        data = json.loads(bytes(raw), object_pairs_hook=pairs, parse_constant=constant)
+        data = json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)
         json.dumps(data, ensure_ascii=False).encode("utf-8")
         if not isinstance(data, dict):
             raise ValueError
@@ -285,14 +294,18 @@ def create_app():
     @app.post("/auth/backchannel-logout")
     async def backchannel_logout(request: Request):
         # Server-to-server from the provider: a form body with exactly one logout_token, no
-        # cookie, no Origin; the token signature is the only authentication.
+        # cookie, no Origin; the token signature is the only authentication. Without a live
+        # provider the route does not exist, and the body is never read.
+        if s.dev_auth or not auth.jwks:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
         if (
             request.headers.get("content-type", "").split(";")[0].strip()
             != "application/x-www-form-urlencoded"
         ):
             raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
         try:
-            form = parse_qs((await request.body()).decode("ascii"), strict_parsing=True)
+            raw = await bounded_body(request, MAX_LOGOUT_BODY)
+            form = parse_qs(raw.decode("ascii"), strict_parsing=True)
         except (UnicodeDecodeError, ValueError):
             raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None
         if set(form) != {"logout_token"} or len(form["logout_token"]) != 1:

@@ -1,4 +1,4 @@
-.PHONY: setup dev test native idp unit reference browser lint build package ledger
+.PHONY: setup dev worker test native idp unit reference browser lint build package ledger
 PYTHON ?= python3
 PY = .venv/bin/python
 setup:
@@ -11,6 +11,9 @@ build:
 	npm run build --prefix apps/web
 dev:
 	$(PY) scripts/run.py dev
+# One more outbox worker for a running `make dev` stack (the dev runner starts one already).
+worker:
+	IMPACT_WORKER_CONFIG_FILE=.local/dev/worker.json PYTHONPATH=apps/api $(PY) -m impact_api.worker
 test:
 	$(PY) scripts/run.py test
 # Needs IMPACT_FIXTURE_DSN: a superuser connection to an empty disposable impact_test[_suffix] database.

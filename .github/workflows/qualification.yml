@@ -85,9 +85,9 @@ jobs:
           python-version: '3.12'
       - run: python -m venv .venv
       - run: .venv/bin/pip install -r requirements.lock
-      - name: Generate throwaway passwords for the four runtime logins
+      - name: Generate throwaway passwords for the five runtime logins
         run: |
-          for name in APP IDENTITY PLATFORM MIGRATOR; do
+          for name in APP IDENTITY PLATFORM WORKER MIGRATOR; do
             value=$(python3 -c 'import secrets; print(secrets.token_urlsafe(24))')
             echo "::add-mask::$value"
             echo "IMPACT_LOGIN_PASSWORD_$name=$value" >> "$GITHUB_ENV"

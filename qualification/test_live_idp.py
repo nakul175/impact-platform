@@ -723,3 +723,31 @@ def test_backchannel_logout_body_is_bounded(idp):
         trust_env=False,
     )
     assert response.status_code == 413 and response.json()["code"] == "LIMIT_EXCEEDED", response.text
+
+
+def test_logout_after_idle_timeout_still_clears_the_cookie(idp, browser):
+    """L5: the session has idled out (last activity moved back 16 min); logout answers 200,
+    deletes the cookie and returns the provider logout URL without an ID token hint."""
+    b = browser()
+    b.sign_in("author", strip=("acr_values",))
+    cookie = b.session
+    with db() as c:
+        c.execute(
+            "UPDATE impact.web_session SET last_seen_at=now()-interval '16 minutes' WHERE session_hash=%s",
+            (sha(cookie),),
+        )
+    assert b.get("/auth/me").status_code == 401
+    response = b.post("/auth/logout")
+    assert response.status_code == 200 and response.json()["authenticated"] is False, response.text
+    params = query(response.json()["logout_url"])
+    assert response.json()["logout_url"].startswith(idp["discovery"]["end_session_endpoint"] + "?")
+    assert params == {"client_id": idp["client_id"], "post_logout_redirect_uri": idp["origin"] + "/"}
+    assert b.session is None
+    assert session_row_by(cookie)["revoked_at"] is not None
+    # A bearer request is still refused rather than treated as a dead browser session.
+    assert (
+        httpx.post(
+            idp["origin"] + "/auth/logout", headers={"Authorization": "Bearer x"}, trust_env=False
+        ).status_code
+        == 401
+    )

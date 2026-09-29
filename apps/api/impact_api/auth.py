@@ -458,8 +458,18 @@ class Auth:
     def logout(self, request):
         """Revoke the presented browser session and, with a live provider, return the provider's
         RP-initiated logout URL for the browser to visit (the ID token hint is unsealed with the
-        session cookie). Nothing is sent to the provider from here."""
-        identity = self.resolve(request)
+        session cookie). Nothing is sent to the provider from here.
+
+        A session that is already dead (idle or absolute timeout, revoked, unknown) still gets its
+        cookie deleted and, with a live provider, the logout URL without a hint, so the browser can
+        end the provider session too; this path changes no live session, so it needs no CSRF token.
+        A bearer request and a live session that fails the Origin/CSRF check are refused as before."""
+        try:
+            identity = self.resolve(request)
+        except DomainError as error:
+            if error.code != "AUTH_REQUIRED" or request.headers.get("authorization"):
+                raise
+            return self.expired_logout(request)
         sealed = None
         if identity.session_id:
             with self.db.transaction(identity=True) as c:
@@ -475,6 +485,27 @@ class Auth:
             if hint:
                 params["id_token_hint"] = hint
             url = self.s.end_session_url + "?" + urlencode(params)
+        response = JSONResponse({"authenticated": False, "logout_url": url})
+        response.delete_cookie(self.s.cookie_name, path="/")
+        return response
+
+    def expired_logout(self, request):
+        cookie = request.cookies.get(self.s.cookie_name)
+        if cookie and len(cookie) <= 256:
+            with self.db.transaction(identity=True) as c:
+                c.execute(
+                    "UPDATE impact.web_session SET revoked_at=COALESCE(revoked_at,now()) WHERE session_hash=%s",
+                    (digest(cookie),),
+                )
+        url = None
+        if cookie and not self.s.dev_auth and self.s.end_session_url:
+            url = (
+                self.s.end_session_url
+                + "?"
+                + urlencode(
+                    {"client_id": self.s.client_id, "post_logout_redirect_uri": self.s.public_origin + "/"}
+                )
+            )
         response = JSONResponse({"authenticated": False, "logout_url": url})
         response.delete_cookie(self.s.cookie_name, path="/")
         return response

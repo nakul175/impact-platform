@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta, timezone
 from uuid import NAMESPACE_URL, uuid4, uuid5
 
+from .delivery import enqueue
 from .domain import DomainError, unavailable
 from .store import audit, envelope, load, write
 
@@ -52,6 +53,12 @@ class WorkCenter:
             data["acknowledged_at"] = (
                 acknowledgement["acknowledged_at"].isoformat() if acknowledgement else None
             )
+            delivery = c.execute(
+                "SELECT delivered_at FROM impact.notification_delivery "
+                "WHERE tenant_id=%s AND notification_id=%s AND channel='IN_APP'",
+                (ctx.tenant_id, row["object_id"]),
+            ).fetchone()
+            data["delivered_at"] = delivery["delivered_at"].isoformat() if delivery else None
         else:
             invalidations = c.execute(
                 "SELECT state,result_id,result_revision,indicator_id,period_id,reason_code,"
@@ -123,6 +130,8 @@ class WorkCenter:
             track_author=False,
         )
         audit(c, ctx, "notification.created", notice, correlation)
+        # The notice is visible at once; the worker records its in-app delivery (v0.16).
+        enqueue(c, ctx.tenant_id, "IN_APP_NOTICE", notification_id)
 
     def invalidate(
         self,

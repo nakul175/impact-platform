@@ -54,6 +54,9 @@ class Settings:
     # Refuse superuser, BYPASSRLS or owner database connections outside staging/production too;
     # native qualification sets it so the API runs on the provisioned login roles only.
     require_unprivileged_db: bool = False
+    # Seals delivery addresses in the outbox and keys recovery-channel verification codes (v0.16).
+    # Shared with the worker; empty disables email intents (invitations stay manual-only).
+    delivery_secret: str = ""
 
     @property
     def unprivileged_db_required(self):
@@ -87,6 +90,8 @@ class Settings:
         if s.environment in {"staging", "production"}:
             if len(s.invitation_secret) < 48 or s.invitation_secret == s.cookie_secret:
                 raise ValueError("A separate invitation signing secret is required")
+            if len(s.delivery_secret) < 48 or s.delivery_secret in {s.cookie_secret, s.invitation_secret}:
+                raise ValueError("A separate delivery secret is required")
             if s.dev_auth or s.dev_db_serial or s.fixture_id:
                 raise ValueError("Development settings are forbidden in production")
             if not s.required_acr or len(s.required_acr) > 200:
@@ -97,6 +102,8 @@ class Settings:
                 + ([s.end_session_url] if s.end_session_url else [])
             ):
                 raise ValueError("HTTPS required")
+        if s.delivery_secret and len(s.delivery_secret) < 48:
+            raise ValueError("A delivery secret must be at least 48 characters")
         if s.client_secret and (len(s.client_secret) < 32 or s.dev_auth):
             raise ValueError("A client secret must be at least 32 characters and needs a live provider")
         if not s.dev_auth and s.environment in {"development", "test"} and s.jwks_url:

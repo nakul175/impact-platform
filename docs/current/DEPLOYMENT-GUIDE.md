@@ -115,6 +115,12 @@ cd /opt/impact/repo/deploy
 sudo docker compose -p impact -f compose.yaml --env-file /opt/impact/compose.env exec backup ls -l /backups/daily /backups/weekly
 ```
 
+Take a set of dumps now (for example before a risky change):
+
+```
+sudo docker compose -p impact -f compose.yaml --env-file /opt/impact/compose.env exec backup /bin/bash /opt/backup/backup.sh --now
+```
+
 Restore the application database from a dump (this replaces the live data; stop the application first):
 
 ```
@@ -126,7 +132,7 @@ $C exec backup psql -d postgres -c 'ALTER DATABASE impact RENAME TO impact_old' 
 sudo /opt/impact/repo/deploy/update.sh    # re-grants the logins on the restored database and restarts everything
 ```
 
-The CI job `container-stack` restores the first nightly dump into a scratch database on every run and checks its migrations and operator row. A restore of the live server has not been rehearsed; do it once on purpose before relying on it. Restoring from a DigitalOcean backup replaces the whole droplet (DigitalOcean control panel → Backups → Restore).
+The CI job `container-stack` takes a dump with `--now` after the first sign-in and restores it into a scratch database on every run, checking its migrations and operator row. A restore of the live server has not been rehearsed; do it once on purpose before relying on it. Restoring from a DigitalOcean backup replaces the whole droplet (DigitalOcean control panel → Backups → Restore).
 
 ## 7. Rolling back
 

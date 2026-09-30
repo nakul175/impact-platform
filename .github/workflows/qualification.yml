@@ -219,7 +219,9 @@ jobs:
       - name: The nightly dump exists and restores
         run: |
           compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
+          # The dump taken when the service started predates the operator bootstrap; take one now.
           for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/impact-*.dump' && break; sleep 5; done
+          compose exec -T backup /bin/bash /opt/backup/backup.sh --now
           compose exec -T backup bash -c 'set -e; f=$(ls -t /backups/daily/impact-*.dump | head -1);
             dropdb --if-exists impact_restore_check; createdb impact_restore_check;
             pg_restore --exit-on-error -d impact_restore_check "$f";

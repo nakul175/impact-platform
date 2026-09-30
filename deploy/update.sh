@@ -157,8 +157,9 @@ main() {
   require_root
   umask 077
   mkdir -p "$IMPACT_HOME" "$STATE_DIR" "$STATUS_DIR" "$CA_DIR"
-  chmod 700 "$IMPACT_HOME" "$STATE_DIR" "$CA_DIR"
-  chmod 755 "$STATUS_DIR"
+  chmod 700 "$IMPACT_HOME" "$STATE_DIR"
+  # Public certificates only (CI's internal root); the API container reads them as a non-root user.
+  chmod 755 "$STATUS_DIR" "$CA_DIR"
   exec 9>"$STATE_DIR/update.lock"
   if ! flock -n 9; then
     log "another update is running; nothing to do"
@@ -292,7 +293,6 @@ main() {
     done
     cat "$CA_DIR/caddy-root.crt" /etc/ssl/certs/ca-certificates.crt >"$CA_DIR/bundle.pem" 2>/dev/null ||
       cp "$CA_DIR/caddy-root.crt" "$CA_DIR/bundle.pem"
-    chmod 755 "$CA_DIR"
     chmod 644 "$CA_DIR/bundle.pem" "$CA_DIR/caddy-root.crt"
   fi
 

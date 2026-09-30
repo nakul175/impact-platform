@@ -8,6 +8,8 @@
 #
 # A dump is written to a temporary name and renamed only after pg_restore --list reads it back.
 # One dump is taken at start when none exists for today, so a fresh server has one at once.
+# `backup.sh --now` (through `docker compose exec backup /bin/bash /opt/backup/backup.sh --now`)
+# takes one set of dumps immediately and exits, without touching the running schedule.
 # These dumps sit on the same server; DigitalOcean's daily droplet backups are the off-server copy.
 set -euo pipefail
 
@@ -66,6 +68,10 @@ seconds_until_next_run() {
 }
 
 until pg_isready -q; do sleep 5; done
+if [ "${1:-}" = "--now" ]; then
+  dump_all
+  exit 0
+fi
 if [ ! -e "$ROOT/daily/impact-$(date -u +%Y%m%d).dump" ]; then
   dump_all
 fi

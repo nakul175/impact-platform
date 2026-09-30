@@ -36123,7 +36123,35 @@
             }
           }
         },
-        "x-contract-version": "1.11.0"
+        "x-contract-version": "1.11.0",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          {
+            "name": "period_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
       }
     }
   },
@@ -37430,6 +37458,14 @@
                 "review_date": {
                   "type": "string",
                   "format": "date"
+                },
+                "recorded_by": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "recorded_at": {
+                  "type": "string",
+                  "format": "date-time"
                 }
               },
               "required": [
@@ -38289,15 +38325,16 @@
             "if": {
               "properties": {
                 "value_state": {
-                  "const": "PRESENT"
+                  "not": {
+                    "const": "PRESENT"
+                  }
                 }
               },
               "required": [
                 "value_state"
               ]
             },
-            "then": {},
-            "else": {
+            "then": {
               "properties": {
                 "value": {
                   "type": "null"
@@ -38506,15 +38543,16 @@
             "if": {
               "properties": {
                 "value_state": {
-                  "const": "PRESENT"
+                  "not": {
+                    "const": "PRESENT"
+                  }
                 }
               },
               "required": [
                 "value_state"
               ]
             },
-            "then": {},
-            "else": {
+            "then": {
               "properties": {
                 "value": {
                   "type": "null"
@@ -50171,6 +50209,10 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 64
+          },
+          "framework_revision": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
@@ -55963,6 +56005,14 @@
                         "review_date": {
                           "type": "string",
                           "format": "date"
+                        },
+                        "recorded_by": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "recorded_at": {
+                          "type": "string",
+                          "format": "date-time"
                         }
                       },
                       "required": [
@@ -56106,7 +56156,7 @@
           },
           "rows": {
             "type": "array",
-            "maxItems": 500,
+            "maxItems": 10000,
             "items": {
               "type": "object",
               "additionalProperties": false,
@@ -56455,7 +56505,6 @@
                     "source": {
                       "enum": [
                         "PROGRAMME_SNAPSHOT",
-                        "UNBOUND_SNAPSHOT",
                         "CALCULATION",
                         "NONE"
                       ]
@@ -56559,6 +56608,12 @@
                         "null"
                       ]
                     },
+                    "change_from_baseline_reason": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "reason_code": {
                       "type": [
                         "string",
@@ -56586,12 +56641,20 @@
                 "progress"
               ]
             }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
           }
         },
         "required": [
           "programme_id",
           "framework",
-          "rows"
+          "rows",
+          "next_cursor"
         ]
       }
     }

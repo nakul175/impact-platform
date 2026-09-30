@@ -258,6 +258,11 @@ class PeriodGovernance:
             )
             blockers.extend(entry_blockers)
         targets = self.service.planning.approved_targets(c, ctx, programme_id, period["object_id"])
+        governing = self.service.planning.governing_framework(c, ctx, programme_id, period)
+        pins = {
+            **({"target_versions": targets} if targets else {}),
+            **({"framework_revision": str(governing["framework_revision"])} if governing else {}),
+        }
         core = {
             "period_revision": str(period["head_revision"]),
             "programme_period_state": state["lifecycle_state"],
@@ -272,7 +277,8 @@ class PeriodGovernance:
             "previewed_at": previewed.isoformat(),
             # Approved targets are pinned into the snapshot; a target approved after the preview
             # makes the close request stale. Without targets the fingerprint is unchanged.
-            "fingerprint": hash_data({**core, "target_versions": targets} if targets else core).hex(),
+            # Without targets or a framework the fingerprint is exactly the pre-0.18 one.
+            "fingerprint": hash_data({**core, **pins} if pins else core).hex(),
         }
 
     def close_request(self, c, ctx, period, data):
@@ -494,6 +500,15 @@ class PeriodGovernance:
                     "policy_revision": str(request["head_revision"]),
                     "classification": "INTERNAL",
                     "purpose": "PERIOD_CLOSE",
+                    **(
+                        {"framework_revision": str(governing["framework_revision"])}
+                        if (
+                            governing := self.service.planning.governing_framework(
+                                c, ctx, data["programme_id"], period
+                            )
+                        )
+                        else {}
+                    ),
                 },
                 "locked_at": datetime.now(timezone.utc).isoformat(),
             },

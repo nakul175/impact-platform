@@ -11,8 +11,8 @@ names the approved revision and the revision it supersedes; nothing approved is 
 All writes run inside `Service.command`'s tenant lock and receipt transaction.
 """
 
-from datetime import datetime, timezone
-from decimal import Decimal, ROUND_HALF_UP, localcontext
+from datetime import datetime
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
 
 from .domain import DomainError, decimal_value, stored
 from .store import authorize, context, envelope, load, scopes, write
@@ -140,6 +140,7 @@ def progress(actual, target, baseline, places):
         "displayed_deviation": None,
         "change_from_baseline": None,
         "change_from_baseline_percent": None,
+        "change_from_baseline_reason": None,
         "reason_code": None,
     }
     value = (
@@ -152,9 +153,13 @@ def progress(actual, target, baseline, places):
         if value is not None and baseline and baseline.get("value_state") == "PRESENT":
             base = decimal_value(baseline["value"])
             result["change_from_baseline"] = stored(value - base)
-            result["change_from_baseline_percent"] = (
-                "Undefined" if base == 0 else display((value - base) / abs(base) * 100, 2)
-            )
+            if base <= 0:
+                # A percentage change from a zero or negative baseline needs an approved
+                # interpretation (FR-ANA-003); none exists, so it stays undefined.
+                result["change_from_baseline_percent"] = "Undefined"
+                result["change_from_baseline_reason"] = "NON_POSITIVE_BASELINE"
+            else:
+                result["change_from_baseline_percent"] = display((value - base) / base * 100, 2)
         if value is None:
             result["reason_code"] = "NO_PRESENT_ACTUAL" if actual.get("mode") != "NONE" else "NO_RESULT"
             return result
@@ -189,6 +194,24 @@ def progress(actual, target, baseline, places):
         return result
 
 
+def safe_progress(actual, target, baseline, places):
+    """`progress` for one row of a read model: an arithmetic result outside the NUMERIC(38,12)
+    transport range leaves that row's arithmetic empty with a reason, never failing the read."""
+    try:
+        return progress(actual, target, baseline, places)
+    except (DomainError, InvalidOperation, ArithmeticError):
+        return {
+            "status": "NOT_COMPUTABLE",
+            "attainment_percent": None,
+            "deviation": None,
+            "displayed_deviation": None,
+            "change_from_baseline": None,
+            "change_from_baseline_percent": None,
+            "change_from_baseline_reason": None,
+            "reason_code": "ARITHMETIC_OVERFLOW",
+        }
+
+
 class Planning:
     def __init__(self, service):
         self.service = service
@@ -215,7 +238,9 @@ class Planning:
         return programme
 
     # Frameworks ---------------------------------------------------------------------------------
-    def framework_issues(self, c, ctx, data, owner_id=None):
+    def framework_issues(self, c, ctx, data, owner_id=None, strict=True):
+        """strict (every write): an indicator the actor cannot see is not found. Not strict (the
+        completeness and candidate reads): such an indicator is reported by identifier only."""
         from .service import revision
 
         nodes = data.get("nodes", [])
@@ -224,6 +249,8 @@ class Planning:
         programme_id = data.get("programme_id")
         for node in nodes:
             for indicator in node.get("indicator_ids", []):
+                if not strict and not scopes(c, ctx, "indicator-instances.read", indicator):
+                    continue
                 row = load(c, ctx, indicator, "IndicatorInstance", "indicator-instances.read")
                 if programme_id and row["payload"].get("programme_id") != programme_id:
                     found.append(
@@ -279,8 +306,20 @@ class Planning:
                         )
                     )
         exceptions = {}
+        today = c.execute("SELECT current_date AS today").fetchone()["today"].isoformat()
         for item in data.get("exceptions", []):
             key = (item["object_id"], item["rule"])
+            if item["review_date"] < today:
+                # A lapsed exception no longer accepts its warning; the author renews or resolves it.
+                found.append(
+                    (
+                        "ERROR",
+                        "EXCEPTION_REVIEW_DATE_PASSED",
+                        item["object_id"],
+                        "The exception's review date has passed.",
+                    )
+                )
+                continue
             if key in exceptions:
                 found.append(
                     ("ERROR", "DUPLICATE_EXCEPTION", item["object_id"], "Record one exception per issue.")
@@ -327,6 +366,13 @@ class Planning:
             self.programme(c, ctx, data["programme_id"])
         issues, base, empty = self.framework_issues(c, ctx, data, owner_id)
         structural = [i for i in issues if i["rule"] in STRUCTURAL]
+        lapsed = [i for i in issues if i["rule"] == "EXCEPTION_REVIEW_DATE_PASSED"]
+        if lapsed:
+            raise DomainError(
+                "VALIDATION_FAILED",
+                reason="EXCEPTION_REVIEW_DATE_PASSED",
+                fields=[{"path": "exceptions." + i["object_id"], "message": i["rule"]} for i in lapsed[:20]],
+            )
         if structural:
             raise DomainError(
                 "VALIDATION_FAILED",
@@ -356,7 +402,7 @@ class Planning:
 
     def completeness(self, c, ctx, row):
         data = row["payload"]
-        issues, base, empty = self.framework_issues(c, ctx, data, str(row["owner_id"]))
+        issues, base, empty = self.framework_issues(c, ctx, data, str(row["owner_id"]), strict=False)
         if empty:
             issues.insert(
                 0,
@@ -396,6 +442,30 @@ class Planning:
             "comparison": comparison,
         }
 
+    def stamp_exceptions(self, c, ctx, previous, data):
+        """Server-owned authorship of each documented exception: an unchanged exception keeps who
+        recorded it and when; a new or edited one is recorded by the acting principal at database
+        time. Clients never supply these fields (the draft schema is closed)."""
+        if "exceptions" not in data:
+            return data
+        known = {}
+        for item in (previous or {}).get("exceptions", []):
+            if item.get("recorded_by"):
+                known[(item["object_id"], item["rule"], item["reason"], item["review_date"])] = item
+        now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"].isoformat()
+        stamped = []
+        for item in data["exceptions"]:
+            core = {k: item[k] for k in ["object_id", "rule", "reason", "review_date"]}
+            kept = known.get(tuple(core.values()))
+            stamped.append(
+                {
+                    **core,
+                    "recorded_by": kept["recorded_by"] if kept else ctx.principal_id,
+                    "recorded_at": kept["recorded_at"] if kept else now,
+                }
+            )
+        return {**data, "exceptions": stamped}
+
     # Targets ------------------------------------------------------------------------------------
     def validate_target(self, c, ctx, data, complete=False):
         from .service import revision
@@ -434,6 +504,8 @@ class Planning:
         if basis == "BASELINE" and kind and kind != "VALUE":
             raise DomainError("VALIDATION_FAILED", reason="BASELINE_REQUIRES_VALUE")
         present = data.get("value_state") == "PRESENT"
+        if not present and any(data.get(k) is not None for k in ["value", "low", "high"]):
+            raise DomainError("VALIDATION_FAILED", reason="BLANK_TARGET_HAS_NO_VALUE")
         if kind == "RANGE":
             if data.get("value") is not None:
                 raise DomainError("VALIDATION_FAILED", reason="RANGE_USES_BOUNDS")
@@ -466,9 +538,11 @@ class Planning:
         elif kind and (data.get("milestone_label") is not None or data.get("due_at") is not None):
             raise DomainError("VALIDATION_FAILED", reason="MILESTONE_FIELDS_NOT_ALLOWED")
         superseding = data.get("supersedes_revision")
-        if basis and (basis == "REVISED") != bool(superseding):
+        # REVISED always supersedes an approved target; an approved BASELINE is corrected by a
+        # BASELINE that supersedes it; ORIGINAL never supersedes anything.
+        if basis and ((basis == "REVISED" and not superseding) or (basis == "ORIGINAL" and superseding)):
             raise DomainError("VALIDATION_FAILED", reason="REVISION_BASIS_MISMATCH")
-        if complete and basis == "REVISED" and not str(data.get("reason") or "").strip():
+        if complete and superseding and not str(data.get("reason") or "").strip():
             raise DomainError("VALIDATION_FAILED", reason="REVISION_REASON_REQUIRED")
         if indicator and period and kind and basis:
             target_slot = slot(data)
@@ -539,11 +613,11 @@ class Planning:
 
     def record_approval(self, c, ctx, candidate, approved, workflow):
         payload = candidate["payload"]
-        now = datetime.now(timezone.utc)
+        now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
         if candidate["object_type"] == "Framework":
             current = self.baseline(c, ctx, payload["programme_id"])
             c.execute(
-                "INSERT INTO impact.framework_baseline VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                "INSERT INTO impact.framework_baseline(tenant_id,programme_id,baseline_version,framework_id,framework_revision,supersedes_revision,effective_from,workflow_id,approved_by,approved_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                 (
                     ctx.tenant_id,
                     payload["programme_id"],
@@ -563,7 +637,7 @@ class Planning:
         target_slot = slot(payload)
         current = self.binding(c, ctx, payload["indicator_id"], payload["period_id"], target_slot)
         c.execute(
-            "INSERT INTO impact.target_binding VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            "INSERT INTO impact.target_binding(tenant_id,indicator_id,period_id,slot,binding_version,target_id,target_revision,supersedes_revision,workflow_id,approved_by,approved_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
             (
                 ctx.tenant_id,
                 payload["indicator_id"],
@@ -616,152 +690,187 @@ class Planning:
         ).fetchall()
         return sorted(str(r["target_revision"]) for r in rows)
 
+    def governing_framework(self, c, ctx, programme_id, period):
+        """The approved baseline that governs a period: the latest one whose effective date falls
+        before the period ends. Every row of the register is already committed, so this is the
+        database's current state; a close pins the answer into the snapshot."""
+        return c.execute(
+            "SELECT * FROM impact.framework_baseline WHERE tenant_id=%s AND programme_id=%s AND effective_from<%s ORDER BY baseline_version DESC LIMIT 1",
+            (ctx.tenant_id, str(programme_id), period["payload"]["ends_at"]),
+        ).fetchone()
+
     # Read models --------------------------------------------------------------------------------
-    def read(self, identity, tenant, op, obj):
+    def read(self, identity, tenant, op, obj, limit=50, cursor=None, period_id=None):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, op, obj, hidden=True)
             if op == "framework_completeness":
                 return self.completeness(c, ctx, load(c, ctx, obj, "Framework", "frameworks.read"))
-            return self.targets_vs_actuals(c, ctx, load(c, ctx, obj, "Programme", "programmes.read"))
+            if not 1 <= limit <= 100:
+                raise DomainError("VALIDATION_FAILED")
+            programme = load(c, ctx, obj, "Programme", "programmes.read")
+            period = load(c, ctx, period_id, "Period", "periods.read") if period_id else None
+            bound = self.service.cursor_binding(
+                ctx, "programmes/" + str(obj) + "/targets-vs-actuals?period=" + str(period_id or "")
+            )
+            key = self.service.cursor_key(bound, cursor)
+            result = self.targets_vs_actuals(c, ctx, programme, limit, key, period)
+            last = result.pop("more")
+            if last:
+                result["next_cursor"] = self.service.next_cursor(bound, [last])
+            return result
 
-    def target_view(self, c, ctx, register):
-        if not scopes(c, ctx, "targets.read", register["target_id"]):
-            return None
-        data = c.execute(
-            "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s AND restriction_state='AVAILABLE'",
-            (ctx.tenant_id, register["target_revision"]),
-        ).fetchone()
-        if not data:
-            return None
-        p = data["payload"]
-        return {
-            "target_id": str(register["target_id"]),
-            "revision_id": str(register["target_revision"]),
-            "target_kind": p["target_kind"],
-            "target_basis": p["target_basis"],
-            "direction": p["direction"],
-            "value_state": p["value_state"],
-            "value": p.get("value"),
-            "low": p.get("low"),
-            "high": p.get("high"),
-            "milestone_label": p.get("milestone_label"),
-            "due_at": p.get("due_at"),
-            "binding_version": register["binding_version"],
+    def target_views(self, c, ctx, registers):
+        payloads = {
+            str(r["revision_id"]): r["payload"]
+            for r in c.execute(
+                "SELECT revision_id,payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=ANY(%s::uuid[]) AND restriction_state='AVAILABLE'",
+                (ctx.tenant_id, [str(r["target_revision"]) for r in registers]),
+            ).fetchall()
         }
+        views = {}
+        for register in registers:
+            p = payloads.get(str(register["target_revision"]))
+            if not p or not scopes(c, ctx, "targets.read", register["target_id"]):
+                continue
+            views[(str(register["indicator_id"]), str(register["period_id"]), register["slot"])] = {
+                "target_id": str(register["target_id"]),
+                "revision_id": str(register["target_revision"]),
+                "target_kind": p["target_kind"],
+                "target_basis": p["target_basis"],
+                "direction": p["direction"],
+                "value_state": p["value_state"],
+                "value": p.get("value"),
+                "low": p.get("low"),
+                "high": p.get("high"),
+                "milestone_label": p.get("milestone_label"),
+                "due_at": p.get("due_at"),
+                "binding_version": register["binding_version"],
+            }
+        return views
 
-    def result_actual(self, c, ctx, row, source, snapshot_id=None, stale=False):
-        p = row["payload"]
-        return {
-            "mode": p.get("mode", "PROVISIONAL"),
-            "source": source,
-            "value_state": p["value_state"],
-            "value": p.get("value"),
-            "displayed_value": p.get("displayed_value"),
-            "result_id": str(row["object_id"]),
-            "result_revision": str(row["revision_id"]),
-            "snapshot_id": snapshot_id,
-            "stale": stale,
-        }
-
-    def targets_vs_actuals(self, c, ctx, programme):
-        from .service import revision
+    def targets_vs_actuals(self, c, ctx, programme, limit, key, period):
+        """One page of indicators (keyset on the indicator identifier) with one row per period.
+        OFFICIAL values come only from a snapshot bound to this programme and period
+        (`official_result_snapshot` for this indicator) whose result used the definition revision the
+        instance pins; PROVISIONAL values only from this indicator's own calculations under the same
+        pin. Nothing is attributed through a shared definition."""
+        from .store import visible_sql
 
         pid = str(programme["object_id"])
-        current = self.baseline(c, ctx, pid)
-        framework = None
         baselines = {}
 
         def framework_at(register):
             if not register or not scopes(c, ctx, "frameworks.read", register["framework_id"]):
                 return None
-            key = str(register["framework_revision"])
-            if key not in baselines:
-                payload = revision(c, ctx, key, "Framework", "frameworks.read")["payload"]
-                baselines[key] = {
+            rev = str(register["framework_revision"])
+            if rev not in baselines:
+                payload = c.execute(
+                    "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s",
+                    (ctx.tenant_id, rev),
+                ).fetchone()["payload"]
+                baselines[rev] = {
                     "framework_id": str(register["framework_id"]),
-                    "revision_id": key,
+                    "revision_id": rev,
                     "baseline_version": register["baseline_version"],
                     "effective_from": register["effective_from"].isoformat(),
                     "version_label": payload.get("version_label", ""),
                     "nodes": payload.get("nodes", []),
                 }
-            return baselines[key]
+            return baselines[rev]
 
-        framework = framework_at(current)
-        results_visible = scopes(c, ctx, "calculated-results.read")
-        unbound_results = (
-            c.execute(
-                "SELECT s.object_id AS snapshot_id,v.object_id,v.revision_id,v.payload,d.object_id AS definition_id FROM impact.snapshot_current s JOIN impact.object_registry r ON r.tenant_id=s.tenant_id AND r.object_id=s.object_id CROSS JOIN LATERAL jsonb_array_elements_text(s.result_versions) AS member(revision) JOIN impact.object_revision v ON v.tenant_id=s.tenant_id AND v.revision_id=member.revision::uuid AND v.object_type='CalculatedResult' AND v.restriction_state='AVAILABLE' JOIN impact.object_revision d ON d.tenant_id=v.tenant_id AND d.revision_id=(v.payload->>'indicator_version')::uuid WHERE s.tenant_id=%s AND s.programme_id IS NULL AND r.lifecycle_state='Locked' AND v.payload->>'mode'='OFFICIAL' ORDER BY s.object_id,v.revision_id LIMIT 1000",
-                (ctx.tenant_id,),
-            ).fetchall()
-            if results_visible and scopes(c, ctx, "snapshots.read")
-            else []
-        )
-        indicators = c.execute(
-            "SELECT object_id FROM impact.indicator_instance_current WHERE tenant_id=%s AND programme_id=%s ORDER BY object_id LIMIT %s",
-            (ctx.tenant_id, pid, MAX_INDICATORS + 1),
+        framework = framework_at(self.baseline(c, ctx, pid))
+        predicate, args = visible_sql(ctx, "indicator-instances.read")
+        instances = c.execute(
+            "SELECT r.object_id,v.payload FROM impact.indicator_instance_current i JOIN impact.object_registry r ON r.tenant_id=i.tenant_id AND r.object_id=i.object_id JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE i.tenant_id=%s AND i.programme_id=%s AND r.classification<>'RESTRICTED' AND v.restriction_state='AVAILABLE' AND "
+            + predicate
+            + (" AND r.object_id>%s::uuid" if key else "")
+            + " ORDER BY r.object_id LIMIT %s",
+            [ctx.tenant_id, pid, *args, *([key[0]] if key else []), limit + 1],
         ).fetchall()
-        if len(indicators) > MAX_INDICATORS:
-            raise DomainError("LIMIT_EXCEEDED", 422)
-        rows = []
-        for item in indicators:
-            indicator_id = str(item["object_id"])
-            if not scopes(c, ctx, "indicator-instances.read", indicator_id):
-                continue
-            instance = load(c, ctx, indicator_id, "IndicatorInstance")
-            definition_rev = revision(
-                c,
-                ctx,
-                instance["payload"]["definition_version"],
-                "IndicatorDefinition",
-                "indicator-definitions.read",
-            )
-            definition = definition_rev["payload"]
-            places = definition.get("display_decimals", 2)
-            periods = {
-                str(r["period_id"])
+        more = len(instances) > limit
+        instances = instances[:limit]
+        ids = [str(r["object_id"]) for r in instances]
+        definitions = {
+            str(r["revision_id"]): r
+            for r in c.execute(
+                "SELECT revision_id,object_id,payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=ANY(%s::uuid[]) AND object_type='IndicatorDefinition' AND restriction_state='AVAILABLE'",
+                (ctx.tenant_id, [r["payload"].get("definition_version") for r in instances]),
+            ).fetchall()
+        }
+        # Periods per indicator: the requested one, or those holding targets, results or snapshots.
+        if period:
+            pairs = {(i, str(period["object_id"])) for i in ids}
+        else:
+            pairs = {
+                (str(r["indicator_id"]), str(r["period_id"]))
                 for r in c.execute(
-                    "SELECT period_id FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=%s UNION SELECT period_id FROM impact.result_binding WHERE tenant_id=%s AND indicator_id=%s",
-                    (ctx.tenant_id, indicator_id, ctx.tenant_id, indicator_id),
+                    "SELECT indicator_id,period_id FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=ANY(%s::uuid[]) UNION SELECT indicator_id,period_id FROM impact.result_binding WHERE tenant_id=%s AND indicator_id=ANY(%s::uuid[])",
+                    (ctx.tenant_id, ids, ctx.tenant_id, ids),
                 ).fetchall()
             }
-            # Fixture-era locked snapshots carry no programme; their OFFICIAL results are matched
-            # to this instance through the same governed definition and labelled as unbound.
-            unbound = {}
-            for result in unbound_results:
-                if result["definition_id"] == definition_rev["object_id"] and scopes(
-                    c, ctx, "calculated-results.read", result["object_id"]
-                ):
-                    period = str(result["payload"]["period_id"])
-                    unbound[period] = (result, str(result["snapshot_id"]))
-                    periods.add(period)
-            period_rows = []
-            for period_id in periods:
-                if scopes(c, ctx, "periods.read", period_id):
-                    period_rows.append(load(c, ctx, period_id, "Period"))
-            period_rows.sort(key=lambda r: (r["payload"].get("starts_at", ""), str(r["object_id"])))
-            for period in period_rows[:100]:
-                period_id = str(period["object_id"])
-                state = self.service.periods.state(c, ctx, pid, period_id)
-                snapshot = self.service.periods.latest_snapshot(c, ctx, pid, period_id)
-                registers = []
-                if snapshot:
-                    pinned = load(c, ctx, snapshot["snapshot_id"], "Snapshot")["payload"].get(
-                        "target_versions", []
-                    )
-                    registers = c.execute(
-                        "SELECT * FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=%s AND period_id=%s AND target_revision=ANY(%s::uuid[])",
-                        (ctx.tenant_id, indicator_id, period_id, pinned),
-                    ).fetchall()
-                    governing = self.baseline(c, ctx, pid, at=snapshot["created_at"])
-                else:
-                    registers = c.execute(
-                        "SELECT DISTINCT ON (slot) * FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=%s AND period_id=%s ORDER BY slot,binding_version DESC",
-                        (ctx.tenant_id, indicator_id, period_id),
-                    ).fetchall()
-                    governing = current
-                views = {r["slot"]: self.target_view(c, ctx, r) for r in registers}
+        period_ids = sorted({p for _, p in pairs})
+        periods = {
+            str(r["object_id"]): r
+            for r in c.execute(
+                "SELECT r.object_id,v.payload FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE r.tenant_id=%s AND r.object_id=ANY(%s::uuid[]) AND r.object_type='Period' AND v.restriction_state='AVAILABLE'",
+                (ctx.tenant_id, period_ids),
+            ).fetchall()
+            if scopes(c, ctx, "periods.read", r["object_id"])
+        }
+        states = {p: self.service.periods.state(c, ctx, pid, p) for p in periods}
+        snapshots = {
+            str(r["period_id"]): r
+            for r in c.execute(
+                "SELECT DISTINCT ON (b.period_id) b.period_id,b.snapshot_id,v.payload FROM impact.period_snapshot_binding b JOIN impact.object_revision v ON v.tenant_id=b.tenant_id AND v.revision_id=b.snapshot_revision WHERE b.tenant_id=%s AND b.programme_id=%s AND b.period_id=ANY(%s::uuid[]) ORDER BY b.period_id,b.snapshot_version DESC",
+                (ctx.tenant_id, pid, list(periods)),
+            ).fetchall()
+        }
+        pinned = [t for snap in snapshots.values() for t in snap["payload"].get("target_versions", [])]
+        open_periods = [p for p in periods if p not in snapshots]
+        registers = (
+            c.execute(
+                "SELECT * FROM impact.target_binding WHERE tenant_id=%s AND target_revision=ANY(%s::uuid[]) AND indicator_id=ANY(%s::uuid[])",
+                (ctx.tenant_id, pinned, ids),
+            ).fetchall()
+            + c.execute(
+                "SELECT DISTINCT ON (indicator_id,period_id,slot) * FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=ANY(%s::uuid[]) AND period_id=ANY(%s::uuid[]) ORDER BY indicator_id,period_id,slot,binding_version DESC",
+                (ctx.tenant_id, ids, open_periods),
+            ).fetchall()
+        )
+        views = self.target_views(c, ctx, registers)
+        results_visible = scopes(c, ctx, "calculated-results.read")
+        official, provisional = {}, {}
+        if results_visible:
+            for r in c.execute(
+                "SELECT o.indicator_id,o.period_id,o.snapshot_id,o.result_id AS object_id,o.result_revision AS revision_id,v.payload FROM impact.official_result_snapshot o JOIN impact.object_revision v ON v.tenant_id=o.tenant_id AND v.revision_id=o.result_revision WHERE o.tenant_id=%s AND o.snapshot_id=ANY(%s::uuid[]) AND o.indicator_id=ANY(%s::uuid[]) AND v.restriction_state='AVAILABLE'",
+                (ctx.tenant_id, [str(s["snapshot_id"]) for s in snapshots.values()], ids),
+            ).fetchall():
+                official[(str(r["indicator_id"]), str(r["period_id"]))] = r
+            for r in c.execute(
+                "SELECT DISTINCT ON (b.indicator_id,b.period_id) b.indicator_id,b.period_id,b.result_id FROM impact.result_binding b JOIN impact.object_registry r ON r.tenant_id=b.tenant_id AND r.object_id=b.result_id WHERE b.tenant_id=%s AND b.indicator_id=ANY(%s::uuid[]) AND b.period_id=ANY(%s::uuid[]) AND r.lifecycle_state='Calculated' ORDER BY b.indicator_id,b.period_id,r.created_at DESC,r.object_id DESC",
+                (ctx.tenant_id, ids, open_periods),
+            ).fetchall():
+                provisional[(str(r["indicator_id"]), str(r["period_id"]))] = str(r["result_id"])
+        rows = []
+        for instance in instances:
+            indicator_id = str(instance["object_id"])
+            pin = instance["payload"].get("definition_version")
+            definition_row = definitions.get(str(pin))
+            definition = (
+                definition_row["payload"]
+                if definition_row
+                and scopes(c, ctx, "indicator-definitions.read", definition_row["object_id"])
+                else {}
+            )
+            places = definition.get("display_decimals", 2)
+            mine = sorted(
+                (periods[p] for i, p in pairs if i == indicator_id and p in periods),
+                key=lambda r: (r["payload"].get("starts_at", ""), str(r["object_id"])),
+            )[:100]
+            for period_row in mine:
+                period_id = str(period_row["object_id"])
+                snapshot = snapshots.get(period_id)
                 actual = {
                     "mode": "NONE",
                     "source": "NONE",
@@ -773,64 +882,68 @@ class Planning:
                     "snapshot_id": None,
                     "stale": False,
                 }
-                if results_visible and snapshot:
-                    official = c.execute(
-                        "SELECT o.result_id AS object_id,o.result_revision AS revision_id,v.payload FROM impact.official_result_snapshot o JOIN impact.object_revision v ON v.tenant_id=o.tenant_id AND v.revision_id=o.result_revision WHERE o.tenant_id=%s AND o.snapshot_id=%s AND o.indicator_id=%s AND v.restriction_state='AVAILABLE'",
-                        (ctx.tenant_id, snapshot["snapshot_id"], indicator_id),
-                    ).fetchone()
-                    if official and scopes(c, ctx, "calculated-results.read", official["object_id"]):
-                        actual = self.result_actual(
-                            c, ctx, official, "PROGRAMME_SNAPSHOT", str(snapshot["snapshot_id"])
-                        )
-                elif results_visible and period_id in unbound:
-                    result, snap = unbound[period_id]
-                    actual = self.result_actual(c, ctx, result, "UNBOUND_SNAPSHOT", snap)
-                elif results_visible:
-                    latest = c.execute(
-                        "SELECT b.result_id FROM impact.result_binding b JOIN impact.object_registry r ON r.tenant_id=b.tenant_id AND r.object_id=b.result_id WHERE b.tenant_id=%s AND b.indicator_id=%s AND b.period_id=%s AND r.lifecycle_state='Calculated' ORDER BY r.created_at DESC,r.object_id DESC LIMIT 1",
-                        (ctx.tenant_id, indicator_id, period_id),
-                    ).fetchone()
-                    if latest and scopes(c, ctx, "calculated-results.read", latest["result_id"]):
-                        row = load(c, ctx, latest["result_id"], "CalculatedResult")
-                        shown = self.service.result(c, ctx, row)
-                        actual = self.result_actual(
-                            c,
-                            ctx,
-                            {
-                                "object_id": row["object_id"],
-                                "revision_id": row["head_revision"],
-                                "payload": row["payload"],
-                            },
-                            "CALCULATION",
-                            stale=bool(shown["data"].get("freshness", {}).get("stale")),
-                        )
-                        actual["mode"] = "PROVISIONAL"
-                target = views.get("TARGET")
-                baseline = views.get("BASELINE")
+                found = official.get((indicator_id, period_id)) if snapshot else None
+                if (
+                    found
+                    and found["payload"].get("indicator_version") == pin
+                    and scopes(c, ctx, "calculated-results.read", found["object_id"])
+                ):
+                    actual = self.result_actual(found, "PROGRAMME_SNAPSHOT", str(snapshot["snapshot_id"]))
+                elif not snapshot and (indicator_id, period_id) in provisional:
+                    result_id = provisional[(indicator_id, period_id)]
+                    if scopes(c, ctx, "calculated-results.read", result_id):
+                        row = load(c, ctx, result_id, "CalculatedResult")
+                        if row["payload"].get("indicator_version") == pin:
+                            shown = self.service.result(c, ctx, row)
+                            actual = self.result_actual(
+                                {
+                                    "object_id": row["object_id"],
+                                    "revision_id": row["head_revision"],
+                                    "payload": row["payload"],
+                                },
+                                "CALCULATION",
+                                stale=bool(shown["data"].get("freshness", {}).get("stale")),
+                            )
+                            actual["mode"] = "PROVISIONAL"
+                target = views.get((indicator_id, period_id, "TARGET"))
+                baseline = views.get((indicator_id, period_id, "BASELINE"))
                 milestones = sorted(
-                    (v for k, v in views.items() if k.startswith("MILESTONE:") and v),
+                    (
+                        v
+                        for (i, p, k), v in views.items()
+                        if i == indicator_id and p == period_id and k.startswith("MILESTONE:")
+                    ),
                     key=lambda v: (v["due_at"] or "", v["milestone_label"] or ""),
                 )
-                result = progress(actual, target, baseline, places)
+                result = safe_progress(actual, target, baseline, places)
                 if actual["mode"] == "NONE" and not results_visible:
                     result["reason_code"] = "RESULT_ACCESS_REQUIRED"
+                if snapshot:
+                    governing_revision = (snapshot["payload"].get("policy_context") or {}).get(
+                        "framework_revision"
+                    )
+                    governing = (
+                        c.execute(
+                            "SELECT * FROM impact.framework_baseline WHERE tenant_id=%s AND framework_revision=%s",
+                            (ctx.tenant_id, governing_revision),
+                        ).fetchone()
+                        if governing_revision
+                        else None
+                    )
+                else:
+                    governing = self.governing_framework(c, ctx, pid, period_row)
                 placed = framework_at(governing)
+                applicability = instance["payload"].get("local_applicability")
                 rows.append(
                     {
                         "indicator_id": indicator_id,
-                        "indicator_label": (
-                            definition.get("name", "Indicator")
-                            + (
-                                " · " + instance["payload"]["local_applicability"]
-                                if instance["payload"].get("local_applicability")
-                                else ""
-                            )
-                        ),
+                        "indicator_label": definition.get("name", "Indicator")
+                        + (" · " + applicability if applicability else ""),
                         "unit": definition.get("unit"),
                         "display_decimals": places,
                         "period_id": period_id,
-                        "period_code": period["payload"].get("code"),
-                        "period_state": state["lifecycle_state"],
+                        "period_code": period_row["payload"].get("code"),
+                        "period_state": states[period_id]["lifecycle_state"],
                         "framework_revision": placed["revision_id"] if placed else None,
                         "node_ids": [
                             n["node_id"]
@@ -844,6 +957,24 @@ class Planning:
                         "progress": result,
                     }
                 )
-                if len(rows) > 500:
-                    raise DomainError("LIMIT_EXCEEDED", 422)
-        return {"programme_id": pid, "framework": framework, "rows": rows}
+        return {
+            "programme_id": pid,
+            "framework": framework,
+            "rows": rows,
+            "next_cursor": None,
+            "more": ids[-1] if more else None,
+        }
+
+    def result_actual(self, row, source, snapshot_id=None, stale=False):
+        p = row["payload"]
+        return {
+            "mode": p.get("mode", "PROVISIONAL"),
+            "source": source,
+            "value_state": p["value_state"],
+            "value": p.get("value"),
+            "displayed_value": p.get("displayed_value"),
+            "result_id": str(row["object_id"]),
+            "result_revision": str(row["revision_id"]),
+            "snapshot_id": snapshot_id,
+            "stale": stale,
+        }

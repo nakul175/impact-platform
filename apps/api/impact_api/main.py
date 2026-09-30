@@ -380,9 +380,22 @@ def create_app():
         return service.planning.read(auth.resolve(request), uuid(tenant), "framework_completeness", uuid(obj))
 
     @app.get("/v1/tenants/{tenant}/programmes/{obj}/targets-vs-actuals")
-    def targets_vs_actuals(request: Request, tenant: str, obj: str):
+    def targets_vs_actuals(
+        request: Request,
+        tenant: str,
+        obj: str,
+        limit: int = 50,
+        cursor: str | None = None,
+        period_id: str | None = None,
+    ):
         return service.planning.read(
-            auth.resolve(request), uuid(tenant), "programme_targets_vs_actuals", uuid(obj)
+            auth.resolve(request),
+            uuid(tenant),
+            "programme_targets_vs_actuals",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")

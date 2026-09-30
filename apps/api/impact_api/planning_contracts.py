@@ -55,6 +55,9 @@ def augment(spec, policy):
         },
         ["object_id", "rule", "reason", "review_date"],
     )
+    # Who recorded an exception, and when, is server-owned: present only in stored revisions.
+    recorded = deepcopy(exception)
+    recorded["properties"].update(recorded_by=UUID, recorded_at=DATE)
     framework = {
         "programme_id": UUID,
         "version_label": text_field(64),
@@ -64,8 +67,9 @@ def augment(spec, policy):
         "supersedes_revision": UUID,
         "exceptions": {"type": "array", "items": exception, "maxItems": 500},
     }
-    schemas["FrameworkData"] = closed(deepcopy(framework))
     schemas["FrameworkDraftData"] = closed(deepcopy(framework))
+    framework["exceptions"] = {"type": "array", "items": recorded, "maxItems": 500}
+    schemas["FrameworkData"] = closed(deepcopy(framework))
 
     # Targets, baselines and milestones for one indicator instance in one programme period. The
     # definition revision is pinned by submission (never accepted from a draft command); a blank
@@ -85,10 +89,11 @@ def augment(spec, policy):
         "supersedes_revision": {"type": ["string", "null"], "format": "uuid"},
         "reason": {"type": ["string", "null"], "maxLength": 2000},
     }
+    # A stated non-PRESENT value state carries no value or bounds; a patch that changes only the
+    # value is merged first and the merged record is checked by the service (and the database).
     blank = {
-        "if": {"properties": {"value_state": {"const": "PRESENT"}}, "required": ["value_state"]},
-        "then": {},
-        "else": {
+        "if": {"properties": {"value_state": {"not": {"const": "PRESENT"}}}, "required": ["value_state"]},
+        "then": {
             "properties": {"value": {"type": "null"}, "low": {"type": "null"}, "high": {"type": "null"}}
         },
     }
@@ -119,7 +124,7 @@ def augment(spec, policy):
             "resolver_id": {"type": ["string", "null"], "format": "uuid"},
             "exceptable": {"type": "boolean"},
             "excepted": {"type": "boolean"},
-            "exception": {"oneOf": [{"type": "null"}, exception]},
+            "exception": {"oneOf": [{"type": "null"}, recorded]},
         },
         ["severity", "rule", "object_id", "message", "resolver_id", "exceptable", "excepted"],
     )
@@ -189,7 +194,7 @@ def augment(spec, policy):
             "actual": closed(
                 {
                     "mode": {"enum": ["OFFICIAL", "PROVISIONAL", "NONE"]},
-                    "source": {"enum": ["PROGRAMME_SNAPSHOT", "UNBOUND_SNAPSHOT", "CALCULATION", "NONE"]},
+                    "source": {"enum": ["PROGRAMME_SNAPSHOT", "CALCULATION", "NONE"]},
                     "value_state": {"enum": VALUE_STATES},
                     "value": NULLABLE_DECIMAL,
                     "displayed_value": {"type": ["string", "null"]},
@@ -208,6 +213,7 @@ def augment(spec, policy):
                     "displayed_deviation": {"type": ["string", "null"]},
                     "change_from_baseline": NULLABLE_DECIMAL,
                     "change_from_baseline_percent": {"type": ["string", "null"]},
+                    "change_from_baseline_reason": {"type": ["string", "null"]},
                     "reason_code": {"type": ["string", "null"]},
                 },
                 ["status", "attainment_percent", "deviation", "reason_code"],
@@ -247,9 +253,11 @@ def augment(spec, policy):
                     ),
                 ]
             },
-            "rows": {"type": "array", "maxItems": 500, "items": row},
+            # One page of at most 100 indicators with at most 100 periods each.
+            "rows": {"type": "array", "maxItems": 10000, "items": row},
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
         },
-        ["programme_id", "framework", "rows"],
+        ["programme_id", "framework", "rows", "next_cursor"],
     )
 
     for route, (op, cap, schema) in SPECIAL_READS.items():
@@ -265,6 +273,16 @@ def augment(spec, policy):
             summary=op.replace("_", " "),
             **{"x-capability": cap, "x-contract-version": VERSION},
         )
+        if base == "programmes":
+            entry["parameters"] = [
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50},
+                },
+                {"name": "cursor", "in": "query", "schema": {"type": "string", "maxLength": 4096}},
+                {"name": "period_id", "in": "query", "schema": UUID},
+            ]
         paths[prefix + route] = {"parameters": template["parameters"], "get": entry}
         policy["operations"] = [p for p in policy["operations"] if p["operation_id"] != op]
         policy["operations"].append(
@@ -280,6 +298,8 @@ def augment(spec, policy):
             }
         )
 
+    # The framework baseline governing a closed period, pinned at close when one exists.
+    schemas["PolicyContext"]["properties"]["framework_revision"] = UUID
     candidate = schemas["ReviewCandidate"]["properties"]
     for kind in ["Framework", "Target"]:
         if kind not in candidate["kind"]["enum"]:

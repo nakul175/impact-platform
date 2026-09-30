@@ -270,6 +270,27 @@ class Service:
         mac = hmac.new(self.s.cookie_secret.encode(), raw, hashlib.sha256).hexdigest()
         return raw.decode() + "." + mac
 
+    def cursor_key(self, bound, cursor):
+        """The keyset position of a signed cursor, or None; a cursor that is forged, expired or bound
+        to another tenant, principal, visibility or route is INVALID_CURSOR."""
+        if not cursor:
+            return None
+        try:
+            raw, mac = cursor.split(".")
+            if len(cursor) > 4096 or not hmac.compare_digest(
+                mac, hmac.new(self.s.cookie_secret.encode(), raw.encode(), hashlib.sha256).hexdigest()
+            ):
+                raise ValueError
+            data = json.loads(base64.urlsafe_b64decode(raw + "=" * ((-len(raw)) % 4)))
+            if data["binding"] != bound or data["expires"] < time.time():
+                raise ValueError
+            return data["key"]
+        except (ValueError, KeyError, TypeError):
+            raise DomainError("INVALID_CURSOR", 400) from None
+
+    def next_cursor(self, bound, key):
+        return self.cursor({"binding": bound, "expires": int(time.time()) + 900, "key": key})
+
     def listing(self, identity, tenant, route, limit=50, cursor=None):
         if route not in READ_ROUTES:
             unavailable()
@@ -281,20 +302,7 @@ class Service:
             if not any(g["capability"] == cap and g["purpose"] is None for g in ctx.grants):
                 raise DomainError("POLICY_DENIED", 403)
             bound = self.cursor_binding(ctx, route)
-            key = None
-            if cursor:
-                try:
-                    raw, mac = cursor.split(".")
-                    if len(cursor) > 4096 or not hmac.compare_digest(
-                        mac, hmac.new(self.s.cookie_secret.encode(), raw.encode(), hashlib.sha256).hexdigest()
-                    ):
-                        raise ValueError
-                    data = json.loads(base64.urlsafe_b64decode(raw + "=" * ((-len(raw)) % 4)))
-                    if data["binding"] != bound or data["expires"] < time.time():
-                        raise ValueError
-                    key = data["key"]
-                except (ValueError, KeyError, TypeError):
-                    raise DomainError("INVALID_CURSOR", 400) from None
+            key = self.cursor_key(bound, cursor)
             predicate, args = visible_sql(ctx, cap)
             personal, personal_args = self.work.listing_filter(route, ctx)
             q = (
@@ -476,6 +484,10 @@ class Service:
                 if kind == "Target":
                     # Pinned again by the next submission; never carried into an edited draft.
                     data.pop("indicator_version", None)
+                if kind == "Framework":
+                    data = self.planning.stamp_exceptions(
+                        c, ctx, previous["payload"] if previous else None, data
+                    )
                 self.validate_data(
                     c, ctx, kind, data, str(previous["owner_id"]) if previous else ctx.principal_id
                 )

@@ -3,7 +3,7 @@
 import uuid
 
 import pytest
-from impact_api.planning import progress, slot, structure_issues
+from impact_api.planning import progress, safe_progress, slot, structure_issues
 
 
 def actual(value, state="PRESENT"):
@@ -36,6 +36,29 @@ def test_zero_target_and_zero_baseline_are_undefined_not_divided():
     result = progress(actual("5"), goal("0"), goal("0", target_basis="BASELINE"), 0)
     assert result["attainment_percent"] == "Undefined" and result["reason_code"] == "ZERO_TARGET"
     assert result["change_from_baseline"] == "5" and result["change_from_baseline_percent"] == "Undefined"
+    assert result["change_from_baseline_reason"] == "NON_POSITIVE_BASELINE"
+
+
+def test_negative_baseline_has_no_percentage_change():
+    # M3: a percentage change from a negative baseline needs an approved interpretation.
+    result = progress(actual("5"), goal("10"), goal("-4", target_basis="BASELINE"), 0)
+    assert result["change_from_baseline"] == "9"
+    assert result["change_from_baseline_percent"] == "Undefined"
+    assert result["change_from_baseline_reason"] == "NON_POSITIVE_BASELINE"
+    positive = progress(actual("15"), goal("10"), goal("10", target_basis="BASELINE"), 0)
+    assert (
+        positive["change_from_baseline_percent"] == "50.00"
+        and positive["change_from_baseline_reason"] is None
+    )
+
+
+def test_overflow_empties_one_row_not_the_read():
+    # L1: the reviewer's values, a deviation beyond NUMERIC(38,12).
+    big = "99999999999999999999999999.999999999999"
+    result = safe_progress(actual(big), goal("-" + big), None, 2)
+    assert result["status"] == "NOT_COMPUTABLE" and result["reason_code"] == "ARITHMETIC_OVERFLOW"
+    assert result["deviation"] is None and result["attainment_percent"] is None
+    assert safe_progress(actual("120"), goal("100"), None, 0)["attainment_percent"] == "120.00"
 
 
 def test_range_bounds_are_inclusive():

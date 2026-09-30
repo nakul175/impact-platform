@@ -2,10 +2,14 @@
 # ruff: noqa: F811
 
 from decimal import Decimal
+import json
 import os
 import uuid
+from urllib.parse import quote
 
+import psycopg
 import pytest
+from psycopg.types.json import Jsonb
 from test_live_application import cmd, expect
 from test_measurement import setup, get, create, action, submit, approve, observation, result  # noqa: F401
 from test_period_governance import complete_period, request_close
@@ -30,6 +34,18 @@ def nodes(owner, indicator=None):
         }
         for i, level in enumerate(levels)
     ]
+
+
+def content(data):
+    """A stored framework payload as a draft command may carry it: exception authorship is
+    server-owned and never sent."""
+    return {
+        **data,
+        "exceptions": [
+            {k: e[k] for k in ["object_id", "rule", "reason", "review_date"]}
+            for e in data.get("exceptions", [])
+        ],
+    }
 
 
 def exceptions(items, *rules):
@@ -192,7 +208,7 @@ def test_framework_draft_review_baseline_and_child_version(live, setup):
         live,
         "frameworks",
         {
-            **first["data"],
+            **content(first["data"]),
             "version_label": "July revision",
             "nodes": revised_nodes,
             "supersedes_revision": first["revision_id"],
@@ -377,7 +393,7 @@ def test_unmeasured_output_blocks_submission_until_documented_exception(live, se
         live,
         "frameworks",
         {
-            **approved_row["data"],
+            **content(approved_row["data"]),
             "nodes": placed,
             "exceptions": documented,
             "supersedes_revision": approved_row["revision_id"],
@@ -386,7 +402,7 @@ def test_unmeasured_output_blocks_submission_until_documented_exception(live, se
     )
     second, _ = approved(live, "frameworks", child)
     grandchild = {
-        **second["data"],
+        **content(second["data"]),
         "nodes": [
             {**n, "parent_node_id": placed[1]["node_id"]} if n["node_id"] == placed[3]["node_id"] else n
             for n in second["data"]["nodes"]
@@ -398,7 +414,7 @@ def test_unmeasured_output_blocks_submission_until_documented_exception(live, se
     failure(post(live, "frameworks", grandchild), 422, "NODE_REFERENCED")
     # A draft built on a superseded baseline is stale.
     stale_child = {
-        **approved_row["data"],
+        **content(approved_row["data"]),
         "supersedes_revision": approved_row["revision_id"],
         "effective_from": "2026-06-01T00:00:00Z",
     }
@@ -546,6 +562,7 @@ def test_targets_baselines_milestones_and_provisional_progress(live, setup):
         "displayed_deviation": "-10",
         "change_from_baseline": "20",
         "change_from_baseline_percent": "200.00",
+        "change_from_baseline_reason": None,
         "reason_code": None,
     }
 
@@ -590,6 +607,12 @@ def test_blank_target_stays_blank_and_decimals_round_trip(live, setup):
         ),
         422,
     )
+    # A value alone merged into a blank target is refused (merged-record schema), never stored as zero.
+    refused = failure(
+        post(live, "targets", {"value": "0"}, revision=blank["revision_id"], obj=blank["object_id"]),
+        422,
+    )
+    assert refused["field_errors"][0]["path"] == "value"
     blank, _ = approved(live, "targets", blank)
     assert blank["data"]["value"] is None and blank["data"]["value_state"] == "MISSING"
     with live.db() as c:
@@ -745,23 +768,429 @@ def test_period_close_pins_targets_and_uses_official_result(live, setup):
     )
 
 
-def test_seeded_official_result_is_shown_without_a_target(live):
-    programme = live.records["programme_a"]["object_id"]
-    view = get(live, "programmes", programme + "/targets-vs-actuals")
-    assert view["framework"] is None
-    row = next(
-        r
-        for r in view["rows"]
-        if r["indicator_id"] == live.records["indicator_a"]["object_id"]
-        and r["period_id"] == live.records["period"]["object_id"]
+def tva(live, programme_id, actor="author", **params):
+    query = "&".join(k + "=" + str(v) for k, v in params.items())
+    return get(
+        live, "programmes", programme_id + "/targets-vs-actuals" + ("?" + query if query else ""), actor=actor
     )
-    assert row["actual"]["mode"] == "OFFICIAL" and row["actual"]["source"] == "UNBOUND_SNAPSHOT"
-    assert row["actual"]["value"] == "46.363636363636" and row["actual"]["displayed_value"] == "46.36"
-    assert row["actual"]["snapshot_id"] == live.records["snapshot"]["object_id"]
-    assert row["target"] is None and row["progress"]["status"] == "NO_TARGET"
-    # Without calculated-results.read the actual is withheld, not zero.
-    view = get(live, "programmes", programme + "/targets-vs-actuals", actor="partner")
-    assert all(r["actual"]["value"] in (None, "46.363636363636") for r in view["rows"])
+
+
+def test_seeded_fixture_official_is_never_attributed(live):
+    """The seeded OFFICIAL 46.36 sits in a fixture snapshot bound to no programme: it is not this
+    programme's snapshot, so the seeded indicator's row reads no official actual."""
+    programme = live.records["programme_a"]["object_id"]
+    view = tva(live, programme, period_id=live.records["period"]["object_id"])
+    assert view["framework"] is None and view["next_cursor"] is None
+    row = next(r for r in view["rows"] if r["indicator_id"] == live.records["indicator_a"]["object_id"])
+    assert row["actual"]["mode"] != "OFFICIAL" and row["actual"]["source"] in {"NONE", "CALCULATION"}
+    if row["actual"]["mode"] == "NONE":
+        assert row["actual"]["value"] is None and row["progress"]["status"] == "NO_ACTUAL"
+    assert all(r["actual"]["value"] != "46.363636363636" for r in view["rows"])
+
+
+def programme_with_calendar(live, title):
+    return create(
+        live,
+        "programmes",
+        {
+            "code": "PRB",
+            "title": title + " " + str(uuid.uuid4())[:8],
+            "programme_type": "Health",
+            "starts_at": "2026-01-01T00:00:00Z",
+            "ends_at": "2027-01-01T00:00:00Z",
+            "reporting_calendar_id": get(live, "reporting-calendars")["items"][0]["object_id"],
+            "geography_id": get(live, "geographies")["items"][0]["object_id"],
+        },
+    )
+
+
+def test_shared_definition_does_not_borrow_another_programmes_official(live):
+    """Reviewer probe (H1): a new programme whose instance pins the seeded definition's current
+    head, with an approved target of 40 in the open period and no data, has no actual."""
+    programme = programme_with_calendar(live, "Probe")
+    definition = get(live, "indicator-definitions", live.records["definition"]["object_id"])
+    assert definition["lifecycle_state"] == "Approved"
+    instance = create(
+        live,
+        "indicator-instances",
+        {
+            "programme_id": programme["object_id"],
+            "definition_version": definition["revision_id"],
+            "local_applicability": "Probe households",
+            "collector_id": live.fixture["actors"]["author"]["principal_id"],
+            "reviewer_id": live.fixture["actors"]["reviewer"]["principal_id"],
+        },
+    )
+    period = get(live, "periods", live.records["period"]["object_id"])
+    approved(live, "targets", target(live, instance, period, value="40"))
+    row = next(
+        r for r in tva(live, programme["object_id"])["rows"] if r["indicator_id"] == instance["object_id"]
+    )
+    assert row["target"]["value"] == "40"
+    assert row["actual"] == {
+        "mode": "NONE",
+        "source": "NONE",
+        "value_state": "MISSING",
+        "value": None,
+        "displayed_value": None,
+        "result_id": None,
+        "result_revision": None,
+        "snapshot_id": None,
+        "stale": False,
+    }
+    assert row["progress"]["status"] == "NO_ACTUAL" and row["progress"]["attainment_percent"] is None
+
+
+def expire_grant(live, actor, capability):
+    """Take one capability from a fixture actor for the duration of a check (restored after)."""
+    principal = live.fixture["actors"][actor]["principal_id"]
+    with live.db() as c:
+        rows = c.execute(
+            "UPDATE impact.grant_current SET expires_at=now()-interval '1 second' WHERE subject_id=%s AND capability=%s RETURNING object_id,expires_at",
+            (principal, capability),
+        ).fetchall()
+    assert rows, (actor, capability)
+    return principal, capability
+
+
+def restore_grant(live, principal, capability):
+    with live.db() as c:
+        c.execute(
+            "UPDATE impact.grant_current g SET expires_at=(v.payload->>'expires_at')::timestamptz FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE g.subject_id=%s AND g.capability=%s AND r.tenant_id=g.tenant_id AND r.object_id=g.object_id",
+            (principal, capability),
+        )
+
+
+def test_actual_withheld_without_result_access(live, setup):
+    programme, indicator, _, period = setup(False)
+    approved(live, "targets", target(live, indicator, period))
+    held = expire_grant(live, "partner", "calculated-results.read")
+    try:
+        row = next(
+            r
+            for r in tva(live, programme["object_id"], actor="partner")["rows"]
+            if r["indicator_id"] == indicator["object_id"]
+        )
+    finally:
+        restore_grant(live, *held)
+    assert row["actual"]["mode"] == "NONE" and row["actual"]["value"] is None
+    assert row["progress"]["reason_code"] == "RESULT_ACCESS_REQUIRED"
+
+
+def test_targets_vs_actuals_pages_by_indicator(live, setup):
+    """M1: more than 500 potential rows arrive in signed pages of indicators; no total is given."""
+    programme, indicator, _, period = setup(False)
+    author = live.fixture["actors"]["author"]["principal_id"]
+    tenant = live.fixture["tenant_a"]
+    payload = {
+        "programme_id": programme["object_id"],
+        "definition_version": indicator["data"]["definition_version"],
+        "local_applicability": "Bulk village",
+    }
+    with live.db() as c:
+        c.execute(
+            "CREATE TEMP TABLE bulk AS SELECT gen_random_uuid() AS object_id,gen_random_uuid() AS revision_id FROM generate_series(1,501)"
+        )
+        c.execute(
+            "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_at,created_by,updated_at) SELECT %s,object_id,'IndicatorInstance',revision_id,'Draft','INTERNAL',%s,now(),%s,now() FROM bulk",
+            (tenant, author, author),
+        )
+        c.execute(
+            "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,author_id,created_at) SELECT %s,object_id,revision_id,'IndicatorInstance','1.2',%s,sha256(convert_to(%s::text,'UTF8')),%s,now() FROM bulk",
+            (tenant, Jsonb(payload), json.dumps(payload), author),
+        )
+        c.execute(
+            "INSERT INTO impact.indicator_instance_current(tenant_id,object_id,revision_id,programme_id,definition_version,local_applicability) SELECT %s,object_id,revision_id,%s,%s,'Bulk village' FROM bulk",
+            (tenant, programme["object_id"], indicator["data"]["definition_version"]),
+        )
+    seen, cursor, pages = [], None, 0
+    while True:
+        params = {"period_id": period["object_id"], "limit": 100}
+        if cursor:
+            params["cursor"] = quote(cursor, safe="")
+        page = tva(live, programme["object_id"], **params)
+        pages += 1
+        assert len(page["rows"]) <= 100 and "total_rows" not in page
+        seen += [r["indicator_id"] for r in page["rows"]]
+        cursor = page["next_cursor"]
+        if not cursor:
+            break
+    assert pages == 6 and len(seen) == len(set(seen)) == 502 and seen == sorted(seen)
+    assert all(r["actual"]["mode"] == "NONE" for r in page["rows"])
+    first = tva(live, programme["object_id"], period_id=period["object_id"], limit=100)
+    token = quote(first["next_cursor"], safe="")
+    other = setup(False)[0]
+    for path in [
+        programme["object_id"] + "/targets-vs-actuals?cursor=" + token,  # bound to the period filter
+        other["object_id"] + "/targets-vs-actuals?period_id=" + period["object_id"] + "&cursor=" + token,
+        programme["object_id"] + "/targets-vs-actuals?period_id=" + period["object_id"] + "&cursor=x" + token,
+    ]:
+        assert expect(live.request(live.path("programmes", path)), 400)["code"] == "INVALID_CURSOR"
+    response = live.request(
+        live.path("programmes", programme["object_id"])
+        + "/targets-vs-actuals?period_id="
+        + period["object_id"]
+        + "&cursor="
+        + token,
+        actor="reviewer",
+    )
+    assert response.status_code == 400, response.text
+    expect(
+        live.request(live.path("programmes", programme["object_id"]) + "/targets-vs-actuals?limit=101"), 422
+    )
+
+
+def test_approved_baseline_is_corrected_by_a_superseding_baseline(live, setup):
+    """M2: an approved BASELINE is corrected by a BASELINE that supersedes it, with a reason."""
+    _, indicator, _, period = setup(False)
+    first, _ = approved(live, "targets", target(live, indicator, period, value="10", target_basis="BASELINE"))
+    correction = {
+        "target_basis": "BASELINE",
+        "value": "12",
+        "supersedes_revision": first["revision_id"],
+    }
+    unreasoned = target(live, indicator, period, **correction)
+    template = get(live, "workflow-templates")["items"][0]
+    denied = action(
+        live, "targets", unreasoned, "submit", {"workflow_version": template["revision_id"]}, status=422
+    )
+    assert denied["reason_code"] == "REVISION_REASON_REQUIRED"
+    second_child = target(live, indicator, period, **correction, reason="Late census return.")
+    corrected, _ = approved(
+        live, "targets", target(live, indicator, period, **correction, reason="Register re-count.")
+    )
+    assert get(live, "targets", first["object_id"])["lifecycle_state"] == "Superseded"
+    denied = action(
+        live, "targets", second_child, "submit", {"workflow_version": template["revision_id"]}, status=409
+    )
+    assert denied["reason_code"] == "TARGET_CHANGED"
+    # The chain continues from the correction; ORIGINAL can never supersede.
+    failure(
+        post(
+            live,
+            "targets",
+            {
+                "indicator_id": indicator["object_id"],
+                "period_id": period["object_id"],
+                "target_kind": "VALUE",
+                "value_state": "PRESENT",
+                "value": "13",
+                "direction": "HIGHER",
+                "target_basis": "ORIGINAL",
+                "supersedes_revision": corrected["revision_id"],
+            },
+        ),
+        422,
+        "REVISION_BASIS_MISMATCH",
+    )
+    with live.db() as c:
+        chain = c.execute(
+            "SELECT binding_version,target_revision,supersedes_revision FROM impact.target_binding WHERE indicator_id=%s AND slot='BASELINE' ORDER BY binding_version",
+            (indicator["object_id"],),
+        ).fetchall()
+    assert [str(r["target_revision"]) for r in chain] == [first["revision_id"], corrected["revision_id"]]
+    assert str(chain[1]["supersedes_revision"]) == first["revision_id"]
+
+
+def test_progress_overflow_is_a_row_reason_not_a_failed_read(live, setup):
+    """L1: an attainment or deviation outside NUMERIC(38,12) empties that row's arithmetic only."""
+    programme, indicator, plan, period = setup()
+    source = create(
+        live,
+        "observations",
+        {
+            "source_namespace": "MANUAL",
+            "source_key": plan["data"]["obligations"][0]["source_key"],
+            "indicator_id": indicator["object_id"],
+            "event_at": "2026-08-15T12:00:00Z",
+            "captured_at": "2026-08-15T13:00:00Z",
+            "capture_zone": "UTC",
+            "value_state": "PRESENT",
+            "value": "99999999999999999999999999",
+            "source_version": "1",
+            "dimension_values": {},
+        },
+    )
+    approve(live, submit(live, "observations", source))
+    assert result(live, indicator, period)["data"]["value"] == "99999999999999999999999999"
+    approved(live, "targets", target(live, indicator, period, value="-99999999999999999999999999"))
+    approved(
+        live,
+        "targets",
+        target(live, indicator, period, value="-99999999999999999999999999", target_basis="BASELINE"),
+    )
+    row = next(
+        r for r in tva(live, programme["object_id"])["rows"] if r["indicator_id"] == indicator["object_id"]
+    )
+    assert row["actual"]["mode"] == "PROVISIONAL"
+    assert (
+        row["progress"]["status"] == "NOT_COMPUTABLE"
+        and row["progress"]["reason_code"] == "ARITHMETIC_OVERFLOW"
+    )
+    assert row["progress"]["deviation"] is None
+
+
+def test_blank_state_row_cannot_carry_a_value(live):
+    """L2: the projection refuses a value, low or high on a row without a PRESENT state, including
+    a row with no state at all."""
+    tenant = live.fixture["tenant_a"]
+    author = live.fixture["actors"]["author"]["principal_id"]
+    for state in [None, "MISSING"]:
+        obj, rev = str(uuid.uuid4()), str(uuid.uuid4())
+        with pytest.raises(psycopg.errors.CheckViolation):
+            with live.db() as c:
+                c.execute(
+                    "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_at,created_by,updated_at) VALUES(%s,%s,'Target',%s,'Draft','INTERNAL',%s,now(),%s,now())",
+                    (tenant, obj, rev, author, author),
+                )
+                c.execute(
+                    "INSERT INTO impact.target_current(tenant_id,object_id,revision_id,value_state,value) VALUES(%s,%s,%s,%s,5)",
+                    (tenant, obj, rev, state),
+                )
+
+
+def test_close_pins_governing_framework_revision(live, setup):
+    """L3: a close pins the framework baseline that governs the period into the snapshot policy
+    context, and locked rows are placed by that pinned revision."""
+    programme, indicator, _, period, _, _ = complete_period(live, setup)
+    baseline, _ = approved(live, "frameworks", framework(live, programme, indicator))
+    approve(live, request_close(live, programme, period))
+    snapshot = next(
+        s
+        for s in get(live, "snapshots")["items"]
+        if s["data"]["period_id"] == period["object_id"]
+        and s["data"].get("programme_id") == programme["object_id"]
+    )
+    assert snapshot["data"]["policy_context"]["framework_revision"] == baseline["revision_id"]
+    row = next(
+        r for r in tva(live, programme["object_id"])["rows"] if r["indicator_id"] == indicator["object_id"]
+    )
+    output = next(n for n in baseline["data"]["nodes"] if n["node_type"] == "OUTPUT")
+    assert row["framework_revision"] == baseline["revision_id"] and row["node_ids"] == [output["node_id"]]
+    # A later revision effective after the locked period does not re-place it.
+    child = create(
+        live,
+        "frameworks",
+        {
+            **content(baseline["data"]),
+            "supersedes_revision": baseline["revision_id"],
+            "effective_from": "2026-12-01T00:00:00Z",
+        },
+    )
+    approved(live, "frameworks", child)
+    row = next(
+        r for r in tva(live, programme["object_id"])["rows"] if r["indicator_id"] == indicator["object_id"]
+    )
+    assert row["framework_revision"] == baseline["revision_id"]
+
+
+def test_exception_authorship_and_review_date(live, setup):
+    """L4: who recorded an exception is set by the server, its review date cannot lie in the past,
+    and the independent approver (the named authority) is recorded against the baseline."""
+    programme, indicator, _, _ = setup(False)
+    draft = framework(live, programme, indicator)
+    author = live.fixture["actors"]["author"]["principal_id"]
+    assert {e["recorded_by"] for e in draft["data"]["exceptions"]} == {author}
+    assert all(e["recorded_at"] for e in draft["data"]["exceptions"])
+    forged = [
+        {**e, "recorded_by": live.fixture["actors"]["reviewer"]["principal_id"]}
+        for e in draft["data"]["exceptions"]
+    ]
+    failure(
+        post(
+            live, "frameworks", {"exceptions": forged}, revision=draft["revision_id"], obj=draft["object_id"]
+        ),
+        422,
+    )
+    past = [{**e, "review_date": "2020-01-01"} for e in content(draft["data"])["exceptions"]]
+    failure(
+        post(live, "frameworks", {"exceptions": past}, revision=draft["revision_id"], obj=draft["object_id"]),
+        422,
+        "EXCEPTION_REVIEW_DATE_PASSED",
+    )
+    # An unrelated edit keeps each unchanged exception's original authorship.
+    expect(
+        post(
+            live,
+            "frameworks",
+            {"version_label": "Relabelled"},
+            revision=draft["revision_id"],
+            obj=draft["object_id"],
+        ),
+        200,
+    )
+    kept = get(live, "frameworks", draft["object_id"])
+    assert kept["data"]["exceptions"] == draft["data"]["exceptions"]
+    row, workflow = approved(live, "frameworks", kept)
+    with live.db() as c:
+        register = c.execute(
+            "SELECT approved_by FROM impact.framework_baseline WHERE framework_revision=%s",
+            (row["revision_id"],),
+        ).fetchone()
+    assert str(register["approved_by"]) == live.fixture["actors"]["reviewer"]["principal_id"] != author
+
+
+def test_second_framework_child_is_refused_after_the_first_is_approved(live, setup):
+    programme, indicator, _, _ = setup(False)
+    baseline, _ = approved(live, "frameworks", framework(live, programme, indicator))
+    children = [
+        create(
+            live,
+            "frameworks",
+            {
+                **content(baseline["data"]),
+                "version_label": label,
+                "supersedes_revision": baseline["revision_id"],
+                "effective_from": "2026-07-01T00:00:00Z",
+            },
+        )
+        for label in ["Child A", "Child B"]
+    ]
+    approved(live, "frameworks", children[0])
+    template = get(live, "workflow-templates")["items"][0]
+    denied = action(
+        live, "frameworks", children[1], "submit", {"workflow_version": template["revision_id"]}, status=409
+    )
+    assert denied["reason_code"] == "FRAMEWORK_BASELINE_CHANGED"
+
+
+def test_reviewer_who_edits_a_draft_becomes_an_author(live, setup):
+    programme, indicator, _, period = setup(False)
+    for route, row, change in [
+        ("frameworks", framework(live, programme, indicator), {"version_label": "Reviewer wording"}),
+        ("targets", target(live, indicator, period), {"value": "41"}),
+    ]:
+        expect(
+            post(live, route, change, actor="reviewer", revision=row["revision_id"], obj=row["object_id"]),
+            200,
+        )
+        workflow = submit(live, route, get(live, route, row["object_id"]))
+        denied = action(
+            live,
+            "workflows",
+            workflow,
+            "approve",
+            {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Own edit"},
+            actor="reviewer",
+            status=403,
+        )
+        assert denied["reason_code"] == "INDEPENDENCE_REQUIRED", route
+
+
+def test_candidate_view_degrades_without_indicator_access(live, setup):
+    """L7: a reviewer who cannot read indicator instances still sees the framework candidate and
+    its completeness; placements are reported by identifier only."""
+    programme, indicator, _, _ = setup(False)
+    workflow = submit(live, "frameworks", framework(live, programme, indicator))
+    held = expire_grant(live, "reviewer", "indicator-instances.read")
+    try:
+        candidate = get(live, "workflows", workflow["object_id"] + "/candidate", actor="reviewer")
+    finally:
+        restore_grant(live, *held)
+    assert candidate["kind"] == "Framework"
+    output = next(n for n in candidate["record"]["data"]["nodes"] if n["node_type"] == "OUTPUT")
+    assert output["indicator_ids"] == [indicator["object_id"]]
+    assert candidate["completeness"]["ready"]
 
 
 @pytest.mark.parametrize("route", ["frameworks", "targets"])

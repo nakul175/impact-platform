@@ -16,6 +16,8 @@ Build 0.15.0 increment (29 September 2026): OPERATIONS-GUIDE.md gains a "Live id
 
 Build 0.16.0 increment (29 September 2026): OPERATIONS-GUIDE.md gains a "Worker and email delivery" section: running workers (make dev, make worker, --once, graceful SIGTERM), the impact_worker_login login, the worker's own configuration and IMPACT_<FIELD> variables, the invitation and delivery secrets it shares with the API and what rotating them does to queued rows, the SMTP adapter and its error classes, the heartbeat and the operators' Workers panel, and dead-letter inspection by query (there is no re-queue API; repeat the business action instead, and never edit outbox_delivery by hand). Readiness requires schema 18. No email provider, bounce handling, metrics or alerting exists, and rows held by a suspension are never sent. The Word copy is unchanged and will be regenerated at the next documentation edition.
 
+Build 0.18.0 increment (29 September 2026): no new operational procedure. Readiness now requires schema 19 (/health/ready). A schema-18 database is upgraded by the ordinary migration runner (0019 alters the framework and target projections and adds two registers); the upgrade check and restore drill verify nineteen checksums.
+
 The application is a development delivery. The requirement ledger records 74 PARTIAL and 233 PENDING requirements, with zero fully accepted. PARTIAL means a bounded implementation and some evidence exist, not that all acceptance conditions are satisfied. PENDING means the requirement has no accepted implementation coverage in the ledger; a read-only surface or reference example does not establish delivery.
 
 Recorded qualification contains 325 application checks, 143 design-reference checks and 81 browser checks. One expired-offline-grant test is deselected and is not a pass. Local integration uses fresh in-memory PGlite PostgreSQL 17.5 with serialized transactions. Native PostgreSQL concurrency, live identity-provider assurance, disaster recovery, load qualification and production acceptance remain open.
@@ -30,7 +32,7 @@ The runnable environment is local development with synthetic data. The reference
 
 ## Local start and diagnosis
 
-From a fresh source checkout, run make setup and make dev. Confirm /health/live and /health/ready, which checks schema 18, then sign in using the generated local account credentials. If startup fails, inspect the specific runner directory under .local, check dependency and migration errors, and preserve the failure evidence. Do not commit that directory because it contains credentials, keys and data.
+From a fresh source checkout, run make setup and make dev. Confirm /health/live and /health/ready, which checks schema 19, then sign in using the generated local account credentials. If startup fails, inspect the specific runner directory under .local, check dependency and migration errors, and preserve the failure evidence. Do not commit that directory because it contains credentials, keys and data.
 
 For an uncertain write, preserve the operation identifier and reconcile its receipt under current authority. Retry the identical command; do not invent a new operation identifier until the outcome is known. A stale revision requires reloading and reviewing the change. For denied access, check current workspace, membership, grant, scope, purpose, tenant state and recent configured assurance. Do not expand privileges merely to clear an error.
 

@@ -1,5 +1,5 @@
 {
-  "version": "1.10.0",
+  "version": "1.11.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5239,6 +5239,38 @@
       "role_templates": [
         "AUTHOR",
         "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "framework_completeness",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness",
+      "capability": "frameworks.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "programme_targets_vs_actuals",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals",
+      "capability": "targets.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

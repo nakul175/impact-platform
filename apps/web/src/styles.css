@@ -1379,3 +1379,44 @@ html[data-reduced-motion="true"] *::after {
   overflow-wrap: anywhere;
   margin-bottom: 0.5rem;
 }
+.planning-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.planning-toolbar label {
+  min-width: 0;
+  max-width: 100%;
+}
+.planning-toolbar select {
+  max-width: 100%;
+}
+.planning-tree ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 18px;
+  border-left: 1px solid var(--line, #d9dde3);
+}
+.planning-tree > ul {
+  padding-left: 0;
+  border-left: 0;
+}
+.planning-node {
+  padding: 6px 0;
+  overflow-wrap: anywhere;
+}
+.planning-node-editor {
+  border: 1px solid var(--line, #d9dde3);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 0 0 12px;
+  min-width: 0;
+}
+.planning-node-editor .checkbox {
+  display: block;
+  font-weight: normal;
+}
+.badge.superseded {
+  opacity: 0.7;
+}

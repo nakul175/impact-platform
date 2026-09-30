@@ -257,6 +257,12 @@ class PeriodGovernance:
                 }
             )
             blockers.extend(entry_blockers)
+        targets = self.service.planning.approved_targets(c, ctx, programme_id, period["object_id"])
+        governing = self.service.planning.governing_framework(c, ctx, programme_id, period)
+        pins = {
+            **({"target_versions": targets} if targets else {}),
+            **({"framework_revision": str(governing["framework_revision"])} if governing else {}),
+        }
         core = {
             "period_revision": str(period["head_revision"]),
             "programme_period_state": state["lifecycle_state"],
@@ -269,7 +275,10 @@ class PeriodGovernance:
             "period_id": str(period["object_id"]),
             "programme_id": str(programme_id),
             "previewed_at": previewed.isoformat(),
-            "fingerprint": hash_data(core).hex(),
+            # Approved targets are pinned into the snapshot; a target approved after the preview
+            # makes the close request stale. Without targets the fingerprint is unchanged.
+            # Without targets or a framework the fingerprint is exactly the pre-0.18 one.
+            "fingerprint": hash_data({**core, **pins} if pins else core).hex(),
         }
 
     def close_request(self, c, ctx, period, data):
@@ -481,7 +490,9 @@ class PeriodGovernance:
                 "programme_id": data["programme_id"],
                 "period_id": str(period["object_id"]),
                 "definition_versions": sorted(set(definitions)),
-                "target_versions": [],
+                "target_versions": self.service.planning.approved_targets(
+                    c, ctx, data["programme_id"], period["object_id"]
+                ),
                 "result_versions": [item["revision_id"] for item in official],
                 "evidence_versions": [],
                 "policy_context": {
@@ -489,6 +500,15 @@ class PeriodGovernance:
                     "policy_revision": str(request["head_revision"]),
                     "classification": "INTERNAL",
                     "purpose": "PERIOD_CLOSE",
+                    **(
+                        {"framework_revision": str(governing["framework_revision"])}
+                        if (
+                            governing := self.service.planning.governing_framework(
+                                c, ctx, data["programme_id"], period
+                            )
+                        )
+                        else {}
+                    ),
                 },
                 "locked_at": datetime.now(timezone.utc).isoformat(),
             },

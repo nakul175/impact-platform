@@ -11,6 +11,7 @@ from impact_api.service import READ_ROUTES, WRITE_ROUTES, ACTIONS  # noqa: E402
 from impact_api.administration_contracts import COMMANDS, ADMIN_READS  # noqa: E402
 from impact_api.measurement_contracts import SPECIAL_READS  # noqa: E402
 from impact_api.reporting_contracts import SPECIAL_READS as REPORTING_READS  # noqa: E402
+from impact_api.planning_contracts import SPECIAL_READS as PLANNING_READS  # noqa: E402
 from impact_api.publication_contracts import (  # noqa: E402
     SPECIAL_READS as PUBLICATION_READS,
     DIRECTORY_READS as PUBLICATION_DIRECTORIES,
@@ -19,6 +20,7 @@ from impact_api.publication_contracts import (  # noqa: E402
 allowed = set()
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in SPECIAL_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in REPORTING_READS)
+allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PLANNING_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_DIRECTORIES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))

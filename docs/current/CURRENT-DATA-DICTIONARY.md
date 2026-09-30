@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Build 0.16.0; schema 18 (0.16.0 adds 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All eighteen checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.18.0; schema 19 (0.18.0 adds 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All nineteen checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 
@@ -24,6 +24,7 @@ Build 0.16.0; schema 18 (0.16.0 adds 0018: dispatch columns, constraints and ind
 | 0016_authority_renewal.sql | 2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc |
 | 0017_provider_logout.sql | 4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b |
 | 0018_worker_delivery.sql | bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7 |
+| 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
 
 ## Executable schema definitions
 
@@ -2883,5 +2884,106 @@ BEGIN
  'unsent_events',(SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=requested_tenant AND channel IS NOT NULL AND state IN ('PENDING','LEASED')),
  'retention_holds',(SELECT count(*) FROM impact.retention_hold WHERE tenant_id=requested_tenant AND released_at IS NULL));
 END $$;
+COMMIT;
+```
+
+### 0019 results framework
+
+Source: infrastructure/migrations/0019_results_framework.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Results framework and planning (v0.18). Framework and Target have been registry kinds with typed
+-- projections since 0002; this migration adds the payload columns the implemented contract writes
+-- and two insert-only registers of independently approved baselines. A register row is written only
+-- in the approval transaction; a later change is a new row that names the revision it supersedes,
+-- so an approved revision is never re-pointed and each revision can be superseded exactly once.
+ALTER TABLE impact.framework_current
+ ADD COLUMN effective_from timestamptz,
+ ADD COLUMN supersedes_revision uuid,
+ ADD COLUMN supersedes_revision_kind text GENERATED ALWAYS AS ('Framework') STORED,
+ ADD COLUMN exceptions jsonb CHECK(exceptions IS NULL OR jsonb_typeof(exceptions)='array'),
+ ADD CONSTRAINT framework_supersedes_fk FOREIGN KEY(tenant_id,supersedes_revision,supersedes_revision_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE impact.target_current
+ ADD COLUMN indicator_id uuid,
+ ADD COLUMN indicator_id_kind text GENERATED ALWAYS AS ('IndicatorInstance') STORED,
+ ADD COLUMN milestone_label varchar(200),
+ ADD COLUMN due_at timestamptz,
+ ADD COLUMN supersedes_revision uuid,
+ ADD COLUMN supersedes_revision_kind text GENERATED ALWAYS AS ('Target') STORED,
+ ADD COLUMN reason text,
+ ADD CONSTRAINT target_indicator_fk FOREIGN KEY(tenant_id,indicator_id,indicator_id_kind)
+  REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ ADD CONSTRAINT target_supersedes_fk FOREIGN KEY(tenant_id,supersedes_revision,supersedes_revision_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ -- A blank target is never zero: only a PRESENT target carries a value or bounds.
+ -- A row without a value state carries no value either.
+ ADD CONSTRAINT target_blank_is_not_zero CHECK((value_state IS NOT NULL AND value_state='PRESENT')
+  OR (value IS NULL AND low IS NULL AND high IS NULL));
+
+CREATE TABLE impact.framework_baseline(
+  tenant_id uuid NOT NULL,
+  programme_id uuid NOT NULL,
+  baseline_version integer NOT NULL CHECK(baseline_version>0),
+  framework_id uuid NOT NULL,
+  framework_revision uuid NOT NULL,
+  supersedes_revision uuid,
+  effective_from timestamptz NOT NULL,
+  workflow_id uuid NOT NULL,
+  approved_by uuid NOT NULL,
+  approved_at timestamptz NOT NULL,
+  framework_revision_kind text GENERATED ALWAYS AS ('Framework') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
+  PRIMARY KEY(tenant_id,programme_id,baseline_version),
+  UNIQUE(tenant_id,framework_revision),
+  UNIQUE(tenant_id,programme_id,framework_revision),
+  UNIQUE(tenant_id,supersedes_revision),
+  CHECK((baseline_version=1)=(supersedes_revision IS NULL)),
+  FOREIGN KEY(tenant_id,programme_id) REFERENCES impact.programme_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,framework_id,framework_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,framework_revision,framework_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,programme_id,supersedes_revision) REFERENCES impact.framework_baseline(tenant_id,programme_id,framework_revision),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE TABLE impact.target_binding(
+  tenant_id uuid NOT NULL,
+  indicator_id uuid NOT NULL,
+  period_id uuid NOT NULL,
+  slot varchar(220) NOT NULL CHECK(slot IN ('TARGET','BASELINE') OR slot LIKE 'MILESTONE:_%'),
+  binding_version integer NOT NULL CHECK(binding_version>0),
+  target_id uuid NOT NULL,
+  target_revision uuid NOT NULL,
+  supersedes_revision uuid,
+  workflow_id uuid NOT NULL,
+  approved_by uuid NOT NULL,
+  approved_at timestamptz NOT NULL,
+  target_revision_kind text GENERATED ALWAYS AS ('Target') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
+  PRIMARY KEY(tenant_id,indicator_id,period_id,slot,binding_version),
+  UNIQUE(tenant_id,target_revision),
+  UNIQUE(tenant_id,indicator_id,period_id,slot,target_revision),
+  UNIQUE(tenant_id,supersedes_revision),
+  CHECK((binding_version=1)=(supersedes_revision IS NULL)),
+  FOREIGN KEY(tenant_id,indicator_id) REFERENCES impact.indicator_instance_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,period_id) REFERENCES impact.period_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,target_id,target_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,target_revision,target_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,indicator_id,period_id,slot,supersedes_revision)
+    REFERENCES impact.target_binding(tenant_id,indicator_id,period_id,slot,target_revision),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX target_binding_period ON impact.target_binding(tenant_id,period_id);
+ALTER TABLE impact.framework_baseline ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.framework_baseline FORCE ROW LEVEL SECURITY;
+ALTER TABLE impact.target_binding ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.target_binding FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.framework_baseline USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+CREATE POLICY tenant_fence ON impact.target_binding USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+-- Insert-only for the application; nothing for the control plane.
+GRANT SELECT,INSERT ON impact.framework_baseline,impact.target_binding TO impact_app;
 COMMIT;
 ```

@@ -66,6 +66,7 @@ BROWSER_MODES = {
     "browser": "check.mjs",
     "admin-browser": "admin-check.mjs",
     "measurement-browser": "measurement-check.mjs",
+    "planning-browser": "planning-check.mjs",
     "reporting-browser": "reporting-check.mjs",
     "workspace-browser": "workspace-check.mjs",
     "tenant-browser": "tenant-check.mjs",

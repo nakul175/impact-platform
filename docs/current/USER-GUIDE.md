@@ -1,6 +1,6 @@
 # Impact Platform user guide
 
-Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below), and build 0.16.0 adds background delivery: notices reach the work centre through the worker, invitations are also emailed, and a nominated recovery contact can confirm their email address with a code (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
+Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below), and build 0.16.0 adds background delivery: notices reach the work centre through the worker, invitations are also emailed, and a nominated recovery contact can confirm their email address with a code (below), and build 0.18.0 adds the results framework, targets and the targets-versus-actuals view (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
 
 ## Sign in and select a workspace
 
@@ -21,6 +21,20 @@ Local sign-in proves the development workflow only. With a live identity provide
 6. An eligible independent reviewer approves the exact candidate revision. Activate only when readiness checks pass.
 
 The source's definition, unit, period and precision govern interpretation. Missing data is different from a present zero. A later definition or plan change follows a reviewed amendment; it does not silently rewrite prior approved data.
+
+## Build the results framework and set targets
+
+Open **Results framework** and choose the programme. You need the framework and target draft capabilities to edit, a separate reviewer to approve, and `targets.read` to see progress.
+
+1. On **Framework**, create the draft: add impact, outcome, output and activity nodes, give each a title, description and owner, place a parent at the same or a higher level, and place each programme indicator on one node. Renaming a node keeps its identity and its indicators.
+2. Saving refuses a structure that cannot be valid — a cycle, a parent that is not in the framework, a child above its parent, an indicator placed twice or from another programme. Correct the named node; these cannot be excepted.
+3. Read the **Completeness review**. Each issue shows severity, rule, object and the person assigned to resolve it. Resolve errors. A warning (for example an output with no indicator, or a programme indicator not placed) can be accepted with **Document exception**: give a reason and a review date that is not in the past. The platform records who documented it and when.
+4. Submit when nothing is unresolved. An eligible reviewer who is a different person opens **Reviews**, re-reads the exact candidate with its completeness report, and approves, returns or rejects it. Approval freezes baseline 1; its exceptions stay visible in it.
+5. To change an approved framework, create a new draft from it with an effective date after the previous one. The review shows what changed; the earlier baseline keeps its approved wording and governs the periods before the new date.
+6. On **Targets**, create per indicator and period a target (a value, a range, or a milestone with a label and due date), a baseline, or both, with the direction (higher, lower, within range, milestone) and a value state — a blank target is recorded as missing, never as zero. Submit it for independent review. To change an approved target or correct a baseline, create a revised one that names the approved one and gives a reason; the original stays on record.
+7. **Targets vs actuals** shows each target, baseline and milestone beside the actual and its source. An official actual appears only from this programme's own locked snapshot; before close the actual is provisional. Attainment is not capped, a lower-is-better target shows its signed deviation, and a zero target or a zero or negative baseline shows Undefined rather than a percentage. Use **Load more** for further indicators.
+
+Closing a period freezes its approved targets and the framework that governed it; a locked period accepts no new or revised target. Status thresholds, disaggregated and cumulative targets, theory-of-change relationships and charts are not available in this build, and a programme without a reporting calendar cannot carry targets.
 
 ## Enter and review observations
 

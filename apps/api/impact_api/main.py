@@ -85,7 +85,7 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.16.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version="0.18.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -184,7 +184,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 18:
+        if version != 19:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -344,9 +344,9 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.16.0",
-            "schema_version": "18",
-            "api_version": "1.10.0",
+            "build_id": "impact-0.18.0",
+            "schema_version": "19",
+            "api_version": "1.11.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),
         }
@@ -374,6 +374,29 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/measurement-members")
     def measurement_members(request: Request, tenant: str):
         return service.measurement.read(auth.resolve(request), uuid(tenant), "measurement_members")
+
+    @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
+    def framework_completeness(request: Request, tenant: str, obj: str):
+        return service.planning.read(auth.resolve(request), uuid(tenant), "framework_completeness", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/programmes/{obj}/targets-vs-actuals")
+    def targets_vs_actuals(
+        request: Request,
+        tenant: str,
+        obj: str,
+        limit: int = 50,
+        cursor: str | None = None,
+        period_id: str | None = None,
+    ):
+        return service.planning.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "programme_targets_vs_actuals",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")
     def publication_recipients(request: Request, tenant: str):

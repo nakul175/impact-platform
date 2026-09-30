@@ -1,0 +1,23 @@
+# Build context for deploy/Dockerfile: only source, never local state, credentials or evidence.
+.git
+.github
+.venv
+.local
+**/node_modules
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.ruff_cache
+apps/web/dist
+docs
+qualification
+tools
+specification/docs
+specification/reference-v1
+specification/fixtures
+specification/reports
+*.zip
+*.pem
+*.key
+*.log
+.env

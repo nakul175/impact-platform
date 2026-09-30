@@ -160,3 +160,115 @@ jobs:
             docs/evidence/native-restore-drill.json
             docs/evidence/idp-native-tests.xml
             docs/evidence/idp-qualification.json
+  container-stack:
+    # The staging deployment package (v0.17) end to end on the runner: deploy/update.sh builds the
+    # image and brings up PostgreSQL, Keycloak (production mode), the API, the worker with its mail
+    # capture, Caddy and the backup service exactly as on the server, except that Caddy issues
+    # certificates from its internal CA (CADDY_TLS_MODE=internal) for fake host names mapped to
+    # 127.0.0.1. Then: the smoke check over HTTPS, a second deployment run (idempotence), the
+    # owner's first sign-in through the provider (password change, authenticator enrolment, MFA
+    # assurance, platform operator), add-user, and a restore of the nightly dump.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      APP_HOST: impact.test
+      OWNER_EMAIL: owner@example.org
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m venv .venv && .venv/bin/pip install -r requirements.lock
+      - name: Map the fake host names to this runner and write the deployment overrides
+        run: |
+          echo "127.0.0.1 $APP_HOST auth.$APP_HOST" | sudo tee -a /etc/hosts
+          echo "IMPACT_HOME=$RUNNER_TEMP/impact" >> "$GITHUB_ENV"
+          sudo install -d -m 700 "$RUNNER_TEMP/impact"
+          printf 'IMPACT_APP_HOST=%s\nCADDY_TLS_MODE=internal\nIMPACT_OWNER_EMAIL=%s\nIMPACT_OWNER_FIRST_NAME=CI\nIMPACT_OWNER_LAST_NAME=Owner\nACME_EMAIL=ci@example.org\n' \
+            "$APP_HOST" "$OWNER_EMAIL" | sudo tee "$RUNNER_TEMP/impact/config.env" >/dev/null
+      - name: First deployment (deploy/update.sh as on the server)
+        run: sudo IMPACT_HOME="$IMPACT_HOME" deploy/update.sh
+      - name: Trust Caddy's internal root for the checks below
+        run: sudo cat "$IMPACT_HOME/ca/caddy-root.crt" > caddy-root.crt
+      - name: Smoke check over HTTPS
+        run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-first.json
+      - name: Second deployment run changes nothing
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/update.sh | tee second-run.log
+          grep -q "already deployed and healthy" second-run.log
+          sudo python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['result']=='ok' and d['step']=='unchanged', d" "$IMPACT_HOME/status.json"
+      - name: first-admin.sh reveals the temporary password only while it is pending
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/first-admin.sh > first-admin.out
+          grep -q "Temporary password:" first-admin.out
+          rm -f first-admin.out
+          if sudo IMPACT_HOME="$IMPACT_HOME" deploy/first-admin.sh > /dev/null 2>&1; then echo "printed to a pipe" >&2; exit 1; fi
+      - name: The owner's first sign-in (password change, authenticator, MFA, platform operator)
+        run: |
+          password=$(sudo sed -n 's/^OWNER_TEMP_PASSWORD=//p' "$IMPACT_HOME/secrets.env")
+          echo "::add-mask::$password"
+          IMPACT_TEMP_PASSWORD="$password" .venv/bin/python scripts/staging_first_login.py "https://$APP_HOST" \
+            --email "$OWNER_EMAIL" --cacert caddy-root.crt | tee first-login.json
+          again=$(sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/first-admin.sh)
+          grep -q "already chosen its own password" <<<"$again"
+      - name: add-user.sh registers a second person without authority
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/add-user.sh second@example.org Second Person > add-user.out
+          grep -q "Account created for second@example.org" add-user.out
+          rm -f add-user.out
+      - name: The nightly dump exists and restores
+        run: |
+          compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
+          # The dump taken when the service started predates the operator bootstrap; take one now.
+          for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/impact-*.dump' && break; sleep 5; done
+          compose exec -T backup /bin/bash /opt/backup/backup.sh --now
+          compose exec -T backup bash -c 'set -e; f=$(ls -t /backups/daily/impact-*.dump | head -1);
+            dropdb --if-exists impact_restore_check; createdb impact_restore_check;
+            pg_restore --exit-on-error -d impact_restore_check "$f";
+            n=$(psql -Atd impact_restore_check -c "select count(*) from impact.schema_migration");
+            o=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator");
+            echo "restored $f: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
+            dropdb impact_restore_check'
+      - name: Smoke check after the sign-in
+        run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-final.json
+      - name: Status and logs on failure
+        if: always()
+        run: |
+          sudo cat "$IMPACT_HOME/status.json" > deploy-status.json || true
+          sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" ps --all || true
+          sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" logs --no-color --tail 150 > compose-logs.txt || true
+          tail -n 60 compose-logs.txt || true
+      - name: Failure details as annotations (readable without signing in)
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          def annotate(title, lines):
+              text = "\n".join(lines)[-3800:]
+              text = text.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+              print("::error title=" + title + "::" + text)
+          try:
+              status = json.load(open("deploy-status.json"))
+              annotate("deploy step " + str(status.get("step")), status.get("log_tail", []))
+              annotate("services", [k + ": " + json.dumps(v) for k, v in status.get("services", {}).items()])
+          except (OSError, ValueError) as e:
+              annotate("no status file", [repr(e)])
+          try:
+              logs = open("compose-logs.txt", errors="replace").read().splitlines()
+          except OSError:
+              logs = []
+          for service in ("api", "keycloak", "caddy", "worker", "postgres", "backup", "mailsink"):
+              mine = [l for l in logs if re.match(r"^" + service + r"[-_ ]", l)]
+              if mine:
+                  annotate("logs " + service, mine[-25:])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-stack
+          path: |
+            smoke-first.json
+            smoke-final.json
+            first-login.json
+            deploy-status.json
+            compose-logs.txt

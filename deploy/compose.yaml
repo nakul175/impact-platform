@@ -1,0 +1,261 @@
+# Impact Platform on one server: PostgreSQL, Keycloak, the API, the outbox worker, Caddy and the
+# nightly backup. deploy/update.sh generates the environment file this reads (secrets, host names,
+# image tag) and runs it; see docs/current/DEPLOYMENT-GUIDE.md. Only Caddy publishes ports (80, 443).
+#
+#   docker compose -p impact -f deploy/compose.yaml --env-file /opt/impact/compose.env <command>
+name: impact
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+x-app: &app
+  image: impact-platform:${IMPACT_TAG:?image tag required}
+  logging: *logging
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: ["ALL"]
+
+x-hardened: &hardened
+  read_only: true
+  tmpfs: ["/tmp:size=64m"]
+
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+      POSTGRES_DB: impact
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [backend]
+    shm_size: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d impact"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  # One-shot jobs (profile "jobs"): run by deploy/update.sh with `docker compose run --rm`.
+  migrate:
+    <<: *app
+    profiles: ["jobs"]
+    command: ["python", "deploy/prepare_database.py"]
+    environment:
+      IMPACT_ADMIN_DSN: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/impact
+      IMPACT_LOGIN_PASSWORD_APP: ${IMPACT_LOGIN_PASSWORD_APP:?}
+      IMPACT_LOGIN_PASSWORD_IDENTITY: ${IMPACT_LOGIN_PASSWORD_IDENTITY:?}
+      IMPACT_LOGIN_PASSWORD_PLATFORM: ${IMPACT_LOGIN_PASSWORD_PLATFORM:?}
+      IMPACT_LOGIN_PASSWORD_WORKER: ${IMPACT_LOGIN_PASSWORD_WORKER:?}
+      IMPACT_LOGIN_PASSWORD_MIGRATOR: ${IMPACT_LOGIN_PASSWORD_MIGRATOR:?}
+      IMPACT_KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?}
+    networks: [backend]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  operator-bootstrap:
+    <<: *app
+    profiles: ["jobs"]
+    command: ["python", "scripts/bootstrap_operator.py", "--help"]
+    environment:
+      IMPACT_MIGRATION_DSN: postgresql://impact_migrator:${IMPACT_LOGIN_PASSWORD_MIGRATOR}@postgres:5432/impact
+      IMPACT_ENVIRONMENT: staging
+    networks: [backend]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  idp-admin:
+    <<: *app
+    profiles: ["jobs"]
+    command: ["python", "deploy/keycloak_admin.py", "--help"]
+    environment:
+      KC_URL: http://keycloak:8080
+      KC_ADMIN_USER: impact-admin
+      KC_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?}
+      IMPACT_REALM: impact
+      IMPACT_PUBLIC_ORIGIN: https://${APP_HOST}
+    volumes:
+      - ./keycloak/realm-staging.json:/app/deploy/keycloak/realm-staging.json:ro
+    networks: [backend]
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.4
+    restart: unless-stopped
+    logging: *logging
+    command: ["start"]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?}
+      KC_HOSTNAME: https://${AUTH_HOST:?}
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_BOOTSTRAP_ADMIN_USERNAME: impact-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?}
+      JAVA_OPTS_KC_HEAP: "-Xms256m -Xmx768m"
+    networks: [backend, edge]
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      # The image has bash but no curl or grep: ask the management port directly. Only a 200
+      # answer is ready (a DOWN report is a 503 whose body still lists checks that are UP).
+      test:
+        - CMD
+        - bash
+        - -c
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /health/ready HTTP/1.0\r\nHost: localhost\r\n\r\n' >&3 &&
+          { IFS= read -r -d '' reply <&3 || true; } &&
+          [[ $$reply == 'HTTP/1.'?' 200 '* ]]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 180s
+
+  api:
+    <<: [*app, *hardened]
+    # The one image build (deploy/update.sh runs `docker compose build api` once per commit); every
+    # other application service and job runs the same tag.
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    environment:
+      IMPACT_ENVIRONMENT: staging
+      IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"
+      IMPACT_APP_DSN: postgresql://impact_app_login:${IMPACT_LOGIN_PASSWORD_APP}@postgres:5432/impact
+      IMPACT_IDENTITY_DSN: postgresql://impact_identity_login:${IMPACT_LOGIN_PASSWORD_IDENTITY}@postgres:5432/impact
+      IMPACT_PLATFORM_DSN: postgresql://impact_platform_login:${IMPACT_LOGIN_PASSWORD_PLATFORM}@postgres:5432/impact
+      IMPACT_PUBLIC_ORIGIN: https://${APP_HOST:?}
+      IMPACT_ISSUER: https://${AUTH_HOST}/realms/impact
+      IMPACT_CLIENT_ID: impact-web
+      IMPACT_AUDIENCE: impact-api
+      IMPACT_JWKS_URL: https://${AUTH_HOST}/realms/impact/protocol/openid-connect/certs
+      IMPACT_AUTHORIZATION_URL: https://${AUTH_HOST}/realms/impact/protocol/openid-connect/auth
+      IMPACT_TOKEN_URL: https://${AUTH_HOST}/realms/impact/protocol/openid-connect/token
+      IMPACT_END_SESSION_URL: https://${AUTH_HOST}/realms/impact/protocol/openid-connect/logout
+      IMPACT_REQUIRED_ACR: urn:impact:acr:mfa
+      IMPACT_COOKIE_SECRET: ${IMPACT_COOKIE_SECRET:?}
+      IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET:?}
+      IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET:?}
+      # The provider's TLS certificate is verified against this bundle: the image's system store
+      # on the server (Let's Encrypt); the system store plus Caddy's internal root in the CI stack,
+      # which deploy/update.sh writes to <impact home>/ca/bundle.pem.
+      SSL_CERT_FILE: ${IMPACT_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+    volumes:
+      - ${IMPACT_CA_DIR:?}:/etc/impact-ca:ro
+    networks: [backend, edge]
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import os,sys,urllib.request as u; r=u.Request('http://127.0.0.1:8000/health/ready',headers={'Host':os.environ['IMPACT_PUBLIC_ORIGIN'].split('//')[1]}); sys.exit(0 if u.urlopen(r,timeout=5).status==200 else 1)"
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # Loopback mail capture: the worker shares this container's network namespace, so its SMTP
+  # adapter reaches 127.0.0.1:2525. Replaced by a real provider via SMTP_* in config.env.
+  mailsink:
+    <<: [*app, *hardened]
+    restart: unless-stopped
+    command: ["python", "deploy/mail_sink.py", "--host", "127.0.0.1", "--port", "2525", "--sink", "/var/lib/impact/mail/captured.jsonl"]
+    volumes:
+      - mail:/var/lib/impact/mail
+    networks: [backend, edge]
+
+  worker:
+    <<: [*app, *hardened]
+    restart: unless-stopped
+    command: ["python", "-m", "impact_api.worker", "--worker-id", "staging-worker-1"]
+    network_mode: "service:mailsink"
+    environment:
+      IMPACT_ENVIRONMENT: staging
+      IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"
+      IMPACT_WORKER_DSN: postgresql://impact_worker_login:${IMPACT_LOGIN_PASSWORD_WORKER}@postgres:5432/impact
+      IMPACT_PUBLIC_ORIGIN: https://${APP_HOST}
+      IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET}
+      IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET}
+      IMPACT_EMAIL_ADAPTER: smtp
+      IMPACT_SMTP_HOST: ${SMTP_HOST:-127.0.0.1}
+      IMPACT_SMTP_PORT: ${SMTP_PORT:-2525}
+      IMPACT_SMTP_USERNAME: ${SMTP_USERNAME:-}
+      IMPACT_SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      IMPACT_SMTP_FROM: ${SMTP_FROM:?}
+    depends_on:
+      mailsink: {condition: service_started}
+      postgres: {condition: service_healthy}
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    logging: *logging
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_HOST: ${APP_HOST}
+      AUTH_HOST: ${AUTH_HOST}
+      CADDY_TLS_MODE: ${CADDY_TLS_MODE:-acme}
+      ACME_EMAIL: ${ACME_EMAIL:?}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - ${IMPACT_STATUS_DIR:?}:/srv/status:ro
+    networks:
+      edge:
+        # The API fetches the provider's keys and Keycloak calls the back-channel logout URL by
+        # their public names; inside the stack those names resolve to Caddy directly.
+        aliases:
+          - ${APP_HOST}
+          - ${AUTH_HOST}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  backup:
+    image: postgres:17
+    restart: unless-stopped
+    logging: *logging
+    entrypoint: ["/bin/bash", "/opt/backup/backup.sh"]
+    environment:
+      PGHOST: postgres
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      BACKUP_HOUR_UTC: ${BACKUP_HOUR_UTC:-21}
+      KEEP_DAILY: "7"
+      KEEP_WEEKLY: "4"
+    volumes:
+      - ./backup.sh:/opt/backup/backup.sh:ro
+      - backups:/backups
+    networks: [backend]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+networks:
+  # The database network has no route out of the host.
+  backend:
+    internal: true
+  edge: {}
+
+volumes:
+  pgdata: {}
+  caddy_data: {}
+  caddy_config: {}
+  backups: {}
+  mail: {}

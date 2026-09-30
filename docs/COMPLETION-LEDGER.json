@@ -1,11 +1,11 @@
 {
-  "build": "0.19.0",
-  "assessment_date": "2026-09-29",
+  "build": "0.20.0",
+  "assessment_date": "2026-09-30",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
   "summary": {
-    "PARTIAL": 83,
-    "PENDING": 224
+    "PARTIAL": 87,
+    "PENDING": 220
   },
   "requirements": [
     {
@@ -1694,9 +1694,20 @@
       "validation": "Qualify 200 questions and 100 repeat entries; the declared limit applies to repeat instances per submission and nesting is limited to two levels in R1. Unsupported combinations are rejected before publishing.",
       "acceptance": "Build a household form with three members, an optional photo and a calculated age; all child responses retain their parent and stable field codes.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.20 adds a form builder whose fields live inside the governed Form revision: stable field_id and code, position, type (TEXT, DECIMAL, INTEGER, BOOLEAN, SINGLE_CHOICE), label, help, required, numeric bounds, text length, choices, and an optional indicator binding with value role or a disaggregation dimension; submitting for review locks the exact revision and starts the independent approval, and publication is a separate fresh-assurance action into the insert-only form_publication register. Validation text exercised (test_forms.py::test_form_definition_validation, test_exhaustive_dimension_field_must_be_answered_with_the_value, test_numerator_and_denominator_answers_pool_into_a_percentage, test_form_review_requires_independence_and_publish_requires_approval; forms-browser design step): unsupported combinations (choices on a non-choice field, bounds on a text field, inverted bounds, duplicate codes, a binding on a text field or to a non-manual or foreign indicator, a ratio without both components, an undeclared or multiselect dimension, an optional or differently relevant exhaustive-dimension field) are rejected before publishing. Not covered: groups and repeat groups (100 repeat entries, two nesting levels), field classification, preview in desktop and mobile modes, calculated fields, photos and the 200-question load qualification (the contract caps 200 fields; no test at that size); FT-FRM-001 (household members, photo, calculated age) is not executable.",
+      "evidence_paths": [
+        "apps/api/impact_api/forms.py",
+        "apps/api/impact_api/forms_contracts.py",
+        "apps/web/src/Forms.tsx",
+        "infrastructure/migrations/0021_web_forms.sql",
+        "qualification/test_forms.py",
+        "tools/browser/forms-check.mjs",
+        "docs/evidence/forms-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.20.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -1709,9 +1720,20 @@
       "validation": "Server checks the same versioned rules. Reject cycles and references to inaccessible fields. A client cannot submit a hidden required answer to bypass relevance policy.",
       "acceptance": "Change pregnancy relevance from yes to no; dependent fields clear under the declared policy and a tampered payload containing disallowed answers is rejected.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.20 implements one bounded relevance rule per field (relevant_when: an earlier yes/no or choice field equals a declared code), typed by reference to an earlier field and a declared code so that cycles and forward or undeclared references are refused (FORM_RELEVANCE_INVALID); the server evaluates the same versioned rules in field order and the web client uses the same rule to show or hide a question. Validation text exercised (test_forms.py::test_submission_refuses_incomplete_and_hidden_answers, test_draft_answers_are_validated_against_the_version, test_form_definition_validation, test_blank_answers_keep_explicit_value_states; forms-browser fill-in step): a tampered payload carrying an answer to a hidden field is refused (ANSWER_NOT_RELEVANT), a relevant required answer cannot be omitted, a hidden bound field becomes NOT_APPLICABLE. Not covered: a bounded expression catalogue beyond equality, required rules separate from relevance, the visible confirmation and declared policy for clearing newly irrelevant values (the client hides them and the server refuses them), explicitly retained hidden values, and references to inaccessible fields (fields have no classification).",
+      "evidence_paths": [
+        "apps/api/impact_api/forms.py",
+        "apps/api/impact_api/forms_contracts.py",
+        "apps/web/src/Forms.tsx",
+        "infrastructure/migrations/0021_web_forms.sql",
+        "qualification/test_forms.py",
+        "tools/browser/forms-check.mjs",
+        "docs/evidence/forms-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.20.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -1724,9 +1746,20 @@
       "validation": "Additive optional changes may accept older versions; changed mandatory or semantic rules quarantine older submissions for reviewed mapping. Revoked unsafe forms are rejected as live collection instruments.",
       "acceptance": "Publish a new mandatory question while an older package is offline; reconnect preserves the original submission and quarantines it rather than inventing the answer.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.20 moves a form through draft, independent review and publication (no isolated test stage); each publication appends a version to the insert-only form_publication register pinning the approved revision, and a submission retains the exact published form revision it was captured on (form_version required at creation and immutable). Validation and acceptance exercised (test_forms.py::test_superseded_version_quarantines_rather_than_inventing_answers, test_form_version_review_publication_and_submission_to_calculation, test_submission_draft_requires_a_form_version, test_native_form_publication_register_is_fenced_and_insert_only): after a new version with a new mandatory question is published, a response captured on the earlier version is preserved unchanged and quarantined (FORM_VERSION_SUPERSEDED) with no observations rather than completed or mapped. Not covered: compatibility declarations and acceptance cutoffs (only LOCK_PUBLISHED, so every older version is quarantined), reviewed mapping of quarantined responses, translation versions, revocation of an unsafe form, isolated test, and the offline-package scenario of FT-FRM-003 (no offline collection exists).",
+      "evidence_paths": [
+        "apps/api/impact_api/forms.py",
+        "apps/api/impact_api/forms_contracts.py",
+        "apps/web/src/Forms.tsx",
+        "infrastructure/migrations/0021_web_forms.sql",
+        "qualification/test_forms.py",
+        "tools/browser/forms-check.mjs",
+        "docs/evidence/forms-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.20.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -1769,9 +1802,20 @@
       "validation": "Repeated taps reuse operation identity. Closing a browser with unsaved changes warns; a server timeout enters confirmation pending, not a new submission.",
       "acceptance": "Interrupt during final submit, reopen and retry; the receipt resolves to one submission and the local draft remains until server acceptance is confirmed.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.20 saves server drafts of a response and resumes them with the same submission identity and pinned form version; submit validates the response against that version and returns a receipt, turning each bound indicator into a FORM-namespace observation submitted into the existing independent review in the same transaction. Validation text exercised (forms-browser fill-in step: the submit response is dropped and the retry with the same operation identifier resolves to the original receipt and one submission; test_forms.py::test_form_and_submission_access_boundaries for stale revisions and server-owned fields, test_response_drafters_are_authors_of_its_observations, test_bound_form_submit_requires_observation_submit). Not covered: local (browser) drafts and the indication of where a draft was saved beyond the server confirmation, the unsaved-changes warning, confirmation of intended finality as a separate step, a confirmation-pending state distinct from a retry, and returned work starting a linked correction revision (the FORM namespace is reserved and no submission correction exists).",
+      "evidence_paths": [
+        "apps/api/impact_api/forms.py",
+        "apps/api/impact_api/forms_contracts.py",
+        "apps/web/src/Forms.tsx",
+        "infrastructure/migrations/0021_web_forms.sql",
+        "qualification/test_forms.py",
+        "tools/browser/forms-check.mjs",
+        "docs/evidence/forms-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.20.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {

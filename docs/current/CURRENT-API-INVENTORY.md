@@ -1,10 +1,10 @@
 # Current implemented API inventory
 
-Build 0.18.0. The domain contract moves from 1.10.0 (138 operations, unchanged since 0.13.0) to 1.11.0 with twelve added operations, 150 in all: frameworks (list, create, get, patch, submit), `framework_completeness`, targets (list, create, get, patch, submit) and `programme_targets_vs_actuals` (the last twelve rows of the domain table); approval uses the existing workflow actions. `access-policy.json` has 307 policy rows (two added) and 218 capabilities, of which the implemented operations use 92 (84 before). The control-plane contract is unchanged since build 0.16.0 at 1.4.0, 31 operations; 0.16.0 added three: `recovery_contact_channel_request` and `recovery_contact_channel_confirm` (nominee-only verification of the recovery contact's registered email address by a single-use code) and the operator-only `list_workers` (worker heartbeats, no tenant data). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"); build 0.15.0 added `POST /auth/backchannel-logout` (live provider only; 404 otherwise) and `logout_url` on `POST /auth/logout`. The worker's `delivery.requested` outbox events are internal delivery intents and are not part of `event.schema.json`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
+Build 0.20.0. The domain contract moves from 1.12.0 (150 operations; 1.12.0 in build 0.19.0 extended schemas only) to 1.13.0 with ten added operations, 160 in all: forms (create, patch, `action_forms_submit` for independent review, `action_forms_publish`, `get_form_published`) and submissions (list, create, get, patch, `action_submissions_submit`) — the last ten rows of the domain table; `list_forms` and `get_forms` were already implemented read routes, and approval uses the existing workflow actions. `access-policy.json` has 309 policy rows (two added: `action_forms_submit` and `get_form_published`) and 219 capabilities, of which the 160 implemented operations use 100 non-purpose capabilities, all delegable in custom roles (92 before). `action_forms_publish` now requires fresh assurance (300 s; 42 operations do), and `action_submissions_submit` declares `additional_capabilities_when_bound` (a submission of a form with indicator bindings also needs `observation.submit` at TENANT scope and the reads of a manual observation submit). Build 0.18.0 added twelve operations (frameworks, `framework_completeness`, targets, `programme_targets_vs_actuals`). The control-plane contract is unchanged since build 0.16.0 at 1.4.0, 31 operations; 0.16.0 added three: `recovery_contact_channel_request` and `recovery_contact_channel_confirm` (nominee-only verification of the recovery contact's registered email address by a single-use code) and the operator-only `list_workers` (worker heartbeats, no tenant data). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"); build 0.15.0 added `POST /auth/backchannel-logout` (live provider only; 404 otherwise) and `logout_url` on `POST /auth/logout`. The worker's `delivery.requested` outbox events are internal delivery intents and are not part of `event.schema.json`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
 
 ## Domain API
 
-Contract version 1.11.0. Source: packages/contracts/openapi-implemented.json.
+Contract version 1.13.0. Source: packages/contracts/openapi-implemented.json.
 
 | Method | Path | Operation |
 | --- | --- | --- |
@@ -158,6 +158,16 @@ Contract version 1.11.0. Source: packages/contracts/openapi-implemented.json.
 | POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | action_targets_submit |
 | GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness` | framework_completeness |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals` | programme_targets_vs_actuals |
+| POST | `/v1/tenants/{tenant_id}/forms` | create_forms |
+| PATCH | `/v1/tenants/{tenant_id}/forms/{object_id}` | patch_forms |
+| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit` | action_forms_submit |
+| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish` | action_forms_publish |
+| GET | `/v1/tenants/{tenant_id}/forms/{object_id}/published` | get_form_published |
+| GET | `/v1/tenants/{tenant_id}/submissions` | list_submissions |
+| POST | `/v1/tenants/{tenant_id}/submissions` | create_submissions |
+| GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | get_submissions |
+| PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | patch_submissions |
+| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | action_submissions_submit |
 
 ## Privileged control plane
 

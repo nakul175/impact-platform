@@ -2,7 +2,7 @@
 
 PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.
 
-Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 83, 'PENDING': 224}. Enterprise completion: **false**.
+Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 87, 'PENDING': 220}. Enterprise completion: **false**.
 
 | Requirement | Title | Status | Evidence |
 |---|---|---|---|
@@ -93,12 +93,12 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-CAL-014 | Cross portfolio attribution | PENDING | Pending |
 | FR-CAL-015 | Reconciliation and explainability | PARTIAL | [domain.py](../apps/api/impact_api/domain.py), [service.py](../apps/api/impact_api/service.py), [test_measurement.py](../qualification/test_measurement.py) |
 | FR-CAL-016 | Statistical interpretation | PENDING | Pending |
-| FR-FRM-001 | Form builder | PENDING | Pending |
-| FR-FRM-002 | Conditional logic and validation | PENDING | Pending |
-| FR-FRM-003 | Form lifecycle and compatibility | PENDING | Pending |
+| FR-FRM-001 | Form builder | PARTIAL | [forms.py](../apps/api/impact_api/forms.py), [forms_contracts.py](../apps/api/impact_api/forms_contracts.py), [Forms.tsx](../apps/web/src/Forms.tsx), [0021_web_forms.sql](../infrastructure/migrations/0021_web_forms.sql), [test_forms.py](../qualification/test_forms.py), [forms-check.mjs](../tools/browser/forms-check.mjs), [forms-browser-tests.json](../docs/evidence/forms-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [RELEASE-0.20.md](../docs/RELEASE-0.20.md) |
+| FR-FRM-002 | Conditional logic and validation | PARTIAL | [forms.py](../apps/api/impact_api/forms.py), [forms_contracts.py](../apps/api/impact_api/forms_contracts.py), [Forms.tsx](../apps/web/src/Forms.tsx), [0021_web_forms.sql](../infrastructure/migrations/0021_web_forms.sql), [test_forms.py](../qualification/test_forms.py), [forms-check.mjs](../tools/browser/forms-check.mjs), [forms-browser-tests.json](../docs/evidence/forms-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [RELEASE-0.20.md](../docs/RELEASE-0.20.md) |
+| FR-FRM-003 | Form lifecycle and compatibility | PARTIAL | [forms.py](../apps/api/impact_api/forms.py), [forms_contracts.py](../apps/api/impact_api/forms_contracts.py), [Forms.tsx](../apps/web/src/Forms.tsx), [0021_web_forms.sql](../infrastructure/migrations/0021_web_forms.sql), [test_forms.py](../qualification/test_forms.py), [forms-check.mjs](../tools/browser/forms-check.mjs), [forms-browser-tests.json](../docs/evidence/forms-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [RELEASE-0.20.md](../docs/RELEASE-0.20.md) |
 | FR-FRM-004 | Multilingual instruments | PENDING | Pending |
 | FR-FRM-005 | Collection rounds and assignments | PENDING | Pending |
-| FR-FRM-006 | Save resume and correction | PENDING | Pending |
+| FR-FRM-006 | Save resume and correction | PARTIAL | [forms.py](../apps/api/impact_api/forms.py), [forms_contracts.py](../apps/api/impact_api/forms_contracts.py), [Forms.tsx](../apps/web/src/Forms.tsx), [0021_web_forms.sql](../infrastructure/migrations/0021_web_forms.sql), [test_forms.py](../qualification/test_forms.py), [forms-check.mjs](../tools/browser/forms-check.mjs), [forms-browser-tests.json](../docs/evidence/forms-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [RELEASE-0.20.md](../docs/RELEASE-0.20.md) |
 | FR-FRM-007 | Media and location evidence | PENDING | Pending |
 | FR-FRM-008 | Respondent and public forms | PENDING | Pending |
 | FR-FRM-009 | Longitudinal and repeat visits | PENDING | Pending |

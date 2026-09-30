@@ -1,10 +1,10 @@
 {
-  "started_at": "2026-09-30T02:59:40+00:00",
+  "started_at": "2026-09-30T10:04:58+00:00",
   "engine": "PostgreSQL",
   "server_version": "PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
-  "database": "impact_test_v19b",
+  "database": "impact_test_f20",
   "login_topology": {
-    "database": "impact_test_v19b",
+    "database": "impact_test_f20",
     "privilege_roles_created": [],
     "public_connect": true,
     "logins": {
@@ -123,7 +123,7 @@
     }
   },
   "migration": {
-    "database": "impact_test_v19b",
+    "database": "impact_test_f20",
     "session_user": "impact_migrator",
     "migration_role": "impact_owner",
     "applied": [
@@ -146,18 +146,19 @@
       "0017_provider_logout.sql",
       "0018_worker_delivery.sql",
       "0019_results_framework.sql",
-      "0020_calculation_methods.sql"
+      "0020_calculation_methods.sql",
+      "0021_web_forms.sql"
     ],
-    "schema_version": 20,
+    "schema_version": 21,
     "fixture_loaded": true,
     "fixture_user": "postgres"
   },
   "api_requires_unprivileged_db": true,
-  "api_ready_seconds": 0.86,
+  "api_ready_seconds": 0.98,
   "runtime_manifest": {
-    "build_id": "impact-0.19.0",
-    "schema_version": "20",
-    "api_version": "1.12.0",
+    "build_id": "impact-0.20.0",
+    "schema_version": "21",
+    "api_version": "1.13.0",
     "environment": "test"
   },
   "tests": {
@@ -168,12 +169,12 @@
       "specification/reference-v1/tests/test_integration.py"
     ],
     "exit_code": 0,
-    "duration_seconds": 320.3,
-    "tests": 677,
+    "duration_seconds": 369.0,
+    "tests": 699,
     "failures": 0,
     "errors": 0,
     "skipped": 19,
-    "reported_seconds": 319.754,
+    "reported_seconds": 368.379,
     "renewal_race_winners": {
       "0": {
         "mode": "race",
@@ -185,7 +186,7 @@
       },
       "2": {
         "mode": "race",
-        "winner": "revocation"
+        "winner": "approval"
       },
       "3": {
         "mode": "revocation_first",
@@ -199,45 +200,45 @@
   },
   "restart_check": {
     "phase_1": {
-      "api_pid": 23530,
+      "api_pid": 7653,
       "exit_code": 0,
-      "duration_seconds": 1.1,
-      "junit": ".local/test-7031b2da/restart-phase-1.xml",
+      "duration_seconds": 1.2,
+      "junit": ".local/test-b6ce14a4/restart-phase-1.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.673
+      "reported_seconds": 0.737
     },
     "first_api": {
-      "pid": 23530,
+      "pid": 7653,
       "exit_code": -15,
       "clean_shutdown": true,
       "stop_seconds": 0.16
     },
     "second_api": {
-      "pid": 16814,
+      "pid": 4612,
       "ready_seconds": 0.81
     },
     "phase_2": {
-      "api_pid": 16814,
+      "api_pid": 4612,
       "exit_code": 0,
-      "duration_seconds": 0.9,
-      "junit": ".local/test-7031b2da/restart-phase-2.xml",
+      "duration_seconds": 1.0,
+      "junit": ".local/test-b6ce14a4/restart-phase-2.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.477
+      "reported_seconds": 0.537
     },
-    "state_file": ".local/test-7031b2da/restart-state.json",
+    "state_file": ".local/test-b6ce14a4/restart-state.json",
     "outcome": "PASS"
   },
-  "finished_at": "2026-09-30T03:05:09+00:00",
+  "finished_at": "2026-09-30T10:11:16+00:00",
   "restore_drill": {
-    "started_at": "2026-09-30T03:05:09+00:00",
-    "source_database": "impact_test_v19b",
-    "restored_database": "impact_test_v19b_restored",
+    "started_at": "2026-09-30T10:11:17+00:00",
+    "source_database": "impact_test_f20",
+    "restored_database": "impact_test_f20_restored",
     "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
     "client": {
       "pg_dump": {
@@ -276,20 +277,20 @@
     },
     "dump": {
       "format": "custom",
-      "seconds": 0.59,
-      "bytes": 4920850,
+      "seconds": 0.64,
+      "bytes": 5352457,
       "warnings": null
     },
     "restore": {
-      "seconds": 1.9,
+      "seconds": 2.07,
       "warnings": null
     },
     "migration": {
       "session_user": "impact_migrator",
       "migration_role": "impact_owner",
       "applied": [],
-      "schema_version": 20,
-      "checksums_verified": 20,
+      "schema_version": 21,
+      "checksums_verified": 21,
       "checksum_mismatches": []
     },
     "restored": {
@@ -316,19 +317,19 @@
       }
     },
     "row_counts": {
-      "tables_compared": 158,
-      "rows_compared": 46162,
+      "tables_compared": 159,
+      "rows_compared": 50516,
       "named": {
-        "object_revision": 11301,
-        "operation_receipt": 2106,
-        "outbox_event": 2262,
-        "outbox_delivery": 2262,
-        "platform_event": 774
+        "object_revision": 12499,
+        "operation_receipt": 2475,
+        "outbox_event": 2655,
+        "outbox_delivery": 2655,
+        "platform_event": 775
       },
       "differing": {}
     },
     "security": {
-      "tables": 158,
+      "tables": 159,
       "owners": [
         "impact_owner"
       ],
@@ -337,7 +338,7 @@
       "grants_identical": true,
       "fenced_reads": {
         "rows_without_tenant": 0,
-        "rows_with_tenant_a": 5962,
+        "rows_with_tenant_a": 6780,
         "tenants_visible_with_tenant_a": [
           "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
         ],
@@ -358,14 +359,14 @@
       "rls_survived": true
     },
     "restored_database_dropped": true,
-    "duration_seconds": 2.86,
-    "finished_at": "2026-09-30T03:05:12+00:00",
+    "duration_seconds": 3.11,
+    "finished_at": "2026-09-30T10:11:20+00:00",
     "outcome": "PASS",
     "credentials_altered": false
   },
   "upgrade_check": {
-    "database": "impact_test_v19b_upgrade",
-    "started_at": "2026-09-30T03:05:13+00:00",
+    "database": "impact_test_f20_upgrade",
+    "started_at": "2026-09-30T10:11:20+00:00",
     "baseline": {
       "applied": [
         "0001_roles.sql",
@@ -386,30 +387,32 @@
         "0016_authority_renewal.sql",
         "0017_provider_logout.sql",
         "0018_worker_delivery.sql",
-        "0019_results_framework.sql"
+        "0019_results_framework.sql",
+        "0020_calculation_methods.sql"
       ],
-      "schema_version": 19,
+      "schema_version": 20,
       "session_user": "impact_migrator",
       "migration_role": "impact_owner",
       "fixture_loaded": true,
       "fixture_user": "postgres",
-      "fixture_loaded_at_schema": 19,
+      "fixture_loaded_at_schema": 20,
       "tenants": 2,
       "revisions": 509,
       "sessions": 1,
       "calculation_rows": 3,
+      "form_rows": 1,
       "outbox_deliveries": 1
     },
     "upgrade": {
       "applied": [
-        "0020_calculation_methods.sql"
+        "0021_web_forms.sql"
       ],
       "session_user": "impact_migrator",
       "migration_role": "impact_owner"
     },
     "verification": {
-      "rows": 20,
-      "max_version": 20,
+      "rows": 21,
+      "max_version": 21,
       "checksum_mismatches": [],
       "tenants_after_upgrade": 2,
       "revisions_after_upgrade": 509,
@@ -423,9 +426,12 @@
       "planning_tables_present": true,
       "calculation_columns_present": true,
       "calculation_rows_preserved": 3,
+      "form_columns_present": true,
+      "form_publication_table_present": true,
+      "form_rows_preserved": 1,
       "data_preserved": true
     },
-    "duration_seconds": 1.27,
+    "duration_seconds": 1.26,
     "outcome": "PASS"
   }
 }

@@ -333,9 +333,14 @@ export function FormsPanel({
             form={dialog.row}
             template={template}
             canSubmit={
-              // Submitting reads the bound indicators with the submitter's own access.
+              // A form with indicator bindings submits observations for review: the server requires
+              // observation.submit and reads the bound indicators with the submitter's own access.
               allowed("submission.submit") &&
-              allowed("indicator-instances.read")
+              (!(dialog.row.data.fields || []).some(
+                (f: { indicator_id?: string | null }) => f.indicator_id,
+              ) ||
+                (allowed("observation.submit") &&
+                  allowed("indicator-instances.read")))
             }
             done={done}
           />

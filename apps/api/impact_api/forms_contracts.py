@@ -214,6 +214,30 @@ def augment(spec, policy):
             }
         )
 
+    for row in policy["operations"]:
+        if row["operation_id"] == "action_forms_publish":
+            # Publishing opens a version to collection, a governance state change like period close
+            # and report publication: fresh authentication within 300 seconds.
+            row["fresh_assurance_seconds"] = 300
+        if row["operation_id"] == "action_submissions_submit":
+            # Submitting a response to a form with indicator bindings creates draft observations and
+            # submits them for independent review exactly as a manual observation submit does, so it
+            # also requires observation.submit at TENANT scope (reason OBSERVATION_SUBMIT_REQUIRED
+            # when absent) and the reads that submit performs with the submitter's own access.
+            row["additional_capabilities_when_bound"] = [
+                "observation.submit",
+                "indicator-instances.read",
+                "indicator-definitions.read",
+                "programmes.read",
+                "workflow-templates.read",
+            ]
+            row["state_guard"] = (
+                "Draft only; pinned published form version. When the version binds indicators, the caller "
+                "must also hold observation.submit (TENANT scope, no purpose) and read access to the bound "
+                "indicator instances, their definitions and programme, and the workflow template; each "
+                "created observation follows the manual observation review path."
+            )
+
     candidate = schemas["ReviewCandidate"]["properties"]
     if "Form" not in candidate["kind"]["enum"]:
         candidate["kind"]["enum"].append("Form")

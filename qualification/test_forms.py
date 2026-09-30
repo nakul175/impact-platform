@@ -4,6 +4,7 @@ states through the existing observation review and calculation path."""
 # ruff: noqa: F811
 
 import os
+import time
 import uuid
 
 import pytest
@@ -615,11 +616,77 @@ def test_native_form_publication_register_is_fenced_and_insert_only(connect, liv
         )
 
 
-def test_submitter_without_indicator_read_access_fails_closed(live, published):
-    """Known limit of this build: turning a response into observations reuses the observation
-    submission path, which reads the bound indicator instance and definition with the submitter's
-    own capabilities. ENUMERATOR can save a draft but its submit fails closed (404) and writes
-    nothing; AUTHOR and PROGRAMME_MANAGER submit."""
+def temporary_grants(live, actor_name, capabilities):
+    """Trusted fixture insertion of TENANT-scope grants for one fixture actor; returns a function
+    that revokes them again so later tests see the fixture's own access."""
+    from types import SimpleNamespace
+    from impact_api.store import Context, write
+
+    actor = live.fixture["actors"][actor_name]
+    tenant = actor["tenant_id"]
+    ctx = Context(
+        tenant,
+        actor["principal_id"],
+        actor["membership_id"],
+        SimpleNamespace(natural_identity_id=actor["natural_identity_id"]),
+        0,
+        0,
+        [],
+    )
+    ids = []
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        scope = c.execute(
+            "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",
+            (tenant,),
+        ).fetchone()["scope_id"]
+        for cap in capabilities:
+            data = {
+                "subject_id": actor["principal_id"],
+                "capability": cap,
+                "scope_id": str(scope),
+                "starts_at": "2026-01-01T00:00:00Z",
+                "expires_at": "2027-01-01T00:00:00Z",
+                "issuer_id": actor["principal_id"],
+            }
+            ids.append(write(c, ctx, "Grant", data, "Active", track_author=False)["object_id"])
+
+    def revoke():
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+            for obj in ids:
+                row = c.execute(
+                    "SELECT r.*,v.payload,v.revision_number FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE r.tenant_id=%s AND r.object_id=%s",
+                    (tenant, obj),
+                ).fetchone()
+                write(c, ctx, "Grant", row["payload"], "Revoked", row, track_author=False)
+
+    return revoke
+
+
+BOUND_SUBMIT = [
+    "observation.submit",
+    "indicator-instances.read",
+    "indicator-definitions.read",
+    "programmes.read",
+    "workflow-templates.read",
+]
+
+
+def test_policy_declares_what_a_bound_submission_requires():
+    from impact_api.contracts import OPERATIONS
+
+    row = OPERATIONS["action_submissions_submit"]
+    assert row["additional_capabilities_when_bound"] == BOUND_SUBMIT
+    assert OPERATIONS["action_forms_publish"]["fresh_assurance_seconds"] == 300
+
+
+def test_bound_form_submit_requires_observation_submit(live, published):
+    """A response to a form with indicator bindings creates observations and submits them for
+    review, so submission.submit alone is not enough: the submitter must also hold
+    observation.submit at TENANT scope (explicit policy, reason OBSERVATION_SUBMIT_REQUIRED) and
+    reads the bound indicators with its own access. ENUMERATOR holds neither; with them granted it
+    submits. A form without bindings needs only submission.submit."""
     _, _, _, version, units = published
     row = response(live, version, ANSWERED, actor="enumerator", unit=units[2])
     r = live.request(
@@ -628,9 +695,103 @@ def test_submitter_without_indicator_read_access_fails_closed(live, published):
         method="POST",
         body=cmd({"workflow_version": workflow_version(live)}, row["revision_id"]),
     )
-    failure(r, 404)
+    failure(r, 403, "OBSERVATION_SUBMIT_REQUIRED")
     after = get(live, "submissions", row["object_id"], actor="enumerator")
     assert after["revision_id"] == row["revision_id"] and after["lifecycle_state"] == "Draft"
+    revoke = temporary_grants(live, "enumerator", BOUND_SUBMIT)
+    try:
+        send(live, after, actor="enumerator")
+        sent = get(live, "submissions", row["object_id"])
+        assert sent["lifecycle_state"] == "Submitted" and len(sent["data"]["observation_ids"]) == 1
+        [obs] = observations(live, sent)
+        assert obs["data"]["source_key"] == units[2] + "/" + obs["data"]["indicator_id"]
+    finally:
+        revoke()
+    # Without bindings no observation is created and submission.submit suffices.
+    indicator = get(live, "indicator-instances", version["data"]["fields"][2]["indicator_id"])
+    unbound = create(
+        live,
+        "forms",
+        {
+            **form_data(indicator),
+            "fields": [
+                {
+                    **version["data"]["fields"][3],
+                    "field_id": str(uuid.uuid4()),
+                    "position": 0,
+                    "required": True,
+                }
+            ],
+        },
+    )
+    plain = publish(live, unbound)
+    row = response(live, plain, {"note": {"kind": "TEXT", "value": "Visited"}}, actor="enumerator")
+    send(live, row, actor="enumerator")
+    done = get(live, "submissions", row["object_id"], actor="enumerator")
+    assert done["lifecycle_state"] == "Submitted" and done["data"]["observation_ids"] == []
+
+
+def test_exhaustive_dimension_field_must_be_answered_with_the_value(live):
+    """A field supplying an exhaustive dimension must be required and either always relevant or
+    relevant under the bound fields' own rule; otherwise a published version could accept a PRESENT
+    value whose dimension is blank or hidden and never be submittable."""
+    indicator, _, _ = planned(live)
+
+    def review(change):
+        data = form_data(indicator)
+        change(data["fields"])
+        form = create(live, "forms", data)
+        return live.request(
+            live.path("forms", form["object_id"]) + "/actions/submit",
+            method="POST",
+            body=cmd({"workflow_version": workflow_version(live)}, form["revision_id"]),
+        )
+
+    rule = {"field_code": "consent", "equals": "true"}
+    for change in [
+        lambda f: f[1].update(required=False),
+        lambda f: f[1].update(relevant_when={"field_code": "consent", "equals": "false"}),
+        lambda f: f[1].update(required=False, relevant_when=rule),
+    ]:
+        failure(review(change), 422, "FORM_DIMENSION_FIELD_INVALID")
+    # Always relevant (the fixture form) or relevant under exactly the bound fields' rule.
+    expect(review(lambda f: f[1].update(relevant_when=rule)), 200)
+    expect(review(lambda f: None), 200)
+
+
+def test_form_publication_requires_fresh_authentication(live):
+    """Publishing opens a version to collection: like report publication and period close it needs
+    authentication within the previous 300 seconds."""
+    indicator, _, _ = planned(live)
+    form = create(live, "forms", form_data(indicator))
+    approve(live, submit(live, "forms", form))
+    form = get(live, "forms", form["object_id"])
+    reviewer = live.fixture["actors"]["reviewer"]
+    body = cmd({"approved_candidate_revision": form["revision_id"]}, form["revision_id"])
+    stale = live.request(
+        live.path("forms", form["object_id"]) + "/actions/publish",
+        actor=None,
+        method="POST",
+        body=body,
+        headers={
+            "Authorization": "Bearer " + live.signed(reviewer["identity_id"], auth_time=time.time() - 301)
+        },
+    )
+    failure(stale, 403, "FRESH_AUTHENTICATION_REQUIRED")
+    assert get(live, "forms", form["object_id"])["lifecycle_state"] == "Approved"
+    action(
+        live, "forms", form, "publish", {"approved_candidate_revision": form["revision_id"]}, actor="reviewer"
+    )
+
+
+def test_submission_draft_requires_a_form_version(live, published):
+    """The version is pinned at creation and immutable afterwards, so a draft without one could never
+    be submitted; creation refuses it."""
+    failure(
+        live.request(live.path("submissions"), method="POST", body=cmd({**WHEN, "answers": {}})),
+        422,
+        "FORM_VERSION_REQUIRED",
+    )
 
 
 def test_numerator_and_denominator_answers_pool_into_a_percentage(live):

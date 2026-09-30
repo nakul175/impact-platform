@@ -154,7 +154,7 @@ class Forms:
                 if kind != "SINGLE_CHOICE" or field["dimension_code"] in dimensions:
                     raise fail("FORM_BINDING_INVALID")
                 dimensions[field["dimension_code"]] = field
-        declared = set()
+        declared, exhaustive = set(), {}
         for indicator_id, bound in indicators.items():
             instance = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
             if programme and instance["payload"].get("programme_id") != str(programme["object_id"]):
@@ -183,6 +183,8 @@ class Forms:
                 raise fail("FORM_BINDING_INVALID")
             for dim in (definition.get("disaggregation") or {}).get("dimensions", []):
                 declared.add(dim["code"])
+                if dim.get("exhaustive"):
+                    exhaustive.setdefault(dim["code"], []).extend(bound)
                 field = dimensions.get(dim["code"])
                 if field and not {ch["code"] for ch in field.get("choices") or []} <= {
                     cat["code"] for cat in dim["categories"]
@@ -192,6 +194,20 @@ class Forms:
                     raise fail("FORM_BINDING_INVALID")
         if set(dimensions) - declared and (complete or indicators):
             raise fail("FORM_BINDING_INVALID")
+        if complete:
+            # A field that supplies an exhaustive dimension must be answered wherever the bound
+            # value is: required, and either always relevant or relevant under exactly the bound
+            # fields' rule. Otherwise a published version could accept a PRESENT value whose
+            # dimension is blank or hidden, and that response could never be submitted.
+            for code in exhaustive:
+                field = dimensions.get(code)
+                if not field:
+                    continue
+                rule = field.get("relevant_when")
+                if not field.get("required") or (
+                    rule and any(str(rule) != str(b.get("relevant_when")) for b in exhaustive[code])
+                ):
+                    raise fail("FORM_DIMENSION_FIELD_INVALID")
 
     def prepare_submit(self, c, ctx, row):
         payload = dict(row["payload"])
@@ -249,7 +265,9 @@ class Forms:
         if previous and any(previous["payload"].get(k) != data.get(k) for k in ["form_version", "unit_key"]):
             raise fail("FORM_VERSION_IMMUTABLE")
         if not data.get("form_version"):
-            return None
+            # The version is pinned at creation and immutable afterwards, so a draft without one
+            # could never be submitted.
+            raise fail("FORM_VERSION_REQUIRED")
         version = self.version_of(c, ctx, data["form_version"])
         evaluate(version["payload"], data.get("answers") or {}, complete=False)
         return version
@@ -287,8 +305,16 @@ class Forms:
         for field in fields_of(form):
             if field.get("indicator_id"):
                 bound.setdefault(field["indicator_id"], {})[field["value_role"]] = field
+        if bound and not any(
+            g["capability"] == "observation.submit" and g["scope_type"] == "TENANT" and g["purpose"] is None
+            for g in ctx.grants
+        ):
+            # A form with indicator bindings creates observations and submits them for review, so
+            # the submitter must hold what a manual observation submit needs (declared in the
+            # policy row of action_submissions_submit), not only submission.submit.
+            raise DomainError("POLICY_DENIED", 403, reason="OBSERVATION_SUBMIT_REQUIRED")
         for indicator_id, roles in bound.items():
-            instance = load(c, ctx, indicator_id, "IndicatorInstance")
+            instance = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
             definition = revision(
                 c,
                 ctx,

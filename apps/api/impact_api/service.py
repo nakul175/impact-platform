@@ -488,7 +488,7 @@ class Service:
             if route == "disclosure-requests":
                 receipt = self.reporting.request_disclosure(c, ctx, body["data"])
             elif action == "submit" and kind == "Submission":
-                receipt = self.forms.submit(c, ctx, previous, body["data"])
+                receipt = self.forms.submit(c, ctx, previous, body["data"], correlation)
             elif action == "publish" and kind == "Form":
                 receipt = self.forms.publish(c, ctx, previous, body["data"])
             elif action == "submit":

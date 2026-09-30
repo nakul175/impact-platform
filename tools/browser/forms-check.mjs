@@ -291,7 +291,7 @@ try {
     await page.getByRole("cell", { name: new RegExp(formTitle) }).waitFor();
   });
   let formId;
-  await test("Send for review; the author cannot publish, the reviewer publishes after approval", async () => {
+  await test("Send for review; the reviewer approves in the review queue and publishes", async () => {
     await button("Send for review").click();
     await page
       .getByText("sent for independent review", { exact: false })
@@ -301,8 +301,28 @@ try {
     formId = form.object_id;
     assert.equal(form.lifecycle_state, "Submitted");
     assert.equal(await button("Publish").count(), 0);
-    await approveCandidate("forms/" + formId);
+    const workflow = (await read("workflows?limit=100")).items.find(
+      (w) => w.lifecycle_state === "InReview" && w.data.candidate_id === formId,
+    );
     await switchUser("reviewer");
+    // The form version is decided in the ordinary review queue, on the exact submitted revision.
+    await button("Review queue").click();
+    await page
+      .locator("tr")
+      .filter({ hasText: workflow.object_id.slice(0, 8) })
+      .getByRole("button")
+      .first()
+      .click();
+    await button("Review submission").click();
+    await page
+      .getByText("Households reached", { exact: false })
+      .first()
+      .waitFor();
+    await label("Decision reason").fill(
+      "Checked the questions, rules and indicator binding.",
+    );
+    await button("Approve").click();
+    await page.getByRole("dialog").waitFor({ state: "hidden" });
     await openForms(programme);
     await button("Publish").click();
     await page.getByText("Form version published", { exact: false }).waitFor();

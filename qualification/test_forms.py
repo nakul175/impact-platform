@@ -243,6 +243,9 @@ def test_form_version_review_publication_and_submission_to_calculation(live, pub
         "outbox": 2,
         "receipts": 1,
     }
+    # The observation and its review workflow carry their own audit and outbox events.
+    obs_counts = db_counts(live, obs["object_id"], "action_submissions_submit")
+    assert (obs_counts["revisions"], obs_counts["audit"], obs_counts["outbox"]) == (2, 1, 1)
     # The observation is reviewed like any other source: the collector cannot approve it.
     workflow = workflow_of(live, obs["object_id"])
     body = cmd(

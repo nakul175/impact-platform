@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from decimal import localcontext
 
 from .domain import RATIO_TYPES, DomainError, decimal_value, ratio, stored, validate_dimensions
-from .store import authorize, context, load, write
+from .store import audit, authorize, context, load, write
 
 NAMESPACE = "FORM"
 NUMERIC = {"DECIMAL", "INTEGER"}
@@ -254,7 +254,7 @@ class Forms:
         evaluate(version["payload"], data.get("answers") or {}, complete=False)
         return version
 
-    def submit(self, c, ctx, row, data):
+    def submit(self, c, ctx, row, data, correlation=None):
         from .service import revision
 
         if row["lifecycle_state"] != "Draft":
@@ -298,7 +298,9 @@ class Forms:
             )["payload"]
             observation = self.observation(c, ctx, row, payload, definition, roles, state, dimension_answers)
             observation["indicator_id"] = indicator_id
-            stamped["observation_ids"].append(self.record(c, ctx, observation, data["workflow_version"]))
+            stamped["observation_ids"].append(
+                self.record(c, ctx, observation, data["workflow_version"], correlation)
+            )
         stamped["review_state"] = "SUBMITTED"
         stamped["quarantine_reason"] = None
         return write(c, ctx, "Submission", stamped, "Submitted", row, track_author=False)
@@ -356,9 +358,11 @@ class Forms:
         validate_dimensions(definition, result)
         return result
 
-    def record(self, c, ctx, data, workflow_version):
+    def record(self, c, ctx, data, workflow_version, correlation=None):
         """Write one draft observation under the response's source identity and submit it into the
-        existing independent review, exactly as a manual observation is submitted."""
+        existing independent review, exactly as a manual observation is submitted. The observation
+        and its review workflow each get their own audit and outbox event in this transaction, as a
+        manual create and submit would; the command's receipt is the submission's."""
         tenant = ctx.tenant_id
         if c.execute(
             "SELECT 1 FROM impact.source_key_registry WHERE tenant_id=%s AND namespace=%s AND source_key=%s",
@@ -373,7 +377,21 @@ class Forms:
             (tenant, data["source_namespace"], data["source_key"], receipt["object_id"]),
         )
         draft = load(c, ctx, receipt["object_id"], "Observation", lock=True)
-        self.service.submit(c, ctx, "Observation", draft, {"workflow_version": workflow_version})
+        workflow = self.service.submit(c, ctx, "Observation", draft, {"workflow_version": workflow_version})
+        submitted = load(c, ctx, receipt["object_id"], "Observation")
+        op = "action_submissions_submit"
+        audit(
+            c,
+            ctx,
+            op,
+            {
+                **receipt,
+                "revision_id": str(submitted["head_revision"]),
+                "business_state": submitted["lifecycle_state"],
+            },
+            correlation,
+        )
+        audit(c, ctx, op, workflow, correlation)
         return receipt["object_id"]
 
     # Read model ---------------------------------------------------------------------------------

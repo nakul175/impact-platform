@@ -1,0 +1,73 @@
+# Public entry point: TLS for the application and the identity provider, nothing else published.
+# APP_HOST / AUTH_HOST come from deploy/update.sh (derived from the server's public IP through
+# sslip.io unless /opt/impact/config.env overrides them). CADDY_TLS_MODE is "acme" (Let's Encrypt,
+# the default on the server) or "internal" (Caddy's own CA, for the CI stack).
+{
+	email {$ACME_EMAIL}
+	admin 127.0.0.1:2019
+}
+
+(tls_acme) {
+}
+
+(tls_internal) {
+	tls internal
+}
+
+(common) {
+	encode zstd gzip
+	header {
+		?Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		?X-Content-Type-Options "nosniff"
+		-Server
+		-Via
+	}
+	# Access log to stdout without authorization codes, state, nonces or logout hints (cookies and
+	# Authorization headers are already left out of Caddy's logs by default).
+	log {
+		output stdout
+		format filter {
+			wrap json
+			fields {
+				request>uri query {
+					replace code REDACTED
+					replace state REDACTED
+					replace session_state REDACTED
+					replace nonce REDACTED
+					replace id_token_hint REDACTED
+					replace code_challenge REDACTED
+				}
+			}
+		}
+	}
+}
+
+{$APP_HOST} {
+	import tls_{$CADDY_TLS_MODE}
+	import common
+	# Deployment status written by deploy/update.sh (commit, time, container health; no secrets).
+	handle /deploy-status.json {
+		root * /srv/status
+		header Cache-Control "no-store"
+		header Content-Security-Policy "default-src 'none'; frame-ancestors 'none'"
+		header Referrer-Policy "no-referrer"
+		file_server
+	}
+	handle {
+		reverse_proxy api:8000
+	}
+}
+
+{$AUTH_HOST} {
+	import tls_{$CADDY_TLS_MODE}
+	import common
+	# The provider's administration console and the master realm are never published; the
+	# deployment reaches the admin API on the internal network only (deploy/keycloak_admin.py).
+	@private path /admin /admin/* /realms/master /realms/master/*
+	handle @private {
+		respond "Not found" 404
+	}
+	handle {
+		reverse_proxy keycloak:8080
+	}
+}

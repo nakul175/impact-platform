@@ -1378,6 +1378,7 @@ html[data-reduced-motion="true"] *::after {
 .worker-list li {
   overflow-wrap: anywhere;
   margin-bottom: 0.5rem;
+}
 .planning-toolbar {
   display: flex;
   flex-wrap: wrap;

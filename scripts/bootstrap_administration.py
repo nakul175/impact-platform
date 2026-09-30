@@ -9,9 +9,9 @@ from impact_api.measurement_contracts import SPECIAL_READS
 from impact_api.reporting_contracts import SPECIAL_READS as REPORTING_READS
 from impact_api.identity_profile import email_hash, masked_email
 from impact_api.store import Context, write
+from fixture_support import FIXTURE_EXPIRES_AT as EXPIRY, FIXTURE_STARTS_AT
 
 ISSUER = "http://127.0.0.1:8080/realms/impact-dev"
-EXPIRY = "2026-12-01T00:00:00Z"
 
 
 def deterministic(value):
@@ -134,7 +134,7 @@ def provision(c, fixture):
                             "subject_id": actor["principal_id"],
                             "capability": cap,
                             "scope_id": scope,
-                            "starts_at": "2026-01-01T00:00:00Z",
+                            "starts_at": FIXTURE_STARTS_AT,
                             "expires_at": EXPIRY,
                             "issuer_id": actor["principal_id"],
                         },

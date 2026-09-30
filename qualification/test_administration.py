@@ -32,17 +32,7 @@ def expiry(days=20):
 
 
 def signed(live, identity, **overrides):
-    claims = {
-        "iss": live.config["issuer"],
-        "sub": identity,
-        "aud": live.config["audience"],
-        "azp": live.config["client_id"],
-        "iat": int(time.time()),
-        "exp": int(time.time()) + 600,
-        "auth_time": time.time(),
-        **overrides,
-    }
-    return jwt.encode(claims, (live.local / "private.pem").read_bytes(), algorithm="RS256")
+    return live.signed(identity, **overrides)
 
 
 def request_as(live, identity, path, method="GET", body=None, token=None):
@@ -470,23 +460,45 @@ def test_cross_tenant_scope_creation_is_atomic(live):
 
 
 def test_delegation_expiry_cannot_be_exceeded(live):
-    identity, email = provision_identity(live)
-    body = command(
-        {
-            "email": email,
-            "role_template_id": role(live)["object_id"],
-            "scope_ids": [tenant_scope(live)],
-            "expires_at": expiry(5),
-            "membership_expires_at": expiry(89),
-            "external": True,
-            "reason": "Bounded authority",
-        }
+    """A membership expiry one day beyond the inviter's delegation ceiling is refused and one day
+    inside it is accepted. The ceiling comes from reviewed initial access (30 days ahead) rather
+    than from the fixture tenant, whose regenerated ceiling lies beyond the 90-day invitation bound."""
+    from test_access_bootstrap import applied  # both modules are fully loaded by now
+
+    row, tenant = applied(live)
+    tenant_id = tenant["tenant_id"]
+    with live.db() as c:
+        ceiling = c.execute(
+            "SELECT min(a.expires_at) AS ceiling FROM impact.grant_authority a JOIN impact.tenant_principal p ON p.tenant_id=a.tenant_id AND p.principal_id=a.principal_id WHERE a.tenant_id=%s AND p.identity_id=%s",
+            (tenant_id, live.fixture["actors"]["author"]["identity_id"]),
+        ).fetchone()["ceiling"]
+    programme_manager = next(
+        r
+        for r in expect(live.request(live.path("role-templates", tenant=tenant_id)), 200)["items"]
+        if r["name"] == "PROGRAMME_MANAGER"
     )
-    assert (
-        expect(live.request(live.path("member-invitations"), actor="admin", method="POST", body=body), 403)[
-            "reason_code"
-        ]
-        == "DELEGATION_NOT_PERMITTED"
+
+    def invitation(membership_expires_at):
+        _, email = provision_identity(live)
+        return command(
+            {
+                "email": email,
+                "role_template_id": programme_manager["object_id"],
+                "scope_ids": [row["scope_id"]],
+                "expires_at": expiry(5),
+                "membership_expires_at": membership_expires_at.isoformat(),
+                "external": True,
+                "reason": "Bounded authority",
+            }
+        )
+
+    path = live.path("member-invitations", tenant=tenant_id)
+    beyond = expect(
+        live.request(path, actor="author", method="POST", body=invitation(ceiling + timedelta(days=1))), 403
+    )
+    assert beyond["reason_code"] == "DELEGATION_NOT_PERMITTED"
+    expect(
+        live.request(path, actor="author", method="POST", body=invitation(ceiling - timedelta(days=1))), 200
     )
 
 

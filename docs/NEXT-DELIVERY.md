@@ -1,42 +1,33 @@
 # Current roadmap and next delivery
 
-Roadmap Release 1 is **in progress**. Build v0.13 adds reviewed renewal of unexpired delegated authority to the v0.11 initial-access and v0.12 recovery-contact increments. The sequenced plan for the remaining increments, infrastructure tracks and quality backlog is in [DELIVERY-PLAN.md](DELIVERY-PLAN.md). A build number does not mean a roadmap release is accepted. The original 307-requirement ledger has 74 PARTIAL and 233 PENDING requirements; none is declared fully accepted.
+Release 1 — **Usable core** — is **in progress**. Build v0.14 qualified the platform on native PostgreSQL with separately provisioned login roles, following the v0.13 reviewed renewal of delegated authority. On 28 September 2026 scope decision SD-01 reorganised the delivery sequence into three releases so that the first one is usable on its own by one organisation; the sequenced increments, the decision record and the quality backlog are in [DELIVERY-PLAN.md](DELIVERY-PLAN.md). A build number does not mean a release is accepted. The original 307-requirement ledger has 76 PARTIAL and 231 PENDING requirements; none is declared fully accepted, and the ledger's own R1/R2/R3 requirement tags are unchanged by SD-01.
 
-## Finish Release 1 before moving to Release 2
+## Release 1 — Usable core
+
+Definition: one organisation runs its real MEL cycle end to end on hosted infrastructure with real logins — results framework, governed indicators, web forms and imports, independent review, calculation, period close, PDF/XLSX exports, dashboards — with the P0 security, privacy, backup and monitoring safeguards.
 
 | Priority | Remaining work | Acceptance evidence |
 |---|---|---|
-| 1 | Complete onboarding: administrator replacement and renewal of expired authority (v0.14), external recovery-channel verification/invitations (v0.15) and legacy tenant adoption (v0.16) | New tenant can run a business workflow only through explicitly reviewed grants; verified contacts and provider evidence are recorded |
-| 2 | Complete lifecycle: real worker cancellation, source-credential rechecks, support/exit access, closure export/archive/deletion | v0.10 already fences access and holds work; live cancellation boundaries, governed exit and recovery still need acceptance |
-| 3 | Live OIDC/MFA/passkeys and provider recovery | PKCE/state/nonce replay and disabled-account tests; actual assurance policy; enrolment/last-factor safeguards; action-bound step-up |
-| 4 | Unavailable-owner recovery | Independently verified contacts/evidence, separate approvers and audited fail-closed custody transition |
-| 5 | Full account/access acceptance | Expiry notices/jobs, provider logout/refresh tokens, shared-device mode, timeout warning, authority renewal/extension, certification, complete departure inventory and key rotation |
-| 6 | Organisation reorganisation acceptance | Future-effective moves, affected-obligation preview, historical context and documented scope semantics |
-| 7 | Native persistence and real service roles | v0.8 upgrade, duplicate-code preflight, RLS under separate app/identity roles, simultaneous approval/revocation, restart and backup/restore |
+| 1 | Deployable base: live identity provider with MFA, logout and revocation (v0.15); worker, outbox dispatcher and email adapter (v0.16); deployment package, secrets, logs, metrics, scheduled backups, first staging deployment (v0.17). Native PostgreSQL with separate login roles, restart check, restore drill and upgrade check is delivered (v0.14) | Provider evidence recorded per run; a staging deployment operated with backups and a restore drill on it |
+| 2 | Programme design and measurement: results framework and planning (v0.18); indicator and calculation completion with golden corpus (v0.19) | P0 PLN/IND/CAL requirements at PARTIAL with executed evidence; calculation reconciliation against the corpus |
+| 3 | Data collection: web forms (v0.20); CSV/XLSX import and data quality (v0.21); object store and evidence attachments (v0.22) | Submissions become observations with value states; imports staged and quarantined; attachments scanned and mediated |
+| 4 | Outputs: PDF/XLSX/DOCX exports of frozen packages (v0.23); dashboards from official snapshots (v0.24) | Rendered artifacts bound to locked snapshots; freshness shown |
+| 5 | Safeguards and acceptance: security and privacy P0 (v0.25); non-functional qualification, accessibility, UAT pack, penetration-test remediation (v0.26) | Release acceptance procedure with named approvers |
 
-Already delivered: custom role create/revise/retire; independently reviewed flat group access; immediate member removal; organisation create/rename/move; renewal that removes old access; owner nomination/acceptance; own-session inventory/revocation; identity authentication cutoff; preferences; configured ACR enforcement; reviewed extension of unexpired delegated authority (v0.13). Extend these capabilities rather than rebuilding them. Exact limits are in RELEASE-0.9.md.
+Already delivered: custom role create/revise/retire; independently reviewed flat group access; immediate member removal; organisation create/rename/move; renewal that removes old access; owner nomination/acceptance; own-session inventory/revocation; identity authentication cutoff; preferences; configured ACR enforcement; reviewed extension of unexpired delegated authority (v0.13); native PostgreSQL qualification (v0.14). Extend these capabilities rather than rebuilding them. Exact limits are in RELEASE-0.9.md, RELEASE-0.13.md and RELEASE-0.14.md.
 
-v0.13 delivers the reviewed extension of unexpired delegated authority: the owner's proposal pins the current ceilings, grants and assignments of both administrators, the second administrator confirms, an independent operator approves within the review window, and a database-owned applicator re-dates only the pinned rows; revocations are preserved and the bootstrap marker is untouched. The next coding slice is v0.14, administrator replacement and renewal of expired authority: replace a revoked, expired or unavailable second administrator, admit a further reviewed authority holder, and re-establish authority that has lapsed through the same three-party review, without resurrecting revoked grants or re-running the one-time bootstrap. v0.12 supplies registered-account recovery-contact evidence; it does not deliver account recovery or a new email/SMS challenge. External delivery/provider qualification, unavailable-owner recovery and operational acceptance still require further work.
+**v0.14 delivered (28–29 September 2026).** The platform now runs and qualifies on native PostgreSQL on four provisioned login roles (`impact_app_login`, `impact_identity_login`, `impact_platform_login`, `impact_migrator`; `scripts/provision_logins.py`), with a runtime guard (`IMPACT_REQUIRE_UNPRIVILEGED_DB`, always on in staging and production) that refuses privileged, shared or missing connections at readiness and on every transaction; one migration runner for PGlite and native; a two-phase API restart persistence check; a scripted backup and restore drill; a populated schema-15 to schema-16 upgrade check; 25 native-only login-role, session and concurrency cases; a fixture regenerated to expire on 2027-09-01; per-actor signed test tokens; cookie sessions read without a row lock; and the frontend loader fix behind the CI browser flake. Evidence: 354 passed / 27 skipped / 1 deselected on PGlite, 379 passed / 2 skipped / 1 deselected on PostgreSQL 16.13, restart, restore and upgrade checks PASS, 143 reference and 91 browser checks, and the CI native job on PostgreSQL 17.11 for commit c759e9e. Not delivered: persistence across a database restart, a connection pooler, a backup regime with retention and measured RPO/RTO (the drill is CI-scale), lock-order evidence across objects, any load profile, a live identity provider, hosting, and the Release 2 tenant-administration items (administrator replacement, renewal of expired authority, legacy adoption, unavailable-owner recovery, closure). VF-DIN-002 and VF-DR-003 moved to PARTIAL on this evidence; VF-DR-002 did not, because no component was interrupted during a write.
 
-## Retained release sequence
+The next coding slice is **v0.15, live identity provider**: a Keycloak realm from `specification/environment/keycloak-dev-realm.json` in CI; PKCE, state and nonce replay, ACR and TOTP MFA enforcement, disabled-account handling, provider logout and refresh-token revocation, provider recovery; plus three quality-backlog items in the same area — exact operation-identifier retention in the work centre and change-request forms (#18), removal of the orphan policy row and bounding of the delegable capability set to the implemented surface (#19), and 404 rather than 503 for a route missing from the regenerated contract (#22). The owner decision needed before v0.15 can complete is the identity-provider deployment model (self-hosted Keycloak or a managed provider); v0.15 qualifies against Keycloak in CI either way, but live-provider evidence needs the owner's accounts.
+
+## Releases 2 and 3
 
 | Release | Scope | State |
 |---|---|---|
-| 1 | Tenant and user administration | In progress; v0.13 increment delivered |
-| 2 | Security and privacy foundations | Planned |
-| 3 | Programme planning | Planned |
-| 4 | Advanced measurement | Planned |
-| 5 | Forms | Planned |
-| 6 | Ingestion | Planned |
-| 7 | Offline | Planned |
-| 8 | Evidence and evaluation | Planned |
-| 9 | Participant and finance | Planned |
-| 10 | Analytics | Planned |
-| 11 | Automation and integrations | Planned |
-| 12 | Reporting | Planned |
-| 13 | AI | Planned |
-| 14 | Product administration, migration, localisation, help and gaps | Planned |
-| 15 | Full qualification | Planned |
-| 16 | Production acceptance | Planned |
+| 1 | Usable core (above) | In progress; v0.14 delivered |
+| 2 | Field and partners: offline and Android, participants, evaluation, remaining evidence, integrations and connectors, migration tooling, tenant-administration completion (administrator replacement, legacy adoption, unavailable-owner recovery, lifecycle closure, access certification, organisation reorganisation) | Planned |
+| 3 | Intelligence: AI, advanced analytics, finance, remaining reporting and delivery, localisation and help completion | Planned |
 
-Earlier builds contain bounded implementation in some later-release areas. Their original acceptance criteria remain open. Track implementation, test evidence and operational acceptance separately. No deployment, real invitations, external messages or infrastructure purchases are implied.
+The former 16-stage sequence (tenant administration; security and privacy; programme planning; advanced measurement; forms; ingestion; offline; evidence and evaluation; participant and finance; analytics; automation and integrations; reporting; AI; product administration, migration, localisation, help; full qualification; production acceptance) is retained in the engineering implementation plan for traceability and is no longer used for scheduling.
+
+Earlier builds contain bounded implementation in some later-release areas. Their original acceptance criteria remain open. Track implementation, test evidence and operational acceptance separately. No deployment, real invitations, external messages or infrastructure purchases are implied by this record; hosting, identity-provider and email-provider decisions are the owner's and are listed in DELIVERY-PLAN.md §2.

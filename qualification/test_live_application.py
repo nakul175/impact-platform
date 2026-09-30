@@ -1,5 +1,4 @@
 import json
-import time
 import uuid
 import httpx
 import jwt
@@ -160,17 +159,7 @@ def test_database_tenant_fence_and_immutable_revisions(live):
 
 
 def token(live, actor="author", **claims):
-    a = live.fixture["actors"][actor]
-    base = {
-        "iss": live.config["issuer"],
-        "sub": a["identity_id"],
-        "aud": live.config["audience"],
-        "azp": live.config["client_id"],
-        "iat": int(time.time()),
-        "exp": int(time.time()) + 600,
-        "auth_time": int(time.time()),
-    }
-    return jwt.encode({**base, **claims}, (live.local / "private.pem").read_bytes(), algorithm="RS256")
+    return live.signed(live.fixture["actors"][actor]["identity_id"], **claims)
 
 
 @pytest.mark.parametrize(

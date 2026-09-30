@@ -1,4 +1,4 @@
-# Impact Platform · v0.13.0
+# Impact Platform · v0.14.0
 
 Documentation edition **1.1** is available in the [master documentation index](docs/current/DOCUMENTATION-INDEX.md): BRD, FSD, HLD, LLD, wireframes, test cases/scenarios, engineering specifications and handover guides. Original editions are preserved in `docs/history/v1.0`. This documentation update does not declare product or production acceptance.
 
@@ -7,7 +7,7 @@ A working development delivery of the Impact Management platform described in th
 
 This release is a development build. It does not implement the complete enterprise product. The exact boundary and remaining work are documented in [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
 
-Version 0.13 adds reviewed renewal of unexpired delegated authority: the owner proposes an extension, the second administrator confirms it and an independent operator approves it, with revocations preserved and the one-time bootstrap marker untouched. Version 0.12 added recovery-contact nomination, verification, independent approval, replacement/renewal, revocation and expiry checks. All prior capabilities remain included. Release 1 remains incomplete: renewal of expired authority, administrator replacement, external recovery-channel verification, live provider acceptance, full closure and native database qualification remain open. See [0.13 release details](docs/RELEASE-0.13.md), [remaining work](docs/NEXT-DELIVERY.md), the [sequenced delivery plan](docs/DELIVERY-PLAN.md) and the [307-requirement ledger](docs/COMPLETION-LEDGER.md).
+Version 0.14 qualifies the platform on native PostgreSQL: four provisioned login roles instead of one superuser session, a runtime guard that refuses privileged or shared database connections, one migration runner, an API restart persistence check, a backup and restore drill, a populated schema-15 to schema-16 upgrade check, native-only concurrency and login-role tests, a fixture regenerated to expire on 2027-09-01 and per-actor signed test tokens; no contract or schema changed. Version 0.13 added reviewed renewal of unexpired delegated authority; version 0.12 added recovery contacts. All prior capabilities remain included. Release 1 remains incomplete: a live identity provider, workers and email, a deployment with backups and monitoring, renewal of expired authority, administrator replacement, external recovery-channel verification and full closure remain open, and the native evidence is single-node and CI-scale. See [0.14 release details](docs/RELEASE-0.14.md), [remaining work](docs/NEXT-DELIVERY.md), the [sequenced delivery plan](docs/DELIVERY-PLAN.md) and the [307-requirement ledger](docs/COMPLETION-LEDGER.md) (76 PARTIAL, 231 PENDING, 0 accepted).
 
 ## Start locally
 
@@ -21,7 +21,7 @@ make dev
 
 Open **http://127.0.0.1:8000**. The first startup applies sixteen migrations, loads synthetic records and generates local passwords. Find the `author`, `reviewer`, `partner`, `admin`, `owner` and `invitee` passwords in `.local/dev/passwords.json`; they are generated on your machine and are not included in this source archive. Stop with Ctrl+C. Running `make dev` again preserves the development database, passwords and signing secrets. Existing databases receive the additive migrations; they are not reset.
 
-The managed execution filesystem produced intermittent EOF/page-consistency errors with filesystem-backed PGlite. The test runners therefore use disposable memory storage. For a disposable local demonstration use `.venv/bin/python scripts/run.py dev --ephemeral`; records in that mode disappear on shutdown. Native PostgreSQL persistence, upgrade and concurrency qualification remain open.
+The managed execution filesystem produced intermittent EOF/page-consistency errors with filesystem-backed PGlite. The test runners therefore use disposable memory storage. For a disposable local demonstration use `.venv/bin/python scripts/run.py dev --ephemeral`; records in that mode disappear on shutdown. Native PostgreSQL is a separate gate (`make native`, below); persistence across a database restart, a connection pooler and any load profile remain open.
 
 For this increment, sign in as `admin` and open **Workspace settings**. Custom roles do not grant access on creation; use **People & access → Access requests** or submit a group proposal. Sign in separately as `owner` to review a proposal independently. **My account** shows preferences and active sessions. Ownership nomination must originate from the current owner and be accepted by the nominated administrator.
 
@@ -29,7 +29,7 @@ For tenant onboarding, open **Tenant lifecycle** as `admin`. Request a tenant us
 
 For initial access, open **Tenant lifecycle → Initial access** as `author`, propose access for the new tenant, nominate the `reviewer` identity UUID, choose an expiry within 90 days and select **PROGRAMME MANAGER** for later delegation. Sign in separately as `reviewer` to accept, then as `admin` to approve independently. The owner and second administrator receive administration access only. Return to the workspace and select the new tenant. As `reviewer`, use **People & access → Members → Reviewer → Request role change** to request PROGRAMME_MANAGER within the reviewed expiry. As `author`, approve it under **Access requests**. Refresh the reviewer workspace; **Portfolio** now permits creating the first programme draft. The protected owner remains the independent administrator. To extend that authority before it expires, sign in as `author`, open **Tenant lifecycle → Authority renewal**, choose a later expiry within 90 days and propose; sign in as `reviewer` to confirm, then as `owner` (an operator independent of both) to approve. Authority that has already expired cannot be renewed in this build. Complete new-tenant measurement/reference setup remains pending.
 
-Keep the local process running while using the application. `make dev` starts both the database and API in the same process tree. This also works in environments that isolate network namespaces between shell commands. Only one local runner can use the default ports 8000 and 55432 at a time.
+Keep the local process running while using the application. `make dev` starts both the database and API in the same process tree. This also works in environments that isolate network namespaces between shell commands. Only one local runner can use the default ports 8000 and 55432 at a time; `IMPACT_DEV_DB_PORT` moves the development database port (`0` lets the operating system choose, which is what `make test` and the browser checks do so that parallel runners never collide).
 
 The embedded PGlite database is for local development and qualification. Production requires separately operated native PostgreSQL, a qualified identity provider, and the release gates listed below.
 
@@ -43,7 +43,7 @@ The embedded PGlite database is for local development and qualification. Product
 6. Open **Results**, calculate the indicator for **2026-Q3**, and inspect the new result. On a fresh fixture, it displays **49.17** from pooled components **59 / 120**. It is explicitly **PROVISIONAL** because expected coverage is not configured.
 7. Add another observation in that period, then refresh the results. The previous result is marked stale; its immutable calculation revision remains intact.
 
-The seeded **OFFICIAL 46.36** result is synthetic baseline data, not an official calculation produced by this implementation. Fixture grants expire on **2026-12-01**. After that date, update the fixture through a reviewed revision process; do not disable expiry checks.
+The seeded **OFFICIAL 46.36** result is synthetic baseline data, not an official calculation produced by this implementation. Fixture grants, delegation ceilings, operator records and the deployment qualification expire on **2027-09-01** (fixture version 2026-09-28; the instant is `FIXTURE_EXPIRES_AT` in `scripts/fixture_support.py`). Before that date, regenerate the fixture with `scripts/redate_fixture.py --expires <instant>`, which re-hashes every changed revision payload, and rerun the full suites; `scripts/run.py` refuses to start within 90 days of expiry, because the suites create authority that expires up to 60 days out and must stay inside the fixture ceilings. Do not disable expiry checks.
 
 ## Configure your own measurement workflow
 
@@ -106,11 +106,12 @@ make unit
 make test
 make reference
 make browser
+IMPACT_FIXTURE_DSN=postgresql://postgres:<password>@127.0.0.1:5432/impact_test make native
 ```
 
-`make test` creates a fresh, isolated in-memory fixture and runs unit, live integration, and smoke tests. It does not reset your development workspace. `make browser` installs the Linux browser dependencies and exercises the actual rendered UI. Test configuration and logs stay under `.local/test-*` for diagnosis; disposable database contents are not retained. These directories are excluded from packages.
+`make test` creates a fresh, isolated in-memory fixture on an operating-system-chosen port and runs unit, live integration, and smoke tests; the native-only tests skip there with a stated reason. It does not reset your development workspace. `make browser` installs the Linux browser dependencies and exercises the actual rendered UI. `make native` needs a superuser connection to an empty disposable `impact_test` or `impact_test_<suffix>` database: it provisions the four login roles (`scripts/provision_logins.py`), migrates as `impact_migrator`, runs the whole suite against the API on the app, identity and platform logins with `IMPACT_REQUIRE_UNPRIVILEGED_DB=1`, restarts the API between the two phases of the persistence check, runs the backup and restore drill on that database and the schema-15 upgrade check on a fresh one, and writes `docs/evidence/native-application-tests.xml`, `native-qualification.json` and `native-restore-drill.json`. Test configuration and logs stay under `.local/test-*` for diagnosis; disposable database contents are not retained. These directories are excluded from packages.
 
-Evidence from this build is in [docs/evidence](docs/evidence). Native PostgreSQL qualification is configured in `.github/workflows/qualification.yml` but was **not executed in this environment**. Local PGlite checks do not establish native concurrency, throughput, or operational readiness.
+Evidence from this build is in [docs/evidence](docs/evidence): the PGlite gate of 28 September 2026 (354 passed, 27 native-only skipped, 1 deselected), the nine browser groups of 29 September 2026 (91 checks) and the native run of 29 September 2026 on PostgreSQL 16.13 (379 passed, 2 restart phases run separately, 1 deselected; restart, restore and upgrade checks PASS). The `native-postgresql-gate` job in `.github/workflows/qualification.yml` runs the same sequence against PostgreSQL 17.11. Neither run establishes throughput, behaviour behind a connection pooler, persistence across a database restart or operational readiness.
 
 ## Structure
 
@@ -124,11 +125,11 @@ Evidence from this build is in [docs/evidence](docs/evidence). Native PostgreSQL
 | `specification` | Preserved engineering package, fixtures, reference models and source requirements |
 | `tools/dev-db` | Local PostgreSQL-compatible PGlite process |
 | `tools/browser` | Real-browser qualification and screenshots |
-| `scripts` | Setup support, runners, migration, contract export and packaging |
+| `scripts` | Setup support, runners, the single migration runner, login provisioning, restore drill, upgrade check, fixture redating, contract export and packaging |
 | `docs` | Implementation boundary, qualification results and next delivery tasks |
 
 ## Continue development
 
 Read [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md), [docs/API-INVENTORY.md](docs/API-INVENTORY.md), [docs/QUALIFICATION.md](docs/QUALIFICATION.md), and [docs/NEXT-DELIVERY.md](docs/NEXT-DELIVERY.md). The original requirement and architecture documents remain under `specification/docs`.
 
-Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.13.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.
+Changes to API contracts should update `scripts/build_contracts.py` and the relevant additive contract module; regenerate the contract, then run `scripts/export_implemented_api.py`. The implemented subset contains 138 domain operations, plus the documented authentication/support routes. Preserve baseline files and the bytes of migrations already applied outside disposable development databases. `make package` produces `Impact-Platform-Source-v0.14.0.zip` with a SHA-256 manifest and verifies every archived file. Dependencies, generated passwords, keys, databases and logs are excluded.

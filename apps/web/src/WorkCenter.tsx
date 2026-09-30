@@ -28,6 +28,9 @@ export function WorkCenterPanel({
   const [busy, setBusy] = useState("");
   const [epoch, setEpoch] = useState(0);
   const can = (capability: string) => capabilities.includes(capability);
+  // Capabilities arrive asynchronously after sign-in; the load below must re-run when they do,
+  // otherwise a fast navigation renders an empty view until something else changes epoch.
+  const capabilityKey = capabilities.join(" ");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -64,7 +67,7 @@ export function WorkCenterPanel({
         if (e.name !== "AbortError") setError(explain(e));
       });
     return () => controller.abort();
-  }, [base, epoch]);
+  }, [base, epoch, capabilityKey]);
 
   async function recalculate(row: Row) {
     setBusy(row.object_id);

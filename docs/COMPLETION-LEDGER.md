@@ -2,11 +2,11 @@
 
 PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.
 
-Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 74, 'PENDING': 233}. Enterprise completion: **false**.
+Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 76, 'PENDING': 231}. Enterprise completion: **false**.
 
 | Requirement | Title | Status | Evidence |
 |---|---|---|---|
-| FR-TEN-001 | Tenant lifecycle | PARTIAL | [tenant_lifecycle.py](../apps/api/impact_api/tenant_lifecycle.py), [test_tenant_lifecycle.py](../qualification/test_tenant_lifecycle.py), [tenant-check.mjs](../tools/browser/tenant-check.mjs), [RELEASE-0.10.md](../docs/RELEASE-0.10.md), [access_bootstrap.py](../apps/api/impact_api/access_bootstrap.py), [test_access_bootstrap.py](../qualification/test_access_bootstrap.py), [bootstrap-check.mjs](../tools/browser/bootstrap-check.mjs), [RELEASE-0.11.md](../docs/RELEASE-0.11.md), [recovery_contacts.py](../apps/api/impact_api/recovery_contacts.py), [test_recovery_contacts.py](../qualification/test_recovery_contacts.py), [recovery-check.mjs](../tools/browser/recovery-check.mjs), [RELEASE-0.12.md](../docs/RELEASE-0.12.md), [authority_renewal.py](../apps/api/impact_api/authority_renewal.py), [test_authority_renewal.py](../qualification/test_authority_renewal.py), [renewal-check.mjs](../tools/browser/renewal-check.mjs), [RELEASE-0.13.md](../docs/RELEASE-0.13.md) |
+| FR-TEN-001 | Tenant lifecycle | PARTIAL | [tenant_lifecycle.py](../apps/api/impact_api/tenant_lifecycle.py), [test_tenant_lifecycle.py](../qualification/test_tenant_lifecycle.py), [tenant-check.mjs](../tools/browser/tenant-check.mjs), [RELEASE-0.10.md](../docs/RELEASE-0.10.md), [access_bootstrap.py](../apps/api/impact_api/access_bootstrap.py), [test_access_bootstrap.py](../qualification/test_access_bootstrap.py), [bootstrap-check.mjs](../tools/browser/bootstrap-check.mjs), [RELEASE-0.11.md](../docs/RELEASE-0.11.md), [recovery_contacts.py](../apps/api/impact_api/recovery_contacts.py), [test_recovery_contacts.py](../qualification/test_recovery_contacts.py), [recovery-check.mjs](../tools/browser/recovery-check.mjs), [RELEASE-0.12.md](../docs/RELEASE-0.12.md), [authority_renewal.py](../apps/api/impact_api/authority_renewal.py), [test_authority_renewal.py](../qualification/test_authority_renewal.py), [renewal-check.mjs](../tools/browser/renewal-check.mjs), [RELEASE-0.13.md](../docs/RELEASE-0.13.md), [test_native_concurrency.py](../qualification/test_native_concurrency.py) |
 | FR-TEN-002 | Organisation structures | PARTIAL | [workspace_administration.py](../apps/api/impact_api/workspace_administration.py), [account.py](../apps/api/impact_api/account.py), [test_workspace_administration.py](../qualification/test_workspace_administration.py), [workspace-check.mjs](../tools/browser/workspace-check.mjs), [RELEASE-0.9.md](../docs/RELEASE-0.9.md), [authority_renewal.py](../apps/api/impact_api/authority_renewal.py), [test_authority_renewal.py](../qualification/test_authority_renewal.py), [renewal-check.mjs](../tools/browser/renewal-check.mjs), [RELEASE-0.13.md](../docs/RELEASE-0.13.md) |
 | FR-TEN-003 | Multiple memberships | PARTIAL | [administration.py](../apps/api/impact_api/administration.py), [test_administration.py](../qualification/test_administration.py), [RELEASE-0.2.md](../docs/RELEASE-0.2.md) |
 | FR-TEN-004 | Configuration and terminology | PENDING | Pending |
@@ -225,7 +225,7 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-AI-018 | Safety feedback and shutdown | PENDING | Pending |
 | FR-SEC-001 | Security threat assessment | PENDING | Pending |
 | FR-SEC-002 | Encryption and key governance | PENDING | Pending |
-| FR-SEC-003 | Tenant isolation verification | PARTIAL | [store.py](../apps/api/impact_api/store.py), [auth.py](../apps/api/impact_api/auth.py), [test_live_application.py](../qualification/test_live_application.py) |
+| FR-SEC-003 | Tenant isolation verification | PARTIAL | [store.py](../apps/api/impact_api/store.py), [auth.py](../apps/api/impact_api/auth.py), [test_live_application.py](../qualification/test_live_application.py), [provision_logins.py](../scripts/provision_logins.py), [test_native_roles.py](../qualification/test_native_roles.py), [restore_drill.py](../scripts/restore_drill.py), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [native-qualification.json](../docs/evidence/native-qualification.json), [RELEASE-0.14.md](../docs/RELEASE-0.14.md) |
 | FR-SEC-004 | Application and API protection | PARTIAL | [store.py](../apps/api/impact_api/store.py), [auth.py](../apps/api/impact_api/auth.py), [test_live_application.py](../qualification/test_live_application.py) |
 | FR-SEC-005 | File and content safety | PENDING | Pending |
 | FR-SEC-006 | Secrets management | PENDING | Pending |
@@ -252,7 +252,7 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-OPS-002 | Entitlements and limits | PENDING | Pending |
 | FR-OPS-003 | Subscription administration | PENDING | Pending |
 | FR-OPS-004 | Support case management | PENDING | Pending |
-| FR-OPS-005 | Monitoring and service visibility | PARTIAL | [main.tsx](../apps/web/src/main.tsx), [reporting-check.mjs](../tools/browser/reporting-check.mjs), [IMPLEMENTATION.md](../docs/IMPLEMENTATION.md) |
+| FR-OPS-005 | Monitoring and service visibility | PARTIAL | [main.tsx](../apps/web/src/main.tsx), [reporting-check.mjs](../tools/browser/reporting-check.mjs), [IMPLEMENTATION.md](../docs/IMPLEMENTATION.md), [main.py](../apps/api/impact_api/main.py), [store.py](../apps/api/impact_api/store.py), [test_native_roles.py](../qualification/test_native_roles.py), [test_native_restart.py](../qualification/test_native_restart.py), [native-qualification.json](../docs/evidence/native-qualification.json), [RELEASE-0.14.md](../docs/RELEASE-0.14.md) |
 | FR-OPS-006 | Backup and recovery operations | PENDING | Pending |
 | FR-OPS-007 | Safe release and rollback | PENDING | Pending |
 | FR-OPS-008 | Capacity and cost management | PENDING | Pending |
@@ -289,9 +289,9 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | VF-AVL-002 | Dependency degradation | PENDING | Pending |
 | VF-DR-001 | Disaster recovery | PENDING | Pending |
 | VF-DR-002 | Ordinary failure durability | PENDING | Pending |
-| VF-DR-003 | Recovery testing and backups | PENDING | Pending |
+| VF-DR-003 | Recovery testing and backups | PARTIAL | [restore_drill.py](../scripts/restore_drill.py), [native-restore-drill.json](../docs/evidence/native-restore-drill.json), [native-qualification.json](../docs/evidence/native-qualification.json), [RELEASE-0.14.md](../docs/RELEASE-0.14.md), [OPERATIONS-GUIDE.md](../docs/current/OPERATIONS-GUIDE.md) |
 | VF-DIN-001 | Calculation correctness | PENDING | Pending |
-| VF-DIN-002 | Concurrent change integrity | PENDING | Pending |
+| VF-DIN-002 | Concurrent change integrity | PARTIAL | [test_native_concurrency.py](../qualification/test_native_concurrency.py), [service.py](../apps/api/impact_api/service.py), [store.py](../apps/api/impact_api/store.py), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [native-qualification.json](../docs/evidence/native-qualification.json), [RELEASE-0.14.md](../docs/RELEASE-0.14.md) |
 | VF-IAM-001 | Revocation time | PENDING | Pending |
 | VF-OFF-001 | Offline authority window | PENDING | Pending |
 | VF-SEC-001 | Release security threshold | PENDING | Pending |

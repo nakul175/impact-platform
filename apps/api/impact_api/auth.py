@@ -15,6 +15,9 @@ from .domain import DomainError, unavailable
 from .identity_profile import normalize_email, email_hash, masked_email
 
 
+SESSION_ACTIVITY_INTERVAL_SECONDS = 30
+
+
 def digest(value):
     return hashlib.sha256(value.encode()).digest()
 
@@ -155,8 +158,11 @@ class Auth:
             raise DomainError("AUTH_REQUIRED", 401)
         now = datetime.now(timezone.utc)
         with self.db.transaction(identity=True) as c:
+            # A plain read: a browser's parallel requests on one session must not queue behind
+            # each other. The idle limit (15 min since last activity) and the absolute limit
+            # (expires_at, 8 h from sign-in) are evaluated on the row as read.
             row = c.execute(
-                "SELECT s.*,i.natural_identity_id,i.provider_subject FROM impact.web_session s JOIN impact.auth_identity i USING(identity_id) WHERE s.session_hash=%s FOR UPDATE OF s",
+                "SELECT s.*,i.natural_identity_id,i.provider_subject FROM impact.web_session s JOIN impact.auth_identity i USING(identity_id) WHERE s.session_hash=%s",
                 (digest(session),),
             ).fetchone()
             if (
@@ -170,9 +176,17 @@ class Auth:
                 self.origin(request)
                 if not hmac.compare_digest(request.headers.get("x-csrf-token", ""), self.csrf(session)):
                     raise DomainError("POLICY_DENIED", 403, reason="CSRF_REQUIRED")
-            c.execute(
-                "UPDATE impact.web_session SET last_seen_at=%s WHERE session_hash=%s", (now, digest(session))
-            )
+            # Activity is recorded at most every 30 s. In a burst of N requests on one session
+            # after 30 s of inactivity, all N pass the check on the row as read; the first UPDATE
+            # takes the row lock and the other N-1 wait briefly on it, then match zero rows once
+            # the predicate is re-evaluated against the advanced last_seen_at, so exactly one
+            # write happens. A 30 s lag never extends the 15-minute idle window beyond what the
+            # last recorded activity allows.
+            if row["last_seen_at"] < now - timedelta(seconds=SESSION_ACTIVITY_INTERVAL_SECONDS):
+                c.execute(
+                    "UPDATE impact.web_session SET last_seen_at=%s WHERE session_hash=%s AND last_seen_at<%s",
+                    (now, digest(session), now - timedelta(seconds=SESSION_ACTIVITY_INTERVAL_SECONDS)),
+                )
         return Identity(
             str(row["identity_id"]),
             str(row["natural_identity_id"]),

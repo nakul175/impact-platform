@@ -9,7 +9,7 @@ catalogue = json.loads((ROOT / "specification/contracts/fsd-requirements.json").
 groups = [
     (
         "FR-TEN-001",
-        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks, archival/deletion and native concurrency remain open.",
+        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14).",
         [
             "apps/api/impact_api/tenant_lifecycle.py",
             "qualification/test_tenant_lifecycle.py",
@@ -27,6 +27,7 @@ groups = [
             "qualification/test_authority_renewal.py",
             "tools/browser/renewal-check.mjs",
             "docs/RELEASE-0.13.md",
+            "qualification/test_native_concurrency.py",
         ],
     ),
     (
@@ -52,12 +53,27 @@ groups = [
         ],
     ),
     (
-        "FR-ACC-001 FR-ACC-002 FR-ACC-004 FR-ACC-005 FR-ACC-011 FR-SEC-003 FR-SEC-004 FR-SEC-007 FR-SEC-012 FR-INT-004 FR-INT-005",
-        "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts. Native database concurrency, every future module, audit tamper evidence and production assurance remain open.",
+        "FR-ACC-001 FR-ACC-002 FR-ACC-004 FR-ACC-005 FR-ACC-011 FR-SEC-004 FR-SEC-007 FR-SEC-012 FR-INT-004 FR-INT-005",
+        "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts. Native concurrency evidence is limited to the raced approvals, operation replays, close reviews and renewal-versus-revocation cases of qualification/test_native_concurrency.py (v0.14); every future module, audit tamper evidence and production assurance remain open.",
         [
             "apps/api/impact_api/store.py",
             "apps/api/impact_api/auth.py",
             "qualification/test_live_application.py",
+        ],
+    ),
+    (
+        "FR-SEC-003",
+        "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts. v0.14 adds native PostgreSQL evidence for the database side of the fence: the API runs on three separately provisioned login roles (impact_app_login, impact_identity_login, impact_platform_login; NOINHERIT, NOBYPASSRLS, exactly one privilege-role membership each) with IMPACT_REQUIRE_UNPRIVILEGED_DB=1, and qualification/test_native_roles.py proves under those real logins (PostgreSQL 16.13 locally, 17.11 in CI) that each login assumes only its own role, that impact_app reads nothing without a transaction-local tenant and exactly one tenant with one, that it cannot read the control-plane tables, that impact_identity reaches identity tables only, that impact_platform writes only its RESTRICTIVE object types, and that the runtime guard refuses superuser, BYPASSRLS, owner-member and shared logins on every transaction (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN) with no login name in any response. The restore drill re-verifies ownership, RLS, policies, grants and the fences on a restored copy. Not covered: attachments, asynchronous jobs, caches, search, AI and support paths (none exist), connection pooling and context reset on pooled connections, audit tamper evidence, an isolation fixture with synthetic tenant markers across every module, and production assurance.",
+        [
+            "apps/api/impact_api/store.py",
+            "apps/api/impact_api/auth.py",
+            "qualification/test_live_application.py",
+            "scripts/provision_logins.py",
+            "qualification/test_native_roles.py",
+            "scripts/restore_drill.py",
+            "docs/evidence/native-application-tests.xml",
+            "docs/evidence/native-qualification.json",
+            "docs/RELEASE-0.14.md",
         ],
     ),
     (
@@ -105,9 +121,47 @@ groups = [
         ],
     ),
     (
-        "FR-RPT-004 FR-UX-001 FR-UX-002 FR-UX-003 FR-UX-004 FR-UX-005 FR-UX-009 FR-OPS-005",
+        "FR-RPT-004 FR-UX-001 FR-UX-002 FR-UX-003 FR-UX-004 FR-UX-005 FR-UX-009",
         "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
         ["apps/web/src/main.tsx", "tools/browser/reporting-check.mjs", "docs/IMPLEMENTATION.md"],
+    ),
+    (
+        "FR-OPS-005",
+        "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. v0.14 adds to the health surface: with unprivileged connections required, /health/ready first verifies that the app, identity and platform connections are three distinct unprivileged logins and answers 503 with a reason code only (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN, PLATFORM_NOT_CONFIGURED; no login name reaches a response), the same check refuses every transaction, and the native restart check shows readiness and the runtime manifest unchanged across an API restart. Service monitoring proper remains open: no health view separated by component, no journey success, latency, backlog, freshness or quota measurement, no incident record, no tenant-cohort view, no metrics, log pipeline or alerting exists; full accessibility/usability qualification, anonymous publication and all remaining screens are also open.",
+        [
+            "apps/web/src/main.tsx",
+            "tools/browser/reporting-check.mjs",
+            "docs/IMPLEMENTATION.md",
+            "apps/api/impact_api/main.py",
+            "apps/api/impact_api/store.py",
+            "qualification/test_native_roles.py",
+            "qualification/test_native_restart.py",
+            "docs/evidence/native-qualification.json",
+            "docs/RELEASE-0.14.md",
+        ],
+    ),
+    (
+        "VF-DIN-002",
+        "Native PostgreSQL only (qualification/test_native_concurrency.py, 11 cases, executed on PostgreSQL 16.13 in the workspace on 29 September 2026 and 17.11 in CI; skipped on PGlite, whose single process lock cannot contend): two independent reviewers approving one candidate revision at once admit exactly one decision (200 and CONFLICT_VERSION; one new revision each of candidate and workflow, one audit event, one outbox event, one receipt); the same command from two threads returns the one receipt and writes one revision; the same operation identifier with different payloads admits exactly one (CONFLICT_OPERATION for the other); two independent close reviews of one period produce one OFFICIAL snapshot version and PERIOD_ALREADY_SNAPSHOTTED for the other; a renewal approval raced with a pinned-grant revocation in both orders yields either the renewed set with the stale revocation refused (CONFLICT_VERSION) or the revoked grant with the approval refused (AUTHORITY_CHANGED), never both; ten reads complete beside a held tenant advisory lock while a write queues, and a write held past lock_timeout is refused with no receipt. Not covered: two concurrent edits of one record, repeated import commands and interrupted bulk jobs (no import or bulk job exists), the LLD lock order across objects under concurrent writers (the mixed-write case is a no-regression smoke test), connection pooling, and any load profile. The target's recoverable explicit partial outcomes exist only where an operation defines them.",
+        [
+            "qualification/test_native_concurrency.py",
+            "apps/api/impact_api/service.py",
+            "apps/api/impact_api/store.py",
+            "docs/evidence/native-application-tests.xml",
+            "docs/evidence/native-qualification.json",
+            "docs/RELEASE-0.14.md",
+        ],
+    ),
+    (
+        "VF-DR-003",
+        "A scripted, verified restore exists and has been executed (scripts/restore_drill.py; 29 September 2026 on PostgreSQL 16.13, and in the CI native job on 17.11 for commit c759e9e): pg_dump -Fc of the qualification database (3,427,234 bytes in 0.45 s), pg_restore into a sibling database (1.56 s), a migrator checksum pass that applies nothing and verifies all 16 ledgered checksums, the seeded OFFICIAL 46.36 present in its snapshot revision with its payload hash, equal row counts in all 151 impact tables (30,016 rows), identical ownership, RLS flags, policies, functions and grants, the tenant fences and control-plane denials intact for impact_app, and no credential altered. This is a CI-scale restore drill of a disposable qualification database, not a backup regime: no scheduled backup, retention window, off-site or immutable copy, protection against alteration or credential compromise, monthly restore cadence, quarterly disaster exercise, key recovery, attachment integrity (no attachments exist) or deletion/restriction replay before reopening exists, and no RPO or RTO is established. A restore of a production-scale database is not qualified.",
+        [
+            "scripts/restore_drill.py",
+            "docs/evidence/native-restore-drill.json",
+            "docs/evidence/native-qualification.json",
+            "docs/RELEASE-0.14.md",
+            "docs/current/OPERATIONS-GUIDE.md",
+        ],
     ),
     (
         "FR-TEN-002 FR-TEN-010 FR-IAM-003 FR-IAM-006 FR-IAM-008 FR-IAM-010 FR-IAM-013 FR-ACC-002",
@@ -153,8 +207,8 @@ for requirement in requirements:
         assert (ROOT / path).is_file(), path
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
-    "build": "0.13.0",
-    "assessment_date": "2026-09-28",
+    "build": "0.14.0",
+    "assessment_date": "2026-09-29",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
     "summary": summary,

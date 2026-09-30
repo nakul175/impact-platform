@@ -16,10 +16,12 @@ from cryptography.hazmat.primitives import serialization
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
+from impact_api.config import boolean  # noqa: E402
 from impact_api.store import Context, write  # noqa: E402
 from impact_api.contracts import OPERATIONS  # noqa: E402
 from bootstrap_administration import provision  # noqa: E402
 from bootstrap_platform import provision_platform  # noqa: E402
+from fixture_support import FIXTURE_EXPIRES_AT, FIXTURE_STARTS_AT, fixture_database_allowed  # noqa: E402
 
 
 def bootstrap(local):
@@ -30,7 +32,7 @@ def bootstrap(local):
     )
     fixture = json.loads((ROOT / "specification/fixtures/api-fixture.json").read_text())
     with psycopg.connect(dsn, row_factory=dict_row, prepare_threshold=None) as c:
-        if c.execute("SELECT current_database() AS db").fetchone()["db"] not in {"impact_dev", "impact_test"}:
+        if not fixture_database_allowed(c.execute("SELECT current_database() AS db").fetchone()["db"]):
             raise RuntimeError("Fixture database refused")
         c.execute("SELECT set_config('impact.allow_fixtures','true',true)")
         # Fixture purpose labels are not general permission. Append revised, explicit grants.
@@ -96,8 +98,8 @@ def bootstrap(local):
                     "subject_id": actor["principal_id"],
                     "capability": cap,
                     "scope_id": str(scope),
-                    "starts_at": "2026-01-01T00:00:00Z",
-                    "expires_at": "2026-12-01T00:00:00Z",
+                    "starts_at": FIXTURE_STARTS_AT,
+                    "expires_at": FIXTURE_EXPIRES_AT,
                     "issuer_id": actor["principal_id"],
                 }
                 write(c, ctx, "Grant", data, "Active", object_id=obj, track_author=False)
@@ -219,6 +221,9 @@ def bootstrap(local):
         "invitation_secret": previous_config.get("invitation_secret") or secrets.token_urlsafe(64),
         "dev_auth": True,
         "dev_db_serial": os.environ.get("IMPACT_NATIVE_TEST") != "1",
+        "require_unprivileged_db": boolean(
+            "require_unprivileged_db", os.environ.get("IMPACT_REQUIRE_UNPRIVILEGED_DB", "0")
+        ),
         "dev_users_file": str(local / "users.json"),
         "dev_public_key": str(local / "public.pem"),
         "fixture_id": fixture["fixture_id"],

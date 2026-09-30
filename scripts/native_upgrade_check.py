@@ -1,6 +1,6 @@
 """Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
 
-LATEST is the number of migration files (20 since build 0.19.0) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (21 since build 0.20.0) and BASELINE is LATEST - 1. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row
@@ -8,7 +8,8 @@ and one outbox event with its delivery row, and (since 0.18.0) one draft framewo
 draft target with their registry and revision rows so that the ALTER TABLE of
 `impact.framework_current` and `impact.target_current` in 0019 runs on populated tables, applies the
 remaining migration as the migrator (since 0.19.0 migration 0020 alters `impact.indicator_definition_current`
-and `impact.calculated_result_current`, which the acceptance fixture populates), and then verifies with direct queries, starting no service,
+and `impact.calculated_result_current`, which the acceptance fixture populates; since 0.20.0 migration
+0021 alters `impact.form_current` and `impact.submission_current`, which the fixture also populates), and then verifies with direct queries, starting no service,
 that `impact.schema_migration` holds LATEST rows with exactly the SHA-256 values ledgered in
 docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the columns and tables
 0017, 0018 and 0019 add exist, and that the tenant, revision, session and outbox counts loaded at
@@ -164,6 +165,9 @@ def run(admin_dsn, fixture_dsn, passwords):
         result["baseline"]["calculation_rows"] = c.execute(
             "SELECT (SELECT count(*) FROM impact.indicator_definition_current)+(SELECT count(*) FROM impact.calculated_result_current)"
         ).fetchone()[0]
+        result["baseline"]["form_rows"] = c.execute(
+            "SELECT (SELECT count(*) FROM impact.form_current)+(SELECT count(*) FROM impact.submission_current)"
+        ).fetchone()[0]
         result["baseline"]["outbox_deliveries"] = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery"
         ).fetchone()[0]
@@ -219,6 +223,13 @@ def run(admin_dsn, fixture_dsn, passwords):
         legacy_calculation = c.execute(
             "SELECT (SELECT count(*) FROM impact.indicator_definition_current WHERE disaggregation IS NULL)+(SELECT count(*) FROM impact.calculated_result_current WHERE disaggregation IS NULL)"
         ).fetchone()[0]
+        form_columns = c.execute(
+            "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND ((table_name='form_current' AND column_name IN ('programme_id','programme_id_kind')) OR (table_name='submission_current' AND column_name IN ('observation_ids','quarantine_reason','unit_key')))"
+        ).fetchone()[0]
+        form_table = c.execute("SELECT to_regclass('impact.form_publication')").fetchone()[0]
+        legacy_forms = c.execute(
+            "SELECT (SELECT count(*) FROM impact.form_current WHERE programme_id IS NULL)+(SELECT count(*) FROM impact.submission_current WHERE observation_ids IS NULL AND unit_key IS NULL)"
+        ).fetchone()[0]
         legacy_delivery = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
             (OUTBOX_TENANT, OUTBOX_EVENT),
@@ -242,6 +253,9 @@ def run(admin_dsn, fixture_dsn, passwords):
         "planning_tables_present": all(planning_tables),
         "calculation_columns_present": calculation_columns == 2,
         "calculation_rows_preserved": legacy_calculation,
+        "form_columns_present": form_columns == 5,
+        "form_publication_table_present": form_table is not None,
+        "form_rows_preserved": legacy_forms,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -250,7 +264,9 @@ def run(admin_dsn, fixture_dsn, passwords):
         and legacy_delivery == 1
         and legacy_planning == 2
         and result["baseline"]["calculation_rows"] > 0
-        and legacy_calculation == result["baseline"]["calculation_rows"],
+        and legacy_calculation == result["baseline"]["calculation_rows"]
+        and result["baseline"]["form_rows"] > 0
+        and legacy_forms == result["baseline"]["form_rows"],
     }
     if (
         mismatches
@@ -263,6 +279,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         or planning_columns != 11
         or not all(planning_tables)
         or calculation_columns != 2
+        or form_columns != 5
+        or form_table is None
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

@@ -4,6 +4,7 @@ import "./styles.css";
 import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
+import { FormsPanel } from "./Forms";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
@@ -73,6 +74,7 @@ const nav = [
   ["observations", "Measurement", "↗"],
   ["configuration", "Measurement setup", "⚙"],
   ["planning", "Results framework", "◇"],
+  ["forms", "Forms", "☰"],
   ["changes", "Change requests", "⇄"],
   ["period-governance", "Period close", "▣"],
   ["work", "My work", "◷"],
@@ -103,6 +105,10 @@ const titles: Record<string, [string, string]> = {
   work: [
     "My work",
     "Resolve assigned recalculations and acknowledge safe in-app notices.",
+  ],
+  forms: [
+    "Forms",
+    "Design, review and publish forms, then collect responses as observations.",
   ],
   planning: [
     "Results framework",
@@ -604,6 +610,7 @@ function Workspace({
       route === "account" ||
       route === "configuration" ||
       route === "planning" ||
+      route === "forms" ||
       route === "changes" ||
       route === "period-governance" ||
       route === "work"
@@ -775,6 +782,15 @@ function Workspace({
             />
           ) : route === "changes" ? (
             <ChangesPanel
+              base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
+              Dialog={Dialog}
+            />
+          ) : route === "forms" ? (
+            <FormsPanel
+              key={tenant}
               base={base}
               capabilities={access.capabilities}
               request={api}

@@ -1,5 +1,5 @@
 {
-  "version": "1.12.0",
+  "version": "1.13.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -3271,7 +3271,7 @@
         "MEL_ADMIN"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
+      "fresh_assurance_seconds": 300,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
@@ -3308,8 +3308,15 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
+      "state_guard": "Draft only; pinned published form version. When the version binds indicators, the caller must also hold observation.submit (TENANT scope, no purpose) and read access to the bound indicator instances, their definitions and programme, and the workflow template; each created observation follows the manual observation review path.",
+      "audit": true,
+      "additional_capabilities_when_bound": [
+        "observation.submit",
+        "indicator-instances.read",
+        "indicator-definitions.read",
+        "programmes.read",
+        "workflow-templates.read"
+      ]
     },
     {
       "operation_id": "action_observations_correct",
@@ -5271,6 +5278,36 @@
         "AUTHOR",
         "REVIEWER",
         "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_forms_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit",
+      "capability": "form.submit",
+      "role_templates": [
+        "AUTHOR",
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_form_published",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/published",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

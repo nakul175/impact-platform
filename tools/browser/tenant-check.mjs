@@ -188,6 +188,30 @@ try {
       0,
     );
   });
+  await test("Every sidebar entry stays reachable on a short screen", async () => {
+    // The fixed sidebar scrolls: with every workspace area listed, the last entry (Tenant
+    // lifecycle) must still be clickable when the window is shorter than the navigation.
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 560 },
+    });
+    const p = await context.newPage();
+    p.setDefaultTimeout(15000);
+    p.on("pageerror", (e) => errors.push(e.message));
+    await p.goto(base);
+    await p.getByLabel("Username", { exact: true }).fill("admin");
+    await p.getByLabel("Password", { exact: true }).fill(passwords.admin);
+    await p.getByRole("button", { name: "Sign in →", exact: true }).click();
+    const entries = p.locator(".sidebar nav button");
+    await entries.first().waitFor();
+    assert.ok((await entries.count()) >= 10);
+    await p
+      .getByRole("button", { name: "Tenant lifecycle", exact: true })
+      .click();
+    await p
+      .getByRole("heading", { name: "Tenant lifecycle", exact: true })
+      .waitFor();
+    await context.close();
+  });
   await test("Tenant console fits a mobile viewport", async () => {
     await admin.setViewportSize({ width: 390, height: 844 });
     assert.ok(

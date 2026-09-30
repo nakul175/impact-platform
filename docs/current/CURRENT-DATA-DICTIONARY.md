@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Build 0.18.0; schema 19 (0.18.0 adds 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All nineteen checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 29 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a typed composite foreign key, `submission_current.observation_ids/quarantine_reason/unit_key`, and the insert-only, tenant-fenced register `form_publication`, SELECT and INSERT for `impact_app` only. 0.19.0 added 0020: nullable `indicator_definition_current.disaggregation` and `calculated_result_current.disaggregation` with jsonb type CHECKs. 0.18.0 added 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All twenty-one checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 30 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 
@@ -26,6 +26,7 @@ Build 0.18.0; schema 19 (0.18.0 adds 0019: framework and target payload columns 
 | 0018_worker_delivery.sql | bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7 |
 | 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
 | 0020_calculation_methods.sql | 357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31 |
+| 0021_web_forms.sql | afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2 |
 
 ## Executable schema definitions
 
@@ -3004,5 +3005,56 @@ ALTER TABLE impact.indicator_definition_current
  ADD COLUMN disaggregation jsonb CHECK(disaggregation IS NULL OR jsonb_typeof(disaggregation)='object');
 ALTER TABLE impact.calculated_result_current
  ADD COLUMN disaggregation jsonb CHECK(disaggregation IS NULL OR jsonb_typeof(disaggregation)='array');
+COMMIT;
+```
+
+### 0021 web forms
+
+Source: infrastructure/migrations/0021_web_forms.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Web forms (v0.20). Form and Submission have been registry kinds with typed projections since
+-- 0002; this migration adds the payload columns the implemented contract writes and one insert-only
+-- register of published form versions. A register row is written only by the publish command, after
+-- an independent approval of the exact revision; a later version is a new row naming the revision it
+-- supersedes, so a published version is never re-pointed and each version is superseded at most once.
+ALTER TABLE impact.form_current
+ ADD COLUMN programme_id uuid,
+ ADD COLUMN programme_id_kind text GENERATED ALWAYS AS ('Programme') STORED,
+ ADD CONSTRAINT form_programme_fk FOREIGN KEY(tenant_id,programme_id,programme_id_kind)
+  REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE impact.submission_current
+ ADD COLUMN observation_ids jsonb CHECK(observation_ids IS NULL OR jsonb_typeof(observation_ids)='array'),
+ ADD COLUMN quarantine_reason varchar(64),
+ ADD COLUMN unit_key varchar(100);
+
+CREATE TABLE impact.form_publication(
+  tenant_id uuid NOT NULL,
+  form_id uuid NOT NULL,
+  version_number integer NOT NULL CHECK(version_number>0),
+  form_revision uuid NOT NULL,
+  approved_revision uuid NOT NULL,
+  supersedes_revision uuid,
+  published_by uuid NOT NULL,
+  published_at timestamptz NOT NULL,
+  form_revision_kind text GENERATED ALWAYS AS ('Form') STORED,
+  PRIMARY KEY(tenant_id,form_id,version_number),
+  UNIQUE(tenant_id,form_revision),
+  UNIQUE(tenant_id,form_id,form_revision),
+  UNIQUE(tenant_id,supersedes_revision),
+  CHECK((version_number=1)=(supersedes_revision IS NULL)),
+  FOREIGN KEY(tenant_id,form_id,form_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,form_revision,form_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,form_id,approved_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,form_id,supersedes_revision) REFERENCES impact.form_publication(tenant_id,form_id,form_revision),
+  FOREIGN KEY(tenant_id,published_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+ALTER TABLE impact.form_publication ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.form_publication FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.form_publication USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+-- Insert-only for the application; nothing for the control plane.
+GRANT SELECT,INSERT ON impact.form_publication TO impact_app;
 COMMIT;
 ```

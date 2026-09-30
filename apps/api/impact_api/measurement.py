@@ -419,6 +419,7 @@ class Measurement:
                         "Disclosure",
                         "Framework",
                         "Target",
+                        "Form",
                     }
                     or not route
                     or not scopes(c, ctx, route + ".read", row["object_id"])

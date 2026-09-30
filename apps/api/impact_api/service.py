@@ -27,6 +27,7 @@ from .period_governance import PeriodGovernance
 from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
 from .planning import PLANNING_KINDS, Planning
+from .forms import Forms
 from .work import WorkCenter
 from .store import (
     context,
@@ -70,6 +71,7 @@ READ_ROUTES = {
     *PERIOD_READS,
     "frameworks",
     "targets",
+    "submissions",
 }
 
 
@@ -94,6 +96,8 @@ WRITE_ROUTES = {
     "measurement-changes",
     "frameworks",
     "targets",
+    "forms",
+    "submissions",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -117,6 +121,8 @@ ACTIONS = {
     "notifications": {"acknowledge"},
     "frameworks": {"submit"},
     "targets": {"submit"},
+    "forms": {"submit", "publish"},
+    "submissions": {"submit"},
 }
 
 
@@ -163,6 +169,7 @@ class Service:
         self.periods = PeriodGovernance(self)
         self.reporting = Reporting(self)
         self.work = WorkCenter(self)
+        self.forms = Forms(self)
         self.planning = Planning(self)
 
     def tenants(self, identity):
@@ -349,6 +356,8 @@ class Service:
             self.planning.validate(c, ctx, kind, data, owner_id)
         if kind == "MeasurementChange":
             self.changes.validate(c, ctx, data)
+        if kind == "Form":
+            self.forms.validate_form(c, ctx, data)
         if kind == "CollectionPlan":
             self.measurement.validate_plan(c, ctx, data)
         if kind == "Programme":
@@ -478,6 +487,10 @@ class Service:
             kind = REQUEST_ROUTES.get(route, READ_KINDS.get(route))
             if route == "disclosure-requests":
                 receipt = self.reporting.request_disclosure(c, ctx, body["data"])
+            elif action == "submit" and kind == "Submission":
+                receipt = self.forms.submit(c, ctx, previous, body["data"], correlation)
+            elif action == "publish" and kind == "Form":
+                receipt = self.forms.publish(c, ctx, previous, body["data"])
             elif action == "submit":
                 receipt = self.submit(c, ctx, kind, previous, body["data"])
             elif action in {"approve", "return", "reject"}:
@@ -499,11 +512,20 @@ class Service:
             elif action == "withdraw":
                 receipt = self.reporting.withdraw(c, ctx, previous, body["data"], correlation)
             else:
-                if previous and previous["lifecycle_state"] not in {"Draft", "Returned"}:
+                # A published form is revised by a new draft revision: the published version stays in
+                # the publication register and keeps serving collection until a successor publishes.
+                editable = {"Draft", "Returned", "Published"} if kind == "Form" else {"Draft", "Returned"}
+                if previous and previous["lifecycle_state"] not in editable:
                     raise DomainError("INVALID_STATE", 409)
                 data = {**(previous["payload"] if previous else {}), **body["data"]}
                 if kind == "Observation":
                     data["approval_state"] = "DRAFT"
+                if kind == "Observation" and data.get("source_namespace") == "FORM":
+                    # Reserved for observations produced from a submitted form response.
+                    raise DomainError("VALIDATION_FAILED", reason="SOURCE_NAMESPACE_RESERVED")
+                if kind == "Submission":
+                    data["review_state"] = "DRAFT"
+                    self.forms.validate_submission(c, ctx, data, previous)
                 if kind == "Target":
                     # Pinned again by the next submission; never carried into an edited draft.
                     data.pop("indicator_version", None)
@@ -580,6 +602,9 @@ class Service:
             required = ["target_kind", "target_id", "target_revision", "reason", "proposed_data"]
         if kind == "Report":
             required = ["template_version", "snapshot_id", "language", "audience_class", "sections"]
+        if kind == "Form":
+            required = []
+            payload = self.forms.prepare_submit(c, ctx, row)
         if kind in PLANNING_KINDS:
             # Framework completeness and target rules are checked, and the target's definition
             # revision pinned, by the planning module.
@@ -708,6 +733,7 @@ class Service:
             "RestatementRequest",
             "Report",
             "Disclosure",
+            "Form",
             *PLANNING_KINDS,
         }:
             raise DomainError("INVALID_STATE", 409)
@@ -740,6 +766,8 @@ class Service:
             self.reporting.validate_disclosure(c, ctx, candidate["payload"])
         if action == "approve" and candidate["object_type"] in PLANNING_KINDS:
             self.planning.check_approval(c, ctx, candidate)
+        if action == "approve" and candidate["object_type"] == "Form":
+            self.forms.check_approval(c, ctx, candidate)
         decision_id = str(uuid4())
         now = datetime.now(timezone.utc)
         c.execute(

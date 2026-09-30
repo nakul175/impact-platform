@@ -31,7 +31,12 @@
 | GET | `/v1/tenants/{tenant_id}/evidence` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
+| POST | `/v1/tenants/{tenant_id}/forms` | `forms.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |
+| PATCH | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish` | `form.publish` |
+| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit` | `form.submit` |
+| GET | `/v1/tenants/{tenant_id}/forms/{object_id}/published` | `forms.read` |
 | GET | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.read` |
 | POST | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | `frameworks.read` |
@@ -136,6 +141,11 @@
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/revise` | `roles.manage` |
 | GET | `/v1/tenants/{tenant_id}/snapshots` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots/{object_id}` | `snapshots.read` |
+| GET | `/v1/tenants/{tenant_id}/submissions` | `submissions.read` |
+| POST | `/v1/tenants/{tenant_id}/submissions` | `submissions.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.read` |
+| PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | `submission.submit` |
 | GET | `/v1/tenants/{tenant_id}/targets` | `targets.read` |
 | POST | `/v1/tenants/{tenant_id}/targets` | `targets.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.read` |

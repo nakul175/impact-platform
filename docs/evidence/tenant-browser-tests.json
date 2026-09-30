@@ -30,6 +30,10 @@
       "status": "passed"
     },
     {
+      "name": "Every sidebar entry stays reachable on a short screen",
+      "status": "passed"
+    },
+    {
       "name": "Tenant console fits a mobile viewport",
       "status": "passed"
     }

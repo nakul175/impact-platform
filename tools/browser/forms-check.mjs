@@ -42,7 +42,13 @@ function watch(candidate) {
 }
 watch(page);
 async function test(name, fn) {
-  await fn();
+  try {
+    await fn();
+  } catch (e) {
+    // Printed to stdout so that the CI step output names the failing step.
+    console.log("FAIL " + name + ": " + e.message);
+    throw e;
+  }
   results.push({ name, status: "passed" });
   console.log("PASS " + name);
 }

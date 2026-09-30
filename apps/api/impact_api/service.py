@@ -520,6 +520,9 @@ class Service:
                 data = {**(previous["payload"] if previous else {}), **body["data"]}
                 if kind == "Observation":
                     data["approval_state"] = "DRAFT"
+                if kind == "Observation" and data.get("source_namespace") == "FORM":
+                    # Reserved for observations produced from a submitted form response.
+                    raise DomainError("VALIDATION_FAILED", reason="SOURCE_NAMESPACE_RESERVED")
                 if kind == "Submission":
                     data["review_state"] = "DRAFT"
                     self.forms.validate_submission(c, ctx, data, previous)

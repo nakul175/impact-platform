@@ -299,7 +299,7 @@ class Forms:
             observation = self.observation(c, ctx, row, payload, definition, roles, state, dimension_answers)
             observation["indicator_id"] = indicator_id
             stamped["observation_ids"].append(
-                self.record(c, ctx, observation, data["workflow_version"], correlation)
+                self.record(c, ctx, observation, data["workflow_version"], correlation, row["object_id"])
             )
         stamped["review_state"] = "SUBMITTED"
         stamped["quarantine_reason"] = None
@@ -341,6 +341,10 @@ class Forms:
         result = {**base, "value_state": "PRESENT", "dimension_values": dims}
         if definition["measurement_type"] in RATIO_TYPES:
             n, d = decimal_value(values["NUMERATOR"]), decimal_value(values["DENOMINATOR"])
+            # Negative components and a PERCENTAGE numerator above its denominator are refused
+            # before a zero denominator is recorded as UNDEFINED.
+            if n < 0 or d < 0 or (definition["measurement_type"] == "PERCENTAGE" and n > d):
+                raise fail("INVALID_COMPONENTS")
             try:
                 with localcontext() as ctx_:
                     ctx_.prec = 60
@@ -358,7 +362,7 @@ class Forms:
         validate_dimensions(definition, result)
         return result
 
-    def record(self, c, ctx, data, workflow_version, correlation=None):
+    def record(self, c, ctx, data, workflow_version, correlation=None, submission_id=None):
         """Write one draft observation under the response's source identity and submit it into the
         existing independent review, exactly as a manual observation is submitted. The observation
         and its review workflow each get their own audit and outbox event in this transaction, as a
@@ -376,6 +380,13 @@ class Forms:
             "INSERT INTO impact.source_key_registry VALUES(%s,%s,%s,%s)",
             (tenant, data["source_namespace"], data["source_key"], receipt["object_id"]),
         )
+        if submission_id:
+            # Everyone who authored the response is an author of the observations it produces, so
+            # a person who drafted the answers cannot approve them after someone else submits.
+            c.execute(
+                "INSERT INTO impact.object_natural_author SELECT tenant_id,%s,natural_identity_id FROM impact.object_natural_author WHERE tenant_id=%s AND object_id=%s ON CONFLICT DO NOTHING",
+                (receipt["object_id"], tenant, str(submission_id)),
+            )
         draft = load(c, ctx, receipt["object_id"], "Observation", lock=True)
         workflow = self.service.submit(c, ctx, "Observation", draft, {"workflow_version": workflow_version})
         submitted = load(c, ctx, receipt["object_id"], "Observation")

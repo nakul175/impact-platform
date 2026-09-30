@@ -224,7 +224,7 @@ def test_form_version_review_publication_and_submission_to_calculation(live, pub
             body=cmd({"workflow_version": other}, draft["revision_id"], operation),
         ),
         409,
-    )
+    )["code"] == "CONFLICT_OPERATION"
     submission = get(live, "submissions", draft["object_id"])
     validate("Submission", submission)
     assert submission["lifecycle_state"] == "Submitted" and submission["data"]["review_state"] == "SUBMITTED"
@@ -285,9 +285,39 @@ def test_form_version_review_publication_and_submission_to_calculation(live, pub
     ] == [3, 2, 2, 1, 0]
     # The same unit cannot report twice for the same indicator.
     duplicate = response(live, version, ANSWERED, unit=units[0])
-    failure(send_raw(live, duplicate), 409, None)
-    # A second submit of the same response is refused; its source identity is taken.
-    failure(send_raw(live, get(live, "submissions", draft["object_id"])), 409)
+    assert failure(send_raw(live, duplicate), 409)["code"] == "SOURCE_KEY_CONFLICT"
+    # A submitted response cannot be submitted again: it is no longer a draft.
+    assert (
+        failure(send_raw(live, get(live, "submissions", draft["object_id"])), 409)["code"] == "INVALID_STATE"
+    )
+    # FORM is reserved for observations produced from a response; a direct observation cannot use it.
+    direct = {
+        "source_namespace": "FORM",
+        "source_key": units[2] + "/" + indicator["object_id"],
+        "indicator_id": indicator["object_id"],
+        **WHEN,
+        "value_state": "PRESENT",
+        "value": "1",
+        "source_version": "1",
+        "dimension_values": {"sex": "F"},
+    }
+    failure(
+        live.request(live.path("observations"), method="POST", body=cmd(direct)),
+        422,
+        "SOURCE_NAMESPACE_RESERVED",
+    )
+    manual = create(live, "observations", {**direct, "source_namespace": "MANUAL"})
+    failure(
+        post(
+            live,
+            "observations",
+            {"source_namespace": "FORM"},
+            revision=manual["revision_id"],
+            obj=manual["object_id"],
+        ),
+        422,
+        "SOURCE_NAMESPACE_RESERVED",
+    )
 
 
 def send_raw(live, row):
@@ -665,9 +695,56 @@ def test_numerator_and_denominator_answers_pool_into_a_percentage(live):
         values.append((obs["data"]["value_state"], obs["data"]["value"], obs["data"].get("numerator")))
         approve(live, workflow_of(live, obs["object_id"]))
     assert values == [("PRESENT", "50", "50"), ("PRESENT", "10", "1"), ("UNDEFINED", None, None)]
-    row, sent = answer("unit-extra", 11, 10)
-    failure(sent, 422, "INVALID_COMPONENTS")
+    for n, d in [(11, 10), (1, 0)]:
+        row, sent = answer("unit-extra", n, d)
+        failure(sent, 422, "INVALID_COMPONENTS")
     result = action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
     value = get(live, "calculated-results", result["object_id"])["data"]
     assert value["numerator"] == "51" and value["denominator"] == "110"
     assert value["displayed_value"] == "46.36"
+
+
+def test_response_drafters_are_authors_of_its_observations(live, published):
+    """Independence follows the response: the enumerator drafts the answers and the author submits;
+    both natural persons are authors of the resulting observation and of its review candidate, so
+    neither can approve it (the review decision checks exactly this `workflow_author` set)."""
+    _, _, _, version, units = published
+    row = response(live, version, ANSWERED, actor="enumerator", unit=units[1])
+    expect(
+        post(
+            live,
+            "submissions",
+            {"answers": {**ANSWERED, "households": {"kind": "INTEGER", "value": 9}}},
+            actor="enumerator",
+            revision=row["revision_id"],
+            obj=row["object_id"],
+        ),
+        200,
+    )
+    row = get(live, "submissions", row["object_id"])
+    send(live, row, actor="author")
+    [obs] = observations(live, get(live, "submissions", row["object_id"]))
+    assert obs["data"]["value"] == "9"
+    workflow = workflow_of(live, obs["object_id"])
+    actors = live.fixture["actors"]
+    with live.db() as c:
+        authors = {
+            str(r["natural_identity_id"])
+            for r in c.execute(
+                "SELECT natural_identity_id FROM impact.workflow_author WHERE workflow_id=%s AND candidate_revision=%s",
+                (workflow["object_id"], workflow["data"]["candidate_revision"]),
+            ).fetchall()
+        }
+    assert authors == {actors["enumerator"]["natural_identity_id"], actors["author"]["natural_identity_id"]}
+    body = cmd(
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Submitted by me"},
+        workflow["revision_id"],
+    )
+    failure(
+        live.request(
+            live.path("workflows", workflow["object_id"]) + "/actions/approve", method="POST", body=body
+        ),
+        403,
+        "INDEPENDENCE_REQUIRED",
+    )
+    approve(live, workflow)

@@ -652,12 +652,19 @@ function Designer({
   );
 }
 
-function relevant(fields: Field[], values: Record<string, string>) {
+/** Mirrors the server: an upstream answer marked with a missing reason has no value. */
+function relevant(
+  fields: Field[],
+  values: Record<string, string>,
+  reasons: Record<string, string> = {},
+) {
   const out: Record<string, boolean> = {};
   for (const f of [...fields].sort((a, b) => a.position - b.position)) {
     const rule = f.relevant_when;
     out[f.stable_code] = rule
-      ? out[rule.field_code] && values[rule.field_code] === rule.equals
+      ? out[rule.field_code] &&
+        !reasons[rule.field_code] &&
+        values[rule.field_code] === rule.equals
       : true;
   }
   return out;
@@ -711,7 +718,7 @@ function Fill({
   const fields: Field[] = [...version.data.fields].sort(
     (a: Field, b: Field) => a.position - b.position,
   );
-  const shown = relevant(fields, values);
+  const shown = relevant(fields, values, reasons);
 
   function answers() {
     const out: Record<string, unknown> = {};

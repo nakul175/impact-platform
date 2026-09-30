@@ -1,6 +1,6 @@
 # Impact Platform administrator guide
 
-This guide describes build 0.14.0, which changes no administrator workflow; the native PostgreSQL provisioning and guard it adds are operator concerns covered in the operations guide. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
+This guide describes build 0.15.0. Builds 0.14.0 and 0.15.0 change no administrator workflow: native PostgreSQL provisioning and the live identity-provider configuration (issuer, client, end-session and back-channel logout, required ACR) are operator concerns covered in the operations guide. Since 0.15.0 custom roles can include only capabilities of implemented operations; a design-only capability is refused as not delegable even when your delegation ceiling contains it. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
 
 ## Managed tenant onboarding
 

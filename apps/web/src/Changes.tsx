@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { usePendingOperations } from "./operations";
 type Row = {
   object_id: string;
   revision_id: string;
@@ -47,6 +48,7 @@ export function ChangesPanel({
     [epoch, setEpoch] = useState(0),
     [notice, setNotice] = useState("");
   const operation = useRef(crypto.randomUUID());
+  const operations = usePendingOperations();
   const can = (cap: string) => capabilities.includes(cap);
   useEffect(() => {
     const controller = new AbortController();
@@ -159,17 +161,22 @@ export function ChangesPanel({
     setBusy(true);
     setError("");
     try {
+      const action = "submit:" + row.object_id;
+      const command = {
+        expected_revision: row.revision_id,
+        data: { workflow_version: template },
+      };
       await request(
         base + "measurement-changes/" + row.object_id + "/actions/submit",
         {
           method: "POST",
           body: JSON.stringify({
-            operation_id: crypto.randomUUID(),
-            expected_revision: row.revision_id,
-            data: { workflow_version: template },
+            operation_id: operations.id(action, command),
+            ...command,
           }),
         },
       );
+      operations.done(action);
       setEpoch((x) => x + 1);
       setNotice(
         "Submitted. An independent reviewer can decide in the Review queue.",

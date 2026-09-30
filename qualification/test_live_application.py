@@ -372,3 +372,26 @@ def test_purpose_restricted_grant_does_not_authorize_general_reads(live):
                 "UPDATE impact.grant_current SET purpose=%s WHERE tenant_id=%s AND object_id=%s",
                 (grant["purpose"], tenant, grant["object_id"]),
             )
+
+
+def test_backchannel_logout_absent_with_development_login(live):
+    """Without a live provider the back-channel logout route does not exist and never reads a body."""
+    response = live.request(
+        "/auth/backchannel-logout",
+        actor=None,
+        method="POST",
+        content=b"logout_token=x",
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    assert response.status_code == 404
+
+
+def test_logout_without_a_live_session_clears_the_cookie(live):
+    """L5 with the development login: a dead or unknown session cookie is deleted, no provider URL."""
+    response = live.client.post(
+        "/auth/logout",
+        headers={"Origin": live.config["public_origin"], "Cookie": "impact_dev_session=gone"},
+    )
+    assert response.status_code == 200 and response.json() == {"authenticated": False, "logout_url": None}
+    assert 'impact_dev_session=""' in response.headers["set-cookie"]
+    assert live.client.post("/auth/logout", headers={"Authorization": "Bearer x"}).status_code == 401

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { usePendingOperations } from "./operations";
 
 type Row = {
   object_id: string;
@@ -27,6 +28,7 @@ export function WorkCenterPanel({
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState("");
   const [epoch, setEpoch] = useState(0);
+  const operations = usePendingOperations();
   const can = (capability: string) => capabilities.includes(capability);
   // Capabilities arrive asynchronously after sign-in; the load below must re-run when they do,
   // otherwise a fast navigation renders an empty view until something else changes epoch.
@@ -73,17 +75,19 @@ export function WorkCenterPanel({
     setBusy(row.object_id);
     setError("");
     try {
+      const action = "recalculate:" + row.object_id;
+      const command = { expected_revision: row.revision_id, data: {} };
       await request(
         base + "work-items/" + row.object_id + "/actions/recalculate",
         {
           method: "POST",
           body: JSON.stringify({
-            operation_id: crypto.randomUUID(),
-            expected_revision: row.revision_id,
-            data: {},
+            operation_id: operations.id(action, command),
+            ...command,
           }),
         },
       );
+      operations.done(action);
       setNotice("Recalculation completed from current approved inputs.");
       setEpoch((value) => value + 1);
     } catch (e) {
@@ -97,17 +101,19 @@ export function WorkCenterPanel({
     setBusy(row.object_id);
     setError("");
     try {
+      const action = "acknowledge:" + row.object_id;
+      const command = { expected_revision: row.revision_id, data: {} };
       await request(
         base + "notifications/" + row.object_id + "/actions/acknowledge",
         {
           method: "POST",
           body: JSON.stringify({
-            operation_id: crypto.randomUUID(),
-            expected_revision: row.revision_id,
-            data: {},
+            operation_id: operations.id(action, command),
+            ...command,
           }),
         },
       );
+      operations.done(action);
       setNotice(
         "Notice acknowledged. Its underlying task remains independent.",
       );

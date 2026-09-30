@@ -1,6 +1,6 @@
 import json
 import logging
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 from uuid import UUID, uuid4
 import psycopg
 from fastapi import FastAPI, Request
@@ -9,7 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.concurrency import run_in_threadpool
 from starlette.staticfiles import StaticFiles
 from .config import Settings, ROOT
-from .auth import Auth, digest
+from .auth import Auth
 from .account import Account
 from .domain import DomainError
 from .service import Service
@@ -24,16 +24,25 @@ from .recovery_contacts import RecoveryContacts
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
+# A logout token is at most 16 KiB (Auth.backchannel_logout); the form adds "logout_token=".
+MAX_LOGOUT_BODY = 16384 + 64
+
+
+async def bounded_body(request, limit):
+    """The request body read chunk by chunk and refused once it exceeds `limit`: the middleware's
+    Content-Length check does not bound a chunked body."""
+    raw = bytearray()
+    async for chunk in request.stream():
+        raw.extend(chunk)
+        if len(raw) > limit:
+            raise DomainError("LIMIT_EXCEEDED", 413)
+    return bytes(raw)
 
 
 async def strict_body(request):
     if request.headers.get("content-type", "").split(";")[0] != "application/json":
         raise DomainError("VALIDATION_FAILED", 415)
-    raw = bytearray()
-    async for chunk in request.stream():
-        raw.extend(chunk)
-        if len(raw) > MAX_BODY:
-            raise DomainError("LIMIT_EXCEEDED", 413)
+    raw = await bounded_body(request, MAX_BODY)
 
     def pairs(items):
         result = {}
@@ -47,7 +56,7 @@ async def strict_body(request):
         raise ValueError
 
     try:
-        data = json.loads(bytes(raw), object_pairs_hook=pairs, parse_constant=constant)
+        data = json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)
         json.dumps(data, ensure_ascii=False).encode("utf-8")
         if not isinstance(data, dict):
             raise ValueError
@@ -74,7 +83,7 @@ def create_app():
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.14.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version="0.15.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -173,7 +182,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 16:
+        if version != 17:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -280,16 +289,28 @@ def create_app():
 
     @app.post("/auth/logout")
     def logout(request: Request):
-        identity = auth.resolve(request)
-        if identity.session_id:
-            with db.transaction(identity=True) as c:
-                c.execute(
-                    "UPDATE impact.web_session SET revoked_at=now() WHERE session_hash=%s",
-                    (digest(identity.session_id),),
-                )
-        response = JSONResponse({"authenticated": False})
-        response.delete_cookie(s.cookie_name, path="/")
-        return response
+        return auth.logout(request)
+
+    @app.post("/auth/backchannel-logout")
+    async def backchannel_logout(request: Request):
+        # Server-to-server from the provider: a form body with exactly one logout_token, no
+        # cookie, no Origin; the token signature is the only authentication. Without a live
+        # provider the route does not exist, and the body is never read.
+        if s.dev_auth or not auth.jwks:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
+        if (
+            request.headers.get("content-type", "").split(";")[0].strip()
+            != "application/x-www-form-urlencoded"
+        ):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
+        try:
+            raw = await bounded_body(request, MAX_LOGOUT_BODY)
+            form = parse_qs(raw.decode("ascii"), strict_parsing=True)
+        except (UnicodeDecodeError, ValueError):
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID") from None
+        if set(form) != {"logout_token"} or len(form["logout_token"]) != 1:
+            raise DomainError("VALIDATION_FAILED", 400, reason="LOGOUT_TOKEN_INVALID")
+        return await run_in_threadpool(auth.backchannel_logout, form["logout_token"][0])
 
     @app.get("/auth/preferences")
     def preferences(request: Request):
@@ -317,8 +338,8 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.14.0",
-            "schema_version": "16",
+            "build_id": "impact-0.15.0",
+            "schema_version": "17",
             "api_version": "1.10.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),

@@ -77,6 +77,45 @@ async function saveReceipt(click, suffix) {
   assert(response.ok(), await response.text());
   return response.json();
 }
+// The first POST ending in `suffix` reaches the server, which applies it, but its response is
+// dropped (connection reset); the second click must repeat the exact command. Asserts that both
+// attempts carried the same operation identifier and payload and that the retry returned the
+// server's original receipt, i.e. one server-side effect. The route stays installed and falls
+// through once the check is done: unrouting while the page's follow-up reads are in flight can
+// leave one of them paused in the interception layer.
+async function lostResponseThenRetry(click, suffix) {
+  const sent = [];
+  let original = null,
+    active = true;
+  await page.route(
+    (url) => url.pathname.endsWith(suffix),
+    async (route) => {
+      const request = route.request();
+      if (!active || request.method() !== "POST") return route.fallback();
+      sent.push(request.postDataJSON());
+      if (sent.length === 1) {
+        const response = await route.fetch();
+        assert(response.ok(), await response.text());
+        original = await response.json();
+        return route.abort("connectionreset");
+      }
+      return route.fallback();
+    },
+  );
+  try {
+    await click();
+    await page.getByRole("alert").first().waitFor();
+    assert(original, "the first attempt reached the server");
+    const retried = await saveReceipt(click, suffix);
+    assert.equal(sent.length, 2);
+    assert.equal(sent[1].operation_id, sent[0].operation_id);
+    assert.deepEqual(sent[1], sent[0]);
+    assert.deepEqual(retried, original);
+    return retried;
+  } finally {
+    active = false;
+  }
+}
 async function setupTab(name) {
   await button("Measurement setup").click();
   await page.getByRole("tab", { name, exact: true }).click();
@@ -272,7 +311,7 @@ try {
       .locator("tr")
       .filter({ hasText: "Verified source correction " + unique });
     await row.getByLabel("Review policy").selectOption({ index: 1 });
-    workflow = await saveReceipt(
+    workflow = await lostResponseThenRetry(
       () =>
         row
           .getByRole("button", { name: "Submit for review", exact: true })
@@ -366,10 +405,16 @@ try {
       .locator("tr")
       .filter({ hasText: "CALCULATION STALE" })
       .first();
-    await noticeRow.getByRole("button", { name: "Acknowledge" }).click();
+    await lostResponseThenRetry(
+      () => noticeRow.getByRole("button", { name: "Acknowledge" }).click(),
+      "/actions/acknowledge",
+    );
     await noticeRow.getByText("Acknowledged", { exact: true }).waitFor();
     await openTask.getByText("Open", { exact: true }).waitFor();
-    await openTask.getByRole("button", { name: "Recalculate" }).click();
+    await lostResponseThenRetry(
+      () => openTask.getByRole("button", { name: "Recalculate" }).click(),
+      "/actions/recalculate",
+    );
     await taskRows
       .filter({ hasText: "Completed" })
       .first()

@@ -17,6 +17,20 @@ OPERATIONS = {
     x["operation_id"]: x
     for x in json.loads((ROOT / "packages/contracts/access-policy.json").read_text())["operations"]
 }
+# Operations this build serves (scripts/export_implemented_api.py). Only their capabilities can
+# be delegated through custom roles; the rest of the policy describes the design contract.
+IMPLEMENTED = json.loads((ROOT / "packages/contracts/openapi-implemented.json").read_text())
+IMPLEMENTED_OPERATIONS = {
+    operation["operationId"]
+    for node in IMPLEMENTED["paths"].values()
+    for operation in node.values()
+    if isinstance(operation, dict) and "operationId" in operation
+}
+DELEGABLE_CAPABILITIES = frozenset(
+    p["capability"]
+    for p in OPERATIONS.values()
+    if p["operation_id"] in IMPLEMENTED_OPERATIONS and not p.get("purpose_required")
+)
 REFERENCES = json.loads((ROOT / "specification/database/reference-map.json").read_text())
 
 

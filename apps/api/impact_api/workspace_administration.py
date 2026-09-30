@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
-from .contracts import OPERATIONS
+from .contracts import DELEGABLE_CAPABILITIES
 from .domain import DomainError, unavailable
 from .store import context, scopes, load, write
 
@@ -129,9 +129,10 @@ class WorkspaceAdministration:
             raise DomainError("CONFLICT_VERSION", 409, reason="ROLE_NAME_EXISTS")
         # Creation conveys no privileges. Every capability must nevertheless be inside
         # the creator's explicit, live operator-provisioned delegation ceiling.
+        # Only capabilities of operations this build implements are delegable: a design-only
+        # capability in a custom role would be dormant authority that a later build activates.
         caps = sorted(data["capabilities"])
-        allowed = {p["capability"] for p in OPERATIONS.values() if not p.get("purpose_required")}
-        if set(caps) - allowed:
+        if set(caps) - DELEGABLE_CAPABILITIES:
             deny("CAPABILITY_NOT_DELEGABLE")
         for cap in caps:
             if not c.execute(

@@ -1,6 +1,6 @@
 # Current Impact Platform architecture
 
-This view describes application build 0.14.0. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
+This view describes application build 0.15.0. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
 
 ```mermaid
 flowchart TD
@@ -9,7 +9,8 @@ flowchart TD
     A --> C["Privileged tenant control"]
     D --> S["PostgreSQL storage"]
     C --> S
-    A --> I["Configured identity boundary"]
+    A --> I["OIDC provider (Keycloak in qualification)"]
+    I -. "back-channel logout" .-> A
 ```
 
 | Component | Source | Current responsibility |
@@ -20,13 +21,43 @@ flowchart TD
 | Governance | apps/web/src/PeriodGovernance.tsx and Changes.tsx | Period close, restatement and reviewed changes |
 | Work centre | apps/web/src/WorkCenter.tsx | Assigned recalculation work and safe notices |
 | Tenant control UI | TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, AuthorityRenewal.tsx | Custody/readiness, reviewed bootstrap, contact evidence and authority renewal |
-| Transport and identity | apps/api/impact_api/main.py and auth.py | Request validation, session/cookie/CSRF and configured bearer identity |
+| Transport and identity | apps/api/impact_api/main.py and auth.py | Request validation, session/cookie/CSRF, OIDC sign-in, RP-initiated and back-channel logout, and bearer identity through the provider JWKS |
+| Operation identity (client) | apps/web/src/operations.ts | One operation identifier per pending action and payload, so retries are exact |
 | Storage and policy | apps/api/impact_api/store.py | Login-topology verification, transaction-local role and tenant context, grants/scopes, revisions, audit/outbox and receipts |
 | Domain services | administration.py, workspace_administration.py, measurement.py, service.py | Explicit reviewed commands and persisted domain changes |
 | Frozen outputs | period_governance.py and reporting.py | Reconciled snapshots, reports and controlled publication |
 | Control plane | tenant_lifecycle.py, access_bootstrap.py, recovery_contacts.py, authority_renewal.py | Separately privileged onboarding, initial authority, recovery evidence and reviewed authority renewal |
 
-The configured identity boundary has a local synthetic sign-in adapter and OIDC transport support. It is not evidence of a live qualified provider. Recorded qualification runs on fresh in-memory PGlite and, since build 0.14.0, on native PostgreSQL with separately provisioned login roles; a connection pooler, persistence across a database restart, hosting and production topology remain separate gates.
+The identity boundary has a loopback-only synthetic sign-in adapter for development and the OIDC relying party, which since build 0.15.0 is qualified against a live Keycloak 26.7.4 started per run in development mode (see "Sign-in and logout" below); that is not evidence for the provider the owner will choose. Recorded qualification runs on fresh in-memory PGlite and, since build 0.14.0, on native PostgreSQL with separately provisioned login roles; a connection pooler, persistence across a database restart, hosting and production topology remain separate gates.
+
+## Sign-in and logout
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant A as Platform API
+    participant P as OIDC provider
+    B->>A: GET /auth/login
+    A->>A: store one-use state (PKCE verifier, nonce); set impact_oidc binding cookie
+    A-->>B: 302 to authorize (S256 challenge, state, nonce, max_age=0, acr_values)
+    B->>P: password, then TOTP (step-up to the required ACR)
+    P-->>B: 302 /auth/callback?code&state
+    B->>A: GET /auth/callback
+    A->>A: consume state (committed before the exchange)
+    A->>P: token exchange with code_verifier (no transaction open)
+    P-->>A: ID token (access or refresh token discarded unread)
+    A->>A: verify signature, iss, aud, nonce, sid, auth_time; create web_session with provider auth_time, ACR, sid and sealed hint
+    A-->>B: session cookie
+    B->>A: POST /auth/logout
+    A->>A: revoke session; unseal id_token_hint with the cookie
+    A-->>B: logout_url
+    B->>P: end-session with id_token_hint
+    P-->>B: 302 to the platform front page
+    P->>A: POST /auth/backchannel-logout (logout token) when a provider session ends elsewhere
+    A->>A: verify token, record issuer+jti once, revoke sessions with that sid
+```
+
+Fresh assurance is judged from the session's stored provider `auth_time` and ACR, never from token issuance. Bearer requests are verified through the provider JWKS (issuer, audience, authorised party, expiry, `auth_time` rules and `typ: Bearer`); bearer tokens are not tied to a platform session, so they stay valid until `exp` after a logout. The sealed hint (`web_session.provider_logout_hint`, AES-256-GCM under a key derived from the cookie secret and the cookie value) and the provider session identifier (`provider_sid`) were added by migration 0017, together with the `oidc_logout_token` replay register used only by the identity role. The platform holds no provider access or refresh token.
 
 ## Database access
 
@@ -43,7 +74,7 @@ flowchart LR
     P["scripts/provision_logins.py (administrator)"] -.->|creates logins, one membership each| DB
 ```
 
-**Native qualification (v0.14).** `scripts/run.py test --native` provisions the logins, migrates as the migrator, loads the fixture as the superuser and runs the full suite against the API on the three runtime logins; it then restarts the API and proves receipts, revisions and a cookie session survive, dumps and restores the database and verifies content, ownership, RLS, policies, functions and grants on the copy, and upgrades a populated schema-15 database to 16. Evidence is separate from the PGlite evidence (`docs/evidence/native-*.json`, `native-application-tests.xml`). The recorded runs used single-node PostgreSQL 16.13 (local) and 17.11 (CI) without a pooler; only the API process was restarted.
+**Native qualification (v0.14).** `scripts/run.py test --native` provisions the logins, migrates as the migrator, loads the fixture as the superuser and runs the full suite against the API on the three runtime logins; it then restarts the API and proves receipts, revisions and a cookie session survive, dumps and restores the database and verifies content, ownership, RLS, policies, functions and grants on the copy, and upgrades a populated database at the previous schema to the latest (schema 15 to 16 in v0.14, 16 to 17 in v0.15). Evidence is separate from the PGlite evidence (`docs/evidence/native-*.json`, `native-application-tests.xml`). The recorded runs used single-node PostgreSQL 16.13 (local) and 17.11 (CI) without a pooler; only the API process was restarted.
 
 ## Recovery relationship and transaction
 

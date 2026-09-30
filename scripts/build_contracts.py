@@ -130,6 +130,17 @@ augment_periods(spec, policy)
 augment_reporting(spec, policy)
 augment_work(spec, policy)
 augment_publication(spec, policy)
+# A baseline policy row whose operation no longer exists in the contract (its path and method
+# were taken over by an implemented operation under another identifier) is dropped: the policy
+# must describe exactly the operations of the contract (#19: create_organisation_units, superseded
+# by create_organisation_unit on the same POST).
+contract_operations = {
+    operation["operationId"]
+    for node in spec["paths"].values()
+    for operation in node.values()
+    if isinstance(operation, dict) and "operationId" in operation
+}
+policy["operations"] = [row for row in policy["operations"] if row["operation_id"] in contract_operations]
 spec["info"]["version"] = "1.10.0"
 policy["version"] = "1.10.0"
 for name, value in [("openapi.json", spec), ("access-policy.json", policy), ("event.schema.json", event)]:

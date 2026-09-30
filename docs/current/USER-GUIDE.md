@@ -1,15 +1,15 @@
 # Impact Platform user guide
 
-Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, and build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide. This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
+Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, and build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
 
 ## Sign in and select a workspace
 
 1. In the local environment, use the generated account credentials supplied by the authorized developer. The development sign-in is limited to loopback and uses synthetic identities.
 2. Select the intended workspace from the tenant selector. Confirm the workspace before entering or approving data.
 3. If a workspace or action is missing, ask its authorized administrator to review your membership and explicit grants. Switching roles or knowing a URL does not create authority.
-4. Use Account settings to view preferences and your sessions. Sign out when finished. Session revocation requires fresh configured assurance; real provider-wide logout is not yet qualified.
+4. Use Account settings to view preferences and your sessions. Sign out when finished. Session revocation requires fresh configured assurance. With a live identity provider, signing out also ends your provider session: the browser visits the provider and returns to the front page.
 
-Local sign-in proves the development workflow only. Actual federation, MFA enrollment and unavailable-account recovery remain release gates.
+Local sign-in proves the development workflow only. With a live identity provider (qualified since build 0.15.0 against a test Keycloak), Sign in sends you to the provider for your password and then a one-time code from your authenticator app; actions that need fresh assurance are accepted for five minutes after that sign-in, after which the platform asks you to sign in again. If your account has no second factor the provider asks you to set one up first. The provider your organisation will use, MFA enrolment and unavailable-account recovery remain release gates.
 
 ## Establish a programme and measurement plan
 

@@ -58,6 +58,21 @@
 	}
 }
 
+# Plain HTTP: everything redirects to HTTPS, except the status file, which stays readable when
+# certificate issuance itself is what failed (it holds no secret). ACME HTTP-01 challenges are
+# still answered by Caddy before these routes.
+http://{$APP_HOST} {
+	handle /deploy-status.json {
+		root * /srv/status
+		header Cache-Control "no-store"
+		header X-Content-Type-Options "nosniff"
+		file_server
+	}
+	handle {
+		redir https://{host}{uri} 308
+	}
+}
+
 {$AUTH_HOST} {
 	import tls_{$CADDY_TLS_MODE}
 	import common

@@ -55,7 +55,7 @@ Open **https://168-144-78-191.sslip.io/deploy-status.json**. It shows:
 - `schema_version`, `first_operator` (`created`, `already-bootstrapped` or `refused`);
 - `log_tail` — the last 40 lines of the run, with every stored secret value replaced by `[redacted]`.
 
-It never contains a password or secret. For a fuller check from any computer with the repository:
+If the HTTPS address does not open at all (for example because the certificate could not be obtained), the same file is also served over plain HTTP at http://168-144-78-191.sslip.io/deploy-status.json; everything else on plain HTTP redirects to HTTPS. It never contains a password or secret. For a fuller check from any computer with the repository:
 
 ```
 .venv/bin/python scripts/smoke.py https://168-144-78-191.sslip.io

@@ -24,7 +24,7 @@ Build 0.16.0; schema 18 (0.16.0 adds 0018: dispatch columns, constraints and ind
 | 0016_authority_renewal.sql | 2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc |
 | 0017_provider_logout.sql | 4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b |
 | 0018_worker_delivery.sql | bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7 |
-| 0019_results_framework.sql | acfeb779c089ba8dba928e251c668a357214fa02bcb626436e8d985978da2544 |
+| 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
 
 ## Executable schema definitions
 
@@ -2919,7 +2919,8 @@ ALTER TABLE impact.target_current
  ADD CONSTRAINT target_supersedes_fk FOREIGN KEY(tenant_id,supersedes_revision,supersedes_revision_kind)
   REFERENCES impact.object_revision(tenant_id,revision_id,object_type) DEFERRABLE INITIALLY DEFERRED,
  -- A blank target is never zero: only a PRESENT target carries a value or bounds.
- ADD CONSTRAINT target_blank_is_not_zero CHECK(value_state IS NULL OR value_state='PRESENT'
+ -- A row without a value state carries no value either.
+ ADD CONSTRAINT target_blank_is_not_zero CHECK((value_state IS NOT NULL AND value_state='PRESENT')
   OR (value IS NULL AND low IS NULL AND high IS NULL));
 
 CREATE TABLE impact.framework_baseline(
@@ -2933,6 +2934,8 @@ CREATE TABLE impact.framework_baseline(
   workflow_id uuid NOT NULL,
   approved_by uuid NOT NULL,
   approved_at timestamptz NOT NULL,
+  framework_revision_kind text GENERATED ALWAYS AS ('Framework') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
   PRIMARY KEY(tenant_id,programme_id,baseline_version),
   UNIQUE(tenant_id,framework_revision),
   UNIQUE(tenant_id,programme_id,framework_revision),
@@ -2940,8 +2943,9 @@ CREATE TABLE impact.framework_baseline(
   CHECK((baseline_version=1)=(supersedes_revision IS NULL)),
   FOREIGN KEY(tenant_id,programme_id) REFERENCES impact.programme_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,framework_id,framework_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,framework_revision,framework_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
   FOREIGN KEY(tenant_id,programme_id,supersedes_revision) REFERENCES impact.framework_baseline(tenant_id,programme_id,framework_revision),
-  FOREIGN KEY(tenant_id,workflow_id) REFERENCES impact.object_registry(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
   FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
 );
 CREATE TABLE impact.target_binding(
@@ -2956,6 +2960,8 @@ CREATE TABLE impact.target_binding(
   workflow_id uuid NOT NULL,
   approved_by uuid NOT NULL,
   approved_at timestamptz NOT NULL,
+  target_revision_kind text GENERATED ALWAYS AS ('Target') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
   PRIMARY KEY(tenant_id,indicator_id,period_id,slot,binding_version),
   UNIQUE(tenant_id,target_revision),
   UNIQUE(tenant_id,indicator_id,period_id,slot,target_revision),
@@ -2964,9 +2970,10 @@ CREATE TABLE impact.target_binding(
   FOREIGN KEY(tenant_id,indicator_id) REFERENCES impact.indicator_instance_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,period_id) REFERENCES impact.period_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,target_id,target_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,target_revision,target_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
   FOREIGN KEY(tenant_id,indicator_id,period_id,slot,supersedes_revision)
     REFERENCES impact.target_binding(tenant_id,indicator_id,period_id,slot,target_revision),
-  FOREIGN KEY(tenant_id,workflow_id) REFERENCES impact.object_registry(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
   FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
 );
 CREATE INDEX target_binding_period ON impact.target_binding(tenant_id,period_id);

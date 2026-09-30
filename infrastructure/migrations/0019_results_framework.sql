@@ -25,7 +25,8 @@ ALTER TABLE impact.target_current
  ADD CONSTRAINT target_supersedes_fk FOREIGN KEY(tenant_id,supersedes_revision,supersedes_revision_kind)
   REFERENCES impact.object_revision(tenant_id,revision_id,object_type) DEFERRABLE INITIALLY DEFERRED,
  -- A blank target is never zero: only a PRESENT target carries a value or bounds.
- ADD CONSTRAINT target_blank_is_not_zero CHECK(value_state IS NULL OR value_state='PRESENT'
+ -- A row without a value state carries no value either.
+ ADD CONSTRAINT target_blank_is_not_zero CHECK((value_state IS NOT NULL AND value_state='PRESENT')
   OR (value IS NULL AND low IS NULL AND high IS NULL));
 
 CREATE TABLE impact.framework_baseline(
@@ -39,6 +40,8 @@ CREATE TABLE impact.framework_baseline(
   workflow_id uuid NOT NULL,
   approved_by uuid NOT NULL,
   approved_at timestamptz NOT NULL,
+  framework_revision_kind text GENERATED ALWAYS AS ('Framework') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
   PRIMARY KEY(tenant_id,programme_id,baseline_version),
   UNIQUE(tenant_id,framework_revision),
   UNIQUE(tenant_id,programme_id,framework_revision),
@@ -46,8 +49,9 @@ CREATE TABLE impact.framework_baseline(
   CHECK((baseline_version=1)=(supersedes_revision IS NULL)),
   FOREIGN KEY(tenant_id,programme_id) REFERENCES impact.programme_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,framework_id,framework_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,framework_revision,framework_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
   FOREIGN KEY(tenant_id,programme_id,supersedes_revision) REFERENCES impact.framework_baseline(tenant_id,programme_id,framework_revision),
-  FOREIGN KEY(tenant_id,workflow_id) REFERENCES impact.object_registry(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
   FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
 );
 CREATE TABLE impact.target_binding(
@@ -62,6 +66,8 @@ CREATE TABLE impact.target_binding(
   workflow_id uuid NOT NULL,
   approved_by uuid NOT NULL,
   approved_at timestamptz NOT NULL,
+  target_revision_kind text GENERATED ALWAYS AS ('Target') STORED,
+  workflow_kind text GENERATED ALWAYS AS ('Workflow') STORED,
   PRIMARY KEY(tenant_id,indicator_id,period_id,slot,binding_version),
   UNIQUE(tenant_id,target_revision),
   UNIQUE(tenant_id,indicator_id,period_id,slot,target_revision),
@@ -70,9 +76,10 @@ CREATE TABLE impact.target_binding(
   FOREIGN KEY(tenant_id,indicator_id) REFERENCES impact.indicator_instance_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,period_id) REFERENCES impact.period_current(tenant_id,object_id),
   FOREIGN KEY(tenant_id,target_id,target_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,target_revision,target_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
   FOREIGN KEY(tenant_id,indicator_id,period_id,slot,supersedes_revision)
     REFERENCES impact.target_binding(tenant_id,indicator_id,period_id,slot,target_revision),
-  FOREIGN KEY(tenant_id,workflow_id) REFERENCES impact.object_registry(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,workflow_id,workflow_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
   FOREIGN KEY(tenant_id,approved_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
 );
 CREATE INDEX target_binding_period ON impact.target_binding(tenant_id,period_id);

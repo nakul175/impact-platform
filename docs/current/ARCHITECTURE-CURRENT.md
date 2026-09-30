@@ -1,6 +1,6 @@
 # Current Impact Platform architecture
 
-This view describes application build 0.16.0. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
+This view describes application build 0.18.0. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
 
 ```mermaid
 flowchart TD
@@ -20,6 +20,7 @@ flowchart TD
 | Browser shell | apps/web/src/main.tsx | Sign-in, permitted workspaces, domain records, review, results and reporting UI |
 | Configuration | apps/web/src/Configuration.tsx | Programme, manual definition, plan and collection-readiness setup |
 | Administration | apps/web/src/Administration.tsx and WorkspaceSettings.tsx | Membership/grant workflows, roles, groups, organisation, preferences and sessions |
+| Results planning | apps/web/src/Planning.tsx | Results framework editor and tree, completeness and exceptions, targets, independent review with a re-fetched candidate, targets versus actuals (since 0.18.0) |
 | Governance | apps/web/src/PeriodGovernance.tsx and Changes.tsx | Period close, restatement and reviewed changes |
 | Work centre | apps/web/src/WorkCenter.tsx | Assigned recalculation work and safe notices |
 | Tenant control UI | TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, AuthorityRenewal.tsx, Workers.tsx | Custody/readiness, reviewed bootstrap, contact evidence and email-channel confirmation, authority renewal, and the operator's worker heartbeat panel |
@@ -27,6 +28,7 @@ flowchart TD
 | Operation identity (client) | apps/web/src/operations.ts | One operation identifier per pending action and payload, so retries are exact |
 | Storage and policy | apps/api/impact_api/store.py | Login-topology verification, transaction-local role and tenant context, grants/scopes, revisions, audit/outbox and receipts |
 | Domain services | administration.py, workspace_administration.py, measurement.py, service.py | Explicit reviewed commands and persisted domain changes |
+| Planning | planning.py (contracts in planning_contracts.py) | Framework hierarchy validation and completeness, target rules, approval into the insert-only `framework_baseline` and `target_binding` registers, targets-versus-actuals read, target and framework pins for close (since 0.18.0) |
 | Frozen outputs | period_governance.py and reporting.py | Reconciled snapshots, reports and controlled publication |
 | Control plane | tenant_lifecycle.py, access_bootstrap.py, recovery_contacts.py, authority_renewal.py, worker_status.py | Separately privileged onboarding, initial authority, recovery evidence and channel challenges, reviewed authority renewal, operator worker view |
 | Delivery intents | apps/api/impact_api/delivery.py | Closed templates, sealed recipients, derived invitation links and channel codes; `delivery.requested` outbox event plus `outbox_delivery` row written in the business transaction |
@@ -62,6 +64,10 @@ sequenceDiagram
 ```
 
 Fresh assurance is judged from the session's stored provider `auth_time` and ACR, never from token issuance. Bearer requests are verified through the provider JWKS (issuer, audience, authorised party, expiry, `auth_time` rules and `typ: Bearer`); bearer tokens are not tied to a platform session, so they stay valid until `exp` after a logout. The sealed hint (`web_session.provider_logout_hint`, AES-256-GCM under a key derived from the cookie secret and the cookie value) and the provider session identifier (`provider_sid`) were added by migration 0017, together with the `oidc_logout_token` replay register used only by the identity role. The platform holds no provider access or refresh token.
+
+## Results framework and targets
+
+Frameworks and targets are governed objects in the ordinary registry (head, immutable revision, typed projection) and pass through the same single-stage independent review as definitions. The approval transaction also appends one row to an insert-only register — `framework_baseline` per programme and baseline version, `target_binding` per indicator, period, slot and binding version — naming the approved revision and the revision it supersedes; the app role holds only SELECT and INSERT on them and each revision can be superseded once, so nothing approved is re-pointed. The targets-versus-actuals read joins the registers with this programme's result bindings and snapshot bindings: OFFICIAL values come only from the programme's own locked snapshot, read under the definition revision the target pins, and PROVISIONAL values from the programme's own calculations. A period close asks the planning service for the approved target revisions and the framework baseline effective before the period ends and pins both into the snapshot and its fingerprint.
 
 ## Worker and outbox delivery
 

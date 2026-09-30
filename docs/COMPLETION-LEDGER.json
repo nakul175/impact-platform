@@ -1,11 +1,11 @@
 {
-  "build": "0.16.0",
+  "build": "0.18.0",
   "assessment_date": "2026-09-29",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
   "summary": {
-    "PARTIAL": 76,
-    "PENDING": 231
+    "PARTIAL": 81,
+    "PENDING": 226
   },
   "requirements": [
     {
@@ -749,9 +749,20 @@
       "validation": "Reject cycles in containment, orphaned parent references and deletion of a referenced approved node. Relationship links and numeric aggregation links are distinct objects.",
       "acceptance": "Rename one output in the table and verify the graph and indicator bindings update within the same draft without creating a duplicate node.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.18 implements typed framework nodes (IMPACT, OUTCOME, OUTPUT, ACTIVITY) with stable node identities, title, description, owner and indicator placement in one governed framework per programme, edited in a table with a hierarchy tree (apps/web/src/Planning.tsx). Validation exercised by executed tests (qualification/test_planning.py::test_hierarchy_structure_is_refused, test_unmeasured_output_blocks_submission_until_documented_exception, test_planning_unit.py::test_structure_rules): containment cycles, including a node containing itself, orphaned parent references and deletion of a node that places indicators in the approved baseline (NODE_REFERENCED) are rejected on every save, as are level inversions and indicators placed twice or from another programme; renaming an output in a draft keeps its node identity and indicator placement (test_framework_draft_review_baseline_and_child_version). Not covered: a relationship (graph) view editing the same identities, relationship links and numeric aggregation links as distinct objects (theory-of-change relationships are accepted only empty and assumption or input nodes are refused), activity-to-output links beyond containment, and the graph half of the acceptance scenario.",
+      "evidence_paths": [
+        "apps/api/impact_api/planning.py",
+        "apps/api/impact_api/planning_contracts.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "apps/web/src/Planning.tsx",
+        "tools/browser/planning-check.mjs",
+        "docs/evidence/native-application-tests.xml",
+        "docs/evidence/planning-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/RELEASE-0.18.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -779,9 +790,18 @@
       "validation": "A previously approved reporting snapshot references its original baseline. Deleting an obsolete draft does not delete approved history or source citations.",
       "acceptance": "Revise an outcome in July and regenerate the March report; March retains its approved hierarchy and language.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.18 submits a framework with its completeness report, shows the reviewer the candidate with that report and, for a child draft, the superseded revision and a comparison (nodes added, removed, changed); approval by an independent natural person freezes a baseline version in the insert-only framework_baseline register, and a later change is a child draft with an effective date that supersedes exactly one approved revision (test_framework_draft_review_baseline_and_child_version, test_second_framework_child_is_refused_after_the_first_is_approved, test_native_planning_registers_are_fenced_and_insert_only). Validation exercised: a period close pins the governing framework revision (the latest baseline effective before the period ends) into the snapshot, and a later approved revision does not re-place the locked period (test_close_pins_governing_framework_revision); the first baseline keeps its approved wording after a July revision. Not covered: the review listing impacted targets, activities, templates and obligations; regeneration of an earlier report against its original hierarchy and language (reports do not bind a framework); deletion of an obsolete draft (no delete operation exists).",
+      "evidence_paths": [
+        "apps/api/impact_api/planning.py",
+        "apps/api/impact_api/planning_contracts.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "apps/api/impact_api/period_governance.py",
+        "docs/evidence/native-application-tests.xml",
+        "docs/evidence/application-tests.xml",
+        "docs/RELEASE-0.18.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -888,9 +908,18 @@
       "validation": "Structural invalidity and unsupported official arithmetic cannot be excepted. A warning can be accepted only by the named authority and remains visible in baseline evidence.",
       "acceptance": "Submit a framework with an unmeasured output; approval either includes a permitted documented exception or remains blocked with an assigned action.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.18 implements a completeness view listing orphan nodes, unmeasured impact/outcome/output nodes, missing owners and incomplete nodes, and programme indicators not placed on any node, each with severity, rule, object and assigned resolver. Validation and acceptance exercised (test_unmeasured_output_blocks_submission_until_documented_exception, test_exception_authorship_and_review_date): structural invalidity is refused on save and can never be excepted, an exception that matches no current warning becomes an error, submission of a framework with an unmeasured output stays blocked (FRAMEWORK_INCOMPLETE) with an assigned resolver until a documented exception with a reason and a review date not in the past is recorded, the server stamps who recorded it, and the accepted exceptions remain visible in the approved baseline revision; the independent approver of that revision is recorded in the register. Not covered: invalid sources, unreviewed assumptions and conflicting reporting obligations (no such checks), unsupported official arithmetic as a completeness rule, and acceptance by a separately named authority per exception (the approver of the revision is the authority; no per-exception acceptance record exists).",
+      "evidence_paths": [
+        "apps/api/impact_api/planning.py",
+        "apps/api/impact_api/planning_contracts.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "tools/browser/planning-check.mjs",
+        "docs/evidence/planning-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/RELEASE-0.18.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -1107,9 +1136,19 @@
       "validation": "Do not cap overachievement. Undefined target ratios show undefined; a zero target uses milestone or reviewed difference logic rather than dividing by zero.",
       "acceptance": "With an actual of 120 and higher target 100 display 120 percent attainment; with lower target 10 and actual 8 show achieved and the defined deviation.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.18 implements targets and baselines per indicator instance and programme period with target kind (VALUE, RANGE, MILESTONE), value and explicit value state, direction (higher, lower, within range, milestone), basis (original, baseline, revised) and the pinned approved definition revision (its unit); revised targets and baseline corrections supersede the approved revision with a reason, and targets versus actuals shows the selected target's basis and binding version. Validation and acceptance exercised (test_planning_unit.py::test_higher_target_attainment_is_uncapped, test_lower_target_reports_signed_deviation_without_inverting_success, test_zero_target_and_zero_baseline_are_undefined_not_divided; test_planning.py::test_targets_baselines_milestones_and_provisional_progress): actual 120 against a higher target of 100 is 120.00 percent attainment, uncapped; a lower target of 10 with actual 8 is ACHIEVED with deviation -2; a zero target gives Undefined attainment (ZERO_TARGET) rather than a division, and milestones need an assessment. Not covered: a reviewed difference logic for zero targets, status thresholds, disaggregated and cumulative targets, measurement dates other than a programme period, and restated comparisons after close (FR-IND-004).",
+      "evidence_paths": [
+        "apps/api/impact_api/planning.py",
+        "apps/api/impact_api/planning_contracts.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "apps/web/src/Planning.tsx",
+        "tools/browser/planning-check.mjs",
+        "docs/evidence/planning-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/RELEASE-0.18.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2759,9 +2798,19 @@
       "validation": "A cumulative curve cannot be compared to a monthly flow target without an approved conversion. Zero baseline percentage change produces undefined, not an infinite trend.",
       "acceptance": "Display lower-is-better target ten with actual eight and show the correct status and declared deviation without an inverted success interpretation.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.18 implements one comparison view, the targets-versus-actuals table (GET /programmes/{id}/targets-vs-actuals and the Targets vs actuals tab), binding the actual, the baseline and the selected target revision with its direction, basis (original or revised), binding version and period; the actual's source is shown (OFFICIAL only from the programme's own locked snapshot, PROVISIONAL from its own calculations) and overachievement stays visible. Validation and acceptance exercised (test_planning_unit.py::test_zero_target_and_zero_baseline_are_undefined_not_divided, test_negative_baseline_has_no_percentage_change, test_lower_target_reports_signed_deviation_without_inverting_success; test_planning.py::test_targets_baselines_milestones_and_provisional_progress, test_period_close_pins_targets_and_uses_official_result): a zero or negative baseline gives an Undefined percentage change (NON_POSITIVE_BASELINE), never an infinite trend, and a lower-is-better target of 10 with actual 8 shows ACHIEVED and the declared deviation without inverting success. Not covered: charts, widgets and axis scales, cumulative curves (no cumulative target exists, so the cumulative-to-flow conversion rule is untested), and time semantics beyond one period.",
+      "evidence_paths": [
+        "apps/api/impact_api/planning.py",
+        "apps/api/impact_api/planning_contracts.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "apps/web/src/Planning.tsx",
+        "tools/browser/planning-check.mjs",
+        "docs/evidence/planning-browser-tests.json",
+        "docs/evidence/application-tests.xml",
+        "docs/RELEASE-0.18.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {

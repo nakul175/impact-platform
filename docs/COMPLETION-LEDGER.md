@@ -2,7 +2,7 @@
 
 PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.
 
-Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 76, 'PENDING': 231}. Enterprise completion: **false**.
+Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 81, 'PENDING': 226}. Enterprise completion: **false**.
 
 | Requirement | Title | Status | Evidence |
 |---|---|---|---|
@@ -42,16 +42,16 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-ACC-010 | Partner limited collaboration | PENDING | Pending |
 | FR-ACC-011 | Access changes and existing artifacts | PARTIAL | [store.py](../apps/api/impact_api/store.py), [auth.py](../apps/api/impact_api/auth.py), [test_live_application.py](../qualification/test_live_application.py) |
 | FR-ACC-012 | Administrative review and simulation | PARTIAL | [administration.py](../apps/api/impact_api/administration.py), [test_administration.py](../qualification/test_administration.py), [RELEASE-0.2.md](../docs/RELEASE-0.2.md) |
-| FR-PLN-001 | Results hierarchy | PENDING | Pending |
+| FR-PLN-001 | Results hierarchy | PARTIAL | [planning.py](../apps/api/impact_api/planning.py), [planning_contracts.py](../apps/api/impact_api/planning_contracts.py), [test_planning.py](../qualification/test_planning.py), [test_planning_unit.py](../qualification/test_planning_unit.py), [Planning.tsx](../apps/web/src/Planning.tsx), [planning-check.mjs](../tools/browser/planning-check.mjs), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [planning-browser-tests.json](../docs/evidence/planning-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [RELEASE-0.18.md](../docs/RELEASE-0.18.md) |
 | FR-PLN-002 | Theory of change relationships | PENDING | Pending |
-| FR-PLN-003 | Framework baselines | PENDING | Pending |
+| FR-PLN-003 | Framework baselines | PARTIAL | [planning.py](../apps/api/impact_api/planning.py), [planning_contracts.py](../apps/api/impact_api/planning_contracts.py), [test_planning.py](../qualification/test_planning.py), [test_planning_unit.py](../qualification/test_planning_unit.py), [period_governance.py](../apps/api/impact_api/period_governance.py), [native-application-tests.xml](../docs/evidence/native-application-tests.xml), [application-tests.xml](../docs/evidence/application-tests.xml), [RELEASE-0.18.md](../docs/RELEASE-0.18.md) |
 | FR-PLN-004 | Reusable libraries | PENDING | Pending |
 | FR-PLN-005 | Standard mappings | PENDING | Pending |
 | FR-PLN-006 | Measurement plan | PARTIAL | [measurement.py](../apps/api/impact_api/measurement.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
 | FR-PLN-007 | Assumptions and context | PENDING | Pending |
 | FR-PLN-008 | Planning scenarios | PENDING | Pending |
 | FR-PLN-009 | Document assisted setup | PENDING | Pending |
-| FR-PLN-010 | Framework completeness review | PENDING | Pending |
+| FR-PLN-010 | Framework completeness review | PARTIAL | [planning.py](../apps/api/impact_api/planning.py), [planning_contracts.py](../apps/api/impact_api/planning_contracts.py), [test_planning.py](../qualification/test_planning.py), [test_planning_unit.py](../qualification/test_planning_unit.py), [planning-check.mjs](../tools/browser/planning-check.mjs), [planning-browser-tests.json](../docs/evidence/planning-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [RELEASE-0.18.md](../docs/RELEASE-0.18.md) |
 | FR-PRG-001 | Programme and project registry | PARTIAL | [measurement.py](../apps/api/impact_api/measurement.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
 | FR-PRG-002 | Activities and milestones | PENDING | Pending |
 | FR-PRG-003 | Workplans and calendars | PENDING | Pending |
@@ -64,7 +64,7 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-PRG-010 | Bulk administration | PENDING | Pending |
 | FR-IND-001 | Complete indicator definition | PARTIAL | [measurement.py](../apps/api/impact_api/measurement.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
 | FR-IND-002 | Supported measurement types | PARTIAL | [measurement.py](../apps/api/impact_api/measurement.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
-| FR-IND-003 | Baselines and targets | PENDING | Pending |
+| FR-IND-003 | Baselines and targets | PARTIAL | [planning.py](../apps/api/impact_api/planning.py), [planning_contracts.py](../apps/api/impact_api/planning_contracts.py), [test_planning.py](../qualification/test_planning.py), [test_planning_unit.py](../qualification/test_planning_unit.py), [Planning.tsx](../apps/web/src/Planning.tsx), [planning-check.mjs](../tools/browser/planning-check.mjs), [planning-browser-tests.json](../docs/evidence/planning-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [RELEASE-0.18.md](../docs/RELEASE-0.18.md) |
 | FR-IND-004 | Target amendments | PENDING | Pending |
 | FR-IND-005 | Reporting periods | PARTIAL | [measurement.py](../apps/api/impact_api/measurement.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
 | FR-IND-006 | Disaggregation dimensions | PENDING | Pending |
@@ -167,7 +167,7 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-WFL-010 | Decisions and signoff | PARTIAL | [work.py](../apps/api/impact_api/work.py), [test_work_center.py](../qualification/test_work_center.py), [RELEASE-0.7.md](../docs/RELEASE-0.7.md) |
 | FR-ANA-001 | Dashboard authoring | PENDING | Pending |
 | FR-ANA-002 | Filters and drill down | PENDING | Pending |
-| FR-ANA-003 | Actual target and baseline views | PENDING | Pending |
+| FR-ANA-003 | Actual target and baseline views | PARTIAL | [planning.py](../apps/api/impact_api/planning.py), [planning_contracts.py](../apps/api/impact_api/planning_contracts.py), [test_planning.py](../qualification/test_planning.py), [test_planning_unit.py](../qualification/test_planning_unit.py), [Planning.tsx](../apps/web/src/Planning.tsx), [planning-check.mjs](../tools/browser/planning-check.mjs), [planning-browser-tests.json](../docs/evidence/planning-browser-tests.json), [application-tests.xml](../docs/evidence/application-tests.xml), [RELEASE-0.18.md](../docs/RELEASE-0.18.md) |
 | FR-ANA-004 | Freshness and approval context | PARTIAL | [domain.py](../apps/api/impact_api/domain.py), [service.py](../apps/api/impact_api/service.py), [test_measurement.py](../qualification/test_measurement.py) |
 | FR-ANA-005 | Table analysis and pivots | PENDING | Pending |
 | FR-ANA-006 | Geographic analysis | PENDING | Pending |

@@ -1,18 +1,18 @@
 # Impact Platform release acceptance record
 
-Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15; the counts below are updated to the build 0.16.0 runs of 29 September 2026 (schema 18; control-plane API 1.4.0; domain API unchanged since 0.13.0). Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
+Documentation edition 1.1 is reconciled to build 0.12.0 and schema 15; the counts below are updated to the build 0.18.0 runs of 29 September 2026 (schema 19; domain API 1.11.0; control-plane API 1.4.0, unchanged since 0.16.0; v0.18 was built ahead of v0.17). Release 1 remains in progress. The original R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap. No full requirement or production gate is declared accepted by this update.
 
 ## Recorded development evidence
 
 | Group | Executed and passed | Boundary |
 | --- | ---: | --- |
-| Application (PGlite) | 405 | Fresh in-memory PGlite, actual HTTP/SQL, 29 September 2026; 35 native-only and 16 live-provider tests skipped with a stated reason; one offline test deselected |
-| Application (native PostgreSQL) | 437 | PostgreSQL 16.13, single node, API on three provisioned login roles and worker processes on a fourth, 29 September 2026; 16 live-provider tests skipped (run separately), two restart phases executed separately (PASS) and one PGlite-only case skipped; one offline test deselected. Restore drill and 17→18 upgrade check PASS; CI for build 0.16.0 is recorded in the pull request |
+| Application (PGlite) | 441 | Fresh in-memory PGlite, actual HTTP/SQL, 29 September 2026; 36 native-only and 16 live-provider tests skipped with a stated reason; one offline test deselected |
+| Application (native PostgreSQL) | 474 | PostgreSQL 16.13, single node, API on three provisioned login roles and worker processes on a fourth, 29 September 2026; 16 live-provider tests skipped (run separately), two restart phases executed separately (PASS) and one PGlite-only case skipped; one offline test deselected. Restore drill and 18→19 upgrade check PASS; CI for build 0.18.0 is recorded in the pull request |
 | Live identity provider | 16 + 16 | Keycloak 26.7.4 per run, development mode, in-memory provider database; on PGlite and on the native login roles, 29 September 2026 |
 | Live identity-provider browser | 2 | Chromium sign-in with TOTP and sign-out through the provider |
 | Design reference | 143 | Reference implementation only; product_validated is false |
-| Browser | 93 | Compiled client, nine workflow groups; no uncaught errors in saved runs |
-| Complete requirements accepted | 0 | 76 partial and 231 pending across 307 |
+| Browser | 100 | Compiled client, ten workflow groups (planning-browser added in 0.18.0); no uncaught errors in saved runs |
+| Complete requirements accepted | 0 | 81 partial and 226 pending across 307 |
 
 Evidence files remain the original run reports, with their recorded timestamps. The documentation reconciliation does not claim a new application run. These counts overlap the exact 17 integration and 12 smoke cases shown in the test catalogue; do not add those 29 again to the application total.
 
@@ -22,9 +22,9 @@ Evidence files remain the original run reports, with their recorded timestamps. 
 | --- | --- | --- | --- |
 | G01 Requirements | Partial | Full release-assigned outcomes, recovery conditions and reviewed UAT | Product and QA |
 | G02 Contracts | Partial | Complete released-scope DTO, compatibility and policy coverage | API lead |
-| G03 Database | Partial native evidence (v0.14, v0.15): provisioned login roles, upgrade of a populated database (0015→0016, then 0016→0017, then 0017→0018 altering a populated outbox table), a worker login and two worker processes contending for leases (v0.16), raced approvals/replays/close/renewal, API restart, CI-scale restore drill | Database restart persistence, connection pooler, lock order across objects, scale, migrations that rewrite populated tables | Database lead |
+| G03 Database | Partial native evidence (v0.14, v0.15): provisioned login roles, upgrade of a populated database (0015→0016, then 0016→0017, then 0017→0018 altering a populated outbox table, then 0018→0019 altering populated framework and target projections), a worker login and two worker processes contending for leases (v0.16), raced approvals/replays/close/renewal, API restart, CI-scale restore drill | Database restart persistence, connection pooler, lock order across objects, scale, migrations that rewrite populated tables | Database lead |
 | G04 Identity and access | Partial; executed against a live provider (v0.15): authorization code with PKCE and nonce, TOTP step-up, fresh assurance by provider `auth_time`, RP-initiated and back-channel logout, JWKS bearer validation, on a per-run development-mode Keycloak | The owner's chosen provider and deployment model, MFA enrolment and recovery, key rotation, provider outage, bearer-token lifetime after logout (no revocation before `exp`), acceptance of the no-refresh-token substitution, departure inventory | Security lead |
-| G05 Measurement | Partial | Full required measure types, golden corpus and reconciliation | Measurement lead |
+| G05 Measurement | Partial (v0.18 adds results framework, targets and targets versus actuals) | Full required measure types, golden corpus and reconciliation | Measurement lead |
 | G06 Web | Partial | Full workflows, supported browser/device matrix and accessibility review | Frontend and QA |
 | G07 Android | Pending | Device authority expiry, encryption, account isolation and durable sync | Mobile and QA |
 | G08 Integration | Pending | Qualified providers, scopes, credential rotation, checkpoints and replay | Integration lead |

@@ -68,10 +68,12 @@ cat <<EOF
      and choose "Sign in". You are sent to https://$auth_host/ .
   2. Username:                $owner_email
      Temporary password:      $password
-  3. Choose a new password (12 characters or more). It replaces the temporary one at once.
-  4. Set up the authenticator app: scan the QR code with Google Authenticator, Microsoft
-     Authenticator or similar and type the 6-digit code. Every sign-in asks for a code.
-  5. You land in the platform as the platform operator (Tenant lifecycle).
+  3. The sign-in service then asks for two things (in its own order):
+     - an authenticator app: scan the QR code with Google Authenticator, Microsoft
+       Authenticator or similar and type the 6-digit code; every sign-in asks for a code;
+     - a new password (12 characters or more, not your e-mail address); it replaces the
+       temporary one at once.
+  4. You land in the platform as the platform operator (Tenant lifecycle).
 
   This password works once and is shown only here. Close this console when you are done.
 

@@ -236,6 +236,30 @@ jobs:
           sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" ps --all || true
           sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" logs --no-color --tail 150 > compose-logs.txt || true
           tail -n 60 compose-logs.txt || true
+      - name: Failure details as annotations (readable without signing in)
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          def annotate(title, lines):
+              text = "\n".join(lines)[-3800:]
+              text = text.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+              print("::error title=" + title + "::" + text)
+          try:
+              status = json.load(open("deploy-status.json"))
+              annotate("deploy step " + str(status.get("step")), status.get("log_tail", []))
+              annotate("services", [k + ": " + json.dumps(v) for k, v in status.get("services", {}).items()])
+          except (OSError, ValueError) as e:
+              annotate("no status file", [repr(e)])
+          try:
+              logs = open("compose-logs.txt", errors="replace").read().splitlines()
+          except OSError:
+              logs = []
+          for service in ("api", "keycloak", "caddy", "worker", "postgres", "backup", "mailsink"):
+              mine = [l for l in logs if re.match(r"^" + service + r"[-_ ]", l)]
+              if mine:
+                  annotate("logs " + service, mine[-25:])
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:

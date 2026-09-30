@@ -175,7 +175,7 @@ main() {
   command -v docker >/dev/null || die "docker is not installed"
   docker compose version >/dev/null || die "the docker compose plugin is not installed"
   command -v python3 >/dev/null || die "python3 is required on the host"
-  COMMIT="${IMPACT_COMMIT:-$(git -C "$REPO_DIR" rev-parse HEAD 2>/dev/null || true)}"
+  COMMIT="${IMPACT_COMMIT:-$(git -c safe.directory="$REPO_DIR" -C "$REPO_DIR" rev-parse HEAD 2>/dev/null || true)}"
   [ -n "$COMMIT" ] || die "cannot determine the commit of $REPO_DIR"
   local tag="${COMMIT:0:12}"
   log "deploying commit $COMMIT"

@@ -28,7 +28,11 @@ idp:
 	node tools/browser/prepare.mjs
 	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
-	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py
+	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_golden.py
+# VF-DIN-001: golden corpus through the independent reference, the domain code and the live API;
+# writes docs/evidence/golden-reconciliation.json.
+golden:
+	$(PY) scripts/run.py test --pytest-path qualification/test_golden.py
 reference:
 	$(PY) specification/reference-v1/run_tests.py reference --report docs/evidence/reference-tests.json
 browser:

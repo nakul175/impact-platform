@@ -381,7 +381,19 @@ class Service:
                 raise DomainError("INVALID_STATE", 409)
         if kind == "Observation":
             if data.get("dimension_values"):
-                raise DomainError("INCOMPATIBLE_MEASURE", reason="DISAGGREGATION_NOT_IMPLEMENTED")
+                # Codes must belong to the scheme pinned by the indicator's approved definition; a draft
+                # may still omit an exhaustive dimension, which submission then requires.
+                if not data.get("indicator_id"):
+                    raise DomainError("VALIDATION_FAILED", reason="INVALID_DIMENSION_VALUES")
+                instance = load(c, ctx, data["indicator_id"], "IndicatorInstance", "indicator-instances.read")
+                pinned = revision(
+                    c,
+                    ctx,
+                    instance["payload"]["definition_version"],
+                    "IndicatorDefinition",
+                    "indicator-definitions.read",
+                )["payload"]
+                validate_dimensions(pinned, data, complete=False)
             if data.get("dataset_id"):
                 raise DomainError("INCOMPATIBLE_MEASURE", reason="DATASET_CAPTURE_NOT_IMPLEMENTED")
             n, d = data.get("numerator"), data.get("denominator")

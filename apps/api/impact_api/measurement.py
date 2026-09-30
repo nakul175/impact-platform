@@ -104,12 +104,16 @@ def coverage(plan, rows, definition, now):
             (r["payload"].get("source_namespace"), r["payload"].get("source_key")) not in keys for r in rows
         ),
         complete=required > 0 and result["approved_count"] == required,
-        approval_percent=format(
+    )
+    if required:
+        # With no required obligation coverage is not applicable (CAL08): no percentage, never 100.
+        result["approval_percent"] = format(
             (Decimal(result["approved_count"] * 100) / Decimal(required)).quantize(
                 Decimal("0.01"), rounding=ROUND_HALF_UP
             ),
             ".2f",
-        ),
+        )
+    result.update(
         plan_revision=str(plan["head_revision"]),
         obligations=details,
     )

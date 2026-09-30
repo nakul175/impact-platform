@@ -77,7 +77,9 @@ def method_supported(definition):
 def display(value, places):
     with localcontext() as c:
         c.prec = PRECISION
-        return format(value.quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP), f".{places}f")
+        shown = value.quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP)
+        # A negative value that rounds to zero is displayed as zero, never as "-0.00".
+        return format(shown.copy_abs() if shown == 0 else shown, f".{places}f")
 
 
 def ratio(definition, n, d):
@@ -227,7 +229,7 @@ def validate_scheme(definition):
         seen.add(dim["code"])
 
 
-def validate_dimensions(definition, payload):
+def validate_dimensions(definition, payload, complete=True):
     """An observation's codes must belong to the pinned scheme; exhaustive dimensions need a code on
     every PRESENT value and only multiselect dimensions accept several codes (separated by |)."""
     values = payload.get("dimension_values") or {}
@@ -238,7 +240,7 @@ def validate_dimensions(definition, payload):
     for code, dim in dims.items():
         codes = dimension_codes(values.get(code))
         allowed = {c["code"] for c in dim["categories"]}
-        if not codes and dim["exhaustive"] and payload.get("value_state") == "PRESENT":
+        if complete and not codes and dim["exhaustive"] and payload.get("value_state") == "PRESENT":
             raise fail
         if len(set(codes)) != len(codes) or not set(codes) <= allowed:
             raise fail

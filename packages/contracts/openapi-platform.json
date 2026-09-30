@@ -9392,6 +9392,10 @@
                           "dead": {
                             "type": "integer",
                             "minimum": 0
+                          },
+                          "failures": {
+                            "type": "integer",
+                            "minimum": 0
                           }
                         },
                         "required": [
@@ -9405,7 +9409,8 @@
                           "iterations",
                           "sent",
                           "retried",
-                          "dead"
+                          "dead",
+                          "failures"
                         ]
                       }
                     }

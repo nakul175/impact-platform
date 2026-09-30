@@ -13,6 +13,9 @@ from .store import hash_data
 
 CHANNEL_CODE_TTL = timedelta(minutes=15)
 CHANNEL_CODE_ATTEMPTS = 5
+# At most this many challenges (codes emailed) per contact within CHANNEL_REQUEST_WINDOW.
+CHANNEL_REQUESTS_PER_WINDOW = 3
+CHANNEL_REQUEST_WINDOW = timedelta(hours=1)
 
 
 def now():
@@ -241,7 +244,7 @@ class RecoveryContacts:
             caller = registered_person(c, identity.identity_id, self.s.issuer)
             if caller["auth_not_before"] and identity.auth_time <= caller["auth_not_before"]:
                 denied("REAUTHENTICATION_REQUIRED")
-            if action in {"nominate", "verify", "approve", "channel-request"} and tenant[
+            if action in {"nominate", "verify", "approve"} | set(CHANNEL_ACTIONS) and tenant[
                 "lifecycle_state"
             ] not in {
                 "Provisioning",
@@ -320,6 +323,12 @@ class RecoveryContacts:
             digest = email_hash(data["email"])
             if digest != bytes(row["email_hash"]) or digest != bytes(person["verified_email_hash"]):
                 denied("CHANNEL_ADDRESS_MISMATCH")
+            recent = c.execute(
+                "SELECT count(*) AS n FROM impact.recovery_channel_challenge WHERE tenant_id=%s AND contact_id=%s AND created_at>%s",
+                (row["tenant_id"], row["contact_id"], at - CHANNEL_REQUEST_WINDOW),
+            ).fetchone()["n"]
+            if recent >= CHANNEL_REQUESTS_PER_WINDOW:
+                raise DomainError("LIMIT_EXCEEDED", 429, reason="CHANNEL_REQUEST_LIMIT")
             c.execute(
                 "UPDATE impact.recovery_channel_challenge SET state='SUPERSEDED' WHERE tenant_id=%s AND contact_id=%s AND state='PENDING'",
                 (row["tenant_id"], row["contact_id"]),

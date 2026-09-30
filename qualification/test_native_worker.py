@@ -159,12 +159,18 @@ def test_native_simultaneous_claims_are_disjoint(live):
     a, b = claims.values()
     assert not (a & b) and events <= (a | b)
     with live.db() as c:
-        owners = c.execute(
-            "SELECT lease_owner,lease_generation FROM impact.outbox_delivery WHERE event_id=ANY(%s::uuid[])",
-            (list(events),),
-        ).fetchall()
-    assert {r["lease_generation"] for r in owners} == {1}
-    assert len({r["lease_owner"] for r in owners}) >= 1
+        owners = {
+            str(r["event_id"]): r
+            for r in c.execute(
+                "SELECT event_id,lease_owner,lease_generation FROM impact.outbox_delivery "
+                "WHERE event_id=ANY(%s::uuid[])",
+                (list(events),),
+            )
+        }
+    # Every row is leased exactly once, to the worker whose claim returned it.
+    for name, claimed_events in claims.items():
+        for event in claimed_events & events:
+            assert (owners[event]["lease_owner"], owners[event]["lease_generation"]) == (name, 1)
 
 
 def test_native_lease_takeover_while_the_first_holder_is_sending(live):
@@ -296,3 +302,41 @@ def test_native_worker_login_holds_only_the_worker_role(live):
             ).fetchone()["n"]
             == 0
         )
+
+
+def test_native_batch_outliving_its_lease_sends_every_row_once(live):
+    """The reviewer's scenario: worker A claims a batch whose total send time exceeds the lease;
+    worker B takes over the rows whose lease ran out. Before the per-row lease renewal every row was
+    sent twice; now each row is sent exactly once, by whichever worker holds it at send time."""
+    drain(live)
+    receipts = [invitation(live)[1] for _ in range(6)]
+    events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
+    slow = start(
+        live,
+        "native-batch-a-" + uuid4().hex[:6],
+        batch_size=6,
+        synthetic_delay=2,
+        lease_seconds=5,
+        smtp_timeout=1,
+    )
+    try:
+        wait_for(
+            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
+            timeout=20,
+        )
+        fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
+        try:
+            wait_for(
+                lambda: all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts),
+                timeout=60,
+            )
+        finally:
+            assert stop(fast) == 0
+    finally:
+        assert stop(slow) == 0
+    sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
+    assert sorted(sent) == sorted(events), sent
+    generations = [deliveries(live, r["object_id"])[0]["lease_generation"] for r in receipts]
+    # The scenario really happened: some rows were taken over from the first worker.
+    assert max(generations) >= 2 and [m["event_id"] for m in sink(fast) if m["event_id"] in events]
+    assert "skipped: lease expired" in slow.log.read_text()

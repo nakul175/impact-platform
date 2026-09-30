@@ -51,11 +51,12 @@ GRANT SELECT ON impact.notification_delivery TO impact_app;
 -- recheck that a challenge is still pending before sending.
 ALTER TABLE impact.tenant_recovery_contact
  ADD COLUMN channel_verified_at timestamptz,
- ADD COLUMN channel_challenge_id uuid;
+ ADD COLUMN channel_challenge_id uuid,
+ ADD CONSTRAINT tenant_recovery_contact_tenant_contact UNIQUE(tenant_id,contact_id);
 CREATE TABLE impact.recovery_channel_challenge(
  tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
  challenge_id uuid NOT NULL,
- contact_id uuid NOT NULL REFERENCES impact.tenant_recovery_contact,
+ contact_id uuid NOT NULL,
  contact_revision uuid NOT NULL,
  requested_by uuid NOT NULL REFERENCES impact.auth_identity,
  email_hash bytea NOT NULL CHECK(octet_length(email_hash)=32),
@@ -65,10 +66,13 @@ CREATE TABLE impact.recovery_channel_challenge(
  created_at timestamptz NOT NULL DEFAULT now(), expires_at timestamptz NOT NULL,
  consumed_at timestamptz,
  PRIMARY KEY(tenant_id,challenge_id),
+ FOREIGN KEY(tenant_id,contact_id) REFERENCES impact.tenant_recovery_contact(tenant_id,contact_id),
  CHECK(expires_at>created_at AND expires_at<=created_at+interval '1 hour'),
  CHECK((state='VERIFIED')=(consumed_at IS NOT NULL))
 );
 CREATE UNIQUE INDEX recovery_channel_one_pending ON impact.recovery_channel_challenge(contact_id) WHERE state='PENDING';
+-- Serves the request rate limit (a few challenges per contact per hour).
+CREATE INDEX recovery_channel_recent ON impact.recovery_channel_challenge(tenant_id,contact_id,created_at);
 ALTER TABLE impact.recovery_channel_challenge ENABLE ROW LEVEL SECURITY;
 ALTER TABLE impact.recovery_channel_challenge FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_fence ON impact.recovery_channel_challenge USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
@@ -99,15 +103,17 @@ GRANT EXECUTE ON FUNCTION impact.enqueue_recovery_channel_delivery(uuid,bytea) T
 -- The worker discovers which tenants to visit without reading any tenant row: identifiers, lifecycle
 -- state and due counts only. Everything else happens in a per-tenant transaction under tenant_fence.
 -- Provisioning and Suspended tenants are listed because recovery-contact verification belongs to
--- activation and reactivation; a suspension holds (held_at) what was queued before it.
+-- activation and reactivation; a suspension holds (held_at) what was queued before it. A held row
+-- whose lease has expired counts as due so that the worker returns it to PENDING (still held, never
+-- sent): a suspension never leaves a row LEASED for ever and never replays it (v0.10 semantics).
 CREATE POLICY worker_tenant_directory ON impact.tenant_root FOR SELECT TO impact_owner USING(true);
 CREATE POLICY worker_dispatch_directory ON impact.outbox_delivery FOR SELECT TO impact_owner USING(true);
 CREATE FUNCTION impact.worker_tenants(at timestamptz)
  RETURNS TABLE(tenant_id uuid, lifecycle_state text, due_deliveries bigint)
  LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
  SELECT t.tenant_id,t.lifecycle_state,(SELECT count(*) FROM impact.outbox_delivery d WHERE d.tenant_id=t.tenant_id
-  AND d.channel IS NOT NULL AND d.held_at IS NULL
-  AND ((d.state='PENDING' AND d.next_attempt_at<=at) OR (d.state='LEASED' AND d.lease_expires_at<=at)))
+  AND d.channel IS NOT NULL AND ((d.held_at IS NULL AND d.state='PENDING' AND d.next_attempt_at<=at)
+  OR (d.state='LEASED' AND d.lease_expires_at<=at)))
  FROM impact.tenant_root t WHERE t.lifecycle_state IN ('Provisioning','Active','Suspended') ORDER BY t.tenant_id
 $$;
 REVOKE ALL ON FUNCTION impact.worker_tenants(timestamptz) FROM PUBLIC;
@@ -124,8 +130,38 @@ CREATE TABLE impact.worker_heartbeat(
  iterations bigint NOT NULL DEFAULT 0 CHECK(iterations>=0),
  sent bigint NOT NULL DEFAULT 0 CHECK(sent>=0), retried bigint NOT NULL DEFAULT 0 CHECK(retried>=0),
  dead bigint NOT NULL DEFAULT 0 CHECK(dead>=0),
+ failures bigint NOT NULL DEFAULT 0 CHECK(failures>=0),
  CHECK((state='STOPPED')=(stopped_at IS NOT NULL))
 );
 GRANT SELECT,INSERT,UPDATE ON impact.worker_heartbeat TO impact_worker;
 GRANT SELECT ON impact.worker_heartbeat TO impact_platform;
+
+-- One row per delegated-authority reminder the worker has created: (principal, expiry instant,
+-- threshold in days). The scan excludes these in SQL, so its batch limit cannot starve later groups.
+CREATE TABLE impact.authority_reminder(
+ tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
+ principal_id uuid NOT NULL, expires_at timestamptz NOT NULL,
+ threshold_days integer NOT NULL CHECK(threshold_days IN (3,14)),
+ notification_id uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(tenant_id,principal_id,expires_at,threshold_days),
+ FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,notification_id) REFERENCES impact.notification_current(tenant_id,object_id)
+);
+ALTER TABLE impact.authority_reminder ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.authority_reminder FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.authority_reminder USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.authority_reminder TO impact_worker;
+
+-- The operator's suspension preview counts only dispatchable intents that are still open: legacy
+-- object.changed rows (never dispatched) and SENT/DEAD/SUPERSEDED rows are not unsent work.
+CREATE OR REPLACE FUNCTION impact.tenant_work_impact(requested_tenant uuid) RETURNS jsonb
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF requested_tenant IS DISTINCT FROM impact.current_tenant() THEN RAISE EXCEPTION 'tenant denied' USING ERRCODE='42501'; END IF;
+ RETURN jsonb_build_object(
+ 'unfinished_jobs',(SELECT count(*) FROM impact.job WHERE tenant_id=requested_tenant AND state NOT IN ('Succeeded','SucceededWithIssues','Failed','Cancelled')),
+ 'active_schedules',(SELECT count(*) FROM impact.object_registry WHERE tenant_id=requested_tenant AND object_type='Schedule' AND lifecycle_state='Active'),
+ 'unsent_events',(SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=requested_tenant AND channel IS NOT NULL AND state IN ('PENDING','LEASED')),
+ 'retention_holds',(SELECT count(*) FROM impact.retention_hold WHERE tenant_id=requested_tenant AND released_at IS NULL));
+END $$;
 COMMIT;

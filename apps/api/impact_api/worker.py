@@ -8,11 +8,14 @@ One process per worker login (`impact_worker_login` -> `impact_worker`). Each it
 2. Per tenant, in its own transaction under the tenant advisory lock and a transaction-local
    tenant context, due `outbox_delivery` rows are claimed with `FOR UPDATE SKIP LOCKED`: the row
    becomes LEASED to this worker with `lease_generation + 1`, an expiry and one more attempt.
-3. Per claimed row, a read-only transaction rechecks the intent (current invitation generation,
-   pending challenge, active recipient) and builds the message; the connection is closed, then the
-   channel adapter is called outside any transaction; a new transaction records the outcome. Every
-   outcome update carries the lease owner and generation, so a holder whose lease was taken over
-   is refused (it may already have sent: email delivery is at least once).
+3. Per claimed row, a transaction renews the lease (fenced on owner and generation, only while
+   the lease is still live and the row is not held; otherwise the row is skipped unsent), rechecks
+   the intent (current invitation generation, pending challenge, active recipient) and builds the
+   message; the connection is closed, then the channel adapter is called outside any transaction;
+   a new transaction records the outcome. Every outcome update carries the lease owner and
+   generation, so a holder whose lease was taken over is refused. Only a send that itself outlives
+   a whole lease period mid-SMTP can be duplicated (email delivery is at least once).
+   All lease and due comparisons use the database clock (statement_timestamp()).
 4. IN_APP intents are transactional: the fenced SENT update, the `notification_delivery` row and
    the consumer receipt commit together, so the visible effect happens exactly once.
 5. Per tenant scans: delegated-authority expiry reminders 14 and 3 days ahead (idempotent per
@@ -42,7 +45,7 @@ import sys
 import threading
 import time
 from contextlib import contextmanager
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import formatdate
@@ -75,6 +78,8 @@ BACKOFF_CAP_SECONDS = 3600
 REMINDER_DAYS = (14, 3)
 LOOPBACK = {"127.0.0.1", "::1", "localhost"}
 PRE_START = ("Requested", "Validating", "Queued")
+# SMTP replies that mean "authenticate first" or "authentication failed": configuration, not message.
+AUTHENTICATION_CODES = {530, 534, 535, 538}
 BOOLEAN = {"require_unprivileged_db"}
 INTEGER = {"smtp_port", "synthetic_failures", "lease_seconds", "batch_size", "max_attempts", "scan_seconds"}
 FLOAT = {"smtp_timeout", "synthetic_delay", "poll_seconds"}
@@ -86,10 +91,6 @@ WORKER_QUERY = (
     "JOIN pg_roles g ON g.oid=m.roleid WHERE m.member=l.oid),'{}') AS memberships "
     "FROM pg_roles l WHERE l.rolname=current_user"
 )
-
-
-def utcnow():
-    return datetime.now(timezone.utc)
 
 
 class ConfigurationError(RuntimeError):
@@ -110,15 +111,15 @@ class DeliveryError(Exception):
 @dataclass(frozen=True)
 class WorkerSettings:
     environment: str
-    worker_dsn: str
+    worker_dsn: str = field(repr=False)
     public_origin: str
-    invitation_secret: str = ""
-    delivery_secret: str = ""
+    invitation_secret: str = field(default="", repr=False)
+    delivery_secret: str = field(default="", repr=False)
     email_adapter: str = "synthetic"
     smtp_host: str = "127.0.0.1"
     smtp_port: int = 25
     smtp_username: str = ""
-    smtp_password: str = ""
+    smtp_password: str = field(default="", repr=False)
     smtp_from: str = "impact-platform@localhost.localdomain"
     smtp_timeout: float = 20.0
     synthetic_sink: str = ""
@@ -141,10 +142,10 @@ class WorkerSettings:
         overrides. The worker never reads the API configuration or its connection strings."""
         path = os.environ.get("IMPACT_WORKER_CONFIG_FILE")
         data = json.loads(Path(path).read_text()) if path else {}
-        for field in fields(cls):
-            value = os.environ.get("IMPACT_" + field.name.upper())
+        for entry in fields(cls):
+            value = os.environ.get("IMPACT_" + entry.name.upper())
             if value is not None:
-                data[field.name] = value
+                data[entry.name] = value
         data.update(overrides or {})
         for name, value in list(data.items()):
             if name in BOOLEAN and isinstance(value, str):
@@ -227,10 +228,17 @@ class SmtpAdapter:
         except DeliveryError:
             raise
         except smtplib.SMTPRecipientsRefused:
+            # Every recipient refused: the address itself is rejected, retrying cannot help.
             raise DeliveryError("RECIPIENT_REFUSED", permanent=True) from None
+        except smtplib.SMTPSenderRefused:
+            # MAIL FROM refused (5xx included): a relay, sender or authentication configuration
+            # problem of ours, not of this message; retried with backoff until it is fixed.
+            raise DeliveryError("SMTP_SENDER_REJECTED") from None
         except smtplib.SMTPAuthenticationError:
             raise DeliveryError("SMTP_AUTHENTICATION") from None
         except smtplib.SMTPResponseException as exc:
+            if exc.smtp_code in AUTHENTICATION_CODES:
+                raise DeliveryError("SMTP_AUTHENTICATION") from None
             if 500 <= exc.smtp_code < 600:
                 raise DeliveryError("SMTP_PERMANENT_REJECTION", permanent=True) from None
             raise DeliveryError("SMTP_TRANSIENT_REJECTION") from None
@@ -265,7 +273,7 @@ class SyntheticAdapter:
             "to": message["To"],
             "subject": message["Subject"],
             "body": message.get_content(),
-            "at": utcnow().isoformat(),
+            "at": datetime.now(timezone.utc).isoformat(),
         }
         descriptor = os.open(sink, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o600)
         with os.fdopen(descriptor, "a") as handle:
@@ -285,13 +293,18 @@ FENCE = (
 
 def empty_summary():
     keys = ["tenants", "claimed", "sent", "retried", "dead", "superseded", "stale_refused", "released"]
-    return dict.fromkeys(keys + ["reminders", "cancelled", "refused_cancellations"], 0)
+    return dict.fromkeys(keys + ["reminders", "cancelled", "refused_cancellations", "tenant_failures"], 0)
 
 
 class Worker:
-    def __init__(self, s, clock=None, adapter=None, rng=None, worker_id=None, probe=None):
+    """All lease, due and expiry comparisons use the database clock (`statement_timestamp()`),
+    never the worker host's clock, so workers on skewed hosts agree on who holds a lease. `skew`
+    is a test seam only: a callable returning a timedelta added to the database time (qualification
+    moves time forward with it; the CLI never sets it)."""
+
+    def __init__(self, s, skew=None, adapter=None, rng=None, worker_id=None, probe=None):
         self.s = s
-        self.clock = clock or utcnow
+        self.skew = skew or (lambda: timedelta(0))
         self.adapter = adapter or make_adapter(s)
         self.rng = rng or random.Random()
         self.worker_id = worker_id or re.sub(
@@ -303,9 +316,8 @@ class Worker:
         self.probe = probe
         self.stop_event = threading.Event()
         self.connection = None
-        self.started_at = self.clock()
         self.last_scan = None
-        self.totals = {"iterations": 0, "sent": 0, "retried": 0, "dead": 0}
+        self.totals = {"iterations": 0, "sent": 0, "retried": 0, "dead": 0, "failures": 0}
 
     # -- database -------------------------------------------------------------------------------
 
@@ -356,12 +368,16 @@ class Worker:
             connection.close()
             self.connection = None
 
+    def now(self, c):
+        """The database's statement time (plus the test-only skew)."""
+        return c.execute("SELECT statement_timestamp()+%s::interval AS now", (self.skew(),)).fetchone()["now"]
+
     # -- iteration ------------------------------------------------------------------------------
 
     def run_once(self):
-        at = self.clock()
         summary = empty_summary()
         with self.transaction() as c:
+            at = self.now(c)
             tenants = c.execute("SELECT * FROM impact.worker_tenants(%s)", (at,)).fetchall()
         scan = self.last_scan is None or (at - self.last_scan).total_seconds() >= self.s.scan_seconds
         for row in tenants:
@@ -369,35 +385,41 @@ class Worker:
                 break
             summary["tenants"] += 1
             tenant = str(row["tenant_id"])
-            if row["due_deliveries"]:
-                self.dispatch(tenant, summary)
-            if scan and row["lifecycle_state"] == "Active" and not self.stopping:
-                self.remind(tenant, summary)
-                self.cancel_jobs(tenant, summary)
+            try:
+                if row["due_deliveries"]:
+                    self.dispatch(tenant, summary)
+                if scan and row["lifecycle_state"] == "Active" and not self.stopping:
+                    self.remind(tenant, summary)
+                    self.cancel_jobs(tenant, summary)
+            except ConfigurationError:
+                raise
+            except Exception as exc:  # one tenant's failure never stops the others
+                summary["tenant_failures"] += 1
+                LOG.warning("worker tenant pass failed class=%s", type(exc).__name__)
         if scan:
             self.last_scan = at
         self.totals["iterations"] += 1
         for key in ["sent", "retried", "dead"]:
             self.totals[key] += summary[key]
+        self.totals["failures"] += summary["tenant_failures"]
         self.heartbeat("STOPPING" if self.stopping else "RUNNING")
         return summary
 
     def heartbeat(self, state):
-        at = self.clock()
         with self.transaction() as c:
             c.execute(
-                "INSERT INTO impact.worker_heartbeat(worker_id,build,state,started_at,beat_at,stopped_at,iterations,sent,retried,dead) "
-                "VALUES(%(id)s,%(build)s,%(state)s,%(started)s,%(at)s,%(stopped)s,%(iterations)s,%(sent)s,%(retried)s,%(dead)s) "
+                "INSERT INTO impact.worker_heartbeat(worker_id,build,state,started_at,beat_at,stopped_at,"
+                "iterations,sent,retried,dead,failures) VALUES(%(id)s,%(build)s,%(state)s,statement_timestamp(),"
+                "statement_timestamp(),CASE WHEN %(stopped)s THEN statement_timestamp() END,"
+                "%(iterations)s,%(sent)s,%(retried)s,%(dead)s,%(failures)s) "
                 "ON CONFLICT(worker_id) DO UPDATE SET state=EXCLUDED.state,beat_at=EXCLUDED.beat_at,"
                 "stopped_at=EXCLUDED.stopped_at,iterations=EXCLUDED.iterations,sent=EXCLUDED.sent,"
-                "retried=EXCLUDED.retried,dead=EXCLUDED.dead",
+                "retried=EXCLUDED.retried,dead=EXCLUDED.dead,failures=EXCLUDED.failures",
                 {
                     "id": self.worker_id,
                     "build": BUILD,
                     "state": state,
-                    "started": self.started_at,
-                    "at": at,
-                    "stopped": at if state == "STOPPED" else None,
+                    "stopped": state == "STOPPED",
                     **self.totals,
                 },
             )
@@ -436,8 +458,16 @@ class Worker:
 
     def claim(self, tenant, summary):
         """Lease up to batch_size due rows of one tenant; returns them in event order."""
-        at = self.clock()
         with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
+            # A held row (tenant suspended) whose lease ended goes back to PENDING and stays held:
+            # never sent, never stuck LEASED; the suspension's no-replay rule is unchanged.
+            c.execute(
+                "UPDATE impact.outbox_delivery SET state='PENDING',lease_owner=NULL,lease_expires_at=NULL "
+                "WHERE tenant_id=%(tenant)s AND channel IS NOT NULL AND held_at IS NOT NULL "
+                "AND state='LEASED' AND lease_expires_at<=%(at)s",
+                {"at": at, "tenant": tenant},
+            )
             # A holder that crashed on its last permitted attempt is not retried.
             expired = c.execute(
                 "UPDATE impact.outbox_delivery SET state='DEAD',completed_at=%(at)s,lease_owner=NULL,"
@@ -468,7 +498,7 @@ class Worker:
         summary["claimed"] += len(rows)
         return sorted(rows, key=lambda r: str(r["event_id"]))
 
-    def fenced(self, c, tenant, row, assignments, values=None):
+    def fenced(self, c, tenant, row, assignments, values=None, condition=""):
         """Apply an outcome only if this worker still holds exactly this lease generation."""
         params = {
             "tenant": tenant,
@@ -477,7 +507,8 @@ class Worker:
             "generation": row["lease_generation"],
             **(values or {}),
         }
-        return c.execute("UPDATE impact.outbox_delivery SET " + assignments + FENCE, params).rowcount == 1
+        statement = "UPDATE impact.outbox_delivery SET " + assignments + FENCE + condition
+        return c.execute(statement, params).rowcount == 1
 
     def release(self, tenant, rows):
         released = 0
@@ -491,16 +522,43 @@ class Worker:
                 )
         return released
 
+    def renew(self, c, tenant, row, at):
+        """Immediately before building a message: extend the lease by a full lease period, but only
+        if this worker still holds this generation, the lease has not yet expired and the row is not
+        held by a suspension. A row of a batch whose lease ran out while earlier rows were being
+        sent is skipped here (a second worker may already have taken it over), so the only send that
+        can be duplicated is one that itself outlives a whole lease period mid-SMTP."""
+        return self.fenced(
+            c,
+            tenant,
+            row,
+            "lease_expires_at=%(renewed)s",
+            {"at": at, "renewed": at + timedelta(seconds=self.s.lease_seconds)},
+            " AND lease_expires_at>%(at)s AND held_at IS NULL",
+        )
+
     def process(self, tenant, row, summary):
         if row["channel"] == "IN_APP":
             self.deliver_in_app(tenant, row, summary)
             return
         try:
-            with self.transaction(tenant) as c:
-                decision = self.prepare(c, tenant, row)
+            with self.transaction(tenant, lock=True) as c:
+                at = self.now(c)
+                decision = self.prepare(c, tenant, row, at) if self.renew(c, tenant, row, at) else ("lost",)
+        except ConfigurationError:
+            raise
         except psycopg.Error as exc:
             LOG.warning("delivery %s prepare failed class=%s", row["event_id"], type(exc).__name__)
             decision = ("retry", "PREPARE_FAILED")
+        except Exception as exc:  # a defect in rendering or unsealing is recorded, never a crash
+            LOG.warning("delivery %s prepare defect class=%s", row["event_id"], type(exc).__name__)
+            decision = ("dead", "PREPARE_DEFECT")
+        if decision[0] == "lost":
+            summary["stale_refused"] += 1
+            LOG.warning(
+                "delivery %s skipped: lease expired, taken over or held before sending", row["event_id"]
+            )
+            return
         if decision[0] != "send":
             self.record(tenant, row, summary, *decision)
             return
@@ -523,7 +581,6 @@ class Worker:
         return timedelta(seconds=delay * self.rng.uniform(0.5, 1.0))
 
     def record(self, tenant, row, summary, outcome, error_class):
-        at = self.clock()
         if outcome == "retry" and row["attempts"] >= self.s.max_attempts:
             outcome = "dead"
         assignments = {
@@ -537,6 +594,7 @@ class Worker:
             "last_error_class=%(error)s",
         }[outcome]
         with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
             applied = self.fenced(
                 c,
                 tenant,
@@ -559,17 +617,16 @@ class Worker:
         )
         return True
 
-    def prepare(self, c, tenant, row):
+    def prepare(self, c, tenant, row, at):
         """Recheck the intent inside the tenant fence and build the message. Returns ("send",
-        message), ("supersede", reason) or ("dead", reason). Reads only."""
+        message), ("supersede", reason) or ("dead", reason)."""
         template, reference = row["template"], str(row["reference_id"])
         try:
             address = unseal_recipient(
                 self.s.delivery_secret, tenant, template, reference, row["recipient_sealed"]
             )
-        except (InvalidTag, ValueError):
+        except (InvalidTag, ValueError, TypeError):
             return ("dead", "RECIPIENT_UNREADABLE")
-        at = self.clock()
         if template == "MEMBER_INVITATION":
             invitation = c.execute(
                 "SELECT * FROM impact.member_invitation WHERE tenant_id=%s AND invitation_id=%s",
@@ -628,9 +685,9 @@ class Worker:
 
     def deliver_in_app(self, tenant, row, summary):
         """The in-app channel's effect is a database row, so it commits with the fenced outcome."""
-        at = self.clock()
         outcome, reason = "sent", None
         with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
             notice = c.execute(
                 "SELECT n.recipient_id,p.active FROM impact.notification_current n "
                 "LEFT JOIN impact.tenant_principal p ON p.tenant_id=n.tenant_id AND p.principal_id=n.recipient_id "
@@ -649,6 +706,7 @@ class Worker:
                     "state='SENT',sent_at=%(at)s,completed_at=%(at)s,lease_owner=NULL,lease_expires_at=NULL,"
                     "last_error_class=NULL",
                     {"at": at},
+                    " AND held_at IS NULL",
                 )
                 if applied:
                     c.execute(
@@ -681,41 +739,37 @@ class Worker:
 
     def remind(self, tenant, summary):
         """In-app reminders to an administrator whose delegation ceilings expire within 14 days,
-        again within 3 days; one per (principal, expiry instant, threshold). A renewal moves the
-        expiry and so re-arms both. The 14-day notice is not sent once inside the 3-day window."""
-        at = self.clock()
+        again within 3 days; one per (principal, expiry instant, threshold), recorded in
+        authority_reminder and excluded in SQL, so the batch limit cannot starve later groups. A
+        renewal moves the expiry and so re-arms both. The 14-day notice is not sent once inside the
+        3-day window."""
         with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
             rows = c.execute(
-                "SELECT a.principal_id,a.expires_at,count(*) AS ceilings,min(m.object_id::text) AS membership_id "
-                "FROM impact.grant_authority a JOIN impact.tenant_principal p ON p.tenant_id=a.tenant_id "
-                "AND p.principal_id=a.principal_id JOIN impact.membership_current m ON m.tenant_id=p.tenant_id "
-                "AND m.identity_id=p.identity_id JOIN impact.object_registry r ON r.tenant_id=m.tenant_id "
-                "AND r.object_id=m.object_id WHERE a.tenant_id=%s AND p.active AND r.lifecycle_state='Active' "
-                "AND a.expires_at>%s AND a.expires_at<=%s GROUP BY a.principal_id,a.expires_at "
-                "ORDER BY a.principal_id,a.expires_at LIMIT 200",
-                (tenant, at, at + timedelta(days=REMINDER_DAYS[0])),
+                "SELECT * FROM (SELECT a.principal_id,a.expires_at,min(m.object_id::text) AS membership_id,"
+                "CASE WHEN a.expires_at-%(at)s<=make_interval(days=>%(short)s) THEN %(short)s ELSE %(long)s END "
+                "AS threshold_days FROM impact.grant_authority a JOIN impact.tenant_principal p "
+                "ON p.tenant_id=a.tenant_id AND p.principal_id=a.principal_id JOIN impact.membership_current m "
+                "ON m.tenant_id=p.tenant_id AND m.identity_id=p.identity_id JOIN impact.object_registry r "
+                "ON r.tenant_id=m.tenant_id AND r.object_id=m.object_id WHERE a.tenant_id=%(tenant)s AND p.active "
+                "AND r.lifecycle_state='Active' AND a.expires_at>%(at)s "
+                "AND a.expires_at<=%(at)s+make_interval(days=>%(long)s) GROUP BY a.principal_id,a.expires_at) g "
+                "WHERE NOT EXISTS(SELECT 1 FROM impact.authority_reminder x WHERE x.tenant_id=%(tenant)s "
+                "AND x.principal_id=g.principal_id AND x.expires_at=g.expires_at "
+                "AND x.threshold_days=g.threshold_days) ORDER BY g.expires_at,g.principal_id LIMIT 200",
+                {"tenant": tenant, "at": at, "short": REMINDER_DAYS[1], "long": REMINDER_DAYS[0]},
             ).fetchall()
             ctx = None
             for row in rows:
-                days = (
-                    REMINDER_DAYS[1]
-                    if row["expires_at"] - at <= timedelta(days=REMINDER_DAYS[1])
-                    else REMINDER_DAYS[0]
-                )
+                days = row["threshold_days"]
+                expires = row["expires_at"].astimezone(timezone.utc).isoformat()
                 notification_id = str(
                     uuid5(
                         NAMESPACE_URL,
                         "impact-authority-reminder-v1:"
-                        + ":".join(
-                            [tenant, str(row["principal_id"]), row["expires_at"].isoformat(), str(days)]
-                        ),
+                        + ":".join([tenant, str(row["principal_id"]), expires, str(days)]),
                     )
                 )
-                if c.execute(
-                    "SELECT 1 FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
-                    (tenant, notification_id),
-                ).fetchone():
-                    continue
                 ctx = ctx or self.service_principal(c, tenant)
                 event_id = enqueue(c, tenant, "IN_APP_NOTICE", notification_id)
                 receipt = write(
@@ -733,6 +787,11 @@ class Worker:
                     object_id=notification_id,
                     track_author=False,
                 )
+                c.execute(
+                    "INSERT INTO impact.authority_reminder(tenant_id,principal_id,expires_at,threshold_days,"
+                    "notification_id) VALUES(%s,%s,%s,%s,%s)",
+                    (tenant, str(row["principal_id"]), row["expires_at"], days, notification_id),
+                )
                 audit(c, ctx, "notification.created", receipt, str(uuid4()))
                 summary["reminders"] += 1
 
@@ -740,8 +799,8 @@ class Worker:
         """Honour a cancellation request for a job that has not started (Requested, Validating or
         Queued): Cancelled, lease generation advanced so no holder can complete it. A started job
         is left alone. Either outcome is recorded once as job_item 'cancellation'."""
-        at = self.clock()
         with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
             jobs = c.execute(
                 "SELECT job_id,state,lease_generation FROM impact.job j WHERE tenant_id=%s "
                 "AND cancellation_requested_at IS NOT NULL "

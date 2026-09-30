@@ -1,5 +1,5 @@
 """Worker runtime and outbox dispatcher (v0.16), with the worker invoked in-process one iteration
-or one step at a time on a deterministic clock. On PGlite the worker connects through the fixture
+or one step at a time, with a test-only skew added to the database clock. On PGlite the worker connects through the fixture
 connection and assumes impact_worker; under the native runner it uses the provisioned
 impact_worker_login with IMPACT_REQUIRE_UNPRIVILEGED_DB. Real subprocesses, races and signals are
 in test_native_worker.py."""
@@ -7,6 +7,7 @@ in test_native_worker.py."""
 
 import json
 import os
+import random
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -37,16 +38,19 @@ from test_measurement import setup, get, submit, approve, observation, result  #
 from test_recovery_contacts import BASE as CONTACTS, action as contact_action, listing, nominate
 
 NATIVE = os.environ.get("IMPACT_NATIVE_TEST") == "1"
-FIXTURE_EXPIRES_AT = datetime.fromisoformat("2027-09-01T00:00:00+00:00")
 
 
 class Clock:
-    """Real time plus an adjustable offset; the worker computes leases and backoff from it."""
+    """The worker's test-only skew: an offset added to the database clock, which the worker uses
+    for every lease, due and expiry comparison. `now()` approximates the skewed database time."""
 
     def __init__(self):
         self.offset = timedelta(0)
 
     def __call__(self):
+        return self.offset
+
+    def now(self):
         return datetime.now(timezone.utc) + self.offset
 
     def advance(self, **delta):
@@ -82,7 +86,7 @@ def settings(live, **overrides):
 def make_worker(live, clock=None, adapter=None, probe=None, **overrides):
     s = settings(live, **overrides)
     return Worker(
-        s, clock=clock or Clock(), adapter=adapter, probe=probe, worker_id="qual-" + uuid4().hex[:12]
+        s, skew=clock or Clock(), adapter=adapter, probe=probe, worker_id="qual-" + uuid4().hex[:12]
     )
 
 
@@ -210,7 +214,7 @@ def test_failures_back_off_with_jitter_then_become_dead(live):
     worker = make_worker(live, clock=clock, max_attempts=3, synthetic_failures=1000)
     for attempt in [1, 2]:
         held = claimed(worker, tenant, row["event_id"])
-        started = clock()
+        started = clock.now()
         worker.process(tenant, held, empty_summary())
         [state] = deliveries(live, receipt["object_id"])
         assert (state["state"], state["attempts"], state["last_error_class"]) == (
@@ -465,45 +469,72 @@ def test_notice_for_an_inactive_recipient_is_superseded(live):
 
 
 def test_authority_expiry_reminders_are_idempotent_per_threshold(live):
+    """Isolated from the shared suite database: two ceilings of the reviewer with an expiry instant
+    no other row has; every assertion is about that (principal, instant) group only, and the
+    ceilings are removed afterwards."""
     tenant = live.fixture["tenant_a"]
-    admin = live.fixture["actors"]["admin"]["principal_id"]
+    reviewer = live.fixture["actors"]["reviewer"]["principal_id"]
+    expires = (datetime.now(timezone.utc) + timedelta(days=10, seconds=random.randrange(1, 80000))).replace(
+        microsecond=0
+    )
+    authorities = [str(uuid4()) for _ in range(2)]
+    with live.db() as c:
+        scope = c.execute(
+            "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT'",
+            (tenant,),
+        ).fetchone()["scope_id"]
+        for authority in authorities:
+            c.execute(
+                "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,%s)",
+                (tenant, authority, reviewer, "qualification.reminder." + authority[:8], scope, expires),
+            )
 
-    def reminders(kind):
+    def reminders():
         with live.db() as c:
             return c.execute(
-                "SELECT n.object_id,n.recipient_id,n.notice_class,r.created_by FROM impact.notification_current n "
-                "JOIN impact.object_registry r USING(tenant_id,object_id) WHERE n.tenant_id=%s AND n.notice_class=%s",
-                (tenant, kind),
+                "SELECT a.threshold_days,a.notification_id,n.notice_class,n.recipient_id,r.created_by "
+                "FROM impact.authority_reminder a JOIN impact.notification_current n "
+                "ON n.tenant_id=a.tenant_id AND n.object_id=a.notification_id JOIN impact.object_registry r "
+                "ON r.tenant_id=n.tenant_id AND r.object_id=n.object_id "
+                "WHERE a.tenant_id=%s AND a.principal_id=%s AND a.expires_at=%s ORDER BY a.threshold_days DESC",
+                (tenant, reviewer, expires),
             ).fetchall()
 
-    clock = Clock()
-    clock.at(FIXTURE_EXPIRES_AT - timedelta(days=20))
-    make_worker(live, clock=clock).run_once()
-    assert not [r for r in reminders("AUTHORITY_EXPIRING_14D") if str(r["recipient_id"]) == admin]
-    clock.at(FIXTURE_EXPIRES_AT - timedelta(days=13))
-    worker = make_worker(live, clock=clock)
-    worker.run_once()
-    worker.run_once()
-    fourteen = [r for r in reminders("AUTHORITY_EXPIRING_14D") if str(r["recipient_id"]) == admin]
-    assert len(fourteen) == 1
-    with live.db() as c:
-        author = c.execute(
-            "SELECT principal_kind,identity_id FROM impact.tenant_principal WHERE tenant_id=%s AND principal_id=%s",
-            (tenant, fourteen[0]["created_by"]),
-        ).fetchone()
-    assert (author["principal_kind"], author["identity_id"]) == ("SERVICE", None)
-    [intent] = deliveries(live, fourteen[0]["object_id"])
-    assert intent["state"] == "SENT"
-    clock.at(FIXTURE_EXPIRES_AT - timedelta(days=2))
-    make_worker(live, clock=clock).run_once()
-    make_worker(live, clock=clock).run_once()
-    three = [r for r in reminders("AUTHORITY_EXPIRING_3D") if str(r["recipient_id"]) == admin]
-    assert len(three) == 1
-    assert len([r for r in reminders("AUTHORITY_EXPIRING_14D") if str(r["recipient_id"]) == admin]) == 1
-    # The reminder is the administrator's own notice.
-    notice = expect(live.request(live.path("notifications", str(three[0]["object_id"])), actor="admin"), 200)
-    assert notice["data"]["notice_class"] == "AUTHORITY_EXPIRING_3D"
-    expect(live.request(live.path("notifications", str(three[0]["object_id"])), actor="author"), 404)
+    try:
+        clock = Clock()
+        clock.advance(days=-5)
+        make_worker(live, clock=clock).run_once()
+        assert reminders() == []
+        clock.advance(days=5)
+        worker = make_worker(live, clock=clock)
+        worker.run_once()
+        worker.run_once()
+        [fourteen] = reminders()
+        assert (fourteen["threshold_days"], fourteen["notice_class"]) == (14, "AUTHORITY_EXPIRING_14D")
+        assert str(fourteen["recipient_id"]) == reviewer
+        with live.db() as c:
+            author = c.execute(
+                "SELECT principal_kind,identity_id FROM impact.tenant_principal WHERE tenant_id=%s AND principal_id=%s",
+                (tenant, fourteen["created_by"]),
+            ).fetchone()
+        assert (author["principal_kind"], author["identity_id"]) == ("SERVICE", None)
+        [intent] = deliveries(live, fourteen["notification_id"])
+        assert intent["state"] == "SENT"
+        clock.advance(days=8)
+        make_worker(live, clock=clock).run_once()
+        make_worker(live, clock=clock).run_once()
+        rows = reminders()
+        assert [(r["threshold_days"], r["notice_class"]) for r in rows] == [
+            (14, "AUTHORITY_EXPIRING_14D"),
+            (3, "AUTHORITY_EXPIRING_3D"),
+        ]
+        three = str(rows[1]["notification_id"])
+        notice = expect(live.request(live.path("notifications", three), actor="reviewer"), 200)
+        assert notice["data"]["notice_class"] == "AUTHORITY_EXPIRING_3D"
+        expect(live.request(live.path("notifications", three), actor="author"), 404)
+    finally:
+        with live.db() as c:
+            c.execute("DELETE FROM impact.grant_authority WHERE authority_id=ANY(%s::uuid[])", (authorities,))
 
 
 # -- job cancellation ------------------------------------------------------------------------------
@@ -779,3 +810,193 @@ def test_invitation_intent_needs_the_current_signing_secret(live):
         row["reference_generation"],
     )
     assert token == invitation_token(receipt)
+
+
+# -- review fixes (M1, L1, L2, L4, L5, L6, L7, L9) -------------------------------------------------
+
+
+def test_a_batch_row_whose_lease_ran_out_is_skipped_not_sent_twice(live):
+    _, taken = invitation(live)
+    _, expired = invitation(live)
+    [taken_row] = deliveries(live, taken["object_id"])
+    [expired_row] = deliveries(live, expired["object_id"])
+    tenant = live.fixture["tenant_a"]
+    clock = Clock()
+    first = make_worker(live, clock=clock, lease_seconds=30)
+    second = make_worker(live, clock=clock, lease_seconds=30)
+    batch = {str(r["event_id"]): r for r in first.claim(tenant, empty_summary())}
+    clock.advance(seconds=31)
+    # An expired, not yet taken-over lease: the first holder may not send it.
+    lost = empty_summary()
+    first.process(tenant, batch[str(expired_row["event_id"])], lost)
+    assert lost["stale_refused"] == 1 and lost["sent"] == 0
+    [waiting] = deliveries(live, expired["object_id"])
+    assert (waiting["state"], waiting["lease_generation"], waiting["sent_at"]) == ("LEASED", 1, None)
+    # A second worker takes the batch over while the first is still busy.
+    rival = {str(r["event_id"]): r for r in second.claim(tenant, empty_summary())}
+    first.process(tenant, batch[str(taken_row["event_id"])], lost)
+    assert lost["stale_refused"] == 2 and sink_lines(first.s) == []
+    for event in [taken_row["event_id"], expired_row["event_id"]]:
+        second.process(tenant, rival[str(event)], empty_summary())
+    for receipt in [taken, expired]:
+        [done] = deliveries(live, receipt["object_id"])
+        assert (done["state"], done["lease_generation"], done["attempts"]) == ("SENT", 2, 2)
+    sent = [m["event_id"] for m in sink_lines(second.s)]
+    assert sent.count(str(taken_row["event_id"])) == 1 and sent.count(str(expired_row["event_id"])) == 1
+
+
+def test_a_held_row_is_never_sent_and_returns_to_pending_when_its_lease_ends(live):
+    _, receipt = invitation(live)
+    [row] = deliveries(live, receipt["object_id"])
+    tenant = live.fixture["tenant_a"]
+    clock = Clock()
+    worker = make_worker(live, clock=clock, lease_seconds=30)
+    held = claimed(worker, tenant, row["event_id"])
+    with live.db() as c:
+        # What quiesce_tenant does on suspension (tenant A itself stays Active here).
+        c.execute(
+            "UPDATE impact.outbox_delivery SET held_at=now() WHERE tenant_id=%s AND event_id=%s",
+            (tenant, row["event_id"]),
+        )
+    summary = empty_summary()
+    worker.process(tenant, held, summary)
+    assert summary["stale_refused"] == 1 and sink_lines(worker.s) == []
+    assert deliveries(live, receipt["object_id"])[0]["state"] == "LEASED"
+    clock.advance(seconds=31)
+    worker.run_once()
+    [released] = deliveries(live, receipt["object_id"])
+    assert (released["state"], released["lease_owner"], released["lease_expires_at"]) == (
+        "PENDING",
+        None,
+        None,
+    )
+    assert released["held_at"] and released["sent_at"] is None
+    clock.advance(hours=3)
+    worker.run_once()
+    assert deliveries(live, receipt["object_id"])[0]["state"] == "PENDING"
+    assert not [m for m in sink_lines(worker.s) if m["event_id"] == str(row["event_id"])]
+
+
+def test_unsent_events_counts_only_open_dispatchable_intents(live):
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        expected = c.execute(
+            "SELECT count(*) AS n FROM impact.outbox_delivery WHERE tenant_id=%s AND channel IS NOT NULL "
+            "AND state IN ('PENDING','LEASED')",
+            (tenant,),
+        ).fetchone()["n"]
+        legacy = c.execute(
+            "SELECT count(*) AS n FROM impact.outbox_delivery WHERE tenant_id=%s AND channel IS NULL",
+            (tenant,),
+        ).fetchone()["n"]
+        c.execute("SET LOCAL ROLE impact_platform")
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        impact = c.execute("SELECT impact.tenant_work_impact(%s) AS i", (tenant,)).fetchone()["i"]
+    assert legacy > 0
+    assert impact["unsent_events"] == expected
+
+
+def test_a_failing_tenant_or_template_does_not_stop_the_worker(live, monkeypatch):
+    import impact_api.worker as module
+
+    tenant_a = live.fixture["tenant_a"]
+    worker = make_worker(live)
+    original = worker.remind
+
+    def remind(tenant, summary):
+        if tenant == tenant_a:
+            raise RuntimeError("qualification fault")
+        return original(tenant, summary)
+
+    worker.remind = remind
+    summary = worker.run_once()
+    assert summary["tenant_failures"] == 1 and summary["tenants"] >= 2
+    listing = expect(live.request("/v1/platform/workers", actor="admin"), 200)
+    [mine] = [w for w in listing["items"] if w["worker_id"] == worker.worker_id]
+    assert mine["failures"] == 1
+
+    _, receipt = invitation(live)
+
+    def broken(*_args, **_kwargs):
+        raise RuntimeError("renderer defect")
+
+    monkeypatch.setattr(module, "render", broken)
+    make_worker(live).run_once()
+    [row] = deliveries(live, receipt["object_id"])
+    assert (row["state"], row["last_error_class"]) == ("DEAD", "PREPARE_DEFECT")
+
+
+def test_challenge_contact_must_belong_to_the_same_tenant(live):
+    row, _, _, _ = nominate(live)
+    with live.db() as c:
+        with pytest.raises(psycopg.errors.ForeignKeyViolation):
+            c.execute(
+                "INSERT INTO impact.recovery_channel_challenge(tenant_id,challenge_id,contact_id,contact_revision,"
+                "requested_by,email_hash,code_hash,state,expires_at) VALUES(%s,gen_random_uuid(),%s,%s,%s,%s,%s,"
+                "'PENDING',now()+interval '10 minutes')",
+                (
+                    live.fixture["tenant_a"],
+                    row["contact_id"],
+                    row["revision_id"],
+                    row["nominee_identity_id"],
+                    b"\0" * 32,
+                    b"\0" * 32,
+                ),
+            )
+
+
+@pytest.mark.parametrize(
+    "sink_options,state,error_class",
+    [
+        ({"mail_rejections": ["550 5.7.1 Sender address rejected"]}, "PENDING", "SMTP_SENDER_REJECTED"),
+        ({"mail_rejections": ["530 5.7.0 Authentication required"]}, "PENDING", "SMTP_SENDER_REJECTED"),
+        ({"rejections": ["535 5.7.8 Authentication credentials invalid"]}, "PENDING", "SMTP_AUTHENTICATION"),
+        ({"rcpt_rejections": ["550 5.1.1 No such user"]}, "DEAD", "RECIPIENT_REFUSED"),
+    ],
+)
+def test_sender_and_authentication_rejections_are_retried_recipient_rejection_is_dead(
+    live, sink_options, state, error_class
+):
+    _, receipt = invitation(live)
+    [row] = deliveries(live, receipt["object_id"])
+    tenant = live.fixture["tenant_a"]
+    with SmtpSink(**sink_options) as sink:
+        worker = make_worker(live, email_adapter="smtp", smtp_port=sink.port, smtp_timeout=5)
+        worker.process(tenant, claimed(worker, tenant, row["event_id"]), empty_summary())
+    [result] = deliveries(live, receipt["object_id"])
+    assert (result["state"], result["last_error_class"]) == (state, error_class)
+    assert sink.messages == []
+
+
+def test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state(live):
+    row, tenant, _, _ = nominate(live)
+    current = row
+    for _ in range(3):
+        current = contact_command(live, current, "channel-request", {"email": "partner@example.test"})
+    limited = contact_command(live, current, "channel-request", {"email": "partner@example.test"}, status=429)
+    assert limited["reason_code"] == "CHANNEL_REQUEST_LIMIT"
+    challenge = current["channel_verification"]["challenge_id"]
+    code = channel_code(live.config["delivery_secret"], challenge)
+    with live.db() as c:
+        c.execute(
+            "UPDATE impact.tenant_root SET lifecycle_state='Closing' WHERE tenant_id=%s",
+            (tenant["tenant_id"],),
+        )
+    closed = contact_command(
+        live, current, "channel-confirm", {"challenge_id": challenge, "code": code}, status=403
+    )
+    assert closed["reason_code"] == "RECOVERY_TENANT_UNAVAILABLE"
+    with live.db() as c:
+        assert (
+            c.execute(
+                "SELECT state FROM impact.recovery_channel_challenge WHERE challenge_id=%s", (challenge,)
+            ).fetchone()["state"]
+            == "PENDING"
+        )
+
+
+def test_worker_settings_never_print_secrets_or_the_connection_string(live):
+    s = settings(live, smtp_password="qualification-smtp-password")
+    text = repr(s) + str(s)
+    for secret in [s.worker_dsn, s.invitation_secret, s.delivery_secret, "qualification-smtp-password"]:
+        assert secret not in text

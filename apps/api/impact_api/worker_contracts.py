@@ -17,6 +17,7 @@ WORKER = obj(
         "sent": COUNT,
         "retried": COUNT,
         "dead": COUNT,
+        "failures": COUNT,
     }
 )
 WORKERS = obj(

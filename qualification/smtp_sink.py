@@ -9,9 +9,11 @@ from email import message_from_bytes, policy
 
 
 class SmtpSink:
-    def __init__(self, rejections=None, on_data=None):
+    def __init__(self, rejections=None, on_data=None, mail_rejections=None, rcpt_rejections=None):
         self.messages = []
         self.rejections = list(rejections or [])
+        self.mail_rejections = list(mail_rejections or [])
+        self.rcpt_rejections = list(rcpt_rejections or [])
         self.on_data = on_data
         self.conversations = 0
         sink = self
@@ -38,8 +40,11 @@ class SmtpSink:
                     elif verb == "MAIL":
                         found = re.search(r"<([^>]*)>", line)
                         sender, recipients = found.group(1) if found else None, []
-                        self.reply("250 OK")
+                        self.reply(sink.mail_rejections.pop(0) if sink.mail_rejections else "250 OK")
                     elif verb == "RCPT":
+                        if sink.rcpt_rejections:
+                            self.reply(sink.rcpt_rejections.pop(0))
+                            continue
                         found = re.search(r"<([^>]*)>", line)
                         recipients.append(found.group(1) if found else None)
                         self.reply("250 OK")

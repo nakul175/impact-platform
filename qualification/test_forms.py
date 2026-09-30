@@ -92,9 +92,9 @@ def publish(live, form):
     return get(live, "forms", form["object_id"] + "/published")
 
 
-def planned(live):
-    """A sex-disaggregated household count whose approved collection plan expects three units to
-    report through the form: obligations FORM/"unit-<n>/<indicator id>"."""
+def planned(live, **changes):
+    """A sex-disaggregated household count (or the definition `changes` describe) whose approved
+    collection plan expects three units to report through the form: FORM/"<unit>/<indicator id>"."""
     calendar = get(live, "reporting-calendars")["items"][0]
     programme = create(
         live,
@@ -109,7 +109,7 @@ def planned(live):
             "geography_id": get(live, "geographies")["items"][0]["object_id"],
         },
     )
-    d = create(live, "indicator-definitions", definition(disaggregation=SEX))
+    d = create(live, "indicator-definitions", definition(**(changes or {"disaggregation": SEX})))
     approve(live, submit(live, "indicator-definitions", d))
     d = get(live, "indicator-definitions", d["object_id"])
     indicator = create(
@@ -598,3 +598,73 @@ def test_submitter_without_indicator_read_access_fails_closed(live, published):
     failure(r, 404)
     after = get(live, "submissions", row["object_id"], actor="enumerator")
     assert after["revision_id"] == row["revision_id"] and after["lifecycle_state"] == "Draft"
+
+
+def test_numerator_and_denominator_answers_pool_into_a_percentage(live):
+    """Two answers feed one ratio observation; the result pools the components (never averages
+    the per-response percentages); a zero denominator is UNDEFINED, never zero."""
+    indicator, period, units = planned(
+        live,
+        measurement_type="PERCENTAGE",
+        unit="percent",
+        combination_rule="POOLED_RATIO",
+        numerator_meaning="Households with safe water",
+        denominator_meaning="Households visited",
+        display_decimals=2,
+    )
+
+    def number(code, role, position):
+        return {
+            "field_id": str(uuid.uuid4()),
+            "stable_code": code,
+            "position": position,
+            "field_type": "INTEGER",
+            "label": code,
+            "required": True,
+            "minimum": "0",
+            "indicator_id": indicator["object_id"],
+            "value_role": role,
+        }
+
+    items = [number("safe", "NUMERATOR", 0), number("visited", "DENOMINATOR", 1)]
+    # Both components are required before a ratio form can be reviewed.
+    partial = create(live, "forms", {**form_data(indicator), "fields": items[:1]})
+    failure(
+        live.request(
+            live.path("forms", partial["object_id"]) + "/actions/submit",
+            method="POST",
+            body=cmd({"workflow_version": workflow_version(live)}, partial["revision_id"]),
+        ),
+        422,
+        "FORM_BINDING_INVALID",
+    )
+    form = create(live, "forms", {**form_data(indicator), "fields": items})
+    version = publish(live, form)
+
+    def answer(unit, n, d):
+        row = response(
+            live,
+            version,
+            {"safe": {"kind": "INTEGER", "value": n}, "visited": {"kind": "INTEGER", "value": d}},
+            unit=unit,
+        )
+        return row, live.request(
+            live.path("submissions", row["object_id"]) + "/actions/submit",
+            method="POST",
+            body=cmd({"workflow_version": workflow_version(live)}, row["revision_id"]),
+        )
+
+    values = []
+    for unit, n, d in [(units[0], 50, 100), (units[1], 1, 10), (units[2], 0, 0)]:
+        row, sent = answer(unit, n, d)
+        expect(sent, 200)
+        [obs] = observations(live, get(live, "submissions", row["object_id"]))
+        values.append((obs["data"]["value_state"], obs["data"]["value"], obs["data"].get("numerator")))
+        approve(live, workflow_of(live, obs["object_id"]))
+    assert values == [("PRESENT", "50", "50"), ("PRESENT", "10", "1"), ("UNDEFINED", None, None)]
+    row, sent = answer("unit-extra", 11, 10)
+    failure(sent, 422, "INVALID_COMPONENTS")
+    result = action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    value = get(live, "calculated-results", result["object_id"])["data"]
+    assert value["numerator"] == "51" and value["denominator"] == "110"
+    assert value["displayed_value"] == "46.36"

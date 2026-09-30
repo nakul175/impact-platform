@@ -304,23 +304,26 @@ try {
     await dialog().waitFor({ state: "hidden" });
     await reviewAndApprove(programme);
   });
-  await test("Targets versus actuals labels missing and official results", async () => {
+  await test("Targets versus actuals shows no borrowed official result", async () => {
     await switchUser("author");
     await openPlanning(programme, "Targets vs actuals");
     const table = page.getByRole("table", { name: "Targets versus actuals" });
     const row = table.locator("tr").filter({ hasText: indicatorLabel });
     await row.getByText("No result yet", { exact: true }).waitFor();
     await row.getByText("40", { exact: true }).waitFor();
-    await label("Programme").selectOption({ label: "Safe Water 2026" });
-    const seeded = page
-      .getByRole("table", { name: "Targets versus actuals" })
-      .locator("tr")
-      .filter({ hasText: "46.36" });
-    await seeded.getByText("OFFICIAL", { exact: true }).waitFor();
-    await seeded.getByText("No approved target", { exact: true }).waitFor();
     await page.screenshot({
       path: path.join(root, "docs/evidence/planning-targets-vs-actuals.png"),
     });
+    // The seeded OFFICIAL 46.36 belongs to a fixture snapshot bound to no programme: it is never
+    // attributed to the seeded programme or to any other.
+    await label("Programme").selectOption({ label: "Safe Water 2026" });
+    await page
+      .getByText("No targets or results for this programme yet.", {
+        exact: true,
+      })
+      .waitFor();
+    assert.equal(await page.getByText("46.36", { exact: false }).count(), 0);
+    assert.equal(await page.getByText("OFFICIAL", { exact: true }).count(), 0);
   });
   await test("Planning views stay within a 390 px mobile width", async () => {
     await page.setViewportSize({ width: 390, height: 844 });

@@ -487,7 +487,26 @@ export function PlanningPanel({
             )}
           </>
         ) : tab === "progress" ? (
-          <Progress view={view} framework={approvedBaseline} />
+          <Progress
+            view={view}
+            framework={approvedBaseline}
+            loadMore={() =>
+              request(
+                base +
+                  "programmes/" +
+                  programme +
+                  "/targets-vs-actuals?cursor=" +
+                  encodeURIComponent(view.next_cursor),
+              )
+                .then((more) =>
+                  setData((d) => ({
+                    ...d,
+                    view: { ...more, rows: [...d.view.rows, ...more.rows] },
+                  })),
+                )
+                .catch((e) => setError(explain(e)))
+            }
+          />
         ) : (
           <>
             <h2>Planning reviews</h2>
@@ -614,7 +633,20 @@ function targetValue(d: Record<string, any>) {
   return d.value ?? "—";
 }
 
-function Progress({ view, framework }: { view: any; framework: any }) {
+const SOURCES: Record<string, string> = {
+  PROGRAMME_SNAPSHOT: "locked snapshot of this programme",
+  CALCULATION: "latest calculation",
+};
+
+function Progress({
+  view,
+  framework,
+  loadMore,
+}: {
+  view: any;
+  framework: any;
+  loadMore: () => void;
+}) {
   if (!view) return <p>You do not have access to targets.</p>;
   const nodeTitle = (id: string) =>
     framework?.nodes.find((n: Node) => n.node_id === id)?.title || id;
@@ -622,9 +654,10 @@ function Progress({ view, framework }: { view: any; framework: any }) {
     <>
       <h2>Targets vs actuals</h2>
       <p className="muted">
-        Actuals come from locked snapshots (OFFICIAL) where a period is closed,
-        otherwise from the latest calculation (PROVISIONAL). Attainment uses
-        stored decimals and is rounded once for display.
+        An OFFICIAL actual comes only from this programme&apos;s locked snapshot
+        for the period; an open period shows this indicator&apos;s own latest
+        calculation, labelled PROVISIONAL. Neither is shared between programmes.
+        Attainment uses stored decimals and is rounded once for display.
       </p>
       {!view.rows.length ? (
         <p className="muted">No targets or results for this programme yet.</p>
@@ -695,6 +728,10 @@ function Progress({ view, framework }: { view: any; framework: any }) {
                         {r.actual.stale && (
                           <span className="badge stale">STALE</span>
                         )}
+                        <small className="muted">
+                          {" "}
+                          · {SOURCES[r.actual.source] || r.actual.source}
+                        </small>
                       </>
                     )}
                   </td>
@@ -721,6 +758,11 @@ function Progress({ view, framework }: { view: any; framework: any }) {
             </tbody>
           </table>
         </div>
+      )}
+      {view.next_cursor && (
+        <button className="secondary" onClick={loadMore}>
+          Load more indicators
+        </button>
       )}
     </>
   );
@@ -1110,7 +1152,13 @@ function FrameworkDetail(
                   "frameworks/" + row.object_id,
                   {
                     exceptions: [
-                      ...(row.data.exceptions || []),
+                      // Who recorded an exception is server-owned; send only its content.
+                      ...(row.data.exceptions || []).map((x: any) => ({
+                        object_id: x.object_id,
+                        rule: x.rule,
+                        reason: x.reason,
+                        review_date: x.review_date,
+                      })),
                       {
                         ...exception,
                         reason: String(form.get("reason")),

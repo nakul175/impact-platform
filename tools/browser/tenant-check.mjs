@@ -175,7 +175,11 @@ try {
     const entry = admin.getByLabel("Worker " + workerId, { exact: true });
     await entry.waitFor();
     assert.match(await entry.innerText(), /Stopped/);
-    assert.match(await entry.innerText(), /build 0\.16\.0/);
+    // The heartbeat carries this build's version, read from the client package, not a literal.
+    const { version } = JSON.parse(
+      await fs.readFile(path.join(root, "apps/web/package.json"), "utf8"),
+    );
+    assert.ok((await entry.innerText()).includes("build " + version));
     await nominated
       .getByRole("button", { name: "Refresh tenants", exact: true })
       .click();

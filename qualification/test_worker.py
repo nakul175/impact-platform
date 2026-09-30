@@ -783,7 +783,7 @@ def test_heartbeat_is_visible_to_platform_operators_only(live):
     listing = expect(live.request("/v1/platform/workers", actor="admin"), 200)
     Draft202012Validator(WORKERS, format_checker=FormatChecker()).validate(listing)
     [mine] = [w for w in listing["items"] if w["worker_id"] == worker.worker_id]
-    assert (mine["state"], mine["stale"], mine["build"]) == ("RUNNING", False, "0.19.0")
+    assert (mine["state"], mine["stale"], mine["build"]) == ("RUNNING", False, "0.20.0")
     assert mine["iterations"] == 1
     worker.heartbeat("STOPPED")
     listing = expect(live.request("/v1/platform/workers", actor="admin"), 200)

@@ -7,7 +7,16 @@ There is no background actor, inferred permission, automatic approval or period 
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from psycopg.types.json import Jsonb
-from .domain import DomainError, calculate, decimal_value, unavailable
+from .domain import (
+    RATIO_TYPES,
+    DomainError,
+    calculate,
+    decimal_value,
+    method_supported,
+    unavailable,
+    validate_dimensions,
+    validate_scheme,
+)
 from .store import load, scopes, write, envelope, context, authorize
 
 
@@ -19,22 +28,23 @@ def definition_ready(data):
     required = ["code", "name", "unit", "population", "inclusion", "exclusion", "method"]
     if any(not str(data.get(k, "")).strip() for k in required):
         raise DomainError("VALIDATION_FAILED", reason="DEFINITION_INCOMPLETE")
-    ratio = data.get("measurement_type") in {"RATIO", "PERCENTAGE"}
-    if (
-        data.get("source_mode") != "MANUAL"
-        or data.get("time_semantic") != "FLOW"
-        or data.get("measurement_type") not in {"COUNT", "DECIMAL", "RATIO", "PERCENTAGE"}
-        or data.get("combination_rule") != ("POOLED_RATIO" if ratio else "SUM")
-    ):
+    ratio = data.get("measurement_type") in RATIO_TYPES
+    if data.get("source_mode") != "MANUAL" or not method_supported(data):
         raise DomainError("INCOMPATIBLE_MEASURE", reason="CONFIGURATION_NOT_IMPLEMENTED")
     if ratio and any(not str(data.get(k, "")).strip() for k in ["numerator_meaning", "denominator_meaning"]):
         raise DomainError("VALIDATION_FAILED", reason="COMPONENT_MEANINGS_REQUIRED")
+    validate_scheme(data)
 
 
 def valid_value(definition, payload):
     if payload.get("value_state") != "PRESENT":
         return False
     try:
+        validate_dimensions(definition, payload)
+        if definition["measurement_type"] in RATIO_TYPES and (
+            payload.get("numerator") is None or payload.get("denominator") is None
+        ):
+            return False
         if definition["measurement_type"] == "COUNT":
             value = decimal_value(payload.get("value"))
             if value < 0 or value != value.to_integral_value():

@@ -25,6 +25,7 @@ Build 0.18.0; schema 19 (0.18.0 adds 0019: framework and target payload columns 
 | 0017_provider_logout.sql | 4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b |
 | 0018_worker_delivery.sql | bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7 |
 | 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
+| 0020_calculation_methods.sql | 357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31 |
 
 ## Executable schema definitions
 
@@ -2985,5 +2986,23 @@ CREATE POLICY tenant_fence ON impact.framework_baseline USING(tenant_id=impact.c
 CREATE POLICY tenant_fence ON impact.target_binding USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
 -- Insert-only for the application; nothing for the control plane.
 GRANT SELECT,INSERT ON impact.framework_baseline,impact.target_binding TO impact_app;
+COMMIT;
+```
+
+### 0020 calculation methods
+
+Source: infrastructure/migrations/0020_calculation_methods.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Indicator and calculation completion (v0.19). The approved definition pins its disaggregation
+-- scheme and a calculated result carries its category breakdown; both are payload properties that
+-- the typed projections must hold. Additive columns only: no row is rewritten and no policy, grant
+-- or role changes (both projections keep their existing RLS policies and grants).
+ALTER TABLE impact.indicator_definition_current
+ ADD COLUMN disaggregation jsonb CHECK(disaggregation IS NULL OR jsonb_typeof(disaggregation)='object');
+ALTER TABLE impact.calculated_result_current
+ ADD COLUMN disaggregation jsonb CHECK(disaggregation IS NULL OR jsonb_typeof(disaggregation)='array');
 COMMIT;
 ```

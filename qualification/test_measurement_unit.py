@@ -115,7 +115,9 @@ def test_zero_is_valid_and_unplanned_does_not_fill_gap():
     [
         {"source_mode": "FORM"},
         {"time_semantic": "STOCK"},
-        {"combination_rule": "MEDIAN"},
+        {"combination_rule": "WEIGHTED_INDEX"},
+        {"combination_rule": "UNIQUE_COUNT"},
+        {"time_semantic": "CUMULATIVE"},
         {"measurement_type": "CURRENCY"},
         {"measurement_type": "PERCENTAGE"},
         {"method": "  "},

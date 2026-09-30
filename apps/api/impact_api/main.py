@@ -85,7 +85,7 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.18.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version="0.19.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -184,7 +184,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 19:
+        if version != 20:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -344,9 +344,9 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.18.0",
-            "schema_version": "19",
-            "api_version": "1.11.0",
+            "build_id": "impact-0.19.0",
+            "schema_version": "20",
+            "api_version": "1.12.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),
         }

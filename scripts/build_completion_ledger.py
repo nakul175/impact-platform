@@ -387,7 +387,7 @@ for requirement in requirements:
         assert (ROOT / path).is_file(), path
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
-    "build": "0.18.0",
+    "build": "0.19.0",
     "assessment_date": "2026-09-29",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, type FormEvent } from "react";
 import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
 import { AuthorityRenewal } from "./AuthorityRenewal";
+import { Workers } from "./Workers";
 
 type Props = {
   development: boolean;
@@ -217,7 +218,7 @@ export function TenantLifecycle({
                 <p>
                   Impact: {row.impact.unfinished_jobs} unfinished jobs;{" "}
                   {row.impact.active_schedules} active schedules;{" "}
-                  {row.impact.unsent_events} unsent events;{" "}
+                  {row.impact.unsent_events} undelivered notices or emails;{" "}
                   {row.impact.retention_holds} retention holds.
                 </p>
                 <details>
@@ -292,6 +293,9 @@ export function TenantLifecycle({
             >
               Load more tenants
             </button>
+          )}
+          {directory.operator && (
+            <Workers request={request} explain={explain} />
           )}
         </>
       )}

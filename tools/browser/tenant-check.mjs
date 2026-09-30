@@ -2,6 +2,7 @@ import { chromium } from "playwright-core";
 import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
+import { runWorkerOnce } from "./worker-run.mjs";
 import { approveRecoveryContact } from "./recovery-fixture.mjs";
 const root = process.cwd(),
   local = process.env.IMPACT_TEST_LOCAL,
@@ -162,6 +163,24 @@ try {
       await card
         .getByRole("button", { name: "Reactivate tenant", exact: true })
         .count(),
+      0,
+    );
+  });
+  await test("Operator sees worker heartbeats; an owner does not", async () => {
+    const workerId = "tenant-browser-" + Date.now();
+    runWorkerOnce(local, workerId);
+    await admin
+      .getByRole("button", { name: "Refresh workers", exact: true })
+      .click();
+    const entry = admin.getByLabel("Worker " + workerId, { exact: true });
+    await entry.waitFor();
+    assert.match(await entry.innerText(), /Stopped/);
+    assert.match(await entry.innerText(), /build 0\.16\.0/);
+    await nominated
+      .getByRole("button", { name: "Refresh tenants", exact: true })
+      .click();
+    assert.equal(
+      await nominated.getByRole("region", { name: "Workers" }).count(),
       0,
     );
   });

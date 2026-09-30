@@ -2,6 +2,7 @@ import { chromium } from "playwright-core";
 import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
+import { runWorkerOnce, sinkMessages } from "./worker-run.mjs";
 const root = process.cwd(),
   local = process.env.IMPACT_TEST_LOCAL,
   base = process.env.IMPACT_BASE_URL;
@@ -170,6 +171,106 @@ try {
       undefined,
       404,
     );
+  });
+  await test("Nominee confirms the registered email address with a single-use code", async () => {
+    const partnerCard = () => card(contact, "Partner", "Verified");
+    await partnerCard()
+      .getByRole("button", {
+        name: "Email me a verification code",
+        exact: true,
+      })
+      .click();
+    await contact
+      .getByLabel("Email address", { exact: true })
+      .fill("someone-else@example.test");
+    await contact
+      .getByLabel("Reason", { exact: true })
+      .fill("Confirm my recovery email");
+    await contact
+      .getByRole("button", {
+        name: "Confirm recovery contact change",
+        exact: true,
+      })
+      .click();
+    await contact
+      .getByRole("alert")
+      .filter({ hasText: "not the verified email address" })
+      .waitFor();
+    await contact
+      .getByLabel("Email address", { exact: true })
+      .fill("partner@example.test");
+    await contact
+      .getByRole("button", {
+        name: "Confirm recovery contact change",
+        exact: true,
+      })
+      .click();
+    await contact
+      .getByRole("status")
+      .filter({ hasText: "verification code is being emailed" })
+      .waitFor();
+    const summary = runWorkerOnce(local, "recovery-browser-" + Date.now());
+    assert.ok(summary.sent >= 1, JSON.stringify(summary));
+    const message = (await sinkMessages(local))
+      .filter(
+        (m) =>
+          m.to === "partner@example.test" &&
+          m.subject === "Impact Platform recovery contact verification code",
+      )
+      .pop();
+    const code = message.body.match(/\b(\d{8})\b/)[1];
+    const wrong = code === "00000000" ? "11111111" : "00000000";
+    await refresh(contact);
+    await partnerCard()
+      .getByRole("button", { name: "Enter verification code", exact: true })
+      .click();
+    await contact.getByLabel("Verification code", { exact: true }).fill(wrong);
+    await contact
+      .getByLabel("Reason", { exact: true })
+      .fill("Confirm my recovery email");
+    await contact
+      .getByRole("button", {
+        name: "Confirm recovery contact change",
+        exact: true,
+      })
+      .click();
+    await contact
+      .getByRole("alert")
+      .filter({ hasText: "That code is not correct." })
+      .waitFor();
+    await contact.getByLabel("Verification code", { exact: true }).fill(code);
+    await contact
+      .getByRole("button", {
+        name: "Confirm recovery contact change",
+        exact: true,
+      })
+      .click();
+    await contact
+      .getByRole("status")
+      .filter({ hasText: "email address confirmed" })
+      .waitFor();
+    await partnerCard()
+      .getByText("Email confirmation: Confirmed", { exact: false })
+      .waitFor();
+    assert.equal(
+      await partnerCard()
+        .getByRole("button", { name: "Enter verification code", exact: true })
+        .count(),
+      0,
+    );
+    await api(
+      "partner",
+      `/v1/tenants/${tenant.tenant_id}/me/access`,
+      undefined,
+      404,
+    );
+    await contact.setViewportSize({ width: 390, height: 844 });
+    assert.ok(
+      await contact.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    );
+    await contact.setViewportSize({ width: 1440, height: 1000 });
   });
   const operator = await user("admin");
   await test("Independent operator approves and tenant readiness permits activation", async () => {

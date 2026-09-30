@@ -15,6 +15,16 @@ const labels: Record<string, string> = {
   cancel: "Withdraw nomination",
   decline: "Decline nomination",
   revoke: "Revoke recovery contact",
+  "channel-request": "Email me a verification code",
+  "channel-confirm": "Enter verification code",
+};
+const channelStates: Record<string, string> = {
+  NONE: "Not confirmed",
+  PENDING: "Code sent — waiting for the code",
+  VERIFIED: "Confirmed",
+  EXPIRED: "Code expired — request a new code",
+  FAILED: "Code locked after wrong attempts — request a new code",
+  SUPERSEDED: "Replaced by a newer code",
 };
 export function RecoveryContacts({
   development,
@@ -69,6 +79,13 @@ export function RecoveryContacts({
         ? tenants.items.find((t: any) => t.tenant_id === tenantId)
         : null;
       const data: any = { reason: form.get("reason") };
+      if (!creating && action === "channel-request")
+        data.email = String(form.get("email") || "").trim();
+      if (!creating && action === "channel-confirm")
+        Object.assign(data, {
+          challenge_id: selected.channel_verification.challenge_id,
+          code: String(form.get("code") || "").trim(),
+        });
       if (creating)
         Object.assign(data, {
           nominee_identity_id: form.get("nominee_identity_id"),
@@ -95,7 +112,11 @@ export function RecoveryContacts({
       retry.current = { key: "", operation: "" };
       await refresh();
       setNotice(
-        `${result.operating_name}: recovery contact ${result.state}. Change saved.`,
+        action === "channel-request" && !creating
+          ? `${result.operating_name}: a verification code is being emailed to ${result.email_mask}. It expires in 15 minutes.`
+          : action === "channel-confirm" && !creating
+            ? `${result.operating_name}: email address confirmed.`
+            : `${result.operating_name}: recovery contact ${result.state}. Change saved.`,
       );
     } catch (e) {
       setError(explain(e));
@@ -127,8 +148,9 @@ export function RecoveryContacts({
       </p>
       <p>
         Verification uses the nominated person’s existing verified account and
-        recent MFA-backed sign-in. This release does not send email or SMS
-        challenges.
+        recent MFA-backed sign-in. The nominated person can also confirm their
+        email address with a single-use code; that confirmation is recorded as
+        evidence only and grants nothing.
       </p>
       {error && (
         <div className="error" role="alert">
@@ -208,6 +230,18 @@ export function RecoveryContacts({
                   row.state === "Active" &&
                     (owner || nominee || directory.operator),
                 ],
+                [
+                  "channel-request",
+                  nominee &&
+                    ["Nominated", "Verified", "Active"].includes(row.state) &&
+                    row.channel_verification.state !== "VERIFIED",
+                ],
+                [
+                  "channel-confirm",
+                  nominee &&
+                    ["Nominated", "Verified", "Active"].includes(row.state) &&
+                    row.channel_verification.state === "PENDING",
+                ],
               ];
               return (
                 <article
@@ -232,6 +266,19 @@ export function RecoveryContacts({
                         row.verification.reason
                           .replaceAll("_", " ")
                           .toLowerCase()
+                      : ""}
+                    .
+                  </p>
+                  <p>
+                    Email confirmation:{" "}
+                    {channelStates[row.channel_verification.state] ||
+                      row.channel_verification.state}
+                    {row.channel_verification.verified_at
+                      ? " (" +
+                        new Date(
+                          row.channel_verification.verified_at,
+                        ).toLocaleString() +
+                        ")"
                       : ""}
                     .
                   </p>
@@ -318,15 +365,44 @@ export function RecoveryContacts({
               </p>
               <p>Expires: {new Date(selected.expires_at).toLocaleString()}.</p>
               <p>
-                {action === "revoke"
-                  ? "Revocation removes this contact from readiness immediately. It blocks future activation or reactivation until an eligible contact is approved. It does not suspend current business access."
-                  : action === "verify"
-                    ? "Confirm that you accept this tenant’s recovery-contact nomination using the displayed registered account. No account recovery rights or workspace permissions are granted."
-                    : "Approval must come from a different person from the owner and contact. The existing contact remains in place until replacement approval succeeds."}
+                {action === "channel-request"
+                  ? "Enter the email address of your registered account. A single-use code valid for 15 minutes is sent to it; at most three codes can be requested per hour."
+                  : action === "channel-confirm"
+                    ? "Enter the eight-digit code from the most recent email. Five wrong attempts lock the code."
+                    : action === "revoke"
+                      ? "Revocation removes this contact from readiness immediately. It blocks future activation or reactivation until an eligible contact is approved. It does not suspend current business access."
+                      : action === "verify"
+                        ? "Confirm that you accept this tenant’s recovery-contact nomination using the displayed registered account. No account recovery rights or workspace permissions are granted."
+                        : "Approval must come from a different person from the owner and contact. The existing contact remains in place until replacement approval succeeds."}
               </p>
             </>
           )}
           <form onSubmit={submit}>
+            {!creating && action === "channel-request" && (
+              <label>
+                Email address
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  maxLength={254}
+                  autoComplete="email"
+                />
+              </label>
+            )}
+            {!creating && action === "channel-confirm" && (
+              <label>
+                Verification code
+                <input
+                  name="code"
+                  required
+                  inputMode="numeric"
+                  pattern="[0-9]{8}"
+                  maxLength={8}
+                  autoComplete="one-time-code"
+                />
+              </label>
+            )}
             {creating && (
               <>
                 <label>

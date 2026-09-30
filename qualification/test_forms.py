@@ -557,12 +557,6 @@ def test_form_and_submission_access_boundaries(live, published):
         expect(live.request(live.path("submissions"), method="POST", body=body), 422)
 
 
-def test_enumerator_collects_on_a_published_form(live, published):
-    _, _, _, version, _ = published
-    row = response(live, version, ANSWERED, actor="enumerator")
-    assert row["data"]["review_state"] == "DRAFT"
-
-
 @pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
     reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role "
@@ -586,3 +580,21 @@ def test_native_form_publication_register_is_fenced_and_insert_only(connect, liv
         assert "permission denied" in denied(
             other, "SELECT count(*) FROM impact.form_publication", role=role, tenant=tenant_a
         )
+
+
+def test_submitter_without_indicator_read_access_fails_closed(live, published):
+    """Known limit of this build: turning a response into observations reuses the observation
+    submission path, which reads the bound indicator instance and definition with the submitter's
+    own capabilities. ENUMERATOR can save a draft but its submit fails closed (404) and writes
+    nothing; AUTHOR and PROGRAMME_MANAGER submit."""
+    _, _, _, version, units = published
+    row = response(live, version, ANSWERED, actor="enumerator", unit=units[2])
+    r = live.request(
+        live.path("submissions", row["object_id"]) + "/actions/submit",
+        actor="enumerator",
+        method="POST",
+        body=cmd({"workflow_version": workflow_version(live)}, row["revision_id"]),
+    )
+    failure(r, 404)
+    after = get(live, "submissions", row["object_id"], actor="enumerator")
+    assert after["revision_id"] == row["revision_id"] and after["lifecycle_state"] == "Draft"

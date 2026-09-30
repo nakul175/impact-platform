@@ -332,7 +332,11 @@ export function FormsPanel({
             explain={explain}
             form={dialog.row}
             template={template}
-            canSubmit={allowed("submission.submit")}
+            canSubmit={
+              // Submitting reads the bound indicators with the submitter's own access.
+              allowed("submission.submit") &&
+              allowed("indicator-instances.read")
+            }
             done={done}
           />
         </Dialog>

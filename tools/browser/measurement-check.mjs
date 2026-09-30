@@ -187,6 +187,18 @@ try {
     }))
       await label(key).fill(value);
     await label("Display decimals").fill("0");
+    await label("Calculation method").selectOption("MEDIAN");
+    await label("Time semantic").selectOption("EVENT");
+    await page
+      .getByText("Median of approved values is not available", { exact: false })
+      .waitFor();
+    await label("Time semantic").selectOption("FLOW");
+    await label("Calculation method").selectOption("SUM");
+    await label("Disaggregate results").check();
+    await label("Dimension code").fill("sex");
+    await label("Dimension label").fill("Sex");
+    await label("Dimension version").fill("2026-1");
+    await label("Categories").fill("F Female\nM Male");
     await button("Save draft").click();
     await button(definition).waitFor();
     workflow = await submitConfig(definition);
@@ -262,6 +274,7 @@ try {
     await label("Source key").fill(source);
     await label("Event date (UTC)").fill("2026-08-15");
     await label("Recorded value").fill("10");
+    await label("Dimension codes (optional)").fill("sex=F");
     await button("Save draft").click();
     await button(source).click();
     await button("Submit for review").click();
@@ -292,6 +305,12 @@ try {
         .getByText("Village B", { exact: false })
         .isVisible(),
     );
+    const breakdown = page.getByRole("table", { name: "Category breakdown" });
+    await breakdown.waitFor();
+    const cells = await breakdown.locator("tbody tr").allInnerTexts();
+    assert.equal(cells.length, 2, cells.join(" | "));
+    assert.match(cells[0], /sex · v2026-1\s+F\s+10\s+1\s+Adds to total/);
+    assert.match(cells[1], /M\s+Undefined \(no approved values\)\s+0/);
     await page.screenshot({
       path: path.join(root, "docs/evidence/collection-coverage.png"),
     });

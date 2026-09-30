@@ -1,7 +1,7 @@
 """Proposals never replace effective data until their independent approval commits."""
 
 from .contracts import validate
-from .domain import DomainError, decimal_value, unavailable
+from .domain import DomainError, decimal_value, unavailable, validate_dimensions
 from .measurement import valid_value
 from .store import load, scopes, write, audit
 
@@ -56,6 +56,7 @@ class Changes:
                 "IndicatorDefinition",
                 "indicator-definitions.read",
             )["payload"]
+            validate_dimensions(definition, merged)
             if merged["value_state"] == "PRESENT" and not valid_value(definition, merged):
                 raise DomainError("VALIDATION_FAILED", reason="INVALID_MEASUREMENT_VALUE")
             if definition["measurement_type"] == "PERCENTAGE" and merged["value_state"] == "PRESENT":

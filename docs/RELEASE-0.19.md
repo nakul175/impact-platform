@@ -1,0 +1,56 @@
+# v0.19 — Indicator and calculation completion
+
+Build 0.19.0; schema 20 (migration 0020); domain API 1.12.0 (150 operations, none added; definition, observation-amendment and calculated-result schemas extended) and control-plane API 1.4.0 (unchanged). Roadmap Release 1 remains in progress. The ledger moves from 81 PARTIAL and 226 PENDING to **83 PARTIAL and 224 PENDING** requirements (0 accepted of 307): VF-DIN-001 and FR-IND-006 move from PENDING to PARTIAL because executed tests exercise part of each requirement's validation text; FR-CAL-001/003/005/008/009/010 stay PARTIAL with the v0.19 evidence added. Every one of them keeps open parts listed below and in COMPLETION-LEDGER.json.
+
+## Delivered
+
+Until this build the platform calculated only a SUM of FLOW counts and a pooled ratio, refused every other method and refused any observation with dimension codes. This increment adds the calculation methods and disaggregation that the FSD asks for at P0, together with a golden corpus that is checked three ways.
+
+**Method catalogue.** An indicator definition's `combination_rule` is bound to its measurement type and time semantic (`domain.METHODS`), and a definition outside the catalogue is refused at submission (`CONFIGURATION_NOT_IMPLEMENTED`) and again at calculation:
+
+| Method | Measurement types | Time semantics | Rule |
+|---|---|---|---|
+| SUM | COUNT, DECIMAL | FLOW | sum of approved PRESENT values |
+| POOLED_RATIO | RATIO, PERCENTAGE | FLOW | Σnumerators/Σdenominators, multiplier after pooling (CAL01) |
+| COUNT | COUNT | EVENT | number of approved events; each value must be 1 |
+| LAST_VALID | COUNT, DECIMAL, RATIO, PERCENTAGE | STOCK, CUMULATIVE | latest approved position by event time, never summed (CAL05 → 20, not 45); a tie at the latest instant with different values is UNDEFINED `TIED_LATEST_VALUES`; a falling CUMULATIVE series is UNDEFINED `CUMULATIVE_DECLINE` |
+| MEAN | COUNT, DECIMAL, RATIO, PERCENTAGE | FLOW, STOCK | unweighted mean, labelled `UNWEIGHTED_MEAN` (CAL02: 30 only as that labelled statistic); ratio contributors use their own numerator and denominator, and a zero denominator makes the mean UNDEFINED |
+| MEDIAN | COUNT, DECIMAL | FLOW, STOCK | median of approved raw values (CAL16 → 3); an even count takes the exact midpoint |
+| MIN, MAX | COUNT, DECIMAL | FLOW, STOCK | smallest or largest approved value |
+
+SUM over STOCK or CUMULATIVE, QUALITATIVE, SCORE and CURRENCY types, WEIGHTED_INDEX, UNIQUE_COUNT and NONE are refused. MISSING, NOT_COLLECTED, NOT_APPLICABLE, INVALID and UNDEFINED values never become zero under any method; only independently approved PRESENT values contribute, and a period with none gives UNDEFINED `NO_APPROVED_VALUES`.
+
+**Precision and display.** Arithmetic runs at 100 significant digits; the stored value is rounded half-up once to 12 places (overflow beyond NUMERIC(38,12) is `NUMERIC_OVERFLOW`, never a truncated number), and **the displayed value is derived from that stored value**, so every artifact that carries the raw decimal (snapshot, export, targets-versus-actuals attainment) reproduces its displayed figure. Example: the exact mean of 1.004999999999, 1.005 and 1.005 is 1.004999999999666…; it is stored as 1.005 and displayed 1.01 (rounding the exact value would have displayed 1.00 while the export said 1.005). A negative value that rounds to zero is displayed unsigned. Planning uses the same display rule.
+
+**Disaggregation (FR-IND-006).** A definition may pin a `disaggregation` scheme: up to five dimensions, each with code, label, version, `multiselect`, `exhaustive` and up to 50 declared categories (`UNSPECIFIED` is reserved; duplicate codes are refused at submission with `INVALID_DISAGGREGATION`). Observation `dimension_values` must use declared dimensions and categories (a multiselect value lists codes separated by `|`); they are checked at draft, at submission (where an exhaustive dimension then needs a code on every PRESENT value), in an amendment and at calculation, where only approved contributions must be complete, so an incomplete draft never blocks a calculation. A calculated result carries `disaggregation[]`: per category the value, numerator and denominator, displayed value, reason, contributor count, dimension version and additivity, plus an UNSPECIFIED bucket for non-exhaustive dimensions. The total is always calculated from the source rows, never from category values (0.4 + 0.4 displays 0 and 0 per category and 1 in total). A multiselect dimension counts a contribution in every selected category and is labelled NONADDITIVE, so the unique total stays one (FT-IND-006); ratio, mean, median, extreme and latest-position categories are NONADDITIVE too. A category can be corrected through the governed amendment (`dimension_values` in the Observation `proposed_data`). A period close promotes the breakdown unchanged into the OFFICIAL revision, and an UNDEFINED total keeps its reason (for example ZERO_DENOMINATOR) with a `PERIOD_LOCKED` limitation instead of having its reason overwritten.
+
+**Coverage without required obligations (CAL08).** When every obligation of a plan is excepted, coverage has no `approval_percent` and is not complete; before this build the percentage divided by zero.
+
+**Timestamps.** Observation `event_at` and `captured_at` without an explicit offset are refused (`TIMESTAMP_OFFSET_REQUIRED`); a naive instant has no period membership or order.
+
+**Golden corpus and reconciliation harness (VF-DIN-001).** `qualification/golden/calculation-corpus-v1.json` (corpus 1.1.0, 40 hand-prepared vectors: pooled ratio 3, mean 1, period semantics 7, zero denominator 2, missingness 3, rounding 10, median 2, minimum/maximum 2, event count 1, magnitude 2, invalid input 3, dimensions 4) is evaluated by `qualification/test_golden.py` three ways: an independent exact-rational reference (`fractions.Fraction`, explicit half-away-from-zero rounding, no import from the application) is checked against the prepared values, then the domain code and the live API path (programme, independently approved definition, instance, approved plan, activation, independently approved observations, calculate) are checked against the reference on stored and displayed decimals per total and per category, with the CAL07 coverage counts and the method labels. `make golden` writes `docs/evidence/golden-reconciliation.json`. Adopting display-from-stored changed no earlier expectation: every existing vector's exact and stored values round to the same display; the new vector above is the case that distinguishes them.
+
+**UI.** The definition editor offers time semantic and calculation method, explains an unsupported combination before saving, and edits one disaggregation dimension (the API accepts five). The observation form accepts dimension codes (`sex=F; service=A|B`). Result details show a category breakdown table with explicit "Undefined (reason)" and whether categories add to the total. `measurement-browser` builds a disaggregated definition, is shown the refused combination, codes an observation and asserts the breakdown (F 10, M Undefined). A unit test keeps the editor's method table equal to `domain.METHODS`.
+
+## Contract and persistence
+
+Domain API 1.11.0 → 1.12.0 (150 operations, unchanged set): `IndicatorDefinitionData`/`DraftData` gain the methods COUNT, MEAN, MIN and MAX in the `combination_rule` enum and the closed `disaggregation` scheme; `CalculatedResultData` gains the closed `disaggregation` array; the Observation variant of the measurement-change `proposed_data` gains `dimension_values`. No capability, policy row or fixture grant changed. Control plane 1.4.0 and `event.schema.json` are unchanged.
+
+Migration 0020 (`infrastructure/migrations/0020_calculation_methods.sql`, SHA-256 `357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31`, ledgered in CURRENT-DATA-DICTIONARY.md) adds nullable `indicator_definition_current.disaggregation` (CHECK jsonb object) and `calculated_result_current.disaggregation` (CHECK jsonb array); no policy, grant or role changes. Readiness requires schema 20. Migrations 0001–0019 are byte-identical; the upgrade check migrates a populated schema-19 database (fixture definitions and results present) to 20 and verifies that those rows keep NULL breakdowns.
+
+## Limits
+
+- Not implemented: FR-CAL-004 unique reach and overlap (CAL03, CAL04; needs participant identities, Release 2), FR-CAL-006 hierarchical aggregation (CAL10), FR-CAL-007 crosswalks (CAL12), FR-CAL-002 unit and currency conversion (CAL11, CAL17), FR-CAL-013 weighted composites (CAL15, R2), FR-CAL-012 formula authoring (only the bounded method catalogue exists), CAL18 cost-effectiveness and CAL19 small-cell suppression (disclosure).
+- CAL05 increments are not produced: only the end position; increments need a verified-zero baseline the contract does not declare. No maximum permissible age for a STOCK position. LAST_VALID treats one indicator's approved observations in a period as one series; per-contributor stock totals are not supported.
+- Dimension `version` is free text and is not validated against a dimension register (none exists); there are no applicability rules and no reviewed crosswalk when a scheme changes (a new definition version is needed). Targets are not disaggregated and compare against the total only (FR-IND-003 does not require it).
+- The database CHECKs on the new columns are type-only (object/array); the closed contract schemas enforce the structure.
+- Display is derived from the stored 12-place value by decision (reproducibility from the exported raw decimal); this differs from rounding the exact value only when digits beyond the twelfth place decide the display rounding.
+- Corpus scope: CAL01, 02, 05, 06, 07, 09, 16 and 20 with variants; correction, version and permission variants of each vector and report-binding comparisons are not in the corpus. Two vectors (invalid-input percentage and event count; the naive timestamp) run on the reference and domain paths only, because the API refuses them at submission.
+- Registers (SCREEN-COVERAGE, EXECUTION-REGISTER, TRACEABILITY) and the specification reading-copy notes were not updated in this increment for lack of time; COMPLETION-LEDGER is regenerated.
+- Native evidence is single-node PostgreSQL 16.13 without a pooler; on PGlite every transaction is serialised. No hosting exists and nothing was deployed.
+
+Executed counts on 30 September 2026 (UTC): `make unit` 203 passed (37 live cases skip without a database); PGlite gate 625 passed / 52 skipped / 1 deselected; `make golden` 118 passed (reference 40/40, domain 40/40, live 37/37); full native run on PostgreSQL 16.13 658 passed / 19 skipped / 1 deselected with the API restart check, restore drill and schema-19 to 20 upgrade check PASS; measurement-browser 17 and planning-browser 7 passed. The reference suite, the other browser groups and the live identity provider were not re-run. CI for the final commit is recorded in the pull request.
+
+## Reproduction
+
+`make lint unit build test golden`; browser modes `.venv/bin/python scripts/run.py measurement-browser` and `planning-browser`; full native `IMPACT_FIXTURE_DSN=<empty impact_test_x> make native`. One file: `.venv/bin/python scripts/run.py test --pytest-path qualification/test_calculation_methods.py`.

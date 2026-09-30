@@ -1,5 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
 
+// Mirrors domain.METHODS for form guidance only; the server is authoritative.
+const METHODS: Record<string, [string[], string[]]> = {
+  SUM: [["COUNT", "DECIMAL"], ["FLOW"]],
+  POOLED_RATIO: [["RATIO", "PERCENTAGE"], ["FLOW"]],
+  COUNT: [["COUNT"], ["EVENT"]],
+  LAST_VALID: [
+    ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
+    ["STOCK", "CUMULATIVE"],
+  ],
+  MEAN: [
+    ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
+    ["FLOW", "STOCK"],
+  ],
+  MEDIAN: [
+    ["COUNT", "DECIMAL"],
+    ["FLOW", "STOCK"],
+  ],
+  MIN: [
+    ["COUNT", "DECIMAL"],
+    ["FLOW", "STOCK"],
+  ],
+  MAX: [
+    ["COUNT", "DECIMAL"],
+    ["FLOW", "STOCK"],
+  ],
+};
+const METHOD_LABELS: Record<string, string> = {
+  SUM: "sum of approved values",
+  POOLED_RATIO: "pooled numerator / denominator",
+  COUNT: "count of approved events",
+  LAST_VALID: "latest approved position",
+  MEAN: "unweighted mean",
+  MEDIAN: "median of approved values",
+  MIN: "minimum approved value",
+  MAX: "maximum approved value",
+};
+function parseCategories(text: string | undefined) {
+  return (text || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [code, ...rest] = line.split(/\s+/);
+      return { code, label: rest.join(" ") || code };
+    });
+}
+
 export function CoverageSummary({ data }: { data: Record<string, any> }) {
   return (
     <section className="coverage-summary" aria-label="Collection coverage">
@@ -366,7 +413,18 @@ function ConfigurationEditor({
 }) {
   const [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
-    [measure, setMeasure] = useState(row?.data.measurement_type || "COUNT");
+    [measure, setMeasure] = useState(row?.data.measurement_type || "COUNT"),
+    [semantic, setSemantic] = useState(row?.data.time_semantic || "FLOW"),
+    [method, setMethod] = useState(row?.data.combination_rule || "SUM"),
+    [dimension, setDimension] = useState<any>(
+      row?.data.disaggregation?.dimensions?.[0] || null,
+    );
+  const methodError = METHODS[method]
+    ? METHODS[method][0].includes(measure) &&
+      METHODS[method][1].includes(semantic)
+      ? ""
+      : `${METHOD_LABELS[method][0].toUpperCase() + METHOD_LABELS[method].slice(1)} is not available for ${measure.toLowerCase()} values with ${semantic.toLowerCase()} time semantics.`
+    : "Choose a calculation method.";
   const [obligations, setObligations] = useState<any[]>(
     row?.data.obligations || [
       { label: "", source_namespace: "MANUAL", source_key: "", due_at: "" },
@@ -459,12 +517,30 @@ function ConfigurationEditor({
     if (route === "indicator-definitions")
       Object.assign(data, {
         source_mode: "MANUAL",
-        time_semantic: "FLOW",
-        combination_rule: ["PERCENTAGE", "RATIO"].includes(measure)
-          ? "POOLED_RATIO"
-          : "SUM",
+        time_semantic: semantic,
+        combination_rule: method,
         display_decimals: Number(data.display_decimals),
+        ...(dimension
+          ? {
+              disaggregation: {
+                dimensions: [
+                  {
+                    ...dimension,
+                    categories:
+                      dimension.categoriesText === undefined
+                        ? dimension.categories
+                        : parseCategories(dimension.categoriesText),
+                  },
+                ].map(({ categoriesText, ...d }) => d),
+              },
+            }
+          : {}),
       });
+    delete data.dimension_categories;
+    if (route === "indicator-definitions" && methodError) {
+      setError(methodError);
+      return;
+    }
     if (route === "collection-plans")
       Object.assign(data, {
         obligations: obligations.map((o) => ({
@@ -501,7 +577,13 @@ function ConfigurationEditor({
               .map(([k, v]) => (
                 <React.Fragment key={k}>
                   <dt>{k.replaceAll("_", " ")}</dt>
-                  <dd>{String(v)}</dd>
+                  <dd>
+                    {v !== null && typeof v === "object" ? (
+                      <pre>{JSON.stringify(v, null, 2)}</pre>
+                    ) : (
+                      String(v)
+                    )}
+                  </dd>
                 </React.Fragment>
               ))}
           </dl>
@@ -630,13 +712,126 @@ function ConfigurationEditor({
                   defaultValue={row?.data.display_decimals ?? 2}
                 />
               </label>
-              <p className="muted">
-                Manual collection · flow over time ·{" "}
-                {["RATIO", "PERCENTAGE"].includes(measure)
-                  ? "pooled numerator / denominator"
-                  : "sum of approved values"}
-                . Drafts require independent approval before use.
-              </p>
+              <div className="form-grid">
+                <label>
+                  Time semantic
+                  <select
+                    aria-label="Time semantic"
+                    value={semantic}
+                    onChange={(e) => setSemantic(e.target.value)}
+                  >
+                    {["FLOW", "STOCK", "CUMULATIVE", "EVENT"].map((v) => (
+                      <option key={v}>{v}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Calculation method
+                  <select
+                    aria-label="Calculation method"
+                    value={method}
+                    onChange={(e) => setMethod(e.target.value)}
+                  >
+                    {Object.keys(METHODS).map((v) => (
+                      <option key={v} value={v}>
+                        {METHOD_LABELS[v]}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              {methodError ? (
+                <p className="error" role="alert">
+                  {methodError}
+                </p>
+              ) : (
+                <p className="muted">
+                  Manual collection · {semantic.toLowerCase()} ·{" "}
+                  {METHOD_LABELS[method]}. Drafts require independent approval
+                  before use.
+                </p>
+              )}
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  aria-label="Disaggregate results"
+                  checked={!!dimension}
+                  onChange={(e) =>
+                    setDimension(
+                      e.target.checked
+                        ? {
+                            code: "",
+                            label: "",
+                            version: "1",
+                            multiselect: false,
+                            exhaustive: true,
+                            categoriesText: "",
+                          }
+                        : null,
+                    )
+                  }
+                />
+                Disaggregate results by one dimension
+              </label>
+              {dimension && (
+                <fieldset>
+                  <legend>Disaggregation dimension</legend>
+                  <div className="form-grid">
+                    {(["code", "label", "version"] as const).map((k) => (
+                      <label key={k}>
+                        {"Dimension " + k}
+                        <input
+                          aria-label={"Dimension " + k}
+                          required
+                          value={dimension[k]}
+                          onChange={(e) =>
+                            setDimension({ ...dimension, [k]: e.target.value })
+                          }
+                        />
+                      </label>
+                    ))}
+                  </div>
+                  <label>
+                    Categories (one per line: CODE Label)
+                    <textarea
+                      aria-label="Categories"
+                      name="dimension_categories"
+                      required
+                      value={
+                        dimension.categoriesText ??
+                        (dimension.categories || [])
+                          .map((c: any) => c.code + " " + c.label)
+                          .join("\n")
+                      }
+                      onChange={(e) =>
+                        setDimension({
+                          ...dimension,
+                          categoriesText: e.target.value,
+                        })
+                      }
+                    />
+                  </label>
+                  {(["multiselect", "exhaustive"] as const).map((k) => (
+                    <label className="checkbox" key={k}>
+                      <input
+                        type="checkbox"
+                        aria-label={
+                          k === "multiselect"
+                            ? "Several categories per value"
+                            : "Every value must have a category"
+                        }
+                        checked={dimension[k]}
+                        onChange={(e) =>
+                          setDimension({ ...dimension, [k]: e.target.checked })
+                        }
+                      />
+                      {k === "multiselect"
+                        ? "Several categories per value (category results are not additive)"
+                        : "Every value must have a category (otherwise uncoded values are shown as UNSPECIFIED)"}
+                    </label>
+                  ))}
+                </fieldset>
+              )}
             </>
           )}
           {route === "indicator-instances" && (

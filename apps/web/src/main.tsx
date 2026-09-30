@@ -178,6 +178,16 @@ function explain(e: unknown) {
       )
     )
       return "Sign out and sign in again. This action requires recent authentication.";
+    if (e.reason === "CONFIGURATION_NOT_IMPLEMENTED")
+      return "This calculation method cannot be used with the chosen measurement type and time semantic. Choose a supported combination.";
+    if (e.reason === "INVALID_DISAGGREGATION")
+      return "Each dimension and category code must be unique, and UNSPECIFIED is reserved.";
+    if (e.reason === "INVALID_DIMENSION_VALUES")
+      return "Dimension codes must belong to the indicator's approved disaggregation scheme; exhaustive dimensions need a code and only multiselect dimensions accept several codes separated by |.";
+    if (e.reason === "INVALID_MEASUREMENT_VALUE")
+      return "The value does not satisfy the approved measurement contract (for example a count must be a whole number, an event count must be 1, and ratios need both components).";
+    if (e.reason === "NUMERIC_OVERFLOW")
+      return "The result exceeds the qualified numeric range and was not calculated.";
     if (e.reason === "CHANNEL_ADDRESS_MISMATCH")
       return "That address is not the verified email address of your registered account. Enter the address you sign in with.";
     if (e.reason === "CHANNEL_CODE_INVALID")
@@ -1044,11 +1054,19 @@ function Fields({ data }: { data: Record<string, any> }) {
       {Object.entries(data).map(([k, v]) => (
         <React.Fragment key={k}>
           <dt>{k.replaceAll("_", " ")}</dt>
-          <dd className={k === "coverage" ? "wide-field" : undefined}>
+          <dd
+            className={
+              ["coverage", "disaggregation"].includes(k)
+                ? "wide-field"
+                : undefined
+            }
+          >
             {v === null ? (
               "—"
             ) : k === "coverage" ? (
               <CoverageSummary data={v} />
+            ) : k === "disaggregation" && Array.isArray(v) ? (
+              <Breakdown entries={v} />
             ) : typeof v === "object" ? (
               <pre>{JSON.stringify(v, null, 2)}</pre>
             ) : (
@@ -1058,6 +1076,57 @@ function Fields({ data }: { data: Record<string, any> }) {
         </React.Fragment>
       ))}
     </dl>
+  );
+}
+function dimensionCodes(text: string) {
+  const codes: Record<string, string> = {};
+  for (const part of text.split(";")) {
+    const [key, value] = part.split("=").map((x) => x.trim());
+    if (key && value) codes[key] = value;
+  }
+  return codes;
+}
+function Breakdown({ entries }: { entries: any[] }) {
+  return (
+    <div className="table-scroll">
+      <table aria-label="Category breakdown">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Category</th>
+            <th>Result</th>
+            <th>Contributors</th>
+            <th>Additivity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((e) => (
+            <tr key={e.dimension + "/" + e.category}>
+              <td>
+                {e.dimension} · v{e.dimension_version}
+              </td>
+              <td>{e.category}</td>
+              <td>
+                {e.value_state === "UNDEFINED"
+                  ? "Undefined (" +
+                    e.reason_code.replaceAll("_", " ").toLowerCase() +
+                    ")"
+                  : e.displayed_value}
+              </td>
+              <td>{e.contributor_count}</td>
+              <td>
+                {e.additivity === "ADDITIVE" ? "Adds to total" : "Not additive"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="footnote">
+        The total is calculated from the approved source values, never from
+        these rounded category values. Non-additive categories (multiselect,
+        ratios, averages and positions) do not sum to the total.
+      </p>
+    </div>
   );
 }
 function Editor({
@@ -1199,7 +1268,7 @@ function Editor({
         ...(numerator !== "" ? { numerator } : {}),
         ...(denominator !== "" ? { denominator } : {}),
         source_version: "1",
-        dimension_values: {},
+        dimension_values: dimensionCodes(get("dimension_values")),
       });
     }
     if (mode === "submit")
@@ -1620,9 +1689,18 @@ function Editor({
               <input name="denominator" inputMode="decimal" placeholder="10" />
             </label>
           </div>
+          <label>
+            Dimension codes (optional)
+            <input
+              name="dimension_values"
+              maxLength={500}
+              placeholder="sex=F; service=A|B"
+            />
+          </label>
           <p className="footnote">
             For ratio and percentage indicators, enter both components. Results
-            pool approved components before rounding.
+            pool approved components before rounding. Dimension codes must
+            belong to the indicator&apos;s approved disaggregation scheme.
           </p>
         </>
       )}

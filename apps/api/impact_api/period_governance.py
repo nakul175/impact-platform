@@ -457,11 +457,20 @@ class PeriodGovernance:
                 mode="OFFICIAL",
                 input_snapshot_id=snapshot_id,
                 run_id=run_id,
-                reason_code="PERIOD_LOCKED",
+                # A PRESENT result records the lock as its reason; an UNDEFINED one keeps the reason it
+                # is undefined (for example ZERO_DENOMINATOR) and records the lock as a limitation.
+                reason_code="PERIOD_LOCKED"
+                if result.get("value_state") == "PRESENT"
+                else result["reason_code"],
                 freshness={**result["freshness"], "stale": False},
                 limitations=[
                     item for item in result.get("limitations", []) if item["code"] != "PERIOD_CLOSE_REQUIRED"
-                ],
+                ]
+                + (
+                    []
+                    if result.get("value_state") == "PRESENT"
+                    else [{"code": "PERIOD_LOCKED", "message": "Locked by the governed period close."}]
+                ),
             )
             receipt = write(c, ctx, "CalculatedResult", result, "Official", track_author=False)
             c.execute(

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.11.0",
+    "version": "1.12.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -19521,7 +19521,11 @@
               "LAST_VALID",
               "MEDIAN",
               "WEIGHTED_INDEX",
-              "NONE"
+              "NONE",
+              "COUNT",
+              "MEAN",
+              "MIN",
+              "MAX"
             ]
           },
           "display_decimals": {
@@ -19540,6 +19544,81 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "disaggregation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "dimensions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 5,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "\\S"
+                    },
+                    "multiselect": {
+                      "type": "boolean"
+                    },
+                    "exhaustive": {
+                      "type": "boolean"
+                    },
+                    "categories": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 50,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"
+                          },
+                          "label": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "label"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "label",
+                    "version",
+                    "multiselect",
+                    "exhaustive",
+                    "categories"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "dimensions"
+            ]
           }
         },
         "required": []
@@ -19710,7 +19789,11 @@
               "LAST_VALID",
               "MEDIAN",
               "WEIGHTED_INDEX",
-              "NONE"
+              "NONE",
+              "COUNT",
+              "MEAN",
+              "MIN",
+              "MAX"
             ]
           },
           "display_decimals": {
@@ -19729,6 +19812,81 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "disaggregation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "dimensions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 5,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "\\S"
+                    },
+                    "multiselect": {
+                      "type": "boolean"
+                    },
+                    "exhaustive": {
+                      "type": "boolean"
+                    },
+                    "categories": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 50,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"
+                          },
+                          "label": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "label"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "label",
+                    "version",
+                    "multiselect",
+                    "exhaustive",
+                    "categories"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "dimensions"
+            ]
           }
         },
         "required": []
@@ -21232,6 +21390,89 @@
           "lineage_manifest_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "disaggregation": {
+            "type": "array",
+            "maxItems": 255,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "dimension": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                },
+                "dimension_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "category": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"
+                },
+                "additivity": {
+                  "enum": [
+                    "ADDITIVE",
+                    "NONADDITIVE"
+                  ]
+                },
+                "contributor_count": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "value_state": {
+                  "enum": [
+                    "PRESENT",
+                    "UNDEFINED"
+                  ]
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "numerator": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "denominator": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "displayed_value": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "reason_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64
+                }
+              },
+              "required": [
+                "dimension",
+                "dimension_version",
+                "category",
+                "additivity",
+                "contributor_count",
+                "value_state",
+                "value",
+                "numerator",
+                "denominator",
+                "displayed_value",
+                "reason_code"
+              ]
+            }
           }
         },
         "required": [],
@@ -36388,6 +36629,9 @@
                   "source_version": {
                     "type": "string",
                     "maxLength": 2000
+                  },
+                  "dimension_values": {
+                    "$ref": "#/components/schemas/DimensionValues"
                   }
                 },
                 "required": [],
@@ -36647,6 +36891,9 @@
                   "source_version": {
                     "type": "string",
                     "maxLength": 2000
+                  },
+                  "dimension_values": {
+                    "$ref": "#/components/schemas/DimensionValues"
                   }
                 },
                 "required": [],

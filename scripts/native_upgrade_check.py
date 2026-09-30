@@ -1,13 +1,14 @@
 """Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
 
-LATEST is the number of migration files (19 since build 0.18.0) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (20 since build 0.19.0) and BASELINE is LATEST - 1. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row
 and one outbox event with its delivery row, and (since 0.18.0) one draft framework and one blank
 draft target with their registry and revision rows so that the ALTER TABLE of
 `impact.framework_current` and `impact.target_current` in 0019 runs on populated tables, applies the
-remaining migration as the migrator, and then verifies with direct queries, starting no service,
+remaining migration as the migrator (since 0.19.0 migration 0020 alters `impact.indicator_definition_current`
+and `impact.calculated_result_current`, which the acceptance fixture populates), and then verifies with direct queries, starting no service,
 that `impact.schema_migration` holds LATEST rows with exactly the SHA-256 values ledgered in
 docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the columns and tables
 0017, 0018 and 0019 add exist, and that the tenant, revision, session and outbox counts loaded at
@@ -160,6 +161,9 @@ def run(admin_dsn, fixture_dsn, passwords):
         )
         insert_planning_rows(c)
         result["baseline"]["revisions"] += 2
+        result["baseline"]["calculation_rows"] = c.execute(
+            "SELECT (SELECT count(*) FROM impact.indicator_definition_current)+(SELECT count(*) FROM impact.calculated_result_current)"
+        ).fetchone()[0]
         result["baseline"]["outbox_deliveries"] = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery"
         ).fetchone()[0]
@@ -209,6 +213,12 @@ def run(admin_dsn, fixture_dsn, passwords):
             "SELECT (SELECT count(*) FROM impact.framework_current WHERE tenant_id=%s AND object_id=%s AND effective_from IS NULL AND supersedes_revision IS NULL AND exceptions IS NULL)+(SELECT count(*) FROM impact.target_current WHERE tenant_id=%s AND object_id=%s AND indicator_id IS NULL AND value IS NULL AND value_state='MISSING')",
             (OUTBOX_TENANT, FRAMEWORK[0], OUTBOX_TENANT, TARGET[0]),
         ).fetchone()[0]
+        calculation_columns = c.execute(
+            "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND table_name IN ('indicator_definition_current','calculated_result_current') AND column_name='disaggregation'"
+        ).fetchone()[0]
+        legacy_calculation = c.execute(
+            "SELECT (SELECT count(*) FROM impact.indicator_definition_current WHERE disaggregation IS NULL)+(SELECT count(*) FROM impact.calculated_result_current WHERE disaggregation IS NULL)"
+        ).fetchone()[0]
         legacy_delivery = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
             (OUTBOX_TENANT, OUTBOX_EVENT),
@@ -230,13 +240,17 @@ def run(admin_dsn, fixture_dsn, passwords):
         "worker_tables_present": all(worker_tables),
         "planning_columns_present": planning_columns == 11,
         "planning_tables_present": all(planning_tables),
+        "calculation_columns_present": calculation_columns == 2,
+        "calculation_rows_preserved": legacy_calculation,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
         and deliveries == result["baseline"]["outbox_deliveries"]
         and untouched == 1
         and legacy_delivery == 1
-        and legacy_planning == 2,
+        and legacy_planning == 2
+        and result["baseline"]["calculation_rows"] > 0
+        and legacy_calculation == result["baseline"]["calculation_rows"],
     }
     if (
         mismatches
@@ -248,6 +262,7 @@ def run(admin_dsn, fixture_dsn, passwords):
         or not all(worker_tables)
         or planning_columns != 11
         or not all(planning_tables)
+        or calculation_columns != 2
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

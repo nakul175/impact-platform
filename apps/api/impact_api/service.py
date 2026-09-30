@@ -9,7 +9,17 @@ from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from psycopg.types.json import Jsonb
 from .contracts import ENTITIES, OPERATIONS, SPEC, validate
-from .domain import DomainError, calculate, decimal_value, unavailable
+from .domain import (
+    RATIO_TYPES,
+    aware,
+    DomainError,
+    calculate,
+    decimal_value,
+    disaggregate,
+    method_limitations,
+    unavailable,
+    validate_dimensions,
+)
 from .measurement import Measurement, coverage, definition_ready, valid_value
 from .measurement_contracts import READS
 from .changes import Changes
@@ -138,8 +148,6 @@ def source_rows(c, ctx, indicator, period):
             or not scopes(c, ctx, "observations.read", row["object_id"])
         ):
             unavailable()
-        if row["payload"].get("dimension_values"):
-            raise DomainError("INCOMPATIBLE_MEASURE", reason="DISAGGREGATION_NOT_IMPLEMENTED")
     return rows
 
 
@@ -373,8 +381,23 @@ class Service:
             ):
                 raise DomainError("INVALID_STATE", 409)
         if kind == "Observation":
+            for field in ["event_at", "captured_at"]:
+                if data.get(field) is not None:
+                    aware(data[field])
             if data.get("dimension_values"):
-                raise DomainError("INCOMPATIBLE_MEASURE", reason="DISAGGREGATION_NOT_IMPLEMENTED")
+                # Codes must belong to the scheme pinned by the indicator's approved definition; a draft
+                # may still omit an exhaustive dimension, which submission then requires.
+                if not data.get("indicator_id"):
+                    raise DomainError("VALIDATION_FAILED", reason="INVALID_DIMENSION_VALUES")
+                instance = load(c, ctx, data["indicator_id"], "IndicatorInstance", "indicator-instances.read")
+                pinned = revision(
+                    c,
+                    ctx,
+                    instance["payload"]["definition_version"],
+                    "IndicatorDefinition",
+                    "indicator-definitions.read",
+                )["payload"]
+                validate_dimensions(pinned, data, complete=False)
             if data.get("dataset_id"):
                 raise DomainError("INCOMPATIBLE_MEASURE", reason="DATASET_CAPTURE_NOT_IMPLEMENTED")
             n, d = data.get("numerator"), data.get("denominator")
@@ -600,9 +623,10 @@ class Service:
             )["payload"]
             if definition["source_mode"] != "MANUAL":
                 raise DomainError("INCOMPATIBLE_MEASURE")
+            validate_dimensions(definition, payload)
             if payload["value_state"] == "PRESENT" and not valid_value(definition, payload):
                 raise DomainError("VALIDATION_FAILED", reason="INVALID_MEASUREMENT_VALUE")
-            if definition["combination_rule"] == "POOLED_RATIO" and payload["value_state"] == "PRESENT":
+            if definition["measurement_type"] in RATIO_TYPES and payload["value_state"] == "PRESENT":
                 if payload.get("numerator") is None or payload.get("denominator") is None:
                     raise DomainError("VALIDATION_FAILED", reason="COMPONENTS_REQUIRED")
                 if definition["measurement_type"] == "PERCENTAGE" and decimal_value(
@@ -825,7 +849,18 @@ class Service:
         numeric_rows = [
             r for r in rows if included_revisions is None or str(r["head_revision"]) in included_revisions
         ]
-        result = calculate(definition["payload"], [r["payload"] for r in numeric_rows])
+        for row in rows:
+            # Codes were checked at submission against this pinned, immutable definition; checked again
+            # so that no contribution can enter a category the approved scheme does not declare. Only an
+            # approved row must be complete: a draft may still lack an exhaustive code.
+            validate_dimensions(
+                definition["payload"],
+                row["payload"],
+                complete=row["payload"].get("approval_state") == "APPROVED",
+            )
+        sources = [r["payload"] for r in numeric_rows]
+        result = calculate(definition["payload"], sources)
+        breakdown = disaggregate(definition["payload"], sources)
         now = cutoff.isoformat()
         plan_pin = {"plan_revision": str(plan["head_revision"])} if plan else {}
         lineage = write(
@@ -868,6 +903,7 @@ class Service:
             indicator_version=indicator["payload"]["definition_version"],
             period_id=data["period_id"],
             dimensions={},
+            **({"disaggregation": breakdown} if definition["payload"].get("disaggregation") else {}),
             run_id=run,
             mode="PROVISIONAL",
             coverage=measured
@@ -886,7 +922,8 @@ class Service:
                     if plan
                     else "Expected coverage is not configured; this result remains provisional.",
                 }
-            ],
+            ]
+            + method_limitations(definition["payload"]),
             lineage_manifest_id=lineage["object_id"],
         )
         receipt = write(c, ctx, "CalculatedResult", result, "Calculated", track_author=False)

@@ -95,8 +95,20 @@ def components(o):
     return decimal_value(o.get("numerator")), decimal_value(o.get("denominator"))
 
 
+def aware(value):
+    """An RFC 3339 instant with an explicit offset; a naive or malformed timestamp is refused (422),
+    never compared with an aware one."""
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        parsed = None
+    if parsed is None or parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise DomainError("VALIDATION_FAILED", reason="TIMESTAMP_OFFSET_REQUIRED")
+    return parsed
+
+
 def event_order(o):
-    return datetime.fromisoformat(str(o.get("event_at", "")).replace("Z", "+00:00"))
+    return aware(o.get("event_at", ""))
 
 
 def calculate(definition, observations):
@@ -105,7 +117,7 @@ def calculate(definition, observations):
     Only APPROVED rows in value state PRESENT contribute; MISSING, NOT_COLLECTED, NOT_APPLICABLE,
     INVALID and UNDEFINED rows never become zero and never enter a denominator. Arithmetic runs at 100
     significant digits; the stored value is rounded half-up once to 12 places and the displayed value is
-    rounded half-up once from the unrounded value, never from a stored or displayed intermediate."""
+    rounded half-up from that stored value (the exported raw decimal), never from a displayed value."""
     rule = definition["combination_rule"]
     places = definition.get("display_decimals", 2)
     if rule not in METHODS:
@@ -186,11 +198,14 @@ def calculate(definition, observations):
                 value = min(numbers)
             else:
                 value = max(numbers)
+        # The display is derived from the stored 12-place value, so every artifact that carries the
+        # raw decimal (snapshot, export, attainment) reproduces its displayed figure exactly.
+        raw = stored(value)
         return {
             **base,
             "value_state": "PRESENT",
-            "value": stored(value),
-            "displayed_value": display(value, places),
+            "value": raw,
+            "displayed_value": display(Decimal(raw), places),
             "reason_code": "CALCULATED",
         }
 

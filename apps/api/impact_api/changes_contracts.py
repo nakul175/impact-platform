@@ -15,7 +15,14 @@ def augment(spec, policy):
             "Observation",
             {
                 k: deepcopy(observation[k])
-                for k in ["value_state", "value", "numerator", "denominator", "source_version"]
+                for k in [
+                    "value_state",
+                    "value",
+                    "numerator",
+                    "denominator",
+                    "source_version",
+                    "dimension_values",
+                ]
             },
         ),
         (

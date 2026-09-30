@@ -54872,6 +54872,9 @@
                   "source_version": {
                     "type": "string",
                     "maxLength": 2000
+                  },
+                  "dimension_values": {
+                    "$ref": "#/components/schemas/DimensionValues"
                   }
                 },
                 "required": [],
@@ -55131,6 +55134,9 @@
                   "source_version": {
                     "type": "string",
                     "maxLength": 2000
+                  },
+                  "dimension_values": {
+                    "$ref": "#/components/schemas/DimensionValues"
                   }
                 },
                 "required": [],

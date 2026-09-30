@@ -427,3 +427,161 @@ def test_mean_result_is_labelled_unweighted(live):
     assert (result["value"], result["displayed_value"]) == ("1.666666666667", "1.67")
     assert "UNWEIGHTED_MEAN" in [x["code"] for x in result["limitations"]]
     assert "disaggregation" not in result
+
+
+def calculate_result(live, indicator, period):
+    receipt = action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    return get(live, "calculated-results", receipt["object_id"])
+
+
+def test_incomplete_draft_does_not_block_calculation(live):
+    """H1: only approved contributions must carry an exhaustive code; a draft without one is excluded."""
+    _, indicator, period, keys = build(live)
+    approve(
+        live, submit(live, "observations", create(live, "observations", observation_data(indicator, keys[0])))
+    )
+    create(live, "observations", observation_data(indicator, keys[1], "9", {}))
+    result = calculate_result(live, indicator, period)["data"]
+    assert result["value"] == "4"
+    assert [(e["category"], e["value"]) for e in result["disaggregation"]] == [("F", "4"), ("M", None)]
+
+
+@pytest.mark.parametrize("field", ["event_at", "captured_at"])
+def test_timestamp_without_offset_refused(live, field):
+    """M1: a naive instant has no period membership or order; it is refused, never a 503."""
+    _, indicator, _, keys = build(live)
+    data = observation_data(indicator, keys[0]) | {field: "2026-08-15T12:00:00"}
+    body = expect(live.request(live.path("observations"), method="POST", body=cmd(data)), 422)
+    assert body["reason_code"] == "TIMESTAMP_OFFSET_REQUIRED"
+
+
+def test_naive_timestamp_never_reaches_latest_ordering():
+    d = definition(measurement_type="DECIMAL", combination_rule="LAST_VALID", time_semantic="STOCK")
+    with pytest.raises(DomainError) as exc:
+        calculate(d, [row("5"), row("7", event_at="2026-09-01T00:00:00")])
+    assert exc.value.reason == "TIMESTAMP_OFFSET_REQUIRED"
+
+
+def test_display_is_derived_from_the_stored_value():
+    """M2: exact mean 1.004999999999666... is stored as 1.005 (12 places) and displayed 1.01 from it."""
+    d = definition(measurement_type="DECIMAL", combination_rule="MEAN", display_decimals=2)
+    result = calculate(d, [row("1.004999999999"), row("1.005"), row("1.005")])
+    assert (result["value"], result["displayed_value"]) == ("1.005", "1.01")
+
+
+def test_category_correction_through_change_request(live):
+    """M3: an approved observation's category is corrected by an independently approved amendment."""
+    _, indicator, period, keys = build(live)
+    row = create(live, "observations", observation_data(indicator, keys[0], "6", {"sex": "F"}))
+    approve(live, submit(live, "observations", row))
+    row = get(live, "observations", row["object_id"])
+    bad = expect(
+        live.request(
+            live.path("measurement-changes"),
+            method="POST",
+            body=cmd(
+                {
+                    "target_kind": "Observation",
+                    "target_id": row["object_id"],
+                    "target_revision": row["revision_id"],
+                    "reason": "Category recorded against the wrong code",
+                    "proposed_data": {"dimension_values": {"sex": "X"}},
+                }
+            ),
+        ),
+        422,
+    )
+    assert bad["reason_code"] == "INVALID_DIMENSION_VALUES"
+    proposal = create(
+        live,
+        "measurement-changes",
+        {
+            "target_kind": "Observation",
+            "target_id": row["object_id"],
+            "target_revision": row["revision_id"],
+            "reason": "Category recorded against the wrong code",
+            "proposed_data": {"dimension_values": {"sex": "M"}, "source_version": "2"},
+        },
+    )
+    approve(live, submit(live, "measurement-changes", proposal))
+    assert get(live, "observations", row["object_id"])["data"]["dimension_values"] == {"sex": "M"}
+    result = calculate_result(live, indicator, period)["data"]
+    assert [(e["category"], e["value"]) for e in result["disaggregation"]] == [("F", None), ("M", "6")]
+
+
+def close_programme(live, programme_id, period):
+    from test_period_governance import request_close
+
+    workflow = request_close(live, {"object_id": programme_id}, period)
+    action(
+        live,
+        "workflows",
+        workflow,
+        "approve",
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Independent close review."},
+        actor="reviewer",
+    )
+    snapshot = next(
+        s
+        for s in get(live, "snapshots")["items"]
+        if s["data"]["period_id"] == period["object_id"] and s["data"].get("programme_id") == programme_id
+    )
+    return next(
+        r
+        for r in get(live, "calculated-results")["items"]
+        if r["revision_id"] in snapshot["data"]["result_versions"]
+    )
+
+
+def test_close_promotes_breakdown_and_keeps_undefined_reason(live):
+    """L2: OFFICIAL disaggregation equals PROVISIONAL. L1: an UNDEFINED total keeps its reason."""
+    d, indicator, period, keys = build(live)
+    for key, value, sex in zip(keys, ["10", "5", "2"], ["F", "M", "F"]):
+        approve(
+            live,
+            submit(
+                live,
+                "observations",
+                create(live, "observations", observation_data(indicator, key, value, {"sex": sex})),
+            ),
+        )
+    provisional = calculate_result(live, indicator, period)
+    official = close_programme(live, indicator["data"]["programme_id"], period)
+    assert official["data"]["mode"] == "OFFICIAL" and official["data"]["reason_code"] == "PERIOD_LOCKED"
+    assert official["data"]["disaggregation"] == provisional["data"]["disaggregation"]
+
+    _, indicator, period, keys = build(
+        live,
+        scheme=None,
+        measurement_type="PERCENTAGE",
+        combination_rule="POOLED_RATIO",
+        numerator_meaning="Eligible reached",
+        denominator_meaning="Eligible population",
+    )
+    for key in keys:
+        data = observation_data(indicator, key, "0", {}) | {"numerator": "0", "denominator": "0"}
+        approve(live, submit(live, "observations", create(live, "observations", data)))
+    provisional = calculate_result(live, indicator, period)
+    assert provisional["data"]["reason_code"] == "ZERO_DENOMINATOR"
+    official = close_programme(live, indicator["data"]["programme_id"], period)["data"]
+    assert (official["mode"], official["value_state"], official["reason_code"]) == (
+        "OFFICIAL",
+        "UNDEFINED",
+        "ZERO_DENOMINATOR",
+    )
+    assert "PERIOD_LOCKED" in [x["code"] for x in official["limitations"]]
+
+
+def test_ui_method_table_matches_domain():
+    """L6: the definition editor's guidance table mirrors domain.METHODS exactly."""
+    import re
+    from pathlib import Path
+
+    from impact_api.domain import METHODS
+
+    source = (Path(__file__).resolve().parents[1] / "apps/web/src/Configuration.tsx").read_text()
+    block = source[source.index("const METHODS") : source.index("};", source.index("const METHODS"))]
+    parsed = {}
+    for name, types, semantics in re.findall(r"(\w+): \[\s*\[([^\]]*)\],\s*\[([^\]]*)\],?\s*\]", block):
+        parsed[name] = (set(re.findall(r'"(\w+)"', types)), set(re.findall(r'"(\w+)"', semantics)))
+    assert parsed == {k: (set(v[0]), set(v[1])) for k, v in METHODS.items()}

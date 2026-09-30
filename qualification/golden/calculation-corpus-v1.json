@@ -1,6 +1,6 @@
 {
  "corpus": "impact-golden-calculation",
- "corpus_version": "1.0.0",
+ "corpus_version": "1.1.0",
  "prepared": "2026-09-29",
  "period": {
   "code": "2026-Q3",
@@ -1397,6 +1397,82 @@
     "denominator": null,
     "displayed_value": "9",
     "reason_code": "CALCULATED"
+   }
+  },
+  {
+   "id": "display-from-stored-value",
+   "fsd": "FR-CAL-009",
+   "category": "rounding",
+   "paths": [
+    "domain",
+    "live"
+   ],
+   "definition": {
+    "measurement_type": "DECIMAL",
+    "time_semantic": "FLOW",
+    "combination_rule": "MEAN",
+    "display_decimals": 2
+   },
+   "observations": [
+    {
+     "value_state": "PRESENT",
+     "value": "1.004999999999",
+     "approval": "APPROVED",
+     "event_at": "2026-08-15T12:00:00Z"
+    },
+    {
+     "value_state": "PRESENT",
+     "value": "1.005",
+     "approval": "APPROVED",
+     "event_at": "2026-08-15T12:00:00Z"
+    },
+    {
+     "value_state": "PRESENT",
+     "value": "1.005",
+     "approval": "APPROVED",
+     "event_at": "2026-08-15T12:00:00Z"
+    }
+   ],
+   "expected": {
+    "value_state": "PRESENT",
+    "value": "1.005",
+    "numerator": null,
+    "denominator": null,
+    "displayed_value": "1.01",
+    "reason_code": "CALCULATED"
+   },
+   "note": "Exact mean 1.004999999999666...; stored 1.005000000000 (half-up at 12 places) and displayed from the stored value as 1.01, so the export reproduces the display. Rounding the exact value would give 1.00."
+  },
+  {
+   "id": "naive-timestamp-refused",
+   "fsd": "FR-CAL-010",
+   "category": "invalid_input",
+   "paths": [
+    "domain"
+   ],
+   "definition": {
+    "measurement_type": "DECIMAL",
+    "time_semantic": "STOCK",
+    "combination_rule": "LAST_VALID",
+    "display_decimals": 0
+   },
+   "observations": [
+    {
+     "value_state": "PRESENT",
+     "value": "5",
+     "approval": "APPROVED",
+     "event_at": "2026-08-01T00:00:00Z"
+    },
+    {
+     "value_state": "PRESENT",
+     "value": "7",
+     "approval": "APPROVED",
+     "event_at": "2026-09-01T00:00:00"
+    }
+   ],
+   "expected": {
+    "error": "VALIDATION_FAILED",
+    "reason_code": "TIMESTAMP_OFFSET_REQUIRED"
    }
   },
   {

@@ -77,6 +77,9 @@ def when(text):
 def reference(vector):
     d = vector["definition"]
     period = CORPUS["period"]
+    if any(when(o["event_at"]).tzinfo is None for o in vector["observations"]):
+        # An instant without an offset has no period membership or order; it is invalid input.
+        return {"error": "VALIDATION_FAILED", "reason_code": "TIMESTAMP_OFFSET_REQUIRED"}
     start, end = when(period["starts_at"]), when(period["ends_at"])
     rows = [o for o in vector["observations"] if start <= when(o["event_at"]) < end]
     places = d["display_decimals"]
@@ -154,7 +157,8 @@ def reference(vector):
         out.update(
             value_state="PRESENT",
             value=stored_text(value),
-            displayed_value=shown_text(value, places),
+            # Displayed from the stored 12-place decimal, the value every artifact exports.
+            displayed_value=shown_text(Fraction(stored_text(value)), places),
             reason_code="CALCULATED",
         )
         return out
@@ -307,7 +311,14 @@ def domain_result(vector):
 
     d = definition_payload(vector)
     start, end = (when(CORPUS["period"][k]) for k in ["starts_at", "ends_at"])
-    rows = [p for p in payloads(vector) if start <= when(p["event_at"]) < end]
+
+    def inside(p):
+        try:
+            return start <= when(p["event_at"]) < end
+        except TypeError:  # a naive instant is passed through so that the domain code must refuse it
+            return True
+
+    rows = [p for p in payloads(vector) if inside(p)]
     try:
         result = calculate(d, rows)
     except DomainError as exc:

@@ -12,9 +12,9 @@ All writes run inside `Service.command`'s tenant lock and receipt transaction.
 """
 
 from datetime import datetime
-from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
+from decimal import Decimal, InvalidOperation, localcontext
 
-from .domain import DomainError, decimal_value, stored
+from .domain import DomainError, decimal_value, display, stored
 from .store import authorize, context, envelope, load, scopes, write
 
 LEVELS = {"IMPACT": 4, "OUTCOME": 3, "OUTPUT": 2, "ACTIVITY": 1}
@@ -37,10 +37,6 @@ MAX_INDICATORS = 200
 
 def instant(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
-
-
-def display(value, places):
-    return format(value.quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP), f".{places}f")
 
 
 def slot(data):

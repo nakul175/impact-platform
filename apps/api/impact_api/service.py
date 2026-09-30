@@ -11,6 +11,7 @@ from psycopg.types.json import Jsonb
 from .contracts import ENTITIES, OPERATIONS, SPEC, validate
 from .domain import (
     RATIO_TYPES,
+    aware,
     DomainError,
     calculate,
     decimal_value,
@@ -380,6 +381,9 @@ class Service:
             ):
                 raise DomainError("INVALID_STATE", 409)
         if kind == "Observation":
+            for field in ["event_at", "captured_at"]:
+                if data.get(field) is not None:
+                    aware(data[field])
             if data.get("dimension_values"):
                 # Codes must belong to the scheme pinned by the indicator's approved definition; a draft
                 # may still omit an exhaustive dimension, which submission then requires.
@@ -847,8 +851,13 @@ class Service:
         ]
         for row in rows:
             # Codes were checked at submission against this pinned, immutable definition; checked again
-            # so that no contribution can enter a category the approved scheme does not declare.
-            validate_dimensions(definition["payload"], row["payload"])
+            # so that no contribution can enter a category the approved scheme does not declare. Only an
+            # approved row must be complete: a draft may still lack an exhaustive code.
+            validate_dimensions(
+                definition["payload"],
+                row["payload"],
+                complete=row["payload"].get("approval_state") == "APPROVED",
+            )
         sources = [r["payload"] for r in numeric_rows]
         result = calculate(definition["payload"], sources)
         breakdown = disaggregate(definition["payload"], sources)

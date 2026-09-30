@@ -510,7 +510,7 @@ def test_category_correction_through_change_request(live):
 
 
 def close_programme(live, programme_id, period):
-    from test_period_governance import request_close
+    from test_period_governance import all_items, request_close
 
     workflow = request_close(live, {"object_id": programme_id}, period)
     action(
@@ -528,7 +528,7 @@ def close_programme(live, programme_id, period):
     )
     return next(
         r
-        for r in get(live, "calculated-results")["items"]
+        for r in all_items(live, "calculated-results")
         if r["revision_id"] in snapshot["data"]["result_versions"]
     )
 

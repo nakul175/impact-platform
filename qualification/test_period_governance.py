@@ -19,6 +19,17 @@ def complete_period(live, setup):
     return programme, indicator, plan, period, rows, provisional
 
 
+def all_items(live, route):
+    """Every permitted item of a listing, following the signed cursor (the suite creates more than a page)."""
+    items, cursor = [], None
+    while True:
+        page = get(live, route + ("?limit=100&cursor=" + cursor if cursor else "?limit=100"))
+        items += page["items"]
+        cursor = page.get("next_cursor")
+        if not cursor:
+            return items
+
+
 def request_close(live, programme, period):
     template = get(live, "workflow-templates")["items"][0]
     receipt = action(
@@ -61,7 +72,7 @@ def test_close_creates_immutable_snapshot_and_official_results(live, setup):
     assert snapshot["lifecycle_state"] == "Locked" and len(snapshot["data"]["result_versions"]) == 1
     official = next(
         r
-        for r in get(live, "calculated-results")["items"]
+        for r in all_items(live, "calculated-results")
         if r["revision_id"] in snapshot["data"]["result_versions"]
     )
     assert official["data"]["mode"] == "OFFICIAL"

@@ -1,5 +1,5 @@
 {
-  "version": "1.12.0",
+  "version": "1.13.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5271,6 +5271,36 @@
         "AUTHOR",
         "REVIEWER",
         "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_forms_submit",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit",
+      "capability": "form.submit",
+      "role_templates": [
+        "AUTHOR",
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_form_published",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/published",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

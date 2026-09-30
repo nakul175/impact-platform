@@ -58,6 +58,8 @@ class Admin:
             with urllib.request.urlopen(request, timeout=self.timeout) as r:
                 return json.load(r)["access_token"]
         except urllib.error.HTTPError as e:
+            if e.code >= 500:
+                raise  # still starting (503 during bootstrap): connect() waits and retries
             raise AdminError("Administrator sign-in refused: HTTP " + str(e.code)) from None
 
     def call(self, method, path, data=None, expect=(200, 201, 204)):
@@ -202,7 +204,7 @@ def connect(env, attempts=60, delay=5):
         except (urllib.error.URLError, ConnectionError, TimeoutError) as e:
             last = e
             time.sleep(delay)
-    raise AdminError("Keycloak did not answer: " + type(last).__name__)
+    raise AdminError("Keycloak did not answer: " + type(last).__name__ + " " + str(last)[:100])
 
 
 def main(argv=None, env=os.environ):

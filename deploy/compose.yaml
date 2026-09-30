@@ -104,7 +104,8 @@ services:
     depends_on:
       postgres: {condition: service_healthy}
     healthcheck:
-      # The image has bash but no curl or grep: ask the management port directly.
+      # The image has bash but no curl or grep: ask the management port directly. Only a 200
+      # answer is ready (a DOWN report is a 503 whose body still lists checks that are UP).
       test:
         - CMD
         - bash
@@ -113,7 +114,7 @@ services:
           exec 3<>/dev/tcp/127.0.0.1/9000 &&
           printf 'GET /health/ready HTTP/1.0\r\nHost: localhost\r\n\r\n' >&3 &&
           { IFS= read -r -d '' reply <&3 || true; } &&
-          [[ $$reply == *'"UP"'* ]]
+          [[ $$reply == 'HTTP/1.'?' 200 '* ]]
       interval: 15s
       timeout: 10s
       retries: 20

@@ -303,7 +303,7 @@ main() {
   step "identity provider realm"
   local realm
   realm="$(compose run --rm -T idp-admin python deploy/keycloak_admin.py realm \
-    --file deploy/keycloak/realm-staging.json | last_json)"
+    --file deploy/keycloak/realm-staging.json | tee /dev/stderr | last_json)" || true
   log "realm: $realm"
   [ -n "$realm" ] && [ -z "$(printf '%s' "$realm" | json_field error)" ] || die "realm import failed"
 
@@ -311,7 +311,7 @@ main() {
   local account subject
   account="$(IMPACT_TEMP_PASSWORD="$(env_value "$SECRETS_FILE" OWNER_TEMP_PASSWORD)" \
     compose run --rm -T -e IMPACT_TEMP_PASSWORD idp-admin python deploy/keycloak_admin.py user \
-    --email "$owner_email" --first-name "$owner_first" --last-name "$owner_last" | last_json)"
+    --email "$owner_email" --first-name "$owner_first" --last-name "$owner_last" | tee /dev/stderr | last_json)" || true
   log "owner account: $account"
   subject="$(printf '%s' "$account" | json_field subject)"
   [ -n "$subject" ] || die "the owner's provider account could not be created"

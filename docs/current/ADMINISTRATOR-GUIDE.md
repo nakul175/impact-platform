@@ -1,6 +1,6 @@
 # Impact Platform administrator guide
 
-This guide describes build 0.15.0. Builds 0.14.0 and 0.15.0 change no administrator workflow: native PostgreSQL provisioning and the live identity-provider configuration (issuer, client, end-session and back-channel logout, required ACR) are operator concerns covered in the operations guide. Since 0.15.0 custom roles can include only capabilities of implemented operations; a design-only capability is refused as not delegable even when your delegation ceiling contains it. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
+This guide describes build 0.16.0. Build 0.16.0 emails invitations through the worker, lets a nominated recovery contact confirm their email address with a single-use code (evidence only) and shows platform operators a Workers panel in the tenant-lifecycle console; worker configuration, the email adapter and dead-letter inspection are covered in the operations guide. Builds 0.14.0 and 0.15.0 change no administrator workflow: native PostgreSQL provisioning and the live identity-provider configuration (issuer, client, end-session and back-channel logout, required ACR) are operator concerns covered in the operations guide. Since 0.15.0 custom roles can include only capabilities of implemented operations; a design-only capability is refused as not delegable even when your delegation ceiling contains it. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
 
 ## Managed tenant onboarding
 
@@ -41,7 +41,7 @@ Approval extends only the pinned ceilings, grants, assignments and the second ad
 
 ## Manage members and grants
 
-Inspect the intended verified identity, scope, capabilities, purpose and expiry before issuing a membership invitation or access request. Invitations are single use, intended-identity bound and time limited. Reissue invalidates the earlier invitation. Development links are not evidence of external delivery.
+Inspect the intended verified identity, scope, capabilities, purpose and expiry before issuing a membership invitation or access request. Invitations are single use, intended-identity bound and time limited. Reissue invalidates the earlier invitation. Since build 0.16.0 the invitation is also emailed by the worker to the intended address: the link is derived when the email is sent, only for the current invitation, so a reissued, revoked or expired invitation's earlier email is never sent. Receiving the email grants nothing; acceptance still requires the intended verified identity. Development and test delivery goes to a local sink, and no email provider has been qualified, so development links and sink messages are not evidence of external delivery.
 
 Role changes and renewal require independent review of the exact proposal. The requester, recipient and material author cannot create independence by switching accounts. Template changes do not silently rewrite previously approved assignments. Renewal removes old grants and requires fresh tenant authentication rather than preserving stale authority.
 
@@ -55,7 +55,7 @@ Organisation units support creation, rename and immediate reparenting. Stable co
 
 ## Tenant suspension and closure
 
-Review the impact preview before suspension. Queued jobs are cancelled, running jobs are marked for cancellation, and active owned schedules are paused. These database effects have local evidence; actual downstream worker interruption is not implemented.
+Review the impact preview before suspension. Queued jobs are cancelled, running jobs are marked for cancellation, and active owned schedules are paused. These database effects have local evidence. Since build 0.16.0 the worker never sends notices or emails queued before a suspension, and does not send them after reactivation either; it cancels queued jobs whose cancellation was requested, but it executes no job class, so interruption of a running downstream job is still not implemented.
 
 Reactivation rechecks readiness and requires independent review and fresh authentication. Closing is a preserved lifecycle state, not proof of export, archival or deletion. Governed exit, support access, source-credential rechecks and completed closure remain open. Do not describe a Closing record as deleted.
 

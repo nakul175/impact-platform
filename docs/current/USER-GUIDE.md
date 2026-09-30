@@ -1,6 +1,6 @@
 # Impact Platform user guide
 
-Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, and build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
+Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below), and build 0.16.0 adds background delivery: notices reach the work centre through the worker, invitations are also emailed, and a nominated recovery contact can confirm their email address with a code (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
 
 ## Sign in and select a workspace
 
@@ -36,7 +36,9 @@ Unplanned sources are visible in coverage but do not silently enter the official
 
 Run the permitted calculation for the programme, indicator and period. Inspect the source contributions, exclusions, unit, precision and result state. A pooled percentage is calculated from summed numerators divided by summed denominators; it is not an average of displayed percentages. Rounding is applied once at the defined display boundary.
 
-A provisional result may become stale after an approved source or plan changes. The work centre shows the assigned recalculation task and a safe notice. Acknowledging the notice does not complete the task. Recalculation creates a replacement result and resolves the relevant invalidation while preserving prior history.
+A provisional result may become stale after an approved source or plan changes. The work centre shows the assigned recalculation task and a safe notice. Acknowledging the notice does not complete the task. Recalculation creates a replacement result and resolves the relevant invalidation while preserving prior history. Since build 0.16.0 each notice is delivered to your work centre once by the background worker, and administrators of delegated authority also receive notices 14 and 3 days before it expires; no notice is sent by email, SMS or push.
+
+If you are nominated as a tenant's recovery contact, you can confirm your email address after verifying the nomination: choose **Email me a verification code**, enter the address of your registered account, then **Enter verification code** with the eight-digit code from the email within 15 minutes (five wrong attempts lock the code; at most three codes per hour). The confirmation is recorded as evidence only and gives you no access. In development the email goes to a local file, never to a real mailbox.
 
 ## Close a period and restate it
 

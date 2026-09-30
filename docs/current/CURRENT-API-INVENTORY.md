@@ -1,6 +1,6 @@
 # Current implemented API inventory
 
-Build 0.15.0 (no operation added or changed since 0.13.0; `access-policy.json` lost the orphan design row `create_organisation_units`, whose path is served by `create_organisation_unit`, leaving 305 policy rows and 218 capabilities). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"). Build 0.15.0 adds one such route, `POST /auth/backchannel-logout` (live provider only; 404 otherwise), and `POST /auth/logout` now also returns `logout_url`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
+Build 0.16.0. The domain contract is unchanged since 0.13.0 (API 1.10.0, 138 operations; `access-policy.json` 305 policy rows and 218 capabilities since build 0.15.0 removed the orphan design row `create_organisation_units`). The control-plane contract moves to 1.4.0 with three added operations, 31 in all: `recovery_contact_channel_request` and `recovery_contact_channel_confirm` (nominee-only verification of the recovery contact's registered email address by a single-use code) and the operator-only `list_workers` (worker heartbeats, no tenant data). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"); build 0.15.0 added `POST /auth/backchannel-logout` (live provider only; 404 otherwise) and `logout_url` on `POST /auth/logout`. The worker's `delivery.requested` outbox events are internal delivery intents and are not part of `event.schema.json`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
 
 ## Domain API
 
@@ -149,7 +149,7 @@ Contract version 1.10.0. Source: packages/contracts/openapi-implemented.json.
 
 ## Privileged control plane
 
-Contract version 1.3.0. Source: packages/contracts/openapi-platform.json.
+Contract version 1.4.0 (31 operations). Source: packages/contracts/openapi-platform.json.
 
 | Method | Path | Operation |
 | --- | --- | --- |
@@ -170,6 +170,8 @@ Contract version 1.3.0. Source: packages/contracts/openapi-platform.json.
 | POST | `/v1/platform/tenants/{tenant_id}/recovery-contacts` | nominate_recovery_contact |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/approve` | recovery_contact_approve |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/cancel` | recovery_contact_cancel |
+| POST | `/v1/platform/recovery-contacts/{contact_id}/actions/channel-confirm` | recovery_contact_channel_confirm |
+| POST | `/v1/platform/recovery-contacts/{contact_id}/actions/channel-request` | recovery_contact_channel_request |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/decline` | recovery_contact_decline |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/reject` | recovery_contact_reject |
 | POST | `/v1/platform/recovery-contacts/{contact_id}/actions/revoke` | recovery_contact_revoke |
@@ -181,3 +183,4 @@ Contract version 1.3.0. Source: packages/contracts/openapi-platform.json.
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/approve` | authority_renewal_approve |
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/cancel` | authority_renewal_cancel |
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/reject` | authority_renewal_reject |
+| GET | `/v1/platform/workers` | list_workers |

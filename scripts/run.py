@@ -5,10 +5,14 @@ database on IMPACT_DEV_DB_PORT (55432 in dev mode; a port chosen by the operatin
 and browser modes, so parallel runners and orphaned servers never collide) and reports the
 actual port in one JSON status line; scripts/migrate.py then applies the migrations and the
 fixture over the wire exactly as it does on native PostgreSQL. Native mode (--native) provisions
-the four login roles on the disposable server named by IMPACT_FIXTURE_DSN, migrates as
+the five login roles on the disposable server named by IMPACT_FIXTURE_DSN, migrates as
 impact_migrator, loads the fixture as the superuser, and starts the API on the app, identity and
-platform logins only: the API process never receives the fixture, migration or administrator
-connection, the login passwords, or any libpq PG* variable. After the native suite the
+platform logins only: the API process never receives the fixture, migration, worker or
+administrator connection, the login passwords, or any libpq PG* variable. The worker login's
+connection reaches only the test process (IMPACT_LOGIN_DSN_WORKER), which starts its own worker
+subprocesses (qualification/test_native_worker.py). Dev mode also starts one worker process
+(python -m impact_api.worker, synthetic mail sink under .local/dev) unless --no-worker is given; it
+receives only .local/dev/worker.json, never the API configuration. After the native suite the
 runner stops the API and starts a fresh process against the same database between the two phases
 of qualification/test_native_restart.py (--skip-restart-check), runs scripts/restore_drill.py on
 the database the suite just used (--skip-restore-drill) and scripts/native_upgrade_check.py on a
@@ -210,6 +214,29 @@ def start_api(local, api_env, base):
     return api, round(time.monotonic() - started, 2)
 
 
+def worker_environment(local, api_env):
+    """The worker receives its own configuration file and nothing of the API's: no API
+    configuration file, connection string, login DSN or libpq variable."""
+    env = {
+        k: v
+        for k, v in api_env.items()
+        if not k.startswith("IMPACT_") or k in {"IMPACT_ENVIRONMENT", "IMPACT_PORT"}
+    }
+    env.update(IMPACT_WORKER_CONFIG_FILE=str(local / "worker.json"), PYTHONPATH=str(ROOT / "apps/api"))
+    return env
+
+
+def start_worker(local, api_env):
+    """One outbox worker process for the development stack; its log is .local/dev/worker.log."""
+    return subprocess.Popen(
+        [sys.executable, "-m", "impact_api.worker", "--worker-id", "dev-worker"],
+        cwd=ROOT,
+        env=worker_environment(local, api_env),
+        stdout=open(local / "worker.log", "a"),
+        stderr=subprocess.STDOUT,
+    )
+
+
 def stop_api(local, api):
     """Clean shutdown (SIGTERM, then SIGKILL after 10 s). Uvicorn re-raises the captured signal
     once its lifespan shutdown has completed, so the exit code is -15; the log line it writes
@@ -390,6 +417,9 @@ def main():
         help="Native test mode: do not run scripts/restore_drill.py on the suite database afterwards",
     )
     parser.add_argument(
+        "--no-worker", action="store_true", help="Dev mode: do not start the outbox worker process"
+    )
+    parser.add_argument(
         "--idp",
         choices=["keycloak"],
         help="Test or idp-browser mode: qualify against a live Keycloak instead of the development login",
@@ -455,6 +485,7 @@ def main():
                 IMPACT_LOGIN_DSN_IDENTITY=dsns["impact_identity_login"],
                 IMPACT_LOGIN_DSN_PLATFORM=dsns["impact_platform_login"],
                 IMPACT_LOGIN_DSN_MIGRATOR=dsns["impact_migrator"],
+                IMPACT_LOGIN_DSN_WORKER=dsns["impact_worker_login"],
             )
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migration = migrate.run(env["IMPACT_MIGRATION_DSN"], fixture_dsn, fixture=True)
@@ -531,6 +562,8 @@ def main():
             }
         print("Ready at " + base, flush=True)
         if args.mode == "dev":
+            if not args.no_worker:
+                services.append(start_worker(local, api_env))
             while api.poll() is None and db.poll() is None:
                 time.sleep(1)
             raise RuntimeError("Development service stopped")

@@ -9,7 +9,7 @@ catalogue = json.loads((ROOT / "specification/contracts/fsd-requirements.json").
 groups = [
     (
         "FR-TEN-001",
-        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14).",
+        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14). v0.16 (qualification/test_worker.py, test_native_worker.py) adds a worker that honours the suspension hold on queued deliveries: a row carrying held_at (what quiesce_tenant sets on suspension; the test sets it directly on an Active tenant) is never sent, a held row whose lease ends returns to PENDING and stays held, and nothing is re-queued on reactivation (no automatic replay, as the validation text requires; no operator re-queue exists); the worker lists Provisioning, Active and Suspended tenants and runs its reminder and cancellation scans for Active tenants only; queued jobs whose cancellation was requested become Cancelled and a started job is recorded NOT_CANCELLED_STARTED, exercised only with test-inserted jobs because no job class is executed; a recovery contact's nominee can confirm the registered email address with a single-use code (15 minutes, 5 attempts, 3 requests per hour), recorded as evidence only — it changes neither readiness nor what a contact may do. Still open: source-credential rechecks on reactivation, a real import and report schedule for the acceptance scenario, support and exit access, closure, and the external email provider.",
         [
             "apps/api/impact_api/tenant_lifecycle.py",
             "qualification/test_tenant_lifecycle.py",
@@ -28,6 +28,10 @@ groups = [
             "tools/browser/renewal-check.mjs",
             "docs/RELEASE-0.13.md",
             "qualification/test_native_concurrency.py",
+            "apps/api/impact_api/worker.py",
+            "qualification/test_worker.py",
+            "qualification/test_native_worker.py",
+            "docs/RELEASE-0.16.md",
         ],
     ),
     (
@@ -48,7 +52,20 @@ groups = [
         ],
     ),
     (
-        "FR-TEN-003 FR-IAM-001 FR-IAM-002 FR-IAM-006 FR-IAM-008 FR-IAM-013 FR-IAM-014 FR-ACC-003 FR-ACC-006 FR-ACC-012",
+        "FR-IAM-001",
+        "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented: the inviter chooses tenant, role template, scopes, expiry and the intended verified identity; acceptance requires the nominated verified identity, a valid token and current inviter authority and creates one membership; resend invalidates the earlier link (qualification/test_administration.py). v0.16 adds email delivery of the invitation through the worker (apps/api/impact_api/delivery.py, worker.py; qualification/test_worker.py): creating or resending an invitation records one delivery intent in the same transaction holding no token and no clear address (the address is sealed, the link is re-derived from tenant, invitation and generation when sent); the worker sends the link only while that generation is current, so a resent, revoked, expired or closed invitation's earlier intent becomes SUPERSEDED and is never sent; each intent carries its own delivery state (SENT, retried with backoff, DEAD with an error class such as RECIPIENT_REFUSED or SMTP_PERMANENT_REJECTION), and sending the email creates no membership — acceptance is unchanged. Evidence is on a local SMTP sink and the synthetic sink only. Not covered: bulk invitation outcomes separating created, duplicate, invalid and delivery-failed rows (no bulk invitation exists), the seven-day default expiry as a qualified default, a live email provider with bounces, SPF/DKIM and sending limits, and federation assurance and recovery.",
+        [
+            "apps/api/impact_api/administration.py",
+            "qualification/test_administration.py",
+            "docs/RELEASE-0.2.md",
+            "apps/api/impact_api/delivery.py",
+            "apps/api/impact_api/worker.py",
+            "qualification/test_worker.py",
+            "docs/RELEASE-0.16.md",
+        ],
+    ),
+    (
+        "FR-TEN-003 FR-IAM-002 FR-IAM-006 FR-IAM-008 FR-IAM-013 FR-IAM-014 FR-ACC-003 FR-ACC-006 FR-ACC-012",
         "Provisioned-identity invitations, membership changes, independent role approval, suspension and revocation are implemented. Federation assurance, recovery, all identity providers and full departure inventory are not qualified.",
         [
             "apps/api/impact_api/administration.py",
@@ -101,8 +118,15 @@ groups = [
     ),
     (
         "FR-WFL-006",
-        "A personal work centre implements deduplicated recalculation assignments and safe in-app notices with event identity, acknowledgement and exact-retry protection. Due obligations, returned work, preferences, digests, provider delivery attempts and escalations remain open.",
-        ["apps/api/impact_api/work.py", "apps/web/src/WorkCenter.tsx", "docs/RELEASE-0.7.md"],
+        "A personal work centre implements deduplicated recalculation assignments and safe in-app notices with event identity, acknowledgement and exact-retry protection. v0.16 adds per-recipient delivery status: every notice records an IN_APP delivery intent that the worker delivers exactly once (fenced SENT, one notification_delivery row and a consumer receipt in one transaction; the notice gains delivered_at beside acknowledged_at), a notice for a recipient who is no longer active is SUPERSEDED rather than delivered, and delegated-authority expiry reminders (14 and 3 days) are created once per principal, expiry instant and threshold however often the scan runs (qualification/test_worker.py). Due obligations, returned work, channel preferences, digests, email or push delivery of notices, muting rules for mandatory security notices, failed-delivery remediation flags and escalations remain open.",
+        [
+            "apps/api/impact_api/work.py",
+            "apps/web/src/WorkCenter.tsx",
+            "docs/RELEASE-0.7.md",
+            "apps/api/impact_api/worker.py",
+            "qualification/test_worker.py",
+            "docs/RELEASE-0.16.md",
+        ],
     ),
     (
         "FR-WFL-007 FR-WFL-008",
@@ -253,7 +277,9 @@ groups = [
 ]
 # Requirements that stay PENDING, with what the latest increments do and do not show for them.
 pending_notes = {
-    "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). Retain the original acceptance criteria; this requirement remains open.",
+    "FR-IAM-007": "PENDING. Related v0.16 evidence, recorded so that it is not mistaken for coverage: the nominee of a recovery contact can confirm the registered email address with a single-use eight-digit code (channel-request/channel-confirm; 15-minute expiry, 5 attempts, at most 3 requests per contact per hour; the code is derived, never stored, and only its keyed hash is kept; qualification/test_worker.py). That verifies a channel for contact evidence only; it is not an identity change, a lost-factor recovery or a support path, and no test exercises the validation text (no support reset refusal, no restricted recovery case, no withheld privileges pending verification). Retain the original acceptance criteria; this requirement remains open.",
+    "FR-ACC-008": "PENDING. Not touched by v0.16 although the delivery plan listed it for that increment: no support case, elevation grant, support session or tenant-ended access exists. The v0.16 worker runs on its own login and writes reminder notices as a per-tenant SERVICE principal without identity, membership or grant; that is not support access. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). v0.16's worker re-reads each delivery intent immediately before sending and supersedes it when the invitation generation, the recovery-channel challenge or the notice recipient is no longer current (qualification/test_worker.py); that is a recheck of the intent, not a measured revocation bound, and no sensitive job class exists for the worker to reauthorise. Retain the original acceptance criteria; this requirement remains open.",
 }
 partial = {key: (description, evidence) for ids, description, evidence in groups for key in ids.split()}
 requirements = []
@@ -287,7 +313,7 @@ for requirement in requirements:
         assert (ROOT / path).is_file(), path
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
-    "build": "0.15.0",
+    "build": "0.16.0",
     "assessment_date": "2026-09-29",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",

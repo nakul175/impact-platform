@@ -6,12 +6,12 @@ import json
 import time
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
-from urllib.parse import quote
 from uuid import uuid4
 from psycopg.types.json import Jsonb
 from .administration_contracts import ADMIN_READS, COMMANDS
 from .contracts import validate
 from .domain import DomainError, unavailable
+from .delivery import enqueue, invitation_token, invitation_url, seal_recipient
 from .identity_profile import email_hash, masked_email
 from .store import context, authorize, scopes, load, write, audit, hash_data
 from .workspace_contracts import COMMANDS as WORKSPACE_COMMANDS, KINDS as WORKSPACE_KINDS
@@ -160,22 +160,39 @@ class Administration:
         self.bump(c, ctx, principal["principal_id"])
 
     def invitation_token(self, tenant, invitation, generation):
-        message = "impact-invitation-v1:" + tenant + ":" + invitation + ":" + generation
-        signature = hmac.new(
-            (self.s.invitation_secret or self.s.cookie_secret).encode(), message.encode(), hashlib.sha256
-        ).hexdigest()
-        return invitation + "." + generation + "." + signature
+        return invitation_token(
+            self.s.invitation_secret or self.s.cookie_secret, tenant, invitation, generation
+        )
 
     def present_receipt(self, tenant, receipt):
         result = dict(receipt)
         if receipt.get("invitation_generation"):
             token = self.invitation_token(tenant, receipt["object_id"], receipt["invitation_generation"])
-            result["invitation_url"] = (
-                self.s.public_origin
-                + "/#invite="
-                + quote(json.dumps({"tenant_id": tenant, "token": token}, separators=(",", ":")))
-            )
+            result["invitation_url"] = invitation_url(self.s.public_origin, tenant, token)
         return result
+
+    def email_invitation(self, c, ctx, invitation_id, generation, address=None):
+        """Record an email delivery intent for the current generation (v0.16). The outbox row holds
+        the invitation and generation only; the worker re-derives the link and rechecks that this
+        generation is still current and unconsumed before sending. On resend the address sealed for
+        the invitation's first intent is reused, since only its hash is kept elsewhere; an
+        invitation created before v0.16, or with no delivery secret configured, stays manual-only."""
+        if not self.s.delivery_secret:
+            return None
+        if address is not None:
+            sealed = seal_recipient(
+                self.s.delivery_secret, ctx.tenant_id, "MEMBER_INVITATION", invitation_id, address
+            )
+        else:
+            row = c.execute(
+                "SELECT recipient_sealed FROM impact.outbox_delivery WHERE tenant_id=%s AND reference_id=%s "
+                "AND template='MEMBER_INVITATION' ORDER BY last_attempt_at NULLS LAST LIMIT 1",
+                (ctx.tenant_id, invitation_id),
+            ).fetchone()
+            if not row:
+                return None
+            sealed = bytes(row["recipient_sealed"])
+        return enqueue(c, ctx.tenant_id, "MEMBER_INVITATION", invitation_id, generation, sealed)
 
     def receipt_row(self, c, ctx, operation, body, fingerprint):
         existing = c.execute(
@@ -371,6 +388,7 @@ class Administration:
                 ),
             )
             receipt = write(c, ctx, "EntitlementApproval", payload, "Invited", row, track_author=False)
+            self.email_invitation(c, ctx, str(row["object_id"]), generation)
         else:
             expiry = timestamp(data["membership_expires_at"])
             expires = timestamp(data["expires_at"])
@@ -433,6 +451,7 @@ class Administration:
                     role["head_revision"],
                 ),
             )
+            self.email_invitation(c, ctx, obj, generation, data["email"])
         receipt["invitation_generation"] = generation
         return receipt
 

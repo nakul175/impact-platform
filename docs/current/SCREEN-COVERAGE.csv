@@ -1,8 +1,8 @@
 Screen,Title,Coverage,Current source or panel,Limits
 UI01,Sign in and recovery,PARTIAL,main.tsx and auth.py,"Local development sign-in; OIDC sign-in with TOTP step-up and sign-out through a live Keycloak 26.7.4 (idp-browser check, v0.15); provider recovery, MFA enrolment completion and the owner's chosen provider unqualified"
 UI02,Tenant switch and profile,PARTIAL,main.tsx and WorkspaceSettings.tsx,"Workspace switching, preferences and own sessions; broader identity lifecycle pending"
-UI03,My work,PARTIAL,WorkCenter.tsx,Recalculation tasks and safe notices; complete assigned work aggregation pending
-UI04,Tenant settings,PARTIAL,TenantLifecycle.tsx and WorkspaceSettings.tsx,Managed-tenant lifecycle and workspace administration; full policy editing pending
+UI03,My work,PARTIAL,WorkCenter.tsx,"Recalculation tasks and safe notices, including the worker's authority expiry reminders (v0.16; the in-app delivery time is recorded but not displayed); complete assigned work aggregation, digests and channel preferences pending"
+UI04,Tenant settings,PARTIAL,"TenantLifecycle.tsx, Workers.tsx and WorkspaceSettings.tsx","Managed-tenant lifecycle and workspace administration; operator-only Workers panel with heartbeat, counts and stale flag (v0.16, tenant browser group); full policy editing pending"
 UI05,Members and grants,PARTIAL,Administration.tsx,"Reviewed memberships, grants and role changes; full external delivery and departure inventory pending"
 UI06,Programme registry,PARTIAL,main.tsx and Configuration.tsx,Programme registry and create; advanced programme planning pending
 UI07,Programme workspace,PARTIAL,main.tsx and Configuration.tsx,Programme setup and readiness; broader delivery management pending
@@ -26,11 +26,11 @@ UI24,Period close,PARTIAL,PeriodGovernance.tsx,Close and scoped restatement; com
 UI25,Integration administration,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
 UI26,AI workspace,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
 UI27,Privacy and disclosure,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
-UI28,Service operations,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
+UI28,Service operations,PENDING,No complete current screen mapped,"Target design; do not infer implementation from this prototype. Only the operator's worker heartbeat panel exists (Workers.tsx in the tenant-lifecycle console, v0.16); no service health view, incidents, quotas or monitoring"
 UI29,Migration and exit,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
 UI30,Budget workspace,PENDING,No complete current screen mapped,Target design; do not infer implementation from this prototype
 UI31,Managed tenant onboarding,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
 UI32,Reviewed initial access,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
-UI33,Recovery contacts,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
+UI33,Recovery contacts,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx","Current implemented subset; since v0.16 the nominee confirms the registered email address with a single-use emailed code (evidence only; recovery browser group, synthetic sink); full baseline acceptance remains open"
 UI34,Workspace and account settings,PARTIAL,"TenantLifecycle.tsx, InitialAccess.tsx, RecoveryContacts.tsx, WorkspaceSettings.tsx",Current implemented subset; full baseline acceptance remains open
 UI35,Authority renewal,PARTIAL,"TenantLifecycle.tsx, AuthorityRenewal.tsx","Owner proposal, second-administrator consent, independent operator review and history for unexpired delegated authority; expired authority, administrator replacement and external notices remain open"

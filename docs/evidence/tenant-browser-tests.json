@@ -26,6 +26,10 @@
       "status": "passed"
     },
     {
+      "name": "Operator sees worker heartbeats; an owner does not",
+      "status": "passed"
+    },
+    {
       "name": "Tenant console fits a mobile viewport",
       "status": "passed"
     }

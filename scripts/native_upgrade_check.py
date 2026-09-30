@@ -1,16 +1,18 @@
 """Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
 
-LATEST is the number of migration files (17 since build 0.15.0) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (18 since build 0.16.0) and BASELINE is LATEST - 1. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row
-so that the ALTER TABLE of `impact.web_session` in 0017 runs on a populated table, applies the
-remaining migration as the migrator, and then verifies with direct queries, starting no service,
-that `impact.schema_migration` holds LATEST rows with exactly the SHA-256 values ledgered in
-docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the two columns and the
-replay table 0017 adds exist, and that the tenant, revision and session counts loaded at the baseline are unchanged
-with the pre-existing session's new columns NULL (`data_preserved`); any of these failing fails the
-check. The result is merged into the JSON report named by --report under `upgrade_check`.
+and one outbox event with its delivery row so that the ALTER TABLE of `impact.outbox_delivery` in
+0018 runs on a populated table, applies the remaining migration as the migrator, and then verifies
+with direct queries, starting no service, that `impact.schema_migration` holds LATEST rows with
+exactly the SHA-256 values ledgered in docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)`
+is LATEST, that the columns and tables 0017 and 0018 add exist, and that the tenant, revision,
+session and outbox counts loaded at the baseline are unchanged, with the pre-existing session's new
+columns NULL and the pre-existing delivery row left undispatchable (no channel, PENDING, lease
+generation 0) (`data_preserved`); any of these failing fails the check. The result is merged into
+the JSON report named by --report under `upgrade_check`.
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
@@ -41,6 +43,9 @@ LATEST = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
 BASELINE = LATEST - 1
 # The session row inserted at the baseline; its identity is the fixture author.
 SESSION_IDENTITY = "69407b72-0f5f-5126-8d04-a1355db5a9c5"
+# The outbox row inserted at the baseline, in fixture tenant A.
+OUTBOX_TENANT = "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
+OUTBOX_EVENT = "7b0c6a39-4f0f-4bb5-9c38-9f2d4f7e0a18"
 
 
 def ledgered_checksums():
@@ -102,6 +107,17 @@ def run(admin_dsn, fixture_dsn, passwords):
             0
         ]
         result["baseline"]["sessions"] = c.execute("SELECT count(*) FROM impact.web_session").fetchone()[0]
+        c.execute(
+            "INSERT INTO impact.outbox_event VALUES(%s,%s,'object.changed',now(),'{}'::jsonb)",
+            (OUTBOX_TENANT, OUTBOX_EVENT),
+        )
+        c.execute(
+            "INSERT INTO impact.outbox_delivery(tenant_id,event_id) VALUES(%s,%s)",
+            (OUTBOX_TENANT, OUTBOX_EVENT),
+        )
+        result["baseline"]["outbox_deliveries"] = c.execute(
+            "SELECT count(*) FROM impact.outbox_delivery"
+        ).fetchone()[0]
     second = migrate.run(migrator, superuser)
     result["upgrade"] = {
         "applied": second["applied"],
@@ -129,6 +145,18 @@ def run(admin_dsn, fixture_dsn, passwords):
             "SELECT count(*) FROM impact.web_session WHERE session_hash=%s AND provider_sid IS NULL AND provider_logout_hint IS NULL",
             (hashlib.sha256(b"upgrade-check-session").digest(),),
         ).fetchone()[0]
+        deliveries = c.execute("SELECT count(*) FROM impact.outbox_delivery").fetchone()[0]
+        dispatch_columns = c.execute(
+            "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND table_name='outbox_delivery' AND column_name IN ('channel','template','state','lease_owner','lease_generation','lease_expires_at','next_attempt_at','recipient_sealed')"
+        ).fetchone()[0]
+        worker_tables = [
+            c.execute("SELECT to_regclass(%s)", ("impact." + name,)).fetchone()[0]
+            for name in ["notification_delivery", "recovery_channel_challenge", "worker_heartbeat"]
+        ]
+        legacy_delivery = c.execute(
+            "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
+            (OUTBOX_TENANT, OUTBOX_EVENT),
+        ).fetchone()[0]
     ledger = {int(name[:4]): sha for name, sha in register.items()}
     recorded = {int(v): s for v, s in rows}
     mismatches = [v for v in sorted(set(ledger) | set(recorded)) if ledger.get(v) != recorded.get(v)]
@@ -141,10 +169,15 @@ def run(admin_dsn, fixture_dsn, passwords):
         "sessions_after_upgrade": sessions,
         "provider_logout_columns_present": added == 2,
         "logout_token_table_present": replay_table is not None,
+        "outbox_deliveries_after_upgrade": deliveries,
+        "dispatch_columns_present": dispatch_columns == 8,
+        "worker_tables_present": all(worker_tables),
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
-        and untouched == 1,
+        and deliveries == result["baseline"]["outbox_deliveries"]
+        and untouched == 1
+        and legacy_delivery == 1,
     }
     if (
         mismatches
@@ -152,6 +185,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         or max_version != LATEST
         or added != 2
         or replay_table is None
+        or dispatch_columns != 8
+        or not all(worker_tables)
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

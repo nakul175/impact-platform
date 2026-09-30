@@ -235,6 +235,7 @@ def bootstrap(local, idp=None):
         "token_url": "",
         "cookie_secret": previous_config.get("cookie_secret") or secrets.token_urlsafe(64),
         "invitation_secret": previous_config.get("invitation_secret") or secrets.token_urlsafe(64),
+        "delivery_secret": previous_config.get("delivery_secret") or secrets.token_urlsafe(64),
         "dev_auth": True,
         "dev_db_serial": os.environ.get("IMPACT_NATIVE_TEST") != "1",
         "require_unprivileged_db": boolean(
@@ -259,6 +260,19 @@ def bootstrap(local, idp=None):
             dev_public_key="",
         )
     (local / "config.json").write_text(json.dumps(config, indent=2))
+    # The worker's own configuration (v0.16): its login, the two secrets it shares with the API and
+    # the synthetic mail sink; never the API's connection strings or cookie secret.
+    worker = {
+        "environment": config["environment"],
+        "worker_dsn": os.environ.get("IMPACT_LOGIN_DSN_WORKER", dsn),
+        "public_origin": config["public_origin"],
+        "invitation_secret": config["invitation_secret"],
+        "delivery_secret": config["delivery_secret"],
+        "email_adapter": "synthetic",
+        "synthetic_sink": str(local / "synthetic-mail.jsonl"),
+        "require_unprivileged_db": config["require_unprivileged_db"],
+    }
+    (local / "worker.json").write_text(json.dumps(worker, indent=2))
     for path in local.iterdir():
         if path.is_file():
             path.chmod(0o600)

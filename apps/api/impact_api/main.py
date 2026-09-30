@@ -21,6 +21,7 @@ from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
+from .worker_status import WorkerStatus
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -83,7 +84,8 @@ def create_app():
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.15.0", docs_url=None, redoc_url=None, openapi_url=None)
+    worker_status = WorkerStatus(lifecycle)
+    app = FastAPI(title="Impact Platform", version="0.16.0", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -182,7 +184,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 17:
+        if version != 18:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -211,6 +213,10 @@ def create_app():
         return await run_in_threadpool(
             recovery_contacts.command, auth.resolve(request), action, body, None, uuid(contact_id)
         )
+
+    @app.get("/v1/platform/workers")
+    def worker_directory(request: Request):
+        return worker_status.directory(auth.resolve(request))
 
     @app.get("/v1/platform/access-bootstraps")
     def initial_access_directory(request: Request, cursor: str | None = None):
@@ -338,8 +344,8 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.15.0",
-            "schema_version": "17",
+            "build_id": "impact-0.16.0",
+            "schema_version": "18",
             "api_version": "1.10.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),

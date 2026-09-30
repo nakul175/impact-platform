@@ -1372,3 +1372,10 @@ html[data-reduced-motion="true"] *::after {
     letter-spacing: 0.65px;
   }
 }
+.worker-list {
+  padding-left: 1.2rem;
+}
+.worker-list li {
+  overflow-wrap: anywhere;
+  margin-bottom: 0.5rem;
+}

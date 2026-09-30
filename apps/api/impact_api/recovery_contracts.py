@@ -21,6 +21,34 @@ CREATE = obj(
     }
 )
 ACTIONS = {"verify", "approve", "reject", "cancel", "decline", "revoke"}
+# Channel verification (v0.16): the nominee proves control of the registered mailbox with a
+# single-use code sent by the worker. Evidence only; eligibility and permissions are unchanged.
+CHANNEL_REQUEST = obj(
+    {
+        "operation_id": UUID,
+        "expected_revision": UUID,
+        "data": obj({"email": {"type": "string", "format": "email", "maxLength": 254}, "reason": text(1000)}),
+    }
+)
+CHANNEL_CONFIRM = obj(
+    {
+        "operation_id": UUID,
+        "expected_revision": UUID,
+        "data": obj(
+            {"challenge_id": UUID, "code": {"type": "string", "pattern": "^[0-9]{8}$"}, "reason": text(1000)}
+        ),
+    }
+)
+CHANNEL_ACTIONS = {"channel-request": CHANNEL_REQUEST, "channel-confirm": CHANNEL_CONFIRM}
+CHANNEL = obj(
+    {
+        "state": {"enum": ["NONE", "PENDING", "VERIFIED", "EXPIRED", "FAILED", "SUPERSEDED"]},
+        "challenge_id": NULL_UUID,
+        "expires_at": {"anyOf": [DATE, {"type": "null"}]},
+        "verified_at": {"anyOf": [DATE, {"type": "null"}]},
+        "attempts_remaining": {"type": "integer", "minimum": 0, "maximum": 5},
+    }
+)
 STATUS = RECOVERY_STATUS
 ITEM = obj(
     {
@@ -53,6 +81,7 @@ ITEM = obj(
         "approved_by": NULL_UUID,
         "verification_method": {"const": "REGISTERED_IDENTITY_MFA"},
         "verification": STATUS,
+        "channel_verification": CHANNEL,
     }
 )
 DIRECTORY = obj(
@@ -65,8 +94,9 @@ DIRECTORY = obj(
 RECEIPT = obj({**ITEM["properties"], "operation_id": UUID})
 
 
-def validate_body(body, create=False):
-    if not Draft202012Validator(CREATE if create else ACTION, format_checker=FormatChecker()).is_valid(body):
+def validate_body(body, create=False, action=None):
+    schema = CREATE if create else CHANNEL_ACTIONS.get(action, ACTION)
+    if not Draft202012Validator(schema, format_checker=FormatChecker()).is_valid(body):
         raise DomainError("VALIDATION_FAILED")
 
 
@@ -78,8 +108,10 @@ def add_paths(paths, operation):
         "parameters": [{"name": "tenant_id", "in": "path", "required": True, "schema": UUID}],
         "post": operation("nominate_recovery_contact", CREATE, RECEIPT),
     }
-    for action in sorted(ACTIONS):
+    for action in sorted(ACTIONS | set(CHANNEL_ACTIONS)):
         paths["/v1/platform/recovery-contacts/{contact_id}/actions/" + action] = {
             "parameters": [{"name": "contact_id", "in": "path", "required": True, "schema": UUID}],
-            "post": operation("recovery_contact_" + action, ACTION, RECEIPT),
+            "post": operation(
+                "recovery_contact_" + action.replace("-", "_"), CHANNEL_ACTIONS.get(action, ACTION), RECEIPT
+            ),
         }

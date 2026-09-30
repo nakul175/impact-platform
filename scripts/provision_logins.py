@@ -2,13 +2,14 @@
 
 Migrations 0001 and 0013 define the NOLOGIN privilege roles; nothing in the migration set may
 carry a credential or a cluster-wide login. This script is what the deployment administrator runs
-instead: it creates four LOGIN roles, each a member of exactly one privilege role, with CONNECT on
+instead: it creates five LOGIN roles, each a member of exactly one privilege role, with CONNECT on
 one database and nothing else. Passwords arrive through the environment and are never printed.
 
     IMPACT_ADMIN_DSN                 superuser connection to the target database (see below)
     IMPACT_LOGIN_PASSWORD_APP        impact_app_login       -> impact_app       (domain requests)
     IMPACT_LOGIN_PASSWORD_IDENTITY   impact_identity_login  -> impact_identity  (identity tables)
     IMPACT_LOGIN_PASSWORD_PLATFORM   impact_platform_login  -> impact_platform  (control plane)
+    IMPACT_LOGIN_PASSWORD_WORKER     impact_worker_login    -> impact_worker    (outbox worker, v0.16)
     IMPACT_LOGIN_PASSWORD_MIGRATOR   impact_migrator        -> impact_owner     (scripts/migrate.py)
 
 Who may run it: a superuser, or an administrator that holds CREATEROLE, owns the target database
@@ -21,7 +22,7 @@ The privilege roles are created here only when absent, with exactly the attribut
 0001/0013 give them, so that a fresh cluster can be provisioned before the first migration runs.
 `impact_owner` additionally receives CREATE on the database: migration 0001 creates the `impact`
 schema with that role as its owner, and a non-superuser migration session needs the database
-privilege to do so. The API never receives the administrator or migrator credential.
+privilege to do so. The API never receives the administrator, migrator or worker credential.
 
 PUBLIC keeps PostgreSQL's default CONNECT privilege on every database of the cluster, so the
 explicit CONNECT grants above narrow nothing by themselves: any login role of the cluster can
@@ -45,6 +46,7 @@ LOGINS = {
     "impact_app_login": ("impact_app", "APP"),
     "impact_identity_login": ("impact_identity", "IDENTITY"),
     "impact_platform_login": ("impact_platform", "PLATFORM"),
+    "impact_worker_login": ("impact_worker", "WORKER"),
     "impact_migrator": ("impact_owner", "MIGRATOR"),
 }
 # NOLOGIN privilege roles exactly as migrations 0001 (first seven) and 0013 (impact_platform) create them.
@@ -77,7 +79,7 @@ def login_dsn(admin_dsn, login, password):
 
 def grant_database_access(c, database):
     """The database-level privileges provisioning gives, and nothing about roles or passwords:
-    CONNECT on the database for the four logins and CREATE for impact_owner. The drill tools call
+    CONNECT on the database for the five logins and CREATE for impact_owner. The drill tools call
     this on the disposable copies they create, since a dump of one database carries no database
     ACL and the cluster-level logins already exist with their passwords."""
     for login in LOGINS:

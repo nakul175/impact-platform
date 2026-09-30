@@ -172,6 +172,22 @@ function explain(e: unknown) {
       )
     )
       return "Sign out and sign in again. This action requires recent authentication.";
+    if (e.reason === "CHANNEL_ADDRESS_MISMATCH")
+      return "That address is not the verified email address of your registered account. Enter the address you sign in with.";
+    if (e.reason === "CHANNEL_CODE_INVALID")
+      return "That code is not correct. Check the latest email and try again; the code locks after five wrong attempts.";
+    if (e.reason === "CHANNEL_CODE_ATTEMPTS_EXCEEDED")
+      return "Too many wrong codes. This code is locked; request a new code.";
+    if (e.reason === "CHANNEL_CODE_EXPIRED")
+      return "This code has expired. Request a new code.";
+    if (e.reason === "CHANNEL_CODE_USED")
+      return "This code has already been used. Your email address is already confirmed.";
+    if (e.reason === "CHANNEL_CHALLENGE_CLOSED")
+      return "This code is no longer valid. Request a new code.";
+    if (e.reason === "CHANNEL_REQUEST_LIMIT")
+      return "Too many codes were requested in the last hour. Try again later.";
+    if (e.reason === "DELIVERY_NOT_CONFIGURED")
+      return "Email delivery is not configured for this deployment.";
     if (e.reason === "PLATFORM_OPERATOR_REQUIRED")
       return "Only an independent platform operator can perform this review.";
     if (e.reason === "AUTHORITY_UNAVAILABLE")

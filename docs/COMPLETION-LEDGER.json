@@ -1,11 +1,11 @@
 {
-  "build": "0.18.0",
+  "build": "0.19.0",
   "assessment_date": "2026-09-29",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
   "summary": {
-    "PARTIAL": 81,
-    "PENDING": 226
+    "PARTIAL": 83,
+    "PENDING": 224
   },
   "requirements": [
     {
@@ -1195,9 +1195,20 @@
       "validation": "Multiselect categories can count an entity several times across categories, so category sum is labelled nonadditive. Do not force overlapping categories to reconcile to unique reach.",
       "acceptance": "One participant selects two service types; both categories count the event as defined and the unique participant total remains one.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.19 lets an indicator definition pin a versioned disaggregation scheme (up to five dimensions with code, label, version, multiselect and exhaustive flags and declared category codes; UNSPECIFIED reserved) and observations carry codes checked against it at draft, submission, amendment and calculation; results carry per-category values computed from source rows. Validation and acceptance exercised (test_calculation_methods.py::test_multiselect_categories_are_nonadditive_and_unique_total_stays_one, test_observation_codes_must_match_the_pinned_scheme, test_category_correction_through_change_request; corpus FT-IND-006-multiselect): one contribution with two selected categories counts in both, the total stays one and the categories are labelled NONADDITIVE. Not covered: applicability rules, explicit missing/unknown/declined codes beyond what a scheme declares, reviewed crosswalks for a changed scheme (FR-CAL-007), unique-participant totals (no participants exist), and dimension version validation (free text).",
+      "evidence_paths": [
+        "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/service.py",
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -1366,11 +1377,18 @@
       "acceptance": "Recompute a frozen ratio from exported inputs and the recorded formula; the raw decimal and displayed rounded output match exactly.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -1404,11 +1422,18 @@
       "acceptance": "Pool 50 of 100 and 1 of 10: produce 51 of 110 and display 46.36 percent under two decimal rounding, never 30 percent.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -1438,11 +1463,18 @@
       "acceptance": "For 10, 15 and 20 cumulative positions report end value 20; increments are 10, 5 and 5 only when a zero starting baseline is established.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -1487,11 +1519,18 @@
       "acceptance": "Five expected partners, three approved, one pending and one missing yield 60 percent approval coverage and distinct pending and missing counts.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -1506,11 +1545,18 @@
       "acceptance": "Sum three values 0.335 before rounding to two decimals: 1.005 becomes 1.01 with half up; document why rounded components would sum differently.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -1525,11 +1571,18 @@
       "acceptance": "Submit negative two participants and divide 5 by 0; the first is invalid and the second undefined, with neither displayed as a successful zero.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Decimal calculation with a bounded method catalogue (v0.19): SUM and POOLED_RATIO for FLOW, COUNT for EVENT, LAST_VALID for STOCK and CUMULATIVE (latest approved position; a tie with different values and a cumulative decline give UNDEFINED), labelled unweighted MEAN, MEDIAN, MIN and MAX; methods bound to measurement types and time semantics and refused at definition submission otherwise; 100-digit arithmetic, stored value half-up at 12 places and display derived from the stored value; absent value states never zero; revision-bound lineage, coverage and stale flags as before. Exercised by the golden corpus through reference, domain and live API (CAL01 51/110 = 46.36, CAL02 labelled 30, CAL05 end 20 not 45, CAL06 zero denominator UNDEFINED, CAL07 60.00 coverage, CAL09 1.005 to 1.01, CAL20 boundary) and test_calculation_methods.py. Not covered: cumulative increments (no verified baseline), maximum stock age, hierarchy, overlap, unit conversion, weighting and production workload qualification.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4761,9 +4814,20 @@
       "procedure": "Run CAL01 through CAL20 and their version, correction, missingness and permission variants against independently prepared expected results. Compare raw and displayed decimals and report bindings.",
       "failure": "Any unexplained official result discrepancy blocks release. Numerical tolerance applies only when the approved calculation contract defines it.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.19 adds a versioned golden corpus (qualification/golden/calculation-corpus-v1.json, corpus 1.1.0, 40 hand-prepared vectors covering CAL01, CAL02, CAL05, CAL06, CAL07, CAL09, CAL16 and CAL20 plus rounding boundaries, magnitude, missingness, invalid input and dimensions) and a reconciliation harness (qualification/test_golden.py, make golden) that compares an independent exact-rational reference with the hand-prepared values, then the domain code and the live API path with the reference, on raw stored and displayed decimals per total and per category; every executed vector passes (docs/evidence/golden-reconciliation.json). Not covered: CAL03, CAL04, CAL10-CAL15, CAL17-CAL19 (overlap, hierarchy, conversions, targets, weighting, currency, cost and disclosure are not implemented or not in the corpus), correction, version and permission variants of each vector, and report bindings.",
+      "evidence_paths": [
+        "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/service.py",
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/golden/calculation-corpus-v1.json",
+        "docs/evidence/golden-reconciliation.json",
+        "docs/evidence/application-tests.xml",
+        "docs/evidence/native-application-tests.xml",
+        "docs/RELEASE-0.19.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {

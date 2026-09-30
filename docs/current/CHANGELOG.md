@@ -1,5 +1,14 @@
 # Documentation change record
 
+## Build 0.19.0 — 30 September 2026
+
+Recorded increment v0.19, indicator and calculation completion, without changing any requirement, priority, release assignment or expected outcome. Schema 20 (migration 0020, SHA-256 `357f7a80…d51fa31`); domain API 1.12.0 (150 operations, schemas extended); control plane 1.4.0 unchanged.
+
+- Added RELEASE-0.19.md; updated IMPLEMENTATION.md (v0.19 summary), QUALIFICATION.md (v0.19 evidence), NEXT-DELIVERY.md, DELIVERY-PLAN.md (v0.19 row delivered, with what was not delivered), README header, CURRENT-DATA-DICTIONARY.md (0020 row and SQL) and the engineering brief.
+- Regenerated the completion ledger at build 0.19.0: **83 PARTIAL, 224 PENDING, 0 accepted**. VF-DIN-001 and FR-IND-006 move from PENDING to PARTIAL on executed tests of part of their validation text; FR-CAL-001/003/005/008/009/010 keep PARTIAL with v0.19 evidence and explicit not-covered lists.
+- Evidence regenerated: `application-tests.xml`, `golden-reconciliation.json` (new), native files, measurement and planning browser files.
+- Not updated for lack of time: SCREEN-COVERAGE.csv, EXECUTION-REGISTER.csv, TRACEABILITY.csv and the specification reading-copy increment notes.
+
 ## Build 0.18.0 — 29 September 2026
 
 Recorded increment v0.18, results framework and planning, built ahead of v0.17 (whose staging step waits on the hosting decision), without changing any requirement, priority, release assignment or expected outcome. Schema 19 (migration 0019, SHA-256 `e12728cf…8b356c4161`); domain API 1.11.0 (150 operations; twelve added: frameworks list/create/get/patch/submit, `framework_completeness`, targets list/create/get/patch/submit, `programme_targets_vs_actuals`); `access-policy.json` 307 rows, 218 capabilities, 92 used by implemented operations; control-plane API unchanged at 1.4.0 (31 operations).

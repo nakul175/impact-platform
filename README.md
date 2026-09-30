@@ -1,4 +1,4 @@
-# Impact Platform · v0.18.0
+# Impact Platform · v0.19.0
 
 Documentation edition **1.1** is available in the [master documentation index](docs/current/DOCUMENTATION-INDEX.md): BRD, FSD, HLD, LLD, wireframes, test cases/scenarios, engineering specifications and handover guides. Original editions are preserved in `docs/history/v1.0`. This documentation update does not declare product or production acceptance.
 

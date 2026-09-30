@@ -13,6 +13,7 @@ This set describes the full target product and the current development implement
 | Use the implemented workflows | [User guide](USER-GUIDE.md) |
 | Onboard and administer a tenant | [Administrator guide](ADMINISTRATOR-GUIDE.md) |
 | Run and diagnose the development build | [Operations guide](OPERATIONS-GUIDE.md) |
+| Deploy, check and back up the staging server | [Deployment guide](DEPLOYMENT-GUIDE.md) |
 | Assess release readiness | [Release acceptance record](RELEASE-ACCEPTANCE.md) and [qualification evidence](../QUALIFICATION.md) |
 | Review exact requirement coverage | [Traceability CSV](TRACEABILITY.csv) and [completion ledger](../COMPLETION-LEDGER.md) |
 

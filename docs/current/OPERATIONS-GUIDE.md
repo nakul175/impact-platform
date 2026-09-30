@@ -2,6 +2,8 @@
 
 Build 0.16.0 is qualified locally for bounded development workflows, at CI scale on native PostgreSQL with separately provisioned login roles, against a live identity provider (a per-run development-mode Keycloak), and with a worker process delivering in-app notices and email to a loopback SMTP sink or a synthetic sink (no email provider). This guide distinguishes commands that can be reproduced now from production procedures that require an actual environment, assigned owner and verified evidence.
 
+The staging server (one DigitalOcean droplet running the Docker Compose stack in `deploy/`, since the v0.17 deployment package) is described separately, in plain language, in the [deployment guide](DEPLOYMENT-GUIDE.md): what runs there, how it deploys itself from `main`, the status page, the owner's first sign-in, backups, restore and rollback.
+
 ## Reproduce the development environment
 
 Prerequisites are Python 3.12, Node.js 24, npm and Make; the live identity-provider qualification also needs Java 21. Dependency installation requires network access. Run from the application source root:

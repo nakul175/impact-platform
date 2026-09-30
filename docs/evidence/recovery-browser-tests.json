@@ -18,6 +18,10 @@
       "status": "passed"
     },
     {
+      "name": "Nominee confirms the registered email address with a single-use code",
+      "status": "passed"
+    },
+    {
       "name": "Independent operator approves and tenant readiness permits activation",
       "status": "passed"
     },

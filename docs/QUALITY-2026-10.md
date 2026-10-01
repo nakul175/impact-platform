@@ -187,6 +187,14 @@ on a private native PostgreSQL 16.13 cluster with the provisioned login roles:
 | native `test_delivery_requeue.py` | 4 passed |
 | `make unit` without placeholders | 1 failed by design (`test_version_unit` contiguity: 0021 then 0025) |
 
+Integration check against the real 0022-0024 (PRs #52, #54, #53 as pushed on 1 Oct 2026, not merged):
+their three migration files plus 0025 migrate cleanly on native PostgreSQL 16.13 and leave the
+worker exactly the kept set above plus 0024's `report_export`, `report_export_artifact` and
+`report_package_binding`. This branch's code with those migrations: native
+`test_delivery_requeue.py` 4 passed. The v0.23 report-exports tree with 0022, 0023 and this 0025
+added (readiness literal set to 25): native `test_report_exports.py` 11 passed and
+`test_native_worker.py` 8 passed, so the export worker needs nothing 0025 revokes.
+
 Full, browser, native and live-provider suites run in CI on push.
 
 ## Integration notes

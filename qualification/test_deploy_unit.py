@@ -110,6 +110,7 @@ class FakeKeycloak:
 
     def __init__(self, realm=None):
         self.realm, self.users, self.credentials, self.calls = realm, {}, {}, []
+        self.lockouts_cleared = []
 
     def call(self, method, path, data=None, expect=(200, 201, 204)):
         self.calls.append((method, path.split("?")[0]))
@@ -131,6 +132,9 @@ class FakeKeycloak:
             self.credentials[user["id"]] = []
             self.users[user["id"]] = user
             return 201, None, {}
+        if "/attack-detection/brute-force/users/" in path and method == "DELETE":
+            self.lockouts_cleared.append(path.split("/")[-1])
+            return 204, None, {}
         user_id = path.split("/")[3]
         if path.endswith("/credentials") and method == "GET":
             return 200, self.credentials[user_id], {}
@@ -183,6 +187,8 @@ def test_owner_account_is_created_once_with_required_actions_and_reset_restores_
     ]
     assert fake.users[first["subject"]]["requiredActions"] == ["UPDATE_PASSWORD", "CONFIGURE_TOTP"]
     assert fake.users[first["subject"]]["password"]["temporary"] is True
+    # A reset also lifts a sign-in lockout left by earlier failed attempts.
+    assert reset["lockout_cleared"] is True and fake.lockouts_cleared == [first["subject"]]
 
 
 # ---- compose and update.sh wiring ----------------------------------------------------------

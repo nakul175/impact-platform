@@ -35,6 +35,8 @@ LOG = logging.getLogger("impact")
 MAX_BODY = 262144
 # The one route whose body is raw bytes rather than JSON: an evidence upload's whole content, at most
 # the design ceiling for EVIDENCE_MEDIA and never more than the upload's own declared size.
+# admin_shutdown, crash_shutdown, cannot_connect_now: the server is going or not yet back.
+DATABASE_SHUTDOWN = {"57P01", "57P02", "57P03"}
 UPLOAD_CONTENT = re.compile(r"^/v1/tenants/[^/]+/uploads/[^/]+/content$")
 # A logout token is at most 16 KiB (Auth.backchannel_logout); the form adds "logout_token=".
 MAX_LOGOUT_BODY = 16384 + 64
@@ -140,6 +142,12 @@ def create_app():
             return error(request, DomainError("CONFLICT_VERSION", 409))
         if (exc.sqlstate or "").startswith("23"):
             return error(request, DomainError("VALIDATION_FAILED"))
+        # A refused, lost or shut-down database connection (no SQLSTATE, class 08 or an operator
+        # shutdown) is named for the caller and readiness; the transaction it carried never committed.
+        if isinstance(exc, psycopg.OperationalError) and (
+            not exc.sqlstate or exc.sqlstate.startswith("08") or exc.sqlstate in DATABASE_SHUTDOWN
+        ):
+            return error(request, DomainError("SERVICE_UNAVAILABLE", 503, reason="DATABASE_UNAVAILABLE"))
         return error(request, DomainError("SERVICE_UNAVAILABLE", 503))
 
     @app.exception_handler(Exception)

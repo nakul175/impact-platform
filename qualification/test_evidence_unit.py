@@ -134,3 +134,37 @@ def test_store_and_scanner_configuration(monkeypatch, tmp_path):
             Settings.load()
     path.write_text(json.dumps({**config, "object_store_dir": str(tmp_path), "evidence_scanner": "none"}))
     assert isinstance(object_store(Settings.load()), FilesystemObjectStore)
+
+
+def test_store_failures_are_bounded_reason_codes_and_leave_no_partial_object(monkeypatch, tmp_path):
+    """QA 2026-10 degradation: an operating-system failure of the store is SERVICE_UNAVAILABLE with
+    OBJECT_STORE_FULL (no space or quota) or OBJECT_STORE_UNAVAILABLE, never a raw OSError, and a
+    failed write leaves neither the object nor its temporary file behind."""
+    import errno
+    from types import SimpleNamespace
+
+    from impact_api import object_store as module
+
+    store = FilesystemObjectStore(tmp_path / "objects")
+    data = b"bytes that never fit\n"
+    digest = hashlib.sha256(data).hexdigest()
+    real = module.os
+
+    def no_space(_):
+        raise OSError(errno.ENOSPC, "No space left on device")
+
+    monkeypatch.setattr(module, "os", SimpleNamespace(**{**vars(real), "fsync": no_space}))
+    with pytest.raises(DomainError) as full:
+        store.put(TENANT, digest, data)
+    monkeypatch.setattr(module, "os", real)
+    assert (full.value.status, full.value.reason) == (503, "OBJECT_STORE_FULL")
+    assert [p for p in (tmp_path / "objects").rglob("*") if p.is_file()] == []
+    (tmp_path / "not-a-directory").write_bytes(b"x")
+    blocked = FilesystemObjectStore(tmp_path / "not-a-directory")
+    with pytest.raises(DomainError) as unavailable:
+        blocked.put(TENANT, digest, data)
+    assert (unavailable.value.status, unavailable.value.reason) == (503, "OBJECT_STORE_UNAVAILABLE")
+    key = store.put(TENANT, digest, data)
+    store.path(key).unlink()
+    store.path(key).mkdir()
+    assert reason(store.get, key, digest) == "OBJECT_STORE_UNAVAILABLE"

@@ -18,6 +18,7 @@ from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
 from impact_api.import_contracts import augment as augment_imports  # noqa: E402
 from impact_api.evidence_contracts import augment as augment_evidence  # noqa: E402
 from impact_api.export_contracts import augment as augment_exports  # noqa: E402
+from impact_api.dashboard_contracts import augment as augment_dashboards  # noqa: E402
 from impact_api.tenant_contracts import openapi as platform_openapi  # noqa: E402
 from impact_api.version import DOMAIN_API  # noqa: E402
 
@@ -143,6 +144,7 @@ augment_forms(spec, policy)
 augment_imports(spec, policy)
 augment_evidence(spec, policy)
 augment_exports(spec, policy)
+augment_dashboards(spec, policy)
 # A baseline policy row whose operation no longer exists in the contract (its path and method
 # were taken over by an implemented operation under another identifier) is dropped: the policy
 # must describe exactly the operations of the contract (#19: create_organisation_units, superseded

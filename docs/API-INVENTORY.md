@@ -75,6 +75,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}` | `indicator-instances.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/activate` | `indicator.activate` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/calculate` | `indicator.calculate` |
+| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/invitation-acceptances` | `invitation.accept` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | `lineage-manifests.read` |
@@ -124,6 +125,7 @@
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/activate` | `programme.activate` |
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/ready` | `programme.activate` |
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/revise` | `programme.activate` |
+| GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/dashboard` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/readiness` | `programmes.read` |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals` | `targets.read` |
 | GET | `/v1/tenants/{tenant_id}/publication-recipients` | `disclosure.request` |

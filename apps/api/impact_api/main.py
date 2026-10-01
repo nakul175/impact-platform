@@ -25,6 +25,7 @@ from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .version import BUILD, DOMAIN_API, SCHEMA
+from .dashboards import Dashboards
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -91,6 +92,7 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
+    dashboards = Dashboards(service)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
@@ -411,6 +413,38 @@ def create_app():
             limit=limit,
             cursor=cursor,
             period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/programmes/{obj}/dashboard")
+    def programme_dashboard(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "programme_dashboard",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-series")
+    def indicator_dashboard_series(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_dashboard_series",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")

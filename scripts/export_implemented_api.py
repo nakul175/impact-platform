@@ -18,6 +18,7 @@ from impact_api.evidence_contracts import (  # noqa: E402
     IMPLEMENTED as EVIDENCE_ROUTES,
 )
 from impact_api.export_contracts import SPECIAL_READS as EXPORT_READS  # noqa: E402
+from impact_api.dashboard_contracts import SPECIAL_READS as DASHBOARD_READS  # noqa: E402
 from impact_api.publication_contracts import (  # noqa: E402
     SPECIAL_READS as PUBLICATION_READS,
     DIRECTORY_READS as PUBLICATION_DIRECTORIES,
@@ -29,6 +30,7 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in REPORTIN
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PLANNING_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in FORMS_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EXPORT_READS)
+allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in DASHBOARD_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_DIRECTORIES)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE_READS)

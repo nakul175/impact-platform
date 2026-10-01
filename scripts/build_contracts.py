@@ -15,6 +15,7 @@ from impact_api.publication_contracts import augment as augment_publication  # n
 from impact_api.planning_contracts import augment as augment_planning  # noqa: E402
 from impact_api.calculation_contracts import augment as augment_calculation  # noqa: E402
 from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
+from impact_api.dashboard_contracts import augment as augment_dashboards  # noqa: E402
 from impact_api.tenant_contracts import openapi as platform_openapi  # noqa: E402
 
 spec = json.loads((ROOT / "packages/contracts/openapi-baseline.json").read_text())
@@ -136,6 +137,7 @@ augment_publication(spec, policy)
 augment_planning(spec, policy)
 augment_calculation(spec, policy)
 augment_forms(spec, policy)
+augment_dashboards(spec, policy)
 # A baseline policy row whose operation no longer exists in the contract (its path and method
 # were taken over by an implemented operation under another identifier) is dropped: the policy
 # must describe exactly the operations of the contract (#19: create_organisation_units, superseded

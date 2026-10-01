@@ -42,6 +42,7 @@ browser:
 	$(PY) scripts/run.py admin-browser
 	$(PY) scripts/run.py measurement-browser
 	$(PY) scripts/run.py planning-browser
+	$(PY) scripts/run.py dashboard-browser
 	$(PY) scripts/run.py forms-browser
 	$(PY) scripts/run.py reporting-browser
 	$(PY) scripts/run.py workspace-browser

@@ -28,6 +28,7 @@ from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
 from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
+from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
 from .work import WorkCenter
 from .store import (
     context,
@@ -72,6 +73,7 @@ READ_ROUTES = {
     "frameworks",
     "targets",
     "submissions",
+    "imports",
 }
 
 
@@ -98,6 +100,7 @@ WRITE_ROUTES = {
     "targets",
     "forms",
     "submissions",
+    "imports",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -123,6 +126,7 @@ ACTIONS = {
     "targets": {"submit"},
     "forms": {"submit", "publish"},
     "submissions": {"submit"},
+    "imports": {"preview", "commit", "cancel"},
 }
 
 
@@ -170,6 +174,7 @@ class Service:
         self.reporting = Reporting(self)
         self.work = WorkCenter(self)
         self.forms = Forms(self)
+        self.imports = Imports(self)
         self.planning = Planning(self)
 
     def tenants(self, identity):
@@ -461,6 +466,9 @@ class Service:
                 "recalculate",
                 "publish",
                 "withdraw",
+                "preview",
+                "commit",
+                "cancel",
             } and not any(
                 g["capability"] == OPERATIONS[op]["capability"]
                 and g["scope_type"] == "TENANT"
@@ -491,6 +499,14 @@ class Service:
                 receipt = self.forms.submit(c, ctx, previous, body["data"], correlation)
             elif action == "publish" and kind == "Form":
                 receipt = self.forms.publish(c, ctx, previous, body["data"])
+            elif kind == "ImportJob" and action == "preview":
+                receipt = self.imports.preview(c, ctx, previous)
+            elif kind == "ImportJob" and action == "commit":
+                receipt = self.imports.commit(c, ctx, previous, body["data"], correlation)
+            elif kind == "ImportJob" and action == "cancel":
+                receipt = self.imports.cancel(c, ctx, previous, body["data"])
+            elif kind == "ImportJob" and not action:
+                receipt = self.imports.save(c, ctx, previous, body["data"])
             elif action == "submit":
                 receipt = self.submit(c, ctx, kind, previous, body["data"])
             elif action in {"approve", "return", "reject"}:
@@ -520,8 +536,9 @@ class Service:
                 data = {**(previous["payload"] if previous else {}), **body["data"]}
                 if kind == "Observation":
                     data["approval_state"] = "DRAFT"
-                if kind == "Observation" and data.get("source_namespace") == "FORM":
-                    # Reserved for observations produced from a submitted form response.
+                if kind == "Observation" and data.get("source_namespace") in {"FORM", IMPORT_NAMESPACE}:
+                    # Reserved for observations produced from a submitted form response or a
+                    # committed import batch.
                     raise DomainError("VALIDATION_FAILED", reason="SOURCE_NAMESPACE_RESERVED")
                 if kind == "Submission":
                     data["review_state"] = "DRAFT"

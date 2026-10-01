@@ -52,6 +52,13 @@
 | POST | `/v1/tenants/{tenant_id}/group-change-requests` | `groups.request` |
 | POST | `/v1/tenants/{tenant_id}/group-change-requests/{object_id}/actions/approve` | `groups.approve` |
 | POST | `/v1/tenants/{tenant_id}/group-change-requests/{object_id}/actions/reject` | `groups.approve` |
+| GET | `/v1/tenants/{tenant_id}/imports` | `imports.read` |
+| POST | `/v1/tenants/{tenant_id}/imports` | `imports.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/imports/{object_id}` | `imports.read` |
+| PATCH | `/v1/tenants/{tenant_id}/imports/{object_id}` | `imports.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel` | `import.cancel` |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit` | `import.commit` |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview` | `import.preview` |
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions` | `indicator-definitions.read` |
 | POST | `/v1/tenants/{tenant_id}/indicator-definitions` | `indicator-definitions.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | `indicator-definitions.read` |

@@ -184,7 +184,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 21:
+        if version != 22:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -345,7 +345,7 @@ def create_app():
         return {
             "environment": s.environment,
             "build_id": "impact-0.20.0",
-            "schema_version": "21",
+            "schema_version": "22",
             "api_version": "1.13.0",
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),

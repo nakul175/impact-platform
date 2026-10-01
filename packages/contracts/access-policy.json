@@ -1468,13 +1468,12 @@
       "path": "/v1/tenants/{tenant_id}/imports",
       "capability": "imports.read",
       "role_templates": [
+        "DATA_STEWARD",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",
         "AUTHOR",
         "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
+        "ANALYST"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
@@ -1490,13 +1489,12 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}",
       "capability": "imports.read",
       "role_templates": [
+        "DATA_STEWARD",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",
         "AUTHOR",
         "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
+        "ANALYST"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
@@ -3341,14 +3339,17 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview",
       "capability": "import.preview",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE and records the quality checks and the preview hash; writes no observation.",
       "audit": true
     },
     {
@@ -3357,15 +3358,26 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit",
       "capability": "import.commit",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
+      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose).",
+      "audit": true,
+      "additional_capabilities": [
+        "observation.submit",
+        "indicator-instances.read",
+        "indicator-definitions.read",
+        "programmes.read",
+        "periods.read",
+        "workflow-templates.read"
+      ]
     },
     {
       "operation_id": "action_imports_cancel",
@@ -3373,14 +3385,17 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel",
       "capability": "import.cancel",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Draft or Previewed only; nothing was committed, so nothing is rolled back.",
       "audit": true
     },
     {
@@ -5312,6 +5327,44 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "create_imports",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/imports",
+      "capability": "imports.draft.create",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft or Previewed only; an edit discards the staged preview. Server-owned namespace, digest, receipt, preview and commit fields are never accepted.",
+      "audit": true
+    },
+    {
+      "operation_id": "patch_imports",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}",
+      "capability": "imports.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft or Previewed only; an edit discards the staged preview. Server-owned namespace, digest, receipt, preview and commit fields are never accepted.",
+      "audit": true
     }
   ],
   "limits": {

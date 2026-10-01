@@ -388,7 +388,16 @@ class Forms:
         validate_dimensions(definition, result)
         return result
 
-    def record(self, c, ctx, data, workflow_version, correlation=None, submission_id=None):
+    def record(
+        self,
+        c,
+        ctx,
+        data,
+        workflow_version,
+        correlation=None,
+        submission_id=None,
+        op="action_submissions_submit",
+    ):
         """Write one draft observation under the response's source identity and submit it into the
         existing independent review, exactly as a manual observation is submitted. The observation
         and its review workflow each get their own audit and outbox event in this transaction, as a
@@ -416,7 +425,6 @@ class Forms:
         draft = load(c, ctx, receipt["object_id"], "Observation", lock=True)
         workflow = self.service.submit(c, ctx, "Observation", draft, {"workflow_version": workflow_version})
         submitted = load(c, ctx, receipt["object_id"], "Observation")
-        op = "action_submissions_submit"
         audit(
             c,
             ctx,

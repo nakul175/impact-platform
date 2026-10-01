@@ -95,6 +95,7 @@ def bootstrap(local, idp=None):
                 "import.commit",
                 "import.cancel",
                 "evidence.attach",
+                "report.export",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",

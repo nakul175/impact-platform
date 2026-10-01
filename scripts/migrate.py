@@ -18,11 +18,14 @@ import psycopg
 from pglast import split
 
 ROOT = Path(__file__).resolve().parents[1]
-# The schema version this build expects: the highest migration number. Parallel release branches
-# may carry a gap (a later number merged before an earlier one); FILES is the number of migration
-# files, which equals LATEST once the sequence is contiguous.
-FILES = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
-LATEST = max(int(p.name[:4]) for p in (ROOT / "infrastructure/migrations").glob("*.sql"))
+# The schema version this build expects: one migration file per version, numbered contiguously
+# from 0001, so the number of files is also the highest version (the rule `impact_api.version.SCHEMA`
+# uses; qualification/test_version_unit.py enforces the contiguity). A gap is a build defect and is
+# refused here rather than compared around.
+_VERSIONS = sorted(int(p.name[:4]) for p in (ROOT / "infrastructure/migrations").glob("*.sql"))
+if _VERSIONS != list(range(1, len(_VERSIONS) + 1)):
+    raise RuntimeError("Migration numbers are not contiguous from 0001: " + repr(_VERSIONS))
+LATEST = len(_VERSIONS)
 sys.path.insert(0, str(ROOT / "scripts"))
 from fixture_support import fixture_database_allowed  # noqa: E402
 

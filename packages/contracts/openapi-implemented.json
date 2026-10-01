@@ -21107,6 +21107,836 @@
         },
         "x-contract-version": "1.1.0"
       }
+    },
+    "/v1/tenants/{tenant_id}/reports/{object_id}/actions/export": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_reports_export",
+        "summary": "action reports export",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "report.export",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionReportsExport"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.14.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/reports/{object_id}/actions/cancel-export": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_reports_cancel_export",
+        "summary": "action reports cancel export",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "report.export",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionReportsCancelExport"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.14.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/reports/{object_id}/exports": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_report_exports",
+        "summary": "list report exports",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "report.export",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportExportList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.14.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "download_report_export",
+        "summary": "download report export",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "report.export",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "application/octet-stream"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.14.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/publications/{object_id}/download.pdf": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "download_controlled_publication_pdf",
+        "summary": "download controlled publication pdf",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "publication.download",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "application/pdf"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.14.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/publications/{object_id}/download.xlsx": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "download_controlled_publication_xlsx",
+        "summary": "download controlled publication xlsx",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "publication.download",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.14.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/publications/{object_id}/download.docx": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "download_controlled_publication_docx",
+        "summary": "download controlled publication docx",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "publication.download",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.14.0"
+      }
     }
   },
   "components": {
@@ -28279,6 +29109,49 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "export_formats": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "PDF",
+                "XLSX",
+                "DOCX"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "maxItems": 3
+          },
+          "export_artifacts": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "format": {
+                  "enum": [
+                    "PDF",
+                    "XLSX",
+                    "DOCX"
+                  ]
+                },
+                "job_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "format",
+                "job_id",
+                "content_sha256"
+              ]
+            }
           }
         },
         "required": []
@@ -28421,6 +29294,49 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "export_formats": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "PDF",
+                "XLSX",
+                "DOCX"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "maxItems": 3
+          },
+          "export_artifacts": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "format": {
+                  "enum": [
+                    "PDF",
+                    "XLSX",
+                    "DOCX"
+                  ]
+                },
+                "job_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "format",
+                "job_id",
+                "content_sha256"
+              ]
+            }
           }
         },
         "required": []
@@ -34437,6 +35353,19 @@
           "workflow_version": {
             "type": "string",
             "format": "uuid"
+          },
+          "export_formats": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "PDF",
+                "XLSX",
+                "DOCX"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1,
+            "maxItems": 3
           }
         },
         "required": [
@@ -42734,6 +43663,224 @@
           "items",
           "next_cursor",
           "scope_label"
+        ]
+      },
+      "ActionReportsExportData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "PDF",
+              "XLSX",
+              "DOCX"
+            ]
+          }
+        },
+        "required": [
+          "format"
+        ]
+      },
+      "ActionReportsExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ActionReportsExportData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "data"
+        ]
+      },
+      "ActionReportsCancelExportData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      },
+      "ActionReportsCancelExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ActionReportsCancelExportData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "data"
+        ]
+      },
+      "ReportExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "report_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "report_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "format": {
+            "enum": [
+              "PDF",
+              "XLSX",
+              "DOCX"
+            ]
+          },
+          "renderer_version": {
+            "type": "string",
+            "pattern": "^[a-z0-9.-]{1,32}$"
+          },
+          "state": {
+            "enum": [
+              "Queued",
+              "Running",
+              "Succeeded",
+              "Failed",
+              "Cancelled"
+            ]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_error_class": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z0-9_]{1,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancellation_requested": {
+            "type": "boolean"
+          },
+          "cancellation_outcome": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z0-9_]{1,64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "requested_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "media_type": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "content_sha256": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "size_bytes": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "job_id",
+          "report_id",
+          "report_revision",
+          "format",
+          "renderer_version",
+          "state",
+          "attempts",
+          "last_error_class",
+          "cancellation_requested",
+          "requested_at",
+          "completed_at",
+          "content_sha256"
+        ]
+      },
+      "ReportExportList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReportExport"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
         ]
       }
     }

@@ -26,6 +26,7 @@ from .changes import Changes
 from .period_governance import PeriodGovernance
 from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
+from .exports import Exports
 from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
 from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
@@ -121,7 +122,7 @@ ACTIONS = {
     "collection-plans": {"submit"},
     "measurement-changes": {"submit"},
     "periods": {"close", "restate"},
-    "reports": {"submit", "publish", "withdraw"},
+    "reports": {"submit", "publish", "withdraw", "export", "cancel-export"},
     "work-items": {"recalculate"},
     "notifications": {"acknowledge"},
     "frameworks": {"submit"},
@@ -175,6 +176,7 @@ class Service:
         self.changes = Changes(self)
         self.periods = PeriodGovernance(self)
         self.reporting = Reporting(self)
+        self.exports = Exports(self)
         self.work = WorkCenter(self)
         self.forms = Forms(self)
         self.imports = Imports(self)
@@ -432,7 +434,7 @@ class Service:
         if action:
             if action not in ACTIONS.get(route, set()):
                 unavailable()
-            op = "action_" + route.replace("-", "_") + "_" + action
+            op = "action_" + route.replace("-", "_") + "_" + action.replace("-", "_")
         else:
             if route not in WRITE_ROUTES and route not in REQUEST_ROUTES:
                 unavailable()
@@ -473,6 +475,8 @@ class Service:
                 "preview",
                 "commit",
                 "cancel",
+                "export",
+                "cancel-export",
             } and not any(
                 g["capability"] == OPERATIONS[op]["capability"]
                 and g["scope_type"] == "TENANT"
@@ -533,6 +537,10 @@ class Service:
                 receipt = self.reporting.withdraw(c, ctx, previous, body["data"], correlation)
             elif action == "attach":
                 receipt = self.evidence.attach(c, ctx, previous, body["data"])
+            elif action == "export":
+                receipt = self.exports.request(c, ctx, previous, body["data"])
+            elif action == "cancel-export":
+                receipt = self.exports.cancel(c, ctx, previous, body["data"])
             else:
                 # A published form is revised by a new draft revision: the published version stays in
                 # the publication register and keeps serving collection until a successor publishes.

@@ -563,6 +563,38 @@ def create_app():
             auth.resolve(request), uuid(tenant), "CalculatedResult", uuid(obj)
         )
 
+    @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
+    def report_exports(request: Request, tenant: str, obj: str):
+        return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    def export_response(artifact):
+        return Response(
+            artifact["body"],
+            media_type=artifact["media_type"],
+            headers={
+                "ETag": '"' + artifact["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="' + artifact["filename"] + '"',
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/reports/{obj}/exports/{job}/download")
+    def report_export_download(request: Request, tenant: str, obj: str, job: str):
+        return export_response(
+            service.exports.download(
+                auth.resolve(request), uuid(tenant), uuid(obj), uuid(job), request.state.correlation
+            )
+        )
+
+    @app.get("/v1/tenants/{tenant}/publications/{obj}/download.{extension}")
+    def publication_download_export(request: Request, tenant: str, obj: str, extension: str):
+        if extension not in {"pdf", "xlsx", "docx"}:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
+        return export_response(
+            service.exports.publication(
+                auth.resolve(request), uuid(tenant), uuid(obj), extension.upper(), request.state.correlation
+            )
+        )
+
     @app.get("/v1/tenants/{tenant}/{route}")
     def listing(request: Request, tenant: str, route: str, limit: int = 50, cursor: str | None = None):
         if route in ADMIN_READS:

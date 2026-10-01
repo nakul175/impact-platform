@@ -40,14 +40,16 @@ REQUIRED_HEADERS = {
     "cache-control": lambda v: "no-store" in v,
     "referrer-policy": lambda v: v.lower() == "no-referrer",
 }
-SECRET_WORDS = ("password", "secret", "token", "dsn", "key")
+SECRET_WORDS = ("password", "passwd", "secret", "token", "dsn", "key", "credential")
 
 
 def secret_looking(name):
-    """A field name with a secret word as one of its words (db_password, apiKey, IMPACT_COOKIE_SECRET),
-    not merely inside another word: the service name "keycloak" is not a key."""
-    words = [w.lower() for w in re.findall(r"[A-Z]?[a-z0-9]+|[A-Z]+(?![a-z])", name)]
-    return any(w in SECRET_WORDS or (w.endswith("s") and w[:-1] in SECRET_WORDS) for w in words)
+    """True when a word of a field name names a secret: ``db_password``, ``signingKey``, ``api-key``,
+    ``apikey``, ``signing_keys``. Matching is per word (a word ending in a secret word, plural or
+    not), so the service name ``keycloak`` in the status file's ``services`` is not taken for a key."""
+    words = re.split(r"[^a-z0-9]+", re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", str(name)).lower())
+    stems = {w for word in words if word for w in (word, word[:-1] if word.endswith("s") else word)}
+    return any(stem.endswith(secret) for stem in stems for secret in SECRET_WORDS)
 
 
 class Smoke:

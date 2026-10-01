@@ -174,7 +174,8 @@ jobs:
     timeout-minutes: 45
     defaults:
       run:
-        # Explicit bash: -eo pipefail, so a failing check piped into tee fails its step.
+        # bash -eo pipefail: a check piped into tee (smoke, first sign-in, second run) fails the step
+        # when the check fails; the default `bash -e` took tee's exit status and hid failures.
         shell: bash
     env:
       APP_HOST: impact.test
@@ -222,6 +223,27 @@ jobs:
           sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/add-user.sh second@example.org Second Person > add-user.out
           grep -q "Account created for second@example.org" add-user.out
           rm -f add-user.out
+      - name: Secret rotation keeps the deployment healthy (rotate, smoke, retire, smoke)
+        run: |
+          fail() { echo "::error title=Secret rotation::$1"; for f in rotate-dry.json rotate.log rotate-status.json retire.log smoke-rotated.json smoke-retired.json; do [ -f "$f" ] && { echo "--- $f"; tail -n 40 "$f"; }; done; exit 1; }
+          rotate() { sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh "$@"; }
+          rotate rotate --family all --dry-run > rotate-dry.json 2>&1 || fail "dry run"
+          rotate rotate --family all --reason "CI rotation" > rotate.log 2>&1 || fail "rotate"
+          rotate status > rotate-status.json 2>&1 || fail "status"
+          python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert all(len(f['grace'])==1 for f in d['families'].values()), d" rotate-status.json || fail "one grace key per family"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-rotated.json || fail "smoke after rotation"
+          rotate retire --family all --all-previous --reason "CI retire" > retire.log 2>&1 || fail "retire"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-retired.json || fail "smoke after retirement"
+          # No secret value reaches the output: compare every value of secrets.env with what was printed.
+          sudo python3 -c "
+          import sys
+          printed = ''.join(open(p).read() for p in sys.argv[2:])
+          for line in open(sys.argv[1]):
+              value = line.partition('=')[2].strip()
+              for part in value.split(','):
+                  assert len(part) < 16 or part not in printed, 'a secret value was printed'
+          " "$IMPACT_HOME/secrets.env" rotate-dry.json rotate.log rotate-status.json retire.log || fail "a secret value was printed"
+          cat rotate.log retire.log
       - name: list-users.sh and reset-user.sh (console only)
         run: |
           sudo IMPACT_HOME="$IMPACT_HOME" deploy/list-users.sh | tee list-users.out

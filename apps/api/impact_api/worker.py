@@ -68,9 +68,10 @@ from cryptography.exceptions import InvalidTag
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
+from . import keyring
 from .delivery import (
     channel_code,
-    channel_code_hash,
+    code_secret,
     enqueue,
     invitation_token,
     invitation_url,
@@ -125,6 +126,9 @@ class WorkerSettings:
     public_origin: str
     invitation_secret: str = field(default="", repr=False)
     delivery_secret: str = field(default="", repr=False)
+    # Grace secrets after a rotation (v0.25 part A): comma- or space-separated, newest first.
+    invitation_secret_previous: str = field(default="", repr=False)
+    delivery_secret_previous: str = field(default="", repr=False)
     email_adapter: str = "synthetic"
     smtp_host: str = "127.0.0.1"
     smtp_port: int = 25
@@ -181,6 +185,10 @@ class WorkerSettings:
             raise ConfigurationError("DELIVERY_SECRETS_REQUIRED")
         if self.invitation_secret == self.delivery_secret:
             raise ConfigurationError("DELIVERY_SECRETS_NOT_DISTINCT")
+        try:
+            keyring.validate(self, families=("invitation", "delivery"))
+        except keyring.KeyringError:
+            raise ConfigurationError("INVALID_KEYRING") from None
         if self.email_adapter not in {"smtp", "synthetic"}:
             raise ConfigurationError("INVALID_EMAIL_ADAPTER")
         if production and (self.email_adapter != "smtp" or not self.public_origin.startswith("https://")):
@@ -655,7 +663,7 @@ class Worker:
         template, reference = row["template"], str(row["reference_id"])
         try:
             address = unseal_recipient(
-                self.s.delivery_secret, tenant, template, reference, row["recipient_sealed"]
+                keyring.ring(self.s, "delivery"), tenant, template, reference, row["recipient_sealed"]
             )
         except (InvalidTag, ValueError, TypeError):
             return ("dead", "RECIPIENT_UNREADABLE")
@@ -672,8 +680,20 @@ class Worker:
                 return ("supersede", "INVITATION_RESENT")
             if bytes(invitation["intended_email_hash"]) != email_hash(address):
                 return ("supersede", "RECIPIENT_CHANGED")
-            token = invitation_token(self.s.invitation_secret, tenant, reference, row["reference_generation"])
-            if bytes(invitation["token_hash"]) != hashlib.sha256(token.encode()).digest():
+            # The link is re-derived with whichever non-retired signing secret produced the stored
+            # token hash (current or in grace after a rotation); a retired secret matches none.
+            token = next(
+                (
+                    candidate
+                    for candidate in (
+                        invitation_token(secret, tenant, reference, row["reference_generation"])
+                        for secret in keyring.ring(self.s, "invitation").secrets()
+                    )
+                    if bytes(invitation["token_hash"]) == hashlib.sha256(candidate.encode()).digest()
+                ),
+                None,
+            )
+            if token is None:
                 return ("dead", "SIGNING_KEY_MISMATCH")
             subject, body = render(
                 template,
@@ -691,9 +711,10 @@ class Worker:
                 return ("supersede", "CHALLENGE_EXPIRED")
             if bytes(challenge["email_hash"]) != email_hash(address):
                 return ("supersede", "RECIPIENT_CHANGED")
-            code = channel_code(self.s.delivery_secret, reference)
-            if bytes(challenge["code_hash"]) != channel_code_hash(self.s.delivery_secret, reference, code):
+            secret = code_secret(keyring.ring(self.s, "delivery"), reference, challenge["code_hash"])
+            if secret is None:
                 return ("dead", "SIGNING_KEY_MISMATCH")
+            code = channel_code(secret, reference)
             subject, body = render(
                 template,
                 code=code,

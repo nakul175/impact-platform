@@ -295,8 +295,11 @@ def secret_values(path):
             for line in handle:
                 if "=" in line:
                     value = line.split("=", 1)[1].strip()
-                    if len(value) >= 8:
-                        values.append(value)
+                    # Grace secrets after a rotation (deploy/rotate-secrets.sh) are one value per
+                    # family, comma- or space-separated: scrub each part as well as the whole.
+                    for part in [value, *value.replace(",", " ").split()]:
+                        if len(part) >= 8 and part not in values:
+                            values.append(part)
     except OSError:
         pass
     return values

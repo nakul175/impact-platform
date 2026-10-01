@@ -443,7 +443,14 @@ def fake_site(overrides=None):
                 303, headers={"location": ISSUER + "/protocol/openid-connect/auth?" + query}
             )
         if path == "/deploy-status.json":
-            return httpx.Response(200, json={"commit": "abc", "result": "ok", "services": {}})
+            return httpx.Response(
+                200,
+                json={
+                    "commit": "abc",
+                    "result": "ok",
+                    "services": {"api": {"state": "running"}, "keycloak": {"state": "running"}},
+                },
+            )
         return httpx.Response(404)
 
     return httpx.MockTransport(handler)
@@ -506,6 +513,40 @@ def test_smoke_fails_each_broken_property(url, response, failed):
     report = run_smoke(fake_site({url: lambda request: response}))
     assert not report["passed"]
     assert [r["check"] for r in report["checks"] if r["status"] == "fail"] == [failed]
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "db_password",
+        "SMTP_PASSWORD",
+        "signingKey",
+        "api-key",
+        "apikey",
+        "signing_keys",
+        "clientSecret",
+        "IMPACT_DSN",
+        "refresh_token",
+        "credentials",
+    ],
+)
+def test_smoke_flags_secret_field_names(name):
+    assert smoke.secret_looking(name)
+    report = run_smoke(
+        fake_site(
+            {
+                "https://app.example.org/deploy-status.json": lambda request: httpx.Response(
+                    200, json={"commit": "a", "services": {"keycloak": {"detail": {name: "x"}}}}
+                )
+            }
+        )
+    )
+    assert [r["check"] for r in report["checks"] if r["status"] == "fail"] == ["deploy_status"]
+
+
+@pytest.mark.parametrize("name", ["keycloak", "services", "log_tail", "first_operator", "schema_version"])
+def test_smoke_does_not_flag_ordinary_status_fields(name):
+    assert not smoke.secret_looking(name)
 
 
 def test_smoke_skips_what_a_local_stack_does_not_have():

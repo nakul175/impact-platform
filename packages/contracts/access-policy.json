@@ -1,5 +1,5 @@
 {
-  "version": "1.14.0",
+  "version": "1.15.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5572,6 +5572,23 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "create_audit_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/audit-exports",
+      "capability": "audit.export",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "The request names a purpose; only a TENANT-scope audit.export grant without a purpose or with that purpose authorises it. Bounded window and page; identifiers, codes and digests only; the export and its manifest digest are recorded (audit event and receipt).",
+      "audit": true
     }
   ],
   "limits": {

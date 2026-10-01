@@ -96,6 +96,8 @@ def bootstrap(local, idp=None):
                 "import.cancel",
                 "evidence.attach",
                 "report.export",
+                # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
+                "audit.export",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",
@@ -258,6 +260,13 @@ def bootstrap(local, idp=None):
         "object_store_dir": str((local / "objects").resolve()),
         "evidence_scanner": "eicar-signature",
     }
+    # Grace secrets and the development signing key set written by scripts/rotate_secrets.py survive a
+    # re-run of this bootstrap (v0.25 part A); a fresh run directory has none.
+    for name in ["cookie_secret_previous", "invitation_secret_previous", "delivery_secret_previous"]:
+        if previous_config.get(name):
+            config[name] = previous_config[name]
+    if previous_config.get("dev_signing_keys") and config["dev_auth"] and not idp:
+        config["dev_signing_keys"] = previous_config["dev_signing_keys"]
     if idp:
         config.update(
             issuer=idp["issuer"],
@@ -281,6 +290,11 @@ def bootstrap(local, idp=None):
         "public_origin": config["public_origin"],
         "invitation_secret": config["invitation_secret"],
         "delivery_secret": config["delivery_secret"],
+        **{
+            name: config[name]
+            for name in ["invitation_secret_previous", "delivery_secret_previous"]
+            if config.get(name)
+        },
         "email_adapter": "synthetic",
         "synthetic_sink": str(local / "synthetic-mail.jsonl"),
         "require_unprivileged_db": config["require_unprivileged_db"],

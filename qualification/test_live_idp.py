@@ -38,6 +38,8 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from psycopg.rows import dict_row
 
+from impact_api.keyring import key_id
+
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_IDP") != "keycloak",
     reason="Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); "
@@ -488,11 +490,14 @@ def test_totp_step_up_allows_fresh_assurance_until_300_seconds(idp, browser):
     row = session_row(b)
     assert row["assurance_acr"] == idp["required_acr"]
     # The session's auth_time is exactly the provider's: the ID token is recovered from the sealed
-    # logout hint (key HMAC(cookie_secret, "logout-hint:" + session cookie), as Auth.hint_key).
+    # logout hint (key HMAC(cookie_secret, "logout-hint:" + session cookie), as Auth.hint_key). Since
+    # v0.25 part A the sealed value starts with a 7-byte header: 0x4B and the cookie key's 6-byte kid.
     key = hmac.new(
         idp["config"]["cookie_secret"].encode(), b"logout-hint:" + b.session.encode(), hashlib.sha256
     ).digest()
     sealed = bytes(row["provider_logout_hint"])
+    assert sealed[0] == 0x4B and sealed[1:7].hex() == key_id("cookie", idp["config"]["cookie_secret"])
+    sealed = sealed[7:]
     id_token = AESGCM(key).decrypt(sealed[:12], sealed[12:], b"impact-provider-logout-hint").decode()
     claims = jwt.decode(id_token, options={"verify_signature": False})
     assert claims["sid"] == row["provider_sid"] and claims["acr"] == idp["required_acr"]

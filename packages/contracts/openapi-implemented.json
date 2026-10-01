@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.14.0",
+    "version": "1.15.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -22207,6 +22207,128 @@
             }
           }
         ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/audit-exports": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_audit_export",
+        "summary": "create audit export",
+        "description": "One bounded page (at most 1000 events, window at most 366 days and not in the future) of the tenant's audit events ordered by occurrence, as JSON Lines with a SHA-256 hash chain, a manifest with the content digest and an HMAC-SHA256 platform seal. Requires audit.export at TENANT scope for the stated purpose and authentication within 300 seconds; the export is itself audited. Identifiers, codes and digests only: no payload, secret or sealed value is exported.",
+        "x-capability": "audit.export",
+        "responses": {
+          "200": {
+            "description": "Contract response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditExport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditExportRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.15.0",
+        "x-audit-required": true
       }
     }
   },
@@ -45098,6 +45220,226 @@
           "indicator_id",
           "programme_id",
           "points",
+          "next_cursor"
+        ]
+      },
+      "AuditExportRequestData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "window_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "window_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purpose": {
+            "enum": [
+              "SECURITY_REVIEW",
+              "INCIDENT_INVESTIGATION",
+              "REGULATORY_REQUEST",
+              "INTERNAL_AUDIT"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "window_start",
+          "window_end",
+          "purpose",
+          "reason"
+        ]
+      },
+      "AuditExportRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuditExportRequestData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "AuditExportManifest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "const": "impact-audit-export-v1"
+          },
+          "export_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "window_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "window_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purpose": {
+            "enum": [
+              "SECURITY_REVIEW",
+              "INCIDENT_INVESTIGATION",
+              "REGULATORY_REQUEST",
+              "INTERNAL_AUDIT"
+            ]
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "generated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "first_sequence": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "event_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "media_type": {
+            "const": "application/x-ndjson"
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "content_bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "chain_algorithm": {
+            "type": "string"
+          },
+          "chain_start": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "chain_end": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "seal": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "algorithm": {
+                "const": "HMAC-SHA256"
+              },
+              "key_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{12}$"
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "algorithm",
+              "key_id",
+              "value"
+            ]
+          }
+        },
+        "required": [
+          "format",
+          "export_id",
+          "tenant_id",
+          "window_start",
+          "window_end",
+          "purpose",
+          "generated_at",
+          "generated_by",
+          "page",
+          "event_count",
+          "complete",
+          "media_type",
+          "content_sha256",
+          "content_bytes",
+          "chain_algorithm",
+          "chain_start",
+          "chain_end",
+          "fields",
+          "seal"
+        ]
+      },
+      "AuditExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "manifest": {
+            "$ref": "#/components/schemas/AuditExportManifest"
+          },
+          "content": {
+            "type": "string"
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "manifest",
+          "content",
           "next_cursor"
         ]
       }

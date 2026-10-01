@@ -32,6 +32,7 @@ from .forms import Forms
 from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
 from .evidence import Evidence
 from .work import WorkCenter
+from .keyring import ring
 from .store import (
     context,
     authorize,
@@ -292,8 +293,11 @@ class Service:
         ).hex()
 
     def cursor(self, payload):
-        raw = base64.urlsafe_b64encode(canonical(payload)).rstrip(b"=")
-        mac = hmac.new(self.s.cookie_secret.encode(), raw, hashlib.sha256).hexdigest()
+        """'<payload>.<HMAC>' under the current cookie secret; the payload names the kid (v0.25
+        part A), so a cursor signed before a rotation keeps working while its secret is in grace."""
+        keys = ring(self.s, "cookie")
+        raw = base64.urlsafe_b64encode(canonical({**payload, "kid": keys.current_id})).rstrip(b"=")
+        mac = hmac.new(keys.current.encode(), raw, hashlib.sha256).hexdigest()
         return raw.decode() + "." + mac
 
     def cursor_key(self, bound, cursor):
@@ -303,15 +307,21 @@ class Service:
             return None
         try:
             raw, mac = cursor.split(".")
-            if len(cursor) > 4096 or not hmac.compare_digest(
-                mac, hmac.new(self.s.cookie_secret.encode(), raw.encode(), hashlib.sha256).hexdigest()
-            ):
+            if len(cursor) > 4096:
                 raise ValueError
             data = json.loads(base64.urlsafe_b64decode(raw + "=" * ((-len(raw)) % 4)))
+            kid = data.get("kid")
+            if kid is not None and not isinstance(kid, str):
+                raise ValueError
+            if not any(
+                hmac.compare_digest(mac, hmac.new(secret.encode(), raw.encode(), hashlib.sha256).hexdigest())
+                for secret in ring(self.s, "cookie").candidates(kid)
+            ):
+                raise ValueError
             if data["binding"] != bound or data["expires"] < time.time():
                 raise ValueError
             return data["key"]
-        except (ValueError, KeyError, TypeError):
+        except (ValueError, KeyError, TypeError, AttributeError):
             raise DomainError("INVALID_CURSOR", 400) from None
 
     def next_cursor(self, bound, key):

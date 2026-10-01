@@ -12,20 +12,23 @@ token, code or clear address:
   database keeps only a second, differently keyed HMAC of it for comparison;
 - an email address is AES-256-GCM sealed under a key derived from the delivery secret and bound to
   tenant, template and reference, so a sealed value cannot be replayed onto another intent.
+
+Since v0.25 part A the delivery and invitation secrets are keyrings (impact_api/keyring.py): a sealed
+address starts with the kid of the delivery key that sealed it, and values made under a secret in its
+grace window (address, link, code) are still opened or matched until that secret is retired.
 """
 
 import hashlib
 import hmac
-import secrets
 from datetime import datetime, timezone
 from json import dumps
 from urllib.parse import quote
 from uuid import uuid4
 
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from psycopg.types.json import Jsonb
 
 from .identity_profile import normalize_email
+from .keyring import Keyring
 
 # template -> channel; the database repeats this set in a CHECK constraint (migration 0018).
 TEMPLATES = {
@@ -48,19 +51,38 @@ def _binding(tenant, template, reference):
     return ("impact-delivery-v1:" + str(tenant) + ":" + template + ":" + str(reference)).encode()
 
 
+def _ring(secret):
+    """A delivery keyring from a Keyring or a single secret string."""
+    return secret if isinstance(secret, Keyring) else Keyring("delivery", secret)
+
+
+def _recipient_key(secret):
+    return _key(secret, "impact-delivery-recipient-v1")
+
+
 def seal_recipient(secret, tenant, template, reference, address):
-    nonce = secrets.token_bytes(12)
-    key = _key(secret, "impact-delivery-recipient-v1")
-    return nonce + AESGCM(key).encrypt(
-        nonce, normalize_email(address).encode(), _binding(tenant, template, reference)
+    """Header (marker + kid of the current delivery secret) + nonce + AES-GCM ciphertext; `secret`
+    is the delivery keyring or one secret (v0.25 part A adds the kid header)."""
+    return _ring(secret).seal(
+        _recipient_key, normalize_email(address).encode(), _binding(tenant, template, reference)
     )
 
 
 def unseal_recipient(secret, tenant, template, reference, sealed):
-    """The clear address; raises cryptography.exceptions.InvalidTag for a foreign or altered value."""
-    sealed = bytes(sealed)
-    key = _key(secret, "impact-delivery-recipient-v1")
-    return AESGCM(key).decrypt(sealed[:12], sealed[12:], _binding(tenant, template, reference)).decode()
+    """The clear address under any non-retired delivery secret (kid-tagged or legacy value); raises
+    cryptography.exceptions.InvalidTag for a foreign, altered or retired-key value."""
+    return _ring(secret).unseal(_recipient_key, sealed, _binding(tenant, template, reference)).decode()
+
+
+def code_secret(keys, challenge_id, code_hash):
+    """The non-retired delivery secret whose derived code matches the stored keyed hash of a
+    recovery challenge, or None (the challenge was made under a retired or foreign secret)."""
+    for secret in _ring(keys).secrets():
+        if hmac.compare_digest(
+            channel_code_hash(secret, challenge_id, channel_code(secret, challenge_id)), bytes(code_hash)
+        ):
+            return secret
+    return None
 
 
 def channel_code(secret, challenge_id):

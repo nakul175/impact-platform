@@ -2,7 +2,6 @@
 
 import hashlib
 import hmac
-import json
 import time
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
@@ -11,6 +10,7 @@ from psycopg.types.json import Jsonb
 from .administration_contracts import ADMIN_READS, COMMANDS
 from .contracts import validate
 from .domain import DomainError, unavailable
+from .keyring import ring
 from .delivery import enqueue, invitation_token, invitation_url, seal_recipient
 from .identity_profile import email_hash, masked_email
 from .store import context, authorize, scopes, load, write, audit, hash_data
@@ -159,15 +159,30 @@ class Administration:
             )
         self.bump(c, ctx, principal["principal_id"])
 
-    def invitation_token(self, tenant, invitation, generation):
-        return invitation_token(
-            self.s.invitation_secret or self.s.cookie_secret, tenant, invitation, generation
-        )
+    def invitation_ring(self):
+        return ring(self.s, "invitation", fallback="cookie")
 
-    def present_receipt(self, tenant, receipt):
+    def invitation_token(self, tenant, invitation, generation, c=None):
+        """The invitation token under the current signing secret. On a receipt replay (c given) the
+        token is re-derived with whichever non-retired secret produced the stored token hash, so a
+        replay after a rotation still returns the link that was issued (v0.25 part A)."""
+        keys = self.invitation_ring()
+        if c is not None:
+            row = c.execute(
+                "SELECT token_hash,generation FROM impact.member_invitation WHERE tenant_id=%s AND invitation_id=%s",
+                (str(tenant), str(invitation)),
+            ).fetchone()
+            if row and str(row["generation"]) == str(generation):
+                for secret in keys.secrets():
+                    token = invitation_token(secret, tenant, invitation, generation)
+                    if hashlib.sha256(token.encode()).digest() == bytes(row["token_hash"]):
+                        return token
+        return invitation_token(keys.current, tenant, invitation, generation)
+
+    def present_receipt(self, tenant, receipt, c=None):
         result = dict(receipt)
         if receipt.get("invitation_generation"):
-            token = self.invitation_token(tenant, receipt["object_id"], receipt["invitation_generation"])
+            token = self.invitation_token(tenant, receipt["object_id"], receipt["invitation_generation"], c)
             result["invitation_url"] = invitation_url(self.s.public_origin, tenant, token)
         return result
 
@@ -181,7 +196,7 @@ class Administration:
             return None
         if address is not None:
             sealed = seal_recipient(
-                self.s.delivery_secret, ctx.tenant_id, "MEMBER_INVITATION", invitation_id, address
+                ring(self.s, "delivery"), ctx.tenant_id, "MEMBER_INVITATION", invitation_id, address
             )
         else:
             row = c.execute(
@@ -249,7 +264,7 @@ class Administration:
             self.require_tenant_admin_scope(ctx, cap)
             old = self.receipt_row(c, ctx, operation, body, fingerprint)
             if old:
-                return self.present_receipt(tenant, old)
+                return self.present_receipt(tenant, old, c)
             previous = load(c, ctx, obj, lock=True) if obj else None
             if expected and (not previous or str(previous["head_revision"]) != body["expected_revision"]):
                 raise DomainError("CONFLICT_VERSION", 409)
@@ -691,22 +706,8 @@ class Administration:
             authorize(c, ctx, "list_" + route.replace("-", "_"))
             self.require_tenant_admin_scope(ctx, cap)
             binding = self.service.cursor_binding(ctx, route)
-            key = None
-            if cursor:
-                import base64
-
-                try:
-                    raw, mac = cursor.split(".")
-                    if len(cursor) > 4096 or not hmac.compare_digest(
-                        mac, hmac.new(self.s.cookie_secret.encode(), raw.encode(), hashlib.sha256).hexdigest()
-                    ):
-                        raise ValueError
-                    data = json.loads(base64.urlsafe_b64decode(raw + "=" * ((-len(raw)) % 4)))
-                    if data["binding"] != binding or data["expires"] < time.time():
-                        raise ValueError
-                    key = data["key"]
-                except (ValueError, KeyError, TypeError):
-                    raise DomainError("INVALID_CURSOR", 400) from None
+            # One cursor verifier for every listing: kid-aware during a cookie-secret grace window.
+            key = self.service.cursor_key(binding, cursor)
             if route == "access-scopes":
                 query = "SELECT scope_id AS object_id,scope_type,predicate_version FROM impact.scope_definition WHERE tenant_id=%s"
                 args = [tenant]

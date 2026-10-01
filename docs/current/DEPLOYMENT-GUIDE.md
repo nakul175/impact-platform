@@ -214,7 +214,7 @@ Revert the change on `main` (for example with GitHub's **Revert** button on the 
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` | loopback capture | Email provider (section 5) |
 | `BACKUP_HOUR_UTC` | 21 | Hour of the nightly dump |
 
-Server files: `/opt/impact/secrets.env` (generated secrets, never edit casually: changing a database password is applied on the next run, changing the cookie, invitation or delivery secret signs everyone out and invalidates outstanding invitations and codes), `/opt/impact/compose.env` (generated each run), `/opt/impact/status.json`, `/opt/impact/state/` (last successful commit, run log, admin actions), `/opt/impact/ca/` (CI only).
+Server files: `/opt/impact/secrets.env` (generated secrets, never edit casually: changing a database password is applied on the next run; rotate the cookie, invitation and delivery secrets only with `deploy/rotate-secrets.sh` (section 10), which keeps the old value in grace — editing them by hand invalidates outstanding CSRF tokens, cursors, invitation emails and codes at once), `/opt/impact/secrets.env.keys.json` (key ids and rotation events, no values), `/opt/impact/compose.env` (generated each run), `/opt/impact/status.json`, `/opt/impact/state/` (last successful commit, run log, admin actions), `/opt/impact/ca/` (CI only).
 
 ## 9. Known limits
 
@@ -226,3 +226,24 @@ Server files: `/opt/impact/secrets.env` (generated secrets, never edit casually:
 - **Sign-in:** self-hosted Keycloak on the same server; no refresh tokens are issued (as qualified in v0.15; for the owner to accept); key rotation, provider outage and account recovery beyond the console reset have not been exercised. The Keycloak administration console is reachable only from inside the server.
 - **Operators:** only the first operator is created automatically; a second operator, operator renewal and qualification renewal are manual database changes.
 - The image base versions (`python:3.12-slim-bookworm`, `node:24-bookworm-slim`, `postgres:17`, `caddy:2`) follow their tags and are refreshed at each build; Keycloak is pinned to 26.7.4; Python packages are pinned by SHA-256.
+
+## 10. Rotating the application secrets
+
+The API's cookie secret (CSRF tokens, list cursors, sealed logout hints, the audit-export seal), the invitation signing secret and the delivery secret (sealed recipient addresses, recovery codes) are versioned keyrings: one current secret plus grace secrets in `IMPACT_<FAMILY>_SECRET_PREVIOUS`. A rotation makes a new current secret and keeps the old one in grace, so sessions, open tabs, invitation emails and codes issued before it keep working; retiring the old secret later ends that. What each secret protects, what is and is not encrypted, and the effect of retiring early: `docs/current/KEY-AND-ENCRYPTION-REGISTER.md`.
+
+Run in the droplet console as root (no value is ever printed; the output names key ids):
+
+```
+sudo /opt/impact/repo/deploy/rotate-secrets.sh status
+sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family all --reason "scheduled rotation" --dry-run
+sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family all --reason "scheduled rotation"
+# after the grace window (cookie 1 day, invitation and delivery 8 days by default; --grace-days N):
+sudo /opt/impact/repo/deploy/rotate-secrets.sh retire --family all --expired --reason "grace ended"
+```
+
+`--family` is `cookie`, `invitation`, `delivery` or `all`; `retire` takes `--expired` (only keys whose recorded grace has ended), `--kid <kid>` or `--all-previous` (immediately; use after a suspected compromise, accepting the effects listed in the register). The script holds the deployment lock (an automatic update cannot interleave), rewrites `/opt/impact/secrets.env` and `/opt/impact/compose.env` atomically (mode 0600), appends the event to `/opt/impact/secrets.env.keys.json`, then recreates the `api` container (and the `worker` when the invitation or delivery family changed) and waits for them to be healthy. A recreate is a few seconds of unavailability on this single server; no session is lost. If a container does not come back, the previous secret is still in grace: fix the cause and run `deploy/update.sh`, or retire nothing until it is healthy.
+
+The CI job `container-stack` rotates every family, runs the smoke check, retires every grace key, runs the smoke check again and verifies that no secret value appeared in any output.
+
+Not covered: the identity provider's token-signing keys (rotate them in Keycloak: add a new `rsa-generated` key provider with a higher priority, keep the old one active until issued tokens expire, then disable it — the API verifies bearer tokens by `kid` through the realm JWKS without a restart; not yet exercised), database login passwords (edit `secrets.env` and run `update.sh`; no grace) and TLS certificates (Caddy renews them).
+

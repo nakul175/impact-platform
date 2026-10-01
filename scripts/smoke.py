@@ -25,6 +25,7 @@ the provider and status checks (for a local stack without them).
 
 import argparse
 import json
+import re
 import socket
 import ssl
 import sys
@@ -40,6 +41,13 @@ REQUIRED_HEADERS = {
     "referrer-policy": lambda v: v.lower() == "no-referrer",
 }
 SECRET_WORDS = ("password", "secret", "token", "dsn", "key")
+
+
+def secret_looking(name):
+    """A field name with a secret word as one of its words (db_password, apiKey, IMPACT_COOKIE_SECRET),
+    not merely inside another word: the service name "keycloak" is not a key."""
+    words = [w.lower() for w in re.findall(r"[A-Z]?[a-z0-9]+|[A-Z]+(?![a-z])", name)]
+    return any(w in SECRET_WORDS or (w.endswith("s") and w[:-1] in SECRET_WORDS) for w in words)
 
 
 class Smoke:
@@ -188,9 +196,13 @@ class Smoke:
                 for v in value:
                     yield from keys(v)
 
-        suspicious = [k for k in keys(document) if any(w in k.lower() for w in SECRET_WORDS)]
+        suspicious = [k for k in keys(document) if secret_looking(k)]
         assert not suspicious, "secret-looking fields: " + ", ".join(suspicious)
-        return {"commit": document.get("commit"), "result": document.get("result")}
+        return {
+            "commit": document.get("commit"),
+            "result": document.get("result"),
+            "alerts": [a.get("code") for a in document.get("alerts") or [] if isinstance(a, dict)],
+        }
 
     def run(self, provider=True, status=True):
         self.check("tls", self.tls)

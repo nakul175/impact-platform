@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+from time import monotonic
 from urllib.parse import parse_qs, quote, urlparse
 from uuid import UUID, uuid4
 import psycopg
@@ -25,6 +26,7 @@ from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
+from .ops_metrics import OpsMetrics, RequestMetrics
 from .version import BUILD, DOMAIN_API, SCHEMA
 from .dashboards import Dashboards
 
@@ -95,6 +97,8 @@ def create_app():
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
     delivery_operations = DeliveryOperations(lifecycle)
+    request_metrics = RequestMetrics()
+    ops_metrics = OpsMetrics(lifecycle, request_metrics)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
@@ -147,6 +151,7 @@ def create_app():
 
     @app.middleware("http")
     async def security(request, call_next):
+        started = monotonic()
         supplied = request.headers.get("x-correlation-id", "")
         try:
             request.state.correlation = str(UUID(supplied))
@@ -184,6 +189,7 @@ def create_app():
             )
         if s.secure:
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        request_metrics.observe(request.url.path, response.status_code, monotonic() - started)
         return response
 
     @app.get("/health/live")
@@ -232,6 +238,10 @@ def create_app():
     @app.get("/v1/platform/workers")
     def worker_directory(request: Request):
         return worker_status.directory(auth.resolve(request))
+
+    @app.get("/v1/platform/metrics")
+    def platform_metrics(request: Request):
+        return ops_metrics.summary(auth.resolve(request))
 
     @app.get("/v1/platform/deliveries")
     def delivery_attention(request: Request, tenant_id: str | None = None):

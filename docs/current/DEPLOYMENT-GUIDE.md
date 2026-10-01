@@ -73,7 +73,7 @@ Steps for the owner, once `deploy-status.json` shows `"result": "ok"`:
 2. Type: `sudo /opt/impact/repo/deploy/first-admin.sh` and press Enter.
 3. It prints the application address, the username (your email address) and the one-time password. Keep the console open.
 4. On your own computer open **https://168-144-78-191.sslip.io/**, choose **Sign in**, enter the email address and the one-time password.
-5. Keycloak asks you to set up an authenticator app: scan the QR code with Google Authenticator, Microsoft Authenticator or a similar app and type the 6-digit code. It then asks for a new password (at least 12 characters, not your email address).
+5. Keycloak asks you to set up an authenticator app: scan the QR code with Google Authenticator, Microsoft Authenticator or a similar app and type the 6-digit code. It then asks for a new password (at least 6 characters on this test server, not your email address).
 6. You are returned to the platform, signed in with two-factor assurance, and you see **Tenant lifecycle** as the platform operator. Close the console.
 
 Running `first-admin.sh` again after step 5 shows nothing (the one-time password is no longer valid). If you forget your password: `sudo /opt/impact/repo/deploy/first-admin.sh --reset` issues a new one-time password; if you lose the authenticator app: `--reset-totp` (also removes the enrolled app, so you enrol again). Five wrong passwords in a row lock the account for a while (brute-force protection), increasing up to 15 minutes.

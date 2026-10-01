@@ -71,7 +71,7 @@ cat <<EOF
   3. The sign-in service then asks for two things (in its own order):
      - an authenticator app: scan the QR code with Google Authenticator, Microsoft
        Authenticator or similar and type the 6-digit code; every sign-in asks for a code;
-     - a new password (12 characters or more, not your e-mail address); it replaces the
+     - a new password (6 characters or more on this test server, not your e-mail address); it replaces the
        temporary one at once.
   4. You land in the platform as the platform operator (Tenant lifecycle).
 

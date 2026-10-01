@@ -234,7 +234,9 @@ export function EvidencePanel({
           {error}
         </div>
       )}
-      {notice && <p role="status">{notice}</p>}
+      <p role="status" className={notice ? undefined : "sr-only"}>
+        {notice}
+      </p>
       {items.length === 0 ? (
         <p className="muted">No evidence is attached to this record.</p>
       ) : (

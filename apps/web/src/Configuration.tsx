@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { tabListKeys } from "./a11y";
 
 // Mirrors domain.METHODS for form guidance only; the server is authoritative.
 const METHODS: Record<string, [string[], string[]]> = {
@@ -238,6 +239,7 @@ export function ConfigurationPanel({
         className="setup-tabs"
         role="tablist"
         aria-label="Measurement configuration"
+        onKeyDown={tabListKeys}
       >
         {Object.entries(tabs).map(([key, label]) => (
           <button

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { usePendingOperations } from "./operations";
+import { tabListKeys } from "./a11y";
 
 type Row = {
   object_id: string;
@@ -295,7 +296,12 @@ export function PlanningPanel({
           </select>
         </label>
       </div>
-      <div className="setup-tabs" role="tablist" aria-label="Results planning">
+      <div
+        className="setup-tabs"
+        role="tablist"
+        aria-label="Results planning"
+        onKeyDown={tabListKeys}
+      >
         {Object.entries(tabs).map(([key, label]) => (
           <button
             key={key}

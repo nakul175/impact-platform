@@ -146,7 +146,7 @@ export function ReportExports({
             {current.map((item) => (
               <tr key={item.job_id}>
                 <td>{item.format}</td>
-                <td>
+                <td aria-live="polite">
                   {item.state}
                   {item.last_error_class
                     ? " (" + item.last_error_class.replaceAll("_", " ") + ")"

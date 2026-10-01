@@ -50,6 +50,7 @@ browser:
 	$(PY) scripts/run.py bootstrap-browser
 	$(PY) scripts/run.py recovery-browser
 	$(PY) scripts/run.py renewal-browser
+	$(PY) scripts/run.py a11y-browser
 lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy

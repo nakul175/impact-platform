@@ -75,6 +75,7 @@ BROWSER_MODES = {
     "bootstrap-browser": "bootstrap-check.mjs",
     "recovery-browser": "recovery-check.mjs",
     "renewal-browser": "renewal-check.mjs",
+    "a11y-browser": "a11y-check.mjs",
     "idp-browser": "idp-check.mjs",
 }
 # Browser modes that sign in through the live provider rather than the development login.

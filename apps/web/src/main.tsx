@@ -659,6 +659,16 @@ function Workspace({
   const [title, description] = titles[route];
   return (
     <>
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("main-content")?.focus();
+        }}
+      >
+        Skip to main content
+      </a>
       <aside className="sidebar">
         <a className="brand" href="/">
           impact<span>.</span>
@@ -715,7 +725,7 @@ function Workspace({
             </button>
           </div>
         </header>
-        <main className="content">
+        <main className="content" id="main-content" tabIndex={-1}>
           {development && (
             <div className="demo-note">
               <span /> Development workspace · synthetic sample data
@@ -764,11 +774,10 @@ function Workspace({
               )}
             </div>
           </div>
-          {toast && (
-            <div className="success" role="status">
-              ✓ {toast}
-            </div>
-          )}
+          {/* Kept mounted so assistive technology announces each new message. */}
+          <div className={toast ? "success" : "sr-only"} role="status">
+            {toast && "✓ " + toast}
+          </div>
           <ErrorBox error={error} />
           {route === "workspace-settings" ? (
             <WorkspaceSettings
@@ -877,7 +886,7 @@ function Workspace({
                 </div>
                 <div className="metric-note">
                   <span className="eyebrow">BUILT ON EVIDENCE</span>
-                  <h3>Every revision tells a story.</h3>
+                  <h2>Every revision tells a story.</h2>
                   <p>
                     Decisions and results stay connected to their source
                     records.
@@ -916,12 +925,17 @@ function Workspace({
                 </div>
                 <div className="table-wrap">
                   <table>
+                    <caption className="sr-only">
+                      {nav.find((x) => x[0] === route)?.[1]} records
+                    </caption>
                     <thead>
                       <tr>
-                        <th>{route === "memberships" ? "Member" : "Record"}</th>
-                        <th>Status</th>
-                        <th>Last updated</th>
-                        <th>
+                        <th scope="col">
+                          {route === "memberships" ? "Member" : "Record"}
+                        </th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Last updated</th>
+                        <th scope="col">
                           <span className="sr-only">Open record</span>
                         </th>
                       </tr>
@@ -1072,7 +1086,16 @@ function Dialog({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
+    // The modal dialog keeps focus inside itself; when it unmounts, focus returns to the
+    // control that opened it (if that control is still on the page).
+    const opener =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
     ref.current?.showModal();
+    return () => {
+      if (opener?.isConnected) opener.focus();
+    };
   }, []);
   return (
     <dialog

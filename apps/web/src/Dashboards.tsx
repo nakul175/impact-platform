@@ -443,6 +443,7 @@ export function DashboardsPanel({
             <p className="muted">No indicators in this programme yet.</p>
           ) : (
             <div className="dashboard-grid">
+              <h2 className="sr-only">Indicators</h2>
               {view.indicators.map((c: any) => (
                 <article
                   key={c.indicator_id}

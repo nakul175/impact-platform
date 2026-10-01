@@ -5,6 +5,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { tabListKeys } from "./a11y";
 
 type Requester = (path: string, options?: RequestInit) => Promise<any>;
 type Item = {
@@ -111,6 +112,7 @@ export function AdministrationPanel({
         className="admin-tabs"
         role="tablist"
         aria-label="Access administration"
+        onKeyDown={tabListKeys}
       >
         {sections
           .filter((s) => allowed(s[2]))

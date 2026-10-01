@@ -79,6 +79,7 @@ BROWSER_MODES = {
     "evidence-browser": "evidence-check.mjs",
     "export-browser": "export-check.mjs",
     "requeue-browser": "requeue-check.mjs",
+    "a11y-browser": "a11y-check.mjs",
     "idp-browser": "idp-check.mjs",
 }
 # Browser modes that sign in through the live provider rather than the development login.

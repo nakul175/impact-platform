@@ -235,7 +235,9 @@ export function EvidencePanel({
           {error}
         </div>
       )}
-      {notice && <p role="status">{notice}</p>}
+      <p role="status" className={notice ? undefined : "sr-only"}>
+        {notice}
+      </p>
     </>
   );
   return (

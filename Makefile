@@ -54,6 +54,7 @@ browser:
 	$(PY) scripts/run.py evidence-browser
 	$(PY) scripts/run.py export-browser
 	$(PY) scripts/run.py requeue-browser
+	$(PY) scripts/run.py a11y-browser
 lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy

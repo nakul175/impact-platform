@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a typed composite foreign key, `submission_current.observation_ids/quarantine_reason/unit_key`, and the insert-only, tenant-fenced register `form_publication`, SELECT and INSERT for `impact_app` only. 0.19.0 added 0020: nullable `indicator_definition_current.disaggregation` and `calculated_result_current.disaggregation` with jsonb type CHECKs. 0.18.0 added 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All twenty-one checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 30 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `import_job_current` with typed composite foreign keys and the insert-only, tenant-fenced `import_unit_register`, SELECT and INSERT for `impact_app` only; 0023: upload, blob and evidence file columns, the guard triggers `file_blob_guard` and `upload_session_guard`, and the insert-only registers `evidence_attachment`, `evidence_access` and `upload_event`; 0024: disclosure export columns, `report_export`, the insert-only `report_export_artifact`, `report_publication_export` and `report_export_access`, owner-only `worker_export_directory` policies and the SECURITY DEFINER `worker_export_tenants`, with the worker's export grants; 0025: the narrowing of `impact_worker` to the tables the worker touches and the SECURITY DEFINER functions `operator_delivery_attention` and `operator_requeue_delivery` for `impact_platform`; 0026: the narrowing of `impact_worker` on `job`, `job_item`, `report_current` and `report_template_current`. 0.20.0 added 0021: `form_current.programme_id` with a typed composite foreign key, `submission_current.observation_ids/quarantine_reason/unit_key`, and the insert-only, tenant-fenced register `form_publication`, SELECT and INSERT for `impact_app` only. 0.19.0 added 0020: nullable `indicator_definition_current.disaggregation` and `calculated_result_current.disaggregation` with jsonb type CHECKs. 0.18.0 added 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All twenty-six checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 1 October 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 
@@ -31,6 +31,7 @@ Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a ty
 | 0023_evidence_objects.sql | aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc |
 | 0024_report_exports.sql | 2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f |
 | 0025_worker_grants.sql | e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047 |
+| 0026_worker_job_grants.sql | c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310 |
 
 ## Executable schema definitions
 
@@ -3593,5 +3594,30 @@ BEGIN
 END $$;
 REVOKE ALL ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) TO impact_platform;
+COMMIT;
+```
+
+### 0026 worker job grants
+
+Source: infrastructure/migrations/0026_worker_job_grants.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Worker privileges, part 2 (integration of builds 0.21.0-0.24.0, October 2026).
+-- Migration 0025 left four tables of migration 0003's SELECT/INSERT/UPDATE grant to impact_worker
+-- untouched until report exports (0024) had settled the worker's job privileges. 0024 grants the
+-- worker exactly what the REPORT_EXPORT job class and the cancellation pass use (worker.py):
+--   job        SELECT, UPDATE  (claim, lease renewal, fenced outcome, cancellation before start)
+--   job_item   SELECT, INSERT  (artifact and cancellation outcomes; never updated)
+-- The worker never inserts a job (jobs are requested by the application) and never reads or writes
+-- report_current or report_template_current (an export reads the pinned package through
+-- object_revision and report_package_binding). Those privileges are revoked here; a REVOKE removes
+-- only what it names, so the grants of 0024 that the worker uses stay in place. impact_app is not
+-- touched.
+REVOKE INSERT ON impact.job FROM impact_worker;
+REVOKE UPDATE ON impact.job_item FROM impact_worker;
+REVOKE ALL ON impact.report_current FROM impact_worker;
+REVOKE ALL ON impact.report_template_current FROM impact_worker;
 COMMIT;
 ```

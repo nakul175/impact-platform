@@ -1,10 +1,10 @@
 # Current implemented API inventory
 
-Build 0.20.0. The domain contract moves from 1.12.0 (150 operations; 1.12.0 in build 0.19.0 extended schemas only) to 1.13.0 with ten added operations, 160 in all: forms (create, patch, `action_forms_submit` for independent review, `action_forms_publish`, `get_form_published`) and submissions (list, create, get, patch, `action_submissions_submit`) — the last ten rows of the domain table; `list_forms` and `get_forms` were already implemented read routes, and approval uses the existing workflow actions. `access-policy.json` has 309 policy rows (two added: `action_forms_submit` and `get_form_published`) and 219 capabilities, of which the 160 implemented operations use 100 non-purpose capabilities, all delegable in custom roles (92 before). `action_forms_publish` now requires fresh assurance (300 s; 42 operations do), and `action_submissions_submit` declares `additional_capabilities_when_bound` (a submission of a form with indicator bindings also needs `observation.submit` at TENANT scope and the reads of a manual observation submit). Build 0.18.0 added twelve operations (frameworks, `framework_completeness`, targets, `programme_targets_vs_actuals`). The control-plane contract is unchanged since build 0.16.0 at 1.4.0, 31 operations; 0.16.0 added three: `recovery_contact_channel_request` and `recovery_contact_channel_confirm` (nominee-only verification of the recovery contact's registered email address by a single-use code) and the operator-only `list_workers` (worker heartbeats, no tenant data). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"); build 0.15.0 added `POST /auth/backchannel-logout` (live provider only; 404 otherwise) and `logout_url` on `POST /auth/logout`. The worker's `delivery.requested` outbox events are internal delivery intents and are not part of `event.schema.json`. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory.
+Build 0.24.0 (integration of v0.21–v0.24 and the October 2026 quality work). The domain contract moves from 1.13.0 (160 operations) to 1.14.0 with 26 added operations, 186 in all — the rows after `action_submissions_submit` in the domain table: import batches (v0.21: `list_imports`, `get_imports`, `create_imports`, `patch_imports`, `action_imports_preview`, `action_imports_commit` — which also needs `observation.submit` at TENANT scope, declared as `additional_capabilities` — and `action_imports_cancel`); uploads and evidence (v0.22: `create_upload`, `get_uploads`, `put_upload_content` — the only route whose body is not JSON, `application/octet-stream` up to 25,000,000 bytes and never more than the declared size — `complete_upload`, `create_evidence`, `patch_evidence`, `action_evidence_attach`, `read_evidence_content` (mediated, audited download) and the citation reads `list_observation_evidence` and `list_calculated_result_evidence`); report exports (v0.23: `action_reports_export`, `action_reports_cancel_export`, `list_report_exports`, `download_report_export` and the recipient downloads `download_controlled_publication_pdf|xlsx|docx`); dashboards (v0.24: `programme_dashboard`, query `period_id` required, and `indicator_dashboard_series`, both `dashboards.read`, signed cursors, `limit` 1–100). Every added operation carries `x-contract-version` 1.14.0. `access-policy.json` has 323 policy rows and 223 capabilities (`imports.draft.create` and `imports.draft.edit` among the additions); the 186 implemented operations use 115 non-purpose capabilities, all delegable in custom roles (100 before); 42 operations require fresh assurance and 16 are purpose-required, as before. The control-plane contract moves from 1.4.0 (31 operations) to 1.5.0 with three operator-only operations, 34 in all: `list_delivery_attention` (`GET /v1/platform/deliveries`: DEAD or suspension-held dispatchable rows, at most 50, no address, reference, token or payload) and `delivery_requeue` / `delivery_release` (`POST /v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/requeue|release`, fresh assurance, reason required, `expected_revision` the lease generation, Active tenants only). Domain and control-plane operations are distinct. Authentication (`/auth/*`) and health (`/health/*`) routes are outside the versioned contracts, as before; they are listed in ../IMPLEMENTATION.md ("Supplementary implemented routes"). The worker's `delivery.requested` outbox events are internal delivery intents and are not part of `event.schema.json`; report-export jobs are rows in `impact.job`, not events. A route or method absent from the contract answers `RESOURCE_UNAVAILABLE` 404. No broad-design operation is implied by this inventory. Earlier builds: 0.20.0 added ten operations (forms and submissions; 1.13.0, 160), 0.18.0 twelve (frameworks, completeness, targets, targets versus actuals), 0.16.0 three control-plane operations (channel request and confirm, `list_workers`).
 
 ## Domain API
 
-Contract version 1.13.0. Source: packages/contracts/openapi-implemented.json.
+Contract version 1.14.0. Source: packages/contracts/openapi-implemented.json.
 
 | Method | Path | Operation |
 | --- | --- | --- |
@@ -168,10 +168,36 @@ Contract version 1.13.0. Source: packages/contracts/openapi-implemented.json.
 | GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | get_submissions |
 | PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | patch_submissions |
 | POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | action_submissions_submit |
+| GET | `/v1/tenants/{tenant_id}/imports` | list_imports |
+| POST | `/v1/tenants/{tenant_id}/imports` | create_imports |
+| GET | `/v1/tenants/{tenant_id}/imports/{object_id}` | get_imports |
+| PATCH | `/v1/tenants/{tenant_id}/imports/{object_id}` | patch_imports |
+| POST | `/v1/tenants/{tenant_id}/evidence` | create_evidence |
+| PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | patch_evidence |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview` | action_imports_preview |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit` | action_imports_commit |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel` | action_imports_cancel |
+| GET | `/v1/tenants/{tenant_id}/uploads/{object_id}` | get_uploads |
+| POST | `/v1/tenants/{tenant_id}/uploads` | create_upload |
+| PUT | `/v1/tenants/{tenant_id}/uploads/{object_id}/content` | put_upload_content |
+| POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | complete_upload |
+| GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | read_evidence_content |
+| POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | action_evidence_attach |
+| GET | `/v1/tenants/{tenant_id}/observations/{object_id}/evidence` | list_observation_evidence |
+| GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | list_calculated_result_evidence |
+| POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/export` | action_reports_export |
+| POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/cancel-export` | action_reports_cancel_export |
+| GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports` | list_report_exports |
+| GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download` | download_report_export |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.pdf` | download_controlled_publication_pdf |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.xlsx` | download_controlled_publication_xlsx |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.docx` | download_controlled_publication_docx |
+| GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/dashboard` | programme_dashboard |
+| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | indicator_dashboard_series |
 
 ## Privileged control plane
 
-Contract version 1.4.0 (31 operations). Source: packages/contracts/openapi-platform.json.
+Contract version 1.5.0 (34 operations). Source: packages/contracts/openapi-platform.json.
 
 | Method | Path | Operation |
 | --- | --- | --- |
@@ -206,3 +232,6 @@ Contract version 1.4.0 (31 operations). Source: packages/contracts/openapi-platf
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/cancel` | authority_renewal_cancel |
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/reject` | authority_renewal_reject |
 | GET | `/v1/platform/workers` | list_workers |
+| GET | `/v1/platform/deliveries` | list_delivery_attention |
+| POST | `/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/release` | delivery_release |
+| POST | `/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/requeue` | delivery_requeue |

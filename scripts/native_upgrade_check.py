@@ -1,6 +1,7 @@
 """Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
 
-LATEST is the number of migration files (21 since build 0.20.0) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (26 since build 0.24.0; scripts/migrate.py refuses a numbering
+gap) and BASELINE is LATEST - 1. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row

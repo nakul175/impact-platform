@@ -9,7 +9,7 @@ catalogue = json.loads((ROOT / "specification/contracts/fsd-requirements.json").
 groups = [
     (
         "FR-TEN-001",
-        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14). v0.16 (qualification/test_worker.py, test_native_worker.py) adds a worker that honours the suspension hold on queued deliveries: a row carrying held_at (what quiesce_tenant sets on suspension; the test sets it directly on an Active tenant) is never sent, a held row whose lease ends returns to PENDING and stays held, and nothing is re-queued on reactivation (no automatic replay, as the validation text requires; no operator re-queue exists); the worker lists Provisioning, Active and Suspended tenants and runs its reminder and cancellation scans for Active tenants only; queued jobs whose cancellation was requested become Cancelled and a started job is recorded NOT_CANCELLED_STARTED, exercised only with test-inserted jobs because no job class is executed; a recovery contact's nominee can confirm the registered email address with a single-use code (15 minutes, 5 attempts, 3 requests per hour), recorded as evidence only — it changes neither readiness nor what a contact may do. Still open: source-credential rechecks on reactivation, a real import and report schedule for the acceptance scenario, support and exit access, closure, and the external email provider.",
+        "v0.10–0.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14). v0.16 (qualification/test_worker.py, test_native_worker.py) adds a worker that honours the suspension hold on queued deliveries: a row carrying held_at (what quiesce_tenant sets on suspension; the test sets it directly on an Active tenant) is never sent, a held row whose lease ends returns to PENDING and stays held, and nothing is re-queued on reactivation (no automatic replay, as the validation text requires; no operator re-queue exists); the worker lists Provisioning, Active and Suspended tenants and runs its reminder and cancellation scans for Active tenants only; queued jobs whose cancellation was requested become Cancelled and a started job is recorded NOT_CANCELLED_STARTED, exercised only with test-inserted jobs because no job class is executed; a recovery contact's nominee can confirm the registered email address with a single-use code (15 minutes, 5 attempts, 3 requests per hour), recorded as evidence only — it changes neither readiness nor what a contact may do. Quality 2026-10 (qualification/test_delivery_requeue.py) adds an operator-only, fresh-assurance, reasoned re-queue of a DEAD delivery and release of a held one for an Active tenant, each a separate recorded platform decision (platform_event and receipt), refused while the tenant is Suspended; nothing is replayed automatically. Still open: source-credential rechecks on reactivation, a real import and report schedule for the acceptance scenario, support and exit access, closure, and the external email provider.",
         [
             "apps/api/impact_api/tenant_lifecycle.py",
             "qualification/test_tenant_lifecycle.py",
@@ -32,6 +32,9 @@ groups = [
             "qualification/test_worker.py",
             "qualification/test_native_worker.py",
             "docs/RELEASE-0.16.md",
+            "apps/api/impact_api/delivery_operations.py",
+            "qualification/test_delivery_requeue.py",
+            "docs/QUALITY-2026-10.md",
         ],
     ),
     (
@@ -139,13 +142,17 @@ groups = [
     ),
     (
         "FR-RPT-003 FR-RPT-005 FR-RPT-007 FR-RPT-009 FR-RPT-010",
-        "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+        "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open.",
         [
             "apps/api/impact_api/reporting.py",
             "qualification/test_reporting.py",
             "qualification/test_publication.py",
             "docs/RELEASE-0.6.md",
             "docs/RELEASE-0.8.md",
+            "apps/api/impact_api/exports.py",
+            "apps/api/impact_api/export_render.py",
+            "qualification/test_report_exports.py",
+            "docs/RELEASE-0.23.md",
         ],
     ),
     (
@@ -335,7 +342,7 @@ groups = [
     ),
     (
         "FR-ANA-003",
-        "v0.18 implements one comparison view, the targets-versus-actuals table (GET /programmes/{id}/targets-vs-actuals and the Targets vs actuals tab), binding the actual, the baseline and the selected target revision with its direction, basis (original or revised), binding version and period; the actual's source is shown (OFFICIAL only from the programme's own locked snapshot, PROVISIONAL from its own calculations) and overachievement stays visible. Validation and acceptance exercised (test_planning_unit.py::test_zero_target_and_zero_baseline_are_undefined_not_divided, test_negative_baseline_has_no_percentage_change, test_lower_target_reports_signed_deviation_without_inverting_success; test_planning.py::test_targets_baselines_milestones_and_provisional_progress, test_period_close_pins_targets_and_uses_official_result): a zero or negative baseline gives an Undefined percentage change (NON_POSITIVE_BASELINE), never an infinite trend, and a lower-is-better target of 10 with actual 8 shows ACHIEVED and the declared deviation without inverting success. Not covered: charts, widgets and axis scales, cumulative curves (no cumulative target exists, so the cumulative-to-flow conversion rule is untested), and time semantics beyond one period.",
+        "v0.18 implements one comparison view, the targets-versus-actuals table (GET /programmes/{id}/targets-vs-actuals and the Targets vs actuals tab), binding the actual, the baseline and the selected target revision with its direction, basis (original or revised), binding version and period; the actual's source is shown (OFFICIAL only from the programme's own locked snapshot, PROVISIONAL from its own calculations) and overachievement stays visible. Validation and acceptance exercised (test_planning_unit.py::test_zero_target_and_zero_baseline_are_undefined_not_divided, test_negative_baseline_has_no_percentage_change, test_lower_target_reports_signed_deviation_without_inverting_success; test_planning.py::test_targets_baselines_milestones_and_provisional_progress, test_period_close_pins_targets_and_uses_official_result): a zero or negative baseline gives an Undefined percentage change (NON_POSITIVE_BASELINE), never an infinite trend, and a lower-is-better target of 10 with actual 8 shows ACHIEVED and the declared deviation without inverting success. v0.24 adds the dashboard comparison: the target pinned by the snapshot, status against the official value naming which value it compared (compared_with), a zero-baseline axis in the trend chart and an Undefined status for a zero target or an UNDEFINED result (test_dashboards.py::test_official_pooled_ratio_from_the_programme_snapshot, test_undefined_result_is_never_zero). Not covered: widgets and configurable axis scales, cumulative curves (no cumulative target exists, so the cumulative-to-flow conversion rule is untested), revised-target labelling on charts beyond the basis text, and time semantics beyond one period.",
         [
             "apps/api/impact_api/planning.py",
             "apps/api/impact_api/planning_contracts.py",
@@ -346,6 +353,12 @@ groups = [
             "docs/evidence/planning-browser-tests.json",
             "docs/evidence/application-tests.xml",
             "docs/RELEASE-0.18.md",
+            "apps/api/impact_api/dashboards.py",
+            "apps/api/impact_api/dashboard_contracts.py",
+            "qualification/test_dashboards.py",
+            "apps/web/src/Dashboards.tsx",
+            "tools/browser/dashboard-check.mjs",
+            "docs/RELEASE-0.24.md",
         ],
     ),
     (
@@ -460,12 +473,119 @@ groups = [
             "docs/RELEASE-0.19.md",
         ],
     ),
+    (
+        "FR-DAT-001",
+        "v0.21 ingests a bounded tabular file carried in the import batch (CSV text or the first worksheet of an XLSX read with the standard library; at most 192 KiB of content, 500 rows and 500 observations): every cell is read as text, so leading zeros (00123), a 20-digit identifier and a quoted comma are kept exactly and shown raw beside their interpretation; dates are never guessed (03/04/2026 without a declared pattern is EVENT_AT_INVALID, read exactly with DD/MM/YYYY); a formula in a mapped column is quarantined; an unreadable archive or an XML DOCTYPE is refused before parsing (qualification/test_import.py::test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode, test_dimension_column_and_xlsx_source). Not covered: encoding, delimiter, sheet and header-row choice, locale-aware numbers, a formula mode other than reject, upload sessions and worker execution for larger files.",
+        [
+            "apps/api/impact_api/imports.py",
+            "apps/api/impact_api/import_contracts.py",
+            "infrastructure/migrations/0022_import_quality.sql",
+            "qualification/test_import.py",
+            "apps/web/src/Imports.tsx",
+            "docs/RELEASE-0.21.md",
+        ],
+    ),
+    (
+        "FR-DAT-002",
+        "v0.21 maps source columns by header name to active manual indicator instances with role (VALUE, NUMERATOR, DENOMINATOR), stated unit, bounds, dimension columns and declared missing-value tokens, and previews every row before anything is written; a renamed or missing mapped column refuses the whole batch (MAPPING_COLUMN_MISSING) rather than shifting values, unit and role mismatches are refused, dropped columns are listed and an edit discards the staged preview (test_import.py::test_ratio_components_dimensions_and_mapping_refusals, test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode). Not covered: versioned, independently reviewed mapping objects (the mapping lives in the batch), transformations and AI-suggested mappings.",
+        [
+            "apps/api/impact_api/imports.py",
+            "apps/api/impact_api/import_contracts.py",
+            "infrastructure/migrations/0022_import_quality.sql",
+            "qualification/test_import.py",
+            "apps/web/src/Imports.tsx",
+            "docs/RELEASE-0.21.md",
+        ],
+    ),
+    (
+        "FR-DAT-004",
+        "v0.21 classifies every staged row ACCEPTED, QUARANTINED with reason codes or DUPLICATE with reconciled counts; an atomic batch commits nothing when any row is not accepted, a partial batch commits exactly its accepted rows, and commit recomputes the staged outcome under the tenant lock and refuses a stale or mismatched preview hash; accepted rows become IMPORT-namespace observations submitted into the existing independent review in the same transaction (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview, test_access_tenancy_independence_and_reserved_namespace). Not covered: the accepted-update versus unchanged-duplicate distinction, rejected versus quarantined outcomes, keyed update and controlled replacement (FR-DAT-003), and retrying corrected rows as a linked batch.",
+        [
+            "apps/api/impact_api/imports.py",
+            "apps/api/impact_api/import_contracts.py",
+            "infrastructure/migrations/0022_import_quality.sql",
+            "qualification/test_import.py",
+            "apps/web/src/Imports.tsx",
+            "docs/RELEASE-0.21.md",
+        ],
+    ),
+    (
+        "FR-DQ-003",
+        "v0.21 detects exact duplicates on declared business keys: the same unit twice in one batch (DUPLICATE_IN_BATCH), the same unit, indicator and period already committed by an import, backed by the insert-only import_unit_register (DUPLICATE_UNIT_PERIOD), a form observation for the same unit and indicator in the period (DUPLICATE_SOURCE_KEY), and a duplicate arising between preview and commit (PREVIEW_STALE) (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview; the register's fence and insert-only grants natively in test_native_import_unit_register_is_fenced_and_insert_only). Not covered: fuzzy matching, a review decision on a suspected duplicate, merge and unmerge, and comparison with manual observations.",
+        [
+            "apps/api/impact_api/imports.py",
+            "apps/api/impact_api/import_contracts.py",
+            "infrastructure/migrations/0022_import_quality.sql",
+            "qualification/test_import.py",
+            "apps/web/src/Imports.tsx",
+            "docs/RELEASE-0.21.md",
+        ],
+    ),
+    (
+        "FR-DQ-007",
+        "v0.21 flags anomalies as warnings only: a modified z-score (threshold 3.5) against the indicator's 200 most recent approved PRESENT values, evaluated only with at least five values and a non-zero MAD; method, version and evaluated indicators are recorded on the batch, a flagged batch commits only with an explicit acceptance recorded on the batch, and the value is never changed or blocked (test_import.py::test_anomaly_warns_without_blocking). Not covered: suggested-state findings with an owner, confirm/dismiss/defer decisions and feedback, seasonality and period awareness.",
+        [
+            "apps/api/impact_api/imports.py",
+            "apps/api/impact_api/import_contracts.py",
+            "infrastructure/migrations/0022_import_quality.sql",
+            "qualification/test_import.py",
+            "apps/web/src/Imports.tsx",
+            "docs/RELEASE-0.21.md",
+        ],
+    ),
+    (
+        "FR-EVD-001",
+        "v0.22 stores evidence files in a private, content-addressed object store that is never served directly, backs evidence draft revisions by a CLEAN upload or an https reference with server-owned file name, type, size and digest, records citations of exact evidence revisions from observation and calculated-result revisions in the insert-only evidence_attachment register, and serves content only through a mediated, re-authorised, audited download (qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download exercises FT-EVD-001: version 1 is attached to an observation, version 2 is uploaded, and the observation still cites and serves version 1; test_attach_to_calculated_result_and_attachment_rules; test_access_is_capability_owner_and_tenant_bound; the registers natively in test_native_evidence_registers_are_fenced_and_insert_only). Not covered: sensitivity and retention, verification and dispute, repository search, annotations, links to findings and decisions, external-reference checking, an S3-compatible backend and a backup of the object volume.",
+        [
+            "apps/api/impact_api/object_store.py",
+            "apps/api/impact_api/content_safety.py",
+            "apps/api/impact_api/evidence.py",
+            "apps/api/impact_api/evidence_contracts.py",
+            "infrastructure/migrations/0023_evidence_objects.sql",
+            "qualification/test_evidence.py",
+            "qualification/test_evidence_unit.py",
+            "apps/web/src/Evidence.tsx",
+            "docs/RELEASE-0.22.md",
+        ],
+    ),
+    (
+        "FR-SEC-005",
+        "v0.22 checks evidence uploads before any byte is accepted and again on the bytes: an allow-list of media types (PDF, PNG, JPEG, plain text, CSV), a plain file name whose single extension the declared type permits, a declared size (at most 25,000,000 bytes) and SHA-256 matched exactly, magic bytes matched to the declared type, executables and PDFs naming active content refused, text required to be UTF-8 without leading markup; a scan verdict precedes any download and a FAILED or INFECTED blob, or bytes that no longer hash to the recorded digest, are never served (test_evidence.py::test_allow_list_names_and_declared_size_are_refused_before_any_byte, test_magic_bytes_size_and_digest_are_checked, test_eicar_is_infected_rejected_and_never_downloadable, test_failed_scan_and_changed_bytes_are_never_served, test_replay_resumes_a_scan_interrupted_after_the_seal, test_raw_upload_route_alone_exceeds_the_json_cap; test_evidence_unit.py). The shipped scanners are not anti-malware engines (eicar-signature recognises only the EICAR test file). Not covered: a real scanning engine, archive expansion and macro profiles (the FT-SEC-005 archive fixture), password-protected files, previews and re-encoding, multipart uploads and external fetch validation.",
+        [
+            "apps/api/impact_api/object_store.py",
+            "apps/api/impact_api/content_safety.py",
+            "apps/api/impact_api/evidence.py",
+            "apps/api/impact_api/evidence_contracts.py",
+            "infrastructure/migrations/0023_evidence_objects.sql",
+            "qualification/test_evidence.py",
+            "qualification/test_evidence_unit.py",
+            "apps/web/src/Evidence.tsx",
+            "docs/RELEASE-0.22.md",
+        ],
+    ),
+    (
+        "FR-ANA-004",
+        "Calculated results carry lineage, coverage and stale flags (v0.7, v0.19). v0.24 adds a read-only programme dashboard and indicator series in which every value distinguishes OFFICIAL (only from this programme's locked snapshot) from PROVISIONAL, exposes lock time, calculation times, last source change and coverage from the period's obligation set (zero required is not applicable, never 100 percent), and stays marked stale under a stated rule until recalculated or re-closed; a read never makes a value fresh (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions, test_official_pooled_ratio_from_the_programme_snapshot, test_coverage_with_no_required_obligation_is_not_applicable; dashboard-browser check). Not covered: export with embedded context (FT-ANA-004's export half), external source refresh state (no connectors exist), dashboard authoring and saved dashboards.",
+        [
+            "apps/api/impact_api/domain.py",
+            "apps/api/impact_api/service.py",
+            "qualification/test_measurement.py",
+            "apps/api/impact_api/dashboards.py",
+            "apps/api/impact_api/dashboard_contracts.py",
+            "qualification/test_dashboards.py",
+            "apps/web/src/Dashboards.tsx",
+            "tools/browser/dashboard-check.mjs",
+            "docs/RELEASE-0.24.md",
+        ],
+    ),
 ]
 # Requirements that stay PENDING, with what the latest increments do and do not show for them.
 pending_notes = {
     "FR-IAM-007": "PENDING. Related v0.16 evidence, recorded so that it is not mistaken for coverage: the nominee of a recovery contact can confirm the registered email address with a single-use eight-digit code (channel-request/channel-confirm; 15-minute expiry, 5 attempts, at most 3 requests per contact per hour; the code is derived, never stored, and only its keyed hash is kept; qualification/test_worker.py). That verifies a channel for contact evidence only; it is not an identity change, a lost-factor recovery or a support path, and no test exercises the validation text (no support reset refusal, no restricted recovery case, no withheld privileges pending verification). Retain the original acceptance criteria; this requirement remains open.",
     "FR-ACC-008": "PENDING. Not touched by v0.16 although the delivery plan listed it for that increment: no support case, elevation grant, support session or tenant-ended access exists. The v0.16 worker runs on its own login and writes reminder notices as a per-tenant SERVICE principal without identity, membership or grant; that is not support access. Retain the original acceptance criteria; this requirement remains open.",
     "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). v0.16's worker re-reads each delivery intent immediately before sending and supersedes it when the invitation generation, the recovery-channel challenge or the notice recipient is no longer current (qualification/test_worker.py); that is a recheck of the intent, not a measured revocation bound, and no sensitive job class exists for the worker to reauthorise. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-005": "PENDING. v0.23 renders PDF, XLSX and DOCX exports of a frozen package through the worker with acknowledgement as one synchronous transaction, job state as progress and cancellation before start (qualification/test_report_exports.py::test_export_request_is_one_queued_job_with_receipt_audit_and_exact_retry, test_cancellation_before_start_is_honoured_and_nothing_is_rendered); that is functional evidence only. No 100,000-row export, 50-page report, twenty-chart report, p95 or mixed-load measurement has been executed. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-006": "PENDING. v0.24's dashboard reads are uncached and computed per request, so after approval and calculation the next read reflects the new value, and the freshness block separates calculation and lock times (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions); that is functional evidence only. No 60-second p95 timing, load or separate display of review delay has been measured. Retain the original acceptance criteria; this requirement remains open.",
 }
 partial = {key: (description, evidence) for ids, description, evidence in groups for key in ids.split()}
 requirements = []
@@ -500,7 +620,7 @@ for requirement in requirements:
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
     "build": json.loads((ROOT / "VERSION.json").read_text())["build"],
-    "assessment_date": "2026-09-30",
+    "assessment_date": "2026-10-01",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
     "summary": summary,

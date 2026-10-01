@@ -8,6 +8,7 @@ in test_native_worker.py."""
 import json
 import os
 import random
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -39,6 +40,7 @@ from test_measurement import setup, get, submit, approve, observation, result  #
 from test_recovery_contacts import BASE as CONTACTS, action as contact_action, listing, nominate
 
 NATIVE = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class Clock:
@@ -766,6 +768,71 @@ def test_worker_role_reads_only_the_tenant_in_context(live):
     ]:
         with psycopg.connect(worker_dsn(), prepare_threshold=None) as c:
             c.execute("SET LOCAL ROLE impact_worker")
+            with pytest.raises(psycopg.errors.InsufficientPrivilege):
+                c.execute(statement)
+
+
+def revoked_by_migration_0025():
+    """(table, privileges) for every REVOKE of migration 0025; ALL means every table privilege."""
+    source = (ROOT / "infrastructure/migrations/0025_worker_grants.sql").read_text()
+    pairs = re.findall(r"^REVOKE ([A-Z,]+) ON impact\.([a-z0-9_]+) FROM impact_worker;$", source, re.M)
+    full = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE", "REFERENCES", "TRIGGER"]
+    return [(table, full if what == "ALL" else what.split(",")) for what, table in pairs]
+
+
+def test_worker_role_holds_no_privilege_migration_0025_revoked(live):
+    """Migration 0025 narrowed impact_worker to what worker.py touches; every revoked privilege is
+    absent, at table and column level, and the privileges the worker uses are still there."""
+    revoked = revoked_by_migration_0025()
+    assert len(revoked) >= 60 and "SELECT" in dict(revoked)["tenant_root"]
+    deferred = {"job", "job_item", "report_current", "report_template_current"}
+    assert not deferred & {table for table, _ in revoked}
+    with live.db() as c:
+        for table, privileges in revoked:
+            for privilege in privileges:
+                held = c.execute(
+                    "SELECT has_table_privilege('impact_worker',%s,%s) AS held",
+                    ("impact." + table, privilege),
+                ).fetchone()["held"]
+                assert not held, (table, privilege)
+        columns = c.execute(
+            "SELECT count(*) AS n FROM information_schema.column_privileges WHERE grantee='impact_worker' "
+            "AND table_schema='impact' AND table_name='tenant_root'"
+        ).fetchone()["n"]
+        assert columns == 0
+        for table, privilege in [
+            ("object_registry", "INSERT"),
+            ("object_revision", "SELECT"),
+            ("notification_current", "INSERT"),
+            ("audit_event_current", "INSERT"),
+            ("tenant_principal", "INSERT"),
+            ("membership_current", "SELECT"),
+            ("outbox_event", "INSERT"),
+            ("outbox_delivery", "UPDATE"),
+            ("consumer_receipt", "INSERT"),
+            ("job", "UPDATE"),
+            ("job_item", "INSERT"),
+        ]:
+            assert c.execute(
+                "SELECT has_table_privilege('impact_worker',%s,%s) AS held", ("impact." + table, privilege)
+            ).fetchone()["held"], (table, privilege)
+
+
+def test_worker_role_is_refused_on_revoked_tables(live):
+    tenant = live.fixture["tenant_a"]
+    for statement in [
+        "SELECT * FROM impact.programme_current",
+        "SELECT * FROM impact.observation_current",
+        "SELECT tenant_id FROM impact.tenant_root",
+        "UPDATE impact.tenant_root SET policy_epoch=policy_epoch",
+        "UPDATE impact.object_registry SET updated_at=updated_at",
+        "UPDATE impact.membership_current SET expires_at=expires_at",
+        "SELECT * FROM impact.operation_receipt",
+        "SELECT * FROM impact.grant_current",
+    ]:
+        with psycopg.connect(worker_dsn(), prepare_threshold=None) as c:
+            c.execute("SET LOCAL ROLE impact_worker")
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
             with pytest.raises(psycopg.errors.InsufficientPrivilege):
                 c.execute(statement)
 

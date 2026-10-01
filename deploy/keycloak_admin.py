@@ -190,7 +190,10 @@ def reset_user(admin, realm, email, password, totp=False):
                 removed += 1
     actions = list(dict.fromkeys((user.get("requiredActions") or []) + REQUIRED_ACTIONS))
     admin.call("PUT", path, {"requiredActions": actions, "enabled": True})
-    return {"subject": user["id"], "password_reset": True, "totp_removed": removed}
+    # A reset is the recovery path after failed sign-ins, so it also lifts any temporary
+    # brute-force lockout; otherwise the new password is refused until the lockout expires.
+    admin.call("DELETE", "/" + realm + "/attack-detection/brute-force/users/" + user["id"])
+    return {"subject": user["id"], "password_reset": True, "totp_removed": removed, "lockout_cleared": True}
 
 
 def connect(env, attempts=60, delay=5):

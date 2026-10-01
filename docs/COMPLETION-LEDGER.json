@@ -2960,6 +2960,7 @@
         "qualification/test_dashboards.py",
         "apps/web/src/Dashboards.tsx",
         "tools/browser/dashboard-check.mjs",
+        "docs/evidence/dashboard-browser-tests.json",
         "docs/RELEASE-0.24.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
@@ -2985,6 +2986,7 @@
         "qualification/test_dashboards.py",
         "apps/web/src/Dashboards.tsx",
         "tools/browser/dashboard-check.mjs",
+        "docs/evidence/dashboard-browser-tests.json",
         "docs/RELEASE-0.24.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."

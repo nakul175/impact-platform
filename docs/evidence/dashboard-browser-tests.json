@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Provisional 51/110 is labelled provisional before any close",
+      "status": "passed"
+    },
+    {
+      "name": "The trend chart has a text alternative and an equal table",
+      "status": "passed"
+    },
+    {
+      "name": "After the independent close the value is official from the snapshot",
+      "status": "passed"
+    },
+    {
+      "name": "The seeded fixture 46.36 is never attributed to a programme",
+      "status": "passed"
+    },
+    {
+      "name": "Dashboards stay within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

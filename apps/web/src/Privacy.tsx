@@ -206,96 +206,104 @@ export function PrivacyPanel({
         </button>
       )}
       {cases && (
-        <table>
-          <caption className="sr-only">Data-subject requests</caption>
-          <thead>
-            <tr>
-              <th scope="col">Type</th>
-              <th scope="col">Member</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cases.map((c) => (
-              <tr key={c.object_id}>
-                <td>{c.data.request_type}</td>
-                <td>
-                  <code>
-                    {String(c.data.subject_membership_id).slice(0, 8)}
-                  </code>
-                </td>
-                <td>
-                  {c.lifecycle_state}
-                  {c.data.outcome
-                    ? " · " + c.data.outcome.replaceAll("_", " ").toLowerCase()
-                    : ""}
-                </td>
-                <td>
-                  <button className="secondary" onClick={() => review(c)}>
-                    Plan
-                  </button>
-                  {["Approved", "Executing", "PartiallyCompleted"].includes(
-                    c.lifecycle_state,
-                  ) &&
-                    may("privacy.execute") && (
-                      <button
-                        className="secondary"
-                        disabled={busy}
-                        onClick={() =>
-                          act(c, "execute", {
-                            approved_plan_hash: c.data.plan_sha256,
-                          })
-                        }
-                      >
-                        Execute
-                      </button>
-                    )}
-                  {c.lifecycle_state === "Completed" &&
-                    c.data.request_type === "ACCESS" &&
-                    may("privacy.export") && (
-                      <button className="secondary" onClick={() => download(c)}>
-                        Download export
-                      </button>
-                    )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {proofs && (
-        <>
-          <h3>Retention proof</h3>
+        <div className="table-scroll">
           <table>
-            <caption className="sr-only">
-              Latest retention proof records
-            </caption>
+            <caption className="sr-only">Data-subject requests</caption>
             <thead>
               <tr>
-                <th scope="col">Data class</th>
+                <th scope="col">Type</th>
+                <th scope="col">Member</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
-                <th scope="col">Items</th>
-                <th scope="col">SHA-256</th>
-                <th scope="col">When</th>
               </tr>
             </thead>
             <tbody>
-              {proofs.slice(0, 12).map((p) => (
-                <tr key={p.proof_id}>
-                  <td>{p.data_class.replaceAll("_", " ").toLowerCase()}</td>
+              {cases.map((c) => (
+                <tr key={c.object_id}>
+                  <td>{c.data.request_type}</td>
                   <td>
-                    {p.action} after {p.retention_days} d
+                    <code>
+                      {String(c.data.subject_membership_id).slice(0, 8)}
+                    </code>
                   </td>
-                  <td>{p.affected_count}</td>
                   <td>
-                    <code>{p.items_sha256.slice(0, 12)}…</code>
+                    {c.lifecycle_state}
+                    {c.data.outcome
+                      ? " · " +
+                        c.data.outcome.replaceAll("_", " ").toLowerCase()
+                      : ""}
                   </td>
-                  <td>{new Date(p.executed_at).toLocaleString()}</td>
+                  <td>
+                    <button className="secondary" onClick={() => review(c)}>
+                      Plan
+                    </button>
+                    {["Approved", "Executing", "PartiallyCompleted"].includes(
+                      c.lifecycle_state,
+                    ) &&
+                      may("privacy.execute") && (
+                        <button
+                          className="secondary"
+                          disabled={busy}
+                          onClick={() =>
+                            act(c, "execute", {
+                              approved_plan_hash: c.data.plan_sha256,
+                            })
+                          }
+                        >
+                          Execute
+                        </button>
+                      )}
+                    {c.lifecycle_state === "Completed" &&
+                      c.data.request_type === "ACCESS" &&
+                      may("privacy.export") && (
+                        <button
+                          className="secondary"
+                          onClick={() => download(c)}
+                        >
+                          Download export
+                        </button>
+                      )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+      {proofs && (
+        <>
+          <h3>Retention proof</h3>
+          <div className="table-scroll">
+            <table>
+              <caption className="sr-only">
+                Latest retention proof records
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Data class</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Items</th>
+                  <th scope="col">SHA-256</th>
+                  <th scope="col">When</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proofs.slice(0, 12).map((p) => (
+                  <tr key={p.proof_id}>
+                    <td>{p.data_class.replaceAll("_", " ").toLowerCase()}</td>
+                    <td>
+                      {p.action} after {p.retention_days} d
+                    </td>
+                    <td>{p.affected_count}</td>
+                    <td>
+                      <code>{p.items_sha256.slice(0, 12)}…</code>
+                    </td>
+                    <td>{new Date(p.executed_at).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
       {dialog?.mode === "create" && (
@@ -351,36 +359,39 @@ export function PrivacyPanel({
                   : ""}
               </p>
               {plan.entries.length > 0 && (
-                <table>
-                  <caption className="sr-only">Store actions</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Store</th>
-                      <th scope="col">Action</th>
-                      <th scope="col">Record</th>
-                      <th scope="col">State</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {plan.entries.map((e) => (
-                      <tr key={e.store + e.object_id}>
-                        <td>{e.store.replaceAll("_", " ").toLowerCase()}</td>
-                        <td>{e.action.toLowerCase()}</td>
-                        <td>
-                          {e.object_type} <code>{e.object_id.slice(0, 8)}</code>
-                        </td>
-                        <td>
-                          {e.state}
-                          {e.reason ? " (" + e.reason + ")" : ""}
-                          {e.hold_review_at
-                            ? " · review " +
-                              new Date(e.hold_review_at).toLocaleDateString()
-                            : ""}
-                        </td>
+                <div className="table-scroll">
+                  <table>
+                    <caption className="sr-only">Store actions</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Store</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Record</th>
+                        <th scope="col">State</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {plan.entries.map((e) => (
+                        <tr key={e.store + e.object_id}>
+                          <td>{e.store.replaceAll("_", " ").toLowerCase()}</td>
+                          <td>{e.action.toLowerCase()}</td>
+                          <td>
+                            {e.object_type}{" "}
+                            <code>{e.object_id.slice(0, 8)}</code>
+                          </td>
+                          <td>
+                            {e.state}
+                            {e.reason ? " (" + e.reason + ")" : ""}
+                            {e.hold_review_at
+                              ? " · review " +
+                                new Date(e.hold_review_at).toLocaleDateString()
+                              : ""}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
               {!plan.approved &&
                 item.lifecycle_state === "Draft" &&

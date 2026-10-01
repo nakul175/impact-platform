@@ -12,6 +12,7 @@ import { ReportExports } from "./ReportExports";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
+import { AuditExportPanel } from "./AuditExport";
 import {
   ConfigurationPanel,
   ProgrammeReadiness,
@@ -847,13 +848,18 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "memberships" ? (
-            <AdministrationPanel
-              base={base}
-              capabilities={access.capabilities}
-              request={api}
-              explain={explain}
-              Dialog={Dialog}
-            />
+            <>
+              <AdministrationPanel
+                base={base}
+                capabilities={access.capabilities}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
+              {access.capabilities.includes("audit.export") && (
+                <AuditExportPanel base={base} request={api} explain={explain} />
+              )}
+            </>
           ) : (
             <>
               <section className="metrics" aria-label="Loaded records">

@@ -14,6 +14,7 @@
 | POST | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.create` |
 | GET | `/v1/tenants/{tenant_id}/audit-events` | `audit-events.read` |
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | `audit-events.read` |
+| POST | `/v1/tenants/{tenant_id}/audit-exports` | `audit.export` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | `evidence.read` |

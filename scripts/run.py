@@ -48,6 +48,7 @@ import jwt
 import psycopg
 from psycopg.conninfo import conninfo_to_dict
 from bootstrap import bootstrap
+from impact_api.keyring import rsa_key_id  # bootstrap puts apps/api on sys.path
 from fixture_support import FIXTURE_EXPIRES_AT, fixture_days_remaining
 from provision_logins import LOGINS, login_dsn, passwords_from_env, provision
 import migrate
@@ -547,6 +548,8 @@ def main():
                 },
                 (local / "private.pem").read_bytes(),
                 algorithm="RS256",
+                # The kid of the current development signing key (v0.25 part A key rotation).
+                headers={"kid": rsa_key_id((local / "public.pem").read_bytes())},
             )
         env.update(
             IMPACT_BASE_URL=base,

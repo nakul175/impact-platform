@@ -146,6 +146,10 @@ services:
       IMPACT_COOKIE_SECRET: ${IMPACT_COOKIE_SECRET:?}
       IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET:?}
       IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET:?}
+      # Grace secrets after a rotation (deploy/rotate-secrets.sh); empty until the first one.
+      IMPACT_COOKIE_SECRET_PREVIOUS: ${IMPACT_COOKIE_SECRET_PREVIOUS:-}
+      IMPACT_INVITATION_SECRET_PREVIOUS: ${IMPACT_INVITATION_SECRET_PREVIOUS:-}
+      IMPACT_DELIVERY_SECRET_PREVIOUS: ${IMPACT_DELIVERY_SECRET_PREVIOUS:-}
       # The provider's TLS certificate is verified against this bundle: the image's system store
       # on the server (Let's Encrypt); the system store plus Caddy's internal root in the CI stack,
       # which deploy/update.sh writes to <impact home>/ca/bundle.pem.
@@ -194,6 +198,8 @@ services:
       IMPACT_PUBLIC_ORIGIN: https://${APP_HOST}
       IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET}
       IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET}
+      IMPACT_INVITATION_SECRET_PREVIOUS: ${IMPACT_INVITATION_SECRET_PREVIOUS:-}
+      IMPACT_DELIVERY_SECRET_PREVIOUS: ${IMPACT_DELIVERY_SECRET_PREVIOUS:-}
       IMPACT_EMAIL_ADAPTER: smtp
       IMPACT_SMTP_HOST: ${SMTP_HOST:-127.0.0.1}
       IMPACT_SMTP_PORT: ${SMTP_PORT:-2525}

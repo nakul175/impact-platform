@@ -26,6 +26,7 @@ from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
 from .version import BUILD, DOMAIN_API, SCHEMA
+from .audit_export import AuditExports
 from .dashboards import Dashboards
 
 LOG = logging.getLogger("impact")
@@ -94,6 +95,7 @@ def create_app():
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
+    audit_exports = AuditExports(service)
     delivery_operations = DeliveryOperations(lifecycle)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
@@ -678,6 +680,14 @@ def create_app():
             )
 
         return await run_in_threadpool(run)
+
+    # Audit export (v0.25 part A): an explicit route, registered before the generic create.
+    @app.post("/v1/tenants/{tenant}/audit-exports")
+    async def audit_export(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            lambda: audit_exports.create(auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        )
 
     @app.post("/v1/tenants/{tenant}/disclosure-requests")
     async def disclosure_request(request: Request, tenant: str):

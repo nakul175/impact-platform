@@ -4,6 +4,7 @@ import hmac
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from psycopg.types.json import Jsonb
+from .keyring import ring
 from .delivery import channel_code, channel_code_hash, seal_recipient
 from .domain import DomainError, unavailable
 from .identity_profile import email_hash
@@ -316,7 +317,8 @@ class RecoveryContacts:
             raise DomainError("CONFLICT_VERSION", 409, reason="INVALID_RECOVERY_TRANSITION")
         if not self.s.delivery_secret:
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="DELIVERY_NOT_CONFIGURED")
-        secret, at = self.s.delivery_secret, now()
+        keys, at = ring(self.s, "delivery"), now()
+        secret = keys.current
         lock_people(c, [row["nominee_identity_id"]])
         person = registered_person(c, row["nominee_identity_id"], self.s.issuer)
         if action == "channel-request":
@@ -354,7 +356,7 @@ class RecoveryContacts:
                 (
                     challenge,
                     seal_recipient(
-                        secret, row["tenant_id"], "RECOVERY_CHANNEL_VERIFICATION", challenge, data["email"]
+                        keys, row["tenant_id"], "RECOVERY_CHANNEL_VERIFICATION", challenge, data["email"]
                     ),
                 ),
             )
@@ -379,8 +381,13 @@ class RecoveryContacts:
                 (row["tenant_id"], challenge["challenge_id"]),
             )
             return DomainError("POLICY_DENIED", 403, reason="CHANNEL_CODE_EXPIRED")
-        if not hmac.compare_digest(
-            channel_code_hash(secret, challenge["challenge_id"], data["code"]), bytes(challenge["code_hash"])
+        # Any non-retired delivery secret: a code issued just before a rotation still confirms.
+        if not any(
+            hmac.compare_digest(
+                channel_code_hash(candidate, challenge["challenge_id"], data["code"]),
+                bytes(challenge["code_hash"]),
+            )
+            for candidate in keys.secrets()
         ):
             attempts = challenge["attempts"] + 1
             c.execute(

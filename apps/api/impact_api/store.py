@@ -193,13 +193,16 @@ def scopes(c, ctx, cap, object_id=None, purpose=None):
     return False
 
 
-def authorize(c, ctx, operation, object_id=None, hidden=False):
+def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None):
+    """A purpose-required operation fails closed unless the caller states a purpose (only the
+    operations that accept one pass it, v0.25 part A audit export); a purpose-bound grant then
+    authorises only that purpose, a purpose-less grant any."""
     p = OPERATIONS[operation]
-    if not scopes(c, ctx, p["capability"], object_id):
+    if not scopes(c, ctx, p["capability"], object_id, purpose=purpose):
         if hidden:
             unavailable()
         raise DomainError("POLICY_DENIED", 403)
-    if p.get("purpose_required"):
+    if p.get("purpose_required") and not purpose:
         raise DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED")
     seconds = p.get("fresh_assurance_seconds")
     if seconds and not getattr(ctx.identity, "assurance_verified", True):

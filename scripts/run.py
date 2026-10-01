@@ -75,6 +75,10 @@ BROWSER_MODES = {
     "bootstrap-browser": "bootstrap-check.mjs",
     "recovery-browser": "recovery-check.mjs",
     "renewal-browser": "renewal-check.mjs",
+    "import-browser": "import-check.mjs",
+    "evidence-browser": "evidence-check.mjs",
+    "export-browser": "export-check.mjs",
+    "requeue-browser": "requeue-check.mjs",
     "idp-browser": "idp-check.mjs",
 }
 # Browser modes that sign in through the live provider rather than the development login.

@@ -1444,6 +1444,12 @@ html[data-reduced-motion="true"] *::after {
   gap: 6px;
   align-items: center;
 }
+/* The global full-width input rule otherwise stretches the box away from its label. */
+.import-new label.checkbox input,
+.import-commit label.checkbox input {
+  width: auto;
+  flex: none;
+}
 .import-binding {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

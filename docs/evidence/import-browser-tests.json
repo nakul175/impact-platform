@@ -1,0 +1,30 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Upload a CSV and map its value column by name",
+      "status": "passed"
+    },
+    {
+      "name": "Preview classifies a quarantined row, a duplicate and an anomaly warning",
+      "status": "passed"
+    },
+    {
+      "name": "Commit waits for the warnings to be accepted; a lost response retries exactly",
+      "status": "passed"
+    },
+    {
+      "name": "Committed rows appear in Measurement as observations pending review",
+      "status": "passed"
+    },
+    {
+      "name": "A second actor reviews and approves an imported observation",
+      "status": "passed"
+    },
+    {
+      "name": "Imports stay within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

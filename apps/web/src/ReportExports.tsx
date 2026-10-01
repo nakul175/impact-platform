@@ -132,61 +132,66 @@ export function ReportExports({
       ) : current.length === 0 ? (
         <p className="muted">No export has been requested for this revision.</p>
       ) : (
-        <table>
-          <caption className="sr-only">Exports of this report revision</caption>
-          <thead>
-            <tr>
-              <th scope="col">Format</th>
-              <th scope="col">Status</th>
-              <th scope="col">SHA-256</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {current.map((item) => (
-              <tr key={item.job_id}>
-                <td>{item.format}</td>
-                <td>
-                  {item.state}
-                  {item.last_error_class
-                    ? " (" + item.last_error_class.replaceAll("_", " ") + ")"
-                    : ""}
-                  {item.cancellation_requested && item.state !== "Cancelled"
-                    ? " · cancellation requested"
-                    : ""}
-                </td>
-                <td>
-                  <code>
-                    {item.content_sha256
-                      ? item.content_sha256.slice(0, 16) + "…"
-                      : "—"}
-                  </code>
-                </td>
-                <td>
-                  {item.state === "Succeeded" && (
-                    <a
-                      className="secondary button"
-                      href={path + "/" + item.job_id + "/download"}
-                    >
-                      Download {item.format}
-                    </a>
-                  )}
-                  {item.state === "Queued" && !item.cancellation_requested && (
-                    <button
-                      className="secondary danger"
-                      disabled={busy}
-                      onClick={() =>
-                        act("cancel-export", { job_id: item.job_id })
-                      }
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </td>
+        <div className="table-scroll">
+          <table>
+            <caption className="sr-only">
+              Exports of this report revision
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Format</th>
+                <th scope="col">Status</th>
+                <th scope="col">SHA-256</th>
+                <th scope="col">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {current.map((item) => (
+                <tr key={item.job_id}>
+                  <td>{item.format}</td>
+                  <td>
+                    {item.state}
+                    {item.last_error_class
+                      ? " (" + item.last_error_class.replaceAll("_", " ") + ")"
+                      : ""}
+                    {item.cancellation_requested && item.state !== "Cancelled"
+                      ? " · cancellation requested"
+                      : ""}
+                  </td>
+                  <td>
+                    <code>
+                      {item.content_sha256
+                        ? item.content_sha256.slice(0, 16) + "…"
+                        : "—"}
+                    </code>
+                  </td>
+                  <td>
+                    {item.state === "Succeeded" && (
+                      <a
+                        className="secondary button"
+                        href={path + "/" + item.job_id + "/download"}
+                      >
+                        Download {item.format}
+                      </a>
+                    )}
+                    {item.state === "Queued" &&
+                      !item.cancellation_requested && (
+                        <button
+                          className="secondary danger"
+                          disabled={busy}
+                          onClick={() =>
+                            act("cancel-export", { job_id: item.job_id })
+                          }
+                        >
+                          Cancel
+                        </button>
+                      )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );

@@ -16,6 +16,7 @@ from impact_api.planning_contracts import augment as augment_planning  # noqa: E
 from impact_api.calculation_contracts import augment as augment_calculation  # noqa: E402
 from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
 from impact_api.tenant_contracts import openapi as platform_openapi  # noqa: E402
+from impact_api.version import DOMAIN_API  # noqa: E402
 
 spec = json.loads((ROOT / "packages/contracts/openapi-baseline.json").read_text())
 policy = json.loads((ROOT / "specification/contracts/access-policy.json").read_text())
@@ -147,8 +148,9 @@ contract_operations = {
     if isinstance(operation, dict) and "operationId" in operation
 }
 policy["operations"] = [row for row in policy["operations"] if row["operation_id"] in contract_operations]
-spec["info"]["version"] = "1.13.0"
-policy["version"] = "1.13.0"
+# The published domain API version comes from VERSION.json (impact_api/version.py).
+spec["info"]["version"] = DOMAIN_API
+policy["version"] = DOMAIN_API
 for name, value in [("openapi.json", spec), ("access-policy.json", policy), ("event.schema.json", event)]:
     (ROOT / "packages/contracts" / name).write_text(json.dumps(value, indent=2) + "\n")
 (ROOT / "packages/contracts/openapi-platform.json").write_text(

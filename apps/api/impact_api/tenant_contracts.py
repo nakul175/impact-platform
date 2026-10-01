@@ -2,6 +2,7 @@
 
 from jsonschema import Draft202012Validator, FormatChecker
 from .domain import DomainError
+from .version import PLATFORM_API
 
 UUID = {"type": "string", "format": "uuid"}
 
@@ -158,7 +159,7 @@ def openapi():
     add_worker_paths(paths, operation)
     return {
         "openapi": "3.1.0",
-        "info": {"title": "Impact control-plane API", "version": "1.4.0"},
+        "info": {"title": "Impact control-plane API", "version": PLATFORM_API},
         "paths": paths,
         "components": {
             "securitySchemes": {

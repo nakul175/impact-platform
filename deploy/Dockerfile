@@ -23,8 +23,9 @@ RUN pip install --no-cache-dir --require-hashes --only-binary=:all: -r /tmp/requ
     && rm /tmp/requirements.runtime.txt \
     && useradd --system --uid 10001 --user-group --home-dir /app --shell /usr/sbin/nologin impact
 WORKDIR /app
-# Only what the processes read at run time: the API package, the generated contracts, the two
+# Only what the processes read at run time: the version source, the API package, the generated contracts, the two
 # specification files the contract loader reads, the migrations and the operational scripts.
+COPY VERSION.json VERSION.json
 COPY apps/api/impact_api apps/api/impact_api
 COPY packages/contracts packages/contracts
 COPY specification/contracts/entity-catalogue.json specification/contracts/entity-catalogue.json

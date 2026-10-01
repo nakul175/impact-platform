@@ -226,15 +226,22 @@ export function EvidencePanel({
     }
   }
 
-  return (
-    <section aria-label="Evidence" className="evidence-panel">
-      <h3>Evidence</h3>
+  // Shown beside the attach button, where the outcome of an upload is seen (the panel sits at
+  // the bottom of a scrolling dialog).
+  const messages = (
+    <>
       {error && (
         <div className="error" role="alert">
           {error}
         </div>
       )}
       {notice && <p role="status">{notice}</p>}
+    </>
+  );
+  return (
+    <section aria-label="Evidence" className="evidence-panel">
+      <h3>Evidence</h3>
+      {!canAttach && messages}
       {items.length === 0 ? (
         <p className="muted">No evidence is attached to this record.</p>
       ) : (
@@ -248,6 +255,7 @@ export function EvidencePanel({
                 {item.evidence_head_revision !== item.evidence_revision &&
                   " (a newer version exists)"}
                 {!item.target_is_current && " · cited by an earlier revision"}
+                {item.scan_state && " · scan " + item.scan_state}
               </span>
               {item.downloadable && (
                 <>
@@ -307,6 +315,7 @@ export function EvidencePanel({
             download them. The scan in this build recognises only the standard
             anti-virus test file; it is not malware protection.
           </p>
+          {messages}
           <button className="primary" disabled={busy}>
             {busy ? "Attaching…" : "Upload and attach"}
           </button>

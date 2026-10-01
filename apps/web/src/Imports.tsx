@@ -515,7 +515,10 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
                   )}
                   <button
                     className="primary"
-                    disabled={!counts.accepted}
+                    disabled={
+                      !counts.accepted ||
+                      (counts.warnings > 0 && !acceptWarnings)
+                    }
                     onClick={() =>
                       act(
                         batch,

@@ -5,7 +5,8 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-export function runWorkerOnce(local, workerId) {
+// `settings` adds IMPACT_<FIELD> worker settings, e.g. { SYNTHETIC_FAILURES: "1000" }.
+export function runWorkerOnce(local, workerId, settings = {}) {
   const output = execFileSync(
     path.resolve(".venv/bin/python"),
     ["-m", "impact_api.worker", "--once", "--worker-id", workerId],
@@ -14,6 +15,9 @@ export function runWorkerOnce(local, workerId) {
         PATH: process.env.PATH,
         PYTHONPATH: path.resolve("apps/api"),
         IMPACT_WORKER_CONFIG_FILE: path.join(local, "worker.json"),
+        ...Object.fromEntries(
+          Object.entries(settings).map(([k, v]) => ["IMPACT_" + k, String(v)]),
+        ),
       },
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],

@@ -169,7 +169,7 @@ function DeliveryAttention({ request, explain }: Props) {
         automatically. Re-queue or release one only after checking why it
         stopped; the reason is recorded.
       </p>
-      {error && (
+      {error && !open && (
         <div className="error" role="alert">
           {error}
         </div>
@@ -208,6 +208,9 @@ function DeliveryAttention({ request, explain }: Props) {
                     key={a}
                     className="secondary"
                     disabled={busy}
+                    aria-expanded={
+                      open?.item.event_id === d.event_id && open?.action === a
+                    }
                     onClick={() => {
                       setOpen({ item: d, action: a });
                       setError("");
@@ -222,6 +225,12 @@ function DeliveryAttention({ request, explain }: Props) {
               </div>
               {open && open.item.event_id === d.event_id && (
                 <form onSubmit={submit} aria-label={actionLabels[open.action]}>
+                  {/* Shown beside the form, where the operator is working. */}
+                  {error && (
+                    <div className="error" role="alert">
+                      {error}
+                    </div>
+                  )}
                   <label>
                     Reason
                     <textarea name="reason" required maxLength={1000} />

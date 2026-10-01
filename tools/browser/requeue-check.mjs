@@ -18,7 +18,7 @@ import {
   evidencePath,
 } from "./qa-harness.mjs";
 
-const { as, test, finish, errors } = await harness("requeue-browser");
+const { as, test, finish, errors, quietly } = await harness("requeue-browser");
 const unique = Date.now().toString();
 const attention = async () =>
   (await read("/v1/platform/deliveries?tenant_id=" + tenant, "admin")).items;
@@ -141,7 +141,7 @@ await finish(async () => {
   });
 
   await test("The next worker iteration sends the re-queued delivery", async () => {
-    const summary = runWorkerOnce(local, "requeue-worker");
+    const summary = await quietly(() => runWorkerOnce(local, "requeue-worker"));
     assert(summary.sent >= 1, JSON.stringify(summary));
     const messages = await sinkMessages(local);
     assert.equal(

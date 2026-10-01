@@ -25,7 +25,7 @@ import {
   evidencePath,
 } from "./qa-harness.mjs";
 
-const { as, test, finish, errors } = await harness("export-browser");
+const { as, test, finish, errors, quietly } = await harness("export-browser");
 const unique = Date.now().toString(),
   heading = "Export package " + unique;
 const FORMATS = [
@@ -130,7 +130,9 @@ await finish(async () => {
   });
 
   await test("One worker iteration renders them; the panel moves to Succeeded on its own", async () => {
-    const summary = runWorkerOnce(local, "export-browser-worker");
+    const summary = await quietly(() =>
+      runWorkerOnce(local, "export-browser-worker"),
+    );
     assert.equal(summary.exports_succeeded, 3, JSON.stringify(summary));
     // No reload: the panel polls while an export is open.
     for (const [format] of FORMATS)

@@ -29,9 +29,21 @@ Common harness (`tools/browser/qa-harness.mjs`):
 - **No fixed delays.** Every wait is on a response or an element state.
 - **Long lists.** Lists are paged with "Load more" until the record appears; they are ordered oldest first, 50 at a time.
 - **API setup.** Setup uses the suite-start bearer tokens.
+- **Quiet worker runs.** `quietly(fn)` runs a worker iteration only while every open page's API requests are held and none is in flight; held requests continue afterwards (see "CI finding").
 - **Failure capture.** Each group writes `docs/evidence/<group>-tests.json` and, on failure, `<group minus -browser>-failure.png`.
 
 `tools/browser/worker-run.mjs` `runWorkerOnce(local, id, settings)` now accepts optional `IMPACT_<FIELD>` worker settings. Existing callers are unchanged.
+
+## CI finding: worker and API on one PGlite socket
+
+The first CI run of `export-browser` (pull-request run of commit aa1f173) failed, although the push run of the same commit and every local run passed. The worker rendered the PDF and the XLSX. Its next connection was then refused (`server closed the connection unexpectedly`) and the heartbeat raised, so `--once` exited non-zero. The cause is the exports panel's 4 s poll: it reached the API while the worker process was between transactions, and the PGlite socket server serves one connection at a time (CLAUDE.md §11: the worker and the API take turns).
+
+The checks now run every worker iteration through `quietly()`, which holds and drains the pages' API requests first. The panel still moves to Succeeded on its own afterwards, on its next poll.
+
+Two consequences outside the scope of this branch, recorded rather than fixed:
+
+- A refused connection in `run_once`'s heartbeat ends the `--once` process with a traceback instead of a counted tenant failure.
+- `make dev` runs a long-lived worker beside the API on the same PGlite socket, so the same refusal can appear there, logged as a failed tenant pass.
 
 ## Defects found and fixed
 

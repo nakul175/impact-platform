@@ -52,6 +52,35 @@ export async function harness(group) {
     errors = [],
     pages = {};
   let last = null;
+  const inflight = new Map();
+  // PGlite serves one connection at a time: a worker process that connects while the API is
+  // answering a browser request (a panel's poll, say) is refused. Run `fn` (a worker iteration)
+  // with every open page's API requests held and none in flight; held requests continue after.
+  async function quietly(fn) {
+    let release;
+    const gate = new Promise((resolve) => (release = resolve));
+    const held = new Map();
+    const hold = async (route) => {
+      const page = route.request().frame().page();
+      held.set(page, (held.get(page) || 0) + 1);
+      await gate;
+      await route.fallback();
+    };
+    const match = (url) => url.pathname.startsWith("/v1/");
+    const open = Object.values(pages);
+    for (const page of open) await page.route(match, hold);
+    try {
+      const busy = (p) => inflight.get(p) - (held.get(p) || 0) > 0;
+      for (let i = 0; open.some(busy); i++) {
+        assert(i < 400, "API requests did not settle");
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      return fn();
+    } finally {
+      release();
+      for (const page of open) await page.unroute(match, hold);
+    }
+  }
   // One browser context per actor, so cookie sessions never mix. The 560 px height keeps the
   // fixed, scrolling sidebar honest: every entry must be reached by scrolling, as on CI runners
   // whose fonts are taller than local ones.
@@ -66,6 +95,16 @@ export async function harness(group) {
     });
     const page = await context.newPage();
     page.setDefaultTimeout(20000);
+    // API requests in flight, for quietly() below.
+    const api = (r) => new URL(r.url()).pathname.startsWith("/v1/");
+    inflight.set(page, 0);
+    page.on("request", (r) => {
+      if (api(r)) inflight.set(page, inflight.get(page) + 1);
+    });
+    for (const done of ["requestfinished", "requestfailed"])
+      page.on(done, (r) => {
+        if (api(r)) inflight.set(page, inflight.get(page) - 1);
+      });
     page.on("pageerror", (e) => errors.push(user + ": " + e.message));
     await page.goto(base);
     await page.getByLabel("Username", { exact: true }).fill(user);
@@ -114,7 +153,7 @@ export async function harness(group) {
       await browser.close();
     }
   }
-  return { as, test, finish, errors };
+  return { as, test, finish, errors, quietly };
 }
 
 // The API as a fixture actor (suite-start bearer token): setup and independent assertions only.

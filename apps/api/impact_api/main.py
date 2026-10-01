@@ -22,6 +22,7 @@ from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
+from .version import BUILD, DOMAIN_API, SCHEMA
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -85,7 +86,7 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.20.0", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -184,7 +185,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 21:
+        if version != SCHEMA:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -344,9 +345,9 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.20.0",
-            "schema_version": "21",
-            "api_version": "1.13.0",
+            "build_id": "impact-" + BUILD,
+            "schema_version": str(SCHEMA),
+            "api_version": DOMAIN_API,
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),
         }

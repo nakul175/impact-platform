@@ -70,8 +70,8 @@ from .delivery import (
 )
 from .identity_profile import email_hash, normalize_email
 from .store import audit, write
+from .version import BUILD
 
-BUILD = "0.20.0"
 LOG = logging.getLogger("impact.worker")
 BACKOFF_BASE_SECONDS = 30
 BACKOFF_CAP_SECONDS = 3600

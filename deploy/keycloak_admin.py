@@ -107,7 +107,12 @@ def ensure_realm(admin, realm, document):
     status, _, _ = admin.call("GET", "/" + realm, expect=(200, 404))
     if status == 404:
         admin.call("POST", "", document)
-        return {"realm": realm, "imported": True, "client_updated": False}
+        return {"realm": realm, "imported": True, "client_updated": False, "policy_updated": False}
+    # The password policy is the one realm setting kept aligned after import (the staging owner
+    # may relax or tighten it in the repository); every other realm setting is import-only.
+    policy_updated = current_policy(admin, realm) != document.get("passwordPolicy")
+    if policy_updated:
+        admin.call("PUT", "/" + realm, {"passwordPolicy": document.get("passwordPolicy")})
     status, clients, _ = admin.call("GET", "/" + realm + "/clients?clientId=" + CLIENT_ID)
     if not clients:
         raise AdminError("The realm exists without the " + CLIENT_ID + " client")
@@ -121,7 +126,12 @@ def ensure_realm(admin, realm, document):
         updated = dict(current, redirectUris=wanted["redirectUris"], webOrigins=wanted["webOrigins"])
         updated["attributes"] = dict(current.get("attributes", {}), **wanted["attributes"])
         admin.call("PUT", "/" + realm + "/clients/" + current["id"], updated)
-    return {"realm": realm, "imported": False, "client_updated": changed}
+    return {"realm": realm, "imported": False, "client_updated": changed, "policy_updated": policy_updated}
+
+
+def current_policy(admin, realm):
+    _, body, _ = admin.call("GET", "/" + realm)
+    return (body or {}).get("passwordPolicy")
 
 
 def find_user(admin, realm, email):

@@ -68,7 +68,7 @@ def test_staging_realm_is_closed_and_matches_the_platform_configuration():
     assert REALM["registrationAllowed"] is False and REALM["resetPasswordAllowed"] is False
     assert REALM["registrationEmailAsUsername"] is True and REALM["loginWithEmailAllowed"] is True
     assert REALM["bruteForceProtected"] is True and REALM["failureFactor"] <= 10
-    assert "length(12)" in REALM["passwordPolicy"]
+    assert "length(6)" in REALM["passwordPolicy"] and "notEmail" in REALM["passwordPolicy"]
     levels = json.loads(REALM["attributes"]["acr.loa.map"])
     assert levels["urn:impact:acr:mfa"] == 2 and "IMPACT_REQUIRED_ACR: urn:impact:acr:mfa" in COMPOSE
     otp = [
@@ -119,6 +119,9 @@ class FakeKeycloak:
         if method == "POST" and path == "":
             self.realm = data
             return 201, None, {}
+        if method == "PUT" and path == "/impact":
+            self.realm.update(data)
+            return 204, None, {}
         if path.startswith("/impact/clients?"):
             return 200, [dict(c, id="c1") for c in self.realm["clients"]], {}
         if method == "PUT" and path == "/impact/clients/c1":
@@ -157,7 +160,10 @@ def test_realm_import_happens_once_and_later_runs_only_realign_the_client():
     document = keycloak_admin.realm_document(DEPLOY / "keycloak/realm-staging.json", "https://a.example.org")
     assert keycloak_admin.ensure_realm(fake, "impact", document)["imported"] is True
     again = keycloak_admin.ensure_realm(fake, "impact", document)
-    assert again == {"realm": "impact", "imported": False, "client_updated": False}
+    assert again == {"realm": "impact", "imported": False, "client_updated": False, "policy_updated": False}
+    fake.realm = dict(fake.realm, passwordPolicy="length(12) and notUsername and notEmail and maxLength(128)")
+    assert keycloak_admin.ensure_realm(fake, "impact", document)["policy_updated"] is True
+    assert fake.realm["passwordPolicy"] == document["passwordPolicy"]
     moved = keycloak_admin.realm_document(DEPLOY / "keycloak/realm-staging.json", "https://b.example.org")
     assert keycloak_admin.ensure_realm(fake, "impact", moved)["client_updated"] is True
     assert fake.realm["clients"][0]["redirectUris"] == ["https://b.example.org/auth/callback"]

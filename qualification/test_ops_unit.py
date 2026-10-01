@@ -739,3 +739,17 @@ def test_backup_age_helpers_handle_naive_and_missing_times():
     assert ops_alerts.parse_time("2026-10-04T21:00:00") == datetime(2026, 10, 4, 21, tzinfo=timezone.utc)
     assert ops_alerts.parse_time(None) is None and ops_alerts.parse_time("yesterday") is None
     assert ops_alerts.hours_between(NOW - timedelta(minutes=90), NOW) == 1.5
+
+
+def test_scrub_removes_each_grace_secret_a_rotation_writes(tmp_path):
+    # deploy/rotate-secrets.sh keeps the previous secrets of a family comma-separated in one value;
+    # each of them, not only the whole line, must be scrubbed from the status documents.
+    current, first, second = "c" * 48, "p" * 48, "q" * 48
+    secrets_file = tmp_path / "secrets.env"
+    secrets_file.write_text(
+        "IMPACT_COOKIE_SECRET=" + current + "\nIMPACT_COOKIE_SECRET_PREVIOUS=" + first + "," + second + "\n"
+    )
+    values = ops_alerts.secret_values(str(secrets_file))
+    document = {"detail": "seen " + first + " and " + second + " and " + current}
+    scrubbed = json.dumps(ops_alerts.scrub(document, values))
+    assert first not in scrubbed and second not in scrubbed and current not in scrubbed

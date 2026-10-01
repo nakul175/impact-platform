@@ -110,8 +110,15 @@ export async function harness(group) {
     await page.getByLabel("Username", { exact: true }).fill(user);
     await page.getByLabel("Password", { exact: true }).fill(passwords[user]);
     await page.getByRole("button", { name: "Sign in →", exact: true }).click();
+    // The landing area depends on the actor's access: a reader of programmes lands on the
+    // portfolio, an administrator without programmes.read on People & access (main.tsx). The
+    // portfolio heading is also rendered for a moment before /me/access answers, so waiting for it
+    // alone passed for the administrator only by winning that race.
     await page
-      .getByRole("heading", { name: "Programme portfolio", exact: true })
+      .getByRole("heading", {
+        name: /^(Programme portfolio|People & access)$/,
+      })
+      .and(page.locator("h1"))
       .waitFor();
     pages[user] = page;
     last = page;

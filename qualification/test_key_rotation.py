@@ -414,9 +414,19 @@ def test_values_made_before_rotation_work_during_grace_and_fail_after_retirement
 
 def test_delivery_and_invitation_secrets_rotate_for_the_worker(live, tmp_path, app_factory, capsys):
     from test_administration import invitation_token, invite
-    from test_worker import claimed, deliveries, invitation, make_worker, sink_lines
+    from test_worker import deliveries, invitation, make_worker, sink_lines
 
     from impact_api.worker import empty_summary
+
+    def claimed(worker, tenant, event_id):
+        # Claim the due rows, keep this test's row and release every other one at once (attempts
+        # restored): a row of an earlier test left leased here would become due in the middle of a
+        # later test that expects to be the only sender (test_native_worker's SIGTERM case).
+        rows = worker.claim(tenant, empty_summary())
+        [mine] = [row for row in rows if str(row["event_id"]) == str(event_id)]
+        others = [row for row in rows if row is not mine]
+        assert worker.release(tenant, others) == len(others)
+        return mine
 
     tenant = live.fixture["tenant_a"]
     # Two invitations made by the suite API before the rotation.

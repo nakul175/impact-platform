@@ -19,6 +19,7 @@ from impact_api.evidence_contracts import (  # noqa: E402
 )
 from impact_api.export_contracts import SPECIAL_READS as EXPORT_READS  # noqa: E402
 from impact_api.dashboard_contracts import SPECIAL_READS as DASHBOARD_READS  # noqa: E402
+from impact_api.privacy_contracts import IMPLEMENTED as PRIVACY_ROUTES  # noqa: E402
 from impact_api.publication_contracts import (  # noqa: E402
     SPECIAL_READS as PUBLICATION_READS,
     DIRECTORY_READS as PUBLICATION_DIRECTORIES,
@@ -35,6 +36,7 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICAT
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_DIRECTORIES)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE_READS)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EVIDENCE_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PRIVACY_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))
 for route in READ_ROUTES:
     allowed.update(

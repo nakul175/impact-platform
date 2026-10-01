@@ -30,6 +30,13 @@ One process per worker login (`impact_worker_login` -> `impact_worker`). Each it
    a fenced outcome transaction stores the artifact (Succeeded), requeues with backoff, or records
    Failed with an error class. A stale holder's outcome matches no row, so one job yields at most
    one artifact. A job with a cancellation request is never claimed.
+8. Retention sweeps (v0.25 part B), job class RETENTION_SWEEP: during the per-tenant scan the
+   definer `impact.worker_schedule_retention` queues one sweep per Active tenant when none is open
+   and none completed within `retention_seconds`; the sweep is claimed like an export (lease
+   generation + 1, database time) and executed in one transaction that renews the lease, applies
+   the schedule of `impact_api.retention`, writes one insert-only `retention_proof` row per data
+   class and records Succeeded, all fenced on the lease generation: a stale holder's sweep rolls
+   back and leaves neither deletions nor proof.
 
 Failures back off exponentially with jitter (BACKOFF_BASE_SECONDS doubling up to BACKOFF_CAP_SECONDS,
 multiplied by a uniform factor in [0.5, 1.0)) and become DEAD after `max_attempts` claims or at once
@@ -79,6 +86,7 @@ from .delivery import (
 )
 from .export_render import MEDIA_TYPES, RenderError, build_model, render as render_export
 from .identity_profile import email_hash, normalize_email
+from . import retention as retention_schedule
 from .store import audit, write
 from .version import BUILD
 
@@ -91,7 +99,15 @@ PRE_START = ("Requested", "Validating", "Queued")
 # SMTP replies that mean "authenticate first" or "authentication failed": configuration, not message.
 AUTHENTICATION_CODES = {530, 534, 535, 538}
 BOOLEAN = {"require_unprivileged_db"}
-INTEGER = {"smtp_port", "synthetic_failures", "lease_seconds", "batch_size", "max_attempts", "scan_seconds"}
+INTEGER = {
+    "smtp_port",
+    "synthetic_failures",
+    "lease_seconds",
+    "batch_size",
+    "max_attempts",
+    "scan_seconds",
+    "retention_seconds",
+}
 FLOAT = {"smtp_timeout", "synthetic_delay", "poll_seconds"}
 WORKER_QUERY = (
     "SELECT current_user AS login,rolsuper,rolbypassrls,"
@@ -141,6 +157,8 @@ class WorkerSettings:
     batch_size: int = 10
     max_attempts: int = 6
     scan_seconds: int = 60
+    # A tenant's next retention sweep is queued once its last one completed this long ago.
+    retention_seconds: int = 86400
 
     @property
     def unprivileged_db_required(self):
@@ -197,6 +215,8 @@ class WorkerSettings:
             raise ConfigurationError("INVALID_LIMITS")
         if self.smtp_timeout >= self.lease_seconds:
             raise ConfigurationError("LEASE_SHORTER_THAN_SMTP_TIMEOUT")
+        if not 60 <= self.retention_seconds <= 31 * 86400:
+            raise ConfigurationError("INVALID_LIMITS")
 
 
 def is_loopback(host):
@@ -313,12 +333,26 @@ EXPORT_KEYS = [
     "exports_failed",
     "exports_cancelled",
 ]
+RETENTION_FENCE = (
+    " WHERE j.tenant_id=%(tenant)s AND j.job_id=%(job)s AND j.state='Running'"
+    " AND j.lease_generation=%(generation)s AND s.tenant_id=j.tenant_id AND s.job_id=j.job_id"
+    " AND s.lease_owner=%(owner)s"
+)
+RETENTION_KEYS = ["retention_scheduled", "retention_claimed", "retention_swept", "retention_failed"]
+
+
+class StaleLease(Exception):
+    """The fenced outcome of a sweep matched no row: roll the whole sweep back."""
 
 
 def empty_summary():
     keys = ["tenants", "claimed", "sent", "retried", "dead", "superseded", "stale_refused", "released"]
     return dict.fromkeys(
-        keys + ["reminders", "cancelled", "refused_cancellations", "tenant_failures"] + EXPORT_KEYS, 0
+        keys
+        + ["reminders", "cancelled", "refused_cancellations", "tenant_failures"]
+        + EXPORT_KEYS
+        + RETENTION_KEYS,
+        0,
     )
 
 
@@ -423,6 +457,7 @@ class Worker:
                 if scan and row["lifecycle_state"] == "Active" and not self.stopping:
                     self.remind(tenant, summary)
                     self.cancel_jobs(tenant, summary)
+                    self.run_retention(tenant, summary)
             except ConfigurationError:
                 raise
             except Exception as exc:  # one tenant's failure never stops the others
@@ -1024,6 +1059,201 @@ class Worker:
             row["attempts"],
         )
         return True
+
+    # -- retention sweeps (job class RETENTION_SWEEP) -------------------------------------------
+
+    def run_retention(self, tenant, summary):
+        for row in self.claim_retention(tenant, summary):
+            if self.stopping:
+                summary["released"] += self.release_retention(tenant, [row])
+                break
+            self.process_retention(tenant, row, summary)
+
+    def claim_retention(self, tenant, summary, schedule=True):
+        """Queue a sweep when one is due (definer, database clock), fail a sweep whose lease
+        expired at the attempt limit, and lease at most one due sweep of the tenant."""
+        with self.transaction(tenant, lock=True) as c:
+            if schedule:
+                principal = self.service_principal(c, tenant).principal_id
+                if c.execute(
+                    "SELECT impact.worker_schedule_retention(%s,%s) AS job",
+                    (principal, self.s.retention_seconds),
+                ).fetchone()["job"]:
+                    summary["retention_scheduled"] += 1
+            # Read after scheduling: a sweep queued just now is due at this instant.
+            at = self.now(c)
+            expired = c.execute(
+                "UPDATE impact.job j SET state='Failed',lease_expires_at=NULL,lease_generation=j.lease_generation+1,"
+                "output_manifest=%(manifest)s FROM impact.retention_sweep s WHERE j.tenant_id=%(tenant)s "
+                "AND s.tenant_id=j.tenant_id AND s.job_id=j.job_id AND j.job_class='RETENTION_SWEEP' "
+                "AND j.state='Running' AND j.lease_expires_at<=%(at)s AND s.attempts>=%(max)s RETURNING j.job_id",
+                {
+                    "tenant": tenant,
+                    "at": at,
+                    "max": self.s.max_attempts,
+                    "manifest": Jsonb({"error_class": "LEASE_EXPIRED", "completed_at": at.isoformat()}),
+                },
+            ).fetchall()
+            for job in expired:
+                c.execute(
+                    "UPDATE impact.retention_sweep SET lease_owner=NULL,completed_at=%s,"
+                    "last_error_class='LEASE_EXPIRED' WHERE tenant_id=%s AND job_id=%s",
+                    (at, tenant, job["job_id"]),
+                )
+            jobs = c.execute(
+                "WITH due AS (SELECT j.job_id FROM impact.job j JOIN impact.retention_sweep s "
+                "ON s.tenant_id=j.tenant_id AND s.job_id=j.job_id WHERE j.tenant_id=%(tenant)s "
+                "AND j.job_class='RETENTION_SWEEP' AND ((j.state='Queued' AND j.cancellation_requested_at IS NULL "
+                "AND s.next_attempt_at<=%(at)s) OR (j.state='Running' AND j.lease_expires_at<=%(at)s)) "
+                "ORDER BY s.next_attempt_at,j.job_id LIMIT 1 FOR UPDATE OF j SKIP LOCKED) "
+                "UPDATE impact.job j SET state='Running',lease_generation=j.lease_generation+1,"
+                "lease_expires_at=%(expires)s FROM due WHERE j.tenant_id=%(tenant)s AND j.job_id=due.job_id "
+                "RETURNING j.job_id,j.lease_generation",
+                {"tenant": tenant, "at": at, "expires": at + timedelta(seconds=self.s.lease_seconds)},
+            ).fetchall()
+            rows = []
+            for job in jobs:
+                sweep = c.execute(
+                    "UPDATE impact.retention_sweep SET lease_owner=%s,attempts=attempts+1,last_attempt_at=%s "
+                    "WHERE tenant_id=%s AND job_id=%s RETURNING job_id,attempts",
+                    (self.worker_id, at, tenant, job["job_id"]),
+                ).fetchone()
+                rows.append({**sweep, "lease_generation": job["lease_generation"]})
+        summary["retention_failed"] += len(expired)
+        summary["retention_claimed"] += len(rows)
+        return rows
+
+    def fenced_retention(self, c, tenant, row, assignments, values=None, condition=""):
+        """Apply a job update only while this worker holds exactly this lease generation."""
+        params = {
+            "tenant": tenant,
+            "job": str(row["job_id"]),
+            "owner": self.worker_id,
+            "generation": row["lease_generation"],
+            **(values or {}),
+        }
+        statement = (
+            "UPDATE impact.job j SET " + assignments + " FROM impact.retention_sweep s" + RETENTION_FENCE
+        )
+        return c.execute(statement + condition + " RETURNING j.state", params).fetchone()
+
+    def release_retention(self, tenant, rows):
+        released = 0
+        with self.transaction(tenant, lock=True) as c:
+            for row in rows:
+                if self.fenced_retention(c, tenant, row, "state='Queued',lease_expires_at=NULL"):
+                    c.execute(
+                        "UPDATE impact.retention_sweep SET lease_owner=NULL,attempts=attempts-1 "
+                        "WHERE tenant_id=%s AND job_id=%s",
+                        (tenant, row["job_id"]),
+                    )
+                    released += 1
+        return released
+
+    def process_retention(self, tenant, row, summary):
+        """One transaction: renew the lease (only while it is live), apply the schedule, write the
+        proof rows and record Succeeded, every update fenced on this worker's lease generation. A
+        refused fence rolls everything back: a stale holder deletes nothing and proves nothing."""
+        manifest = {}
+        try:
+            with self.transaction(tenant, lock=True) as c:
+                at = self.now(c)
+                if not self.fenced_retention(
+                    c,
+                    tenant,
+                    row,
+                    "lease_expires_at=%(renewed)s",
+                    {"at": at, "renewed": at + timedelta(seconds=self.s.lease_seconds)},
+                    " AND j.lease_expires_at>%(at)s",
+                ):
+                    raise StaleLease()
+                results = retention_schedule.apply(c, tenant)
+                for data_class, (cutoff, items) in sorted(results.items()):
+                    policy = retention_schedule.CLASSES[data_class]
+                    digest = retention_schedule.digest(items)
+                    c.execute(
+                        "INSERT INTO impact.retention_proof(tenant_id,proof_id,job_id,lease_generation,data_class,"
+                        "action,retention_days,cutoff,affected_count,items_sha256,executed_at,worker_id) "
+                        "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,statement_timestamp(),%s)",
+                        (
+                            tenant,
+                            str(uuid4()),
+                            row["job_id"],
+                            row["lease_generation"],
+                            data_class,
+                            policy["action"],
+                            policy["retention_days"],
+                            cutoff,
+                            len(items),
+                            digest,
+                            self.worker_id,
+                        ),
+                    )
+                    manifest[data_class] = {"affected": len(items), "items_sha256": digest.hex()}
+                if not self.fenced_retention(
+                    c,
+                    tenant,
+                    row,
+                    "state='Succeeded',lease_expires_at=NULL,output_manifest=%(manifest)s",
+                    {"manifest": Jsonb({"classes": manifest, "completed_at": at.isoformat()})},
+                ):
+                    raise StaleLease()
+                c.execute(
+                    "UPDATE impact.retention_sweep SET lease_owner=NULL,completed_at=statement_timestamp(),"
+                    "last_error_class=NULL WHERE tenant_id=%s AND job_id=%s",
+                    (tenant, row["job_id"]),
+                )
+                c.execute(
+                    "INSERT INTO impact.job_item(tenant_id,job_id,item_key,outcome) "
+                    "VALUES(%s,%s,'sweep','SUCCEEDED') ON CONFLICT DO NOTHING",
+                    (tenant, row["job_id"]),
+                )
+        except ConfigurationError:
+            raise
+        except StaleLease:
+            summary["stale_refused"] += 1
+            LOG.warning("retention sweep %s refused: lease expired or taken over", row["job_id"])
+            return False
+        except psycopg.Error as exc:
+            LOG.warning("retention sweep %s failed class=%s", row["job_id"], type(exc).__name__)
+            self.record_retention_failure(tenant, row, summary, "SWEEP_FAILED")
+            return False
+        summary["retention_swept"] += 1
+        LOG.info("retention sweep %s %s", row["job_id"], json.dumps(manifest, sort_keys=True))
+        return True
+
+    def record_retention_failure(self, tenant, row, summary, error_class):
+        """Back off and queue again, or Failed with the error class at the attempt limit (fenced)."""
+        with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
+            final = row["attempts"] >= self.s.max_attempts
+            applied = self.fenced_retention(
+                c,
+                tenant,
+                row,
+                "state=%(state)s,lease_expires_at=NULL,output_manifest=%(manifest)s",
+                {
+                    "state": "Failed" if final else "Queued",
+                    "manifest": (
+                        Jsonb({"error_class": error_class, "completed_at": at.isoformat()}) if final else None
+                    ),
+                },
+            )
+            if not applied:
+                summary["stale_refused"] += 1
+                return
+            c.execute(
+                "UPDATE impact.retention_sweep SET lease_owner=NULL,last_error_class=%s,next_attempt_at=%s,"
+                "completed_at=CASE WHEN %s THEN %s::timestamptz END WHERE tenant_id=%s AND job_id=%s",
+                (error_class, at + self.backoff(row["attempts"]), final, at, tenant, row["job_id"]),
+            )
+            if final:
+                summary["retention_failed"] += 1
+                c.execute(
+                    "INSERT INTO impact.job_item(tenant_id,job_id,item_key,outcome,error_code) "
+                    "VALUES(%s,%s,'sweep','FAILED',%s) ON CONFLICT DO NOTHING",
+                    (tenant, row["job_id"], error_class),
+                )
 
     # -- scheduled scans ------------------------------------------------------------------------
 

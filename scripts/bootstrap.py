@@ -24,6 +24,15 @@ from bootstrap_platform import provision_platform  # noqa: E402
 from fixture_support import FIXTURE_EXPIRES_AT, FIXTURE_STARTS_AT, fixture_database_allowed  # noqa: E402
 
 
+# Purpose-bound capabilities the fixture actors receive per the policy's role templates.
+PURPOSE_CAPABILITIES = [
+    "privacy-cases.read",
+    "privacy-cases.draft.create",
+    "privacy-cases.draft.edit",
+    "privacy.approve",
+    "privacy.execute",
+    "privacy.export",
+]
 # The issuer the fixture's auth_identity rows carry (specification/fixtures/seed.sql).
 FIXTURE_ISSUER = "http://127.0.0.1:8080/realms/impact-dev"
 
@@ -96,6 +105,7 @@ def bootstrap(local, idp=None):
                 "import.cancel",
                 "evidence.attach",
                 "report.export",
+                "retention.read",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",
@@ -119,6 +129,29 @@ def bootstrap(local, idp=None):
                     "issuer_id": actor["principal_id"],
                 }
                 write(c, ctx, "Grant", data, "Active", object_id=obj, track_author=False)
+            # Privacy cases (v0.25 part B) are purpose-bound: their grants carry the purpose a
+            # request must name. The fixture's QUALIFICATION-purpose grants stay inert for them.
+            for cap in PURPOSE_CAPABILITIES:
+                policy = next(p for p in OPERATIONS.values() if p["capability"] == cap)
+                if not set(actor["roles"]).intersection(policy["role_templates"]):
+                    continue
+                for purpose in policy.get("purposes", []):
+                    obj = str(uuid5(NAMESPACE_URL, "impact-dev-grant:" + name + ":" + cap + ":" + purpose))
+                    if c.execute(
+                        "SELECT 1 FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
+                        (tenant, obj),
+                    ).fetchone():
+                        continue
+                    data = {
+                        "subject_id": actor["principal_id"],
+                        "capability": cap,
+                        "scope_id": str(scope),
+                        "starts_at": FIXTURE_STARTS_AT,
+                        "expires_at": FIXTURE_EXPIRES_AT,
+                        "purpose": purpose,
+                        "issuer_id": actor["principal_id"],
+                    }
+                    write(c, ctx, "Grant", data, "Active", object_id=obj, track_author=False)
         # This milestone captures manual observations. Preserve the baseline DATASET revision,
         # then explicitly append a development-only manual definition and instance revision.
         author = fixture["actors"]["author"]

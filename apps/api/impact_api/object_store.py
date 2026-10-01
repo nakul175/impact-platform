@@ -50,6 +50,11 @@ class ObjectStore(ABC):
     def exists(self, key):
         """Whether an object is stored under `key`."""
 
+    @abstractmethod
+    def delete(self, key):
+        """Remove the object under `key` (a privacy erasure, v0.25 part B); idempotent: an absent
+        key is already deleted. Returns whether bytes were removed by this call."""
+
 
 class FilesystemObjectStore(ObjectStore):
     backend = "filesystem"
@@ -109,6 +114,19 @@ class FilesystemObjectStore(ObjectStore):
 
     def exists(self, key):
         return self.path(key).is_file()
+
+    def delete(self, key):
+        target = self.path(key)
+        try:
+            os.unlink(target)
+        except FileNotFoundError:
+            return False
+        directory = os.open(target.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
+        return True
 
 
 def object_store(settings):

@@ -118,6 +118,14 @@
 | GET | `/v1/tenants/{tenant_id}/periods/{object_id}` | `periods.read` |
 | POST | `/v1/tenants/{tenant_id}/periods/{object_id}/actions/close` | `period.close` |
 | POST | `/v1/tenants/{tenant_id}/periods/{object_id}/actions/restate` | `period.restate` |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.read` |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | `privacy-cases.read` |
+| PATCH | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | `privacy-cases.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve` | `privacy.approve` |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute` | `privacy.execute` |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/export` | `privacy.export` |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/plan` | `privacy-cases.read` |
 | GET | `/v1/tenants/{tenant_id}/programmes` | `programmes.read` |
 | POST | `/v1/tenants/{tenant_id}/programmes` | `programmes.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}` | `programmes.read` |
@@ -157,6 +165,8 @@
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download` | `report.export` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests` | `restatement-requests.read` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests/{object_id}` | `restatement-requests.read` |
+| GET | `/v1/tenants/{tenant_id}/retention-proofs` | `retention.read` |
+| GET | `/v1/tenants/{tenant_id}/retention-schedule` | `retention.read` |
 | GET | `/v1/tenants/{tenant_id}/role-templates` | `role-templates.read` |
 | POST | `/v1/tenants/{tenant_id}/role-templates` | `roles.manage` |
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/retire` | `roles.manage` |

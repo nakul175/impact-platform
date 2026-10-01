@@ -22,6 +22,7 @@ import {
   JoinInvitation,
   readInvitation,
 } from "./Administration";
+import { PrivacyPanel } from "./Privacy";
 type RecordRow = {
   object_id: string;
   revision_id: string;
@@ -42,7 +43,10 @@ type Page = {
   next_cursor: string | null;
   scope_label: string;
 };
-type Access = { capabilities: string[] };
+type Access = {
+  capabilities: string[];
+  purpose_capabilities?: [string, string][];
+};
 let csrf = "";
 class ApiError extends Error {
   constructor(
@@ -847,13 +851,24 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "memberships" ? (
-            <AdministrationPanel
-              base={base}
-              capabilities={access.capabilities}
-              request={api}
-              explain={explain}
-              Dialog={Dialog}
-            />
+            <>
+              <AdministrationPanel
+                base={base}
+                capabilities={access.capabilities}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
+              <PrivacyPanel
+                key={tenant}
+                base={base}
+                capabilities={access.capabilities}
+                purposeCapabilities={access.purpose_capabilities || []}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
+            </>
           ) : (
             <>
               <section className="metrics" aria-label="Loaded records">

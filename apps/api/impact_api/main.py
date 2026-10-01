@@ -642,6 +642,77 @@ def create_app():
             )
         )
 
+    # Data-subject requests and the retention schedule (v0.25 part B): purpose-bound privacy routes,
+    # registered before the generic routes so that "privacy-cases" never reaches the dispatcher.
+    @app.get("/v1/tenants/{tenant}/privacy-cases")
+    def privacy_cases(
+        request: Request, tenant: str, purpose: str | None = None, limit: int = 50, cursor: str | None = None
+    ):
+        return service.privacy.listing(auth.resolve(request), uuid(tenant), purpose, limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/privacy-cases", status_code=201)
+    async def create_privacy_case(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}")
+    def privacy_case(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        return service.privacy.get(auth.resolve(request), uuid(tenant), uuid(obj), purpose)
+
+    @app.patch("/v1/tenants/{tenant}/privacy-cases/{obj}")
+    async def patch_privacy_case(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.patch,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}/plan")
+    def privacy_case_plan(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        return service.privacy.plan_view(auth.resolve(request), uuid(tenant), uuid(obj), purpose)
+
+    @app.post("/v1/tenants/{tenant}/privacy-cases/{obj}/actions/{action}")
+    async def privacy_case_action(request: Request, tenant: str, obj: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            action,
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}/export")
+    def privacy_case_export(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        package = service.privacy.download(
+            auth.resolve(request), uuid(tenant), uuid(obj), purpose, request.state.correlation
+        )
+        return Response(
+            package["body"],
+            media_type="application/json",
+            headers={
+                "ETag": '"' + package["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="' + package["filename"] + '"',
+                "Content-Security-Policy": "default-src 'none'; sandbox",
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/retention-schedule")
+    def retention_schedule(request: Request, tenant: str):
+        return service.privacy.retention_schedule(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/retention-proofs")
+    def retention_proofs(request: Request, tenant: str):
+        return service.privacy.retention_proofs(auth.resolve(request), uuid(tenant))
+
     @app.get("/v1/tenants/{tenant}/{route}")
     def listing(request: Request, tenant: str, route: str, limit: int = 50, cursor: str | None = None):
         if route in ADMIN_READS:

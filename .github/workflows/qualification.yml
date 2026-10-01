@@ -218,13 +218,15 @@ jobs:
           rm -f add-user.out
       - name: Secret rotation keeps the deployment healthy (rotate, smoke, retire, smoke)
         run: |
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh rotate --family all --dry-run > rotate-dry.json
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh rotate --family all --reason "CI rotation" | tee rotate.log
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh status > rotate-status.json
-          python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert all(len(f['grace'])==1 for f in d['families'].values()), d" rotate-status.json
-          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-rotated.json
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh retire --family all --all-previous --reason "CI retire" | tee retire.log
-          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-retired.json
+          fail() { echo "::error title=Secret rotation::$1"; for f in rotate-dry.json rotate.log rotate-status.json retire.log smoke-rotated.json smoke-retired.json; do [ -f "$f" ] && { echo "--- $f"; tail -n 40 "$f"; }; done; exit 1; }
+          rotate() { sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh "$@"; }
+          rotate rotate --family all --dry-run > rotate-dry.json 2>&1 || fail "dry run"
+          rotate rotate --family all --reason "CI rotation" > rotate.log 2>&1 || fail "rotate"
+          rotate status > rotate-status.json 2>&1 || fail "status"
+          python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert all(len(f['grace'])==1 for f in d['families'].values()), d" rotate-status.json || fail "one grace key per family"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-rotated.json || fail "smoke after rotation"
+          rotate retire --family all --all-previous --reason "CI retire" > retire.log 2>&1 || fail "retire"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-retired.json || fail "smoke after retirement"
           # No secret value reaches the output: compare every value of secrets.env with what was printed.
           sudo python3 -c "
           import sys
@@ -233,7 +235,8 @@ jobs:
               value = line.partition('=')[2].strip()
               for part in value.split(','):
                   assert len(part) < 16 or part not in printed, 'a secret value was printed'
-          " "$IMPACT_HOME/secrets.env" rotate-dry.json rotate.log rotate-status.json retire.log
+          " "$IMPACT_HOME/secrets.env" rotate-dry.json rotate.log rotate-status.json retire.log || fail "a secret value was printed"
+          cat rotate.log retire.log
       - name: The nightly dump exists and restores
         run: |
           compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }

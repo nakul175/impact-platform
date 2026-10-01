@@ -157,7 +157,7 @@ export function AuditExportPanel({
           />
         </label>
         <label>
-          Purpose
+          Export purpose
           <select value={purpose} onChange={(e) => setPurpose(e.target.value)}>
             {PURPOSES.map(([value, label]) => (
               <option key={value} value={value}>
@@ -167,7 +167,7 @@ export function AuditExportPanel({
           </select>
         </label>
         <label>
-          Reason
+          Export reason
           <input
             value={reason}
             maxLength={2000}

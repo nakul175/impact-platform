@@ -566,6 +566,9 @@ def test_host_units_run_the_check_every_five_minutes_and_the_drill_weekly(tmp_pa
     rotate = (tmp_path / "logrotate").read_text()
     assert "/var/log/impact-deploy.log" in rotate and "/opt/impact/state/admin-actions.log" in rotate
     assert "copytruncate" in rotate and "maxsize 20M" in rotate
+    # Ubuntu's /var/log is group-writable (root:syslog 0775): without su in every stanza logrotate
+    # skips the logs as "insecure permissions" and exits 1 (container-stack, PR #60).
+    assert rotate.count("su root root") == rotate.count("{") == 2
     assert "install_host_units\n" in UPDATE and "IMPACT_HOST_UNITS" in UPDATE
 
 

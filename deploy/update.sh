@@ -212,7 +212,11 @@ WantedBy=timers.target
 EOF
   cat >"$dir/logrotate" <<EOF
 # Impact Platform host logs (written by deploy/update.sh; regenerated on every deployment).
+# An su directive in every stanza: Ubuntu's /var/log is root:syslog 0775, and without an su
+# directive logrotate refuses the group-writable parent ("insecure permissions"), skips the logs
+# and exits 1 whenever this file is run on its own.
 /var/log/impact-deploy.log /var/log/impact-ops.log /var/log/impact-restore-drill.log {
+  su root root
   weekly
   maxsize 20M
   rotate 8
@@ -223,6 +227,7 @@ EOF
   copytruncate
 }
 $STATE_DIR/admin-actions.log {
+  su root root
   monthly
   rotate 24
   compress

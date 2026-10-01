@@ -5312,6 +5312,127 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "action_reports_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/export",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_reports_cancel_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/cancel-export",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_report_exports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/exports",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_report_export",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_pdf",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.pdf",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_xlsx",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.xlsx",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_docx",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.docx",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     }
   ],
   "limits": {

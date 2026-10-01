@@ -45,8 +45,11 @@ from fixture_support import fixture_database_allowed  # noqa: E402
 from provision_logins import login_dsn, passwords_from_env, provision  # noqa: E402
 
 DICTIONARY = ROOT / "docs/current/CURRENT-DATA-DICTIONARY.md"
-LATEST = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
-BASELINE = LATEST - 1
+VERSIONS = sorted(int(p.name[:4]) for p in (ROOT / "infrastructure/migrations").glob("*.sql"))
+COUNT = len(VERSIONS)
+LATEST = VERSIONS[-1]
+# The previous migration (LATEST - 1 on an integrated build).
+BASELINE = VERSIONS[-2]
 # The session row inserted at the baseline; its identity is the fixture author.
 SESSION_IDENTITY = "69407b72-0f5f-5126-8d04-a1355db5a9c5"
 # The outbox row inserted at the baseline, in fixture tenant A.
@@ -100,10 +103,10 @@ def ledgered_checksums():
         match = re.fullmatch(r"\|\s*(\d{4}_[a-z_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
         if match:
             register[match.group(1)] = match.group(2)
-    if len(register) != LATEST:
+    if len(register) != COUNT:
         raise RuntimeError(
             "Expected "
-            + str(LATEST)
+            + str(COUNT)
             + " ledgered migrations in the data dictionary, found "
             + str(len(register))
         )
@@ -230,6 +233,19 @@ def run(admin_dsn, fixture_dsn, passwords):
         legacy_forms = c.execute(
             "SELECT (SELECT count(*) FROM impact.form_current WHERE programme_id IS NULL)+(SELECT count(*) FROM impact.submission_current WHERE observation_ids IS NULL AND unit_key IS NULL)"
         ).fetchone()[0]
+        export_tables = [
+            c.execute("SELECT to_regclass(%s)", ("impact." + name,)).fetchone()[0]
+            for name in [
+                "report_export",
+                "report_export_artifact",
+                "report_publication_export",
+                "report_export_access",
+            ]
+        ]
+        legacy_disclosures = c.execute(
+            "SELECT count(*) FROM impact.disclosure_current WHERE export_formats IS NULL AND export_artifacts IS NULL"
+        ).fetchone()[0]
+        disclosures = c.execute("SELECT count(*) FROM impact.disclosure_current").fetchone()[0]
         legacy_delivery = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
             (OUTBOX_TENANT, OUTBOX_EVENT),
@@ -256,6 +272,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         "form_columns_present": form_columns == 5,
         "form_publication_table_present": form_table is not None,
         "form_rows_preserved": legacy_forms,
+        "export_tables_present": all(export_tables),
+        "disclosure_rows_preserved": legacy_disclosures == disclosures,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -270,7 +288,7 @@ def run(admin_dsn, fixture_dsn, passwords):
     }
     if (
         mismatches
-        or len(rows) != LATEST
+        or len(rows) != COUNT
         or max_version != LATEST
         or added != 2
         or replay_table is None
@@ -281,6 +299,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         or calculation_columns != 2
         or form_columns != 5
         or form_table is None
+        or not all(export_tables)
+        or legacy_disclosures != disclosures
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

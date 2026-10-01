@@ -18,8 +18,11 @@ import psycopg
 from pglast import split
 
 ROOT = Path(__file__).resolve().parents[1]
-# The schema version this build expects: one migration file per version.
-LATEST = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
+# The schema version this build expects (the highest migration number) and the number of migration
+# files. They are equal on an integrated build; a branch carrying a later migration before the ones
+# numbered between (parallel increments) differs, and every check compares like with like.
+COUNT = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
+LATEST = max(int(p.name[:4]) for p in (ROOT / "infrastructure/migrations").glob("*.sql"))
 sys.path.insert(0, str(ROOT / "scripts"))
 from fixture_support import fixture_database_allowed  # noqa: E402
 

@@ -115,6 +115,9 @@
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals` | `targets.read` |
 | GET | `/v1/tenants/{tenant_id}/publication-recipients` | `disclosure.request` |
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.csv` | `publication.download` |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.docx` | `publication.download` |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.pdf` | `publication.download` |
+| GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.xlsx` | `publication.download` |
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/view` | `publication.download` |
 | GET | `/v1/tenants/{tenant_id}/renewal-requests` | `memberships.read` |
 | POST | `/v1/tenants/{tenant_id}/renewal-requests` | `membership.renew.request` |
@@ -128,11 +131,15 @@
 | POST | `/v1/tenants/{tenant_id}/reports` | `reports.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}` | `reports.read` |
 | PATCH | `/v1/tenants/{tenant_id}/reports/{object_id}` | `reports.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/cancel-export` | `report.export` |
+| POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/export` | `report.export` |
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/publish` | `report.publish` |
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/submit` | `report.submit` |
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/withdraw` | `report.withdraw` |
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}/export` | `reports.read` |
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}/export.csv` | `reports.read` |
+| GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports` | `report.export` |
+| GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download` | `report.export` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests` | `restatement-requests.read` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests/{object_id}` | `restatement-requests.read` |
 | GET | `/v1/tenants/{tenant_id}/role-templates` | `role-templates.read` |

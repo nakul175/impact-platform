@@ -88,6 +88,7 @@ def bootstrap(local, idp=None):
                 "disclosures.read",
                 "publication.download",
                 "form.submit",
+                "report.export",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",

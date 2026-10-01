@@ -5,6 +5,7 @@ import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { FormsPanel } from "./Forms";
+import { ReportExports } from "./ReportExports";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
@@ -1353,6 +1354,9 @@ function Editor({
         expires_at: new Date(get("expires_at") + ":00Z").toISOString(),
         public: false,
         workflow_version: get("workflow_version"),
+        ...(exportFormats(f).length
+          ? { export_formats: exportFormats(f) }
+          : {}),
       });
     if (mode === "publish-report")
       return send(
@@ -1372,6 +1376,10 @@ function Editor({
         row!.revision_id,
       );
   }
+  const exportFormats = (f: FormData) =>
+    ["PDF", "XLSX", "DOCX"].filter(
+      (format) => f.get("export_" + format) === "on",
+    );
   const selection = (
     key: string,
     name: string,
@@ -1400,6 +1408,11 @@ function Editor({
           <span>Revision {row.revision_id.slice(0, 8)}</span>
         </div>
         <Fields data={row.data} />
+        {route === "reports" &&
+          row.lifecycle_state === "Approved" &&
+          allowed("report.export") && (
+            <ReportExports {...{ base, row, request: api, explain }} />
+          )}
         {route === "programmes" &&
           ["Draft", "Ready"].includes(row.lifecycle_state) && (
             <ProgrammeReadiness
@@ -1876,8 +1889,18 @@ function Editor({
           </label>
           <label className="check-row">
             <input type="checkbox" name="allow_download" defaultChecked />
-            Permit the selected recipient to download the bound-values CSV
+            Permit the selected recipient to download the bound-values CSV and
+            any rendered exports below
           </label>
+          <fieldset>
+            <legend>Rendered exports to disclose</legend>
+            {["PDF", "XLSX", "DOCX"].map((format) => (
+              <label className="check-row" key={format}>
+                <input type="checkbox" name={"export_" + format} />
+                {format} (must already be rendered for this revision)
+              </label>
+            ))}
+          </fieldset>
           {selection(
             "workflow_version",
             "Disclosure review template",

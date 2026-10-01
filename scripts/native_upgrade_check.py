@@ -45,8 +45,10 @@ from fixture_support import fixture_database_allowed  # noqa: E402
 from provision_logins import login_dsn, passwords_from_env, provision  # noqa: E402
 
 DICTIONARY = ROOT / "docs/current/CURRENT-DATA-DICTIONARY.md"
-LATEST = len(list((ROOT / "infrastructure/migrations").glob("*.sql")))
-BASELINE = LATEST - 1
+LATEST = migrate.LATEST
+FILES = migrate.FILES
+# The migration before the latest one (LATEST - 1 once the sequence is contiguous).
+BASELINE = sorted(version for version, _ in migrate.migration_files())[-2]
 # The session row inserted at the baseline; its identity is the fixture author.
 SESSION_IDENTITY = "69407b72-0f5f-5126-8d04-a1355db5a9c5"
 # The outbox row inserted at the baseline, in fixture tenant A.
@@ -100,10 +102,10 @@ def ledgered_checksums():
         match = re.fullmatch(r"\|\s*(\d{4}_[a-z_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
         if match:
             register[match.group(1)] = match.group(2)
-    if len(register) != LATEST:
+    if len(register) != FILES:
         raise RuntimeError(
             "Expected "
-            + str(LATEST)
+            + str(FILES)
             + " ledgered migrations in the data dictionary, found "
             + str(len(register))
         )
@@ -270,7 +272,7 @@ def run(admin_dsn, fixture_dsn, passwords):
     }
     if (
         mismatches
-        or len(rows) != LATEST
+        or len(rows) != FILES
         or max_version != LATEST
         or added != 2
         or replay_table is None

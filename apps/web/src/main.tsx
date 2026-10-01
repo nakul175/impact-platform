@@ -6,6 +6,7 @@ import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { FormsPanel } from "./Forms";
 import { ImportsPanel } from "./Imports";
+import { EvidencePanel } from "./Evidence";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
@@ -1415,6 +1416,15 @@ function Editor({
           <span>Revision {row.revision_id.slice(0, 8)}</span>
         </div>
         <Fields data={row.data} />
+        {(route === "observations" || route === "calculated-results") && (
+          <EvidencePanel
+            base={base}
+            route={route}
+            row={row}
+            allowed={allowed}
+            token={() => csrf}
+          />
+        )}
         {route === "programmes" &&
           ["Draft", "Ready"].includes(row.lifecycle_state) && (
             <ProgrammeReadiness

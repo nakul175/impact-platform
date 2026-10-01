@@ -57,6 +57,14 @@ class Settings:
     # Seals delivery addresses in the outbox and keys recovery-channel verification codes (v0.16).
     # Shared with the worker; empty disables email intents (invitations stay manual-only).
     delivery_secret: str = ""
+    # Private object store for evidence bytes (v0.22): an absolute directory only the API reads
+    # (never served directly); empty disables uploads (SERVICE_UNAVAILABLE, OBJECT_STORE_NOT_CONFIGURED).
+    # Only the filesystem backend is implemented. The scanner names the content_safety scanner that
+    # decides each blob's verdict: "eicar-signature" (deterministic; recognises only the EICAR test
+    # file, not an anti-malware engine) or "none" (every scan FAILED, nothing downloadable).
+    object_store_backend: str = "filesystem"
+    object_store_dir: str = ""
+    evidence_scanner: str = ""
 
     @property
     def unprivileged_db_required(self):
@@ -102,6 +110,16 @@ class Settings:
                 + ([s.end_session_url] if s.end_session_url else [])
             ):
                 raise ValueError("HTTPS required")
+        if s.object_store_dir and not Path(s.object_store_dir).is_absolute():
+            raise ValueError("object_store_dir must be an absolute path")
+        if s.object_store_backend != "filesystem":
+            raise ValueError("object_store_backend: only 'filesystem' is implemented")
+        if s.evidence_scanner not in {"", "eicar-signature", "none"}:
+            raise ValueError("evidence_scanner must be eicar-signature or none")
+        if s.object_store_dir and not s.evidence_scanner:
+            # No silent default: whoever enables evidence storage names the scanner that decides
+            # what becomes downloadable.
+            raise ValueError("An object store requires an explicitly configured evidence_scanner")
         if s.delivery_secret and len(s.delivery_secret) < 48:
             raise ValueError("A delivery secret must be at least 48 characters")
         if s.client_secret and (len(s.client_secret) < 32 or s.dev_auth):

@@ -4084,7 +4084,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Owner of the upload only; any other caller receives RESOURCE_UNAVAILABLE.",
       "audit": false
     },
     {
@@ -4120,7 +4120,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "WHOLE mode only. Check current owner, tenant, byte count and SHA256; immutable first write, identical replay returns same receipt. MULTIPART mode uses numbered parts and exact completion manifest. Media max 25,000,000 bytes; imports max 100,000,000 bytes.",
+      "state_guard": "WHOLE mode only, owner only, request body at most 25,000,000 bytes (the 256 KiB JSON cap does not apply to this route alone). Exact byte count and SHA-256, magic-byte sniffing against the declared allow-listed type; identical replay returns the same status, different bytes conflict.",
       "audit": true
     },
     {
@@ -4138,7 +4138,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Seal exact ordered part manifest and whole-file digest under upload lock. Missing/changed/extra parts conflict. Freeze new parts, queue assembly and scan. Blob remains quarantined until verified CLEAN. Job generation fences stale workers.",
+      "state_guard": "Seals the received whole file (no parts) and scans it with the configured scanner outside the transaction; the blob stays quarantined until the verdict is CLEAN. Replays re-run a scan that was interrupted.",
       "audit": true
     },
     {
@@ -4157,8 +4157,8 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": true,
-      "state_guard": "Mediated content response. Reauthorise before stream and at bounded intervals/chunks; Range requests independently checked. No signed redirect. Current restrictions override historical access.",
-      "audit": false
+      "state_guard": "Mediated content response through the API only: re-authorised per request, tenant-fenced, only a CLEAN blob whose bytes still match the recorded SHA-256; attachment disposition, nosniff, no-store; each response recorded. No range requests, no signed redirect.",
+      "audit": true
     },
     {
       "operation_id": "put_upload_part",
@@ -5365,6 +5365,56 @@
       "field_filter_required": false,
       "state_guard": "Draft or Previewed only; an edit discards the staged preview. Server-owned namespace, digest, receipt, preview and commit fields are never accepted.",
       "audit": true
+    },
+    {
+      "operation_id": "action_evidence_attach",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach",
+      "capability": "evidence.attach",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "File-backed evidence must hold a CLEAN upload; the caller must also read the target (observations.read or calculated-results.read). Insert-only citation of exact revisions."
+    },
+    {
+      "operation_id": "list_observation_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/observations/{object_id}/evidence",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_calculated_result_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     }
   ],
   "limits": {

@@ -1,6 +1,7 @@
 import json
 import logging
-from urllib.parse import parse_qs, urlparse
+import re
+from urllib.parse import parse_qs, quote, urlparse
 from uuid import UUID, uuid4
 import psycopg
 from fastapi import FastAPI, Request
@@ -16,6 +17,7 @@ from .service import Service
 from .administration import Administration
 from .administration_contracts import COMMANDS, ADMIN_READS
 from .reporting import REPORT_CSP
+from .content_safety import MAX_EVIDENCE_BYTES
 from .store import Database
 from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
@@ -26,6 +28,9 @@ from .version import BUILD, DOMAIN_API, SCHEMA
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
+# The one route whose body is raw bytes rather than JSON: an evidence upload's whole content, at most
+# the design ceiling for EVIDENCE_MEDIA and never more than the upload's own declared size.
+UPLOAD_CONTENT = re.compile(r"^/v1/tenants/[^/]+/uploads/[^/]+/content$")
 # A logout token is at most 16 KiB (Auth.backchannel_logout); the form adds "logout_token=".
 MAX_LOGOUT_BODY = 16384 + 64
 
@@ -144,11 +149,16 @@ def create_app():
         except ValueError:
             request.state.correlation = str(uuid4())
         host = request.headers.get("host", "").split(":")[0]
+        limit = (
+            MAX_EVIDENCE_BYTES
+            if request.method == "PUT" and UPLOAD_CONTENT.fullmatch(request.url.path)
+            else MAX_BODY
+        )
         if host not in {urlparse(s.public_origin).hostname, "testserver" if s.environment == "test" else ""}:
             response = error(request, DomainError("VALIDATION_FAILED", 400))
         elif (
             request.headers.get("content-length", "0").isdigit()
-            and int(request.headers.get("content-length", "0")) > MAX_BODY
+            and int(request.headers.get("content-length", "0")) > limit
         ):
             response = error(request, DomainError("LIMIT_EXCEEDED", 413))
         else:
@@ -468,6 +478,89 @@ def create_app():
                 "ETag": '"' + artifact["digest"] + '"',
                 "Content-Disposition": 'attachment; filename="' + artifact["filename"] + '"',
             },
+        )
+
+    # Evidence uploads and mediated content (v0.22). Registered before the generic routes so that
+    # "uploads" never reaches the domain dispatcher.
+    @app.post("/v1/tenants/{tenant}/uploads", status_code=201)
+    async def create_upload(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.evidence.create_upload,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/uploads/{obj}")
+    def upload_status(request: Request, tenant: str, obj: str):
+        return service.evidence.upload(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.put("/v1/tenants/{tenant}/uploads/{obj}/content")
+    async def upload_content(request: Request, tenant: str, obj: str):
+        if request.headers.get("content-type", "").split(";")[0].strip() != "application/octet-stream":
+            raise DomainError("VALIDATION_FAILED", 415)
+        identity = await run_in_threadpool(auth.resolve, request)
+        tenant_id, upload_id = uuid(tenant), uuid(obj)
+        # Authorised and bounded by the declared size before the body is read.
+        expected = await run_in_threadpool(service.evidence.content_limit, identity, tenant_id, upload_id)
+        try:
+            raw = await bounded_body(request, expected)
+        except DomainError:
+            raise DomainError("LIMIT_EXCEEDED", 413, reason="FILE_TOO_LARGE") from None
+        return await run_in_threadpool(
+            service.evidence.put_content, identity, tenant_id, upload_id, raw, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/uploads/{obj}/actions/complete")
+    async def complete_upload(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.evidence.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evidence/{obj}/content")
+    def evidence_content(request: Request, tenant: str, obj: str, revision: str | None = None):
+        artifact = service.evidence.content(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision) if revision else None,
+            request.state.correlation,
+        )
+        ascii_name = re.sub(r"[^A-Za-z0-9._-]", "_", artifact["filename"])
+        media = artifact["media_type"] + (
+            "; charset=utf-8" if artifact["media_type"].startswith("text/") else ""
+        )
+        return Response(
+            artifact["body"],
+            media_type=media,
+            headers={
+                "ETag": '"' + artifact["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="'
+                + ascii_name
+                + "\"; filename*=UTF-8''"
+                + quote(artifact["filename"], safe=""),
+                # Nothing in a downloaded file runs in this origin, even if a browser renders it.
+                "Content-Security-Policy": "default-src 'none'; sandbox",
+                "Cross-Origin-Resource-Policy": "same-origin",
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/observations/{obj}/evidence")
+    def observation_evidence(request: Request, tenant: str, obj: str):
+        return service.evidence.attachments(auth.resolve(request), uuid(tenant), "Observation", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/evidence")
+    def result_evidence(request: Request, tenant: str, obj: str):
+        return service.evidence.attachments(
+            auth.resolve(request), uuid(tenant), "CalculatedResult", uuid(obj)
         )
 
     @app.get("/v1/tenants/{tenant}/{route}")

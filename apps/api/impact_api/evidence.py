@@ -93,7 +93,7 @@ def status(row):
 
 UPLOAD_QUERY = (
     "SELECT u.*,b.scan_state AS b_scan_state,b.scan_detail AS b_scan_detail,b.object_key AS b_object_key,"
-    "b.sha256 AS b_sha256,b.bytes AS b_bytes FROM impact.upload_session u LEFT JOIN impact.file_blob b "
+    "b.sha256 AS b_sha256,b.bytes AS b_bytes,b.purged_at AS b_purged_at FROM impact.upload_session u LEFT JOIN impact.file_blob b "
     "ON b.tenant_id=u.tenant_id AND b.blob_id=u.blob_id WHERE u.tenant_id=%s AND u.upload_id=%s"
 )
 
@@ -330,6 +330,9 @@ class Evidence:
             unavailable()
         if row["state"] != "CLEAN" or row["b_scan_state"] != "CLEAN":
             raise DomainError("INVALID_STATE", 409, reason="UPLOAD_NOT_CLEAN")
+        if row["b_purged_at"]:
+            # Bytes erased by a privacy case (v0.25 part B): the upload can back nothing any more.
+            raise DomainError("INVALID_STATE", 409, reason="UPLOAD_CONTENT_ERASED")
         return row
 
     def stamp(self, c, ctx, data, previous):
@@ -477,7 +480,7 @@ class Evidence:
             row = c.execute(UPLOAD_QUERY, (tenant, upload_id)).fetchone() if upload_id else None
             # Only bytes whose verdict is CLEAN ever leave: quarantined, scanning, infected and failed
             # content is indistinguishable from absent content.
-            if not row or row["state"] != "CLEAN" or row["b_scan_state"] != "CLEAN":
+            if not row or row["state"] != "CLEAN" or row["b_scan_state"] != "CLEAN" or row["b_purged_at"]:
                 unavailable()
             data = self.store.get(row["b_object_key"], bytes(row["b_sha256"]).hex())
             c.execute(

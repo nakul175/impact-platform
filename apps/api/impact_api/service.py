@@ -31,6 +31,7 @@ from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
 from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
 from .evidence import Evidence
+from .privacy import Privacy
 from .work import WorkCenter
 from .keyring import ring
 from .store import (
@@ -183,6 +184,7 @@ class Service:
         self.imports = Imports(self)
         self.planning = Planning(self)
         self.evidence = Evidence(self)
+        self.privacy = Privacy(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -213,6 +215,11 @@ class Service:
                 "tenant_id": tenant,
                 "principal_id": ctx.principal_id,
                 "capabilities": sorted({g["capability"] for g in ctx.grants if g["purpose"] is None}),
+                # Purpose-bound grants (privacy cases, v0.25 part B) authorise only requests that
+                # name the same purpose; listed separately so a client never treats them as general.
+                "purpose_capabilities": sorted(
+                    {(g["capability"], g["purpose"]) for g in ctx.grants if g["purpose"] is not None}
+                ),
                 "policy_epoch": ctx.policy_epoch,
                 "subject_epoch": ctx.subject_epoch,
             }

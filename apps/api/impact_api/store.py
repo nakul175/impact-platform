@@ -193,12 +193,25 @@ def scopes(c, ctx, cap, object_id=None, purpose=None):
     return False
 
 
-def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None):
+def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None, exact_purpose=False):
     """A purpose-required operation fails closed unless the caller states a purpose (only the
     operations that accept one pass it, v0.25 part A audit export); a purpose-bound grant then
-    authorises only that purpose, a purpose-less grant any."""
+    authorises only that purpose, a purpose-less grant any.
+
+    exact_purpose (v0.25 part B, privacy cases): the stated purpose must be one the policy row
+    lists and only a TENANT-scope grant bound to exactly that purpose authorises; a purpose-less
+    grant never does. A missing purpose is refused before any grant is looked at."""
     p = OPERATIONS[operation]
-    if not scopes(c, ctx, p["capability"], object_id, purpose=purpose):
+    if exact_purpose:
+        if not purpose:
+            raise DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED")
+        allowed = purpose in p.get("purposes", []) and any(
+            g["capability"] == p["capability"] and g["purpose"] == purpose and g["scope_type"] == "TENANT"
+            for g in ctx.grants
+        )
+    else:
+        allowed = scopes(c, ctx, p["capability"], object_id, purpose=purpose)
+    if not allowed:
         if hidden:
             unavailable()
         raise DomainError("POLICY_DENIED", 403)

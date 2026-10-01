@@ -23,6 +23,7 @@ import {
   JoinInvitation,
   readInvitation,
 } from "./Administration";
+import { PrivacyPanel } from "./Privacy";
 type RecordRow = {
   object_id: string;
   revision_id: string;
@@ -43,7 +44,10 @@ type Page = {
   next_cursor: string | null;
   scope_label: string;
 };
-type Access = { capabilities: string[] };
+type Access = {
+  capabilities: string[];
+  purpose_capabilities?: [string, string][];
+};
 let csrf = "";
 class ApiError extends Error {
   constructor(
@@ -868,6 +872,15 @@ function Workspace({
               {access.capabilities.includes("audit.export") && (
                 <AuditExportPanel base={base} request={api} explain={explain} />
               )}
+              <PrivacyPanel
+                key={tenant}
+                base={base}
+                capabilities={access.capabilities}
+                purposeCapabilities={access.purpose_capabilities || []}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
             </>
           ) : (
             <>

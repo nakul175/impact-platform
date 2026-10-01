@@ -2091,70 +2091,6 @@
       "audit": false
     },
     {
-      "operation_id": "list_privacy_cases",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases",
-      "capability": "privacy-cases.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_privacy_cases",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases",
-      "capability": "privacy-cases.draft.create",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
-      "operation_id": "get_privacy_cases",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
-      "capability": "privacy-cases.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "patch_privacy_cases",
-      "method": "PATCH",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
-      "capability": "privacy-cases.draft.edit",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
-      "audit": true
-    },
-    {
       "operation_id": "list_audit_events",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/audit-events",
@@ -3605,38 +3541,6 @@
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
-    },
-    {
-      "operation_id": "action_privacy_cases_approve",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve",
-      "capability": "privacy.approve",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": 300,
-      "independence_required": true,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
-    },
-    {
-      "operation_id": "action_privacy_cases_execute",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute",
-      "capability": "privacy.execute",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": 300,
-      "independence_required": false,
-      "purpose_required": true,
       "field_filter_required": false,
       "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
       "audit": true
@@ -5589,6 +5493,173 @@
       "field_filter_required": true,
       "state_guard": "The request names a purpose; only a TENANT-scope audit.export grant without a purpose or with that purpose authorises it. Bounded window and page; identifiers, codes and digests only; the export and its manifest digest are recorded (audit event and receipt).",
       "audit": true
+    },
+    {
+      "operation_id": "list_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "get_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "create_privacy_cases",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.draft.create",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "patch_privacy_cases",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.draft.edit",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "get_privacy_case_plan",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/plan",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "action_privacy_cases_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve",
+      "capability": "privacy.approve",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "audit": true,
+      "state_guard": "Independent natural person: never an author of the case nor the subject. Confirms the plan SHA-256 the approver reviewed; a changed plan is refused."
+    },
+    {
+      "operation_id": "action_privacy_cases_execute",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute",
+      "capability": "privacy.execute",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Executes exactly the approved plan (hash re-computed and compared). Erasure removes or redacts the subject's personal data in each store; held items stay and are reported; approved official results are never altered. Access writes one bounded export package."
+    },
+    {
+      "operation_id": "read_privacy_case_export",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/export",
+      "capability": "privacy.export",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Mediated JSON attachment, re-authorised per request with purpose and fresh assurance, recorded in privacy_export_access and the audit trail."
+    },
+    {
+      "operation_id": "list_retention_schedule",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-schedule",
+      "capability": "retention.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_retention_proofs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-proofs",
+      "capability": "retention.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     }
   ],
   "limits": {

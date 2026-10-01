@@ -1424,3 +1424,46 @@ html[data-reduced-motion="true"] *::after {
 .badge.superseded {
   opacity: 0.7;
 }
+
+/* Import batches (v0.21) */
+.import-new {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line, #d9dde3);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0 0 16px;
+}
+.import-new label {
+  display: grid;
+  gap: 4px;
+}
+.import-new label.checkbox,
+.import-commit label.checkbox {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.import-binding {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+.import-preview {
+  margin-top: 16px;
+}
+.import-commit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+button.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

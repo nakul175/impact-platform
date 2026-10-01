@@ -5,6 +5,7 @@ import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { FormsPanel } from "./Forms";
+import { ImportsPanel } from "./Imports";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
@@ -75,6 +76,7 @@ const nav = [
   ["configuration", "Measurement setup", "⚙"],
   ["planning", "Results framework", "◇"],
   ["forms", "Forms", "☰"],
+  ["imports", "Imports", "⇪"],
   ["changes", "Change requests", "⇄"],
   ["period-governance", "Period close", "▣"],
   ["work", "My work", "◷"],
@@ -105,6 +107,10 @@ const titles: Record<string, [string, string]> = {
   work: [
     "My work",
     "Resolve assigned recalculations and acknowledge safe in-app notices.",
+  ],
+  imports: [
+    "Imports",
+    "Load tabular data, check every row, then commit accepted rows for review.",
   ],
   forms: [
     "Forms",
@@ -611,6 +617,7 @@ function Workspace({
       route === "configuration" ||
       route === "planning" ||
       route === "forms" ||
+      route === "imports" ||
       route === "changes" ||
       route === "period-governance" ||
       route === "work"
@@ -787,6 +794,14 @@ function Workspace({
               request={api}
               explain={explain}
               Dialog={Dialog}
+            />
+          ) : route === "imports" ? (
+            <ImportsPanel
+              key={tenant}
+              base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
             />
           ) : route === "forms" ? (
             <FormsPanel

@@ -8847,7 +8847,116 @@
             }
           }
         ],
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
+      },
+      "post": {
+        "operationId": "create_imports",
+        "summary": "create imports",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "imports.draft.create",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportJobCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.14.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/imports/{object_id}": {
@@ -8958,7 +9067,116 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
+      },
+      "patch": {
+        "operationId": "patch_imports",
+        "summary": "patch imports",
+        "description": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+        "x-capability": "imports.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportJobPatch"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.14.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/quality-issues": {
@@ -20731,16 +20949,6 @@
         "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
         "x-capability": "import.preview",
         "responses": {
-          "202": {
-            "description": "Successful bounded response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobReceipt"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Successful bounded response",
             "content": {
@@ -20810,6 +21018,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -20831,7 +21049,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -20862,16 +21080,6 @@
         "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
         "x-capability": "import.commit",
         "responses": {
-          "202": {
-            "description": "Successful bounded response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobReceipt"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Successful bounded response",
             "content": {
@@ -20941,6 +21149,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -20962,7 +21180,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -20993,16 +21211,6 @@
         "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
         "x-capability": "import.cancel",
         "responses": {
-          "202": {
-            "description": "Successful bounded response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobReceipt"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Successful bounded response",
             "content": {
@@ -21072,6 +21280,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -21093,7 +21311,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -41903,45 +42121,321 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "upload_id": {
+          "format": {
+            "enum": [
+              "CSV",
+              "XLSX"
+            ]
+          },
+          "file_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 196608
+          },
+          "programme_id": {
             "type": "string",
             "format": "uuid"
           },
-          "source_namespace": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "mapping_version": {
+          "period_id": {
             "type": "string",
             "format": "uuid"
           },
           "mode": {
-            "type": "string",
             "enum": [
-              "APPEND",
-              "UPSERT",
-              "CONTROLLED_REPLACEMENT"
+              "APPEND"
             ]
-          },
-          "source_key_policy": {
-            "$ref": "#/components/schemas/SourceKeyPolicy"
-          },
-          "locale": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "date_pattern": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "expected_totals": {
-            "$ref": "#/components/schemas/ExpectedTotals"
           },
           "atomic": {
             "type": "boolean"
+          },
+          "date_pattern": {
+            "enum": [
+              "ISO_8601",
+              "YYYY-MM-DD",
+              "DD/MM/YYYY",
+              "MM/DD/YYYY"
+            ]
+          },
+          "mapping": {
+            "$ref": "#/components/schemas/ImportColumnMapping"
+          },
+          "source_namespace": {
+            "const": "IMPORT"
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preview": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "previewed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "previewed_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "preview_hash": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "rule_set": {
+                    "type": "string",
+                    "maxLength": 64
+                  },
+                  "anomaly_method": {
+                    "type": "object"
+                  },
+                  "header": {
+                    "type": "array",
+                    "maxItems": 40,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "dropped_columns": {
+                    "type": "array",
+                    "maxItems": 40,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "blank_rows": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "counts": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "rows": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "accepted": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "quarantined": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "duplicate": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "warnings": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "observations": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "rows",
+                      "accepted",
+                      "quarantined",
+                      "duplicate",
+                      "warnings",
+                      "observations"
+                    ]
+                  },
+                  "rows": {
+                    "type": "array",
+                    "maxItems": 500,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "row_number": {
+                          "type": "integer",
+                          "minimum": 2
+                        },
+                        "row_key": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 1000
+                        },
+                        "outcome": {
+                          "enum": [
+                            "ACCEPTED",
+                            "QUARANTINED",
+                            "DUPLICATE"
+                          ]
+                        },
+                        "reasons": {
+                          "type": "array",
+                          "maxItems": 40,
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                          }
+                        },
+                        "warnings": {
+                          "type": "array",
+                          "maxItems": 40,
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                          }
+                        },
+                        "raw": {
+                          "type": "object",
+                          "maxProperties": 40
+                        },
+                        "event_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "observations": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "indicator_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "value_state": {
+                                "enum": [
+                                  "PRESENT",
+                                  "MISSING",
+                                  "NOT_COLLECTED",
+                                  "NOT_APPLICABLE",
+                                  "UNDEFINED"
+                                ]
+                              },
+                              "value": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "numerator": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "denominator": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "dimension_values": {
+                                "type": "object",
+                                "maxProperties": 10
+                              },
+                              "observation_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              }
+                            },
+                            "required": [
+                              "indicator_id",
+                              "value_state"
+                            ]
+                          }
+                        },
+                        "anomalies": {
+                          "type": "array",
+                          "maxItems": 20
+                        }
+                      },
+                      "required": [
+                        "row_number",
+                        "outcome",
+                        "reasons",
+                        "warnings"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "previewed_at",
+                  "previewed_by",
+                  "preview_hash",
+                  "counts",
+                  "rows"
+                ]
+              }
+            ]
+          },
+          "committed": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "committed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "committed_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "preview_hash": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "observation_ids": {
+                    "type": "array",
+                    "maxItems": 500,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "accepted_warnings": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "committed_at",
+                  "committed_by",
+                  "preview_hash",
+                  "observation_ids"
+                ]
+              }
+            ]
+          },
+          "cancel_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
           }
         },
         "required": []
@@ -42041,45 +42535,49 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "upload_id": {
+          "format": {
+            "enum": [
+              "CSV",
+              "XLSX"
+            ]
+          },
+          "file_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 196608
+          },
+          "programme_id": {
             "type": "string",
             "format": "uuid"
           },
-          "source_namespace": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "mapping_version": {
+          "period_id": {
             "type": "string",
             "format": "uuid"
           },
           "mode": {
-            "type": "string",
             "enum": [
-              "APPEND",
-              "UPSERT",
-              "CONTROLLED_REPLACEMENT"
+              "APPEND"
             ]
-          },
-          "source_key_policy": {
-            "$ref": "#/components/schemas/SourceKeyPolicy"
-          },
-          "locale": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "date_pattern": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
-          },
-          "expected_totals": {
-            "$ref": "#/components/schemas/ExpectedTotals"
           },
           "atomic": {
             "type": "boolean"
+          },
+          "date_pattern": {
+            "enum": [
+              "ISO_8601",
+              "YYYY-MM-DD",
+              "DD/MM/YYYY",
+              "MM/DD/YYYY"
+            ]
+          },
+          "mapping": {
+            "$ref": "#/components/schemas/ImportColumnMapping"
           }
         },
         "required": []
@@ -47740,15 +48238,8 @@
       "ActionImportsPreviewData": {
         "type": "object",
         "additionalProperties": false,
-        "properties": {
-          "mapping_version": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "required": [
-          "mapping_version"
-        ]
+        "properties": {},
+        "required": []
       },
       "ActionImportsPreview": {
         "type": "object",
@@ -47776,18 +48267,21 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "preview_id": {
+          "preview_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "workflow_version": {
             "type": "string",
             "format": "uuid"
           },
-          "preview_hash": {
-            "type": "string",
-            "maxLength": 2000
+          "accept_warnings": {
+            "type": "boolean"
           }
         },
         "required": [
-          "preview_id",
-          "preview_hash"
+          "preview_hash",
+          "workflow_version"
         ]
       },
       "ActionImportsCommit": {
@@ -47818,7 +48312,9 @@
         "properties": {
           "reason": {
             "type": "string",
-            "maxLength": 2000
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": [
@@ -57386,6 +57882,126 @@
           "published_at",
           "data",
           "versions"
+        ]
+      },
+      "ImportColumnBinding": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "column": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "indicator_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value_role": {
+            "enum": [
+              "VALUE",
+              "NUMERATOR",
+              "DENOMINATOR"
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "minimum": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "maximum": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          }
+        },
+        "required": [
+          "column",
+          "indicator_id",
+          "value_role",
+          "unit"
+        ]
+      },
+      "ImportColumnMapping": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "unit_column": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "event_at_column": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            ]
+          },
+          "columns": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/ImportColumnBinding"
+            }
+          },
+          "dimension_columns": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "column": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "dimension_code": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                }
+              },
+              "required": [
+                "column",
+                "dimension_code"
+              ]
+            }
+          },
+          "missing_codes": {
+            "type": "object",
+            "maxProperties": 10,
+            "patternProperties": {
+              "^\\S{1,32}$": {
+                "enum": [
+                  "MISSING",
+                  "NOT_COLLECTED",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "unit_column",
+          "columns"
         ]
       }
     }

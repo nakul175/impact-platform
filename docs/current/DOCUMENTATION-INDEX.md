@@ -14,6 +14,9 @@ This set describes the full target product and the current development implement
 | Onboard and administer a tenant | [Administrator guide](ADMINISTRATOR-GUIDE.md) |
 | Run and diagnose the development build | [Operations guide](OPERATIONS-GUIDE.md) |
 | Deploy, check and back up the staging server | [Deployment guide](DEPLOYMENT-GUIDE.md) |
+| Know which keys exist, what they protect and how they rotate | [Key and encryption register](KEY-AND-ENCRYPTION-REGISTER.md) (build 0.25.0) |
+| Check what accessibility has and has not been verified | [Accessibility statement](ACCESSIBILITY-STATEMENT.md) and [QA accessibility record](../QA-A11Y-2026-10.md) (build 0.25.0) |
+| Read the build 0.25.0 increment records | [v0.25 part A](../RELEASE-0.25a.md), [v0.25 part B](../RELEASE-0.25b.md), [operations hardening](../RELEASE-OPS-2026-10.md), [QA browser coverage](../QA-BROWSER-2026-10.md) |
 | Assess release readiness | [Release acceptance record](RELEASE-ACCEPTANCE.md) and [qualification evidence](../QUALIFICATION.md) |
 | Review exact requirement coverage | [Traceability CSV](TRACEABILITY.csv) and [completion ledger](../COMPLETION-LEDGER.md) |
 

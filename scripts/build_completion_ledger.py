@@ -35,6 +35,9 @@ groups = [
             "apps/api/impact_api/delivery_operations.py",
             "qualification/test_delivery_requeue.py",
             "docs/QUALITY-2026-10.md",
+            "tools/browser/requeue-check.mjs",
+            "docs/evidence/requeue-browser-tests.json",
+            "docs/QA-BROWSER-2026-10.md",
         ],
     ),
     (
@@ -77,7 +80,7 @@ groups = [
         ],
     ),
     (
-        "FR-ACC-001 FR-ACC-002 FR-ACC-004 FR-ACC-005 FR-ACC-011 FR-SEC-004 FR-SEC-007 FR-SEC-012 FR-INT-004 FR-INT-005",
+        "FR-ACC-001 FR-ACC-002 FR-ACC-004 FR-ACC-005 FR-ACC-011 FR-SEC-004 FR-SEC-012 FR-INT-004 FR-INT-005",
         "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts. Native concurrency evidence is limited to the raced approvals, operation replays, close reviews and renewal-versus-revocation cases of qualification/test_native_concurrency.py (v0.14); every future module, audit tamper evidence and production assurance remain open.",
         [
             "apps/api/impact_api/store.py",
@@ -142,7 +145,7 @@ groups = [
     ),
     (
         "FR-RPT-003 FR-RPT-005 FR-RPT-007 FR-RPT-009 FR-RPT-010",
-        "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open.",
+        "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
         [
             "apps/api/impact_api/reporting.py",
             "qualification/test_reporting.py",
@@ -153,16 +156,27 @@ groups = [
             "apps/api/impact_api/export_render.py",
             "qualification/test_report_exports.py",
             "docs/RELEASE-0.23.md",
+            "tools/browser/export-check.mjs",
+            "docs/evidence/export-browser-tests.json",
         ],
     ),
     (
         "FR-RPT-004 FR-UX-001 FR-UX-002 FR-UX-003 FR-UX-004 FR-UX-005 FR-UX-009",
-        "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
-        ["apps/web/src/main.tsx", "tools/browser/reporting-check.mjs", "docs/IMPLEMENTATION.md"],
+        "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+        [
+            "apps/web/src/main.tsx",
+            "tools/browser/reporting-check.mjs",
+            "docs/IMPLEMENTATION.md",
+            "apps/web/src/a11y.ts",
+            "tools/browser/a11y-check.mjs",
+            "docs/evidence/a11y-browser-tests.json",
+            "docs/current/ACCESSIBILITY-STATEMENT.md",
+            "docs/QA-A11Y-2026-10.md",
+        ],
     ),
     (
         "FR-OPS-005",
-        "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. v0.14 adds to the health surface: with unprivileged connections required, /health/ready first verifies that the app, identity and platform connections are three distinct unprivileged logins and answers 503 with a reason code only (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN, PLATFORM_NOT_CONFIGURED; no login name reaches a response), the same check refuses every transaction, and the native restart check shows readiness and the runtime manifest unchanged across an API restart. Service monitoring proper remains open: no health view separated by component, no journey success, latency, backlog, freshness or quota measurement, no incident record, no tenant-cohort view, no metrics, log pipeline or alerting exists; full accessibility/usability qualification, anonymous publication and all remaining screens are also open.",
+        "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. v0.14 adds to the health surface: with unprivileged connections required, /health/ready first verifies that the app, identity and platform connections are three distinct unprivileged logins and answers 503 with a reason code only (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN, PLATFORM_NOT_CONFIGURED; no login name reaches a response), the same check refuses every transaction, and the native restart check shows readiness and the runtime manifest unchanged across an API restart. Service monitoring proper remains open: no health view separated by component, no journey success, latency, backlog, freshness or quota measurement, no incident record, no tenant-cohort view, no metrics, log pipeline or alerting exists; full accessibility/usability qualification, anonymous publication and all remaining screens are also open. Operations hardening (October 2026) adds the operator-only GET /v1/platform/metrics (platform API 1.6.0; apps/api/impact_api/ops_metrics.py): request counts by route family and status class with a latency histogram, worker freshness, DEAD and held deliveries, unsent deliveries and unfinished jobs, tenants by state and object-store space, no path, tenant data or identity (qualification/test_ops_metrics.py::test_operators_read_counts_and_no_tenant_data, test_metrics_are_for_platform_operators_only; test_ops_unit.py::test_request_metrics_count_families_classes_and_latency_without_paths), and a five-minute alert check into deploy-status.json (deploy/ops-check.sh, deploy/ops_alerts.py). Still open: journey success by tenant cohort, connector and AI separation, incident linkage, metric history and any notification channel.",
         [
             "apps/web/src/main.tsx",
             "tools/browser/reporting-check.mjs",
@@ -173,6 +187,12 @@ groups = [
             "qualification/test_native_restart.py",
             "docs/evidence/native-qualification.json",
             "docs/RELEASE-0.14.md",
+            "apps/api/impact_api/ops_metrics.py",
+            "apps/api/impact_api/metrics_contracts.py",
+            "qualification/test_ops_metrics.py",
+            "qualification/test_ops_unit.py",
+            "deploy/ops_alerts.py",
+            "docs/RELEASE-OPS-2026-10.md",
         ],
     ),
     (
@@ -189,13 +209,20 @@ groups = [
     ),
     (
         "VF-DR-003",
-        "A scripted, verified restore exists and has been executed (scripts/restore_drill.py; 29 September 2026 on PostgreSQL 16.13, and in the CI native job on 17.11 for commit c759e9e): pg_dump -Fc of the qualification database (3,427,234 bytes in 0.45 s), pg_restore into a sibling database (1.56 s), a migrator checksum pass that applies nothing and verifies all 16 ledgered checksums, the seeded OFFICIAL 46.36 present in its snapshot revision with its payload hash, equal row counts in all 151 impact tables (30,016 rows), identical ownership, RLS flags, policies, functions and grants, the tenant fences and control-plane denials intact for impact_app, and no credential altered. This is a CI-scale restore drill of a disposable qualification database, not a backup regime: no scheduled backup, retention window, off-site or immutable copy, protection against alteration or credential compromise, monthly restore cadence, quarterly disaster exercise, key recovery, attachment integrity (no attachments exist) or deletion/restriction replay before reopening exists, and no RPO or RTO is established. A restore of a production-scale database is not qualified.",
+        "A scripted, verified restore exists and has been executed (scripts/restore_drill.py; 29 September 2026 on PostgreSQL 16.13, and in the CI native job on 17.11 for commit c759e9e): pg_dump -Fc of the qualification database (3,427,234 bytes in 0.45 s), pg_restore into a sibling database (1.56 s), a migrator checksum pass that applies nothing and verifies all 16 ledgered checksums, the seeded OFFICIAL 46.36 present in its snapshot revision with its payload hash, equal row counts in all 151 impact tables (30,016 rows), identical ownership, RLS flags, policies, functions and grants, the tenant fences and control-plane denials intact for impact_app, and no credential altered. This is a CI-scale restore drill of a disposable qualification database, not a backup regime: no scheduled backup, retention window, off-site or immutable copy, protection against alteration or credential compromise, monthly restore cadence, quarterly disaster exercise, key recovery, attachment integrity (no attachments exist) or deletion/restriction replay before reopening exists, and no RPO or RTO is established. A restore of a production-scale database is not qualified. Operations hardening (October 2026) adds, on the staging server, nightly verified backup sets (both databases, roles without passwords, the evidence object volume as a tar, SHA-256 manifest; written in a hidden directory, verified with pg_restore --list, a full tar read and sha256sum, then renamed; 7 daily and 4 weekly within the 35-day default; a disk guard) and a weekly on-server restore drill into throwaway containers that checks object digests against their names, blob rows against objects, a migrator checksum pass, ownership, forced fences and the identity-provider realm and records duration and backup age (deploy/backup.sh, deploy/restore-drill.sh, deploy/drill_restore.sh, deploy/restore_check.py; qualification/test_ops_unit.py::test_backup_set_holds_databases_roles_objects_and_a_verified_manifest, test_sundays_set_is_kept_weekly_by_hard_link_and_retention_prunes_oldest, test_verification_catches_a_changed_file, test_drill_restores_the_newest_set_and_skips_the_bootstrap_superuser, test_object_digests_match_names_and_blob_rows_find_their_objects, test_drill_record_measures_duration_and_backup_age; the CI container-stack job restores a set and runs the drill). Still open: protection against alteration and credential compromise (sets live on the same server and root account), an off-server copy, the quarterly disaster exercise, key recovery and deletion replay before reopening (TH27); no RPO or RTO target is met.",
         [
             "scripts/restore_drill.py",
             "docs/evidence/native-restore-drill.json",
             "docs/evidence/native-qualification.json",
             "docs/RELEASE-0.14.md",
             "docs/current/OPERATIONS-GUIDE.md",
+            "deploy/backup.sh",
+            "deploy/restore-drill.sh",
+            "deploy/drill_restore.sh",
+            "deploy/restore_check.py",
+            "qualification/test_ops_unit.py",
+            "docs/current/DEPLOYMENT-GUIDE.md",
+            "docs/RELEASE-OPS-2026-10.md",
         ],
     ),
     (
@@ -484,6 +511,8 @@ groups = [
             "qualification/test_import.py",
             "apps/web/src/Imports.tsx",
             "docs/RELEASE-0.21.md",
+            "tools/browser/import-check.mjs",
+            "docs/evidence/import-browser-tests.json",
         ],
     ),
     (
@@ -496,6 +525,8 @@ groups = [
             "qualification/test_import.py",
             "apps/web/src/Imports.tsx",
             "docs/RELEASE-0.21.md",
+            "tools/browser/import-check.mjs",
+            "docs/evidence/import-browser-tests.json",
         ],
     ),
     (
@@ -508,6 +539,8 @@ groups = [
             "qualification/test_import.py",
             "apps/web/src/Imports.tsx",
             "docs/RELEASE-0.21.md",
+            "tools/browser/import-check.mjs",
+            "docs/evidence/import-browser-tests.json",
         ],
     ),
     (
@@ -520,6 +553,8 @@ groups = [
             "qualification/test_import.py",
             "apps/web/src/Imports.tsx",
             "docs/RELEASE-0.21.md",
+            "tools/browser/import-check.mjs",
+            "docs/evidence/import-browser-tests.json",
         ],
     ),
     (
@@ -532,6 +567,8 @@ groups = [
             "qualification/test_import.py",
             "apps/web/src/Imports.tsx",
             "docs/RELEASE-0.21.md",
+            "tools/browser/import-check.mjs",
+            "docs/evidence/import-browser-tests.json",
         ],
     ),
     (
@@ -547,6 +584,8 @@ groups = [
             "qualification/test_evidence_unit.py",
             "apps/web/src/Evidence.tsx",
             "docs/RELEASE-0.22.md",
+            "tools/browser/evidence-check.mjs",
+            "docs/evidence/evidence-browser-tests.json",
         ],
     ),
     (
@@ -562,6 +601,8 @@ groups = [
             "qualification/test_evidence_unit.py",
             "apps/web/src/Evidence.tsx",
             "docs/RELEASE-0.22.md",
+            "tools/browser/evidence-check.mjs",
+            "docs/evidence/evidence-browser-tests.json",
         ],
     ),
     (
@@ -580,9 +621,129 @@ groups = [
             "docs/RELEASE-0.24.md",
         ],
     ),
+    (
+        "FR-SEC-007",
+        "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts; audit events are written in the same transaction as every command and object revisions carry a payload SHA-256. v0.25 part A adds a tamper-evident audit export (create_audit_export, purpose-required, 300 s fresh assurance, audited): JSON Lines ordered by occurrence with a hash chain across pages, a manifest with the content SHA-256 and an HMAC seal under a key derived from the current cookie secret, and verify functions that detect a changed, removed or reordered line and a changed manifest (qualification/test_audit_export.py::test_chain_digest_and_seal_verify_and_detect_tampering, test_export_pages_verify_and_each_export_is_audited). The seal is verifiable by the platform only while its key is current or in grace; it is not a public signature. Native concurrency evidence is limited to qualification/test_native_concurrency.py (v0.14). Not covered: tamper evidence of the stored audit table itself (an operator with database ownership can alter rows), external anchoring, a durable export register.",
+        [
+            "apps/api/impact_api/store.py",
+            "apps/api/impact_api/auth.py",
+            "qualification/test_live_application.py",
+            "apps/api/impact_api/audit_export.py",
+            "apps/api/impact_api/audit_export_contracts.py",
+            "qualification/test_audit_export.py",
+            "docs/RELEASE-0.25a.md",
+        ],
+    ),
+    (
+        "FR-SEC-002",
+        "v0.25 part A: the application's own secrets (cookie, invitation signing, delivery sealing) are versioned keyrings with grace secrets and a key id (12 hex characters of SHA-256 over family and secret) carried in CSRF tokens, signed cursors and the header of sealed delivery recipients and logout hints; new values always use the current secret, values made before a rotation keep working while their secret is in grace and fail once it is retired, legacy unheaded values still open, and a missing key answers a controlled failure (RECIPIENT_UNREADABLE, logout without hint), never plaintext (qualification/test_key_rotation.py::test_sealed_recipients_carry_the_kid_and_legacy_values_still_open, test_logout_hints_rotate_and_an_oversized_token_is_not_sealed, test_values_made_before_rotation_work_during_grace_and_fail_after_retirement, test_delivery_and_invitation_secrets_rotate_for_the_worker). docs/current/KEY-AND-ENCRYPTION-REGISTER.md inventories every secret, its kid, holders and grace, the keys the application does not hold, and states plainly what is not encrypted by the application (database files, the evidence object store, dumps and backup sets, captured mail, logs). Not covered: encryption at rest under a platform data-protection key, rotation of such a key over backups (FT-SEC-002), KMS or HSM custody, Keycloak signing-key rotation (documented, not exercised), an operator interface showing key status.",
+        [
+            "apps/api/impact_api/keyring.py",
+            "apps/api/impact_api/delivery.py",
+            "apps/api/impact_api/auth.py",
+            "apps/api/impact_api/config.py",
+            "qualification/test_key_rotation.py",
+            "docs/current/KEY-AND-ENCRYPTION-REGISTER.md",
+            "docs/RELEASE-0.25a.md",
+        ],
+    ),
+    (
+        "FR-SEC-006",
+        "v0.25 part A: rotation and retirement of the application secrets are explicit operations (scripts/rotate_secrets.py status, rotate, retire, dry run; deploy/rotate-secrets.sh on the server under the deployment lock, recreating the API and worker) with atomic 0600 writes and a register beside the secrets file that names kids, dates, actor and reason, never a value; old values are rejected after retirement; settings refuse short, repeated or shared secrets and keep every secret and DSN out of their repr; no value reaches the rotation output, responses, logs or the API log (qualification/test_key_rotation.py::test_env_file_rotation_is_atomic_private_and_prints_kids_only, test_settings_validate_keyrings_and_never_print_secrets, test_values_made_before_rotation_work_during_grace_and_fail_after_retirement; the CI container-stack job rotates every family, smokes, retires, smokes and compares every secrets.env value with what was printed). Not covered: connector credentials and credential references with fingerprints in an admin view (no connectors exist), configuration export, automatic rotation and expiry alerts, database passwords and TLS keys (outside the keyrings).",
+        [
+            "apps/api/impact_api/keyring.py",
+            "apps/api/impact_api/config.py",
+            "scripts/rotate_secrets.py",
+            "deploy/rotate-secrets.sh",
+            "qualification/test_key_rotation.py",
+            "docs/current/KEY-AND-ENCRYPTION-REGISTER.md",
+            "docs/RELEASE-0.25a.md",
+        ],
+    ),
+    (
+        "VF-AUD-001",
+        "v0.25 part A: a permitted audit export (create_audit_export; capability audit.export for OWNER and TENANT_ADMIN, purpose-required with SECURITY_REVIEW, INCIDENT_INVESTIGATION, REGULATORY_REQUEST or INTERNAL_AUDIT, fresh assurance 300 s) returns the tenant's audit events of an ended window of at most 366 days as JSON Lines (projected audit columns and the revision digest only: no payload, secret, sealed value or address) with a manifest, a hash chain and a seal, paged by a signed cursor bound to tenant, principal, window and purpose; each page is itself an audited command with a receipt, so receipts reconcile to the export's own events (qualification/test_audit_export.py::test_export_pages_verify_and_each_export_is_audited, test_exact_retry_is_identical_and_a_changed_payload_conflicts, test_refusals_tenant_capability_assurance_and_revocation, test_purpose_is_required_and_a_purpose_bound_grant_authorises_only_its_purpose, test_owner_may_export_and_the_content_holds_no_secret, test_cursor_is_signed_and_bound_to_window_and_purpose). Not covered, so the gate is not met: every audit event class of FSD section 35 (denied operations and restricted reads are not recorded as events), the 365-day metadata retention and governed business retention, search by reviewers beyond a window export, and a durable export register (the window and digest live in the 7-day receipt).",
+        [
+            "apps/api/impact_api/audit_export.py",
+            "apps/api/impact_api/audit_export_contracts.py",
+            "apps/web/src/AuditExport.tsx",
+            "qualification/test_audit_export.py",
+            "docs/RELEASE-0.25a.md",
+        ],
+    ),
+    (
+        "FR-PRV-007",
+        "v0.25 part B: data-subject request cases for a member of the tenant (no participant records exist): intake with request type ACCESS or ERASURE, subject membership, reason, verification note and handling authority, purpose-bound to DATA_SUBJECT_REQUEST (a purpose-less grant never authorises), independent approval by a natural person other than every author and the subject against the SHA-256 of the per-store plan they reviewed, and an access response that is one canonical export package with a manifest (per-section count, completeness and SHA-256), holding only the subject's data, downloaded through a mediated, logged, purpose-bound route and expiring after 7 days (qualification/test_privacy_requests.py::test_access_export_holds_only_the_subjects_data_with_a_manifest_and_is_mediated, test_case_approval_requires_an_independent_natural_person, test_case_operations_are_purpose_bound_and_never_authorised_by_a_general_grant, test_exact_retry_changed_payload_stale_revision_and_changed_plan). Not covered: participants and household members, a response-deadline policy, rejected and on-hold outcomes chosen by the handler, a subject channel or self-service, free text other members wrote about the subject.",
+        [
+            "apps/api/impact_api/privacy.py",
+            "apps/api/impact_api/privacy_contracts.py",
+            "infrastructure/migrations/0027_privacy_execution.sql",
+            "qualification/test_privacy_requests.py",
+            "apps/web/src/Privacy.tsx",
+            "docs/RELEASE-0.25b.md",
+        ],
+    ),
+    (
+        "FR-PRV-005",
+        "v0.25 part B: an erasure case is executed only from its independently approved, enumerated per-store plan (member profile, invitation register and revisions, revision payloads, projections, delivery intents, object-store bytes), re-computed and compared by SHA-256 at execution; each store action records its own outcome, an item under an active retention_hold or still used by another evidence revision is HELD with its review date, a failed object-store deletion leaves the case PartiallyCompleted until a retry completes it, and revision payloads are removable only through the definer privacy_remove_revisions under revision_removal_guard with a deletion_ledger row (qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers, test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried, test_erasure_of_a_named_import_batch_removes_its_raw_content, test_revision_removal_is_reachable_only_through_an_approved_executing_plan). Not covered: an API to place or release holds (tests insert them), restriction before deletion, anonymisation, derivatives beyond the listed stores, deletion handling in backups (FR-PRV-006).",
+        [
+            "apps/api/impact_api/privacy.py",
+            "apps/api/impact_api/object_store.py",
+            "infrastructure/migrations/0027_privacy_execution.sql",
+            "qualification/test_privacy_requests.py",
+            "docs/RELEASE-0.25b.md",
+        ],
+    ),
+    (
+        "VF-PRV-001",
+        "v0.25 part B: an approved erasure removes or restricts the subject's data in active primary records, projections, sealed delivery addresses (overwritten with random bytes and the intents SUPERSEDED with the lease generation advanced), object-store bytes (after the commit, recorded per object) and named import raw content within the request, keeps audit, identifiers and every official number unchanged (every CalculatedResult, Snapshot and Observation revision compared before and after), and reports a no-hold, a partial-hold and a failed-derivative-store run distinctly (qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers, test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried; natively test_native_privacy_tables_are_fenced_for_the_application_login). Not covered: backup expiry and deletion replay on restore (FR-PRV-006, TH27; erased values stay in nightly sets until they age out), search, AI and cache stores (none exist), external recipients of earlier publications.",
+        [
+            "apps/api/impact_api/privacy.py",
+            "infrastructure/migrations/0027_privacy_execution.sql",
+            "qualification/test_privacy_requests.py",
+            "docs/RELEASE-0.25b.md",
+        ],
+    ),
+    (
+        "FR-OPS-006",
+        "Operations hardening (October 2026), staging server only: nightly backup sets hold the application and identity-provider databases, the roles without passwords, the evidence object volume and a SHA-256 manifest, are verified before they are published and kept 7 daily and 4 weekly; a weekly restore drill restores the newest complete set into throwaway containers and refuses to declare success unless every object matches its digest, every blob row finds its object, the migrator finds every ledgered checksum, ownership and forced fences are intact and the realm is present, recording duration and backup age (deploy/backup.sh, deploy/restore-drill.sh, deploy/drill_restore.sh, deploy/restore_check.py; qualification/test_ops_unit.py::test_backup_set_holds_databases_roles_objects_and_a_verified_manifest, test_disk_guard_refuses_and_reports_without_touching_the_sets, test_drill_restore_reports_a_damaged_set_or_a_failed_restore, test_object_digests_match_names_and_blob_rows_find_their_objects, test_drill_record_measures_duration_and_backup_age; the CI container-stack job takes a set, restores it and runs the drill with every check passing). Not covered: an off-server or immutable copy (sets share the server's disk and root account), reconciliation of accepted writes and reapplication of deletions and revocations before controlled reopening, comparison of effective grants and report snapshots against the source, recovery region and key policy, and a representative tenant's full recovery; no RPO or RTO target is met.",
+        [
+            "deploy/backup.sh",
+            "deploy/restore-drill.sh",
+            "deploy/drill_restore.sh",
+            "deploy/restore_check.py",
+            "deploy/compose.yaml",
+            "qualification/test_ops_unit.py",
+            "docs/current/DEPLOYMENT-GUIDE.md",
+            "docs/RELEASE-OPS-2026-10.md",
+        ],
+    ),
+    (
+        "VF-OBS-001",
+        "Alerting clause only. Operations hardening (October 2026): a check every five minutes (systemd timer on the server, and after each deployment and drill) raises closed alert codes for missing, stale, failed or disk-refused backups, low disk, an unhealthy or absent container, a stale worker heartbeat, DEAD deliveries, a queue backlog, a schema mismatch, an unavailable summary and a failed or stale restore drill, writes them into deploy-status.json with secret values scrubbed, and an injected failure (worker stopped) is alerted by the next check and cleared after restart (deploy/ops-check.sh, deploy/ops_alerts.py; qualification/test_ops_unit.py::test_a_healthy_server_has_no_alerts, test_each_problem_raises_its_alert, test_evaluate_writes_the_ops_file_and_merges_into_the_status_files, test_host_units_run_the_check_every_five_minutes_and_the_drill_weekly; CI container-stack step 'An injected failure (worker stopped) is alerted by the next check'). Every request already carries a correlation identifier returned in errors. Not covered: correlation references traced across jobs and integrations, tenant-scoped diagnosis and audit separation of logs, any notification channel (alerts reach only the status page; nobody is paged), metric history.",
+        [
+            "deploy/ops-check.sh",
+            "deploy/ops_alerts.py",
+            "deploy/update.sh",
+            "qualification/test_ops_unit.py",
+            "docs/RELEASE-OPS-2026-10.md",
+        ],
+    ),
+    (
+        "VF-UX-001",
+        "QA 2026-10 (tools/browser/a11y-check.mjs, group a11y-browser) scans 43 page states of the web client (every workspace area and tab, record and decision dialogs, tenant lifecycle, Workers, recovery contacts, initial access, authority renewal, sign-in, one 390 px state) with axe-core 4.13.0 at the WCAG 2.0/2.1/2.2 A and AA tags: 0 serious or critical violations and no accepted exceptions after the fixes (759 colour-contrast nodes before). A scripted keyboard-only flow submits an observation and has an independent reviewer approve it, and checks focus visibility (outline contrast at least 3:1), dialog focus containment and return, tab-list arrow keys and the skip link. Chromium 153 only. Not covered, so the failure rule (a clean automated scan alone does not pass) is not met: screen-reader review, other browsers, zoom and reflow at 400 percent, a manual WCAG 2.2 AA audit, the identity-provider pages, generated report templates, the invalid-field and stale-revision cases and keyboard walk-throughs of the other processes.",
+        [
+            "tools/browser/a11y-check.mjs",
+            "docs/evidence/a11y-browser-tests.json",
+            "docs/current/ACCESSIBILITY-STATEMENT.md",
+            "docs/QA-A11Y-2026-10.md",
+        ],
+    ),
 ]
 # Requirements that stay PENDING, with what the latest increments do and do not show for them.
 pending_notes = {
+    "FR-PRV-004": "PENDING. Related v0.25 part B evidence, recorded so that it is not mistaken for coverage: the worker runs one fixed retention schedule for every tenant (job class RETENTION_SWEEP; operation receipts past their 7-day window deleted, OPEN uploads past 24 hours expired, privacy export packages deleted after 7 days, sealed delivery addresses redacted 30 days after a final state), each class with its own trigger, duration and action, and writes one insert-only retention_proof row per class (qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class). There are no tenant retention policies with purpose and owner, no preview of affected objects and holds, no approval gate before collection and no record or evidence class, so the validation and acceptance text (a 90-day diagnostic-log class and a separate approved evidence term) is not exercised. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PRV-002": "PENDING. Related v0.25 part B evidence: scheduled action receipts exist for four fixed data classes (retention_proof with cutoff on the database clock, affected count and the SHA-256 of the sorted affected keys, written by a lease-fenced sweep that a stale holder cannot complete; qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class, test_a_stale_lease_holder_neither_deletes_nor_proves, test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class, test_worker_holds_exactly_the_retention_privileges). Approved record and evidence policies before collection, diagnostic-log, AI-content and security-metadata classes and orphan-copy detection do not exist, so the target is not met. Retain the original acceptance criteria; this requirement remains open.",
     "FR-IAM-007": "PENDING. Related v0.16 evidence, recorded so that it is not mistaken for coverage: the nominee of a recovery contact can confirm the registered email address with a single-use eight-digit code (channel-request/channel-confirm; 15-minute expiry, 5 attempts, at most 3 requests per contact per hour; the code is derived, never stored, and only its keyed hash is kept; qualification/test_worker.py). That verifies a channel for contact evidence only; it is not an identity change, a lost-factor recovery or a support path, and no test exercises the validation text (no support reset refusal, no restricted recovery case, no withheld privileges pending verification). Retain the original acceptance criteria; this requirement remains open.",
     "FR-ACC-008": "PENDING. Not touched by v0.16 although the delivery plan listed it for that increment: no support case, elevation grant, support session or tenant-ended access exists. The v0.16 worker runs on its own login and writes reminder notices as a per-tenant SERVICE principal without identity, membership or grant; that is not support access. Retain the original acceptance criteria; this requirement remains open.",
     "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). v0.16's worker re-reads each delivery intent immediately before sending and supersedes it when the invitation generation, the recovery-channel challenge or the notice recipient is no longer current (qualification/test_worker.py); that is a recheck of the intent, not a measured revocation bound, and no sensitive job class exists for the worker to reauthorise. Retain the original acceptance criteria; this requirement remains open.",

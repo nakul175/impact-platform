@@ -1,6 +1,6 @@
 # Deployment guide — staging server
 
-Build 0.17 deployment package (v0.17). This guide explains, in plain language, what runs on the staging server, how a change reaches it, how to check it from outside, how the owner signs in for the first time, how backups work and what is not yet in place. The technical reference for each component is in `deploy/` and in the [operations guide](OPERATIONS-GUIDE.md).
+Build 0.25.0: the v0.17 deployment package with the October 2026 operations hardening (backup sets, restore drill, alerts, owner console) and the v0.25 secrets rotation. This guide explains, in plain language, what runs on the staging server, how a change reaches it, how to check it from outside, how the owner signs in for the first time, how backups work and what is not yet in place. The technical reference for each component is in `deploy/` and in the [operations guide](OPERATIONS-GUIDE.md).
 
 Status: **staging only**. Nothing here makes the platform ready for real personal data or production use, and no release is accepted by deploying it.
 
@@ -105,6 +105,8 @@ It creates their sign-in account with a one-time password (shown once in the con
 | Help someone who forgot their password (or is locked out after wrong passwords) | `sudo /opt/impact/repo/deploy/reset-user.sh name@example.org` | A new one-time password, in a box; the lock is lifted |
 | Help someone who lost their phone with the authenticator app | `sudo /opt/impact/repo/deploy/reset-user.sh name@example.org --totp` | As above; they set up the app again at their next sign-in |
 | Your own password or app | `sudo /opt/impact/repo/deploy/first-admin.sh --reset` (or `--reset-totp`) | Your address, username and a new one-time password, in a box |
+| Rotate the application secrets (on a schedule or after a suspected leak) | `sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family all --reason "scheduled rotation"` | Key ids only, never a value; old values keep working until you retire them (section 10) |
+| Run the restore drill now instead of waiting for Sunday | `sudo /opt/impact/repo/deploy/restore-drill.sh` | PASS or FAIL with the time the restore took; the result also appears in the status page (section 6.2) |
 | Check the server is healthy | open https://168-144-78-191.sslip.io/deploy-status.json in a browser | `"result": "ok"` and `"alerts": []` when all is well (section 6.4) |
 
 Every add and reset is recorded (who, when, never the password) in `/opt/impact/state/admin-actions.log`. A **second platform operator** cannot be created by the scripts (the first-operator bootstrap refuses once any operator exists, and there is no operator-management screen yet); adding one is a deliberate database change by the owner and is not automated in this build.
@@ -220,6 +222,8 @@ Server files: `/opt/impact/secrets.env` (generated secrets, never edit casually:
 
 - **One server.** Database, sign-in service and application share one 4 GB droplet; a failure of the droplet stops everything. No load test has been run; the sizing is a guess for a handful of users.
 - **Backups:** the nightly sets (databases, roles, evidence files) sit on the same server; DigitalOcean's droplet backups are the only off-server copy, so losing the droplet loses everything since the last droplet backup (up to a day or a week, by the plan chosen) (section 6.3). Off-server copies of the nightly sets need an owner decision on a storage provider. The weekly restore drill runs on the same server into throwaway containers; a restore onto a different server has not been rehearsed.
+- **Erased personal data stays in backups until they age out.** A data-subject erasure (v0.25 part B) removes the member's data from the live databases and the evidence volume, but every nightly set taken before it keeps the old values for up to 7 days (daily) or 4 weeks (weekly), and DigitalOcean's droplet backups keep them for their own retention. A restore does not replay erasures; after restoring a set older than an erasure, the erasure must be executed again (no tool does this yet).
+- **Retiring a delivery secret early** makes every queued email whose address was sealed with it undeliverable (`DEAD RECIPIENT_UNREADABLE`; an invitation resend reuses the first sealed address, so issue a new invitation instead). Retire with `--expired` after the grace window unless a compromise forces it.
 - **No email** (section 5), so invitation and recovery-contact emails are captured, not delivered; "Forgot password" is off.
 - **sslip.io host names** depend on a free third-party DNS service; if it is unavailable, the site cannot be reached by name. Let's Encrypt rate limits apply to the shared sslip.io domain.
 - **Staging only**: synthetic or test data only, no real personal data (repository rule 11), no penetration test. Alerts are written to the status page only (section 6.4): nobody is paged or e-mailed, metrics are kept in memory by the running application and reset when it restarts, there is no history or dashboard, and logs stay on the server (10 MB × 5 per container; host logs rotated).

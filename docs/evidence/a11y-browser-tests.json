@@ -871,6 +871,21 @@
               "reason": "Element content contains only non-text characters"
             }
           ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
         }
       ]
     },
@@ -909,10 +924,18 @@
         {
           "rule": "th-has-data-cells",
           "impact": "serious",
-          "nodes": 1,
+          "nodes": 3,
           "examples": [
             {
-              "target": "table",
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
               "reason": "Table data cells are missing or empty"
             }
           ]
@@ -954,10 +977,18 @@
         {
           "rule": "th-has-data-cells",
           "impact": "serious",
-          "nodes": 1,
+          "nodes": 3,
           "examples": [
             {
-              "target": "table",
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
               "reason": "Table data cells are missing or empty"
             }
           ]
@@ -995,6 +1026,21 @@
               "reason": "Element content contains only non-text characters"
             }
           ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
         }
       ]
     },
@@ -1027,6 +1073,21 @@
             {
               "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
             }
           ]
         }

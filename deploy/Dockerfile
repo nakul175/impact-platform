@@ -32,7 +32,7 @@ COPY specification/contracts/entity-catalogue.json specification/contracts/entit
 COPY specification/database/reference-map.json specification/database/reference-map.json
 COPY infrastructure/migrations infrastructure/migrations
 COPY scripts/migrate.py scripts/provision_logins.py scripts/fixture_support.py scripts/bootstrap_operator.py scripts/smoke.py scripts/
-COPY deploy/prepare_database.py deploy/keycloak_admin.py deploy/mail_sink.py deploy/
+COPY deploy/prepare_database.py deploy/keycloak_admin.py deploy/mail_sink.py deploy/restore_check.py deploy/
 COPY --from=web /src/apps/web/dist apps/web/dist
 RUN mkdir -p /var/lib/impact/mail /var/lib/impact/objects \
     && chown impact:impact /var/lib/impact/mail /var/lib/impact/objects \

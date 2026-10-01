@@ -65,6 +65,9 @@ class Settings:
     object_store_backend: str = "filesystem"
     object_store_dir: str = ""
     evidence_scanner: str = ""
+    # The server's operations summary (deploy/ops-check.sh: backup age, restore drill, disk, alerts),
+    # an absolute path read by GET /v1/platform/metrics; empty reports no operations section.
+    ops_status_file: str = ""
 
     @property
     def unprivileged_db_required(self):
@@ -112,6 +115,8 @@ class Settings:
                 raise ValueError("HTTPS required")
         if s.object_store_dir and not Path(s.object_store_dir).is_absolute():
             raise ValueError("object_store_dir must be an absolute path")
+        if s.ops_status_file and not Path(s.ops_status_file).is_absolute():
+            raise ValueError("ops_status_file must be an absolute path")
         if s.object_store_backend != "filesystem":
             raise ValueError("object_store_backend: only 'filesystem' is implemented")
         if s.evidence_scanner not in {"", "eicar-signature", "none"}:

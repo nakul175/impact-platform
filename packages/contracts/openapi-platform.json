@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -9943,6 +9943,459 @@
                 ]
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/platform/metrics": {
+      "get": {
+        "operationId": "platform_metrics",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "build": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32,
+                      "pattern": "\\S"
+                    },
+                    "schema_version": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "schema_expected": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "generated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "workers": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "running": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "running_fresh": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "stale": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "stale_after_seconds": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "newest_beat_age_seconds": {
+                          "anyOf": [
+                            {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "dead_total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "failures_total": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "running",
+                        "running_fresh",
+                        "stale",
+                        "stale_after_seconds",
+                        "newest_beat_age_seconds",
+                        "dead_total",
+                        "failures_total"
+                      ]
+                    },
+                    "deliveries": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "dead": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "held": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "capped": {
+                          "type": "boolean"
+                        },
+                        "unsent": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "dead",
+                        "held",
+                        "capped",
+                        "unsent"
+                      ]
+                    },
+                    "jobs": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "unfinished": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "unfinished"
+                      ]
+                    },
+                    "tenants": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "counted": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "not_counted": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "by_lifecycle": {
+                          "type": "object",
+                          "maxProperties": 7,
+                          "additionalProperties": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        }
+                      },
+                      "required": [
+                        "counted",
+                        "not_counted",
+                        "by_lifecycle"
+                      ]
+                    },
+                    "storage": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "free_mb": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "total_mb": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "free_percent": {
+                              "anyOf": [
+                                {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "free_mb",
+                            "total_mb",
+                            "free_percent"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "requests": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "started_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "uptime_seconds": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "by_family": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "tenant": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "platform": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "auth": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "health": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "client": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "tenant",
+                            "platform",
+                            "auth",
+                            "health",
+                            "client"
+                          ]
+                        },
+                        "latency_seconds": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "buckets": {
+                              "type": "array",
+                              "maxItems": 16,
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                  "le": {
+                                    "anyOf": [
+                                      {
+                                        "type": "number",
+                                        "minimum": 0
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "count": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                  }
+                                },
+                                "required": [
+                                  "le",
+                                  "count"
+                                ]
+                              }
+                            },
+                            "sum": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "buckets",
+                            "sum"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "started_at",
+                        "uptime_seconds",
+                        "total",
+                        "by_family",
+                        "latency_seconds"
+                      ]
+                    },
+                    "operations": {
+                      "anyOf": [
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "build",
+                    "schema_version",
+                    "schema_expected",
+                    "generated_at",
+                    "workers",
+                    "deliveries",
+                    "jobs",
+                    "tenants",
+                    "storage",
+                    "requests",
+                    "operations"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
           }
         }
       }

@@ -167,9 +167,15 @@ jobs:
     # certificates from its internal CA (CADDY_TLS_MODE=internal) for fake host names mapped to
     # 127.0.0.1. Then: the smoke check over HTTPS, a second deployment run (idempotence), the
     # owner's first sign-in through the provider (password change, authenticator enrolment, MFA
-    # assurance, platform operator), add-user, and a restore of the nightly dump.
+    # assurance, platform operator), add-user, list-users and reset-user, a backup set (both
+    # databases, roles, the evidence object volume, manifest) verified and restored, the restore
+    # drill on throwaway containers, the operations check and its alerts, and the host timers.
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    defaults:
+      run:
+        # Explicit bash: -eo pipefail, so a failing check piped into tee fails its step.
+        shell: bash
     env:
       APP_HOST: impact.test
       OWNER_EMAIL: owner@example.org
@@ -216,19 +222,88 @@ jobs:
           sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/add-user.sh second@example.org Second Person > add-user.out
           grep -q "Account created for second@example.org" add-user.out
           rm -f add-user.out
-      - name: The nightly dump exists and restores
+      - name: list-users.sh and reset-user.sh (console only)
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/list-users.sh | tee list-users.out
+          grep -q "$OWNER_EMAIL" list-users.out
+          grep -q "second@example.org .*has not signed in yet" list-users.out
+          sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/reset-user.sh second@example.org --totp > reset.out
+          grep -q "One-time password:" reset.out
+          grep -q "authenticator app was removed" reset.out
+          rm -f reset.out list-users.out
+          if sudo IMPACT_HOME="$IMPACT_HOME" deploy/reset-user.sh second@example.org > /dev/null 2>&1; then echo "printed to a pipe" >&2; exit 1; fi
+          if sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/reset-user.sh nobody@example.org > /dev/null 2>&1; then echo "reset an absent account" >&2; exit 1; fi
+          ! sudo grep -rq "One-time password" "$IMPACT_HOME/state" /var/log/impact-*.log 2>/dev/null
+      - name: A backup set (databases, roles, objects, manifest) is verified and restores
         run: |
           compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
-          # The dump taken when the service started predates the operator bootstrap; take one now.
-          for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/impact-*.dump' && break; sleep 5; done
+          # One synthetic content-addressed object in the evidence volume, so the set carries one.
+          compose exec -T api python -c 'import hashlib,os; d=os.urandom(4096); h=hashlib.sha256(d).hexdigest(); p="/var/lib/impact/objects/00000000-0000-4000-8000-000000000001/"+h[:2]; os.makedirs(p,0o700,exist_ok=True); open(p+"/"+h,"wb").write(d)'
+          # The set taken when the service started predates the operator bootstrap; take one now.
+          for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/[0-9]*/manifest.json' && break; sleep 5; done
           compose exec -T backup /bin/bash /opt/backup/backup.sh --now
-          compose exec -T backup bash -c 'set -e; f=$(ls -t /backups/daily/impact-*.dump | head -1);
+          sudo cat "$IMPACT_HOME/ops/backup-status.json" | tee backup-status.json
+          python3 -c "import json,sys; d=json.load(open('backup-status.json')); assert d['result']=='ok' and d['last_success']['objects']>=1 and d['last_success']['schema_version']>=26, d"
+          compose exec -T backup bash -c 'set -e; s=$(ls -d /backups/daily/[0-9]* | tail -1); cat "$s/manifest.json"; ls -l "$s";
+            (cd "$s" && sha256sum --check --strict SHA256SUMS);
             dropdb --if-exists impact_restore_check; createdb impact_restore_check;
-            pg_restore --exit-on-error -d impact_restore_check "$f";
+            pg_restore --exit-on-error -d impact_restore_check "$s/impact.dump";
             n=$(psql -Atd impact_restore_check -c "select count(*) from impact.schema_migration");
             o=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator");
-            echo "restored $f: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
+            echo "restored $s: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
             dropdb impact_restore_check'
+      - name: Restore drill on throwaway containers (measured restore time)
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/restore-drill.sh
+          sudo cat "$IMPACT_HOME/ops/restore-drill.json" | tee restore-drill.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open("restore-drill.json"))
+          assert d["outcome"] == "PASS", d
+          assert all(d["checks"].values()) and d["objects"]["files"] >= 1, d
+          print("::notice title=restore drill::PASS in %ss (restore %s; set %s, %s bytes, %s h old; %s tables, %s rows)" % (
+              d["duration_seconds"], json.dumps(d["restore_seconds"]), d["set"], d["set_bytes"],
+              d["backup_age_hours"], d["restored"]["tables"], d["restored"]["rows"]))
+          PY
+          # Nothing of the drill is left behind.
+          test -z "$(sudo docker ps -aq --filter label=com.docker.compose.service=drill-db)"
+      - name: Operations check, alerts and host timers
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh
+          sudo cat "$IMPACT_HOME/ops/ops-status.json" | tee ops-status.json
+          sudo cat "$IMPACT_HOME/status.json" > deploy-status-ops.json
+          python3 - <<'PY'
+          import json
+          ops = json.load(open("ops-status.json"))
+          status = json.load(open("deploy-status-ops.json"))
+          codes = [a["code"] for a in ops["alerts"]]
+          critical = [a for a in ops["alerts"] if a["severity"] == "critical"]
+          assert not critical, critical
+          assert status["alerts"] == ops["alerts"] and status["operations"]["backup"]["last_set"], status
+          assert ops["operations"]["restore_drill"]["outcome"] == "PASS", ops
+          assert ops["operations"]["workers"]["running_fresh"] >= 1, ops
+          print("::notice title=operations check::alerts " + json.dumps(codes))
+          PY
+          systemctl is-enabled impact-ops-check.timer impact-restore-drill.timer
+          systemctl list-timers 'impact-*' --all --no-pager
+          test -s /etc/logrotate.d/impact && sudo logrotate --debug /etc/logrotate.d/impact
+      - name: An injected failure (worker stopped) is alerted by the next check, and clears
+        run: |
+          compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
+          compose stop worker
+          stopped=$(date +%s)
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh | tee injected.json
+          alerted=$(date +%s)
+          python3 -c "import json,sys; c=json.load(open('injected.json'))['alerts']; assert 'CONTAINER_UNHEALTHY' in c and 'WORKER_STALE' in c, c"
+          echo "::notice title=alert latency::worker stopped -> alerts $(python3 -c "import json; print(json.load(open('injected.json'))['alerts'])") in $((alerted - stopped)) s of one check (the timer runs every 300 s)"
+          compose start worker
+          for i in $(seq 1 30); do
+            sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh > cleared.json
+            python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; sys.exit(0 if 'WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c else 1)" && break
+            sleep 5
+          done
+          cat cleared.json
+          python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; assert 'WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c, c"
       - name: Smoke check after the sign-in
         run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-final.json
       - name: Status and logs on failure
@@ -271,4 +346,7 @@ jobs:
             smoke-final.json
             first-login.json
             deploy-status.json
+            backup-status.json
+            restore-drill.json
+            ops-status.json
             compose-logs.txt

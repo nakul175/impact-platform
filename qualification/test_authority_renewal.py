@@ -459,13 +459,39 @@ def test_suspension_and_missing_recovery_contact_block_renewal(live):
         live, {"contact_id": contact["contact_id"], "revision_id": contact["revision_id"]}, "revoke"
     )
     assert action(live, row, "approve", "admin", status=403)["reason_code"] == "TENANT_NOT_READY"
+    # Suspension sets every principal's auth_not_before to the suspension instant. The owner's
+    # authentication is pinned before it: the suite's cached token is re-minted once it is 60 s
+    # old, and an owner who authenticated after the suspension may withdraw (next test).
+    authenticated_before = time.time() - 5
     suspended = tenant_action(live, fresh_tenant(live, tenant), "suspend", "admin")
     described = authority(live, suspended, "admin")
     assert not described["renewable"] and described["reason_unavailable"] == "TENANT_NOT_ACTIVE"
     assert propose(live, suspended, status=403)[0]["reason_code"] == "TENANT_NOT_ACTIVE"
     assert action(live, row, "approve", "admin", status=403)["reason_code"] == "TENANT_NOT_ACTIVE"
-    action(live, row, "cancel", "author", status=403)
+    stale = owner_request(live, row, "cancel", auth_time=authenticated_before)
+    assert expect(stale, 403)["reason_code"] == "REAUTHENTICATION_REQUIRED"
     assert action(live, row, "reject", "admin")["state"] == "Rejected"
+
+
+def owner_request(live, row, name, auth_time):
+    """One renewal action by the owner (author) with an explicit authentication instant."""
+    token = live.signed(live.fixture["actors"]["author"]["identity_id"], auth_time=auth_time)
+    return live.request(
+        BASE + "/" + row["request_id"] + "/actions/" + name,
+        method="POST",
+        body=command({"reason": "Withdraw the renewal proposal"}, row["revision_id"]),
+        headers={"Authorization": "Bearer " + token},
+    )
+
+
+def test_owner_who_authenticated_after_suspension_may_withdraw_a_pending_renewal(live):
+    """Withdrawal stays open while the tenant is not Active (RELEASE-0.13), after re-authentication."""
+    row, tenant, _, _ = propose(live)
+    row = action(live, row, "accept")
+    tenant_action(live, fresh_tenant(live, tenant), "suspend", "admin")
+    assert action(live, row, "approve", "admin", status=403)["reason_code"] == "TENANT_NOT_ACTIVE"
+    withdrawn = expect(owner_request(live, row, "cancel", auth_time=time.time()), 200)
+    assert withdrawn["state"] == "Cancelled"
 
 
 def test_unready_tenant_is_not_renewable_until_recovery_evidence_is_restored(live):

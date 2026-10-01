@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.4.0"
+    "version": "1.5.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -9425,6 +9425,524 @@
           },
           "default": {
             "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/deliveries": {
+      "get": {
+        "operationId": "list_delivery_attention",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "tenant_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "operating_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "lifecycle_state": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20,
+                            "pattern": "\\S"
+                          },
+                          "event_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "channel": {
+                            "enum": [
+                              "IN_APP",
+                              "EMAIL"
+                            ]
+                          },
+                          "template": {
+                            "enum": [
+                              "IN_APP_NOTICE",
+                              "MEMBER_INVITATION",
+                              "RECOVERY_CHANNEL_VERIFICATION"
+                            ]
+                          },
+                          "state": {
+                            "enum": [
+                              "PENDING",
+                              "LEASED",
+                              "SENT",
+                              "DEAD",
+                              "SUPERSEDED"
+                            ]
+                          },
+                          "held": {
+                            "type": "boolean"
+                          },
+                          "attempts": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "last_error_class": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "last_attempt_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "completed_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "revision": {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]{0,18})$"
+                          },
+                          "permitted_actions": {
+                            "type": "array",
+                            "items": {
+                              "enum": [
+                                "release",
+                                "requeue"
+                              ]
+                            },
+                            "uniqueItems": true
+                          }
+                        },
+                        "required": [
+                          "tenant_id",
+                          "operating_name",
+                          "lifecycle_state",
+                          "event_id",
+                          "channel",
+                          "template",
+                          "state",
+                          "held",
+                          "attempts",
+                          "last_error_class",
+                          "last_attempt_at",
+                          "completed_at",
+                          "revision",
+                          "permitted_actions"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/release": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "event_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "delivery_release",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "action": {
+                      "enum": [
+                        "release",
+                        "requeue"
+                      ]
+                    },
+                    "state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "held": {
+                      "type": "boolean"
+                    },
+                    "attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "previous_attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_error_class": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "operation_id",
+                    "tenant_id",
+                    "event_id",
+                    "action",
+                    "state",
+                    "held",
+                    "attempts",
+                    "previous_state",
+                    "previous_attempts",
+                    "previous_error_class",
+                    "revision",
+                    "reason"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/requeue": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "event_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "delivery_requeue",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "action": {
+                      "enum": [
+                        "release",
+                        "requeue"
+                      ]
+                    },
+                    "state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "held": {
+                      "type": "boolean"
+                    },
+                    "attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "previous_attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_error_class": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "operation_id",
+                    "tenant_id",
+                    "event_id",
+                    "action",
+                    "state",
+                    "held",
+                    "attempts",
+                    "previous_state",
+                    "previous_attempts",
+                    "previous_error_class",
+                    "revision",
+                    "reason"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
           }
         }
       }

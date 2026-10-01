@@ -22,6 +22,7 @@ from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
+from .delivery_operations import DeliveryOperations
 from .version import BUILD, DOMAIN_API, SCHEMA
 
 LOG = logging.getLogger("impact")
@@ -86,6 +87,7 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
+    delivery_operations = DeliveryOperations(lifecycle)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
@@ -218,6 +220,17 @@ def create_app():
     @app.get("/v1/platform/workers")
     def worker_directory(request: Request):
         return worker_status.directory(auth.resolve(request))
+
+    @app.get("/v1/platform/deliveries")
+    def delivery_attention(request: Request, tenant_id: str | None = None):
+        return delivery_operations.directory(auth.resolve(request), uuid(tenant_id) if tenant_id else None)
+
+    @app.post("/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/{action}")
+    async def delivery_action(request: Request, tenant_id: str, event_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            delivery_operations.command, auth.resolve(request), action, body, uuid(tenant_id), uuid(event_id)
+        )
 
     @app.get("/v1/platform/access-bootstraps")
     def initial_access_directory(request: Request, cursor: str | None = None):

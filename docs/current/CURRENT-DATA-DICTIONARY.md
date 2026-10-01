@@ -27,7 +27,7 @@ Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a ty
 | 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
 | 0020_calculation_methods.sql | 357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31 |
 | 0021_web_forms.sql | afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2 |
-| 0025_worker_grants.sql | c51677c3d36d89f15911f0a11f270b4af8bc60fe8e7a98b40d6c15a806af848a |
+| 0025_worker_grants.sql | e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047 |
 
 ## Executable schema definitions
 
@@ -3067,7 +3067,8 @@ Source: infrastructure/migrations/0025_worker_grants.sql
 ```sql
 BEGIN;
 SET LOCAL ROLE impact_owner;
--- Narrow impact_worker (quality hardening, October 2026). Migration 0003 granted impact_worker the
+-- Worker privileges and operator re-queue (quality hardening, October 2026).
+-- Part 1 narrows impact_worker. Migration 0003 granted impact_worker the
 -- same SELECT/INSERT/UPDATE as impact_app on nearly every domain table. The worker of build 0.20.0
 -- (impact_api/worker.py with store.write/audit and delivery.enqueue) touches only:
 --   object_registry, object_revision, notification_current, audit_event_current: reminder notices
@@ -3156,5 +3157,67 @@ REVOKE ALL ON impact.webhook_delivery FROM impact_worker;
 REVOKE ALL ON impact.work_item_current FROM impact_worker;
 REVOKE ALL ON impact.workflow_author FROM impact_worker;
 REVOKE ALL ON impact.workflow_current FROM impact_worker;
+
+-- Operator re-queue (control plane, platform API 1.5.0). impact_platform may not read or write the
+-- tenant outbox; these two functions expose exactly the attention list (dispatchable rows that are
+-- DEAD or held by a suspension, optionally of one tenant; no address, reference or payload) and one
+-- fenced transition per row.
+-- They read through the owner-only SELECT policies of 0018 and update under tenant_fence, so the
+-- caller must have set impact.tenant_id. The lease generation is the row's revision: a re-queue or
+-- a release advances it, so a worker that still believes it holds the row matches nothing (0018).
+CREATE FUNCTION impact.operator_delivery_attention(requested_tenant uuid, max_rows integer)
+ RETURNS TABLE(tenant_id uuid, lifecycle_state text, event_id uuid, channel text, template text,
+  state text, held boolean, attempts integer, last_error_class text, last_attempt_at timestamptz,
+  completed_at timestamptz, lease_generation bigint)
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT d.tenant_id,t.lifecycle_state,d.event_id,d.channel,d.template,d.state,d.held_at IS NOT NULL,
+  d.attempts,d.last_error_class,d.last_attempt_at,d.completed_at,d.lease_generation
+ FROM impact.outbox_delivery d JOIN impact.tenant_root t ON t.tenant_id=d.tenant_id
+ WHERE d.channel IS NOT NULL AND (d.state='DEAD' OR (d.held_at IS NOT NULL AND d.state IN ('PENDING','LEASED')))
+  AND (requested_tenant IS NULL OR d.tenant_id=requested_tenant)
+ ORDER BY coalesce(d.last_attempt_at,d.next_attempt_at) DESC,d.tenant_id,d.event_id
+ LIMIT least(greatest(max_rows,1),50)
+$$;
+REVOKE ALL ON FUNCTION impact.operator_delivery_attention(uuid,integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.operator_delivery_attention(uuid,integer) TO impact_platform;
+-- 'requeue': a DEAD row becomes PENDING with a fresh attempt budget, due now, released from any
+-- hold. 'release': a held PENDING row is released, due now. Anything else changes nothing and
+-- answers a reason. The caller holds the tenant advisory lock and checks the tenant is Active.
+CREATE FUNCTION impact.operator_requeue_delivery(requested_event uuid, mode text, expected_generation bigint)
+ RETURNS TABLE(outcome text, state text, held boolean, attempts integer, lease_generation bigint,
+  previous_state text, previous_attempts integer, previous_error_class text)
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+#variable_conflict use_column
+DECLARE tenant uuid := impact.current_tenant(); r impact.outbox_delivery%ROWTYPE;
+BEGIN
+ IF tenant IS NULL OR mode NOT IN ('requeue','release') THEN
+  RAISE EXCEPTION 'operator re-queue needs a tenant context and a known mode' USING ERRCODE='42501';
+ END IF;
+ SELECT * INTO r FROM impact.outbox_delivery d WHERE d.tenant_id=tenant AND d.event_id=requested_event
+  AND d.channel IS NOT NULL FOR UPDATE;
+ IF NOT FOUND THEN
+  RETURN QUERY SELECT 'NOT_FOUND'::text,NULL::text,NULL::boolean,NULL::integer,NULL::bigint,NULL::text,NULL::integer,NULL::text;
+  RETURN;
+ END IF;
+ IF r.lease_generation<>expected_generation THEN outcome := 'STALE';
+ ELSIF mode='requeue' AND r.state<>'DEAD' THEN outcome := 'NOT_DEAD';
+ ELSIF mode='release' AND r.held_at IS NULL THEN outcome := 'NOT_HELD';
+ ELSIF mode='release' AND r.state<>'PENDING' THEN outcome := 'NOT_PENDING';
+ ELSIF mode='requeue' THEN
+  UPDATE impact.outbox_delivery d SET state='PENDING',attempts=0,completed_at=NULL,held_at=NULL,
+   next_attempt_at=now(),lease_generation=d.lease_generation+1
+   WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+  outcome := 'REQUEUED';
+ ELSE
+  UPDATE impact.outbox_delivery d SET held_at=NULL,next_attempt_at=now(),lease_generation=d.lease_generation+1
+   WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+  outcome := 'RELEASED';
+ END IF;
+ RETURN QUERY SELECT outcome,d.state::text,d.held_at IS NOT NULL,d.attempts,d.lease_generation,
+  r.state::text,r.attempts,r.last_error_class::text
+  FROM impact.outbox_delivery d WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+END $$;
+REVOKE ALL ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) TO impact_platform;
 COMMIT;
 ```

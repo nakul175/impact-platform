@@ -12,8 +12,9 @@ administration API:
   logout to `<origin>/auth/backchannel-logout`, no refresh tokens, an `impact-api` audience, a
   step-up browser flow (level 1 password, level 2 TOTP) with an ACR-to-level map, short token
   lifetimes, and the fixture users under their fixture subjects;
-- a foreign realm with the same client and one user carrying the author's subject, whose tokens
-  the platform must refuse.
+- a foreign realm with the same client and one author user whose subject is derived from the
+  author's (uuid5 of the author's subject: Keycloak user IDs are unique across realms, so it cannot
+  carry the author's own subject), whose tokens the platform must refuse.
 
 Passwords, TOTP secrets and the administrator password are generated at every start and written
 only to <local>/idp.json (mode 0600); they are never printed and never reach the repository or the

@@ -207,10 +207,8 @@ class TenantLifecycle:
         ).fetchone()
         if not q or not owner or owner["issuer"] != self.s.issuer:
             unavailable()
-        if (
-            owner["natural_identity_id"] == identity.natural_identity_id
-            or str(owner["natural_identity_id"]) == identity.natural_identity_id
-        ):
+        # The row carries a UUID and the resolved identity a str: compare one representation.
+        if str(owner["natural_identity_id"]) == str(identity.natural_identity_id):
             raise DomainError("POLICY_DENIED", 403, reason="INDEPENDENCE_REQUIRED")
         tenant = str(uuid4())
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))

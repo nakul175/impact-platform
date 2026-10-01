@@ -13,7 +13,7 @@ for (const name of ["chromium", "al2023.tar", "fonts.tar", "swiftshader.tar"]) {
   const dest = path.join(out, name);
   await fs.writeFile(dest, data);
   if (name.endsWith(".tar"))
-    execFileSync("python", [
+    execFileSync(process.env.PYTHON || "python3", [
       "-c",
       "import sys,tarfile;tarfile.open(sys.argv[1]).extractall(sys.argv[2],filter='data')",
       dest,

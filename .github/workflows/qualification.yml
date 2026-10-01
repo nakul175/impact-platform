@@ -278,20 +278,29 @@ jobs:
           sudo cat "$IMPACT_HOME/ops/ops-status.json" | tee ops-status.json
           sudo cat "$IMPACT_HOME/status.json" > deploy-status-ops.json
           python3 - <<'PY'
-          import json
+          import json, sys
           ops = json.load(open("ops-status.json"))
           status = json.load(open("deploy-status-ops.json"))
           codes = [a["code"] for a in ops["alerts"]]
+          problems = []
           critical = [a for a in ops["alerts"] if a["severity"] == "critical"]
-          assert not critical, critical
-          assert status["alerts"] == ops["alerts"] and status["operations"]["backup"]["last_set"], status
-          assert ops["operations"]["restore_drill"]["outcome"] == "PASS", ops
-          assert ops["operations"]["workers"]["running_fresh"] >= 1, ops
-          print("::notice title=operations check::alerts " + json.dumps(codes))
+          if critical:
+              problems.append("critical alerts: " + json.dumps(critical))
+          if status.get("alerts") != ops["alerts"] or not (status.get("operations") or {}).get("backup", {}).get("last_set"):
+              problems.append("status file lacks the operations: " + json.dumps({k: status.get(k) for k in ("alerts", "operations")})[:1500])
+          if ops["operations"]["restore_drill"].get("outcome") != "PASS":
+              problems.append("drill: " + json.dumps(ops["operations"]["restore_drill"]))
+          if not (ops["operations"].get("workers") or {}).get("running_fresh"):
+              problems.append("workers: " + json.dumps(ops["operations"].get("workers")))
+          for p in problems:
+              print("::error title=operations check::" + p[:3500])
+          print("::notice title=operations check::alerts " + json.dumps(codes) + " services " + json.dumps(ops["operations"].get("services")))
+          sys.exit(1 if problems else 0)
           PY
-          systemctl is-enabled impact-ops-check.timer impact-restore-drill.timer
+          systemctl is-enabled impact-ops-check.timer impact-restore-drill.timer || { echo "::error title=timers::not enabled"; exit 1; }
           systemctl list-timers 'impact-*' --all --no-pager
-          test -s /etc/logrotate.d/impact && sudo logrotate --debug /etc/logrotate.d/impact
+          test -s /etc/logrotate.d/impact || { echo "::error title=logrotate::no /etc/logrotate.d/impact"; exit 1; }
+          sudo logrotate --debug /etc/logrotate.d/impact > logrotate.out 2>&1 || { echo "::error title=logrotate::$(tail -n 5 logrotate.out | tr '\n' ' ')"; exit 1; }
       - name: An injected failure (worker stopped) is alerted by the next check, and clears
         run: |
           compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
@@ -299,7 +308,7 @@ jobs:
           stopped=$(date +%s)
           sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh | tee injected.json
           alerted=$(date +%s)
-          python3 -c "import json,sys; c=json.load(open('injected.json'))['alerts']; assert 'CONTAINER_UNHEALTHY' in c and 'WORKER_STALE' in c, c"
+          python3 -c "import json,sys; c=json.load(open('injected.json'))['alerts']; ok='CONTAINER_UNHEALTHY' in c and 'WORKER_STALE' in c; print('' if ok else '::error title=injected failure::alerts '+json.dumps(c)); sys.exit(0 if ok else 1)"
           echo "::notice title=alert latency::worker stopped -> alerts $(python3 -c "import json; print(json.load(open('injected.json'))['alerts'])") in $((alerted - stopped)) s of one check (the timer runs every 300 s)"
           compose start worker
           for i in $(seq 1 30); do
@@ -308,7 +317,7 @@ jobs:
             sleep 5
           done
           cat cleared.json
-          python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; assert 'WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c, c"
+          python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; ok='WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c; print('' if ok else '::error title=alerts after restart::'+json.dumps(c)); sys.exit(0 if ok else 1)"
       - name: Smoke check after the sign-in
         run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-final.json
       - name: Status and logs on failure

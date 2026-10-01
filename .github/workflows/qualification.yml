@@ -20,7 +20,11 @@ jobs:
         if: always()
         with:
           name: local-qualification
-          path: docs/evidence/
+          # The runners' database and API logs (synthetic data only) diagnose a PGlite failure.
+          path: |
+            docs/evidence/
+            .local/test-*/database.log
+            .local/test-*/api.log
   live-identity-provider:
     runs-on: ubuntu-24.04
     env:

@@ -1,3 +1,4 @@
+import hashlib
 import json
 import uuid
 import httpx
@@ -137,6 +138,19 @@ def test_duplicate_source_key(live):
     data = draft(live)
     expect(live.request(live.path("observations"), method="POST", body=cmd(data)), 201)
     expect(live.request(live.path("observations"), method="POST", body=cmd(data)), 409)
+
+
+def test_messages_larger_than_one_socket_read_reach_the_database_whole(live):
+    # tools/dev-db/server.mjs frames the wire protocol: a message split across TCP reads (an
+    # export artifact bound as a parameter) once reached PGlite as two fragments and closed the
+    # connection. Native PostgreSQL runs the same check.
+    for size in [70_000, 600_000]:
+        body = bytes(range(256)) * (size // 256)
+        with live.db() as c:
+            row = c.execute(
+                "SELECT octet_length(%s::bytea) AS n, sha256(%s::bytea) AS digest", (body, body)
+            ).fetchone()
+        assert row["n"] == len(body) and bytes(row["digest"]) == hashlib.sha256(body).digest()
 
 
 def test_database_tenant_fence_and_immutable_revisions(live):

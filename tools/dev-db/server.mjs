@@ -25,16 +25,74 @@ db = ephemeral
 // PGlite returns a view into a reused wire-response buffer. Copy it before any
 // filesystem await and serialize protocol packets across connection handoffs.
 // Socket event callbacks are async but EventEmitter does not await them.
+//
+// pglite-socket hands every TCP read to execProtocolRaw as it arrives, but PGlite's
+// execProtocolRawSync treats its input as whole protocol messages (it passes the buffer's
+// length and first byte to the backend). A message larger than one read, or one the kernel
+// delivers in two reads (a rendered DOCX bound as a parameter is about 40 KB), would reach
+// PGlite as two fragments, and the second fragment is parsed as a new message from a byte in
+// the middle of the first: the backend fails and the connection is closed. That happened in
+// CI (build 0.25.0 integration, test_report_exports: "server closed the connection
+// unexpectedly" while inserting a DOCX artifact, after which every connection failed).
+// So the bytes are framed here: only complete messages are passed on, an incomplete tail is
+// kept until the next read, and the framing state is reset (in protocol order) whenever a
+// new connection is attached.
+const STARTUP_CODES = new Set([196608, 80877102, 80877103, 80877104]);
+let pending = new Uint8Array(0);
+function int32(bytes, at) {
+  return (
+    ((bytes[at] << 24) |
+      (bytes[at + 1] << 16) |
+      (bytes[at + 2] << 8) |
+      bytes[at + 3]) >>>
+    0
+  );
+}
+// The length of the longest prefix of `bytes` made of complete protocol messages. A message
+// with no type byte (StartupMessage, SSLRequest, CancelRequest, GSSENCRequest) can only open
+// a connection's byte stream; every later message is a type byte and a 4-byte length.
+function completePrefix(bytes, atStreamStart) {
+  let offset = 0;
+  if (atStreamStart && bytes.length > 0 && bytes[0] === 0) {
+    if (bytes.length < 8) return 0;
+    const length = int32(bytes, 0);
+    if (!STARTUP_CODES.has(int32(bytes, 4)) || length < 8) return bytes.length;
+    if (bytes.length < length) return 0;
+    offset = length;
+  }
+  while (bytes.length - offset >= 5) {
+    const total = 1 + int32(bytes, offset + 1);
+    if (total < 5 || bytes.length - offset < total) break;
+    offset += total;
+  }
+  return offset;
+}
+let streamStart = true;
 let protocolTail = Promise.resolve();
 db.execProtocolRaw = (message, { syncToFs = true } = {}) => {
   const next = protocolTail.then(async () => {
-    const response = db.execProtocolRawSync(message).slice();
+    const bytes = new Uint8Array(pending.length + message.length);
+    bytes.set(pending, 0);
+    bytes.set(message, pending.length);
+    const complete = completePrefix(bytes, streamStart);
+    pending = bytes.slice(complete);
+    if (complete === 0) return new Uint8Array(0);
+    streamStart = false;
+    const response = db
+      .execProtocolRawSync(bytes.subarray(0, complete))
+      .slice();
     if (syncToFs) await db.syncToFs();
     return response;
   });
   protocolTail = next.catch(() => {});
   return next;
 };
+function newStream() {
+  protocolTail = protocolTail.then(() => {
+    pending = new Uint8Array(0);
+    streamStart = true;
+  });
+}
 // IMPACT_DEV_DB_PORT selects the loopback port: 55432 by default (make dev), 0 lets the
 // operating system choose a free one (the test and browser runners), so two runners or an
 // orphaned server never collide. The one JSON status line below carries the actual port;
@@ -58,6 +116,9 @@ const server = new PGLiteSocketServer({
   host: "127.0.0.1",
   port: requestedPort,
 });
+// A connection is attached only once the previous one has detached; its bytes start a new
+// stream (dispatched before its first read is handled).
+server.addEventListener("connection", newStream);
 let listeningPort = null;
 server.addEventListener("listening", (event) => {
   listeningPort = event.detail?.port ?? null;

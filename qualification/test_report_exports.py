@@ -608,6 +608,7 @@ def test_export_tables_are_tenant_fenced_and_artifacts_are_insert_only(live):
 
 @pytest.mark.skipif(not NATIVE, reason="concurrent claims need real PostgreSQL row locks")
 def test_native_two_workers_claiming_at_once_lease_each_export_once(live):
+    settle(live)
     reports = [approved_report(live) for _ in range(3)]
     jobs = {request_export(live, report, "XLSX")["job_id"] for report in reports}
     tenant = live.fixture["tenant_a"]
@@ -617,22 +618,23 @@ def test_native_two_workers_claiming_at_once_lease_each_export_once(live):
 
     def run(index):
         barrier.wait()
-        claimed[index] = [str(r["job_id"]) for r in workers[index].claim_exports(tenant, empty_summary())]
+        claimed[index] = workers[index].claim_exports(tenant, empty_summary())
 
     threads = [threading.Thread(target=run, args=(i,)) for i in range(2)]
     for thread in threads:
         thread.start()
     for thread in threads:
         thread.join()
-    mine = [set(ids) & jobs for ids in claimed]
-    assert not (mine[0] & mine[1])
-    rows = {job_id: job(live, job_id) for job_id in jobs}
-    assert all(
-        row["lease_generation"] == 1 and row["attempts"] == 1
-        for row in rows.values()
-        if row["state"] == "Running"
-    )
-    for index, worker in enumerate(workers):
-        drain(worker, tenant)
+    mine = [{str(r["job_id"]) for r in rows} & jobs for rows in claimed]
+    # SKIP LOCKED: each job is leased by exactly one of the two simultaneous claims.
+    assert not (mine[0] & mine[1]) and mine[0] | mine[1] == jobs
+    for job_id in jobs:
+        row = job(live, job_id)
+        assert (row["state"], row["lease_generation"], row["attempts"]) == ("Running", 1, 1)
+    for worker, rows in zip(workers, claimed):
+        summary = empty_summary()
+        for row in rows:
+            worker.process_export(tenant, row, summary)
+        assert summary["stale_refused"] == 0
     assert all(job(live, job_id)["state"] == "Succeeded" for job_id in jobs)
     assert all(len(artifacts(live, job_id)) == 1 for job_id in jobs)

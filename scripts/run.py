@@ -426,6 +426,12 @@ def main():
         help="Native test mode: do not run scripts/restore_drill.py on the suite database afterwards",
     )
     parser.add_argument(
+        "--perf",
+        action="store_true",
+        help="Test mode: performance harness run (scripts/perf.py); JUnit stays in the run directory and "
+        "no qualification evidence file is written",
+    )
+    parser.add_argument(
         "--no-worker", action="store_true", help="Dev mode: do not start the outbox worker process"
     )
     parser.add_argument(
@@ -601,7 +607,9 @@ def main():
             ]
         )
         junit = (
-            ROOT
+            local / "perf-tests.xml"
+            if args.perf
+            else ROOT
             / "docs/evidence"
             / (
                 ("idp-native-tests.xml" if args.native else "idp-tests.xml")
@@ -622,7 +630,7 @@ def main():
                 evidence, idp_details, targets, junit, code, time.monotonic() - started, args.native
             )
             return code
-        if not args.native:
+        if not args.native or args.perf:
             return code
         evidence["tests"] = {
             "junit": "docs/evidence/native-application-tests.xml",

@@ -818,6 +818,38 @@ def test_worker_role_holds_no_privilege_migration_0025_revoked(live):
             ).fetchone()["held"], (table, privilege)
 
 
+def test_worker_job_and_report_privileges_after_migration_0026(live):
+    """Migration 0026 finished the narrowing 0025 deferred: on the job tables the worker holds exactly
+    what the REPORT_EXPORT job class and the cancellation pass use (0024), and nothing on the report
+    and report-template projections."""
+    expected = {
+        "job": {"SELECT", "UPDATE"},
+        "job_item": {"SELECT", "INSERT"},
+        "report_current": set(),
+        "report_template_current": set(),
+        "report_export": {"SELECT", "UPDATE"},
+        "report_export_artifact": {"SELECT", "INSERT"},
+        "report_package_binding": {"SELECT"},
+    }
+    every = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE", "REFERENCES", "TRIGGER"]
+    with live.db() as c:
+        for table, privileges in expected.items():
+            held = {
+                privilege
+                for privilege in every
+                if c.execute(
+                    "SELECT has_table_privilege('impact_worker',%s,%s) AS held",
+                    ("impact." + table, privilege),
+                ).fetchone()["held"]
+            }
+            assert held == privileges, (table, held)
+        # The application keeps its own job grants (0003): it requests export jobs.
+        for privilege in ["SELECT", "INSERT", "UPDATE"]:
+            assert c.execute(
+                "SELECT has_table_privilege('impact_app','impact.job',%s) AS held", (privilege,)
+            ).fetchone()["held"], privilege
+
+
 def test_worker_role_is_refused_on_revoked_tables(live):
     tenant = live.fixture["tenant_a"]
     for statement in [
@@ -829,6 +861,9 @@ def test_worker_role_is_refused_on_revoked_tables(live):
         "UPDATE impact.membership_current SET expires_at=expires_at",
         "SELECT * FROM impact.operation_receipt",
         "SELECT * FROM impact.grant_current",
+        "SELECT * FROM impact.report_current",
+        "SELECT * FROM impact.report_template_current",
+        "UPDATE impact.job_item SET outcome=outcome",
     ]:
         with psycopg.connect(worker_dsn(), prepare_threshold=None) as c:
             c.execute("SET LOCAL ROLE impact_worker")

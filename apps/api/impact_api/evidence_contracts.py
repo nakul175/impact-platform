@@ -38,6 +38,7 @@ IMPLEMENTED = [
     ("get", "evidence/{object_id}/content"),
 ]
 ATTACH_ROLES = ["AUTHOR", "DATA_STEWARD"]
+VERSION = "1.14.0"
 
 
 def augment(spec, policy):
@@ -246,3 +247,11 @@ def augment(spec, policy):
                 "transaction; the blob stays quarantined until the verdict is CLEAN. Replays re-run a scan that "
                 "was interrupted."
             )
+
+    # Every operation this module implements first appeared in the implemented contract of domain API
+    # 1.14.0 (build 0.24.0); the design contract's 1.1.0 tag described the design, not this build.
+    implemented = [("post", "evidence"), ("patch", "evidence/{object_id}")]
+    implemented += [("post", "evidence/{object_id}/actions/attach")]
+    implemented += [("get", route) for route in SPECIAL_READS] + IMPLEMENTED
+    for method, route in implemented:
+        paths[PREFIX + route][method]["x-contract-version"] = VERSION

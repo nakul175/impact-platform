@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.13.0",
+    "version": "1.14.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -5469,7 +5469,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -5689,7 +5689,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -11444,7 +11444,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/uploads": {
@@ -11565,7 +11565,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -11696,7 +11696,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -11827,7 +11827,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -11942,7 +11942,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/observations/{object_id}/actions/submit": {
@@ -20882,7 +20882,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -20994,7 +20994,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence": {
@@ -21105,7 +21105,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/reports/{object_id}/actions/export": {

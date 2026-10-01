@@ -1466,6 +1466,8 @@ button.link {
   color: inherit;
   text-decoration: underline;
   cursor: pointer;
+}
+
 /* Dashboards (v0.24): official and provisional values are always labelled; the chart has a text
    description and an equivalent table. */
 .dashboard-context {

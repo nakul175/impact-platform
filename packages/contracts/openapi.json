@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.13.0",
+    "version": "1.14.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -9857,7 +9857,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -10077,7 +10077,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -27011,7 +27011,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/uploads": {
@@ -27132,7 +27132,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -27263,7 +27263,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -27394,7 +27394,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -27509,7 +27509,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/uploads/{object_id}/parts/{part_number}": {
@@ -36741,7 +36741,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.14.0",
         "x-audit-required": true
       }
     },
@@ -36853,7 +36853,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence": {
@@ -36964,7 +36964,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.14.0"
       }
     },
     "/v1/tenants/{tenant_id}/reports/{object_id}/actions/export": {

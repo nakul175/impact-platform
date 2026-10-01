@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-10-01T22:03:34+00:00",
+  "started_at": "2026-10-01T22:51:19+00:00",
   "source_database": "impact_test_i25",
   "restored_database": "impact_test_i25_restored",
   "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
@@ -41,11 +41,11 @@
   "dump": {
     "format": "custom",
     "seconds": 0.64,
-    "bytes": 6408363,
+    "bytes": 6442066,
     "warnings": null
   },
   "restore": {
-    "seconds": 1.98,
+    "seconds": 1.85,
     "warnings": null
   },
   "migration": {
@@ -122,8 +122,8 @@
     "rls_survived": true
   },
   "restored_database_dropped": true,
-  "duration_seconds": 2.92,
-  "finished_at": "2026-10-01T22:03:37+00:00",
+  "duration_seconds": 2.78,
+  "finished_at": "2026-10-01T22:51:22+00:00",
   "outcome": "PASS",
   "credentials_altered": false
 }

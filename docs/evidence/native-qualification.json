@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-10-01T21:56:41+00:00",
+  "started_at": "2026-10-01T22:44:43+00:00",
   "engine": "PostgreSQL",
   "server_version": "PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
   "database": "impact_test_i25",
@@ -160,7 +160,7 @@
     "fixture_user": "postgres"
   },
   "api_requires_unprivileged_db": true,
-  "api_ready_seconds": 0.85,
+  "api_ready_seconds": 0.59,
   "runtime_manifest": {
     "build_id": "impact-0.25.0",
     "schema_version": "27",
@@ -175,12 +175,12 @@
       "specification/reference-v1/tests/test_integration.py"
     ],
     "exit_code": 0,
-    "duration_seconds": 404.2,
-    "tests": 879,
+    "duration_seconds": 388.5,
+    "tests": 880,
     "failures": 0,
     "errors": 0,
     "skipped": 19,
-    "reported_seconds": 403.415,
+    "reported_seconds": 387.876,
     "renewal_race_winners": {
       "0": {
         "mode": "race",
@@ -188,11 +188,11 @@
       },
       "1": {
         "mode": "race",
-        "winner": "revocation"
+        "winner": "approval"
       },
       "2": {
         "mode": "race",
-        "winner": "approval"
+        "winner": "revocation"
       },
       "3": {
         "mode": "revocation_first",
@@ -206,43 +206,43 @@
   },
   "restart_check": {
     "phase_1": {
-      "api_pid": 12843,
+      "api_pid": 26392,
       "exit_code": 0,
       "duration_seconds": 1.1,
-      "junit": ".local/test-8dfc6c4b/restart-phase-1.xml",
+      "junit": ".local/test-e8ea05e2/restart-phase-1.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.657
+      "reported_seconds": 0.691
     },
     "first_api": {
-      "pid": 12843,
+      "pid": 26392,
       "exit_code": -15,
       "clean_shutdown": true,
-      "stop_seconds": 0.16
+      "stop_seconds": 0.21
     },
     "second_api": {
-      "pid": 17976,
-      "ready_seconds": 0.8
+      "pid": 31550,
+      "ready_seconds": 0.81
     },
     "phase_2": {
-      "api_pid": 17976,
+      "api_pid": 31550,
       "exit_code": 0,
-      "duration_seconds": 0.9,
-      "junit": ".local/test-8dfc6c4b/restart-phase-2.xml",
+      "duration_seconds": 0.8,
+      "junit": ".local/test-e8ea05e2/restart-phase-2.xml",
       "tests": 1,
       "failures": 0,
       "errors": 0,
       "skipped": 0,
-      "reported_seconds": 0.466
+      "reported_seconds": 0.43
     },
-    "state_file": ".local/test-8dfc6c4b/restart-state.json",
+    "state_file": ".local/test-e8ea05e2/restart-state.json",
     "outcome": "PASS"
   },
-  "finished_at": "2026-10-01T22:03:34+00:00",
+  "finished_at": "2026-10-01T22:51:19+00:00",
   "restore_drill": {
-    "started_at": "2026-10-01T22:03:34+00:00",
+    "started_at": "2026-10-01T22:51:19+00:00",
     "source_database": "impact_test_i25",
     "restored_database": "impact_test_i25_restored",
     "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
@@ -284,11 +284,11 @@
     "dump": {
       "format": "custom",
       "seconds": 0.64,
-      "bytes": 6408363,
+      "bytes": 6442066,
       "warnings": null
     },
     "restore": {
-      "seconds": 1.98,
+      "seconds": 1.85,
       "warnings": null
     },
     "migration": {
@@ -365,14 +365,14 @@
       "rls_survived": true
     },
     "restored_database_dropped": true,
-    "duration_seconds": 2.92,
-    "finished_at": "2026-10-01T22:03:37+00:00",
+    "duration_seconds": 2.78,
+    "finished_at": "2026-10-01T22:51:22+00:00",
     "outcome": "PASS",
     "credentials_altered": false
   },
   "upgrade_check": {
     "database": "impact_test_i25_upgrade",
-    "started_at": "2026-10-01T22:03:37+00:00",
+    "started_at": "2026-10-01T22:51:22+00:00",
     "baseline": {
       "applied": [
         "0001_roles.sql",
@@ -445,7 +445,7 @@
       "disclosure_rows_preserved": true,
       "data_preserved": true
     },
-    "duration_seconds": 1.2,
+    "duration_seconds": 1.21,
     "outcome": "PASS"
   }
 }

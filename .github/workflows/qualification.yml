@@ -170,6 +170,11 @@ jobs:
     # assurance, platform operator), add-user, and a restore of the nightly dump.
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    defaults:
+      run:
+        # bash -eo pipefail: a check piped into tee (smoke, first sign-in, second run) fails the step
+        # when the check fails; the default `bash -e` took tee's exit status and hid failures.
+        shell: bash
     env:
       APP_HOST: impact.test
       OWNER_EMAIL: owner@example.org

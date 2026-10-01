@@ -57,7 +57,8 @@ main() {
     error="DRILL_DATABASE_DID_NOT_START"
   else
     local waited=0
-    until drill exec -T drill-db pg_isready -q -U postgres >/dev/null 2>&1; do
+    # Over TCP: on first start the image initialises with a socket-only server, then restarts it.
+    until drill exec -T drill-db pg_isready -q -h 127.0.0.1 -U postgres >/dev/null 2>&1; do
       if [ "$waited" -ge 120 ]; then
         error="DRILL_DATABASE_NOT_READY"
         break
@@ -90,6 +91,11 @@ main() {
     write_result FAIL "$started" "$restore" "$checked" "$error"
   fi
   log "restore drill: $(python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print(d["outcome"], "in", d["duration_seconds"], "s; set", d.get("set"), "aged", d.get("backup_age_hours"), "h", d.get("error") or "")' "$RESULT_FILE")"
+  if [ -n "$error" ]; then
+    # The step reports and the check results carry no secret or tenant data.
+    log "restore drill: restore report: ${restore:-none}"
+    log "restore drill: check report: ${checked:-none}"
+  fi
   # Refresh deploy-status.json at once (best effort).
   "$DEPLOY_DIR/ops-check.sh" >/dev/null 2>&1 || true
   [ -z "$error" ]

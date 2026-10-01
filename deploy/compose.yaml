@@ -285,6 +285,9 @@ services:
   drill-check:
     <<: [*app, *hardened]
     profiles: ["drill"]
+    # The backup sets are root's (0700/0600); root in this container, still with every capability
+    # dropped, read-only and on the drill network only, reads them as their owner.
+    user: "0:0"
     command: ["python", "deploy/restore_check.py"]
     environment:
       # The password arrives as PGPASSWORD from deploy/restore-drill.sh, never in this file.

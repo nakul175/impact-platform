@@ -62,7 +62,8 @@ restore() {
   pg_restore --exit-on-error --no-password -d "$db" "$dump"
 }
 
-until pg_isready -q; do sleep 1; done
+# Over TCP: on first start the image initialises with a socket-only server, then restarts it.
+until pg_isready -q -h 127.0.0.1; do sleep 1; done
 set_name="${1:-$(latest_set)}"
 case "$set_name" in
 daily/[0-9]* | weekly/[0-9]*) ;;

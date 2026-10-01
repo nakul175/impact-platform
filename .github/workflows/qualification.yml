@@ -254,8 +254,13 @@ jobs:
             dropdb impact_restore_check'
       - name: Restore drill on throwaway containers (measured restore time)
         run: |
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/restore-drill.sh
+          status=0
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/restore-drill.sh | tee drill.log || status=$?
           sudo cat "$IMPACT_HOME/ops/restore-drill.json" | tee restore-drill.json
+          if [ "$status" -ne 0 ]; then
+            echo "::error title=restore drill::$(tail -n 4 drill.log | tr '\n' ' ' | cut -c1-3000)"
+            exit "$status"
+          fi
           python3 - <<'PY'
           import json
           d = json.load(open("restore-drill.json"))

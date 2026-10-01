@@ -305,6 +305,36 @@ def test_native_worker_login_holds_only_the_worker_role(live):
         )
 
 
+def test_native_worker_login_cannot_touch_tables_revoked_by_migration_0025(live):
+    """The provisioned worker login, as impact_worker, is refused reads and writes on a sample of
+    the tables migration 0025 revoked, while its own delivery table stays readable."""
+    dsn = os.environ["IMPACT_LOGIN_DSN_WORKER"]
+    tenant = live.fixture["tenant_a"]
+    for statement in [
+        "SELECT * FROM impact.programme_current LIMIT 1",
+        "SELECT * FROM impact.calculated_result_current LIMIT 1",
+        "SELECT * FROM impact.snapshot_current LIMIT 1",
+        "SELECT lifecycle_state FROM impact.tenant_root LIMIT 1",
+        "SELECT * FROM impact.operation_receipt LIMIT 1",
+        "UPDATE impact.tenant_root SET policy_epoch=policy_epoch",
+        "UPDATE impact.object_registry SET updated_at=updated_at",
+        "UPDATE impact.tenant_principal SET active=active",
+        "UPDATE impact.observation_current SET tenant_id=tenant_id",
+        "DELETE FROM impact.grant_current",
+        "INSERT INTO impact.scope_member SELECT * FROM impact.scope_member LIMIT 0",
+    ]:
+        with psycopg.connect(dsn) as c:
+            c.execute("SET LOCAL ROLE impact_worker")
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+            with pytest.raises(psycopg.errors.InsufficientPrivilege):
+                c.execute(statement)
+    with psycopg.connect(dsn, row_factory=dict_row) as c:
+        c.execute("SET LOCAL ROLE impact_worker")
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        assert c.execute("SELECT count(*) AS n FROM impact.outbox_delivery").fetchone()["n"] >= 0
+        assert c.execute("SELECT count(*) AS n FROM impact.membership_current").fetchone()["n"] >= 1
+
+
 def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     """The reviewer's scenario: worker A claims a batch whose total send time exceeds the lease;
     worker B takes over the rows whose lease ran out. Before the per-row lease renewal every row was

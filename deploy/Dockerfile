@@ -33,7 +33,9 @@ COPY infrastructure/migrations infrastructure/migrations
 COPY scripts/migrate.py scripts/provision_logins.py scripts/fixture_support.py scripts/bootstrap_operator.py scripts/smoke.py scripts/
 COPY deploy/prepare_database.py deploy/keycloak_admin.py deploy/mail_sink.py deploy/
 COPY --from=web /src/apps/web/dist apps/web/dist
-RUN mkdir -p /var/lib/impact/mail && chown impact:impact /var/lib/impact/mail
+RUN mkdir -p /var/lib/impact/mail /var/lib/impact/objects \
+    && chown impact:impact /var/lib/impact/mail /var/lib/impact/objects \
+    && chmod 700 /var/lib/impact/objects
 USER impact
 EXPOSE 8000
 # The API. The worker, the database job and the bootstrap override the command (deploy/compose.yaml).

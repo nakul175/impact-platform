@@ -88,6 +88,7 @@ def bootstrap(local, idp=None):
                 "disclosures.read",
                 "publication.download",
                 "form.submit",
+                "evidence.attach",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",
@@ -245,6 +246,10 @@ def bootstrap(local, idp=None):
         "dev_users_file": str(local / "users.json"),
         "dev_public_key": str(local / "public.pem"),
         "fixture_id": fixture["fixture_id"],
+        # Evidence bytes (v0.22): a private directory of this run, scanned by the deterministic
+        # signature scanner (EICAR test file only; not an anti-malware engine).
+        "object_store_dir": str((local / "objects").resolve()),
+        "evidence_scanner": "eicar-signature",
     }
     if idp:
         config.update(

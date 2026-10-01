@@ -28,6 +28,7 @@ from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
 from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
+from .evidence import Evidence
 from .work import WorkCenter
 from .store import (
     context,
@@ -98,6 +99,7 @@ WRITE_ROUTES = {
     "targets",
     "forms",
     "submissions",
+    "evidence",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -123,6 +125,7 @@ ACTIONS = {
     "targets": {"submit"},
     "forms": {"submit", "publish"},
     "submissions": {"submit"},
+    "evidence": {"attach"},
 }
 
 
@@ -171,6 +174,7 @@ class Service:
         self.work = WorkCenter(self)
         self.forms = Forms(self)
         self.planning = Planning(self)
+        self.evidence = Evidence(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -511,6 +515,8 @@ class Service:
                 receipt = self.reporting.publish(c, ctx, previous, body["data"])
             elif action == "withdraw":
                 receipt = self.reporting.withdraw(c, ctx, previous, body["data"], correlation)
+            elif action == "attach":
+                receipt = self.evidence.attach(c, ctx, previous, body["data"])
             else:
                 # A published form is revised by a new draft revision: the published version stays in
                 # the publication register and keeps serving collection until a successor publishes.
@@ -529,6 +535,9 @@ class Service:
                 if kind == "Target":
                     # Pinned again by the next submission; never carried into an edited draft.
                     data.pop("indicator_version", None)
+                if kind == "Evidence":
+                    # Name, media type, size, digest and verdict come from the CLEAN upload only.
+                    data = self.evidence.stamp(c, ctx, data, previous)
                 if kind == "Framework":
                     data = self.planning.stamp_exceptions(
                         c, ctx, previous["payload"] if previous else None, data

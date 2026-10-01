@@ -340,7 +340,7 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
     checks = {
         "migration_applied_nothing": migration["applied"] == []
         and migration["schema_version"] == migrate.LATEST,
-        "checksums_ok": len(recorded) == migrate.LATEST and not result["migration"]["checksum_mismatches"],
+        "checksums_ok": len(recorded) == migrate.FILES and not result["migration"]["checksum_mismatches"],
         "golden_official_result": restored["golden"]["ok"] and result["source"]["golden"]["ok"],
         "row_counts_equal": not differing,
         "owned_by_impact_owner": owners == {"impact_owner"},

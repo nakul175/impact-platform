@@ -150,8 +150,14 @@ services:
       # on the server (Let's Encrypt); the system store plus Caddy's internal root in the CI stack,
       # which deploy/update.sh writes to <impact home>/ca/bundle.pem.
       SSL_CERT_FILE: ${IMPACT_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+      # Evidence bytes (v0.22): a private, content-addressed store on the named volume below, read
+      # only through the API's mediated download. The scanner recognises the EICAR test file only;
+      # it is not an anti-malware engine ("none" makes every scan FAILED and nothing downloadable).
+      IMPACT_OBJECT_STORE_DIR: /var/lib/impact/objects
+      IMPACT_EVIDENCE_SCANNER: ${IMPACT_EVIDENCE_SCANNER:-eicar-signature}
     volumes:
       - ${IMPACT_CA_DIR:?}:/etc/impact-ca:ro
+      - objects:/var/lib/impact/objects
     networks: [backend, edge]
     depends_on:
       postgres: {condition: service_healthy}
@@ -259,3 +265,6 @@ volumes:
   caddy_config: {}
   backups: {}
   mail: {}
+  # Evidence objects. Not covered by the nightly pg_dump: back up with the database (see
+  # docs/RELEASE-0.22.md); the database rows name every object by SHA-256.
+  objects: {}

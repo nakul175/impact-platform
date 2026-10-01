@@ -16,6 +16,7 @@
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | `audit-events.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/collection-plans` | `collection-plans.read` |
 | POST | `/v1/tenants/{tenant_id}/collection-plans` | `collection-plans.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | `collection-plans.read` |
@@ -29,7 +30,11 @@
 | GET | `/v1/tenants/{tenant_id}/disclosures` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/evidence` | `evidence.read` |
+| POST | `/v1/tenants/{tenant_id}/evidence` | `evidence.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.read` |
+| PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | `evidence.attach` |
+| GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
 | POST | `/v1/tenants/{tenant_id}/forms` | `forms.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |
@@ -90,6 +95,7 @@
 | GET | `/v1/tenants/{tenant_id}/observations/{object_id}` | `observations.read` |
 | PATCH | `/v1/tenants/{tenant_id}/observations/{object_id}` | `observations.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/observations/{object_id}/actions/submit` | `observation.submit` |
+| GET | `/v1/tenants/{tenant_id}/observations/{object_id}/evidence` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/organisation-units` | `organisation-units.read` |
 | POST | `/v1/tenants/{tenant_id}/organisation-units` | `organisation-units.manage` |
 | POST | `/v1/tenants/{tenant_id}/organisation-units/{object_id}/actions/rename` | `organisation-units.manage` |
@@ -151,6 +157,10 @@
 | GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.read` |
 | PATCH | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | `target.submit` |
+| POST | `/v1/tenants/{tenant_id}/uploads` | `upload.create` |
+| GET | `/v1/tenants/{tenant_id}/uploads/{object_id}` | `uploads.read` |
+| POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | `upload.write` |
+| PUT | `/v1/tenants/{tenant_id}/uploads/{object_id}/content` | `upload.write` |
 | GET | `/v1/tenants/{tenant_id}/work-items` | `work-items.read` |
 | GET | `/v1/tenants/{tenant_id}/work-items/{object_id}` | `work-items.read` |
 | POST | `/v1/tenants/{tenant_id}/work-items/{object_id}/actions/recalculate` | `indicator.calculate` |

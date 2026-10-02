@@ -3,6 +3,7 @@ import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
 import { AuthorityRenewal } from "./AuthorityRenewal";
 import { Workers } from "./Workers";
+import { StatusBanner } from "./StatusBanner";
 import { Operators } from "./Operators";
 
 type Props = {
@@ -151,6 +152,7 @@ export function TenantLifecycle({
         </button>
       </div>
       <h1>Tenant lifecycle</h1>
+      <StatusBanner request={request} />
       <button className="secondary" onClick={() => setRecoveryContacts(true)}>
         Recovery contacts
       </button>

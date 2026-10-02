@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { onCallLine } from "./StatusBanner";
 
 type Props = {
   request: (path: string, options?: RequestInit) => Promise<any>;
@@ -26,9 +27,33 @@ const deliveryConflicts: Record<string, string> = {
 export function Workers({ request, explain }: Props) {
   return (
     <>
+      <OnCall request={request} />
       <WorkerHeartbeats request={request} explain={explain} />
       <DeliveryAttention request={request} explain={explain} />
     </>
+  );
+}
+
+// Who is on call (release 0.27): the rota the server owner publishes as ops/on-call.json, read
+// through GET /v1/status (operators receive the detail). One line; nothing to act on here.
+function OnCall({ request }: { request: Props["request"] }) {
+  const [line, setLine] = useState("");
+  useEffect(() => {
+    const c = new AbortController();
+    request("/v1/status", { signal: c.signal })
+      .then((s) => {
+        if (!c.signal.aborted) setLine(onCallLine(s.detail?.on_call));
+      })
+      .catch(() => {
+        if (!c.signal.aborted)
+          setLine("The on-call rota could not be read right now.");
+      });
+    return () => c.abort();
+  }, []);
+  return (
+    <p className="on-call" aria-label="Who is on call">
+      {line || "Reading the on-call rota…"}
+    </p>
   );
 }
 

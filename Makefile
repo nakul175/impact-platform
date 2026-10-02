@@ -60,6 +60,7 @@ browser:
 	$(PY) scripts/run.py requeue-browser
 	$(PY) scripts/run.py a11y-browser
 	$(PY) scripts/run.py operators-browser
+	IMPACT_OPS_STATUS_FILE=$(CURDIR)/.local/status-browser/ops-status.json $(PY) scripts/run.py status-browser
 lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy

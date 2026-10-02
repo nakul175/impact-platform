@@ -26,6 +26,7 @@ import {
 import { PrivacyPanel } from "./Privacy";
 import { NoWorkspace } from "./Landing";
 import { ReferenceDataPanel } from "./ReferenceData";
+import { StatusBanner } from "./StatusBanner";
 type RecordRow = {
   object_id: string;
   revision_id: string;
@@ -767,6 +768,7 @@ function Workspace({
           </div>
         </header>
         <main className="content" id="main-content" tabIndex={-1}>
+          <StatusBanner request={api} />
           {development && (
             <div className="demo-note">
               <span /> Development workspace · synthetic sample data

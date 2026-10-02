@@ -8,6 +8,14 @@ Superseded) through the single independent review stage of `Service.submit`/`Ser
 Approval appends a row to an insert-only register (`framework_baseline`, `target_binding`) that
 names the approved revision and the revision it supersedes; nothing approved is re-pointed.
 
+v0.27 (planning slice): a framework revision also carries typed theory-of-change relationships
+between its nodes (FR-PLN-002) and assumption, risk and context records (FR-PLN-007), both
+validated here and frozen with the revision; a REVISED target superseding the target pinned at a
+period's close is accepted and applies prospectively, shown beside the official comparison and
+never in its place (FR-IND-004); a target may carry reviewed status thresholds, and
+`performance_band` turns a comparison into an on-track / at-risk / off-track band without hiding
+any separately visible state (FSD 32.2).
+
 All writes run inside `Service.command`'s tenant lock and receipt transaction.
 """
 
@@ -29,14 +37,167 @@ STRUCTURAL = {
     "INDICATOR_LINKED_TWICE",
     "NODE_REFERENCED",
     "DUPLICATE_EXCEPTION",
+    # Theory of change (FR-PLN-002) and assumptions (FR-PLN-007): refused on every save too.
+    "DUPLICATE_RELATIONSHIP_ID",
+    "DUPLICATE_RELATIONSHIP",
+    "RELATIONSHIP_SELF",
+    "RELATIONSHIP_ENDPOINT_MISSING",
+    "RELATIONSHIP_LEVEL_ORDER",
+    "RELATIONSHIP_CYCLE",
+    "RELATIONSHIP_ASSUMPTION_MISSING",
+    "DUPLICATE_ASSUMPTION_ID",
+    "ASSUMPTION_NODE_MISSING",
 }
 PLANNING_KINDS = {"Framework", "Target"}
 OPEN_PROGRAMME = {"Draft", "Ready", "Active"}
 MAX_INDICATORS = 200
+FLAGGED_ASSUMPTION = {"AT_RISK", "INVALID"}
 
 
 def instant(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def causal_edge(relationship):
+    """The contribution a relationship states, as (contributor, beneficiary): CONTRIBUTES_TO reads
+    from -> to, DEPENDS_ON states the same contribution from the dependent side."""
+    a, b = relationship["from_node_id"], relationship["to_node_id"]
+    return (a, b) if relationship["relationship_type"] == "CONTRIBUTES_TO" else (b, a)
+
+
+def relationship_issues(by_id, relationships, assumption_ids):
+    """Pure rules over the theory-of-change links: identities, endpoints, the level order of a
+    contribution (a result contributes to the same or a higher level; alternative pathways are
+    allowed), no causal cycle, and assumptions that exist. A link never creates a numeric rule."""
+    issues, seen, edges, graph = [], set(), set(), {}
+    for rel in relationships:
+        rid = rel["relationship_id"]
+        if rid in seen:
+            issues.append(
+                ("ERROR", "DUPLICATE_RELATIONSHIP_ID", rid, "Each relationship needs its own identity.")
+            )
+        seen.add(rid)
+        a, b = rel["from_node_id"], rel["to_node_id"]
+        if a == b:
+            issues.append(("ERROR", "RELATIONSHIP_SELF", rid, "A node cannot contribute to itself."))
+            continue
+        if a not in by_id or b not in by_id:
+            issues.append(
+                (
+                    "ERROR",
+                    "RELATIONSHIP_ENDPOINT_MISSING",
+                    rid,
+                    "Both ends of a relationship must be nodes of this framework.",
+                )
+            )
+            continue
+        key = (a, b, rel["relationship_type"])
+        if key in edges:
+            issues.append(("ERROR", "DUPLICATE_RELATIONSHIP", rid, "Record each relationship once."))
+        edges.add(key)
+        contributor, beneficiary = causal_edge(rel)
+        if LEVELS[by_id[contributor]["node_type"]] > LEVELS[by_id[beneficiary]["node_type"]]:
+            issues.append(
+                (
+                    "ERROR",
+                    "RELATIONSHIP_LEVEL_ORDER",
+                    rid,
+                    "A result contributes to the same or a higher result level, never a lower one.",
+                )
+            )
+        else:
+            graph.setdefault(contributor, set()).add(beneficiary)
+        for assumption in rel.get("assumption_ids", []):
+            if assumption not in assumption_ids:
+                issues.append(
+                    (
+                        "ERROR",
+                        "RELATIONSHIP_ASSUMPTION_MISSING",
+                        rid,
+                        "A relationship names only assumptions recorded in this framework.",
+                    )
+                )
+        if rel.get("evidence_strength") == "UNTESTED":
+            issues.append(
+                ("WARNING", "UNTESTED_RELATIONSHIP", rid, "The evidence for this contribution is untested.")
+            )
+    # A causal cycle (only possible between nodes of one level) is refused like a containment cycle.
+    state, cyclic = {}, set()
+
+    def visit(node, path):
+        state[node] = 1
+        for nxt in sorted(graph.get(node, ())):
+            if state.get(nxt) == 1:
+                cyclic.update(path[path.index(nxt) :])
+            elif nxt not in state:
+                visit(nxt, path + [nxt])
+        state[node] = 2
+
+    for start in sorted(graph):
+        if start not in state:
+            visit(start, [start])
+    for node in sorted(cyclic):
+        issues.append(("ERROR", "RELATIONSHIP_CYCLE", node, "Contributions must not form a cycle."))
+    return issues
+
+
+def assumption_issues(by_id, assumptions, today=None):
+    """Pure rules over assumption, risk and context records: identities and linked nodes exist
+    (structural), an owner is assigned, an assumption or risk is linked to a node, an invalid status
+    highlights every linked node, and a passed review date asks for a reassessment."""
+    issues, seen, flagged = [], set(), set()
+    for item in assumptions:
+        aid = item["assumption_id"]
+        if aid in seen:
+            issues.append(
+                ("ERROR", "DUPLICATE_ASSUMPTION_ID", aid, "Each assumption needs its own identity.")
+            )
+        seen.add(aid)
+        linked = []
+        for node in item.get("node_ids", []):
+            if node not in by_id:
+                issues.append(
+                    (
+                        "ERROR",
+                        "ASSUMPTION_NODE_MISSING",
+                        aid,
+                        "An assumption links only to nodes of this framework.",
+                    )
+                )
+            else:
+                linked.append(node)
+        if not item.get("owner_id"):
+            issues.append(("ERROR", "ASSUMPTION_INCOMPLETE", aid, "Assign an owner to this assumption."))
+        if item["kind"] != "CONTEXT" and not item.get("node_ids"):
+            issues.append(
+                (
+                    "WARNING",
+                    "UNLINKED_ASSUMPTION",
+                    aid,
+                    "This assumption is not linked to any result it conditions.",
+                )
+            )
+        if item["status"] == "INVALID":
+            flagged.update(linked)
+        if today and item["review_date"] < today:
+            issues.append(
+                (
+                    "WARNING",
+                    "ASSUMPTION_REVIEW_DUE",
+                    aid,
+                    "The assumption's review date has passed; reassess it.",
+                )
+            )
+    for node in sorted(flagged):
+        issues.append(
+            (
+                "WARNING",
+                "ASSUMPTION_INVALID",
+                node,
+                "An assumption this result relies on is invalid; review the result.",
+            )
+        )
+    return issues
 
 
 def slot(data):
@@ -47,9 +208,9 @@ def slot(data):
     return "TARGET"
 
 
-def structure_issues(nodes):
-    """Pure structural and completeness rules over a node list (no database): returns issues as
-    (severity, rule, object_id, message)."""
+def structure_issues(nodes, relationships=(), assumptions=(), today=None):
+    """Pure structural and completeness rules over a node list, its theory-of-change relationships
+    and its assumptions (no database): returns issues as (severity, rule, object_id, message)."""
     issues = []
     by_id = {}
     for node in nodes:
@@ -122,13 +283,76 @@ def structure_issues(nodes):
                     "No indicator measures this result.",
                 )
             )
+    issues.extend(relationship_issues(by_id, relationships, {a["assumption_id"] for a in assumptions}))
+    issues.extend(assumption_issues(by_id, assumptions, today))
     return issues
+
+
+def threshold_issue(target):
+    """Why a target's `status_thresholds` are refused, or None. ATTAINMENT_PERCENT needs a
+    higher-is-better value target (attainment is defined only there); DEVIATION applies to value and
+    range targets; a milestone needs an assessment, not a band. Bands are ordered so that on-track
+    is at least as demanding as at-risk."""
+    thresholds = target.get("status_thresholds")
+    if not thresholds:
+        return None
+    kind, direction = target.get("target_kind"), target.get("direction")
+    if kind == "MILESTONE":
+        return "THRESHOLDS_NOT_ALLOWED"
+    on_track, at_risk = decimal_value(thresholds["on_track"]), decimal_value(thresholds["at_risk"])
+    if on_track < 0 or at_risk < 0:
+        return "THRESHOLD_NEGATIVE"
+    if thresholds["scheme"] == "ATTAINMENT_PERCENT":
+        if kind != "VALUE" or direction != "HIGHER":
+            return "THRESHOLD_SCHEME_MISMATCH"
+        return None if on_track >= at_risk else "THRESHOLD_ORDER"
+    return None if on_track <= at_risk else "THRESHOLD_ORDER"
+
+
+def performance_band(value, target, stale=False):
+    """Pure banding of one PRESENT stored actual against a PRESENT target that carries status
+    thresholds: (band, reason). The band is None, with the reason, whenever a separately visible
+    state comes first (FSD 32.2): no thresholds, a stale actual, an undefined attainment, a milestone.
+    ATTAINMENT_PERCENT: attainment >= on_track is ON_TRACK, >= at_risk AT_RISK, else OFF_TRACK.
+    DEVIATION: the adverse distance from the target (below a higher target, above a lower one, outside
+    a range; never negative) <= on_track is ON_TRACK, <= at_risk AT_RISK, else OFF_TRACK.
+    Dashboards and other read models may call this with the same arguments."""
+    thresholds = (target or {}).get("status_thresholds")
+    if not thresholds:
+        return None, "NO_THRESHOLDS"
+    if stale:
+        return None, "STALE_ACTUAL"
+    if target.get("target_kind") == "MILESTONE":
+        return None, "MILESTONE_ASSESSMENT"
+    on_track, at_risk = decimal_value(thresholds["on_track"]), decimal_value(thresholds["at_risk"])
+    with localcontext() as c:
+        c.prec = 60
+        if thresholds["scheme"] == "ATTAINMENT_PERCENT":
+            goal = decimal_value(target["value"])
+            if goal <= 0:
+                return None, "ATTAINMENT_UNDEFINED"
+            measure = value / goal * 100
+            if measure >= on_track:
+                return "ON_TRACK", None
+            return ("AT_RISK" if measure >= at_risk else "OFF_TRACK"), None
+        if target["target_kind"] == "RANGE":
+            low, high = decimal_value(target["low"]), decimal_value(target["high"])
+            adverse = low - value if value < low else value - high if value > high else Decimal(0)
+        elif target["direction"] == "LOWER":
+            adverse = max(Decimal(0), value - decimal_value(target["value"]))
+        else:
+            adverse = max(Decimal(0), decimal_value(target["value"]) - value)
+        if adverse <= on_track:
+            return "ON_TRACK", None
+        return ("AT_RISK" if adverse <= at_risk else "OFF_TRACK"), None
 
 
 def progress(actual, target, baseline, places):
     """Target attainment per the declared direction (LLD: uncapped higher attainment, signed lower
     deviation, inclusive range bounds); zero or negative higher targets and zero baselines are
-    undefined, never divided. Arithmetic uses stored decimals, never displayed values."""
+    undefined, never divided. Arithmetic uses stored decimals, never displayed values. The band
+    comes from the target's own thresholds (`performance_band`) and is never a substitute for the
+    status, the actual's mode or its staleness."""
     result = {
         "status": "NO_ACTUAL",
         "attainment_percent": None,
@@ -138,6 +362,8 @@ def progress(actual, target, baseline, places):
         "change_from_baseline_percent": None,
         "change_from_baseline_reason": None,
         "reason_code": None,
+        "band": None,
+        "band_reason": None,
     }
     value = (
         decimal_value(actual["value"])
@@ -158,14 +384,25 @@ def progress(actual, target, baseline, places):
                 result["change_from_baseline_percent"] = display((value - base) / base * 100, 2)
         if value is None:
             result["reason_code"] = "NO_PRESENT_ACTUAL" if actual.get("mode") != "NONE" else "NO_RESULT"
-            return result
+            return {**result, "band_reason": result["reason_code"]}
         if target is None:
-            return {**result, "status": "NO_TARGET", "reason_code": "NO_APPROVED_TARGET"}
+            return {
+                **result,
+                "status": "NO_TARGET",
+                "reason_code": "NO_APPROVED_TARGET",
+                "band_reason": "NO_TARGET",
+            }
         if target.get("value_state") != "PRESENT":
-            return {**result, "status": "NO_TARGET", "reason_code": "TARGET_" + target["value_state"]}
+            reason = "TARGET_" + target["value_state"]
+            return {**result, "status": "NO_TARGET", "reason_code": reason, "band_reason": reason}
         kind, direction = target["target_kind"], target["direction"]
         if kind == "MILESTONE":
-            return {**result, "status": "ASSESSMENT_REQUIRED", "reason_code": "MILESTONE_ASSESSMENT"}
+            return {
+                **result,
+                "status": "ASSESSMENT_REQUIRED",
+                "reason_code": "MILESTONE_ASSESSMENT",
+                "band_reason": "MILESTONE_ASSESSMENT",
+            }
         if kind == "RANGE":
             low, high = decimal_value(target["low"]), decimal_value(target["high"])
             deviation = value - low if value < low else value - high if value > high else Decimal(0)
@@ -182,10 +419,13 @@ def progress(actual, target, baseline, places):
                     result["reason_code"] = "ZERO_TARGET" if goal == 0 else "NON_POSITIVE_TARGET"
             else:
                 status = "ACHIEVED" if value <= goal else "ABOVE_TARGET"
+        band, band_reason = performance_band(value, target, stale=bool(actual.get("stale")))
         result.update(
             status=status,
             deviation=stored(deviation),
             displayed_deviation=display(deviation, places),
+            band=band,
+            band_reason=band_reason,
         )
         return result
 
@@ -205,6 +445,8 @@ def safe_progress(actual, target, baseline, places):
             "change_from_baseline_percent": None,
             "change_from_baseline_reason": None,
             "reason_code": "ARITHMETIC_OVERFLOW",
+            "band": None,
+            "band_reason": "ARITHMETIC_OVERFLOW",
         }
 
 
@@ -240,8 +482,25 @@ class Planning:
         from .service import revision
 
         nodes = data.get("nodes", [])
-        found = list(structure_issues(nodes))
+        relationships, assumptions = data.get("relationships", []), data.get("assumptions", [])
+        today = c.execute("SELECT current_date AS today").fetchone()["today"].isoformat()
+        found = list(structure_issues(nodes, relationships, assumptions, today))
         by_id = {n["node_id"]: n for n in nodes}
+        # Who resolves an issue on a relationship (the contributing node's owner) or an assumption
+        # (its owner); nodes resolve their own, the framework owner the rest.
+        resolvers = {a["assumption_id"]: a.get("owner_id") for a in assumptions}
+        for rel in relationships:
+            resolvers[rel["relationship_id"]] = (by_id.get(causal_edge(rel)[0]) or {}).get("owner_id")
+        for item in assumptions:
+            if item.get("owner_id") and not self.service.measurement.principal(c, ctx, item["owner_id"]):
+                found.append(
+                    (
+                        "ERROR",
+                        "OWNER_INELIGIBLE",
+                        item["assumption_id"],
+                        "The assumption owner must be an active member.",
+                    )
+                )
         programme_id = data.get("programme_id")
         for node in nodes:
             for indicator in node.get("indicator_ids", []):
@@ -302,7 +561,6 @@ class Planning:
                         )
                     )
         exceptions = {}
-        today = c.execute("SELECT current_date AS today").fetchone()["today"].isoformat()
         for item in data.get("exceptions", []):
             key = (item["object_id"], item["rule"])
             if item["review_date"] < today:
@@ -334,7 +592,7 @@ class Planning:
                     "rule": rule,
                     "object_id": obj,
                     "message": message,
-                    "resolver_id": (node or {}).get("owner_id") or owner_id,
+                    "resolver_id": (node or {}).get("owner_id") or resolvers.get(obj) or owner_id,
                     "exceptable": severity == "WARNING",
                     "excepted": bool(exception),
                     "exception": exception,
@@ -439,28 +697,58 @@ class Planning:
         }
 
     def stamp_exceptions(self, c, ctx, previous, data):
-        """Server-owned authorship of each documented exception: an unchanged exception keeps who
-        recorded it and when; a new or edited one is recorded by the acting principal at database
-        time. Clients never supply these fields (the draft schema is closed)."""
-        if "exceptions" not in data:
+        """Server-owned authorship of each documented exception and of each assumption's assessment:
+        an unchanged exception keeps who recorded it and when; an assumption keeps who assessed its
+        status until the status changes; anything new or changed is stamped with the acting principal
+        at database time. Clients never supply these fields (the draft schema is closed). A child
+        draft (no previous revision of its own) inherits the stamps of the approved revision it
+        supersedes, so an unchanged assessment is not re-attributed to the drafter."""
+        if "exceptions" not in data and "assumptions" not in data:
             return data
-        known = {}
-        for item in (previous or {}).get("exceptions", []):
-            if item.get("recorded_by"):
-                known[(item["object_id"], item["rule"], item["reason"], item["review_date"])] = item
+        if previous is None and data.get("supersedes_revision"):
+            superseded = c.execute(
+                "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s AND object_type='Framework' AND restriction_state='AVAILABLE'",
+                (ctx.tenant_id, data["supersedes_revision"]),
+            ).fetchone()
+            previous = superseded["payload"] if superseded else None
         now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"].isoformat()
-        stamped = []
-        for item in data["exceptions"]:
-            core = {k: item[k] for k in ["object_id", "rule", "reason", "review_date"]}
-            kept = known.get(tuple(core.values()))
-            stamped.append(
-                {
-                    **core,
-                    "recorded_by": kept["recorded_by"] if kept else ctx.principal_id,
-                    "recorded_at": kept["recorded_at"] if kept else now,
-                }
-            )
-        return {**data, "exceptions": stamped}
+        data = dict(data)
+        if "exceptions" in data:
+            known = {}
+            for item in (previous or {}).get("exceptions", []):
+                if item.get("recorded_by"):
+                    known[(item["object_id"], item["rule"], item["reason"], item["review_date"])] = item
+            stamped = []
+            for item in data["exceptions"]:
+                core = {k: item[k] for k in ["object_id", "rule", "reason", "review_date"]}
+                kept = known.get(tuple(core.values()))
+                stamped.append(
+                    {
+                        **core,
+                        "recorded_by": kept["recorded_by"] if kept else ctx.principal_id,
+                        "recorded_at": kept["recorded_at"] if kept else now,
+                    }
+                )
+            data["exceptions"] = stamped
+        if "assumptions" in data:
+            # An assumption keeps who assessed its status, and when, until the status changes; a
+            # changed status is assessed by the acting principal now (FR-PLN-007: a past assessment
+            # stays in the earlier revision with its date).
+            earlier = {a["assumption_id"]: a for a in (previous or {}).get("assumptions", [])}
+            assessed = []
+            for item in data["assumptions"]:
+                core = {k: v for k, v in item.items() if k not in {"assessed_by", "assessed_at"}}
+                kept = earlier.get(item["assumption_id"])
+                same = kept and kept.get("status") == item["status"] and kept.get("assessed_by")
+                assessed.append(
+                    {
+                        **core,
+                        "assessed_by": kept["assessed_by"] if same else ctx.principal_id,
+                        "assessed_at": kept["assessed_at"] if same else now,
+                    }
+                )
+            data["assumptions"] = assessed
+        return data
 
     # Targets ------------------------------------------------------------------------------------
     def validate_target(self, c, ctx, data, complete=False):
@@ -489,11 +777,16 @@ class Planning:
             ):
                 raise DomainError("VALIDATION_FAILED", reason="PERIOD_OUTSIDE_PROGRAMME")
             state = self.service.periods.state(c, ctx, str(programme["object_id"]), str(period["object_id"]))
-            if state["lifecycle_state"] != "Open":
-                # A new or revised target never changes a frozen period (FR-IND-004); restated
-                # comparisons are not implemented.
+            if state["lifecycle_state"] != "Open" and not (
+                data.get("target_basis") == "REVISED" and data.get("supersedes_revision")
+            ):
+                # A frozen period keeps the comparison its close pinned. Only an amendment that
+                # supersedes the approved target may follow, and it applies prospectively: the
+                # official comparison stays against the pinned target (FR-IND-004).
                 raise DomainError("INVALID_STATE", 409, reason="PERIOD_LOCKED")
         kind, direction, basis = data.get("target_kind"), data.get("direction"), data.get("target_basis")
+        if kind and data.get("status_thresholds") and (issue := threshold_issue(data)):
+            raise DomainError("VALIDATION_FAILED", reason=issue)
         allowed = {"VALUE": {"HIGHER", "LOWER"}, "RANGE": {"RANGE"}, "MILESTONE": {"MILESTONE"}}
         if kind and direction and direction not in allowed[kind]:
             raise DomainError("VALIDATION_FAILED", reason="DIRECTION_KIND_MISMATCH")
@@ -674,6 +967,34 @@ class Planning:
             }
         if row["object_type"] == "Framework":
             extra["completeness"] = self.completeness(c, ctx, row)
+            return extra
+        payload = row["payload"]
+        if superseded:
+            # FR-IND-004: the review compares original, currently effective and proposed values.
+            # The chain is walked through the register, which names each superseded revision.
+            first, seen = superseded, set()
+            while first not in seen:
+                seen.add(first)
+                register = c.execute(
+                    "SELECT supersedes_revision FROM impact.target_binding WHERE tenant_id=%s AND target_revision=%s",
+                    (ctx.tenant_id, first),
+                ).fetchone()
+                if not register or not register["supersedes_revision"]:
+                    break
+                first = str(register["supersedes_revision"])
+            if first != superseded:
+                original = revision(c, ctx, first, "Target", "targets.read")
+                extra["original"] = {
+                    **envelope(load(c, ctx, original["object_id"])),
+                    "revision_id": str(original["revision_id"]),
+                    "data": original["payload"],
+                }
+        if payload.get("indicator_id") and payload.get("period_id"):
+            indicator = load(c, ctx, payload["indicator_id"], "IndicatorInstance", "indicator-instances.read")
+            state = self.service.periods.state(
+                c, ctx, indicator["payload"]["programme_id"], payload["period_id"]
+            )["lifecycle_state"]
+            extra["amendment"] = {"period_state": state, "prospective_only": state != "Open"}
         return extra
 
     # Snapshot pin -------------------------------------------------------------------------------
@@ -742,6 +1063,7 @@ class Planning:
                 "milestone_label": p.get("milestone_label"),
                 "due_at": p.get("due_at"),
                 "binding_version": register["binding_version"],
+                "status_thresholds": p.get("status_thresholds"),
             }
         return views
 
@@ -772,6 +1094,8 @@ class Planning:
                     "effective_from": register["effective_from"].isoformat(),
                     "version_label": payload.get("version_label", ""),
                     "nodes": payload.get("nodes", []),
+                    "relationships": payload.get("relationships", []),
+                    "assumptions": payload.get("assumptions", []),
                 }
             return baselines[rev]
 
@@ -835,6 +1159,16 @@ class Planning:
             ).fetchall()
         )
         views = self.target_views(c, ctx, registers)
+        # FR-IND-004: the latest approved target of a locked period, when it is not the one the
+        # close pinned, is an amendment shown beside the official comparison, never in its place.
+        amended = self.target_views(
+            c,
+            ctx,
+            c.execute(
+                "SELECT DISTINCT ON (indicator_id,period_id,slot) * FROM impact.target_binding WHERE tenant_id=%s AND indicator_id=ANY(%s::uuid[]) AND period_id=ANY(%s::uuid[]) AND slot='TARGET' ORDER BY indicator_id,period_id,slot,binding_version DESC",
+                (ctx.tenant_id, ids, list(snapshots)),
+            ).fetchall(),
+        )
         results_visible = scopes(c, ctx, "calculated-results.read")
         official, provisional = {}, {}
         if results_visible:
@@ -930,6 +1264,14 @@ class Planning:
                     governing = self.governing_framework(c, ctx, pid, period_row)
                 placed = framework_at(governing)
                 applicability = instance["payload"].get("local_applicability")
+                node_ids = [
+                    n["node_id"]
+                    for n in (placed["nodes"] if placed else [])
+                    if indicator_id in n.get("indicator_ids", [])
+                ]
+                current = amended.get((indicator_id, period_id, "TARGET")) if snapshot else None
+                if current and target and current["revision_id"] == target["revision_id"]:
+                    current = None
                 rows.append(
                     {
                         "indicator_id": indicator_id,
@@ -941,16 +1283,28 @@ class Planning:
                         "period_code": period_row["payload"].get("code"),
                         "period_state": states[period_id]["lifecycle_state"],
                         "framework_revision": placed["revision_id"] if placed else None,
-                        "node_ids": [
-                            n["node_id"]
-                            for n in (placed["nodes"] if placed else [])
-                            if indicator_id in n.get("indicator_ids", [])
-                        ],
+                        "node_ids": node_ids,
                         "baseline": baseline,
                         "target": target,
                         "milestones": milestones,
                         "actual": actual,
                         "progress": result,
+                        "amended_target": current,
+                        "amended_progress": (
+                            safe_progress(actual, current, baseline, places) if current else None
+                        ),
+                        "amended_after_close": current is not None,
+                        "assumption_flags": [
+                            {
+                                "assumption_id": a["assumption_id"],
+                                "kind": a["kind"],
+                                "status": a["status"],
+                                "statement": a["statement"],
+                            }
+                            for a in (placed["assumptions"] if placed else [])
+                            if a["status"] in FLAGGED_ASSUMPTION
+                            and any(n in node_ids for n in a.get("node_ids", []))
+                        ],
                     }
                 )
         return {

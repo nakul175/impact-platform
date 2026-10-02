@@ -564,6 +564,9 @@ def test_targets_baselines_milestones_and_provisional_progress(live, setup):
         "change_from_baseline_percent": "200.00",
         "change_from_baseline_reason": None,
         "reason_code": None,
+        # A target without thresholds has no band, and says so (v0.27).
+        "band": None,
+        "band_reason": "NO_THRESHOLDS",
     }
 
     # A revised target supersedes the approved one; the original revision is retained.
@@ -723,9 +726,33 @@ def test_target_rules_and_calendar(live, setup):
     )
 
 
+STANDARD = {"scheme": "ATTAINMENT_PERCENT", "on_track": "100", "at_risk": "80"}
+
+
 def test_period_close_pins_targets_and_uses_official_result(live, setup):
     programme, indicator, _, period, _, provisional = complete_period(live, setup)
-    goal, _ = approved(live, "targets", target(live, indicator, period, value="60"))
+    # Status thresholds are reviewed with the target; a mismatched or misordered set is refused.
+    failure(
+        post(
+            live,
+            "targets",
+            {**target_data(indicator, period), "direction": "LOWER", "status_thresholds": STANDARD},
+        ),
+        422,
+        "THRESHOLD_SCHEME_MISMATCH",
+    )
+    failure(
+        post(
+            live,
+            "targets",
+            {**target_data(indicator, period), "status_thresholds": {**STANDARD, "on_track": "70"}},
+        ),
+        422,
+        "THRESHOLD_ORDER",
+    )
+    goal, _ = approved(
+        live, "targets", target(live, indicator, period, value="60", status_thresholds=STANDARD)
+    )
     workflow = request_close(live, programme, period)
     approve(live, workflow)
     snapshot = next(
@@ -745,27 +772,307 @@ def test_period_close_pins_targets_and_uses_official_result(live, setup):
     assert row["actual"]["snapshot_id"] == snapshot["object_id"]
     assert row["actual"]["value"] == provisional["data"]["value"] == "50"
     assert row["target"]["revision_id"] == goal["revision_id"]
+    assert row["target"]["status_thresholds"] == STANDARD
     assert row["progress"]["attainment_percent"] == "83.33" and row["progress"]["status"] == "BELOW_TARGET"
-    # A locked period's targets are frozen: no new or revised target.
+    # 83.33 percent of target sits in the at-risk band of the standard template (FSD 32.2).
+    assert row["progress"]["band"] == "AT_RISK" and row["progress"]["band_reason"] is None
+    assert row["amended_target"] is None and not row["amended_after_close"]
+    # A locked period's targets are frozen: no new original target or baseline.
+    failure(post(live, "targets", {**target_data(indicator, period), "value": "45"}), 409, "PERIOD_LOCKED")
+    failure(
+        post(live, "targets", {**target_data(indicator, period), "value": "5", "target_basis": "BASELINE"}),
+        409,
+        "PERIOD_LOCKED",
+    )
+
+
+def target_data(indicator, period, **data):
+    return {
+        "indicator_id": indicator["object_id"],
+        "period_id": period["object_id"],
+        "target_kind": "VALUE",
+        "value_state": "PRESENT",
+        "value": "40",
+        "direction": "HIGHER",
+        "target_basis": "ORIGINAL",
+        **data,
+    }
+
+
+def amendment(live, indicator, period, superseded, value, reason):
+    return create(
+        live,
+        "targets",
+        target_data(
+            indicator,
+            period,
+            value=value,
+            target_basis="REVISED",
+            supersedes_revision=superseded["revision_id"],
+            reason=reason,
+            status_thresholds=STANDARD,
+        ),
+    )
+
+
+def test_target_amended_after_close_never_changes_the_official_comparison(live, setup):
+    """FT-IND-004: the quarter target changes after lock; the original comparison stays against the
+    pinned target and the amended comparison is shown beside it, distinctly labelled."""
+    programme, indicator, _, period, _, _ = complete_period(live, setup)
+    goal, _ = approved(
+        live, "targets", target(live, indicator, period, value="60", status_thresholds=STANDARD)
+    )
+    approve(live, request_close(live, programme, period))
+    snapshot_before = next(
+        s
+        for s in get(live, "snapshots")["items"]
+        if s["data"]["period_id"] == period["object_id"]
+        and s["data"].get("programme_id") == programme["object_id"]
+    )
+    first = amendment(live, indicator, period, goal, "45", "Reduced scope after the mid-year review.")
+    workflow = submit(live, "targets", first)
+    candidate = get(live, "workflows", workflow["object_id"] + "/candidate", actor="reviewer")
+    # The review compares the currently effective target with the proposal and knows the period is
+    # closed; with one earlier version there is no distinct original yet.
+    assert candidate["superseded"]["revision_id"] == goal["revision_id"]
+    assert candidate["amendment"] == {"period_state": "Locked", "prospective_only": True}
+    assert "original" not in candidate
+    own = action(
+        live,
+        "workflows",
+        workflow,
+        "approve",
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Own amendment"},
+        status=403,
+    )
+    assert own["reason_code"] == "INDEPENDENCE_REQUIRED"
+    approve(live, workflow)
+    first = get(live, "targets", first["object_id"])
+    assert first["lifecycle_state"] == "Approved"
+    assert get(live, "targets", goal["object_id"])["lifecycle_state"] == "Superseded"
+    row = next(
+        r
+        for r in tva(live, programme["object_id"], period_id=period["object_id"])["rows"]
+        if r["indicator_id"] == indicator["object_id"]
+    )
+    # The official comparison is unchanged: pinned target, same attainment, same band.
+    assert row["period_state"] == "Locked" and row["actual"]["mode"] == "OFFICIAL"
+    assert row["target"]["revision_id"] == goal["revision_id"] and row["target"]["value"] == "60"
+    assert row["progress"]["attainment_percent"] == "83.33" and row["progress"]["band"] == "AT_RISK"
+    # The amendment is shown beside it, distinctly labelled, compared with the same official actual.
+    assert row["amended_after_close"] and row["amended_target"]["revision_id"] == first["revision_id"]
+    assert row["amended_target"]["value"] == "45" and row["amended_target"]["binding_version"] == 2
+    assert row["amended_progress"]["attainment_percent"] == "111.11"
+    assert row["amended_progress"]["status"] == "ACHIEVED" and row["amended_progress"]["band"] == "ON_TRACK"
+    # The snapshot still pins the target in force at close; the register keeps both rows.
+    snapshot = get(live, "snapshots", snapshot_before["object_id"])
+    assert snapshot["data"]["target_versions"] == [goal["revision_id"]]
+    assert snapshot["revision_id"] == snapshot_before["revision_id"]
+    with live.db() as c:
+        chain = c.execute(
+            "SELECT binding_version,target_revision,supersedes_revision FROM impact.target_binding WHERE indicator_id=%s AND period_id=%s AND slot='TARGET' ORDER BY binding_version",
+            (indicator["object_id"], period["object_id"]),
+        ).fetchall()
+    assert [(r["binding_version"], str(r["target_revision"])) for r in chain] == [
+        (1, goal["revision_id"]),
+        (2, first["revision_id"]),
+    ]
+    assert str(chain[1]["supersedes_revision"]) == goal["revision_id"]
+    # A second amendment's review names the original as well as the currently effective target.
+    second = amendment(live, indicator, period, first, "50", "Donor agreed the revised scope.")
+    workflow = submit(live, "targets", second)
+    candidate = get(live, "workflows", workflow["object_id"] + "/candidate", actor="reviewer")
+    assert candidate["superseded"]["revision_id"] == first["revision_id"]
+    assert candidate["original"]["revision_id"] == goal["revision_id"]
+    assert candidate["original"]["data"]["value"] == "60" and candidate["record"]["data"]["value"] == "50"
+    # A revised target that names no approved target to supersede is still refused after lock.
     failure(
         post(
             live,
             "targets",
-            {
-                "indicator_id": indicator["object_id"],
-                "period_id": period["object_id"],
-                "target_kind": "VALUE",
-                "value_state": "PRESENT",
-                "value": "45",
-                "direction": "HIGHER",
-                "target_basis": "REVISED",
-                "supersedes_revision": goal["revision_id"],
-                "reason": "After lock",
-            },
+            target_data(indicator, period, value="30", target_basis="REVISED", reason="No chain"),
         ),
         409,
         "PERIOD_LOCKED",
     )
+
+
+def relationship(a, b, kind="CONTRIBUTES_TO", **extra):
+    return {
+        "relationship_id": str(uuid.uuid4()),
+        "from_node_id": a["node_id"],
+        "to_node_id": b["node_id"],
+        "relationship_type": kind,
+        "rationale": "Stated contribution pathway.",
+        "evidence_strength": "MODERATE",
+        "assumption_ids": [],
+        **extra,
+    }
+
+
+def assumption(owner, *linked, **extra):
+    return {
+        "assumption_id": str(uuid.uuid4()),
+        "kind": "ASSUMPTION",
+        "node_ids": [n["node_id"] for n in linked],
+        "statement": "Government co-funding continues through 2027.",
+        "expected_condition": "The budget line is renewed each fiscal year.",
+        "evidence": None,
+        "owner_id": owner,
+        "review_date": TODAY,
+        "status": "HOLDS",
+        **extra,
+    }
+
+
+def test_theory_of_change_relationships_and_assumptions(live, setup):
+    programme, indicator, _, period = setup(False)
+    owner = live.fixture["actors"]["author"]["principal_id"]
+    items = nodes(owner, indicator["object_id"])
+    impact, outcome, output, activity = items
+    other = {**outcome, "node_id": str(uuid.uuid4()), "title": "Second outcome", "indicator_ids": []}
+    all_nodes = items + [other]
+    funding = assumption(owner, outcome, output)
+    base = {
+        "programme_id": programme["object_id"],
+        "version_label": "Theory of change",
+        "nodes": all_nodes,
+        "assumptions": [funding],
+        "effective_from": "2026-01-01T00:00:00Z",
+        "exceptions": exceptions(all_nodes, "IMPACT", "OUTCOME"),
+    }
+
+    def refused(reason, status=422, **change):
+        failure(post(live, "frameworks", {**base, **change}), status, reason)
+
+    refused("RELATIONSHIP_LEVEL_ORDER", relationships=[relationship(impact, outcome)])
+    refused("RELATIONSHIP_SELF", relationships=[relationship(outcome, outcome)])
+    refused(
+        "RELATIONSHIP_ENDPOINT_MISSING",
+        relationships=[relationship(outcome, {"node_id": str(uuid.uuid4())})],
+    )
+    refused("RELATIONSHIP_CYCLE", relationships=[relationship(outcome, other), relationship(other, outcome)])
+    refused(
+        "RELATIONSHIP_ASSUMPTION_MISSING",
+        relationships=[relationship(outcome, impact, assumption_ids=[str(uuid.uuid4())])],
+    )
+    refused("ASSUMPTION_NODE_MISSING", assumptions=[assumption(owner, {"node_id": str(uuid.uuid4())})])
+    # Assessment authorship is server-owned: the closed draft schema refuses it.
+    refused(None, 422, assumptions=[{**funding, "assessed_by": owner}])
+    # FT-PLN-002: two outcomes contribute to one impact; alternative pathways are allowed, and the
+    # dependent side may state the same contribution. No numeric rule is created.
+    links = [
+        relationship(outcome, impact, assumption_ids=[funding["assumption_id"]]),
+        relationship(other, impact, evidence_strength="WEAK"),
+        relationship(output, activity, "DEPENDS_ON", external_context="Partner delivery capacity."),
+    ]
+    draft = create(live, "frameworks", {**base, "relationships": links})
+    assert [r["relationship_id"] for r in draft["data"]["relationships"]] == [
+        r["relationship_id"] for r in links
+    ]
+    stamped = draft["data"]["assumptions"][0]
+    assert stamped["assessed_by"] == owner and stamped["assessed_at"] and stamped["status"] == "HOLDS"
+    report = get(live, "frameworks", draft["object_id"] + "/completeness")
+    assert report["ready"], report["issues"]
+    first, _ = approved(live, "frameworks", draft)
+    assert first["data"]["relationships"] == draft["data"]["relationships"]
+    view = tva(live, programme["object_id"], period_id=period["object_id"])
+    assert view["framework"]["relationships"] == first["data"]["relationships"]
+    assert view["framework"]["assumptions"] == first["data"]["assumptions"]
+    row = next(r for r in view["rows"] if r["indicator_id"] == indicator["object_id"])
+    assert row["assumption_flags"] == [] and row["progress"]["status"] in {"NO_ACTUAL", "NO_TARGET"}
+
+    # FT-PLN-007: the funding assumption is invalidated after the baseline was approved. The linked
+    # outcome and output are flagged in the completeness review and the baseline keeps its earlier
+    # assessment; nothing recorded changes.
+    unchanged = {k: v for k, v in stamped.items() if k not in {"assessed_by", "assessed_at"}}
+    child = create(
+        live,
+        "frameworks",
+        {
+            **base,
+            "relationships": links,
+            "assumptions": [unchanged],
+            "supersedes_revision": first["revision_id"],
+            "effective_from": "2026-07-01T00:00:00Z",
+        },
+    )
+    # A child draft inherits the superseded revision's stamps: an unchanged assessment and an
+    # unchanged exception are not re-attributed to the drafter.
+    assert child["data"]["assumptions"][0] == stamped
+    assert child["data"]["exceptions"][0]["recorded_at"] == first["data"]["exceptions"][0]["recorded_at"]
+    expect(
+        post(
+            live,
+            "frameworks",
+            {"assumptions": [{**unchanged, "status": "INVALID"}]},
+            revision=child["revision_id"],
+            obj=child["object_id"],
+        ),
+        200,
+    )
+    child = get(live, "frameworks", child["object_id"])
+    reassessed = child["data"]["assumptions"][0]
+    assert reassessed["status"] == "INVALID" and reassessed["assessed_at"] != stamped["assessed_at"]
+    report = get(live, "frameworks", child["object_id"] + "/completeness")
+    flags = [i for i in report["issues"] if i["rule"] == "ASSUMPTION_INVALID"]
+    assert {f["object_id"] for f in flags} == {outcome["node_id"], output["node_id"]}
+    assert all(f["severity"] == "WARNING" and f["exceptable"] and not f["excepted"] for f in flags)
+    assert all(f["resolver_id"] == owner for f in flags) and not report["ready"]
+    template = get(live, "workflow-templates")["items"][0]
+    blocked = action(
+        live,
+        "frameworks",
+        child,
+        "submit",
+        {"workflow_version": template["revision_id"]},
+        status=422,
+    )
+    assert blocked["reason_code"] == "FRAMEWORK_INCOMPLETE"
+    assert get(live, "frameworks", first["object_id"])["data"]["assumptions"][0]["status"] == "HOLDS"
+    # The planner documents the review of each flagged result; the revision is then approved and
+    # the affected planning view carries the flag.
+    documented = content(child["data"])["exceptions"] + [
+        {
+            "object_id": node["node_id"],
+            "rule": "ASSUMPTION_INVALID",
+            "reason": "Reviewed: the result is retained with a reduced ambition in the next target.",
+            "review_date": TODAY,
+        }
+        for node in (outcome, output)
+    ]
+    expect(
+        post(
+            live,
+            "frameworks",
+            {"exceptions": documented},
+            revision=child["revision_id"],
+            obj=child["object_id"],
+        ),
+        200,
+    )
+    child = get(live, "frameworks", child["object_id"])
+    assert get(live, "frameworks", child["object_id"] + "/completeness")["ready"]
+    second, _ = approved(live, "frameworks", child)
+    view = tva(live, programme["object_id"], period_id=period["object_id"])
+    row = next(r for r in view["rows"] if r["indicator_id"] == indicator["object_id"])
+    assert row["assumption_flags"] == [
+        {
+            "assumption_id": funding["assumption_id"],
+            "kind": "ASSUMPTION",
+            "status": "INVALID",
+            "statement": funding["statement"],
+        }
+    ]
+    with live.db() as c:
+        versions = c.execute(
+            "SELECT baseline_version,framework_revision FROM impact.framework_baseline WHERE programme_id=%s ORDER BY baseline_version",
+            (programme["object_id"],),
+        ).fetchall()
+    assert [(v["baseline_version"], str(v["framework_revision"])) for v in versions] == [
+        (1, first["revision_id"]),
+        (2, second["revision_id"]),
+    ]
 
 
 def tva(live, programme_id, actor="author", **params):

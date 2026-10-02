@@ -1,9 +1,17 @@
 """Unit checks of framework structure rules and target progress arithmetic (no database)."""
 
 import uuid
+from decimal import Decimal
 
 import pytest
-from impact_api.planning import progress, safe_progress, slot, structure_issues
+from impact_api.planning import (
+    performance_band,
+    progress,
+    safe_progress,
+    slot,
+    structure_issues,
+    threshold_issue,
+)
 
 
 def actual(value, state="PRESENT"):
@@ -140,3 +148,169 @@ def test_structure_rules():
 def test_progress_rejects_non_contract_decimals(value):
     with pytest.raises(Exception):
         progress(actual(value), goal("1"), None, 0)
+
+
+# Theory of change, assumptions and status thresholds (v0.27 planning) --------------------------
+
+
+def link(a, b, kind="CONTRIBUTES_TO", strength="MODERATE", assumptions=(), rid=None):
+    return {
+        "relationship_id": rid or str(uuid.uuid4()),
+        "from_node_id": a["node_id"],
+        "to_node_id": b["node_id"],
+        "relationship_type": kind,
+        "rationale": "Stated pathway.",
+        "evidence_strength": strength,
+        "assumption_ids": list(assumptions),
+    }
+
+
+def assumption(nodes=(), status="HOLDS", kind="ASSUMPTION", owner="o", review="2027-01-01", aid=None):
+    return {
+        "assumption_id": aid or str(uuid.uuid4()),
+        "kind": kind,
+        "node_ids": [n["node_id"] for n in nodes],
+        "statement": "Funding continues.",
+        "owner_id": owner,
+        "review_date": review,
+        "status": status,
+    }
+
+
+def toc(nodes, relationships=(), assumptions=(), today="2026-10-02"):
+    return {(s, r, o) for s, r, o, _ in structure_issues(nodes, relationships, assumptions, today)}
+
+
+def only_rules(found):
+    return {(s, r) for s, r, _ in found}
+
+
+def test_relationship_rules():
+    impact = node("IMPACT", indicators=["a"])
+    outcome = node("OUTCOME", impact["node_id"], indicators=["b"])
+    other = node("OUTCOME", impact["node_id"], indicators=["c"])
+    output = node("OUTPUT", outcome["node_id"], indicators=["d"])
+    nodes = [impact, outcome, other, output]
+    # FT-PLN-002: two outcomes contribute to one impact; alternative pathways are allowed.
+    assert toc(nodes, [link(outcome, impact), link(other, impact), link(output, other)]) == set()
+    # DEPENDS_ON states the same contribution from the dependent side.
+    assert toc(nodes, [link(impact, outcome, "DEPENDS_ON")]) == set()
+    assert only_rules(toc(nodes, [link(impact, outcome)])) == {("ERROR", "RELATIONSHIP_LEVEL_ORDER")}
+    assert only_rules(toc(nodes, [link(outcome, impact, "DEPENDS_ON")])) == {
+        ("ERROR", "RELATIONSHIP_LEVEL_ORDER")
+    }
+    assert only_rules(toc(nodes, [link(outcome, outcome)])) == {("ERROR", "RELATIONSHIP_SELF")}
+    stranger = node("OUTPUT")
+    assert only_rules(toc(nodes, [link(outcome, stranger)])) == {("ERROR", "RELATIONSHIP_ENDPOINT_MISSING")}
+    same = link(outcome, impact)
+    assert ("ERROR", "DUPLICATE_RELATIONSHIP_ID") in only_rules(toc(nodes, [same, dict(same)]))
+    assert ("ERROR", "DUPLICATE_RELATIONSHIP") in only_rules(
+        toc(nodes, [link(outcome, impact), link(outcome, impact)])
+    )
+    # A causal cycle between nodes of one level is refused, naming every node on the cycle.
+    found = toc(nodes, [link(outcome, other), link(other, outcome)])
+    assert {o for s, r, o in found if r == "RELATIONSHIP_CYCLE"} == {outcome["node_id"], other["node_id"]}
+    assert only_rules(toc(nodes, [link(outcome, impact, assumptions=[str(uuid.uuid4())])])) == {
+        ("ERROR", "RELATIONSHIP_ASSUMPTION_MISSING")
+    }
+    funding = assumption([outcome])
+    assert toc(nodes, [link(outcome, impact, assumptions=[funding["assumption_id"]])], [funding]) == set()
+    assert only_rules(toc(nodes, [link(outcome, impact, strength="UNTESTED")])) == {
+        ("WARNING", "UNTESTED_RELATIONSHIP")
+    }
+
+
+def test_assumption_rules():
+    impact = node("IMPACT", indicators=["a"])
+    outcome = node("OUTCOME", impact["node_id"], indicators=["b"])
+    nodes = [impact, outcome]
+    assert toc(nodes, [], [assumption([outcome])]) == set()
+    one = assumption([outcome])
+    assert ("ERROR", "DUPLICATE_ASSUMPTION_ID") in only_rules(toc(nodes, [], [one, dict(one)]))
+    assert only_rules(toc(nodes, [], [assumption([node("OUTPUT")])])) == {
+        ("ERROR", "ASSUMPTION_NODE_MISSING")
+    }
+    assert only_rules(toc(nodes, [], [assumption([outcome], owner=None)])) == {
+        ("ERROR", "ASSUMPTION_INCOMPLETE")
+    }
+    assert only_rules(toc(nodes, [], [assumption()])) == {("WARNING", "UNLINKED_ASSUMPTION")}
+    assert toc(nodes, [], [assumption(kind="CONTEXT")]) == set()
+    # FT-PLN-007: an invalid assumption flags the linked outcome, not the impact; the flag is a
+    # warning the planner documents, so recorded actuals are untouched.
+    invalid = assumption([outcome], status="INVALID")
+    assert toc(nodes, [], [invalid]) == {("WARNING", "ASSUMPTION_INVALID", outcome["node_id"])}
+    assert only_rules(toc(nodes, [], [assumption([outcome], review="2026-01-01")])) == {
+        ("WARNING", "ASSUMPTION_REVIEW_DUE")
+    }
+
+
+def thresholds(scheme, on_track, at_risk):
+    return {"scheme": scheme, "on_track": on_track, "at_risk": at_risk}
+
+
+def banded(value, direction="HIGHER", kind="VALUE", scheme="ATTAINMENT_PERCENT", on="100", at="80", **extra):
+    return goal(value, direction, kind, status_thresholds=thresholds(scheme, on, at), **extra)
+
+
+def test_threshold_rules():
+    assert threshold_issue(banded("100")) is None
+    assert threshold_issue(goal("100")) is None
+    assert threshold_issue(banded("100", on="80", at="100")) == "THRESHOLD_ORDER"
+    assert threshold_issue(banded("10", "LOWER")) == "THRESHOLD_SCHEME_MISMATCH"
+    assert threshold_issue(banded("10", "LOWER", scheme="DEVIATION", on="0", at="2")) is None
+    assert threshold_issue(banded("10", "LOWER", scheme="DEVIATION", on="2", at="0")) == "THRESHOLD_ORDER"
+    assert threshold_issue(banded("10", scheme="DEVIATION", on="-1", at="0")) == "THRESHOLD_NEGATIVE"
+    assert threshold_issue(banded(None, "MILESTONE", "MILESTONE", "DEVIATION", "0", "1")) == (
+        "THRESHOLDS_NOT_ALLOWED"
+    )
+
+
+def test_bands_follow_the_declared_thresholds_and_direction():
+    # FSD 32.2 standard higher-target template: achieved at 100 percent, at risk from 80, below 80.
+    higher = banded("100")
+    assert progress(actual("120"), higher, None, 0)["band"] == "ON_TRACK"
+    assert progress(actual("100"), higher, None, 0)["band"] == "ON_TRACK"
+    assert progress(actual("80"), higher, None, 0)["band"] == "AT_RISK"
+    assert progress(actual("79.999999999999"), higher, None, 0)["band"] == "OFF_TRACK"
+    # Lower is better: the adverse deviation is above the target, a shortfall is on track.
+    lower = banded("10", "LOWER", scheme="DEVIATION", on="0", at="2")
+    assert progress(actual("8"), lower, None, 0)["band"] == "ON_TRACK"
+    assert progress(actual("12"), lower, None, 0)["band"] == "AT_RISK"
+    assert progress(actual("12.000000000001"), lower, None, 0)["band"] == "OFF_TRACK"
+    # Range: the adverse distance is outside the bounds only.
+    within = banded(None, "RANGE", "RANGE", "DEVIATION", "0", "5", low="10", high="20")
+    assert progress(actual("20"), within, None, 0)["band"] == "ON_TRACK"
+    assert progress(actual("25"), within, None, 0)["band"] == "AT_RISK"
+    assert progress(actual("4"), within, None, 0)["band"] == "OFF_TRACK"
+    # A higher target banded by deviation in the indicator's unit.
+    by_unit = banded("100", scheme="DEVIATION", on="5", at="10")
+    assert progress(actual("97"), by_unit, None, 0)["band"] == "ON_TRACK"
+    assert progress(actual("90"), by_unit, None, 0)["band"] == "AT_RISK"
+
+
+def test_bands_never_conceal_a_separately_visible_state():
+    higher = banded("100")
+    assert progress(actual("120"), goal("100"), None, 0)["band_reason"] == "NO_THRESHOLDS"
+    blank = progress(actual(None, "MISSING"), higher, None, 0)
+    assert (blank["band"], blank["band_reason"]) == (None, "NO_PRESENT_ACTUAL")
+    none = progress(actual("120"), None, None, 0)
+    assert (none["band"], none["band_reason"]) == (None, "NO_TARGET")
+    stale = progress({**actual("120"), "stale": True}, higher, None, 0)
+    assert (stale["band"], stale["band_reason"], stale["status"]) == (None, "STALE_ACTUAL", "ACHIEVED")
+    zero = progress(actual("5"), banded("0"), None, 0)
+    assert (zero["band"], zero["band_reason"], zero["reason_code"]) == (
+        None,
+        "ATTAINMENT_UNDEFINED",
+        "ZERO_TARGET",
+    )
+    milestone = progress(
+        actual("5"),
+        goal(None, "MILESTONE", "MILESTONE", milestone_label="L", due_at="2026-06-01T00:00:00Z"),
+        None,
+        0,
+    )
+    assert (milestone["band"], milestone["band_reason"]) == (None, "MILESTONE_ASSESSMENT")
+    assert performance_band(Decimal("5"), None) == (None, "NO_THRESHOLDS")
+    big = "99999999999999999999999999.999999999999"
+    overflow = safe_progress(actual(big), goal("-" + big), None, 2)
+    assert (overflow["band"], overflow["band_reason"]) == (None, "ARITHMETIC_OVERFLOW")

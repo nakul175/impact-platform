@@ -1,5 +1,7 @@
 # Current data dictionary and schema evolution
 
+Schema 29 (v0.27 planning, 2 October 2026, branch `release/0.27-planning`; the integrator sets the build). 0029 adds the payload columns of this build's planning contract and nothing else: `framework_current.assumptions` (a JSON array of the assumption, risk and context records a framework revision carries beside its 0002 `relationships` column, which this build writes for the first time) and `target_current.status_thresholds` (the JSON object of reviewed status thresholds a target carries). No grant, policy, trigger or role change; the closed contract schemas validate both documents before they are written.
+
 Build 0.26.0; schema 28 (v0.26a usable staging, 1 October 2026, branch `release/0.26a-usable-staging`). 0028 lets `platform_event.tenant_id` be NULL only for the tenant-less control-plane actions (`operator-nominate/cancel/decline/accept`, `account-create/reissue`; CHECK `platform_event_tenant_scope`); adds `platform_operator_nomination` (one open nomination per e-mail hash, no clear address, an immutability and finality trigger `guard_operator_nomination` that admits an acceptance only from the definer) and `provider_account` (who created which identity-provider subject for which address hash, credentials issued, never a password; UNIQUE issuer and subject), both readable and insertable by `impact_platform` only with UPDATE on a few decision columns; the SECURITY DEFINER functions `register_provider_account_identity` (the identity of a provisioned account, only for an active qualification's issuer), `accept_operator_nomination` (the only run-time writer of `platform_operator`: open, unexpired nomination, nominating operator still active, the actor's verified address, a natural person different from the nominator and from every active operator) and `tenant_pending_invitation` (whether the transaction's tenant has a pending invitation for an address hash), EXECUTE to `impact_platform` only; and replaces `apply_initial_authority` so the reviewed ceiling also covers a v2 manifest's `purpose_bound` capabilities (every other condition unchanged).
 
 Build 0.25.0; schema 27 (integrated 1 October 2026 on branch `integration/0.25`). v0.25 part B's 0027 adds the privacy-case payload columns of `privacy_case_current` (subject membership and principal with typed foreign keys, reason, verification note, named evidence and import batches, approval, plan, execution and package fields; CHECKs on request type and outcome), the export package `privacy_export_package` (bounded body, SHA-256, expiry; SELECT/INSERT for `impact_app`, SELECT/DELETE for `impact_worker`) and the insert-only download log `privacy_export_access`, `outbox_delivery.recipient_redacted_at`, `file_blob.purged_at/purge_case_id`, the RETENTION_SWEEP lease table `retention_sweep` and the insert-only proof register `retention_proof` (all with forced RLS and `tenant_fence`); it replaces `guard_revision_removal` (adds the definer path, every other condition unchanged) and `upload_session_guard` (a file name may be cleared by the erasure definer only), and adds the SECURITY DEFINER functions `privacy_require_case` (no grantee), `privacy_remove_revisions`, `privacy_redact_uploads`, `privacy_supersede_deliveries` (EXECUTE to `impact_app`), `retention_purge_receipts`, `retention_expire_uploads` and `worker_schedule_retention` (EXECUTE to `impact_worker`). v0.25 part A and the October 2026 operations hardening add no migration.
@@ -38,6 +40,7 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0026_worker_job_grants.sql | c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310 |
 | 0027_privacy_execution.sql | b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d |
 | 0028_usable_staging.sql | 2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c |
+| 0029_theory_of_change.sql | 2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac |
 
 ## Executable schema definitions
 
@@ -4160,5 +4163,27 @@ GRANT EXECUTE ON FUNCTION impact.register_provider_account_identity(uuid),impact
 GRANT SELECT,INSERT ON impact.platform_operator_nomination,impact.provider_account TO impact_platform;
 GRANT UPDATE(state,revision_id,updated_at,decided_by,decision_reason) ON impact.platform_operator_nomination TO impact_platform;
 GRANT UPDATE(revision_id,updated_at,credentials_issued,last_issued_at) ON impact.provider_account TO impact_platform;
+COMMIT;
+```
+
+### 0029 theory of change
+
+Source: infrastructure/migrations/0029_theory_of_change.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Theory of change, assumptions and status thresholds (v0.27 planning). Payload columns only: a
+-- framework revision now carries typed relationships between its nodes (the 0002 column
+-- `relationships`, written empty until this build) and the assumptions, risks and context records
+-- its nodes rely on; a target carries the status thresholds its independent review approves, so the
+-- band shown against an official number is the one pinned with that target at close. Additive: no
+-- grant, policy, trigger or role change; both arrays and the object are JSON documents of the
+-- revision payload, validated by the closed contract schemas before they are written.
+ALTER TABLE impact.framework_current
+ ADD COLUMN assumptions jsonb CHECK(assumptions IS NULL OR jsonb_typeof(assumptions)='array');
+ALTER TABLE impact.target_current
+ ADD COLUMN status_thresholds jsonb
+  CHECK(status_thresholds IS NULL OR jsonb_typeof(status_thresholds)='object');
 COMMIT;
 ```

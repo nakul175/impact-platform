@@ -44,6 +44,29 @@ ACCOUNT_REISSUE = obj(
     }
 )
 ACCOUNT_ACTIONS = {"reissue"}
+# Operator lifecycle (v0.27): renewal before expiry and deactivation, each by a different active
+# operator with fresh assurance and a reason, against the exact operator revision.
+RENEW = obj(
+    {
+        "operation_id": UUID,
+        "expected_revision": UUID,
+        "data": obj({"expires_at": DATE, "reason": text(1000)}),
+    }
+)
+OPERATOR_ACTIONS = {"renew", "deactivate"}
+CHANGE = obj(
+    {
+        "change_id": UUID,
+        "operator_identity_id": UUID,
+        "action": {"enum": ["renew", "deactivate"]},
+        "actor_identity_id": UUID,
+        "actor_name": text(200),
+        "reason": text(1000),
+        "previous_expires_at": DATE,
+        "expires_at": DATE,
+        "created_at": DATE,
+    }
+)
 NOMINATION = obj(
     {
         "nomination_id": UUID,
@@ -65,13 +88,18 @@ NOMINATION = obj(
 OPERATOR = obj(
     {
         "identity_id": UUID,
+        "revision_id": UUID,
         "display_name": text(200),
         "email_mask": {"anyOf": [text(254), {"type": "null"}]},
         "active": {"type": "boolean"},
+        # Active: active and unexpired; Expired: active flag but past expiry; Deactivated: flag off.
+        "state": {"enum": ["Active", "Expired", "Deactivated"]},
         "expires_at": DATE,
+        "updated_at": DATE,
         "authority_reference": text(300),
     }
 )
+OPERATOR_RECEIPT = obj({**OPERATOR["properties"], "operation_id": UUID, "change_id": UUID})
 IDENTITY = obj(
     {
         "identity_id": UUID,
@@ -102,6 +130,7 @@ DIRECTORY = obj(
         "identity_id": UUID,
         "accounts_enabled": {"type": "boolean"},
         "operators": {"type": "array", "maxItems": 200, "items": OPERATOR},
+        "changes": {"type": "array", "maxItems": 100, "items": CHANGE},
         "nominations": {"type": "array", "maxItems": 100, "items": NOMINATION},
         "identities": {"type": "array", "maxItems": 200, "items": IDENTITY},
         "accounts": {"type": "array", "maxItems": 100, "items": ACCOUNT},
@@ -130,6 +159,13 @@ def validate_body(body, schema):
 
 def add_paths(paths, operation):
     paths["/v1/platform/operators"] = {"get": operation("list_platform_operators", response_schema=DIRECTORY)}
+    for action in sorted(OPERATOR_ACTIONS):
+        paths["/v1/platform/operators/{identity_id}/actions/" + action] = {
+            "parameters": [{"name": "identity_id", "in": "path", "required": True, "schema": UUID}],
+            "post": operation(
+                action + "_platform_operator", RENEW if action == "renew" else ACTION, OPERATOR_RECEIPT
+            ),
+        }
     paths["/v1/platform/operator-nominations"] = {
         "post": operation("nominate_platform_operator", NOMINATE, NOMINATION_RECEIPT)
     }

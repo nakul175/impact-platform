@@ -311,6 +311,13 @@ def create_app():
     def operator_directory(request: Request):
         return operators.directory(auth.resolve(request))
 
+    @app.post("/v1/platform/operators/{identity_id}/actions/{action}")
+    async def operator_lifecycle_action(request: Request, identity_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            operators.lifecycle_change, auth.resolve(request), action, body, uuid(identity_id)
+        )
+
     @app.post("/v1/platform/operator-nominations")
     async def nominate_operator(request: Request):
         body = await strict_body(request)

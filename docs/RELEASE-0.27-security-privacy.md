@@ -38,9 +38,18 @@ IMPACT_PORT=8108 .venv/bin/python scripts/run.py test --pytest-path qualificatio
   --pytest-path qualification/test_worker.py --pytest-path qualification/test_tenant_lifecycle.py --pytest-path qualification/test_audit_export.py   # 75 passed, 1 skipped (native-only) on PGlite
 IMPACT_PORT=8108 .venv/bin/python scripts/run.py test --pytest-path qualification/test_security_privacy.py --pytest-path qualification/test_retention.py \
   --pytest-path qualification/test_audit_export.py --pytest-path qualification/test_privacy_requests.py   # 36 passed, 2 skipped before the default-restoring approvals were added (two order-dependent retention failures, since fixed)
+IMPACT_PORT=8108 .venv/bin/python scripts/run.py test --pytest-path qualification/test_administration.py --pytest-path qualification/test_audit_export.py \
+  --pytest-path qualification/test_live_application.py --pytest-path qualification/test_security_privacy.py --pytest-path qualification/test_workspace_administration.py \
+  --pytest-path qualification/test_retention.py   # 103 passed, 1 skipped (the suite's alphabetical order around this file)
+IMPACT_PORT=8108 .venv/bin/python scripts/run.py test --pytest-path qualification/test_access_bootstrap.py --pytest-path qualification/test_authority_renewal.py \
+  --pytest-path qualification/test_key_rotation.py --pytest-path qualification/test_operator_onboarding.py --pytest-path qualification/test_ops_metrics.py \
+  --pytest-path qualification/test_recovery_contacts.py --pytest-path qualification/test_evidence.py --pytest-path qualification/test_report_exports.py \
+  --pytest-path qualification/test_usable_staging.py --pytest-path qualification/test_delivery_requeue.py   # 135 passed, 2 skipped (regression on every refusal path)
 .venv/bin/python -m pytest qualification/test_version_unit.py qualification/test_usable_staging_unit.py   # 16 passed
-make lint                                                                                                  # clean
+make lint                                                                                                  # clean; apps/web tsc --noEmit and npm run build clean
 ```
+
+CI status at hand-over: the first push's native job ran the restore drill and the populated schema-28→29 upgrade check with PASS, and its suite step failed on the two defects fixed in the second commit (a bare context handed to `authorize` by `test_workspace_administration`, and the denial test's 300-second window colliding with `test_audit_export`'s earlier refusal). The second commit's workflow runs did not start: GitHub answered "The job was not started because recent account payments have failed or your spending limit needs to be increased" for every job of every branch pushed after about 14:35 UTC, so the full PGlite, native, browser, live-provider and container-stack runs remain to be made once the account's Actions limit is raised (re-run the workflow on this branch's head).
 
 Recorded on 2 October 2026 on branch `release/0.27-security-privacy` (from `main` at 25a8dca) on fresh in-memory PGlite. The full PGlite, native (where the fence test runs), live-provider and browser suites and the web build are CI's. `docs/evidence/` was restored before committing.
 

@@ -15,6 +15,7 @@ import asyncio
 import json
 import os
 import platform
+import random
 import threading
 import time
 import uuid
@@ -24,7 +25,17 @@ from datetime import datetime, timezone
 import httpx
 import pytest
 
-from perf_support import TARGETS, import_csv, ratio_values, summarize, verdict, workload
+from perf_support import (
+    MIX,
+    TARGETS,
+    import_csv,
+    profile,
+    ratio_values,
+    summarize,
+    verdict,
+    windows,
+    workload,
+)
 from test_calculation_methods import observation_data
 from test_dashboards import RATIO
 from test_forms import planned, workflow_version
@@ -64,6 +75,8 @@ class Probe:
     def __init__(self, live):
         self.live = live
         self.samples = defaultdict(list)
+        self.stamped = defaultdict(list)
+        self.started = time.perf_counter()
         self.errors = defaultdict(int)
         self.examples = defaultdict(list)
         self.scenarios = {}
@@ -73,6 +86,7 @@ class Probe:
         with self.lock:
             if response is not None and response.status_code in ok:
                 self.samples[name].append(ms)
+                self.stamped[name].append((time.perf_counter() - self.started, ms))
                 return
             self.errors[name] += 1
             if len(self.examples[name]) < 3:
@@ -302,6 +316,157 @@ def dashboard_path(live, programme, period):
     return live.path("programmes", programme["object_id"]) + "/dashboard?period_id=" + period["object_id"]
 
 
+# -- closed-loop profiles (peak, soak, cohorts) ------------------------------------------------------
+
+
+async def closed_loop(probe, w, prof, programmes, period, wf, deadline, concurrency, prefix=""):
+    """`concurrency` virtual users each loop over the weighted mix until `deadline`: 100-row
+    observation lists, indicator-instance record reads, warm dashboard reads and governed write
+    cycles (create, read, submit, read workflow, independent approval). Class names are the base
+    workload's, so the FSD verdicts apply unchanged; `prefix` separates a tenant cohort."""
+    live = probe.live
+    indicators = [i for _, inds in programmes for i in inds]
+    ops = [name for name, weight in MIX.items() for _ in range(weight)]
+    counter = {"iterations": 0}
+
+    async def user(number):
+        rng = random.Random(w.seed * 1000 + number)
+        values = iter(ratio_values(w.seed + 5000 + number, 100000))
+        async with client(live) as http:
+            while time.perf_counter() < deadline:
+                op = ops[rng.randrange(len(ops))]
+                ind = indicators[rng.randrange(len(indicators))]
+                counter["iterations"] += 1
+                if op == "read.list100":
+                    await probe.call(http, prefix + op, "GET", live.path("observations") + "?limit=100")
+                elif op == "read.record":
+                    await probe.call(
+                        http, prefix + op, "GET", live.path("indicator-instances", ind["object_id"])
+                    )
+                elif op == "dashboard.warm":
+                    programme = programmes[rng.randrange(len(programmes))][0]
+                    await probe.call(http, prefix + op, "GET", dashboard_path(live, programme, period))
+                else:
+                    n, d = next(values)
+                    r = await probe.call(
+                        http,
+                        prefix + "write.save",
+                        "POST",
+                        live.path("observations"),
+                        body=cmd(
+                            observation_data(ind, str(uuid.uuid4()), "0", {})
+                            | {"numerator": n, "denominator": d}
+                        ),
+                    )
+                    if r is None:
+                        continue
+                    r = await probe.call(
+                        http, prefix + "read.record", "GET", live.path("observations", r.json()["object_id"])
+                    )
+                    if r is None:
+                        continue
+                    row = r.json()
+                    r = await probe.call(
+                        http,
+                        prefix + "write.save",
+                        "POST",
+                        live.path("observations", row["object_id"]) + "/actions/submit",
+                        body=cmd({"workflow_version": wf}, row["revision_id"]),
+                    )
+                    if r is None:
+                        continue
+                    r = await probe.call(
+                        http, prefix + "read.record", "GET", live.path("workflows", r.json()["object_id"])
+                    )
+                    if r is None:
+                        continue
+                    wfl = r.json()
+                    await probe.call(
+                        http,
+                        prefix + "write.approval",
+                        "POST",
+                        live.path("workflows", wfl["object_id"]) + "/actions/approve",
+                        actor="reviewer",
+                        body=cmd(
+                            {
+                                "candidate_revision": wfl["data"]["candidate_revision"],
+                                "reason": "Synthetic performance workload: verified.",
+                            },
+                            wfl["revision_id"],
+                        ),
+                    )
+
+    await asyncio.gather(*(user(n) for n in range(concurrency)))
+    return counter["iterations"]
+
+
+async def quiet_reader(probe, name, path, actor, deadline):
+    """One quiet tenant's reader at concurrency 1 until `deadline` (the cohort probe)."""
+    live = probe.live
+    async with client(live) as http:
+        while time.perf_counter() < deadline:
+            await probe.call(http, name, "GET", path, actor=actor)
+
+
+def third_tenant(live):
+    """A freshly onboarded, Active managed tenant whose owner is the fixture author (the control
+    plane's own bootstrap path); returns (tenant_id, a read path that answers 200 for the owner)."""
+    from test_authority_renewal import bootstrapped_tenant
+
+    tenant, _ = bootstrapped_tenant(live)
+    tenant_id = tenant["tenant_id"]
+    for route in ["programmes?limit=100", "me/access"]:
+        path = live.path(route, tenant=tenant_id)
+        if live.request(path).status_code == 200:
+            return tenant_id, path
+    raise AssertionError("the onboarded tenant's owner cannot read it")
+
+
+def run_profile(probe, w, prof, programmes, period, wf):
+    """The closed-loop phase of a non-base profile; returns the scenario facts."""
+    live = probe.live
+    concurrency = prof.concurrency(w.concurrency)
+    facts = {"profile": prof.describe(), "concurrency": concurrency}
+    if prof.name == "cohorts":
+        tenant_b = live.fixture["tenant_b"]
+        path_b = live.path("programmes", tenant=tenant_b) + "?limit=100"
+        tenant_c, path_c = third_tenant(live)
+        facts["tenant_c"] = tenant_c
+
+        async def idle():
+            deadline = time.perf_counter() + max(10, prof.duration // 6)
+            await asyncio.gather(
+                quiet_reader(probe, "isolation.tenant_b.idle", path_b, "other_tenant", deadline),
+                quiet_reader(probe, "isolation.tenant_c.idle", path_c, "author", deadline),
+            )
+
+        async def noisy():
+            deadline = time.perf_counter() + prof.duration
+            iterations, *_ = await asyncio.gather(
+                closed_loop(probe, w, prof, programmes, period, wf, deadline, concurrency),
+                quiet_reader(probe, "isolation.tenant_b.during_cohorts", path_b, "other_tenant", deadline),
+                quiet_reader(probe, "isolation.tenant_c.during_cohorts", path_c, "author", deadline),
+            )
+            return iterations
+
+        asyncio.run(idle())
+        facts["noisy_iterations"] = asyncio.run(noisy())
+        for name in ["isolation.tenant_b", "isolation.tenant_c"]:
+            idle_p95 = summarize(probe.samples[name + ".idle"])["p95_ms"]
+            busy_p95 = summarize(probe.samples[name + ".during_cohorts"])["p95_ms"]
+            facts[name + "_p95_ratio"] = round(busy_p95 / idle_p95, 2) if idle_p95 and busy_p95 else None
+        return facts
+    deadline = time.perf_counter() + prof.duration
+    facts["iterations"] = asyncio.run(
+        closed_loop(probe, w, prof, programmes, period, wf, deadline, concurrency)
+    )
+    facts["windows"] = {
+        name: windows(probe.stamped[name], prof.window)
+        for name in ["read.list100", "read.record", "dashboard.warm", "write.save", "write.approval"]
+    }
+    return facts
+
+
 # -- the measured run ----------------------------------------------------------------------------
 
 
@@ -354,6 +519,16 @@ def test_performance_workload(live):
             calculate(probe, indicator, period)
         probe.sync("dashboard.cold", "GET", dashboard_path(live, programme, period))
     probe.scenario("calculate_and_cold_dashboard", t, concurrency=1)
+
+    prof = profile(
+        os.environ.get("IMPACT_PERF_PROFILE", "base"),
+        int(os.environ["IMPACT_PERF_DURATION"]) if os.environ.get("IMPACT_PERF_DURATION") else None,
+    )
+    if prof.name != "base":
+        t = time.perf_counter()
+        facts = run_profile(probe, w, prof, programmes, period, wf)
+        probe.scenario("profile_" + prof.name, t, **facts)
+        return finish(probe, w, prof, started_at, loadavg_before, server_version, settings)
 
     tenant_b = live.fixture["tenant_b"]
     tenant_b_read = live.path("programmes", tenant=tenant_b) + "?limit=100"
@@ -606,6 +781,10 @@ def test_performance_workload(live):
                 probe.samples["export.render"].append((time.perf_counter() - tt) * 1000)
     probe.scenario("report_export", t, formats=list(FORMATS), repetitions=3)
 
+    finish(probe, w, prof, started_at, loadavg_before, server_version, settings)
+
+
+def finish(probe, w, prof, started_at, loadavg_before, server_version, settings):
     classes = {}
     for name in sorted(set(probe.samples) | set(probe.errors)):
         s = summarize(probe.samples[name], probe.errors.get(name, 0))
@@ -627,7 +806,8 @@ def test_performance_workload(live):
         "database": {
             "server_version": server_version,
             "settings": settings,
-            "topology": "single node, loopback, four provisioned login roles, no pooler",
+            "topology": "single node, loopback, four provisioned login roles, "
+            + (os.environ.get("IMPACT_DB_POOLER") or "no pooler"),
         },
         "api": {
             "base_url": os.environ["IMPACT_BASE_URL"],
@@ -635,6 +815,7 @@ def test_performance_workload(live):
             "unprivileged_db": os.environ.get("IMPACT_REQUIRE_UNPRIVILEGED_DB") == "1",
         },
         "workload": w.describe(),
+        "profile": prof.describe(),
         "scenarios": probe.scenarios,
         "classes": classes,
         "raw_ms": {k: [round(v, 2) for v in vs] for k, vs in probe.samples.items()},

@@ -5,12 +5,15 @@ import pytest
 
 from perf_support import (
     MINIMUM_SAMPLES,
+    PROFILES,
     import_csv,
     markdown,
     percentile,
+    profile,
     ratio_values,
     summarize,
     verdict,
+    windows,
     workload,
 )
 
@@ -97,3 +100,27 @@ def test_markdown_summary_lists_every_class():
     }
     text = markdown(report)
     assert "| read.record | VF-PER-001 | 20 | 0 |" in text and "not representative" in text
+
+
+def test_profiles_scale_concurrency_and_bound_durations():
+    assert set(PROFILES) == {"base", "peak", "soak", "cohorts"}
+    assert profile().name == "base" and profile().concurrency(4) == 4
+    peak = profile("peak")
+    assert (peak.multiplier, peak.duration, peak.window) == (4, 120, 30) and peak.concurrency(4) == 16
+    assert profile("soak").duration == 600
+    # A shortened smoke run keeps a window no longer than the run and at least five seconds.
+    short = profile("soak", 20)
+    assert (short.duration, short.window) == (20, 20)
+    assert profile("peak", 3).window == 5
+    with pytest.raises(ValueError):
+        profile("burst")
+    with pytest.raises(ValueError):
+        profile("peak", 0)
+
+
+def test_windows_group_stamped_samples_in_order():
+    stamped = [(0.0, 10.0), (1.0, 30.0), (31.0, 20.0), (59.0, 40.0), (61.0, 50.0)]
+    out = windows(stamped, 30)
+    assert [(w["window"], w["from_seconds"], w["count"]) for w in out] == [(0, 0, 2), (1, 30, 2), (2, 60, 1)]
+    assert out[0]["p95_ms"] == 30.0 and out[1]["p50_ms"] == 20.0 and out[2]["p95_ms"] == 50.0
+    assert windows([], 30) == [] and windows(stamped, 0) == []

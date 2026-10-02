@@ -108,7 +108,15 @@ def test_native_worker_process_sends_over_smtp_with_no_transaction_open(live):
         finally:
             code = stop(process)
     assert code == 0
-    assert observed and all(rows == [] for rows in observed), observed
+    if os.environ.get("IMPACT_DB_POOLER"):
+        # Behind a transaction-mode pooler the worker login's server connection stays open between
+        # transactions (the pooler owns it); the claim is that no transaction is open during the
+        # SMTP conversation, which pg_stat_activity shows as idle with no transaction start.
+        assert observed and all(
+            row["state"] == "idle" and row["xact_start"] is None for rows in observed for row in rows
+        ), observed
+    else:
+        assert observed and all(rows == [] for rows in observed), observed
     [row] = deliveries(live, receipt["object_id"])
     assert (row["attempts"], row["lease_generation"], row["lease_owner"]) == (1, 1, None)
     assert message["message"]["X-Impact-Delivery"] == str(row["event_id"])

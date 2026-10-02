@@ -671,8 +671,10 @@ function Workspace({
 }) {
   const [route, setRoute] = useState("programmes"),
     [access, setAccess] = useState<Access>({ capabilities: [] }),
-    // "loading" until GET me/access answers: nothing capability-gated renders before that, so
-    // nobody sees areas or headings they cannot use flash past (v0.27).
+    // "loading" until GET me/access answers. The sidebar and headings render meanwhile as they
+    // always did (workspace-browser proves the settings panel initialises after late
+    // permissions by holding that answer back); the record list waits for it, and once it is
+    // known the sidebar keeps only the areas the person can use (v0.27).
     [accessState, setAccessState] = useState<"loading" | "ready" | "failed">(
       "loading",
     ),
@@ -790,13 +792,9 @@ function Workspace({
       .includes(query.toLowerCase()),
   );
   const [title, description] = titles[route];
-  // "gated": the person cannot use this area yet, so neither its heading nor its panels render.
-  const gated =
-    accessState === "loading" || (waiting && route !== "account")
-      ? accessState === "loading"
-        ? "loading"
-        : "waiting"
-      : null;
+  // "gated": the person holds no capability at all, so instead of this area's heading and
+  // panels the waiting page says what happens next.
+  const gated = waiting && route !== "account";
   return (
     <>
       <a
@@ -815,13 +813,10 @@ function Workspace({
         </a>
         <div className="workspace-label">MEASUREMENT WORKSPACE</div>
         <nav aria-label="Main navigation">
-          {/* The whole list appears at once when the person's access is known. */}
+          {/* Once access is known, only the areas the person can use are listed. */}
           {nav
             .filter(
-              ([key]) =>
-                accessState !== "loading" &&
-                (key === "account" ||
-                  (accessState === "ready" && areaVisible(key, access))),
+              ([key]) => accessState !== "ready" || areaVisible(key, access),
             )
             .map(([key, name, icon]) => (
               <button
@@ -839,9 +834,7 @@ function Workspace({
                 {key === "workflows" && <span className="nav-dot" />}
               </button>
             ))}
-          {accessState !== "loading" && (
-            <button onClick={openTenants}>Tenant lifecycle</button>
-          )}
+          <button onClick={openTenants}>Tenant lifecycle</button>
         </nav>
         <div className="sidebar-bottom">
           <span className="avatar">IM</span>
@@ -883,7 +876,6 @@ function Workspace({
           )}
           {gated && (
             <AccessGate
-              state={gated}
               custody={Boolean(access.custody)}
               tenantName={
                 session.tenants.find((t) => t.tenant_id === tenant)?.name ||

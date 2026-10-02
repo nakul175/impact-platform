@@ -1,29 +1,16 @@
-// What the workspace shows before a person can use any area (v0.27): a quiet line while
-// GET me/access is answered, and a plain-language waiting page when it answers with no
-// capability at all. The commonest case is a workspace owner whose organisation is Active but
-// whose initial access has not yet been applied: ownership never opens programme data, and the
-// administrator access arrives only when the second administrator has accepted the proposal and
-// an independent operator has approved it (docs/RELEASE-0.26a.md, DEPLOYMENT-GUIDE.md §4.1).
+// What the workspace shows when GET me/access answers with no capability at all (v0.27): a
+// plain-language waiting page instead of "The action is not permitted". The commonest case is a
+// workspace owner whose organisation is Active but whose initial access has not yet been
+// applied: ownership never opens programme data, and the administrator access arrives only when
+// the second administrator has accepted the proposal and an independent operator has approved
+// it (docs/RELEASE-0.26a.md, DEPLOYMENT-GUIDE.md §4.1).
 type Props = {
-  state: "loading" | "waiting";
   custody: boolean;
   tenantName: string;
   openTenants: () => void;
   retry: () => void;
 };
-export function AccessGate({
-  state,
-  custody,
-  tenantName,
-  openTenants,
-  retry,
-}: Props) {
-  if (state === "loading")
-    return (
-      <p className="empty" role="status">
-        Checking your access…
-      </p>
-    );
+export function AccessGate({ custody, tenantName, openTenants, retry }: Props) {
   return (
     <section className="panel access-gate" aria-labelledby="access-gate">
       <span className="eyebrow">{tenantName.toUpperCase()}</span>

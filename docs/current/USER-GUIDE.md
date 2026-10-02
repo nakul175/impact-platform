@@ -19,7 +19,7 @@ Signing out also clears the page for the next person: whoever signs in on the sa
 
 ## Find your way around
 
-The sidebar lists only the areas you can use; the list appears once your access has been checked. **Portfolio** holds programmes. **Measurement** holds observations. **Measurement setup** holds indicator definitions, indicator assignments and collection plans. **Results framework**, **Dashboards**, **Forms**, **Imports**, **Change requests**, **Period close**, **My work**, **Review queue**, **Results** and **Reports** are described below. **People & access** and **Workspace settings** are for administrators (`docs/current/ADMINISTRATOR-GUIDE.md`). **Tenant lifecycle** opens the operators' console, in which you see only the requests addressed to you.
+The sidebar narrows to the areas you can use as soon as your access has been checked. **Portfolio** holds programmes. **Measurement** holds observations. **Measurement setup** holds indicator definitions, indicator assignments and collection plans. **Results framework**, **Dashboards**, **Forms**, **Imports**, **Change requests**, **Period close**, **My work**, **Review queue**, **Results** and **Reports** are described below. **People & access** and **Workspace settings** are for administrators (`docs/current/ADMINISTRATOR-GUIDE.md`). **Tenant lifecycle** opens the operators' console, in which you see only the requests addressed to you.
 
 Every list shows the records you are permitted to read, fifty at a time; use **Load more** for the rest and the search box to filter what is loaded. Opening a record shows its current revision, its state and the fields the server stores. Record identifiers are shown short (the first eight characters) only where no name exists.
 

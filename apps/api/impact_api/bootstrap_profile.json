@@ -33,11 +33,17 @@
       "uploads.read"
     ],
     "MEL_ADMIN": [
+      "assignments.draft.create",
+      "assignments.draft.edit",
+      "assignments.read",
       "calculated-results.read",
       "collection-plan.submit",
       "collection-plans.draft.create",
       "collection-plans.draft.edit",
       "collection-plans.read",
+      "collection-rounds.draft.create",
+      "collection-rounds.draft.edit",
+      "collection-rounds.read",
       "dashboards.read",
       "decisions.read",
       "disclosures.read",
@@ -104,11 +110,13 @@
       "workflows.read"
     ],
     "AUTHOR": [
+      "assignments.read",
       "calculated-results.read",
       "collection-plan.submit",
       "collection-plans.draft.create",
       "collection-plans.draft.edit",
       "collection-plans.read",
+      "collection-rounds.read",
       "dashboards.read",
       "decisions.read",
       "disclosure.request",
@@ -164,6 +172,7 @@
       "reports.read",
       "restatement-requests.read",
       "snapshots.read",
+      "submission.correct",
       "submission.submit",
       "submissions.draft.create",
       "submissions.draft.edit",
@@ -180,8 +189,10 @@
       "workflows.read"
     ],
     "REVIEWER": [
+      "assignments.read",
       "calculated-results.read",
       "collection-plans.read",
+      "collection-rounds.read",
       "dashboards.read",
       "decisions.read",
       "evidence.download",
@@ -219,11 +230,18 @@
       "workflows.read"
     ],
     "PROGRAMME_MANAGER": [
+      "assignment.reassign",
+      "assignments.draft.create",
+      "assignments.draft.edit",
+      "assignments.read",
       "calculated-results.read",
       "collection-plan.submit",
       "collection-plans.draft.create",
       "collection-plans.draft.edit",
       "collection-plans.read",
+      "collection-rounds.draft.create",
+      "collection-rounds.draft.edit",
+      "collection-rounds.read",
       "dashboards.read",
       "decisions.read",
       "evidence.read",
@@ -274,6 +292,7 @@
       "workflows.read"
     ],
     "DATA_STEWARD": [
+      "assignments.read",
       "calculated-results.read",
       "dashboards.read",
       "decisions.read",
@@ -311,8 +330,11 @@
       "workflows.read"
     ],
     "ENUMERATOR": [
+      "assignments.read",
+      "collection-rounds.read",
       "forms.read",
       "notifications.read",
+      "submission.correct",
       "submission.submit",
       "submissions.draft.create",
       "submissions.draft.edit",

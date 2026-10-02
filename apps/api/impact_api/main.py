@@ -456,6 +456,14 @@ def create_app():
     def form_published(request: Request, tenant: str, obj: str):
         return service.forms.read(auth.resolve(request), uuid(tenant), "get_form_published", uuid(obj))
 
+    @app.get("/v1/tenants/{tenant}/forms/{obj}/completeness")
+    def form_completeness(request: Request, tenant: str, obj: str):
+        return service.forms.read(auth.resolve(request), uuid(tenant), "get_form_completeness", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/collection-rounds/{obj}/coverage")
+    def round_coverage(request: Request, tenant: str, obj: str):
+        return service.forms.read(auth.resolve(request), uuid(tenant), "get_round_coverage", uuid(obj))
+
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
     def framework_completeness(request: Request, tenant: str, obj: str):
         return service.planning.read(auth.resolve(request), uuid(tenant), "framework_completeness", uuid(obj))

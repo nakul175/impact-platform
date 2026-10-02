@@ -36,6 +36,20 @@ class WorkCenter:
                 "AND personal.recipient_id=%s)",
                 [ctx.principal_id],
             )
+        if route == "assignments" and not any(
+            g["capability"] == "assignments.draft.create"
+            and g["scope_type"] == "TENANT"
+            and g["purpose"] is None
+            for g in ctx.grants
+        ):
+            # My work (v0.27, FR-FRM-005): a collector lists the assignments they hold; whoever may
+            # create assignments for the tenant lists every assignment their read scope admits.
+            return (
+                "EXISTS(SELECT 1 FROM impact.assignment_current personal "
+                "WHERE personal.tenant_id=r.tenant_id AND personal.object_id=r.object_id "
+                "AND personal.assignee_id=%s)",
+                [ctx.principal_id],
+            )
         return "TRUE", []
 
     def decorate(self, c, ctx, row, result=None):

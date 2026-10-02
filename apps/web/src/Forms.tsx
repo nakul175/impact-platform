@@ -33,6 +33,32 @@ type Field = {
   dimension_code?: string | null;
   relevant_when?: { field_code: string; equals: string } | null;
 };
+/** One language version of a form (v0.27): texts under the stable field and choice codes. */
+type Translation = {
+  language: string;
+  name?: string;
+  fields: Record<
+    string,
+    { label?: string; help?: string | null; choices?: Record<string, string> }
+  >;
+};
+const LANGUAGE = "[a-z]{2,3}(-[A-Za-z0-9]{2,8}){0,2}";
+
+/** The texts of a field in the chosen language, falling back to the form's own text. */
+function texts(
+  f: Field,
+  translation: Translation | undefined,
+): { label: string; choice: (code: string) => string } {
+  const own = translation?.fields?.[f.stable_code];
+  return {
+    label: own?.label || f.label,
+    choice: (code) =>
+      own?.choices?.[code] ||
+      (f.choices || []).find((c) => c.code === code)?.label ||
+      code,
+  };
+}
+
 const TYPES = ["DECIMAL", "INTEGER", "SINGLE_CHOICE", "BOOLEAN", "TEXT"];
 const MISSING = [
   ["", "Answer"],
@@ -372,6 +398,12 @@ function Designer({
   const [fields, setFields] = useState<Field[]>(
     row?.data.fields?.length ? row.data.fields : [blankField(0)],
   );
+  const [language, setLanguage] = useState<string>(
+    row?.data.default_language || "",
+  );
+  const [translations, setTranslations] = useState<Translation[]>(
+    row?.data.translation_versions || [],
+  );
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   // One identifier for the life of this dialog: a retry after a lost response is exact.
@@ -379,6 +411,46 @@ function Designer({
   const payload = useRef("");
   const update = (i: number, change: Partial<Field>) =>
     setFields((all) => all.map((f, j) => (j === i ? { ...f, ...change } : f)));
+  const translate = (
+    i: number,
+    code: string,
+    change: { label?: string; help?: string; choice?: [string, string] },
+  ) =>
+    setTranslations((all) =>
+      all.map((t, j) => {
+        if (j !== i) return t;
+        const own = { ...(t.fields[code] || {}) };
+        if (change.label !== undefined) own.label = change.label;
+        if (change.help !== undefined) own.help = change.help || null;
+        if (change.choice)
+          own.choices = {
+            ...(own.choices || {}),
+            [change.choice[0]]: change.choice[1],
+          };
+        return { ...t, fields: { ...t.fields, [code]: own } };
+      }),
+    );
+
+  /** Translations into the closed contract: blank texts are omitted, so they show as gaps. */
+  function cleanTranslation(t: Translation) {
+    const out: Record<string, unknown> = {};
+    for (const [code, own] of Object.entries(t.fields)) {
+      if (!fields.some((f) => f.stable_code === code)) continue;
+      const entry: Record<string, unknown> = {};
+      if (own.label) entry.label = own.label;
+      if (own.help) entry.help = own.help;
+      const choices = Object.fromEntries(
+        Object.entries(own.choices || {}).filter(([, v]) => v),
+      );
+      if (Object.keys(choices).length) entry.choices = choices;
+      if (Object.keys(entry).length) out[code] = entry;
+    }
+    return {
+      language: t.language,
+      ...(t.name ? { name: t.name } : {}),
+      fields: out,
+    };
+  }
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -386,11 +458,12 @@ function Designer({
       code,
       title,
       fields: fields.map(clean),
+      translation_versions: translations.map(cleanTranslation),
     };
+    if (language) data.default_language = language;
     if (!row) {
       data.programme_id = programme;
       data.logic = [];
-      data.translation_versions = [];
       data.compatibility_policy = "LOCK_PUBLISHED";
     }
     const fingerprint = JSON.stringify(data);
@@ -649,6 +722,114 @@ function Designer({
         onClick={() => setFields((all) => [...all, blankField(all.length)])}
       >
         Add question
+      </button>
+      <h3>Languages</h3>
+      <div className="form-grid">
+        <label>
+          Default language (code)
+          <input
+            aria-label="Default language"
+            pattern={LANGUAGE}
+            maxLength={16}
+            placeholder="en"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          />
+        </label>
+      </div>
+      {translations.map((t, i) => (
+        <fieldset key={i} className="planning-node-editor">
+          <legend>Language version {i + 1}</legend>
+          <div className="form-grid">
+            <label>
+              Language code {i + 1}
+              <input
+                required
+                pattern={LANGUAGE}
+                maxLength={16}
+                value={t.language}
+                onChange={(e) =>
+                  setTranslations((all) =>
+                    all.map((x, j) =>
+                      j === i ? { ...x, language: e.target.value } : x,
+                    ),
+                  )
+                }
+              />
+            </label>
+            <label>
+              Language name {i + 1}
+              <input
+                maxLength={64}
+                value={t.name || ""}
+                onChange={(e) =>
+                  setTranslations((all) =>
+                    all.map((x, j) =>
+                      j === i ? { ...x, name: e.target.value } : x,
+                    ),
+                  )
+                }
+              />
+            </label>
+            {fields.map((f, k) => (
+              <React.Fragment key={f.field_id}>
+                <label>
+                  {t.language || "Language " + (i + 1)} label for question{" "}
+                  {k + 1}
+                  <input
+                    maxLength={200}
+                    value={t.fields[f.stable_code]?.label || ""}
+                    onChange={(e) =>
+                      translate(i, f.stable_code, { label: e.target.value })
+                    }
+                  />
+                </label>
+                {f.field_type === "SINGLE_CHOICE" &&
+                  (f.choices || []).map((c) => (
+                    <label key={c.code}>
+                      {t.language || "Language " + (i + 1)} label for choice{" "}
+                      {c.code} of question {k + 1}
+                      <input
+                        maxLength={200}
+                        value={t.fields[f.stable_code]?.choices?.[c.code] || ""}
+                        onChange={(e) =>
+                          translate(i, f.stable_code, {
+                            choice: [c.code, e.target.value],
+                          })
+                        }
+                      />
+                    </label>
+                  ))}
+              </React.Fragment>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="secondary"
+            onClick={() =>
+              setTranslations((all) => all.filter((_, j) => j !== i))
+            }
+          >
+            Remove language version {i + 1}
+          </button>
+        </fieldset>
+      ))}
+      <p className="muted">
+        Every question and choice needs a label in each language version before
+        the version can be sent for review; answers keep their stable codes
+        whatever the language shown.
+      </p>
+      <button
+        type="button"
+        className="secondary"
+        onClick={() =>
+          setTranslations((all) => [
+            ...all,
+            { language: "", name: "", fields: {} },
+          ])
+        }
+      >
+        Add language version
       </button>{" "}
       <button className="primary" disabled={busy}>
         Save draft
@@ -700,6 +881,7 @@ function Fill({
     new Date().toISOString().slice(0, 10),
   );
   const [draft, setDraft] = useState<Row | null>(null);
+  const [language, setLanguage] = useState("");
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
@@ -709,7 +891,10 @@ function Fill({
 
   useEffect(() => {
     request(base + "forms/" + form.object_id + "/published")
-      .then(setVersion)
+      .then((v) => {
+        setVersion(v);
+        setLanguage(v.data.default_language || "");
+      })
       .catch((e) => setError(explain(e)));
   }, [form.object_id]);
   if (!version)
@@ -724,6 +909,22 @@ function Fill({
     (a: Field, b: Field) => a.position - b.position,
   );
   const shown = relevant(fields, values, reasons);
+  const translations: Translation[] = version.data.translation_versions || [];
+  const languages: { code: string; name: string }[] = version.data
+    .default_language
+    ? [
+        {
+          code: version.data.default_language,
+          name: version.data.default_language,
+        },
+        ...translations.map((t) => ({
+          code: t.language,
+          name: t.name || t.language,
+        })),
+      ]
+    : [];
+  const translation = translations.find((t) => t.language === language);
+  const text = (f: Field) => texts(f, translation);
 
   function answers() {
     const out: Record<string, unknown> = {};
@@ -753,6 +954,7 @@ function Fill({
         captured_at: capturedAt.current,
         capture_zone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
         ...(unit ? { unit_key: unit } : {}),
+        ...(language ? { language } : {}),
       });
     }
     try {
@@ -842,19 +1044,36 @@ function Fill({
             onChange={(e) => setEventDate(e.target.value)}
           />
         </label>
+        {languages.length > 0 && (
+          <label>
+            Language
+            <select
+              aria-label="Language"
+              disabled={!!draft}
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+            >
+              {languages.map((l) => (
+                <option key={l.code} value={l.code}>
+                  {l.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
       {fields
         .filter((f) => shown[f.stable_code])
         .map((f) => (
           <fieldset key={f.field_id} className="planning-node-editor">
             <legend>
-              {f.label}
+              {text(f).label}
               {f.required ? " *" : ""}
             </legend>
             <div className="form-grid">
               {f.field_type === "SINGLE_CHOICE" ? (
                 <label>
-                  {f.label}
+                  {text(f).label}
                   <select
                     aria-label={f.label}
                     disabled={!!reasons[f.stable_code]}
@@ -868,14 +1087,14 @@ function Fill({
                       .filter((c) => c.active)
                       .map((c) => (
                         <option key={c.code} value={c.code}>
-                          {c.label}
+                          {text(f).choice(c.code)}
                         </option>
                       ))}
                   </select>
                 </label>
               ) : f.field_type === "BOOLEAN" ? (
                 <label>
-                  {f.label}
+                  {text(f).label}
                   <select
                     aria-label={f.label}
                     disabled={!!reasons[f.stable_code]}
@@ -891,7 +1110,7 @@ function Fill({
                 </label>
               ) : (
                 <label>
-                  {f.label}
+                  {text(f).label}
                   <input
                     aria-label={f.label}
                     disabled={!!reasons[f.stable_code]}

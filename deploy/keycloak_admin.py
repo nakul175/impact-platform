@@ -24,6 +24,14 @@ Commands (each prints one JSON object without secrets):
     list                 every account of the realm (at most 500): e-mail, name, enabled, whether a
                          temporary password is pending, whether an authenticator is configured,
                          whether sign-in is temporarily locked after failed attempts
+    provisioner          (v0.26a) ensure the confidential client `impact-provisioner` with a service
+                         account holding only the realm-management roles manage-users, view-users
+                         and query-users, and the client secret from IMPACT_PROVISIONER_SECRET; the
+                         API uses it to create sign-in accounts from the control plane
+
+The account functions (`ensure_user`, `user_status`, `reset_user`) live in
+apps/api/impact_api/provider_admin.py, which the control plane calls with the provisioner's service
+account: add-user.sh and the platform's "create sign-in" operation run the same logic.
 """
 
 import argparse
@@ -34,14 +42,34 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
+
+try:  # in the image PYTHONPATH holds /app/apps/api
+    from impact_api.provider_admin import (  # noqa: F401
+        REQUIRED_ACTIONS,
+        AdminError,
+        check_password,
+        ensure_user,
+        find_user,
+        reset_user,
+        user_status,
+    )
+except ImportError:  # a repository checkout
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "apps/api"))
+    from impact_api.provider_admin import (  # noqa: F401
+        REQUIRED_ACTIONS,
+        AdminError,
+        check_password,
+        ensure_user,
+        find_user,
+        reset_user,
+        user_status,
+    )
 
 ORIGIN_PLACEHOLDER = "${PUBLIC_ORIGIN}"
 CLIENT_ID = "impact-web"
-REQUIRED_ACTIONS = ["UPDATE_PASSWORD", "CONFIGURE_TOTP"]
-
-
-class AdminError(RuntimeError):
-    pass
+PROVISIONER_ID = "impact-provisioner"
+PROVISIONER_ROLES = ["manage-users", "view-users", "query-users"]
 
 
 class Admin:
@@ -137,76 +165,71 @@ def current_policy(admin, realm):
     return (body or {}).get("passwordPolicy")
 
 
-def find_user(admin, realm, email):
-    query = urllib.parse.urlencode({"email": email, "exact": "true", "briefRepresentation": "false"})
-    _, users, _ = admin.call("GET", "/" + realm + "/users?" + query)
-    matches = [u for u in users or [] if (u.get("email") or "").lower() == email.lower()]
-    return matches[0] if matches else None
-
-
-def check_password(password):
-    if len(password) < 12:
-        raise AdminError("IMPACT_TEMP_PASSWORD must be at least 12 characters")
-
-
-def ensure_user(admin, realm, email, password, first="", last=""):
-    user = find_user(admin, realm, email)
-    if user:
-        return {"subject": user["id"], "created": False}
-    check_password(password)
-    body = {
-        "username": email.lower(),
-        "email": email.lower(),
+def ensure_provisioner(admin, realm, secret, client_id=PROVISIONER_ID):
+    """The confidential client the API uses to create sign-in accounts (v0.26a): client credentials
+    only (no browser, password or implicit flow), its service account holding exactly the
+    realm-management roles manage-users, view-users and query-users. Idempotent; the secret is
+    re-aligned when it changed and never printed."""
+    if len(secret) < 32:
+        raise AdminError("IMPACT_PROVISIONER_SECRET must be at least 32 characters")
+    wanted = {
+        "clientId": client_id,
+        "name": "Impact Platform account provisioning",
+        "description": "Service account of the platform API: creates sign-in accounts only (v0.26a)",
         "enabled": True,
-        "emailVerified": True,
-        "requiredActions": REQUIRED_ACTIONS,
-        "credentials": [{"type": "password", "value": password, "temporary": True}],
+        "publicClient": False,
+        "clientAuthenticatorType": "client-secret",
+        "secret": secret,
+        "serviceAccountsEnabled": True,
+        "standardFlowEnabled": False,
+        "implicitFlowEnabled": False,
+        "directAccessGrantsEnabled": False,
+        "frontchannelLogout": False,
+        "protocol": "openid-connect",
+        "attributes": {"use.refresh.tokens": "false", "client_credentials.use_refresh_token": "false"},
     }
-    if first:
-        body["firstName"] = first
-    if last:
-        body["lastName"] = last
-    admin.call("POST", "/" + realm + "/users", body)
-    user = find_user(admin, realm, email)
-    if not user:
-        raise AdminError("The account was not created")
-    return {"subject": user["id"], "created": True}
-
-
-def user_status(admin, realm, email):
-    user = find_user(admin, realm, email)
-    if not user:
-        return {"exists": False}
-    _, credentials, _ = admin.call("GET", "/" + realm + "/users/" + user["id"] + "/credentials")
+    _, clients, _ = admin.call("GET", "/" + realm + "/clients?clientId=" + urllib.parse.quote(client_id))
+    created = not clients
+    if created:
+        admin.call("POST", "/" + realm + "/clients", wanted)
+        _, clients, _ = admin.call("GET", "/" + realm + "/clients?clientId=" + urllib.parse.quote(client_id))
+        if not clients:
+            raise AdminError("The provisioner client was not created")
+        updated = False
+    else:
+        current = clients[0]
+        updated = any(current.get(k) != wanted[k] for k in wanted if k not in {"secret", "attributes"})
+        _, stored, _ = admin.call("GET", "/" + realm + "/clients/" + current["id"] + "/client-secret")
+        if updated or (stored or {}).get("value") != secret:
+            admin.call("PUT", "/" + realm + "/clients/" + current["id"], dict(current, **wanted))
+            updated = True
+    client = clients[0]
+    _, account, _ = admin.call("GET", "/" + realm + "/clients/" + client["id"] + "/service-account-user")
+    _, management, _ = admin.call("GET", "/" + realm + "/clients?clientId=realm-management")
+    if not account or not management:
+        raise AdminError("The provisioner's service account or realm-management is missing")
+    management_id = management[0]["id"]
+    mapping = "/" + realm + "/users/" + account["id"] + "/role-mappings/clients/" + management_id
+    _, held, _ = admin.call("GET", mapping)
+    held_names = {r["name"] for r in held or []}
+    missing = []
+    for name in PROVISIONER_ROLES:
+        if name not in held_names:
+            _, role, _ = admin.call("GET", "/" + realm + "/clients/" + management_id + "/roles/" + name)
+            missing.append(role)
+    if missing:
+        admin.call("POST", mapping, missing)
+    extra = sorted(held_names - set(PROVISIONER_ROLES))
+    if extra:
+        # Nothing beyond user management, whoever added it.
+        admin.call("DELETE", mapping, [r for r in held if r["name"] in extra])
     return {
-        "exists": True,
-        "subject": user["id"],
-        "enabled": bool(user.get("enabled")),
-        "temporary_password_pending": "UPDATE_PASSWORD" in (user.get("requiredActions") or []),
-        "totp_configured": any(c.get("type") == "otp" for c in credentials or []),
+        "client_id": client_id,
+        "created": created,
+        "updated": updated,
+        "roles_added": sorted(r["name"] for r in missing),
+        "roles_removed": extra,
     }
-
-
-def reset_user(admin, realm, email, password, totp=False):
-    user = find_user(admin, realm, email)
-    if not user:
-        raise AdminError("No account with that e-mail address")
-    check_password(password)
-    path = "/" + realm + "/users/" + user["id"]
-    admin.call("PUT", path + "/reset-password", {"type": "password", "value": password, "temporary": True})
-    removed = 0
-    if totp:
-        _, credentials, _ = admin.call("GET", path + "/credentials")
-        for credential in credentials or []:
-            if credential.get("type") == "otp":
-                admin.call("DELETE", path + "/credentials/" + credential["id"])
-                removed += 1
-    actions = list(dict.fromkeys((user.get("requiredActions") or []) + REQUIRED_ACTIONS))
-    admin.call("PUT", path, {"requiredActions": actions, "enabled": True})
-    # A reset is the recovery path after failed sign-ins, so it also lifts any temporary
-    # brute-force lockout; otherwise the new password is refused until the lockout expires.
-    admin.call("DELETE", "/" + realm + "/attack-detection/brute-force/users/" + user["id"])
-    return {"subject": user["id"], "password_reset": True, "totp_removed": removed, "lockout_cleared": True}
 
 
 def list_users(admin, realm, limit=500):
@@ -257,6 +280,7 @@ def main(argv=None, env=os.environ):
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("realm").add_argument("--file", required=True)
     sub.add_parser("list")
+    sub.add_parser("provisioner")
     for name in ("user", "status", "reset"):
         s = sub.add_parser(name)
         s.add_argument("--email", required=True)
@@ -277,6 +301,8 @@ def main(argv=None, env=os.environ):
             )
         elif args.command == "list":
             result = list_users(admin, realm)
+        elif args.command == "provisioner":
+            result = ensure_provisioner(admin, realm, env.get("IMPACT_PROVISIONER_SECRET", ""))
         elif args.command == "status":
             result = user_status(admin, realm, args.email)
         else:

@@ -6,6 +6,7 @@ from .workspace_contracts import (
     COMMANDS as WORKSPACE_COMMANDS,
     shapes as workspace_shapes,
 )
+from .reference_contracts import COMMANDS as REFERENCE_COMMANDS
 
 UUID = {"type": "string", "format": "uuid"}
 DATE = {"type": "string", "format": "date-time"}
@@ -17,6 +18,8 @@ ADMIN_READS = {
     "role-templates": ("RoleTemplate", "role-templates.read"),
     "access-scopes": ("AccessScope", "access-scopes.read"),
     "access-requests": ("AccessRequest", "access-requests.read"),
+    # v0.26a (gap A4): reviewed purpose-bound grants.
+    "purpose-grants": ("PurposeGrantRequest", "access-requests.read"),
 }
 COMMANDS = {
     ("member-invitations", None): (
@@ -122,21 +125,50 @@ COMMANDS = {
         True,
         {"reason": REASON},
     ),
+    # v0.26a (gap A4): a purpose-bound grant of one purpose-required capability to one member at
+    # TENANT scope, requested and then approved by a natural person different from both the
+    # requester and the member, within both administrators' delegation ceilings.
+    ("purpose-grants", None): (
+        "request_purpose_grant",
+        "grant.request",
+        "RequestPurposeGrant",
+        False,
+        {
+            "membership_id": UUID,
+            "expected_membership_revision": UUID,
+            "capability": {"type": "string", "minLength": 1, "maxLength": 64},
+            "purpose": {"type": "string", "pattern": "^[A-Z][A-Z_]{2,63}$"},
+            "scope_id": UUID,
+            "expires_at": DATE,
+            "reason": REASON,
+        },
+    ),
+    ("purpose-grants", "approve"): (
+        "approve_purpose_grant",
+        "grant.approve",
+        "ApprovePurposeGrant",
+        True,
+        {"reason": REASON},
+    ),
+    ("purpose-grants", "reject"): (
+        "reject_purpose_grant",
+        "grant.approve",
+        "RejectPurposeGrant",
+        True,
+        {"reason": REASON},
+    ),
 }
 
 
 ADMIN_READS.update(WORKSPACE_READS)
 COMMANDS.update(WORKSPACE_COMMANDS)
+COMMANDS.update(REFERENCE_COMMANDS)
 
 
-def augment(spec, policy):
+def add_commands(spec, rows, commands):
+    """Closed schemas, the POST path and the policy row of each tenant-administration command."""
     schemas = spec["components"]["schemas"]
-    schemas["AdministrationReceipt"] = deepcopy(schemas["Receipt"])
-    schemas["AdministrationReceipt"]["properties"].update(
-        invitation_generation=UUID, invitation_url={"type": "string", "format": "uri", "maxLength": 2000}
-    )
-    rows = {p["operation_id"]: p for p in policy["operations"]}
-    for (route, action), (op, cap, name, expected, fields) in COMMANDS.items():
+    for (route, action), (op, cap, name, expected, fields) in commands.items():
         schemas[name + "Data"] = {
             "type": "object",
             "additionalProperties": False,
@@ -181,6 +213,24 @@ def augment(spec, policy):
             "purpose_required": False,
             "audit": True,
         }
+
+
+def augment_reference(spec, policy):
+    """Reference-data commands (v0.26a, gap A1). Run after the measurement and period augmenters,
+    which rebuild the read paths of reporting-calendars, geographies and periods from scratch."""
+    rows = {p["operation_id"]: p for p in policy["operations"]}
+    add_commands(spec, rows, REFERENCE_COMMANDS)
+    policy["operations"] = list(rows.values())
+
+
+def augment(spec, policy):
+    schemas = spec["components"]["schemas"]
+    schemas["AdministrationReceipt"] = deepcopy(schemas["Receipt"])
+    schemas["AdministrationReceipt"]["properties"].update(
+        invitation_generation=UUID, invitation_url={"type": "string", "format": "uri", "maxLength": 2000}
+    )
+    rows = {p["operation_id"]: p for p in policy["operations"]}
+    add_commands(spec, rows, {key: value for key, value in COMMANDS.items() if key not in REFERENCE_COMMANDS})
     # Administration list payloads are intentionally distinct from domain object payloads.
     for route, (name, cap) in ADMIN_READS.items():
         path = "/v1/tenants/{tenant_id}/" + route
@@ -268,6 +318,17 @@ def augment(spec, policy):
             "scope_ids": SCOPES,
             "expires_at": DATE,
             "reason": REASON,
+        },
+        "PurposeGrantRequest": {
+            **common,
+            "membership_id": UUID,
+            "requested_by": UUID,
+            "capability": text,
+            "purpose": text,
+            "scope_id": UUID,
+            "expires_at": DATE,
+            "reason": REASON,
+            "grant_id": {"type": ["string", "null"], "format": "uuid"},
         },
     }
     shapes.update(workspace_shapes(common))

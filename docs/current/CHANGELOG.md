@@ -1,5 +1,12 @@
 # Documentation change record
 
+## Build 0.26.0 — v0.26a usable staging — 1 October 2026
+
+Branch `release/0.26a-usable-staging` from `main` (d7d66db). Build 0.26.0, schema 28 (`0028_usable_staging.sql`), domain API 1.16.0 (207 operations), platform API 1.7.0 (42 operations). Resolves the hosted-UAT blockers A1–A4 of `RELEASE-1-ACCEPTANCE-GAPS.md` §1 without relaxing any independence rule; no requirement changes status (evidence added to FR-TEN-001 and FR-IAM-001; related-evidence notes on FR-OPS-001 and FR-PRV-002, both PENDING).
+
+- New: `docs/RELEASE-0.26a.md`; `apps/api/impact_api/reference_contracts.py`, `reference_data.py`, `purpose_grants.py`, `operator_contracts.py`, `operators.py`, `provider_accounts.py`, `provider_admin.py` (account functions shared with `deploy/keycloak_admin.py`); `scripts/build_access_profile.py` (generates `bootstrap_profile.json`, now `initial-access-v2`); web `Landing.tsx`, `Operators.tsx`, `Accounts.tsx`, `ReferenceData.tsx`; tests `test_usable_staging.py`, `test_operator_onboarding.py`, `test_usable_staging_unit.py`, a native role test, a live-provider test, browser group `operators-browser`.
+- Changed: `DEPLOYMENT-GUIDE.md` §4 (the owner's click-path from sign-in to an active organisation, §4.1; second operator through the web application; known limits); `RELEASE-1-ACCEPTANCE-GAPS.md` (A1–A4 resolved, A5 open); `CURRENT-DATA-DICTIONARY.md` (0028 with SHA-256); `CURRENT-API-INVENTORY.md`; `IMPLEMENTATION.md`; `QUALIFICATION.md`; `NEXT-DELIVERY.md`; CSV registers; README; CLAUDE.md. Deployment: `update.sh` generates `IMPACT_PROVISIONER_SECRET` and runs `keycloak_admin.py provisioner`; `compose.yaml` gives the API the provisioner client; CI `container-stack` onboards a second operator through the platform after the owner's first sign-in.
+
 ## QA 2026-10 merges onto build 0.25.0 — 1 October 2026
 
 Three qualification slices merged onto `integration/0.25` (PRs #63, #64, #65); build 0.25.0, schema 27, domain API 1.15.0 and platform API 1.6.0 are unchanged, and no requirement, priority, release assignment or expected behaviour changed.

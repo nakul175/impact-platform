@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { tabListKeys } from "./a11y";
+import { OneTimeCredential, SignInForm } from "./Accounts";
 
 type Requester = (path: string, options?: RequestInit) => Promise<any>;
 type Item = {
@@ -32,7 +33,23 @@ const sections = [
   ["access-requests", "Access requests", "access-requests.read"],
   ["access-scopes", "Scopes", "access-scopes.read"],
   ["role-templates", "Role templates", "role-templates.read"],
+  ["purpose-grants", "Purpose-bound access", "access-requests.read"],
 ];
+// v0.26a: capabilities granted only for a stated purpose, after an independent review.
+const purposeCapabilities: Record<string, string[]> = {
+  "privacy-cases.read": ["DATA_SUBJECT_REQUEST"],
+  "privacy-cases.draft.create": ["DATA_SUBJECT_REQUEST"],
+  "privacy-cases.draft.edit": ["DATA_SUBJECT_REQUEST"],
+  "privacy.approve": ["DATA_SUBJECT_REQUEST"],
+  "privacy.execute": ["DATA_SUBJECT_REQUEST"],
+  "privacy.export": ["DATA_SUBJECT_REQUEST"],
+  "audit.export": [
+    "INTERNAL_AUDIT",
+    "SECURITY_REVIEW",
+    "INCIDENT_INVESTIGATION",
+    "REGULATORY_REQUEST",
+  ],
+};
 const inDays = (days: number) =>
   new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
 
@@ -50,7 +67,12 @@ export function AdministrationPanel({
     [busy, setBusy] = useState(false),
     [tick, setTick] = useState(0),
     [dialog, setDialog] = useState<{ mode: string; item?: Item } | null>(null),
-    [link, setLink] = useState("");
+    [link, setLink] = useState(""),
+    [invited, setInvited] = useState(""),
+    [signIn, setSignIn] = useState<{ email: string; account?: any } | null>(
+      null,
+    );
+  const tenantId = base.split("/")[3];
   const currentView = useRef("");
   currentView.current = `${base}:${route}:${tick}`;
   const allowed = (cap: string) => capabilities.includes(cap);
@@ -90,11 +112,12 @@ export function AdministrationPanel({
       if (currentView.current === view) setBusy(false);
     }
   }
-  function completed(result: any) {
+  function completed(result: any, email = "") {
     setDialog(null);
     setTick((x) => x + 1);
     if (result.invitation_url) {
       setLink(result.invitation_url);
+      setInvited(email);
       setMessage(
         "Invitation created. No email has been sent; deliver the link through an approved channel.",
       );
@@ -105,7 +128,9 @@ export function AdministrationPanel({
     r.email_mask ||
     r.title ||
     r.name ||
-    r.role_name + " access request";
+    (r.capability
+      ? r.capability + " for " + r.purpose
+      : r.role_name + " access request");
   return (
     <section className="administration">
       <div
@@ -166,8 +191,39 @@ export function AdministrationPanel({
           <button className="secondary" onClick={() => setLink("")}>
             Hide link
           </button>
+          <button
+            className="secondary"
+            onClick={() => setSignIn({ email: invited })}
+          >
+            Create a sign-in for this person
+          </button>
+          <p className="footnote">
+            If the person has no sign-in yet, the workspace owner can create one
+            here; the one-time password is shown once.
+          </p>
         </div>
       )}
+      {signIn &&
+        (signIn.account ? (
+          <OneTimeCredential
+            account={signIn.account}
+            email={signIn.email}
+            done={() => setSignIn(null)}
+          />
+        ) : (
+          <section className="panel">
+            <h2>Create a sign-in</h2>
+            <SignInForm
+              request={request}
+              explain={explain}
+              tenantId={tenantId}
+              email={signIn.email}
+              intro="Only the workspace owner can create a sign-in, and only for an address with a pending invitation to this workspace. It grants nothing by itself; the invitation link grants the invited role."
+              created={(account, email) => setSignIn({ email, account })}
+              cancel={() => setSignIn(null)}
+            />
+          </section>
+        ))}
       <div className="panel">
         <div className="panel-toolbar">
           <div>
@@ -183,6 +239,14 @@ export function AdministrationPanel({
                 onClick={() => setDialog({ mode: "invite" })}
               >
                 Invite member
+              </button>
+            )}
+            {route === "purpose-grants" && allowed("grant.request") && (
+              <button
+                className="primary"
+                onClick={() => setDialog({ mode: "purpose" })}
+              >
+                Request purpose-bound access
               </button>
             )}
             {route === "access-scopes" && allowed("access-scopes.create") && (
@@ -246,6 +310,9 @@ export function AdministrationPanel({
                   <td>
                     {item.roles?.join(", ") ||
                       item.role_name ||
+                      (item.purpose &&
+                        "Purpose: " +
+                          item.purpose.replaceAll("_", " ").toLowerCase()) ||
                       `${item.capabilities?.length ?? item.object_ids?.length ?? 0} ${item.capabilities ? "capabilities" : "objects"}`}
                     {item.expires_at && (
                       <small className="record-id">
@@ -300,6 +367,9 @@ export function AdministrationPanel({
                   approve: "Approve access request",
                   reject: "Reject access request",
                   revokeGrant: "Revoke a capability",
+                  purpose: "Request purpose-bound access",
+                  purposeApprove: "Approve purpose-bound access",
+                  purposeReject: "Reject purpose-bound access",
                 }[dialog.mode] || "Access change"
           }
           close={() => setDialog(null)}
@@ -403,6 +473,28 @@ export function AdministrationPanel({
                       </button>
                     </>
                   )}
+                {route === "purpose-grants" &&
+                  dialog.item?.state === "Requested" &&
+                  allowed("grant.approve") && (
+                    <>
+                      <button
+                        className="secondary"
+                        onClick={() =>
+                          setDialog({ ...dialog, mode: "purposeReject" })
+                        }
+                      >
+                        Reject request
+                      </button>
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          setDialog({ ...dialog, mode: "purposeApprove" })
+                        }
+                      >
+                        Approve request
+                      </button>
+                    </>
+                  )}
                 {route === "access-requests" &&
                   dialog.item?.state === "Requested" &&
                   allowed("grant.approve") && (
@@ -482,16 +574,35 @@ function AdminForm({
   base: string;
   request: Requester;
   explain: (e: unknown) => string;
-  completed: (r: any) => void;
+  completed: (r: any, email?: string) => void;
 }) {
   const [roles, setRoles] = useState<Item[]>([]),
     [scopes, setScopes] = useState<Item[]>([]),
+    [members, setMembers] = useState<Item[]>([]),
+    [capability, setCapability] = useState("privacy-cases.read"),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
   const operation = useRef(crypto.randomUUID()),
     invitationExpiry = useRef(
       new Date(Date.now() + 6 * 86400000).toISOString(),
     );
+  useEffect(() => {
+    if (mode !== "purpose") return;
+    const controller = new AbortController();
+    Promise.all(
+      ["membership-directory", "access-scopes"].map((r) =>
+        request(base + r + "?limit=100", { signal: controller.signal }),
+      ),
+    )
+      .then(([m, s]) => {
+        setMembers(m.items.filter((x: Item) => x.state === "Active"));
+        setScopes(s.items.filter((x: Item) => x.scope_type === "TENANT"));
+      })
+      .catch((e) => {
+        if (e.name !== "AbortError") setError(explain(e));
+      });
+    return () => controller.abort();
+  }, [mode]);
   useEffect(() => {
     if (!["invite", "request"].includes(mode)) return;
     const controller = new AbortController();
@@ -551,7 +662,25 @@ function AdminForm({
         scope_ids: [get("scope")],
         expires_at: new Date(get("expires") + "T23:59:59Z").toISOString(),
       };
-    } else if (["suspend", "reactivate", "revoke"].includes(mode))
+    } else if (mode === "purpose") {
+      target = "purpose-grants";
+      const member = members.find((m) => m.object_id === get("member"));
+      data = {
+        ...data,
+        membership_id: get("member"),
+        expected_membership_revision: member?.revision_id,
+        capability: get("capability"),
+        purpose: get("purpose"),
+        scope_id: get("scope"),
+        expires_at: new Date(get("expires") + "T23:59:59Z").toISOString(),
+      };
+    } else if (["purposeApprove", "purposeReject"].includes(mode))
+      target =
+        "purpose-grants/" +
+        item!.object_id +
+        "/actions/" +
+        (mode === "purposeApprove" ? "approve" : "reject");
+    else if (["suspend", "reactivate", "revoke"].includes(mode))
       target = "memberships/" + item!.object_id + "/actions/" + mode;
     else if (["resend", "cancel"].includes(mode))
       target =
@@ -571,7 +700,7 @@ function AdminForm({
           data,
         }),
       });
-      completed(response);
+      completed(response, mode === "invite" ? get("email") : "");
     } catch (e) {
       setError(explain(e));
     } finally {
@@ -661,6 +790,83 @@ function AdminForm({
           </p>
         </>
       )}
+      {mode === "purpose" && (
+        <>
+          <p className="muted">
+            Grants one capability for one stated purpose, for the whole
+            workspace, until the date you choose. A different administrator, who
+            is neither you nor the member, must approve it. The owner's own
+            access is not changed this way.
+          </p>
+          <label>
+            Member
+            <select name="member" aria-label="Member" required defaultValue="">
+              <option value="" disabled>
+                Select a member
+              </option>
+              {members
+                .filter((m) => !m.owner)
+                .map((m) => (
+                  <option key={m.object_id} value={m.object_id}>
+                    {m.display_name} {m.email_mask || ""}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label>
+            Capability
+            <select
+              name="capability"
+              aria-label="Capability"
+              value={capability}
+              onChange={(e) => setCapability(e.target.value)}
+            >
+              {Object.keys(purposeCapabilities).map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Purpose
+            <select name="purpose" aria-label="Purpose" required>
+              {purposeCapabilities[capability].map((p) => (
+                <option key={p} value={p}>
+                  {p.replaceAll("_", " ").toLowerCase()}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Scope
+            <select name="scope" aria-label="Scope" required>
+              {scopes.map((s) => (
+                <option key={s.object_id} value={s.object_id}>
+                  {s.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Access expires (UTC)
+            <input
+              type="date"
+              name="expires"
+              required
+              min={inDays(1)}
+              max={inDays(89)}
+              defaultValue={inDays(30)}
+            />
+          </label>
+        </>
+      )}
+      {mode === "purposeApprove" && (
+        <p className="footnote">
+          Approval issues exactly this capability for exactly this purpose. You
+          must be a different person from the requester and from the member.
+        </p>
+      )}
       {mode === "request" && (
         <p className="footnote">
           This adds a time-bounded role assignment; it does not remove existing
@@ -737,6 +943,9 @@ function AdminForm({
                 approve: "Confirm approval",
                 reject: "Confirm rejection",
                 revokeGrant: "Confirm grant revocation",
+                purpose: "Submit purpose-bound request",
+                purposeApprove: "Confirm approval",
+                purposeReject: "Confirm rejection",
               }[mode]}
         </button>
       </div>

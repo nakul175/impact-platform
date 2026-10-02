@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.15.0",
+    "version": "1.16.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -8370,6 +8370,115 @@
           }
         ],
         "x-contract-version": "1.1.0"
+      },
+      "post": {
+        "operationId": "create_report_template",
+        "summary": "CreateReportTemplate",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReportTemplate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/report-templates/{object_id}": {
@@ -13064,6 +13173,115 @@
           }
         ],
         "x-contract-version": "1.1.0"
+      },
+      "post": {
+        "operationId": "create_workflow_template",
+        "summary": "CreateWorkflowTemplate",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkflowTemplate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/workflow-templates/{object_id}": {
@@ -14510,6 +14728,499 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/RejectAccessChange"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/purpose-grants": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "request_purpose_grant",
+        "summary": "RequestPurposeGrant",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "grant.request",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPurposeGrant"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
+      },
+      "get": {
+        "operationId": "list_purpose_grants",
+        "summary": "List PurposeGrantRequest",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "access-requests.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurposeGrantRequestList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "x-contract-version": "1.1.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/approve": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "approve_purpose_grant",
+        "summary": "ApprovePurposeGrant",
+        "description": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+        "x-capability": "grant.approve",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovePurposeGrant"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/reject": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "reject_purpose_grant",
+        "summary": "RejectPurposeGrant",
+        "description": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+        "x-capability": "grant.approve",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectPurposeGrant"
               }
             }
           }
@@ -17947,6 +18658,115 @@
           }
         ],
         "x-contract-version": "1.4.0"
+      },
+      "post": {
+        "operationId": "create_reporting_calendar",
+        "summary": "CreateReportingCalendar",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReportingCalendar"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}": {
@@ -18180,6 +19000,115 @@
           }
         ],
         "x-contract-version": "1.4.0"
+      },
+      "post": {
+        "operationId": "create_geography",
+        "summary": "CreateGeography",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGeography"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/geographies/{object_id}": {
@@ -23520,6 +24449,259 @@
         },
         "x-contract-version": "1.15.0",
         "parameters": []
+      }
+    },
+    "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "extend_reporting_calendar",
+        "summary": "ExtendReportingCalendar",
+        "description": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtendReportingCalendar"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/reference-defaults": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "apply_reference_defaults",
+        "summary": "ApplyReferenceDefaults",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "reference-data.manage",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyReferenceDefaults"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     }
   },
@@ -40247,6 +41429,140 @@
           "expected_revision"
         ]
       },
+      "RequestPurposeGrantData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_membership_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "purpose": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z_]{2,63}$"
+          },
+          "scope_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "membership_id",
+          "expected_membership_revision",
+          "capability",
+          "purpose",
+          "scope_id",
+          "expires_at",
+          "reason"
+        ]
+      },
+      "RequestPurposeGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RequestPurposeGrantData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "ApprovePurposeGrantData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ApprovePurposeGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ApprovePurposeGrantData"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "RejectPurposeGrantData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RejectPurposeGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RejectPurposeGrantData"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
       "CreateRoleTemplateData": {
         "type": "object",
         "additionalProperties": false,
@@ -41447,6 +42763,101 @@
             "maxItems": 100,
             "items": {
               "$ref": "#/components/schemas/AccessRequestItem"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scope_label": {
+            "type": "string",
+            "maxLength": 254
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
+        ]
+      },
+      "PurposeGrantRequestItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 254
+          },
+          "membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requested_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "capability": {
+            "type": "string",
+            "maxLength": 254
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 254
+          },
+          "scope_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "grant_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "state",
+          "membership_id",
+          "requested_by",
+          "capability",
+          "purpose",
+          "scope_id",
+          "expires_at",
+          "reason",
+          "grant_id"
+        ]
+      },
+      "PurposeGrantRequestList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/PurposeGrantRequestItem"
             }
           },
           "next_cursor": {
@@ -47165,6 +48576,306 @@
       },
       "PrivacyExportPackage": {
         "type": "object"
+      },
+      "CreateReportingCalendarData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "frequency": {
+            "enum": [
+              "MONTHLY",
+              "QUARTERLY",
+              "ANNUAL"
+            ]
+          },
+          "zone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "first_year": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "years": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "title",
+          "frequency",
+          "zone",
+          "first_year",
+          "years",
+          "reason"
+        ]
+      },
+      "CreateReportingCalendar": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateReportingCalendarData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "ExtendReportingCalendarData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "years": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "years",
+          "reason"
+        ]
+      },
+      "ExtendReportingCalendar": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ExtendReportingCalendarData"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "CreateWorkflowTemplateData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "title",
+          "reason"
+        ]
+      },
+      "CreateWorkflowTemplate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateWorkflowTemplateData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "CreateReportTemplateData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "section_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[a-z0-9_]+$"
+                },
+                "heading": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "narrative_limit": {
+                  "type": "integer",
+                  "minimum": 100,
+                  "maximum": 20000
+                }
+              },
+              "required": [
+                "section_code",
+                "heading",
+                "required",
+                "narrative_limit"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 20
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "title",
+          "language",
+          "sections",
+          "reason"
+        ]
+      },
+      "CreateReportTemplate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateReportTemplateData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "CreateGeographyData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "title",
+          "code",
+          "reason"
+        ]
+      },
+      "CreateGeography": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CreateGeographyData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "ApplyReferenceDefaultsData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ApplyReferenceDefaults": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ApplyReferenceDefaultsData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
       }
     }
   }

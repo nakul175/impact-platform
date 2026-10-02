@@ -221,6 +221,19 @@ def bootstrap(local, idp=None):
                 "UPDATE impact.auth_identity SET issuer=%s WHERE issuer=%s AND provider_subject=ANY(%s)",
                 (idp["issuer"], FIXTURE_ISSUER, subjects),
             )
+            # v0.26a: accounts created through the control plane are registered only for a qualified
+            # issuer (migration 0028); a synthetic qualification names the live realm.
+            c.execute(
+                "INSERT INTO impact.deployment_qualification VALUES(%s,%s,%s,'LOCAL_ONLY',%s,%s,'local-development-privacy','Synthetic live-provider fixture; not production evidence',3650,%s,true) ON CONFLICT DO NOTHING",
+                (
+                    str(uuid5(NAMESPACE_URL, "impact-local-qualification-idp")),
+                    str(uuid5(NAMESPACE_URL, "impact-local-qualification-idp-v1")),
+                    os.environ.get("IMPACT_ENVIRONMENT", "development"),
+                    idp["issuer"],
+                    idp["required_acr"],
+                    FIXTURE_EXPIRES_AT,
+                ),
+            )
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
         geography = str(uuid5(NAMESPACE_URL, "impact-measurement:geography:demonstration"))
         if not current(geography):
@@ -292,6 +305,9 @@ def bootstrap(local, idp=None):
         # signature scanner (EICAR test file only; not an anti-malware engine).
         "object_store_dir": str((local / "objects").resolve()),
         "evidence_scanner": "eicar-signature",
+        # Sign-in accounts created through the control plane (v0.26a) go to the development users
+        # file, so a created account can sign in on the development login page.
+        "provider_admin": "development",
     }
     # Grace secrets and the development signing key set written by scripts/rotate_secrets.py survive a
     # re-run of this bootstrap (v0.25 part A); a fresh run directory has none.
@@ -313,6 +329,18 @@ def bootstrap(local, idp=None):
             dev_auth=False,
             dev_users_file="",
             dev_public_key="",
+            # v0.26a: accounts through the qualification realm's provisioner service account.
+            **(
+                {
+                    "provider_admin": "keycloak",
+                    "provider_admin_url": idp["base_url"],
+                    "provider_admin_realm": idp["realm"],
+                    "provider_admin_client_id": idp["provisioner"]["client_id"],
+                    "provider_admin_client_secret": idp["provisioner"]["secret"],
+                }
+                if idp.get("provisioner")
+                else {"provider_admin": ""}
+            ),
         )
     (local / "config.json").write_text(json.dumps(config, indent=2))
     # The worker's own configuration (v0.16): its login, the two secrets it shares with the API and

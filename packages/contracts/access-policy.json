@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0",
+  "version": "1.16.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -2729,23 +2729,6 @@
       "audit": false
     },
     {
-      "operation_id": "create_report_templates",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/report-templates",
-      "capability": "report-templates.draft.create",
-      "role_templates": [
-        "MEL_ADMIN",
-        "AUTHOR"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
       "operation_id": "get_report_templates",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/report-templates/{object_id}",
@@ -4278,6 +4261,45 @@
       "audit": true
     },
     {
+      "operation_id": "request_purpose_grant",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/purpose-grants",
+      "capability": "grant.request",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "approve_purpose_grant",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/approve",
+      "capability": "grant.approve",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "reject_purpose_grant",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/reject",
+      "capability": "grant.approve",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
       "operation_id": "create_role_template",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/role-templates",
@@ -4567,6 +4589,19 @@
       "operation_id": "list_access_requests",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/access-requests",
+      "capability": "access-requests.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": null,
+      "purpose_required": false,
+      "audit": false
+    },
+    {
+      "operation_id": "list_purpose_grants",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/purpose-grants",
       "capability": "access-requests.read",
       "role_templates": [
         "OWNER",
@@ -5660,6 +5695,84 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "create_reporting_calendar",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reporting-calendars",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "extend_reporting_calendar",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "create_workflow_template",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/workflow-templates",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "create_report_template",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/report-templates",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "create_geography",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/geographies",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
+    },
+    {
+      "operation_id": "apply_reference_defaults",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reference-defaults",
+      "capability": "reference-data.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "fresh_assurance_seconds": 300,
+      "purpose_required": false,
+      "audit": true
     }
   ],
   "limits": {

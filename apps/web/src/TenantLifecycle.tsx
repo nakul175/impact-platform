@@ -3,6 +3,7 @@ import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
 import { AuthorityRenewal } from "./AuthorityRenewal";
 import { Workers } from "./Workers";
+import { Operators } from "./Operators";
 
 type Props = {
   development: boolean;
@@ -30,7 +31,15 @@ export function TenantLifecycle({
   const [initialAccess, setInitialAccess] = useState(false);
   const [recoveryContacts, setRecoveryContacts] = useState(false);
   const [authorityRenewal, setAuthorityRenewal] = useState(false);
+  const [people, setPeople] = useState<any[]>([]);
   const retry = useRef({ key: "", operation: "" });
+  useEffect(() => {
+    if (!creating) return;
+    // Registered people (operators only): the owner is chosen by name, not typed as a UUID.
+    request("/v1/platform/operators")
+      .then((r) => setPeople(r.identities || []))
+      .catch(() => setPeople([]));
+  }, [creating]);
   const base = "/v1/platform/tenants";
   async function refresh(after?: string) {
     const result = await request(
@@ -294,6 +303,11 @@ export function TenantLifecycle({
               Load more tenants
             </button>
           )}
+          <Operators
+            request={request}
+            explain={explain}
+            changed={() => refresh().catch((e) => setError(explain(e)))}
+          />
           {directory.operator && (
             <Workers request={request} explain={explain} />
           )}
@@ -322,14 +336,42 @@ export function TenantLifecycle({
                   Operating name
                   <input name="operating_name" required maxLength={200} />
                 </label>
-                <label>
-                  Nominated owner identity UUID
-                  <input
-                    name="owner_identity_id"
-                    required
-                    pattern="[0-9a-fA-F-]{36}"
-                  />
-                </label>
+                {people.length ? (
+                  <label>
+                    Organisation owner (a different person from you)
+                    <select
+                      name="owner_identity_id"
+                      aria-label="Organisation owner"
+                      required
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Select the person who will own it
+                      </option>
+                      {people
+                        .filter((p: any) => p.identity_id !== identity)
+                        .map((p: any) => (
+                          <option
+                            key={p.identity_id}
+                            value={p.identity_id}
+                            disabled={!p.signed_in}
+                          >
+                            {p.display_name} {p.email_mask || ""}
+                            {p.signed_in ? "" : " (must sign in once first)"}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                ) : (
+                  <label>
+                    Nominated owner identity reference
+                    <input
+                      name="owner_identity_id"
+                      required
+                      pattern="[0-9a-fA-F-]{36}"
+                    />
+                  </label>
+                )}
                 <label>
                   Qualified deployment
                   <select

@@ -380,6 +380,8 @@ def test_identity_provider_outage_fails_closed_and_cookie_sessions_continue(live
         tmp_path,
         dev_auth=False,
         dev_users_file="",
+        # v0.26a: development provider accounts belong to development sign-in only.
+        provider_admin="",
         jwks_url=provider.url("/certs"),
         authorization_url=provider.url("/auth"),
         token_url=provider.url("/token"),

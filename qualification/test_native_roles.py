@@ -132,6 +132,9 @@ def test_app_role_cannot_read_control_plane_tables(connect, live):
         "tenant_access_bootstrap_applied",
         "tenant_onboarding",
         "platform_event",
+        # 0028 (v0.26a): operator nominations and provisioned accounts, platform only.
+        "platform_operator_nomination",
+        "provider_account",
     ]:
         message = denied(c, "SELECT count(*) FROM impact." + table, role="impact_app", tenant=tenant)
         assert "permission denied" in message
@@ -252,6 +255,61 @@ def test_platform_role_writes_only_its_restrictive_object_types(connect, live):
         assert "permission denied" in denied(c, statement, params, role="impact_platform", tenant=tenant), (
             statement
         )
+
+
+def test_platform_role_cannot_make_operators_or_rewrite_nominations(connect, live):
+    """0028 (v0.26a): impact_platform holds SELECT/INSERT on platform_operator_nomination and
+    provider_account, UPDATE on a few decision columns only, and no write on platform_operator
+    (0013); an acceptance is recorded only by the definer accept_operator_nomination, which refuses
+    an actor of the nominating operator's natural person; identities of provisioned accounts only
+    through register_provider_account_identity. app, identity and worker logins reach none of it."""
+    c = connect("PLATFORM")
+    admin = live.fixture["actors"]["admin"]
+    for statement, params in [
+        (
+            "INSERT INTO impact.platform_operator(identity_id,active,expires_at,authority_reference) VALUES(%s,true,now()+interval '1 day','direct')",
+            (live.fixture["actors"]["author"]["identity_id"],),
+        ),
+        ("UPDATE impact.platform_operator SET expires_at=expires_at+interval '1 year'", None),
+        ("UPDATE impact.platform_operator_nomination SET email_hash=email_hash", None),
+        ("UPDATE impact.platform_operator_nomination SET operator_expires_at=now()", None),
+        ("UPDATE impact.provider_account SET provider_subject='other'", None),
+        ("DELETE FROM impact.platform_operator_nomination", None),
+        ("DELETE FROM impact.provider_account", None),
+        ("INSERT INTO impact.auth_identity VALUES(gen_random_uuid(),'x','y',gen_random_uuid())", None),
+    ]:
+        assert "permission denied" in denied(c, statement, params, role="impact_platform"), statement
+    nomination = str(uuid.uuid4())
+    with pytest.raises(Rollback):
+        with c.transaction():
+            c.execute("SET LOCAL ROLE impact_platform")
+            c.execute(
+                "INSERT INTO impact.platform_operator_nomination(nomination_id,revision_id,state,nominated_by,email_hash,email_mask,reason,operator_expires_at,expires_at,nominator_auth_time) VALUES(%s,gen_random_uuid(),'Nominated',%s,%s,'ad***@example.test','native check',now()+interval '10 days',now()+interval '1 day',now())",
+                (nomination, admin["identity_id"], b"\x01" * 32),
+            )
+            with pytest.raises(psycopg.Error) as refused:
+                with c.transaction():
+                    c.execute(
+                        "UPDATE impact.platform_operator_nomination SET state='Accepted' WHERE nomination_id=%s",
+                        (nomination,),
+                    )
+            assert "acceptance only through" in str(refused.value)
+            # The nominating operator cannot accept through the definer either.
+            with pytest.raises(InsufficientPrivilege):
+                with c.transaction():
+                    c.execute(
+                        "SELECT impact.accept_operator_nomination(%s,%s)", (nomination, admin["identity_id"])
+                    )
+            raise Rollback
+    for login, role in [("APP", "impact_app"), ("IDENTITY", "impact_identity")]:
+        other = connect(login)
+        for statement in [
+            "SELECT count(*) FROM impact.platform_operator_nomination",
+            "SELECT count(*) FROM impact.provider_account",
+            "SELECT impact.register_provider_account_identity(gen_random_uuid())",
+            "SELECT impact.accept_operator_nomination(gen_random_uuid(),gen_random_uuid())",
+        ]:
+            assert "permission denied" in denied(other, statement, role=role), (login, statement)
 
 
 def test_migrator_assumes_owner_only_and_runs_the_migration_runner(connect, live):

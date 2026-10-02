@@ -214,12 +214,16 @@ jobs:
           grep -q "Temporary password:" first-admin.out
           rm -f first-admin.out
           if sudo IMPACT_HOME="$IMPACT_HOME" deploy/first-admin.sh > /dev/null 2>&1; then echo "printed to a pipe" >&2; exit 1; fi
-      - name: The owner's first sign-in (password change, authenticator, MFA, platform operator)
+      - name: The owner's first sign-in, then a second operator onboarded through the platform (no console)
         run: |
           password=$(sudo sed -n 's/^OWNER_TEMP_PASSWORD=//p' "$IMPACT_HOME/secrets.env")
           echo "::add-mask::$password"
+          # v0.26a: after the owner's first sign-in the same session nominates operator2, creates its
+          # sign-in through the impact-provisioner service account, signs it in for the first time
+          # (own password, authenticator) and accepts; the one-time password is never printed.
           IMPACT_TEMP_PASSWORD="$password" .venv/bin/python scripts/staging_first_login.py "https://$APP_HOST" \
-            --email "$OWNER_EMAIL" --cacert caddy-root.crt | tee first-login.json
+            --email "$OWNER_EMAIL" --cacert caddy-root.crt --onboard-operator operator2@example.org | tee first-login.json
+          python3 -c "import json; d=json.load(open('first-login.json')); o=d['operator_onboarding']; assert d['passed'] and o['accepted'] and o['active_operators'] >= 2, d"
           again=$(sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/first-admin.sh)
           grep -q "already chosen its own password" <<<"$again"
       - name: add-user.sh registers a second person without authority
@@ -276,7 +280,10 @@ jobs:
             pg_restore --exit-on-error -d impact_restore_check "$s/impact.dump";
             n=$(psql -Atd impact_restore_check -c "select count(*) from impact.schema_migration");
             o=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator");
-            echo "restored $s: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
+            a=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator_nomination where state='"'"'Accepted'"'"'");
+            echo "restored $s: $n migrations, $o platform operator(s), $a accepted nomination(s)"; test "$n" -ge 20;
+            # The bootstrap operator plus operator2, onboarded through the platform in an earlier step.
+            test "$o" -eq 2; test "$a" -eq 1;
             dropdb impact_restore_check'
       - name: Restore drill on throwaway containers (measured restore time)
         run: |

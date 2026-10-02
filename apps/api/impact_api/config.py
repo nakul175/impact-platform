@@ -82,6 +82,15 @@ class Settings:
     # The server's operations summary (deploy/ops-check.sh: backup age, restore drill, disk, alerts),
     # an absolute path read by GET /v1/platform/metrics; empty reports no operations section.
     ops_status_file: str = ""
+    # Sign-in accounts created through the control plane (v0.26a, impact_api/provider_accounts.py):
+    # "keycloak" (the realm's admin API through a service-account client limited to user management,
+    # reached on the deployment's internal network), "development" (the development users file;
+    # development sign-in only) or empty (account creation answers 503 PROVIDER_ADMIN_NOT_CONFIGURED).
+    provider_admin: str = ""
+    provider_admin_url: str = ""
+    provider_admin_realm: str = ""
+    provider_admin_client_id: str = ""
+    provider_admin_client_secret: str = field(default="", repr=False)
 
     @property
     def unprivileged_db_required(self):
@@ -163,6 +172,22 @@ class Settings:
             or urlparse(s.public_origin).hostname not in {"127.0.0.1", "localhost"}
         ):
             raise ValueError("Local identity requires loopback development")
+        if s.provider_admin not in {"", "keycloak", "development"}:
+            raise ValueError("provider_admin must be keycloak, development or empty")
+        if s.provider_admin == "development" and (
+            not s.dev_auth or s.environment not in {"development", "test"} or not s.dev_users_file
+        ):
+            raise ValueError("Development provider accounts need development sign-in")
+        if s.provider_admin == "keycloak" and (
+            urlparse(s.provider_admin_url).scheme not in {"http", "https"}
+            or urlparse(s.provider_admin_url).username
+            or not s.provider_admin_realm
+            or not s.provider_admin_client_id
+            or len(s.provider_admin_client_secret) < 32
+        ):
+            raise ValueError(
+                "Keycloak provider accounts need a URL, realm, client and a 32+ character secret"
+            )
         keyring.validate(s)
         if s.dev_signing_keys and not s.dev_auth:
             raise ValueError("dev_signing_keys belongs to development sign-in only")

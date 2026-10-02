@@ -4,18 +4,30 @@ from jsonschema import Draft202012Validator, FormatChecker
 from .domain import DomainError
 from .tenant_contracts import UUID, ACTION, obj, text
 
-ROLE_NAMES = ["AUTHOR", "REVIEWER", "PROGRAMME_MANAGER", "ANALYST", "EXTERNAL"]
+# initial-access-v2 (v0.26a): the role bundles of bootstrap_profile.json besides TENANT_ADMIN. The
+# first five were the whole of initial-access-v1; a v1 manifest still validates (it names no other
+# role and carries no purpose_bound list).
+ROLE_NAMES = [
+    "AUTHOR",
+    "REVIEWER",
+    "PROGRAMME_MANAGER",
+    "ANALYST",
+    "EXTERNAL",
+    "MEL_ADMIN",
+    "DATA_STEWARD",
+    "ENUMERATOR",
+    "PRIVACY",
+    "AUDIT_READER",
+]
+CAPABILITY_LIST = {"type": "array", "items": text(64), "uniqueItems": True, "maxItems": 200}
 MANIFEST = obj(
     {
         "version": text(80),
-        "roles": obj(
-            {
-                name: {"type": "array", "items": text(64), "uniqueItems": True, "maxItems": 200}
-                for name in ["TENANT_ADMIN", *ROLE_NAMES]
-            },
-            ["TENANT_ADMIN"],
-        ),
-    }
+        "roles": obj({name: CAPABILITY_LIST for name in ["TENANT_ADMIN", *ROLE_NAMES]}, ["TENANT_ADMIN"]),
+        # Purpose-required capabilities: inside the delegation ceiling, never in a role template.
+        "purpose_bound": CAPABILITY_LIST,
+    },
+    ["version", "roles"],
 )
 CREATE = obj(
     {
@@ -29,7 +41,7 @@ CREATE = obj(
                     "type": "array",
                     "items": {"enum": ROLE_NAMES},
                     "minItems": 1,
-                    "maxItems": 5,
+                    "maxItems": len(ROLE_NAMES),
                     "uniqueItems": True,
                 },
                 "expires_at": {"type": "string", "format": "date-time"},

@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
-from impact_api.administration_contracts import augment  # noqa: E402
+from impact_api.administration_contracts import augment, augment_reference  # noqa: E402
 from impact_api.measurement_contracts import augment as augment_measurement  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
@@ -149,6 +149,8 @@ augment_exports(spec, policy)
 augment_dashboards(spec, policy)
 augment_audit_export(spec, policy)
 augment_privacy(spec, policy)
+# v0.26a: reference-data commands, after the read paths the measurement and period augmenters rebuild.
+augment_reference(spec, policy)
 # A baseline policy row whose operation no longer exists in the contract (its path and method
 # were taken over by an implemented operation under another identifier) is dropped: the policy
 # must describe exactly the operations of the contract (#19: create_organisation_units, superseded

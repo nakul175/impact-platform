@@ -211,9 +211,17 @@ class Service:
     def access(self, identity, tenant):
         with self.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
+            # v0.27: whether this membership holds the tenant's custody. Custody is never data
+            # access; the client only uses it to tell an owner awaiting initial access what
+            # happens next instead of a bare "not permitted".
+            custody = c.execute(
+                "SELECT 1 FROM impact.tenant_custody WHERE tenant_id=%s AND owner_membership_id=%s",
+                (ctx.tenant_id, ctx.membership_id),
+            ).fetchone()
             return {
                 "tenant_id": tenant,
                 "principal_id": ctx.principal_id,
+                "custody": bool(custody),
                 "capabilities": sorted({g["capability"] for g in ctx.grants if g["purpose"] is None}),
                 # Purpose-bound grants (privacy cases, v0.25 part B) authorise only requests that
                 # name the same purpose; listed separately so a client never treats them as general.

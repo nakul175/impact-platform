@@ -1,64 +1,102 @@
 # Impact Platform administrator guide
 
-This guide describes build 0.18.0. Build 0.18.0 adds eight grantable planning capabilities (see "Roles groups and organisation") and no administrator workflow. Build 0.16.0 emails invitations through the worker, lets a nominated recovery contact confirm their email address with a single-use code (evidence only) and shows platform operators a Workers panel in the tenant-lifecycle console; worker configuration, the email adapter and dead-letter inspection are covered in the operations guide. Builds 0.14.0 and 0.15.0 change no administrator workflow: native PostgreSQL provisioning and the live identity-provider configuration (issuer, client, end-session and back-channel logout, required ACR) are operator concerns covered in the operations guide. Since 0.15.0 custom roles can include only capabilities of implemented operations; a design-only capability is refused as not delegable even when your delegation ceiling contains it. Custody, tenant control, access administration and programme-data permissions are separate authorities. All sensitive changes retain the real actor, reason, expected revision and operation receipt. Local synthetic verification does not establish a production identity or recovery process.
+This guide describes build 0.26.0, refreshed for the v0.27 usability work (`docs/RELEASE-0.27-ux.md`). It is for the people who look after a workspace (the owner and the administrators under People & access and Workspace settings) and for platform operators (the Tenant lifecycle console). Each section names the release note that holds the full description and the exact limits; where they disagree, the release note is right. The operations guide (`docs/current/OPERATIONS-GUIDE.md`) and the deployment guide (`docs/current/DEPLOYMENT-GUIDE.md`) cover the server, secrets, backups and alerts; the support runbook (`docs/current/SUPPORT-RUNBOOK.md`) covers incidents.
 
-## Managed tenant onboarding
+Four authorities are kept apart on purpose, and no screen merges them: **custody** (owning the organisation's workspace), **tenant control** (the operators' console), **access administration** (who may do what) and **programme-data permissions** (reading or changing data). Holding one never implies another. Every administrative change records who did it, their reason, the exact revision they changed and an operation receipt, and every review that needs a different person compares natural persons, not accounts.
 
-| Step | Actor | Action | Result and boundary |
+## Bring a new organisation onto the platform
+
+*Release notes: `docs/RELEASE-0.26a.md` (operators, sign-ins, reference data, `initial-access-v2`), `docs/RELEASE-0.12.md` (recovery contacts), `docs/RELEASE-0.13.md` (authority renewal); the owner's click path is `docs/current/DEPLOYMENT-GUIDE.md` §4.1.*
+
+The first organisation needs three people: the operator who requests it, the person who will own it, and a second operator who activates it and approves its access reviews. The platform refuses to let one person play two of these roles.
+
+| Step | Who | Where | What it does |
 | --- | --- | --- | --- |
-| 1 | Qualified platform operator | Request tenant with profile, nominated owner and deployment qualification reference | Requested record only; no business access |
-| 2 | Exact nominated owner | Review and accept custody | Owner acceptance; no implicit programme grant |
-| 3 | Current owner | Nominate a distinct registered recovery contact and bounded expiry | Pending contact; no authority granted |
-| 4 | Exact nominee | Verify the nomination with fresh configured assurance | Verified consent to the pinned proposal |
-| 5 | Independent operator | Approve the verified contact | Eligible contact if all current checks still pass |
-| 6 | Independent operator | Review full readiness and activate | Active tenant; still no automatic business grants |
-| 7 | Owner | Propose initial administrative package | Fixed capability and expiry ceilings pinned |
-| 8 | Distinct nominated administrator | Accept the exact package | Consent only; no access until provision |
-| 9 | Independent operator | Provision reviewed initial access | Bounded administration; one-time applied marker |
-| 10 | Authorized administrator and independent reviewer | Request and approve business grants | Explicit scoped business access |
+| 1 | Operator | Tenant lifecycle → Platform operators | **Nominate an operator** by e-mail, then **Create a sign-in for someone** for that address. Hand over the one-time password yourself; it is shown once and never stored. |
+| 2 | Nominee | Sign in, Tenant lifecycle | Set a password and authenticator on first sign-in, then **Accept** the nomination. The nominating operator cannot accept for them. |
+| 3 | Operator | Platform operators | Create sign-ins for the future owner and for the second administrator (two different people). Each signs in once. |
+| 4 | Operator | **Request tenant** | Operating name, owner (chosen by name from the people who have signed in), qualified deployment, reporting time zone, retention days, privacy policy reference, reason. The form opens in a dialog; the request creates a record and nothing else. |
+| 5 | Owner | The card of the request | **Accept ownership.** This creates the custody membership. It opens no data: the owner now sees **Your administrator access is being set up** in the workspace. |
+| 6 | Owner | Recovery contacts | **Nominate** a registered person as recovery contact (expiry within 90 days). The contact **verifies** the nomination with a fresh sign-in and may confirm their e-mail address with a code; an operator who is not the owner **approves** within 24 hours of the verification. |
+| 7 | Independent operator | The card | **Activate tenant.** Refused for the requesting operator and for the owner. |
+| 8 | Owner | Initial access | **Propose initial access**, naming the second administrator. The proposal pins the onboarding profile `initial-access-v2`. |
+| 9 | Second administrator | Initial access | **Accept administrator role.** Consent only; still no access. |
+| 10 | Independent operator | Initial access | **Approve initial access.** The reviewed package is applied once: the owner and the second administrator receive their administration capabilities and delegation ceilings, with an expiry. |
+| 11 | Owner | People & access → Reference data | **Set up the standard reference data**, or create a calendar, review template, report template and geography by hand. Programmes cannot be activated without a calendar and a geography. |
+| 12 | Administrators | People & access | Invite members and grant them roles (below). |
 
-The initial requester cannot independently activate their own tenant request. Operator independence also compares natural-person identities. Current recovery readiness is required for initial-access approval. Authority expiry does not authorize rerunning bootstrap; reviewed renewal/extension remains future work.
+Tenants onboarded before build 0.26.0 keep the older `initial-access-v1` ceiling of 75 capabilities; there is no reviewed way to widen it yet. A v1 proposal still pending when the platform is updated is refused (`ACCESS_PROFILE_CHANGED`): cancel it and propose again.
 
-## Maintain recovery contacts
+## Operators' console (Tenant lifecycle)
 
-Open Tenant lifecycle, then Recovery contacts. The inbox is restricted to current participants and operators. Inspect both stored state and current readiness eligibility. An Active record can be ineligible because of expiry, owner change, verified-channel change or account authentication revocation.
+*Release notes: `docs/RELEASE-0.26a.md`, `docs/RELEASE-0.16.md` (workers), `docs/QUALITY-2026-10.md` (re-queue), `docs/RELEASE-0.27-ux.md` (dialogs).*
 
-Nomination chooses an existing registered person with verified email evidence, a reason and an expiry no more than 90 days away. The pending window is at most seven days. The nominee must verify the exact proposal, and an independent operator must approve within 24 hours of that verification and before the relevant expiries. Each mutation requires authentication within five minutes and the configured assurance class.
+Everyone can open the console; it shows each person only the requests addressed to them. A platform operator sees every organisation, the operators, the registered people, the workers and the deliveries.
 
-To replace or renew a contact, the owner creates a proposal pinned to the current contact revision. The existing contact remains effective until the replacement is approved. Approval atomically replaces the old record. Decline, withdrawal or rejection leaves the old approved contact untouched. Renewal with the same identity still requires new proof and independent approval.
+- **Tenant cards** show state, region, time zone, retention, the owner's identity reference, the work still outstanding (unfinished jobs, schedules, undelivered notices, retention holds) and the readiness checks. The actions on a card (**Accept ownership**, **Activate**, **Suspend**, **Reactivate**, **Begin closure**) open a dialog next to the card that names the action and the organisation, asks for a reason, and returns focus to the card when closed. Every one of them needs a sign-in within the last five minutes.
+- **Suspend** stops access and holds background deliveries; **Reactivate** rechecks readiness, needs an operator independent of the requester and the owner, and does not resend what was held. **Begin closure** cannot be reversed in this build and deletes nothing; a Closing record is not an archived or deleted one.
+- **Platform operators**: nominate, cancel a nomination, create or reissue a sign-in, see who has signed in and their identity references. Build 0.26.0 has no operator renewal or deactivation in the console.
+- **Workers**: heartbeats of the background workers (build, state, failures); a worker whose heartbeat is older than a minute while running is shown stale.
+- **Deliveries needing attention**: notices and e-mails that failed permanently or are held by a suspension. **Re-queue** or **Release hold** one at a time, with a reason, for an Active organisation only; nothing is resent automatically.
+- **Recovery contacts**, **Initial access** and **Authority renewal** are separate pages with the same card-and-form pattern.
 
-The owner may cancel pending nominations, the nominee may decline, and an operator may reject. An owner, nominee or operator may revoke an Active contact. Revocation removes future readiness but does not automatically suspend the tenant. Expired pending proposals must be withdrawn, declined or rejected before a new proposal can be created.
+## Keep the administrators' authority alive
 
-A freshly authenticated current owner can repair contact evidence while the tenant is Suspended. An unavailable owner cannot be bypassed by an operator. Contact records confer no reset, custody, membership or grant rights. Account-wide revocation invalidates contact proof; tenant-membership revocation alone does not automatically revoke this separate relationship.
+*Release note: `docs/RELEASE-0.13.md`.*
 
-## Renew delegated authority
+The authority applied at initial access expires. **Authority renewal** shows the owner's and the second administrator's delegated authority as it stands and whether a renewal can be proposed now. The owner proposes an expiry up to 90 days ahead; the second administrator confirms the exact proposal; an operator who is neither of them approves within seven days. Approval extends only what was pinned: nothing is widened and business grants are not extended. Authority that has already expired cannot be renewed in this build, and an administrator cannot yet be replaced; both are Release 2 work.
 
-Open Tenant lifecycle, then Authority renewal. The panel shows the delegated authority of the owner and the second administrator as it currently stands: the exact capability ceilings, the grants and assignments they back, and their expiry. It states whether a renewal can be proposed now and, if not, why (no applied initial access, no second holder, tenant not Active, readiness not met, or a proposal already pending).
+Administrators of delegated authority receive a notice in My work 14 and 3 days before it expires.
 
-Only the current owner proposes. Choose an expiry later than the current one and no more than 90 days ahead, give a reason, and confirm. The proposal pins the exact current authority; anything revoked before the proposal is not included. The second administrator confirms the exact proposal from their inbox. A platform operator who is a different natural person from both approves it within seven days. Every step requires authentication within the previous five minutes and the configured assurance.
+## Invite people and grant access
 
-Approval extends only the pinned ceilings, grants, assignments and the second administrator's membership. Nothing is widened, business grants are not extended, and a grant revoked after the proposal makes approval fail; withdraw and propose again. Authority that has already expired cannot be renewed in this build; that case, and replacing an administrator, are planned as v0.14.
+*Release notes: `docs/IMPLEMENTATION.md` (access administration), `docs/RELEASE-0.16.md` (emailed invitations), `docs/RELEASE-0.26a.md` (sign-ins and purpose-bound grants).*
 
-## Manage members and grants
+1. In **People & access**, **Invite member**: a person's e-mail address with an expiry. The invitation is single use and bound to the intended verified identity; reissuing it invalidates the earlier one. Where e-mail delivery is configured the worker e-mails the link; the e-mail itself grants nothing. On staging the workspace owner can then **Create a sign-in for this person**, and hands over the one-time password in person.
+2. The person opens the link, signs in and joins. They now have a membership and no permission: they see **Your access is being set up** until a grant is approved.
+3. **Request role change** for a member: a fixed template (AUTHOR, REVIEWER, MEL_ADMIN, PROGRAMME_MANAGER, DATA_STEWARD, ENUMERATOR, ANALYST, EXTERNAL and so on) or a custom role, a scope (the whole workspace or a named scope), an expiry within 90 days and a reason. A different administrator chooses **Approve request** or **Reject request**. A request beyond your own delegation ceiling is refused: you cannot delegate what you do not hold.
+4. **Purpose-bound access** is requested and approved the same way for the seven capabilities that only exist for a stated purpose: the audit export and the six data-subject-request capabilities. They are never part of a role.
+5. **Suspend** a member to stop their access and hold their work; **Reactivate** needs their fresh sign-in and resumes nothing automatically; **Revoke** removes their grants and is not undone by reactivation. The owner's own custody membership cannot be removed here.
 
-Inspect the intended verified identity, scope, capabilities, purpose and expiry before issuing a membership invitation or access request. Invitations are single use, intended-identity bound and time limited. Reissue invalidates the earlier invitation. Since build 0.16.0 the invitation is also emailed by the worker to the intended address: the link is derived when the email is sent, only for the current invitation, so a reissued, revoked or expired invitation's earlier email is never sent. Receiving the email grants nothing; acceptance still requires the intended verified identity. Development and test delivery goes to a local sink, and no email provider has been qualified, so development links and sink messages are not evidence of external delivery.
+Every one of these needs your sign-in within the last five minutes. The requester, the member and any author of the request cannot approve it, however many accounts they hold.
 
-Role changes and renewal require independent review of the exact proposal. The requester, recipient and material author cannot create independence by switching accounts. Template changes do not silently rewrite previously approved assignments. Renewal removes old grants and requires fresh tenant authentication rather than preserving stale authority.
+## Roles, groups and organisation units
 
-Suspension stops current access and holds owned work. Reactivation requires fresh sign-in and does not replay queued writes or resume schedules. Revocation removes grants and is not reversible through reactivation. Review departure-related sources, schedules, tasks, credentials and recovery-contact relationships separately; the full departure inventory is not yet complete.
+*Release note: `docs/IMPLEMENTATION.md`; the delegable set is `contracts.DELEGABLE_CAPABILITIES`.*
 
-## Roles groups and organisation
+In **Workspace settings** you create, revise and retire custom roles within your delegation ceiling; the fifteen system templates cannot be edited. A custom role may carry only the 117 capabilities of implemented, purpose-less operations; a design-only capability is refused even if your ceiling names it. Groups bind reviewed memberships to roles, and removing a member from a group removes the derived access at once. Organisation units can be created, renamed and reparented; a cycle is refused. Custody can be transferred to a nominated successor who accepts it; the transfer carries no business permission.
 
-Workspace settings supports custom role creation, revision and retirement within the actor's delegation ceiling. System templates cannot be edited. Groups require reviewed membership and role bindings; removal immediately removes derived access. Nested groups and full certification are not qualified. Custom roles can delegate only capabilities of implemented operations: 92 since build 0.18.0 (84 before). The new ones are the planning capabilities `frameworks.read`, `frameworks.draft.create`, `frameworks.draft.edit`, `framework.submit`, `targets.read`, `targets.draft.create`, `targets.draft.edit` and `target.submit`; the MEL_ADMIN and AUTHOR templates carry the draft and submit capabilities, and approval of a framework or target uses the existing workflow approval by an independent reviewer. None of them needs a purpose or fresh assurance. Grant `targets.read` together with result access where people should see actuals: without result access the targets-versus-actuals view withholds the actual.
+## Reference data
 
-Organisation units support creation, rename and immediate reparenting. Stable codes remain fixed. Cycles and cross-tenant parents are rejected. Future-effective moves and full impact previews remain pending. Custody transfer requires the nominated eligible successor to accept; it never supplies new business permissions.
+*Release note: `docs/RELEASE-0.26a.md`.*
 
-## Tenant suspension and closure
+Under **People & access → Reference data** (capability `reference-data.manage`, owner and tenant administrator): **Set up the standard reference data** once per workspace (a quarterly calendar for this and next year, the review template "Standard independent review", the report template "Standard results report", the geography "Organisation-wide"); or create a **reporting calendar** (monthly, quarterly or yearly, 1–5 years, extendable to 20), a **review template** (the only shape this build executes: one independent approval), a **report template** (1–20 sections) and **geographies** by hand. Each is an ordinary governed command with a reason and an audit record. The development fixture's calendar cannot be extended.
 
-Review the impact preview before suspension. Queued jobs are cancelled, running jobs are marked for cancellation, and active owned schedules are paused. These database effects have local evidence. Since build 0.16.0 the worker never sends notices or emails queued before a suspension, and does not send them after reactivation either; it cancels queued jobs whose cancellation was requested, but it executes no job class, so interruption of a running downstream job is still not implemented.
+## Export the audit trail
 
-Reactivation rechecks readiness and requires independent review and fresh authentication. Closing is a preserved lifecycle state, not proof of export, archival or deletion. Governed exit, support access, source-credential rechecks and completed closure remain open. Do not describe a Closing record as deleted.
+*Release note: `docs/RELEASE-0.25a.md`.*
 
-## Administrative incident record
+**Audit export** under People & access (capability `audit.export`, held for a purpose: security review, incident investigation, regulatory request or internal audit) exports the audit events of a window as JSON lines with a hash chain and a seal, page by page, with a manifest you download beside it. State the purpose and a reason; the export itself is audited. The seal can be verified only while the key that made it is current or in its grace period, so verify soon after exporting.
 
-Record the tenant, actor, operation and correlation identifiers, source and resulting revisions, reason, current state, observed outcome and evidence reference. Never paste credentials or sensitive participant content into an issue. Escalation routes and production security responsibilities must be assigned by the operating organization before deployment.
+## Handle a data-subject request
+
+*Release note: `docs/RELEASE-0.25b.md`.*
+
+Subjects are members of the workspace; participants do not exist in this build. Under **People & access → Data-subject requests**, with purpose-bound privacy capabilities:
+
+1. **Open a case**: access or erasure, the member, the reason, how the request was verified, an optional deadline. An erasure case may name the member's evidence files and finished import batches.
+2. Read the **plan**: every store the case will touch and what happens there (redact, delete, supersede), including items held back by a retention hold or shared content.
+3. A different person **approves** the exact plan. Erasure also requires that the member is no longer active and does not hold custody: offboard first.
+4. **Execute.** An access case produces an export package to download within seven days; an erasure case runs at once, records every store action in the deletion ledger and reports anything held back or failed (failed object deletions are retried). Approved observations, results, snapshots and reports are never altered: official numbers stay as they were.
+
+Erased values remain in backup sets taken before the erasure until those age out, and a restore does not replay erasures; the retention schedule is fixed for every workspace and cannot yet be set per tenant.
+
+## Suspend or close an organisation
+
+*Release notes: `docs/IMPLEMENTATION.md`, `docs/RELEASE-0.16.md`.*
+
+Review the card's impact figures before suspending. Suspension cancels queued jobs, marks running ones for cancellation and pauses schedules; notices queued before it are never sent, not even after reactivation. Reactivation rechecks readiness and needs independent review. Closing is a preserved state: governed export, archival and deletion are not implemented, and a Closing organisation must not be described as deleted.
+
+## Record an administrative incident
+
+Record the organisation, actor, operation and correlation identifiers, the revisions before and after, the reason, the current state, what was observed and where the evidence is. Never paste credentials, one-time passwords or personal data into an issue. Alert codes, first steps and escalation are in `docs/current/SUPPORT-RUNBOOK.md`.

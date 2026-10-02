@@ -122,6 +122,22 @@ export function NoWorkspace({
               </li>
             </ol>
           </>
+        ) : nominated.length > 0 ? (
+          <p>
+            A platform operator looks after organisations&apos; workspaces:
+            requesting them, activating them and approving their access reviews.
+            Accepting the nomination gives you no access to any
+            organisation&apos;s data. You accept it with your own sign-in and
+            authenticator; the person who nominated you cannot accept for you.
+          </p>
+        ) : owned.length > 0 ? (
+          <p>
+            As the owner you review the organisation&apos;s configuration,
+            accept it and name a recovery contact; a platform operator then
+            activates the organisation. Ownership on its own opens no programme
+            data. Your administrator access follows later, through an initial
+            access review with a second administrator and an operator.
+          </p>
         ) : (
           <p>
             Your sign-in works, but no organisation has given you access yet. If

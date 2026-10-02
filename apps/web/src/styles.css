@@ -1639,3 +1639,36 @@ button.link {
   font-weight: 600;
   fill: #203c34;
 }
+/* v0.27: waiting page before any area is usable, and readable review stages. */
+.access-gate {
+  max-width: 720px;
+  padding: 32px;
+}
+.access-gate h1 {
+  font-size: 26px;
+  margin: 8px 0 16px;
+}
+.access-gate p,
+.access-gate li {
+  line-height: 1.6;
+}
+.next-steps {
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+}
+.review-stages {
+  margin-bottom: 22px;
+}
+.review-stages h3 {
+  margin: 0 0 10px;
+}
+.review-stages ol {
+  padding-left: 20px;
+  display: grid;
+  gap: 12px;
+}
+.review-stages li > strong {
+  display: block;
+  margin-bottom: 6px;
+}

@@ -158,8 +158,10 @@ def augment(spec, policy):
             "retention_days": {"type": "integer", "minimum": 0},
             "action": {"enum": ["DELETE", "REDACT", "EXPIRE"]},
             "basis": {"type": "string"},
+            "source": {"enum": ["DEFAULT", "APPROVED_POLICY"]},
+            "policy_id": {"type": ["string", "null"], "format": "uuid"},
         },
-        ["data_class", "store", "trigger", "retention_days", "action", "basis"],
+        ["data_class", "store", "trigger", "retention_days", "action", "basis", "source", "policy_id"],
     )
     schemas["RetentionSchedule"] = closed(
         {

@@ -2201,70 +2201,6 @@
       "audit": true
     },
     {
-      "operation_id": "list_retention_policies",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/retention-policies",
-      "capability": "retention-policies.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_retention_policies",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/retention-policies",
-      "capability": "retention-policies.draft.create",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
-      "operation_id": "get_retention_policies",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
-      "capability": "retention-policies.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "patch_retention_policies",
-      "method": "PATCH",
-      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
-      "capability": "retention-policies.draft.edit",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
-      "audit": true
-    },
-    {
       "operation_id": "list_subscriptions",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/subscriptions",
@@ -5694,6 +5630,163 @@
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_retention_policies",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.draft.create",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft only; data class within the policy-able set, duration inside the class bounds (the 365-day audit floor among them), action fixed per class.",
+      "audit": true
+    },
+    {
+      "operation_id": "patch_retention_policies",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.draft.edit",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_retention_policies_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve",
+      "capability": "retention-policy.approve",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Independent natural person (never an author of the draft); Draft \u2192 Approved; one insert-only binding row per approval; the sweep applies the latest binding.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_retention_holds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-holds",
+      "capability": "retention-holds.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_retention_holds",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-holds",
+      "capability": "retention.hold",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "The object must be readable by the caller; review date in the future; effective immediately.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_retention_holds_release",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release",
+      "capability": "retention.release",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Never the natural person who placed the hold; a released hold is final.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_access_denials",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/access-denials",
+      "capability": "access-denials.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Identifiers, codes and correlation ids only; never a payload or secret.",
       "audit": false
     },
     {

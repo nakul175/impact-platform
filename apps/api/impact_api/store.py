@@ -193,6 +193,26 @@ def scopes(c, ctx, cap, object_id=None, purpose=None):
     return False
 
 
+def denied(ctx, operation, object_id, error):
+    """The one hook of denial auditing (v0.27): a refused authorisation carries what was refused
+    (principal, operation, capability, selector, status and reason; never a payload) so the request
+    layer can record it after the refused transaction rolled back (security_events.record). The
+    refusal itself is unchanged."""
+    tenant, principal = getattr(ctx, "tenant_id", None), getattr(ctx, "principal_id", None)
+    if tenant and principal:
+        error.denial = {
+            "tenant_id": tenant,
+            "principal_id": principal,
+            "operation_id": operation,
+            "capability": OPERATIONS[operation]["capability"],
+            "object_id": str(object_id) if object_id else None,
+            "status": error.status,
+            "code": error.code,
+            "reason_code": error.reason or error.code,
+        }
+    raise error
+
+
 def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None, exact_purpose=False):
     """A purpose-required operation fails closed unless the caller states a purpose (only the
     operations that accept one pass it, v0.25 part A audit export); a purpose-bound grant then
@@ -204,7 +224,7 @@ def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None, exa
     p = OPERATIONS[operation]
     if exact_purpose:
         if not purpose:
-            raise DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED")
+            denied(ctx, operation, object_id, DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED"))
         allowed = purpose in p.get("purposes", []) and any(
             g["capability"] == p["capability"] and g["purpose"] == purpose and g["scope_type"] == "TENANT"
             for g in ctx.grants
@@ -213,15 +233,22 @@ def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None, exa
         allowed = scopes(c, ctx, p["capability"], object_id, purpose=purpose)
     if not allowed:
         if hidden:
-            unavailable()
-        raise DomainError("POLICY_DENIED", 403)
+            denied(ctx, operation, object_id, DomainError("RESOURCE_UNAVAILABLE", 404))
+        denied(ctx, operation, object_id, DomainError("POLICY_DENIED", 403))
     if p.get("purpose_required") and not purpose:
-        raise DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED")
+        denied(ctx, operation, object_id, DomainError("POLICY_DENIED", 403, reason="PURPOSE_REQUIRED"))
     seconds = p.get("fresh_assurance_seconds")
     if seconds and not getattr(ctx.identity, "assurance_verified", True):
-        raise DomainError("ASSURANCE_REQUIRED", 403, reason="MFA_ASSURANCE_REQUIRED")
+        denied(
+            ctx, operation, object_id, DomainError("ASSURANCE_REQUIRED", 403, reason="MFA_ASSURANCE_REQUIRED")
+        )
     if seconds and (datetime.now(timezone.utc) - ctx.identity.auth_time).total_seconds() > seconds:
-        raise DomainError("ASSURANCE_REQUIRED", 403, reason="FRESH_AUTHENTICATION_REQUIRED")
+        denied(
+            ctx,
+            operation,
+            object_id,
+            DomainError("ASSURANCE_REQUIRED", 403, reason="FRESH_AUTHENTICATION_REQUIRED"),
+        )
 
 
 def visible_sql(ctx, cap):

@@ -13986,7 +13986,7 @@
             }
           }
         ],
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.17.0"
       },
       "post": {
         "operationId": "create_retention_policies",
@@ -14094,7 +14094,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.17.0",
         "x-audit-required": true
       }
     },
@@ -14206,7 +14206,7 @@
             }
           }
         },
-        "x-contract-version": "1.1.0"
+        "x-contract-version": "1.17.0"
       },
       "patch": {
         "operationId": "patch_retention_policies",
@@ -14314,7 +14314,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.17.0",
         "x-audit-required": true
       }
     },
@@ -38927,7 +38927,7 @@
       "post": {
         "operationId": "create_audit_export",
         "summary": "create audit export",
-        "description": "One bounded page (at most 1000 events, window at most 366 days and not in the future) of the tenant's audit events ordered by occurrence, as JSON Lines with a SHA-256 hash chain, a manifest with the content digest and an HMAC-SHA256 platform seal. Requires audit.export at TENANT scope for the stated purpose and authentication within 300 seconds; the export is itself audited. Identifiers, codes and digests only: no payload, secret or sealed value is exported.",
+        "description": "One bounded page (at most 1000 events, window at most 366 days and not in the future) of the tenant's audit events and collapsed access denials (v0.27) ordered by occurrence, as JSON Lines with a SHA-256 hash chain, a manifest with the content digest and an HMAC-SHA256 platform seal. Requires audit.export at TENANT scope for the stated purpose and authentication within 300 seconds; the export is itself audited. Identifiers, codes and digests only: no payload, secret or sealed value is exported.",
         "x-capability": "audit.export",
         "responses": {
           "200": {
@@ -39488,6 +39488,603 @@
         "parameters": []
       }
     },
+    "/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_retention_policies_approve",
+        "summary": "approve retention policy",
+        "description": "Independent approval of a proposed retention policy: a natural person other than every author of the draft, within 300 seconds of authentication. Writes the Approved revision and appends the binding the retention sweep applies for that data class from its next run.",
+        "x-capability": "retention-policy.approve",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRetentionPoliciesApprove"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.17.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/retention-holds": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_retention_holds",
+        "summary": "list retention holds",
+        "description": "The tenant's retention holds, active first: object, authority reference, reason, review date, who placed and who released each.",
+        "x-capability": "retention-holds.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionHoldList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "x-contract-version": "1.17.0"
+      },
+      "post": {
+        "operationId": "create_retention_holds",
+        "summary": "place retention hold",
+        "description": "Place a retention hold on one object of this tenant the caller can read (authority reference, reason, future review date). Effective at once: the erasure plan reports the object as HELD and the revision-removal guard refuses it. Requires authentication within 300 seconds.",
+        "x-capability": "retention.hold",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetentionHoldCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.17.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_retention_holds_release",
+        "summary": "release retention hold",
+        "description": "Release a hold: a natural person other than the one who placed it, with a reason, within 300 seconds of authentication. A released hold is final.",
+        "x-capability": "retention.release",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRetentionHoldsRelease"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.17.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/access-denials": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_access_denials",
+        "summary": "list access denials",
+        "description": "Refused authorisations of this tenant's members (denial auditing, v0.27): principal, operation, capability, route, status, reason and correlation ids, collapsed per principal, operation and reason inside a 300-second window with an occurrence counter; newest first, at most 200.",
+        "x-capability": "access-denials.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccessDenialList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "x-contract-version": "1.17.0"
+      }
+    },
     "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend": {
       "parameters": [
         {
@@ -39866,6 +40463,10 @@
             "format": "uuid"
           },
           "job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "hold_id": {
             "type": "string",
             "format": "uuid"
           }
@@ -48605,29 +49206,59 @@
           "data_class": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
-          "purpose": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
+          "duration_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3650
+          },
+          "expiry_action": {
+            "enum": [
+              "DELETE",
+              "EXPIRE",
+              "REDACT",
+              "RESTRICT",
+              "REVIEW"
+            ]
           },
           "trigger": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
-          "duration_days": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "expiry_action": {
+          "purpose": {
             "type": "string",
-            "enum": [
-              "DELETE",
-              "RESTRICT",
-              "REVIEW"
-            ]
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "supersedes_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "approved_by": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "approved_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "approved_revision": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
           }
         },
         "required": []
@@ -48730,29 +49361,44 @@
           "data_class": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
-          "purpose": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
+          "duration_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3650
+          },
+          "expiry_action": {
+            "enum": [
+              "DELETE",
+              "EXPIRE",
+              "REDACT",
+              "RESTRICT",
+              "REVIEW"
+            ]
           },
           "trigger": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 64
+            "maxLength": 64,
+            "pattern": "\\S"
           },
-          "duration_days": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "expiry_action": {
+          "purpose": {
             "type": "string",
-            "enum": [
-              "DELETE",
-              "RESTRICT",
-              "REVIEW"
-            ]
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "supersedes_revision": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": []
@@ -48766,7 +49412,58 @@
             "format": "uuid"
           },
           "data": {
-            "$ref": "#/components/schemas/RetentionPolicyDraftData"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data_class": {
+                "enum": [
+                  "OPERATION_RECEIPT",
+                  "OUTBOX_RECIPIENT",
+                  "PRIVACY_EXPORT_PACKAGE",
+                  "SECURITY_EVENT"
+                ]
+              },
+              "duration_days": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3650
+              },
+              "expiry_action": {
+                "enum": [
+                  "DELETE",
+                  "EXPIRE",
+                  "REDACT"
+                ]
+              },
+              "trigger": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "\\S"
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "\\S"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "supersedes_revision": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "data_class",
+              "duration_days",
+              "expiry_action",
+              "reason"
+            ]
           }
         },
         "required": [
@@ -48787,11 +49484,53 @@
             "format": "uuid"
           },
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RetentionPolicyDraftData"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data_class": {
+                "enum": [
+                  "OPERATION_RECEIPT",
+                  "OUTBOX_RECIPIENT",
+                  "PRIVACY_EXPORT_PACKAGE",
+                  "SECURITY_EVENT"
+                ]
+              },
+              "duration_days": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3650
+              },
+              "expiry_action": {
+                "enum": [
+                  "DELETE",
+                  "EXPIRE",
+                  "REDACT"
+                ]
+              },
+              "trigger": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "\\S"
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "\\S"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "supersedes_revision": {
+                "type": "string",
+                "format": "uuid"
               }
-            ],
+            },
+            "required": [],
             "minProperties": 1
           }
         },
@@ -48799,8 +49538,7 @@
           "operation_id",
           "expected_revision",
           "data"
-        ],
-        "description": "Atomic shallow merge of supplied draft fields. Omitted fields retain value; supplied nested arrays/objects replace the complete field. Null clears only nullable fields. Empty data is rejected."
+        ]
       },
       "SubscriptionData": {
         "type": "object",
@@ -63187,7 +63925,7 @@
         "additionalProperties": false,
         "properties": {
           "format": {
-            "const": "impact-audit-export-v1"
+            "const": "impact-audit-export-v2"
           },
           "export_id": {
             "type": "string",
@@ -63237,6 +63975,11 @@
             "minimum": 1
           },
           "event_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "denial_count": {
             "type": "integer",
             "minimum": 0,
             "maximum": 1000
@@ -63306,6 +64049,7 @@
           "generated_by",
           "page",
           "event_count",
+          "denial_count",
           "complete",
           "media_type",
           "content_sha256",
@@ -63466,6 +64210,7 @@
               "OPERATION_RECEIPT",
               "OUTBOX_RECIPIENT",
               "PRIVACY_EXPORT_PACKAGE",
+              "SECURITY_EVENT",
               "UPLOAD_SESSION"
             ]
           },
@@ -63488,6 +64233,19 @@
           },
           "basis": {
             "type": "string"
+          },
+          "source": {
+            "enum": [
+              "DEFAULT",
+              "APPROVED_POLICY"
+            ]
+          },
+          "policy_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
           }
         },
         "required": [
@@ -63496,7 +64254,9 @@
           "trigger",
           "retention_days",
           "action",
-          "basis"
+          "basis",
+          "source",
+          "policy_id"
         ]
       },
       "RetentionSchedule": {
@@ -63613,6 +64373,338 @@
       },
       "PrivacyExportPackage": {
         "type": "object"
+      },
+      "ActionRetentionPoliciesApproveData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ActionRetentionPoliciesApprove": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ActionRetentionPoliciesApproveData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "data"
+        ]
+      },
+      "RetentionHoldCreateData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "authority_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "review_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "object_id",
+          "authority_reference",
+          "reason",
+          "review_at"
+        ]
+      },
+      "RetentionHoldCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RetentionHoldCreateData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "ActionRetentionHoldsReleaseData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ActionRetentionHoldsRelease": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ActionRetentionHoldsReleaseData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "RetentionHold": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hold_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "object_type": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "authority_reference": {
+            "type": "string"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "review_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "placed_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "placed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "released_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "released_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "release_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "hold_id",
+          "object_id",
+          "object_type",
+          "authority_reference",
+          "reason",
+          "review_at",
+          "placed_by",
+          "placed_at",
+          "released_at",
+          "released_by",
+          "release_reason"
+        ]
+      },
+      "RetentionHoldList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "$ref": "#/components/schemas/RetentionHold"
+            }
+          },
+          "next_cursor": {
+            "type": "null"
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
+        ]
+      },
+      "AccessDenial": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "denial_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation_id": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "capability": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "route": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "status": {
+            "enum": [
+              403,
+              404
+            ]
+          },
+          "code": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "reason_code": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "object_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "window_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "first_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "first_correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "last_correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurrences": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "denial_id",
+          "principal_id",
+          "operation_id",
+          "capability",
+          "route",
+          "status",
+          "code",
+          "reason_code",
+          "object_id",
+          "window_start",
+          "first_at",
+          "last_at",
+          "first_correlation_id",
+          "last_correlation_id",
+          "occurrences"
+        ]
+      },
+      "AccessDenialList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "$ref": "#/components/schemas/AccessDenial"
+            }
+          },
+          "next_cursor": {
+            "type": "null"
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
+        ]
       },
       "CreateReportingCalendarData": {
         "type": "object",

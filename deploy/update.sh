@@ -36,7 +36,7 @@ write_status() {
   RESULT="$result" STEP="$CURRENT_STEP" COMMIT="$COMMIT" STARTED_AT="$STARTED_AT" \
     APP_HOST="${APP_HOST:-}" AUTH_HOST="${AUTH_HOST:-}" CONTAINERS="$containers" \
     RUN_LOG="$RUN_LOG" SECRETS_FILE="$SECRETS_FILE" TLS_MODE="${CADDY_TLS_MODE:-}" \
-    OPERATOR="${OPERATOR_OUTCOME:-}" SCHEMA="${SCHEMA_VERSION:-}" \
+    OPERATOR="${OPERATOR_OUTCOME:-}" SCHEMA="${SCHEMA_VERSION:-}" OPS_FILE="$OPS_DIR/ops-status.json" \
     python3 - "$STATUS_DIR/deploy-status.json" "$IMPACT_HOME/status.json" <<'PY'
 import json, os, sys, tempfile
 from datetime import datetime, timezone
@@ -74,6 +74,11 @@ for line in tail:
         line = line.replace(value, "[redacted]")
     cleaned.append(line[:400])
 app, auth = os.environ["APP_HOST"], os.environ["AUTH_HOST"]
+# The last operations check (deploy/ops-check.sh, every 5 minutes): kept across deployments.
+try:
+    ops = json.load(open(os.environ["OPS_FILE"]))
+except (OSError, ValueError):
+    ops = {}
 document = {
     "result": os.environ["RESULT"],
     "step": os.environ["STEP"],
@@ -89,6 +94,8 @@ document = {
     "schema_version": os.environ["SCHEMA"] or None,
     "first_operator": os.environ["OPERATOR"] or None,
     "services": services,
+    "operations": ops.get("operations"),
+    "alerts": ops.get("alerts", []),
     "log_tail": cleaned,
 }
 for target in sys.argv[1:]:
@@ -148,6 +155,115 @@ ensure_secret() {
   fi
 }
 
+# Host units: the 5-minute alert check, the weekly restore drill and log rotation for the logs this
+# package writes on the host. Rewritten only when their content changes; IMPACT_HOST_UNITS=0 skips.
+render_host_units() {
+  local dir=$1
+  cat >"$dir/impact-ops-check.service" <<EOF
+[Unit]
+Description=Impact Platform operations check (alerts into deploy-status.json)
+After=docker.service
+
+[Service]
+Type=oneshot
+Environment=IMPACT_HOME=$IMPACT_HOME
+ExecStart=$DEPLOY_DIR/ops-check.sh
+Nice=10
+TimeoutStartSec=5min
+StandardOutput=append:/var/log/impact-ops.log
+StandardError=append:/var/log/impact-ops.log
+EOF
+  cat >"$dir/impact-ops-check.timer" <<EOF
+[Unit]
+Description=Impact Platform operations check every 5 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target
+EOF
+  cat >"$dir/impact-restore-drill.service" <<EOF
+[Unit]
+Description=Impact Platform weekly restore drill (throwaway containers; live data untouched)
+After=docker.service
+
+[Service]
+Type=oneshot
+Environment=IMPACT_HOME=$IMPACT_HOME
+ExecStart=$DEPLOY_DIR/restore-drill.sh
+Nice=10
+TimeoutStartSec=2h
+StandardOutput=append:/var/log/impact-restore-drill.log
+StandardError=append:/var/log/impact-restore-drill.log
+EOF
+  cat >"$dir/impact-restore-drill.timer" <<EOF
+[Unit]
+Description=Impact Platform restore drill every Sunday after the nightly backup
+
+[Timer]
+OnCalendar=Sun *-*-* 23:15:00 UTC
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+  cat >"$dir/logrotate" <<EOF
+# Impact Platform host logs (written by deploy/update.sh; regenerated on every deployment).
+# An su directive in every stanza: Ubuntu's /var/log is root:syslog 0775, and without an su
+# directive logrotate refuses the group-writable parent ("insecure permissions"), skips the logs
+# and exits 1 whenever this file is run on its own.
+/var/log/impact-deploy.log /var/log/impact-ops.log /var/log/impact-restore-drill.log {
+  su root root
+  weekly
+  maxsize 20M
+  rotate 8
+  compress
+  delaycompress
+  missingok
+  notifempty
+  copytruncate
+}
+$STATE_DIR/admin-actions.log {
+  su root root
+  monthly
+  rotate 24
+  compress
+  missingok
+  notifempty
+  copytruncate
+}
+EOF
+}
+
+install_host_units() {
+  if [ "${IMPACT_HOST_UNITS:-1}" != "1" ] || [ ! -d /run/systemd/system ] || ! command -v systemctl >/dev/null; then
+    log "host units: skipped (no systemd, or IMPACT_HOST_UNITS=0)"
+    return 0
+  fi
+  local rendered name changed=0
+  rendered="$(mktemp -d)"
+  render_host_units "$rendered"
+  for name in impact-ops-check.service impact-ops-check.timer impact-restore-drill.service impact-restore-drill.timer; do
+    if ! cmp -s "$rendered/$name" "/etc/systemd/system/$name"; then
+      install -m 644 "$rendered/$name" "/etc/systemd/system/$name"
+      changed=1
+    fi
+  done
+  if [ -d /etc/logrotate.d ]; then
+    install -m 644 "$rendered/logrotate" /etc/logrotate.d/impact
+  fi
+  rm -rf "$rendered"
+  if [ "$changed" = 1 ]; then
+    systemctl daemon-reload
+    log "host units: installed or updated"
+  fi
+  systemctl enable --now impact-ops-check.timer impact-restore-drill.timer >/dev/null 2>&1 ||
+    log "host units: the timers could not be enabled"
+}
+
 public_ipv4() {
   curl -sf --max-time 5 http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address || true
 }
@@ -156,10 +272,11 @@ public_ipv4() {
 main() {
   require_root
   umask 077
-  mkdir -p "$IMPACT_HOME" "$STATE_DIR" "$STATUS_DIR" "$CA_DIR"
+  mkdir -p "$IMPACT_HOME" "$STATE_DIR" "$STATUS_DIR" "$CA_DIR" "$OPS_DIR"
   chmod 700 "$IMPACT_HOME" "$STATE_DIR"
   # Public certificates only (CI's internal root); the API container reads them as a non-root user.
-  chmod 755 "$STATUS_DIR" "$CA_DIR"
+  # The operations directory holds status files only (backup, drill, alerts; never a secret).
+  chmod 755 "$STATUS_DIR" "$CA_DIR" "$OPS_DIR"
   exec 9>"$STATE_DIR/update.lock"
   if ! flock -n 9; then
     log "another update is running; nothing to do"
@@ -245,13 +362,15 @@ main() {
     printf 'ACME_EMAIL=%s\n' "${acme_email:-$owner_email}"
     printf 'SMTP_FROM=%s\n' "${smtp_from:-impact@$APP_HOST}"
     printf 'IMPACT_STATUS_DIR=%s\nIMPACT_CA_DIR=%s\nIMPACT_CA_BUNDLE=%s\n' "$STATUS_DIR" "$CA_DIR" "$ca_bundle"
-    for key in SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD BACKUP_HOUR_UTC; do
+    printf 'IMPACT_OPS_DIR=%s\n' "$OPS_DIR"
+    for key in SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD BACKUP_HOUR_UTC BACKUP_MIN_FREE_MB; do
       local value
       value="$(env_value "$CONFIG_FILE" "$key")"
       if [ -n "$value" ]; then printf '%s=%s\n' "$key" "$value"; fi
     done
   } >"$tmp"
   mv -f "$tmp" "$COMPOSE_ENV"
+  install_host_units
 
   if [ "$(cat "$STATE_DIR/last-success" 2>/dev/null || true)" = "$COMMIT" ] &&
     [ "$(container_health api)" = "healthy" ] && [ "$(container_health keycloak)" = "healthy" ] &&
@@ -350,6 +469,8 @@ main() {
 
   step "done"
   printf '%s\n' "$COMMIT" >"$STATE_DIR/last-success"
+  # Fill the status file's operations and alerts at once instead of at the next timer run.
+  "$DEPLOY_DIR/ops-check.sh" >/dev/null 2>&1 || log "operations check failed (the timer retries)"
   write_status ok
   log "deployed $COMMIT; status at https://$APP_HOST/deploy-status.json"
 }

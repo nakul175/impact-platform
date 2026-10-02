@@ -344,6 +344,11 @@ class Reporting:
             ).fetchone()
             if not eligible:
                 unavailable()
+        if "export_artifacts" in data:
+            # A stored disclosure: the export artifacts it pinned still exist, byte for byte, for
+            # exactly the disclosed report revision (they are insert-only, so this only fails on a
+            # tampered or partially restored database).
+            self.service.exports.verify(c, ctx, report, data)
         return report
 
     def recipients(self, identity, tenant):
@@ -380,6 +385,12 @@ class Reporting:
 
         payload = {key: value for key, value in data.items() if key != "workflow_version"}
         report = self.validate_disclosure(c, ctx, payload)
+        if payload.get("export_formats"):
+            # Server-owned: each requested format is pinned to the exact succeeded artifact of the
+            # disclosed revision, so the independent reviewer approves exact bytes, not a format.
+            payload["export_artifacts"] = self.service.exports.resolve(
+                c, ctx, report, payload["export_formats"]
+            )
         template = revision(
             c,
             ctx,
@@ -517,6 +528,11 @@ class Reporting:
                     now,
                 ),
             )
+        # The export artifacts the reviewed disclosure pinned, bound to this publication; a new
+        # format for the same audience is a new disclosure decision, never added to this one.
+        self.service.exports.bind(
+            c, ctx, disclosure["object_id"], published["revision_id"], disclosure["payload"], now
+        )
         return published
 
     def withdraw(self, c, ctx, report, data, correlation):
@@ -558,6 +574,32 @@ class Reporting:
             audit(c, ctx, "publication.withdrawn", receipt, correlation)
         return receipts[0]
 
+    def recipient_disclosure(self, c, ctx, disclosure_id, download):
+        """The published, unexpired disclosure naming the caller as a recipient (with the download
+        right when `download`), or RESOURCE_UNAVAILABLE: a withdrawn, expired or foreign disclosure
+        looks exactly like a missing one."""
+        disclosure = load(c, ctx, disclosure_id, "Disclosure")
+        try:
+            expires = datetime.fromisoformat(disclosure["payload"]["expires_at"].replace("Z", "+00:00"))
+        except (KeyError, TypeError, ValueError):
+            unavailable()
+        recipient = next(
+            (
+                item
+                for item in disclosure["payload"].get("recipients", [])
+                if item.get("membership_id") == ctx.membership_id
+            ),
+            None,
+        )
+        if (
+            disclosure["lifecycle_state"] != "Published"
+            or expires <= datetime.now(timezone.utc)
+            or not recipient
+            or (download and not recipient["allow_download"])
+        ):
+            unavailable()
+        return disclosure
+
     def publication(self, identity, tenant, disclosure_id, format, correlation):
         operation = (
             "view_controlled_publication" if format == "HTML" else "download_controlled_publication_csv"
@@ -565,26 +607,7 @@ class Reporting:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, operation, disclosure_id, hidden=True)
-            disclosure = load(c, ctx, disclosure_id, "Disclosure")
-            try:
-                expires = datetime.fromisoformat(disclosure["payload"]["expires_at"].replace("Z", "+00:00"))
-            except (KeyError, TypeError, ValueError):
-                unavailable()
-            recipient = next(
-                (
-                    item
-                    for item in disclosure["payload"].get("recipients", [])
-                    if item.get("membership_id") == ctx.membership_id
-                ),
-                None,
-            )
-            if (
-                disclosure["lifecycle_state"] != "Published"
-                or expires <= datetime.now(timezone.utc)
-                or not recipient
-                or (format == "CSV" and not recipient["allow_download"])
-            ):
-                unavailable()
+            disclosure = self.recipient_disclosure(c, ctx, disclosure_id, download=format == "CSV")
             artifact = c.execute(
                 "SELECT * FROM impact.report_publication_artifact "
                 "WHERE tenant_id=%s AND disclosure_id=%s AND disclosure_revision=%s AND format=%s",

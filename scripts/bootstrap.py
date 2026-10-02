@@ -24,6 +24,15 @@ from bootstrap_platform import provision_platform  # noqa: E402
 from fixture_support import FIXTURE_EXPIRES_AT, FIXTURE_STARTS_AT, fixture_database_allowed  # noqa: E402
 
 
+# Purpose-bound capabilities the fixture actors receive per the policy's role templates.
+PURPOSE_CAPABILITIES = [
+    "privacy-cases.read",
+    "privacy-cases.draft.create",
+    "privacy-cases.draft.edit",
+    "privacy.approve",
+    "privacy.execute",
+    "privacy.export",
+]
 # The issuer the fixture's auth_identity rows carry (specification/fixtures/seed.sql).
 FIXTURE_ISSUER = "http://127.0.0.1:8080/realms/impact-dev"
 
@@ -88,6 +97,17 @@ def bootstrap(local, idp=None):
                 "disclosures.read",
                 "publication.download",
                 "form.submit",
+                "imports.read",
+                "imports.draft.create",
+                "imports.draft.edit",
+                "import.preview",
+                "import.commit",
+                "import.cancel",
+                "evidence.attach",
+                "report.export",
+                # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
+                "audit.export",
+                "retention.read",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",
@@ -111,6 +131,29 @@ def bootstrap(local, idp=None):
                     "issuer_id": actor["principal_id"],
                 }
                 write(c, ctx, "Grant", data, "Active", object_id=obj, track_author=False)
+            # Privacy cases (v0.25 part B) are purpose-bound: their grants carry the purpose a
+            # request must name. The fixture's QUALIFICATION-purpose grants stay inert for them.
+            for cap in PURPOSE_CAPABILITIES:
+                policy = next(p for p in OPERATIONS.values() if p["capability"] == cap)
+                if not set(actor["roles"]).intersection(policy["role_templates"]):
+                    continue
+                for purpose in policy.get("purposes", []):
+                    obj = str(uuid5(NAMESPACE_URL, "impact-dev-grant:" + name + ":" + cap + ":" + purpose))
+                    if c.execute(
+                        "SELECT 1 FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
+                        (tenant, obj),
+                    ).fetchone():
+                        continue
+                    data = {
+                        "subject_id": actor["principal_id"],
+                        "capability": cap,
+                        "scope_id": str(scope),
+                        "starts_at": FIXTURE_STARTS_AT,
+                        "expires_at": FIXTURE_EXPIRES_AT,
+                        "purpose": purpose,
+                        "issuer_id": actor["principal_id"],
+                    }
+                    write(c, ctx, "Grant", data, "Active", object_id=obj, track_author=False)
         # This milestone captures manual observations. Preserve the baseline DATASET revision,
         # then explicitly append a development-only manual definition and instance revision.
         author = fixture["actors"]["author"]
@@ -245,7 +288,18 @@ def bootstrap(local, idp=None):
         "dev_users_file": str(local / "users.json"),
         "dev_public_key": str(local / "public.pem"),
         "fixture_id": fixture["fixture_id"],
+        # Evidence bytes (v0.22): a private directory of this run, scanned by the deterministic
+        # signature scanner (EICAR test file only; not an anti-malware engine).
+        "object_store_dir": str((local / "objects").resolve()),
+        "evidence_scanner": "eicar-signature",
     }
+    # Grace secrets and the development signing key set written by scripts/rotate_secrets.py survive a
+    # re-run of this bootstrap (v0.25 part A); a fresh run directory has none.
+    for name in ["cookie_secret_previous", "invitation_secret_previous", "delivery_secret_previous"]:
+        if previous_config.get(name):
+            config[name] = previous_config[name]
+    if previous_config.get("dev_signing_keys") and config["dev_auth"] and not idp:
+        config["dev_signing_keys"] = previous_config["dev_signing_keys"]
     if idp:
         config.update(
             issuer=idp["issuer"],
@@ -269,6 +323,11 @@ def bootstrap(local, idp=None):
         "public_origin": config["public_origin"],
         "invitation_secret": config["invitation_secret"],
         "delivery_secret": config["delivery_secret"],
+        **{
+            name: config[name]
+            for name in ["invitation_secret_previous", "delivery_secret_previous"]
+            if config.get(name)
+        },
         "email_adapter": "synthetic",
         "synthetic_sink": str(local / "synthetic-mail.jsonl"),
         "require_unprivileged_db": config["require_unprivileged_db"],

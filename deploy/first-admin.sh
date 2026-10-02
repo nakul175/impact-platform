@@ -50,20 +50,21 @@ if [ -n "$reset" ]; then
   log "issued a new temporary password for $owner_email (authenticator removed: $(printf '%s' "$result" | json_field totp_removed))" \
     >>"$STATE_DIR/admin-actions.log"
 elif [ "$(printf '%s' "$status" | json_field temporary_password_pending)" != "true" ]; then
-  cat <<EOF
-
-The owner account $owner_email has already chosen its own password, so there is nothing to show.
-Forgotten password or lost authenticator app?  sudo $0 --reset   (or --reset-totp)
-
-EOF
+  box "Impact Platform (staging)" "" \
+    "Address:    https://$app_host/" \
+    "Username:   $owner_email" "" \
+    "The owner account has already chosen its own password, so there is nothing to show." \
+    "Forgot the password?          sudo $0 --reset" \
+    "Lost the authenticator app?   sudo $0 --reset-totp"
   exit 0
 fi
 
 password="$(env_value "$SECRETS_FILE" OWNER_TEMP_PASSWORD)"
+box "Impact Platform (staging) - your first sign-in" "" \
+  "Address:              https://$app_host/" \
+  "Username:             $owner_email" \
+  "Temporary password:   $password"
 cat <<EOF
-
-  Impact Platform (staging) - first sign-in for the owner
-
   1. On your computer, open   https://$app_host/
      and choose "Sign in". You are sent to https://$auth_host/ .
   2. Username:                $owner_email

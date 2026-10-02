@@ -5,24 +5,30 @@ from urllib.parse import urlencode
 import hashlib
 import hmac
 import json
+import logging
 import secrets
 import time
 import base64
 import httpx
 import jwt
 from cryptography.exceptions import InvalidTag
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from fastapi.responses import JSONResponse, RedirectResponse
 from .domain import DomainError, unavailable
+from .keyring import KeyringError, ring, signing_keys
 from .identity_profile import normalize_email, email_hash, masked_email
 
 
+LOG = logging.getLogger("impact")
 SESSION_ACTIVITY_INTERVAL_SECONDS = 30
 # OpenID Connect Back-Channel Logout 1.0, section 2.4.
 BACKCHANNEL_LOGOUT_EVENT = "http://schemas.openid.net/event/backchannel-logout"
 # A logout token older than this is refused; the provider sends it at the moment of logout.
 LOGOUT_TOKEN_MAX_AGE_SECONDS = 300
 LOGOUT_HINT_CONTEXT = b"impact-provider-logout-hint"
+# web_session.provider_logout_hint holds at most 16412 bytes (migration 0017): the 7-byte key
+# header, the 12-byte nonce and the 16-byte tag leave this much for the ID token. A longer token
+# is not sealed; logout then goes to the provider without a hint.
+MAX_HINT_TOKEN_BYTES = 16412 - 7 - 12 - 16
 
 
 def digest(value):
@@ -51,10 +57,31 @@ class Auth:
             jwt.PyJWKClient(s.jwks_url, cache_keys=False, lifespan=60, timeout=5) if s.jwks_url else None
         )
 
+    def cookie_ring(self):
+        return ring(self.s, "cookie")
+
     def csrf(self, session):
-        return hmac.new(
-            self.s.cookie_secret.encode(), ("csrf:" + session).encode(), hashlib.sha256
-        ).hexdigest()
+        """'<kid>.<HMAC>' of the session under the current cookie secret (v0.25 part A)."""
+        return self.cookie_ring().sign(("csrf:" + session).encode())
+
+    def csrf_valid(self, session, token):
+        """A kid-tagged or legacy CSRF token made with any non-retired cookie secret."""
+        return self.cookie_ring().verify(("csrf:" + session).encode(), token)
+
+    def dev_key(self, token):
+        """The public key that verifies a development token: the key its kid header names among
+        the current and grace keys, or the current key for a token without a kid."""
+        header = jwt.get_unverified_header(token)
+        kid = header.get("kid")
+        if kid is None:
+            return Path(self.s.dev_public_key).read_bytes()
+        try:
+            keys = signing_keys(self.s.dev_public_key, getattr(self.s, "dev_signing_keys", ""))
+        except (KeyringError, ValueError):
+            raise ValueError from None
+        if not isinstance(kid, str) or kid not in keys:
+            raise ValueError
+        return keys[kid]
 
     def origin(self, request):
         if request.headers.get("origin") != self.s.public_origin:
@@ -64,11 +91,7 @@ class Auth:
         try:
             if len(token) > 16384:
                 raise ValueError
-            key = (
-                Path(self.s.dev_public_key).read_bytes()
-                if self.s.dev_auth
-                else self.jwks.get_signing_key_from_jwt(token).key
-            )
+            key = self.dev_key(token) if self.s.dev_auth else self.jwks.get_signing_key_from_jwt(token).key
             claims = jwt.decode(
                 token,
                 key,
@@ -81,6 +104,12 @@ class Auth:
             if claims.get("azp", self.s.client_id) != self.s.client_id:
                 raise ValueError
             return claims
+        except jwt.PyJWKClientConnectionError:
+            # The provider's key set could not be fetched (outage, timeout, refused connection) and no
+            # cached key set is current: no bearer token is accepted, and the caller is told the
+            # provider is unavailable rather than that its credential is wrong.
+            LOG.warning("identity provider key set unavailable")
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="IDENTITY_PROVIDER_UNAVAILABLE") from None
         except (jwt.PyJWTError, ValueError, OSError):
             raise DomainError("AUTH_REQUIRED", 401) from None
 
@@ -186,7 +215,7 @@ class Auth:
                 raise DomainError("AUTH_REQUIRED", 401)
             if request.method not in {"GET", "HEAD", "OPTIONS"}:
                 self.origin(request)
-                if not hmac.compare_digest(request.headers.get("x-csrf-token", ""), self.csrf(session)):
+                if not self.csrf_valid(session, request.headers.get("x-csrf-token", "")):
                     raise DomainError("POLICY_DENIED", 403, reason="CSRF_REQUIRED")
             # Activity is recorded at most every 30 s. In a burst of N requests on one session
             # after 30 s of inactivity, all N pass the check on the row as read; the first UPDATE
@@ -213,23 +242,24 @@ class Auth:
             row["assurance_acr"] == self.s.required_acr if self.s.required_acr else self.s.dev_auth,
         )
 
-    def hint_key(self, session):
-        return hmac.new(
-            self.s.cookie_secret.encode(), b"logout-hint:" + session.encode(), hashlib.sha256
+    @staticmethod
+    def hint_key(session):
+        """The sealing key of a logout hint for one cookie secret: HMAC(secret, session cookie)."""
+        return lambda secret: hmac.new(
+            secret.encode(), b"logout-hint:" + session.encode(), hashlib.sha256
         ).digest()
 
     def seal_hint(self, session, id_token):
         """The ID token for the provider's logout request, encrypted under a key derived from the
-        session cookie value (never stored) and the cookie secret."""
-        nonce = secrets.token_bytes(12)
-        return nonce + AESGCM(self.hint_key(session)).encrypt(nonce, id_token.encode(), LOGOUT_HINT_CONTEXT)
+        session cookie value (never stored) and the current cookie secret, tagged with its kid."""
+        raw = id_token.encode()
+        if len(raw) > MAX_HINT_TOKEN_BYTES:
+            return None
+        return self.cookie_ring().seal(self.hint_key(session), raw, LOGOUT_HINT_CONTEXT)
 
     def open_hint(self, session, sealed):
         try:
-            sealed = bytes(sealed)
-            return (
-                AESGCM(self.hint_key(session)).decrypt(sealed[:12], sealed[12:], LOGOUT_HINT_CONTEXT).decode()
-            )
+            return self.cookie_ring().unseal(self.hint_key(session), sealed, LOGOUT_HINT_CONTEXT).decode()
         except (InvalidTag, ValueError, UnicodeDecodeError):
             return None
 
@@ -436,6 +466,8 @@ class Auth:
                 timeout=8,
                 follow_redirects=False,
             )
+            if response.status_code >= 500:
+                raise httpx.TransportError("provider token endpoint status " + str(response.status_code))
             response.raise_for_status()
             id_token = response.json()["id_token"]
             claims = self.claims(id_token, self.s.client_id)
@@ -446,6 +478,11 @@ class Auth:
             sid = claims.get("sid")
             if sid is not None and (not isinstance(sid, str) or not sid or len(sid) > 255):
                 raise ValueError
+        except httpx.TransportError:
+            # Provider outage at the code exchange: no session is created and the consumed state
+            # cannot be replayed; the caller must start a new sign-in once the provider is back.
+            LOG.warning("identity provider token endpoint unavailable")
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="IDENTITY_PROVIDER_UNAVAILABLE") from None
         except (httpx.HTTPError, KeyError, ValueError, TypeError):
             raise DomainError("AUTH_REQUIRED", 401) from None
         identity = self.identity(claims)

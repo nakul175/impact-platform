@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared helpers for deploy/update.sh, deploy/first-admin.sh and deploy/add-user.sh. Sourced, not
+# Shared helpers for deploy/update.sh and the owner and operations scripts in deploy/. Sourced, not
 # run. Paths default to the server layout and can be moved with IMPACT_HOME (the CI stack does).
 # shellcheck disable=SC2034  # variables are used by the scripts that source this file
 
@@ -13,6 +13,7 @@ COMPOSE_ENV="$IMPACT_HOME/compose.env"
 STATUS_DIR="$IMPACT_HOME/public"
 CA_DIR="$IMPACT_HOME/ca"
 STATE_DIR="$IMPACT_HOME/state"
+OPS_DIR="$IMPACT_HOME/ops"
 PROJECT="impact"
 DEFAULT_OWNER_EMAIL="nakul.jain@aplyd.com"
 DEFAULT_OWNER_FIRST_NAME="Nakul"
@@ -86,6 +87,51 @@ for line in sys.stdin:
         except ValueError:
             pass
 print(found)
+'
+}
+
+# A plain box around the given lines, for the owner's console (no colours, ASCII only).
+box() {
+  local line width=0 rule
+  for line in "$@"; do
+    if [ "${#line}" -gt "$width" ]; then width=${#line}; fi
+  done
+  rule="$(printf '%*s' $((width + 4)) '' | tr ' ' '-')"
+  printf '\n  +%s+\n' "$rule"
+  for line in "$@"; do
+    printf '  |  %-*s  |\n' "$width" "$line"
+  done
+  printf '  +%s+\n\n' "$rule"
+}
+
+# The keycloak_admin.py `list` JSON (stdin) as a plain table for the owner's console.
+format_user_listing() {
+  python3 -c '
+import json, sys
+data = json.loads(sys.stdin.read() or "{}")
+users = data.get("users", [])
+def status(u):
+    if not u.get("enabled"):
+        return "switched off (cannot sign in)"
+    if u.get("locked"):
+        return "temporarily locked after wrong passwords (reset-user.sh lifts it)"
+    if u.get("temporary_password_pending"):
+        return "has not signed in yet (one-time password not used)"
+    if not u.get("totp_configured"):
+        return "signed in, but no authenticator app set up yet"
+    return "active, authenticator app set up"
+rows = [(u.get("email") or "", u.get("name") or "", status(u)) for u in users]
+w1 = max([len("E-MAIL")] + [len(r[0]) for r in rows])
+w2 = max([len("NAME")] + [len(r[1]) for r in rows])
+print()
+print("  Sign-in accounts on this deployment: %d" % len(rows))
+print()
+print("  %-*s  %-*s  %s" % (w1, "E-MAIL", w2, "NAME", "STATUS"))
+for r in rows:
+    print("  %-*s  %-*s  %s" % (w1, r[0], w2, r[1], r[2]))
+if data.get("truncated"):
+    print("  (only the first 500 accounts are shown)")
+print()
 '
 }
 

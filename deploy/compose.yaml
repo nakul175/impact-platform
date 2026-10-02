@@ -146,12 +146,26 @@ services:
       IMPACT_COOKIE_SECRET: ${IMPACT_COOKIE_SECRET:?}
       IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET:?}
       IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET:?}
+      # Grace secrets after a rotation (deploy/rotate-secrets.sh); empty until the first one.
+      IMPACT_COOKIE_SECRET_PREVIOUS: ${IMPACT_COOKIE_SECRET_PREVIOUS:-}
+      IMPACT_INVITATION_SECRET_PREVIOUS: ${IMPACT_INVITATION_SECRET_PREVIOUS:-}
+      IMPACT_DELIVERY_SECRET_PREVIOUS: ${IMPACT_DELIVERY_SECRET_PREVIOUS:-}
       # The provider's TLS certificate is verified against this bundle: the image's system store
       # on the server (Let's Encrypt); the system store plus Caddy's internal root in the CI stack,
       # which deploy/update.sh writes to <impact home>/ca/bundle.pem.
       SSL_CERT_FILE: ${IMPACT_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+      # Evidence bytes (v0.22): a private, content-addressed store on the named volume below, read
+      # only through the API's mediated download. The scanner recognises the EICAR test file only;
+      # it is not an anti-malware engine ("none" makes every scan FAILED and nothing downloadable).
+      IMPACT_OBJECT_STORE_DIR: /var/lib/impact/objects
+      IMPACT_EVIDENCE_SCANNER: ${IMPACT_EVIDENCE_SCANNER:-eicar-signature}
+      # Operations summary written by deploy/ops-check.sh (backup age, disk, drill, alerts), read by
+      # the operator-only GET /v1/platform/metrics.
+      IMPACT_OPS_STATUS_FILE: /var/lib/impact/ops/ops-status.json
     volumes:
       - ${IMPACT_CA_DIR:?}:/etc/impact-ca:ro
+      - objects:/var/lib/impact/objects
+      - ${IMPACT_OPS_DIR:?}:/var/lib/impact/ops:ro
     networks: [backend, edge]
     depends_on:
       postgres: {condition: service_healthy}
@@ -188,6 +202,8 @@ services:
       IMPACT_PUBLIC_ORIGIN: https://${APP_HOST}
       IMPACT_INVITATION_SECRET: ${IMPACT_INVITATION_SECRET}
       IMPACT_DELIVERY_SECRET: ${IMPACT_DELIVERY_SECRET}
+      IMPACT_INVITATION_SECRET_PREVIOUS: ${IMPACT_INVITATION_SECRET_PREVIOUS:-}
+      IMPACT_DELIVERY_SECRET_PREVIOUS: ${IMPACT_DELIVERY_SECRET_PREVIOUS:-}
       IMPACT_EMAIL_ADAPTER: smtp
       IMPACT_SMTP_HOST: ${SMTP_HOST:-127.0.0.1}
       IMPACT_SMTP_PORT: ${SMTP_PORT:-2525}
@@ -240,18 +256,61 @@ services:
       BACKUP_HOUR_UTC: ${BACKUP_HOUR_UTC:-21}
       KEEP_DAILY: "7"
       KEEP_WEEKLY: "4"
+      # Refuse an attempt below this much free space (or twice the newest set, if larger).
+      MIN_FREE_MB: ${BACKUP_MIN_FREE_MB:-1024}
+      IMPACT_COMMIT: ${IMPACT_TAG}
     volumes:
       - ./backup.sh:/opt/backup/backup.sh:ro
       - backups:/backups
+      # Evidence bytes, read-only: each set carries a tar of them (taken after the dumps).
+      - objects:/objects:ro
+      # Host directory for backup-status.json (read by deploy/ops-check.sh); no secret goes there.
+      - ${IMPACT_OPS_DIR:?}:/ops
     networks: [backend]
     depends_on:
       postgres: {condition: service_healthy}
+
+  # Weekly restore drill (profile "drill"; started only by deploy/restore-drill.sh and removed with
+  # its anonymous data volume afterwards). A throwaway PostgreSQL on its own internal network: it
+  # sees the backup sets read-only and nothing of the live database, its volume or its network.
+  drill-db:
+    image: postgres:17
+    profiles: ["drill"]
+    logging: *logging
+    environment:
+      # Generated per drill by deploy/restore-drill.sh; empty makes the image refuse to start.
+      POSTGRES_PASSWORD: ${DRILL_DB_PASSWORD:-}
+    volumes:
+      - backups:/backups:ro
+      - ./drill_restore.sh:/opt/drill/drill_restore.sh:ro
+    networks: [drill]
+    shm_size: 128m
+
+  # The drill's checks (deploy/restore_check.py in the application image): object digests against
+  # the restored file_blob rows, the migrator checksum pass and the security invariants.
+  drill-check:
+    <<: [*app, *hardened]
+    profiles: ["drill"]
+    # The backup sets are root's (0700/0600); root in this container, still with every capability
+    # dropped, read-only and on the drill network only, reads them as their owner.
+    user: "0:0"
+    command: ["python", "deploy/restore_check.py"]
+    environment:
+      # The password arrives as PGPASSWORD from deploy/restore-drill.sh, never in this file.
+      IMPACT_DRILL_DSN: postgresql://postgres@drill-db:5432/impact
+      IMPACT_DRILL_IDP_DSN: postgresql://postgres@drill-db:5432/keycloak
+    volumes:
+      - backups:/backups:ro
+    networks: [drill]
 
 networks:
   # The database network has no route out of the host.
   backend:
     internal: true
   edge: {}
+  # The restore drill's network: no route out and no other service on it.
+  drill:
+    internal: true
 
 volumes:
   pgdata: {}
@@ -259,3 +318,6 @@ volumes:
   caddy_config: {}
   backups: {}
   mail: {}
+  # Evidence objects. Each nightly backup set carries a tar of this volume (deploy/backup.sh); the
+  # database rows name every object by SHA-256 and the weekly restore drill checks them.
+  objects: {}

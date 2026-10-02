@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.4.0"
+    "version": "1.6.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -9418,6 +9418,977 @@
                   "required": [
                     "stale_after_seconds",
                     "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/deliveries": {
+      "get": {
+        "operationId": "list_delivery_attention",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 50,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "tenant_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "operating_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "lifecycle_state": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20,
+                            "pattern": "\\S"
+                          },
+                          "event_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "channel": {
+                            "enum": [
+                              "IN_APP",
+                              "EMAIL"
+                            ]
+                          },
+                          "template": {
+                            "enum": [
+                              "IN_APP_NOTICE",
+                              "MEMBER_INVITATION",
+                              "RECOVERY_CHANNEL_VERIFICATION"
+                            ]
+                          },
+                          "state": {
+                            "enum": [
+                              "PENDING",
+                              "LEASED",
+                              "SENT",
+                              "DEAD",
+                              "SUPERSEDED"
+                            ]
+                          },
+                          "held": {
+                            "type": "boolean"
+                          },
+                          "attempts": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "last_error_class": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "last_attempt_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "completed_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "revision": {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]{0,18})$"
+                          },
+                          "permitted_actions": {
+                            "type": "array",
+                            "items": {
+                              "enum": [
+                                "release",
+                                "requeue"
+                              ]
+                            },
+                            "uniqueItems": true
+                          }
+                        },
+                        "required": [
+                          "tenant_id",
+                          "operating_name",
+                          "lifecycle_state",
+                          "event_id",
+                          "channel",
+                          "template",
+                          "state",
+                          "held",
+                          "attempts",
+                          "last_error_class",
+                          "last_attempt_at",
+                          "completed_at",
+                          "revision",
+                          "permitted_actions"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/release": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "event_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "delivery_release",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "action": {
+                      "enum": [
+                        "release",
+                        "requeue"
+                      ]
+                    },
+                    "state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "held": {
+                      "type": "boolean"
+                    },
+                    "attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "previous_attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_error_class": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "operation_id",
+                    "tenant_id",
+                    "event_id",
+                    "action",
+                    "state",
+                    "held",
+                    "attempts",
+                    "previous_state",
+                    "previous_attempts",
+                    "previous_error_class",
+                    "revision",
+                    "reason"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/requeue": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "event_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "delivery_requeue",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "action": {
+                      "enum": [
+                        "release",
+                        "requeue"
+                      ]
+                    },
+                    "state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "held": {
+                      "type": "boolean"
+                    },
+                    "attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_state": {
+                      "enum": [
+                        "PENDING",
+                        "LEASED",
+                        "SENT",
+                        "DEAD",
+                        "SUPERSEDED"
+                      ]
+                    },
+                    "previous_attempts": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "previous_error_class": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "operation_id",
+                    "tenant_id",
+                    "event_id",
+                    "action",
+                    "state",
+                    "held",
+                    "attempts",
+                    "previous_state",
+                    "previous_attempts",
+                    "previous_error_class",
+                    "revision",
+                    "reason"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/metrics": {
+      "get": {
+        "operationId": "platform_metrics",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "build": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32,
+                      "pattern": "\\S"
+                    },
+                    "schema_version": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "schema_expected": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "generated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "workers": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "running": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "running_fresh": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "stale": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "stale_after_seconds": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "newest_beat_age_seconds": {
+                          "anyOf": [
+                            {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "dead_total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "failures_total": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "running",
+                        "running_fresh",
+                        "stale",
+                        "stale_after_seconds",
+                        "newest_beat_age_seconds",
+                        "dead_total",
+                        "failures_total"
+                      ]
+                    },
+                    "deliveries": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "dead": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "held": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "capped": {
+                          "type": "boolean"
+                        },
+                        "unsent": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "dead",
+                        "held",
+                        "capped",
+                        "unsent"
+                      ]
+                    },
+                    "jobs": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "unfinished": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "unfinished"
+                      ]
+                    },
+                    "tenants": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "counted": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "not_counted": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "by_lifecycle": {
+                          "type": "object",
+                          "maxProperties": 7,
+                          "additionalProperties": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        }
+                      },
+                      "required": [
+                        "counted",
+                        "not_counted",
+                        "by_lifecycle"
+                      ]
+                    },
+                    "storage": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "free_mb": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "total_mb": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "free_percent": {
+                              "anyOf": [
+                                {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "free_mb",
+                            "total_mb",
+                            "free_percent"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "requests": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "started_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "uptime_seconds": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "by_family": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "tenant": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "platform": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "auth": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "health": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            },
+                            "client": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "2xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "3xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "4xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "5xx": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "2xx",
+                                "3xx",
+                                "4xx",
+                                "5xx"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "tenant",
+                            "platform",
+                            "auth",
+                            "health",
+                            "client"
+                          ]
+                        },
+                        "latency_seconds": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "buckets": {
+                              "type": "array",
+                              "maxItems": 16,
+                              "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                  "le": {
+                                    "anyOf": [
+                                      {
+                                        "type": "number",
+                                        "minimum": 0
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "count": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                  }
+                                },
+                                "required": [
+                                  "le",
+                                  "count"
+                                ]
+                              }
+                            },
+                            "sum": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "buckets",
+                            "sum"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "started_at",
+                        "uptime_seconds",
+                        "total",
+                        "by_family",
+                        "latency_seconds"
+                      ]
+                    },
+                    "operations": {
+                      "anyOf": [
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "build",
+                    "schema_version",
+                    "schema_expected",
+                    "generated_at",
+                    "workers",
+                    "deliveries",
+                    "jobs",
+                    "tenants",
+                    "storage",
+                    "requests",
+                    "operations"
                   ]
                 }
               }

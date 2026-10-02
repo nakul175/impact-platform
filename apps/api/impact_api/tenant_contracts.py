@@ -2,6 +2,7 @@
 
 from jsonschema import Draft202012Validator, FormatChecker
 from .domain import DomainError
+from .version import PLATFORM_API
 
 UUID = {"type": "string", "format": "uuid"}
 
@@ -118,8 +119,10 @@ DIRECTORY = obj(
 
 def openapi():
     from .bootstrap_contracts import add_paths
+    from .metrics_contracts import add_paths as add_metrics_paths
     from .recovery_contracts import add_paths as add_recovery_paths
     from .renewal_contracts import add_paths as add_renewal_paths
+    from .requeue_contracts import add_paths as add_requeue_paths
     from .worker_contracts import add_paths as add_worker_paths
 
     def operation(name, request_schema=None, response_schema=DIRECTORY):
@@ -156,9 +159,11 @@ def openapi():
     add_recovery_paths(paths, operation)
     add_renewal_paths(paths, operation)
     add_worker_paths(paths, operation)
+    add_requeue_paths(paths, operation)
+    add_metrics_paths(paths, operation)
     return {
         "openapi": "3.1.0",
-        "info": {"title": "Impact control-plane API", "version": "1.4.0"},
+        "info": {"title": "Impact control-plane API", "version": PLATFORM_API},
         "paths": paths,
         "components": {
             "securitySchemes": {

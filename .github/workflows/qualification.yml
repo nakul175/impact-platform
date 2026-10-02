@@ -6,21 +6,25 @@ jobs:
   local-reference-and-browser:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
       - run: make setup
       - run: make lint test reference
       - run: make browser
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: local-qualification
-          path: docs/evidence/
+          # The runners' database and API logs (synthetic data only) diagnose a PGlite failure.
+          path: |
+            docs/evidence/
+            .local/test-*/database.log
+            .local/test-*/api.log
   live-identity-provider:
     runs-on: ubuntu-24.04
     env:
@@ -28,19 +32,19 @@ jobs:
       # of the cached or downloaded archive before unpacking it.
       KEYCLOAK_VERSION: 26.7.4
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
       - name: Cache the Keycloak distribution
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .local/keycloak/keycloak-${{ env.KEYCLOAK_VERSION }}.tar.gz
           key: keycloak-${{ env.KEYCLOAK_VERSION }}
@@ -55,7 +59,7 @@ jobs:
           npm ci --prefix tools/browser
           node tools/browser/prepare.mjs
           .venv/bin/python scripts/run.py idp-browser --idp keycloak
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: live-identity-provider-qualification
@@ -79,8 +83,8 @@ jobs:
       IMPACT_ADMIN_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test
       IMPACT_FIXTURE_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - run: python -m venv .venv
@@ -129,14 +133,14 @@ jobs:
       - name: Upgrade a populated database at the previous schema to the latest
         if: always()
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         if: always()
         with:
           distribution: temurin
           java-version: '21'
       - name: Cache the Keycloak distribution
         if: always()
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .local/keycloak/keycloak-26.7.4.tar.gz
           key: keycloak-26.7.4
@@ -150,7 +154,7 @@ jobs:
           .venv/bin/python -c "import psycopg; c = psycopg.connect('postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test', autocommit=True); c.execute('DROP DATABASE IF EXISTS impact_test_idp WITH (FORCE)'); c.execute('CREATE DATABASE impact_test_idp')"
           .venv/bin/python scripts/idp.py fetch
           .venv/bin/python scripts/run.py test --native --idp keycloak
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: native-postgresql-qualification
@@ -167,15 +171,22 @@ jobs:
     # certificates from its internal CA (CADDY_TLS_MODE=internal) for fake host names mapped to
     # 127.0.0.1. Then: the smoke check over HTTPS, a second deployment run (idempotence), the
     # owner's first sign-in through the provider (password change, authenticator enrolment, MFA
-    # assurance, platform operator), add-user, and a restore of the nightly dump.
+    # assurance, platform operator), add-user, list-users and reset-user, a backup set (both
+    # databases, roles, the evidence object volume, manifest) verified and restored, the restore
+    # drill on throwaway containers, the operations check and its alerts, and the host timers.
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    defaults:
+      run:
+        # bash -eo pipefail: a check piped into tee (smoke, first sign-in, second run) fails the step
+        # when the check fails; the default `bash -e` took tee's exit status and hid failures.
+        shell: bash
     env:
       APP_HOST: impact.test
       OWNER_EMAIL: owner@example.org
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - run: python -m venv .venv && .venv/bin/pip install -r requirements.lock
@@ -216,19 +227,123 @@ jobs:
           sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/add-user.sh second@example.org Second Person > add-user.out
           grep -q "Account created for second@example.org" add-user.out
           rm -f add-user.out
-      - name: The nightly dump exists and restores
+      - name: Secret rotation keeps the deployment healthy (rotate, smoke, retire, smoke)
+        run: |
+          fail() { echo "::error title=Secret rotation::$1"; for f in rotate-dry.json rotate.log rotate-status.json retire.log smoke-rotated.json smoke-retired.json; do [ -f "$f" ] && { echo "--- $f"; tail -n 40 "$f"; }; done; exit 1; }
+          rotate() { sudo IMPACT_HOME="$IMPACT_HOME" deploy/rotate-secrets.sh "$@"; }
+          rotate rotate --family all --dry-run > rotate-dry.json 2>&1 || fail "dry run"
+          rotate rotate --family all --reason "CI rotation" > rotate.log 2>&1 || fail "rotate"
+          rotate status > rotate-status.json 2>&1 || fail "status"
+          python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert all(len(f['grace'])==1 for f in d['families'].values()), d" rotate-status.json || fail "one grace key per family"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-rotated.json || fail "smoke after rotation"
+          rotate retire --family all --all-previous --reason "CI retire" > retire.log 2>&1 || fail "retire"
+          .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt > smoke-retired.json || fail "smoke after retirement"
+          # No secret value reaches the output: compare every value of secrets.env with what was printed.
+          sudo python3 -c "
+          import sys
+          printed = ''.join(open(p).read() for p in sys.argv[2:])
+          for line in open(sys.argv[1]):
+              value = line.partition('=')[2].strip()
+              for part in value.split(','):
+                  assert len(part) < 16 or part not in printed, 'a secret value was printed'
+          " "$IMPACT_HOME/secrets.env" rotate-dry.json rotate.log rotate-status.json retire.log || fail "a secret value was printed"
+          cat rotate.log retire.log
+      - name: list-users.sh and reset-user.sh (console only)
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/list-users.sh | tee list-users.out
+          grep -q "$OWNER_EMAIL" list-users.out
+          grep -q "second@example.org .*has not signed in yet" list-users.out
+          sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/reset-user.sh second@example.org --totp > reset.out
+          grep -q "One-time password:" reset.out
+          grep -q "authenticator app was removed" reset.out
+          rm -f reset.out list-users.out
+          if sudo IMPACT_HOME="$IMPACT_HOME" deploy/reset-user.sh second@example.org > /dev/null 2>&1; then echo "printed to a pipe" >&2; exit 1; fi
+          if sudo IMPACT_HOME="$IMPACT_HOME" IMPACT_ALLOW_NON_TTY=1 deploy/reset-user.sh nobody@example.org > /dev/null 2>&1; then echo "reset an absent account" >&2; exit 1; fi
+          ! sudo grep -rq "One-time password" "$IMPACT_HOME/state" /var/log/impact-*.log 2>/dev/null
+      - name: A backup set (databases, roles, objects, manifest) is verified and restores
         run: |
           compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
-          # The dump taken when the service started predates the operator bootstrap; take one now.
-          for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/impact-*.dump' && break; sleep 5; done
+          # One synthetic content-addressed object in the evidence volume, so the set carries one.
+          compose exec -T api python -c 'import hashlib,os; d=os.urandom(4096); h=hashlib.sha256(d).hexdigest(); p="/var/lib/impact/objects/00000000-0000-4000-8000-000000000001/"+h[:2]; os.makedirs(p,0o700,exist_ok=True); open(p+"/"+h,"wb").write(d)'
+          # The set taken when the service started predates the operator bootstrap; take one now.
+          for i in $(seq 1 30); do compose exec -T backup sh -c 'ls /backups/daily/[0-9]*/manifest.json' && break; sleep 5; done
           compose exec -T backup /bin/bash /opt/backup/backup.sh --now
-          compose exec -T backup bash -c 'set -e; f=$(ls -t /backups/daily/impact-*.dump | head -1);
+          sudo cat "$IMPACT_HOME/ops/backup-status.json" | tee backup-status.json
+          python3 -c "import json,sys; d=json.load(open('backup-status.json')); assert d['result']=='ok' and d['last_success']['objects']>=1 and d['last_success']['schema_version']>=26, d"
+          compose exec -T backup bash -c 'set -e; s=$(ls -d /backups/daily/[0-9]* | tail -1); cat "$s/manifest.json"; ls -l "$s";
+            (cd "$s" && sha256sum --check --strict SHA256SUMS);
             dropdb --if-exists impact_restore_check; createdb impact_restore_check;
-            pg_restore --exit-on-error -d impact_restore_check "$f";
+            pg_restore --exit-on-error -d impact_restore_check "$s/impact.dump";
             n=$(psql -Atd impact_restore_check -c "select count(*) from impact.schema_migration");
             o=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator");
-            echo "restored $f: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
+            echo "restored $s: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
             dropdb impact_restore_check'
+      - name: Restore drill on throwaway containers (measured restore time)
+        run: |
+          status=0
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/restore-drill.sh | tee drill.log || status=$?
+          sudo cat "$IMPACT_HOME/ops/restore-drill.json" | tee restore-drill.json
+          if [ "$status" -ne 0 ]; then
+            echo "::error title=restore drill::$(tail -n 4 drill.log | tr '\n' ' ' | cut -c1-3000)"
+            exit "$status"
+          fi
+          python3 - <<'PY'
+          import json
+          d = json.load(open("restore-drill.json"))
+          assert d["outcome"] == "PASS", d
+          assert all(d["checks"].values()) and d["objects"]["files"] >= 1, d
+          print("::notice title=restore drill::PASS in %ss (restore %s; set %s, %s bytes, %s h old; %s tables, %s rows)" % (
+              d["duration_seconds"], json.dumps(d["restore_seconds"]), d["set"], d["set_bytes"],
+              d["backup_age_hours"], d["restored"]["tables"], d["restored"]["rows"]))
+          PY
+          # Nothing of the drill is left behind.
+          test -z "$(sudo docker ps -aq --filter label=com.docker.compose.service=drill-db)"
+      - name: Operations check, alerts and host timers
+        run: |
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh
+          sudo cat "$IMPACT_HOME/ops/ops-status.json" | tee ops-status.json
+          sudo cat "$IMPACT_HOME/status.json" > deploy-status-ops.json
+          python3 - <<'PY'
+          import json, sys
+          ops = json.load(open("ops-status.json"))
+          status = json.load(open("deploy-status-ops.json"))
+          codes = [a["code"] for a in ops["alerts"]]
+          problems = []
+          critical = [a for a in ops["alerts"] if a["severity"] == "critical"]
+          if critical:
+              problems.append("critical alerts: " + json.dumps(critical))
+          if status.get("alerts") != ops["alerts"] or not (status.get("operations") or {}).get("backup", {}).get("last_set"):
+              problems.append("status file lacks the operations: " + json.dumps({k: status.get(k) for k in ("alerts", "operations")})[:1500])
+          if ops["operations"]["restore_drill"].get("outcome") != "PASS":
+              problems.append("drill: " + json.dumps(ops["operations"]["restore_drill"]))
+          if not (ops["operations"].get("workers") or {}).get("running_fresh"):
+              problems.append("workers: " + json.dumps(ops["operations"].get("workers")))
+          for p in problems:
+              print("::error title=operations check::" + p[:3500])
+          print("::notice title=operations check::alerts " + json.dumps(codes) + " services " + json.dumps(ops["operations"].get("services")))
+          sys.exit(1 if problems else 0)
+          PY
+          systemctl is-enabled impact-ops-check.timer impact-restore-drill.timer || { echo "::error title=timers::not enabled"; exit 1; }
+          systemctl list-timers 'impact-*' --all --no-pager
+          test -s /etc/logrotate.d/impact || { echo "::error title=logrotate::no /etc/logrotate.d/impact"; exit 1; }
+          sudo logrotate --debug /etc/logrotate.d/impact > logrotate.out 2>&1 || { echo "::error title=logrotate::$(tail -n 5 logrotate.out | tr '\n' ' ')"; exit 1; }
+      - name: An injected failure (worker stopped) is alerted by the next check, and clears
+        run: |
+          compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
+          compose stop worker
+          stopped=$(date +%s)
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh | tee injected.json
+          alerted=$(date +%s)
+          python3 -c "import json,sys; c=json.load(open('injected.json'))['alerts']; ok='CONTAINER_UNHEALTHY' in c and 'WORKER_STALE' in c; print('' if ok else '::error title=injected failure::alerts '+json.dumps(c)); sys.exit(0 if ok else 1)"
+          echo "::notice title=alert latency::worker stopped -> alerts $(python3 -c "import json; print(json.load(open('injected.json'))['alerts'])") in $((alerted - stopped)) s of one check (the timer runs every 300 s)"
+          compose start worker
+          for i in $(seq 1 30); do
+            sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh > cleared.json
+            python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; sys.exit(0 if 'WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c else 1)" && break
+            sleep 5
+          done
+          cat cleared.json
+          python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; ok='WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c; print('' if ok else '::error title=alerts after restart::'+json.dumps(c)); sys.exit(0 if ok else 1)"
       - name: Smoke check after the sign-in
         run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-final.json
       - name: Status and logs on failure
@@ -262,7 +377,7 @@ jobs:
               if mine:
                   annotate("logs " + service, mine[-25:])
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: container-stack
@@ -271,4 +386,7 @@ jobs:
             smoke-final.json
             first-login.json
             deploy-status.json
+            backup-status.json
+            restore-drill.json
+            ops-status.json
             compose-logs.txt

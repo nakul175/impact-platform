@@ -1,6 +1,8 @@
 import json
 import logging
-from urllib.parse import parse_qs, urlparse
+import re
+from time import monotonic
+from urllib.parse import parse_qs, quote, urlparse
 from uuid import UUID, uuid4
 import psycopg
 from fastapi import FastAPI, Request
@@ -16,15 +18,26 @@ from .service import Service
 from .administration import Administration
 from .administration_contracts import COMMANDS, ADMIN_READS
 from .reporting import REPORT_CSP
+from .content_safety import MAX_EVIDENCE_BYTES
 from .store import Database
 from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
+from .delivery_operations import DeliveryOperations
+from .ops_metrics import OpsMetrics, RequestMetrics
+from .version import BUILD, DOMAIN_API, SCHEMA
+from .audit_export import AuditExports
+from .dashboards import Dashboards
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
+# The one route whose body is raw bytes rather than JSON: an evidence upload's whole content, at most
+# the design ceiling for EVIDENCE_MEDIA and never more than the upload's own declared size.
+# admin_shutdown, crash_shutdown, cannot_connect_now: the server is going or not yet back.
+DATABASE_SHUTDOWN = {"57P01", "57P02", "57P03"}
+UPLOAD_CONTENT = re.compile(r"^/v1/tenants/[^/]+/uploads/[^/]+/content$")
 # A logout token is at most 16 KiB (Auth.backchannel_logout); the form adds "logout_token=".
 MAX_LOGOUT_BODY = 16384 + 64
 
@@ -85,7 +98,12 @@ def create_app():
     authority_renewal = AuthorityRenewal(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
-    app = FastAPI(title="Impact Platform", version="0.20.0", docs_url=None, redoc_url=None, openapi_url=None)
+    dashboards = Dashboards(service)
+    audit_exports = AuditExports(service)
+    delivery_operations = DeliveryOperations(lifecycle)
+    request_metrics = RequestMetrics()
+    ops_metrics = OpsMetrics(lifecycle, request_metrics)
+    app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
     def error(request, exc):
@@ -124,6 +142,12 @@ def create_app():
             return error(request, DomainError("CONFLICT_VERSION", 409))
         if (exc.sqlstate or "").startswith("23"):
             return error(request, DomainError("VALIDATION_FAILED"))
+        # A refused, lost or shut-down database connection (no SQLSTATE, class 08 or an operator
+        # shutdown) is named for the caller and readiness; the transaction it carried never committed.
+        if isinstance(exc, psycopg.OperationalError) and (
+            not exc.sqlstate or exc.sqlstate.startswith("08") or exc.sqlstate in DATABASE_SHUTDOWN
+        ):
+            return error(request, DomainError("SERVICE_UNAVAILABLE", 503, reason="DATABASE_UNAVAILABLE"))
         return error(request, DomainError("SERVICE_UNAVAILABLE", 503))
 
     @app.exception_handler(Exception)
@@ -137,17 +161,23 @@ def create_app():
 
     @app.middleware("http")
     async def security(request, call_next):
+        started = monotonic()
         supplied = request.headers.get("x-correlation-id", "")
         try:
             request.state.correlation = str(UUID(supplied))
         except ValueError:
             request.state.correlation = str(uuid4())
         host = request.headers.get("host", "").split(":")[0]
+        limit = (
+            MAX_EVIDENCE_BYTES
+            if request.method == "PUT" and UPLOAD_CONTENT.fullmatch(request.url.path)
+            else MAX_BODY
+        )
         if host not in {urlparse(s.public_origin).hostname, "testserver" if s.environment == "test" else ""}:
             response = error(request, DomainError("VALIDATION_FAILED", 400))
         elif (
             request.headers.get("content-length", "0").isdigit()
-            and int(request.headers.get("content-length", "0")) > MAX_BODY
+            and int(request.headers.get("content-length", "0")) > limit
         ):
             response = error(request, DomainError("LIMIT_EXCEEDED", 413))
         else:
@@ -169,6 +199,7 @@ def create_app():
             )
         if s.secure:
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        request_metrics.observe(request.url.path, response.status_code, monotonic() - started)
         return response
 
     @app.get("/health/live")
@@ -184,7 +215,7 @@ def create_app():
             version = c.execute("SELECT max(version) AS version FROM impact.schema_migration").fetchone()[
                 "version"
             ]
-        if version != 21:
+        if version != SCHEMA:
             raise DomainError("SERVICE_UNAVAILABLE", 503)
         return {"status": "ready"}
 
@@ -217,6 +248,21 @@ def create_app():
     @app.get("/v1/platform/workers")
     def worker_directory(request: Request):
         return worker_status.directory(auth.resolve(request))
+
+    @app.get("/v1/platform/metrics")
+    def platform_metrics(request: Request):
+        return ops_metrics.summary(auth.resolve(request))
+
+    @app.get("/v1/platform/deliveries")
+    def delivery_attention(request: Request, tenant_id: str | None = None):
+        return delivery_operations.directory(auth.resolve(request), uuid(tenant_id) if tenant_id else None)
+
+    @app.post("/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/{action}")
+    async def delivery_action(request: Request, tenant_id: str, event_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            delivery_operations.command, auth.resolve(request), action, body, uuid(tenant_id), uuid(event_id)
+        )
 
     @app.get("/v1/platform/access-bootstraps")
     def initial_access_directory(request: Request, cursor: str | None = None):
@@ -344,9 +390,9 @@ def create_app():
         auth.resolve(request)
         return {
             "environment": s.environment,
-            "build_id": "impact-0.20.0",
-            "schema_version": "21",
-            "api_version": "1.13.0",
+            "build_id": "impact-" + BUILD,
+            "schema_version": str(SCHEMA),
+            "api_version": DOMAIN_API,
             "fixture_id": s.fixture_id,
             "mutation_tests_allowed": s.environment == "test" and bool(s.fixture_id),
         }
@@ -400,6 +446,38 @@ def create_app():
             limit=limit,
             cursor=cursor,
             period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/programmes/{obj}/dashboard")
+    def programme_dashboard(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "programme_dashboard",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-series")
+    def indicator_dashboard_series(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_dashboard_series",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")
@@ -469,6 +547,192 @@ def create_app():
             },
         )
 
+    # Evidence uploads and mediated content (v0.22). Registered before the generic routes so that
+    # "uploads" never reaches the domain dispatcher.
+    @app.post("/v1/tenants/{tenant}/uploads", status_code=201)
+    async def create_upload(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.evidence.create_upload,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/uploads/{obj}")
+    def upload_status(request: Request, tenant: str, obj: str):
+        return service.evidence.upload(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.put("/v1/tenants/{tenant}/uploads/{obj}/content")
+    async def upload_content(request: Request, tenant: str, obj: str):
+        if request.headers.get("content-type", "").split(";")[0].strip() != "application/octet-stream":
+            raise DomainError("VALIDATION_FAILED", 415)
+        identity = await run_in_threadpool(auth.resolve, request)
+        tenant_id, upload_id = uuid(tenant), uuid(obj)
+        # Authorised and bounded by the declared size before the body is read.
+        expected = await run_in_threadpool(service.evidence.content_limit, identity, tenant_id, upload_id)
+        try:
+            raw = await bounded_body(request, expected)
+        except DomainError:
+            raise DomainError("LIMIT_EXCEEDED", 413, reason="FILE_TOO_LARGE") from None
+        return await run_in_threadpool(
+            service.evidence.put_content, identity, tenant_id, upload_id, raw, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/uploads/{obj}/actions/complete")
+    async def complete_upload(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.evidence.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evidence/{obj}/content")
+    def evidence_content(request: Request, tenant: str, obj: str, revision: str | None = None):
+        artifact = service.evidence.content(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision) if revision else None,
+            request.state.correlation,
+        )
+        ascii_name = re.sub(r"[^A-Za-z0-9._-]", "_", artifact["filename"])
+        media = artifact["media_type"] + (
+            "; charset=utf-8" if artifact["media_type"].startswith("text/") else ""
+        )
+        return Response(
+            artifact["body"],
+            media_type=media,
+            headers={
+                "ETag": '"' + artifact["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="'
+                + ascii_name
+                + "\"; filename*=UTF-8''"
+                + quote(artifact["filename"], safe=""),
+                # Nothing in a downloaded file runs in this origin, even if a browser renders it.
+                "Content-Security-Policy": "default-src 'none'; sandbox",
+                "Cross-Origin-Resource-Policy": "same-origin",
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/observations/{obj}/evidence")
+    def observation_evidence(request: Request, tenant: str, obj: str):
+        return service.evidence.attachments(auth.resolve(request), uuid(tenant), "Observation", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/evidence")
+    def result_evidence(request: Request, tenant: str, obj: str):
+        return service.evidence.attachments(
+            auth.resolve(request), uuid(tenant), "CalculatedResult", uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
+    def report_exports(request: Request, tenant: str, obj: str):
+        return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    def export_response(artifact):
+        return Response(
+            artifact["body"],
+            media_type=artifact["media_type"],
+            headers={
+                "ETag": '"' + artifact["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="' + artifact["filename"] + '"',
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/reports/{obj}/exports/{job}/download")
+    def report_export_download(request: Request, tenant: str, obj: str, job: str):
+        return export_response(
+            service.exports.download(
+                auth.resolve(request), uuid(tenant), uuid(obj), uuid(job), request.state.correlation
+            )
+        )
+
+    @app.get("/v1/tenants/{tenant}/publications/{obj}/download.{extension}")
+    def publication_download_export(request: Request, tenant: str, obj: str, extension: str):
+        if extension not in {"pdf", "xlsx", "docx"}:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
+        return export_response(
+            service.exports.publication(
+                auth.resolve(request), uuid(tenant), uuid(obj), extension.upper(), request.state.correlation
+            )
+        )
+
+    # Data-subject requests and the retention schedule (v0.25 part B): purpose-bound privacy routes,
+    # registered before the generic routes so that "privacy-cases" never reaches the dispatcher.
+    @app.get("/v1/tenants/{tenant}/privacy-cases")
+    def privacy_cases(
+        request: Request, tenant: str, purpose: str | None = None, limit: int = 50, cursor: str | None = None
+    ):
+        return service.privacy.listing(auth.resolve(request), uuid(tenant), purpose, limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/privacy-cases", status_code=201)
+    async def create_privacy_case(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}")
+    def privacy_case(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        return service.privacy.get(auth.resolve(request), uuid(tenant), uuid(obj), purpose)
+
+    @app.patch("/v1/tenants/{tenant}/privacy-cases/{obj}")
+    async def patch_privacy_case(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.patch,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}/plan")
+    def privacy_case_plan(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        return service.privacy.plan_view(auth.resolve(request), uuid(tenant), uuid(obj), purpose)
+
+    @app.post("/v1/tenants/{tenant}/privacy-cases/{obj}/actions/{action}")
+    async def privacy_case_action(request: Request, tenant: str, obj: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.privacy.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            action,
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/privacy-cases/{obj}/export")
+    def privacy_case_export(request: Request, tenant: str, obj: str, purpose: str | None = None):
+        package = service.privacy.download(
+            auth.resolve(request), uuid(tenant), uuid(obj), purpose, request.state.correlation
+        )
+        return Response(
+            package["body"],
+            media_type="application/json",
+            headers={
+                "ETag": '"' + package["digest"] + '"',
+                "Content-Disposition": 'attachment; filename="' + package["filename"] + '"',
+                "Content-Security-Policy": "default-src 'none'; sandbox",
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/retention-schedule")
+    def retention_schedule(request: Request, tenant: str):
+        return service.privacy.retention_schedule(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/retention-proofs")
+    def retention_proofs(request: Request, tenant: str):
+        return service.privacy.retention_proofs(auth.resolve(request), uuid(tenant))
+
     @app.get("/v1/tenants/{tenant}/{route}")
     def listing(request: Request, tenant: str, route: str, limit: int = 50, cursor: str | None = None):
         if route in ADMIN_READS:
@@ -505,6 +769,14 @@ def create_app():
             )
 
         return await run_in_threadpool(run)
+
+    # Audit export (v0.25 part A): an explicit route, registered before the generic create.
+    @app.post("/v1/tenants/{tenant}/audit-exports")
+    async def audit_export(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            lambda: audit_exports.create(auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        )
 
     @app.post("/v1/tenants/{tenant}/disclosure-requests")
     async def disclosure_request(request: Request, tenant: str):

@@ -25,6 +25,7 @@ the provider and status checks (for a local stack without them).
 
 import argparse
 import json
+import re
 import socket
 import ssl
 import sys
@@ -39,7 +40,16 @@ REQUIRED_HEADERS = {
     "cache-control": lambda v: "no-store" in v,
     "referrer-policy": lambda v: v.lower() == "no-referrer",
 }
-SECRET_WORDS = ("password", "secret", "token", "dsn", "key")
+SECRET_WORDS = ("password", "passwd", "secret", "token", "dsn", "key", "credential")
+
+
+def secret_looking(name):
+    """True when a word of a field name names a secret: ``db_password``, ``signingKey``, ``api-key``,
+    ``apikey``, ``signing_keys``. Matching is per word (a word ending in a secret word, plural or
+    not), so the service name ``keycloak`` in the status file's ``services`` is not taken for a key."""
+    words = re.split(r"[^a-z0-9]+", re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", str(name)).lower())
+    stems = {w for word in words if word for w in (word, word[:-1] if word.endswith("s") else word)}
+    return any(stem.endswith(secret) for stem in stems for secret in SECRET_WORDS)
 
 
 class Smoke:
@@ -188,9 +198,13 @@ class Smoke:
                 for v in value:
                     yield from keys(v)
 
-        suspicious = [k for k in keys(document) if any(w in k.lower() for w in SECRET_WORDS)]
+        suspicious = [k for k in keys(document) if secret_looking(k)]
         assert not suspicious, "secret-looking fields: " + ", ".join(suspicious)
-        return {"commit": document.get("commit"), "result": document.get("result")}
+        return {
+            "commit": document.get("commit"),
+            "result": document.get("result"),
+            "alerts": [a.get("code") for a in document.get("alerts") or [] if isinstance(a, dict)],
+        }
 
     def run(self, provider=True, status=True):
         self.check("tls", self.tls)

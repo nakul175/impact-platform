@@ -1,8 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 import os
 from pathlib import Path
 from urllib.parse import urlparse
+
+from . import keyring
 
 ROOT = Path(__file__).resolve().parents[3]
 BOOLEAN_FIELDS = {"dev_auth", "dev_db_serial", "require_unprivileged_db"}
@@ -26,8 +28,9 @@ def boolean(name, value):
 @dataclass(frozen=True)
 class Settings:
     environment: str
-    app_dsn: str
-    identity_dsn: str
+    # Connection strings carry login passwords: never part of a repr.
+    app_dsn: str = field(repr=False)
+    identity_dsn: str = field(repr=False)
     public_origin: str
     issuer: str
     client_id: str
@@ -35,28 +38,50 @@ class Settings:
     jwks_url: str
     authorization_url: str
     token_url: str
-    cookie_secret: str
+    cookie_secret: str = field(repr=False)
     dev_auth: bool = False
     dev_db_serial: bool = False
     dev_users_file: str = ""
     dev_public_key: str = ""
     fixture_id: str = ""
-    invitation_secret: str = ""
+    invitation_secret: str = field(default="", repr=False)
     required_acr: str = ""
     provider_account_url: str = ""
-    platform_dsn: str = ""
+    platform_dsn: str = field(default="", repr=False)
     # A live provider (dev_auth off): the RP-initiated logout endpoint the browser is sent to after
     # the local session is revoked, and the client secret for a confidential client (normally
     # supplied as IMPACT_CLIENT_SECRET; a public client with S256 PKCE leaves it empty). The
     # platform holds no provider refresh token, so no revocation endpoint is configured.
     end_session_url: str = ""
-    client_secret: str = ""
+    client_secret: str = field(default="", repr=False)
     # Refuse superuser, BYPASSRLS or owner database connections outside staging/production too;
     # native qualification sets it so the API runs on the provisioned login roles only.
     require_unprivileged_db: bool = False
     # Seals delivery addresses in the outbox and keys recovery-channel verification codes (v0.16).
     # Shared with the worker; empty disables email intents (invitations stay manual-only).
-    delivery_secret: str = ""
+    delivery_secret: str = field(default="", repr=False)
+    # Key rotation (v0.25 part A, impact_api/keyring.py): the previous secrets of each family kept for
+    # a grace window, separated by commas or whitespace, newest first. Values made with one of them
+    # (CSRF tokens, cursors, sealed recipients and logout hints, invitation links, recovery codes)
+    # keep working until it is removed here; new values always use the current secret.
+    cookie_secret_previous: str = field(default="", repr=False)
+    invitation_secret_previous: str = field(default="", repr=False)
+    delivery_secret_previous: str = field(default="", repr=False)
+    # Development sign-in only: a JSON key set {"keys": [{"kid", "public_pem", "status"}]} of RS256
+    # public keys that still verify fixture bearer tokens by their kid header during a grace window
+    # (status "grace"); the current key is dev_public_key. scripts/rotate_secrets.py writes it.
+    dev_signing_keys: str = ""
+    # Private object store for evidence bytes (v0.22): an absolute directory only the API reads
+    # (never served directly); empty disables uploads (SERVICE_UNAVAILABLE, OBJECT_STORE_NOT_CONFIGURED).
+    # Only the filesystem backend is implemented. The scanner names the content_safety scanner that
+    # decides each blob's verdict: "eicar-signature" (deterministic; recognises only the EICAR test
+    # file, not an anti-malware engine) or "none" (every scan FAILED, nothing downloadable).
+    object_store_backend: str = "filesystem"
+    object_store_dir: str = ""
+    evidence_scanner: str = ""
+    # The server's operations summary (deploy/ops-check.sh: backup age, restore drill, disk, alerts),
+    # an absolute path read by GET /v1/platform/metrics; empty reports no operations section.
+    ops_status_file: str = ""
 
     @property
     def unprivileged_db_required(self):
@@ -102,6 +127,18 @@ class Settings:
                 + ([s.end_session_url] if s.end_session_url else [])
             ):
                 raise ValueError("HTTPS required")
+        if s.object_store_dir and not Path(s.object_store_dir).is_absolute():
+            raise ValueError("object_store_dir must be an absolute path")
+        if s.ops_status_file and not Path(s.ops_status_file).is_absolute():
+            raise ValueError("ops_status_file must be an absolute path")
+        if s.object_store_backend != "filesystem":
+            raise ValueError("object_store_backend: only 'filesystem' is implemented")
+        if s.evidence_scanner not in {"", "eicar-signature", "none"}:
+            raise ValueError("evidence_scanner must be eicar-signature or none")
+        if s.object_store_dir and not s.evidence_scanner:
+            # No silent default: whoever enables evidence storage names the scanner that decides
+            # what becomes downloadable.
+            raise ValueError("An object store requires an explicitly configured evidence_scanner")
         if s.delivery_secret and len(s.delivery_secret) < 48:
             raise ValueError("A delivery secret must be at least 48 characters")
         if s.client_secret and (len(s.client_secret) < 32 or s.dev_auth):
@@ -126,4 +163,7 @@ class Settings:
             or urlparse(s.public_origin).hostname not in {"127.0.0.1", "localhost"}
         ):
             raise ValueError("Local identity requires loopback development")
+        keyring.validate(s)
+        if s.dev_signing_keys and not s.dev_auth:
+            raise ValueError("dev_signing_keys belongs to development sign-in only")
         return s

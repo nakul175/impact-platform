@@ -1,6 +1,8 @@
 # Current data dictionary and schema evolution
 
-Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a typed composite foreign key, `submission_current.observation_ids/quarantine_reason/unit_key`, and the insert-only, tenant-fenced register `form_publication`, SELECT and INSERT for `impact_app` only. 0.19.0 added 0020: nullable `indicator_definition_current.disaggregation` and `calculated_result_current.disaggregation` with jsonb type CHECKs. 0.18.0 added 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All twenty-one checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 30 September 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
+Build 0.25.0; schema 27 (integrated 1 October 2026 on branch `integration/0.25`). v0.25 part B's 0027 adds the privacy-case payload columns of `privacy_case_current` (subject membership and principal with typed foreign keys, reason, verification note, named evidence and import batches, approval, plan, execution and package fields; CHECKs on request type and outcome), the export package `privacy_export_package` (bounded body, SHA-256, expiry; SELECT/INSERT for `impact_app`, SELECT/DELETE for `impact_worker`) and the insert-only download log `privacy_export_access`, `outbox_delivery.recipient_redacted_at`, `file_blob.purged_at/purge_case_id`, the RETENTION_SWEEP lease table `retention_sweep` and the insert-only proof register `retention_proof` (all with forced RLS and `tenant_fence`); it replaces `guard_revision_removal` (adds the definer path, every other condition unchanged) and `upload_session_guard` (a file name may be cleared by the erasure definer only), and adds the SECURITY DEFINER functions `privacy_require_case` (no grantee), `privacy_remove_revisions`, `privacy_redact_uploads`, `privacy_supersede_deliveries` (EXECUTE to `impact_app`), `retention_purge_receipts`, `retention_expire_uploads` and `worker_schedule_retention` (EXECUTE to `impact_worker`). v0.25 part A and the October 2026 operations hardening add no migration.
+
+Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `import_job_current` with typed composite foreign keys and the insert-only, tenant-fenced `import_unit_register`, SELECT and INSERT for `impact_app` only; 0023: upload, blob and evidence file columns, the guard triggers `file_blob_guard` and `upload_session_guard`, and the insert-only registers `evidence_attachment`, `evidence_access` and `upload_event`; 0024: disclosure export columns, `report_export`, the insert-only `report_export_artifact`, `report_publication_export` and `report_export_access`, owner-only `worker_export_directory` policies and the SECURITY DEFINER `worker_export_tenants`, with the worker's export grants; 0025: the narrowing of `impact_worker` to the tables the worker touches and the SECURITY DEFINER functions `operator_delivery_attention` and `operator_requeue_delivery` for `impact_platform`; 0026: the narrowing of `impact_worker` on `job`, `job_item`, `report_current` and `report_template_current`. 0.20.0 added 0021: `form_current.programme_id` with a typed composite foreign key, `submission_current.observation_ids/quarantine_reason/unit_key`, and the insert-only, tenant-fenced register `form_publication`, SELECT and INSERT for `impact_app` only. 0.19.0 added 0020: nullable `indicator_definition_current.disaggregation` and `calculated_result_current.disaggregation` with jsonb type CHECKs. 0.18.0 added 0019: framework and target payload columns on `framework_current` and `target_current` with typed kind columns, composite foreign keys and the CHECK `target_blank_is_not_zero`; the insert-only, tenant-fenced registers `framework_baseline` and `target_binding`, SELECT and INSERT for `impact_app` only. 0.16.0 added 0018: dispatch columns, constraints and indexes on `outbox_delivery` and the revocation of its UPDATE from `impact_app`; `notification_delivery`, `recovery_channel_challenge`, `authority_reminder` and `worker_heartbeat`; the recovery-contact channel columns and `UNIQUE(tenant_id, contact_id)`; the SECURITY DEFINER functions `enqueue_recovery_channel_delivery` and `worker_tenants`; worker grants; and a replaced `tenant_work_impact`. 0.15.0 added 0017. All twenty-six checksums below match `sha256sum` of the files and were verified by the native run, the restore drill and the upgrade check of 1 October 2026). Executable migrations are authoritative. This dictionary retains each table definition and later alteration in execution order, including constraints and role policy. JSONB domain payload fields are specified by the current OpenAPI schemas; scalar column definitions alone are not the full data model.
 
 ## Migration register
 
@@ -27,6 +29,12 @@ Build 0.20.0; schema 21 (0.20.0 adds 0021: `form_current.programme_id` with a ty
 | 0019_results_framework.sql | e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161 |
 | 0020_calculation_methods.sql | 357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31 |
 | 0021_web_forms.sql | afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2 |
+| 0022_import_quality.sql | 7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac |
+| 0023_evidence_objects.sql | aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc |
+| 0024_report_exports.sql | 2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f |
+| 0025_worker_grants.sql | e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047 |
+| 0026_worker_job_grants.sql | c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310 |
+| 0027_privacy_execution.sql | b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d |
 
 ## Executable schema definitions
 
@@ -3056,5 +3064,921 @@ ALTER TABLE impact.form_publication FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_fence ON impact.form_publication USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
 -- Insert-only for the application; nothing for the control plane.
 GRANT SELECT,INSERT ON impact.form_publication TO impact_app;
+COMMIT;
+```
+
+### 0022 import quality
+
+Source: infrastructure/migrations/0022_import_quality.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Import and data quality (v0.21). ImportJob has been a registry kind with a typed projection since
+-- 0002; this migration adds the payload columns the implemented import batch writes (the bounded
+-- source file carried in the request, its mapping to indicator instances, unit and period, the
+-- staged row outcomes with their quality checks, and the commit manifest) and one insert-only
+-- register that makes "this unit already reported this indicator for this period through an
+-- import" a database fact. A register row is written only by the commit of an independently
+-- staged batch, in the same transaction as the observation it names; it is never updated or
+-- deleted, so a second batch for the same unit, indicator and period is a duplicate.
+ALTER TABLE impact.import_job_current
+ ADD COLUMN programme_id uuid,
+ ADD COLUMN programme_id_kind text GENERATED ALWAYS AS ('Programme') STORED,
+ ADD COLUMN period_id uuid,
+ ADD COLUMN period_id_kind text GENERATED ALWAYS AS ('Period') STORED,
+ ADD COLUMN format varchar(16) CHECK(format IS NULL OR format IN ('CSV','XLSX')),
+ ADD COLUMN file_name varchar(200),
+ ADD COLUMN content text,
+ ADD COLUMN content_sha256 varchar(64) CHECK(content_sha256 IS NULL OR content_sha256 ~ '^[0-9a-f]{64}$'),
+ ADD COLUMN received_at timestamptz,
+ ADD COLUMN mapping jsonb CHECK(mapping IS NULL OR jsonb_typeof(mapping)='object'),
+ ADD COLUMN preview jsonb CHECK(preview IS NULL OR jsonb_typeof(preview)='object'),
+ ADD COLUMN committed jsonb CHECK(committed IS NULL OR jsonb_typeof(committed)='object'),
+ ADD COLUMN cancel_reason text,
+ ADD CONSTRAINT import_job_programme_fk FOREIGN KEY(tenant_id,programme_id,programme_id_kind)
+  REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ ADD CONSTRAINT import_job_period_fk FOREIGN KEY(tenant_id,period_id,period_id_kind)
+  REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED;
+
+CREATE TABLE impact.import_unit_register(
+  tenant_id uuid NOT NULL,
+  indicator_id uuid NOT NULL,
+  period_id uuid NOT NULL,
+  unit_key varchar(100) NOT NULL CHECK(unit_key ~ '^[A-Za-z0-9][A-Za-z0-9_.:-]{0,99}$'),
+  observation_id uuid NOT NULL,
+  import_id uuid NOT NULL,
+  import_revision uuid NOT NULL,
+  row_number integer NOT NULL CHECK(row_number>1),
+  registered_by uuid NOT NULL,
+  registered_at timestamptz NOT NULL,
+  indicator_id_kind text GENERATED ALWAYS AS ('IndicatorInstance') STORED,
+  period_id_kind text GENERATED ALWAYS AS ('Period') STORED,
+  observation_id_kind text GENERATED ALWAYS AS ('Observation') STORED,
+  import_id_kind text GENERATED ALWAYS AS ('ImportJob') STORED,
+  PRIMARY KEY(tenant_id,indicator_id,period_id,unit_key),
+  UNIQUE(tenant_id,observation_id),
+  FOREIGN KEY(tenant_id,indicator_id,indicator_id_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,period_id,period_id_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,observation_id,observation_id_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,import_id,import_id_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+  FOREIGN KEY(tenant_id,import_id,import_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,registered_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX import_unit_register_import ON impact.import_unit_register(tenant_id,import_id);
+ALTER TABLE impact.import_unit_register ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.import_unit_register FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.import_unit_register USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+-- Insert-only for the application; nothing for the worker or the control plane.
+GRANT SELECT,INSERT ON impact.import_unit_register TO impact_app;
+COMMIT;
+```
+
+### 0023 evidence objects
+
+Source: infrastructure/migrations/0023_evidence_objects.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Object store and evidence attachments (v0.22). upload_session, file_blob and evidence_current have
+-- existed since 0002 with tenant fences (0003); this migration adds the columns the implemented
+-- upload, scan and evidence commands write, transition guards on the two upload tables, and three
+-- insert-only registers: upload events, evidence attachments (an evidence revision cited by an exact
+-- observation or calculated-result revision) and evidence content access (one row per mediated
+-- download). The bytes themselves live outside the database in a private, content-addressed object
+-- store; file_blob holds the SHA-256, size, object key and scan verdict. Additive only: no row is
+-- rewritten, and no existing grant, policy or role changes.
+ALTER TABLE impact.file_blob
+ ADD COLUMN created_at timestamptz,
+ ADD COLUMN scanned_at timestamptz,
+ ADD COLUMN scanner varchar(64),
+ ADD COLUMN scan_detail varchar(64);
+ALTER TABLE impact.upload_session
+ ADD COLUMN filename varchar(200),
+ ADD COLUMN media_type varchar(64),
+ ADD COLUMN blob_id uuid,
+ ADD COLUMN created_at timestamptz,
+ ADD COLUMN content_received_at timestamptz,
+ ADD COLUMN completed_at timestamptz,
+ ADD CONSTRAINT upload_session_blob_fk FOREIGN KEY(tenant_id,blob_id) REFERENCES impact.file_blob(tenant_id,blob_id);
+ALTER TABLE impact.evidence_current
+ ADD COLUMN filename varchar(200),
+ ADD COLUMN media_type varchar(64),
+ ADD COLUMN byte_size bigint CHECK(byte_size IS NULL OR byte_size>0);
+
+-- A blob's identity (key, digest, size) never changes, and a verdict is final: QUARANTINED ->
+-- SCANNING -> CLEAN | INFECTED | FAILED, with FAILED -> SCANNING for a retried scan. CLEAN and
+-- INFECTED are never rewritten by any role.
+CREATE FUNCTION impact.file_blob_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+  IF NEW.tenant_id<>OLD.tenant_id OR NEW.blob_id<>OLD.blob_id OR NEW.object_key<>OLD.object_key
+     OR NEW.sha256<>OLD.sha256 OR NEW.bytes<>OLD.bytes THEN
+    RAISE EXCEPTION 'file_blob identity is immutable' USING ERRCODE='23514';
+  END IF;
+  IF NEW.scan_state<>OLD.scan_state AND NOT (
+       (OLD.scan_state='QUARANTINED' AND NEW.scan_state='SCANNING')
+    OR (OLD.scan_state='FAILED' AND NEW.scan_state='SCANNING')
+    OR (OLD.scan_state='SCANNING' AND NEW.scan_state IN ('CLEAN','INFECTED','FAILED'))) THEN
+    RAISE EXCEPTION 'file_blob scan transition refused' USING ERRCODE='23514';
+  END IF;
+  RETURN NEW;
+END $$;
+CREATE TRIGGER file_blob_guard BEFORE UPDATE ON impact.file_blob FOR EACH ROW EXECUTE FUNCTION impact.file_blob_guard();
+REVOKE ALL ON FUNCTION impact.file_blob_guard() FROM PUBLIC;
+
+-- An upload's declaration (owner, purpose, size, digest, name, media type) is fixed at creation and
+-- its received blob is bound once.
+CREATE FUNCTION impact.upload_session_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+  IF NEW.tenant_id<>OLD.tenant_id OR NEW.upload_id<>OLD.upload_id OR NEW.owner_id<>OLD.owner_id
+     OR NEW.purpose<>OLD.purpose OR NEW.mode<>OLD.mode OR NEW.expected_bytes<>OLD.expected_bytes
+     OR NEW.expected_digest<>OLD.expected_digest
+     OR NEW.filename IS DISTINCT FROM OLD.filename OR NEW.media_type IS DISTINCT FROM OLD.media_type
+     OR (OLD.blob_id IS NOT NULL AND NEW.blob_id IS DISTINCT FROM OLD.blob_id) THEN
+    RAISE EXCEPTION 'upload_session declaration is immutable' USING ERRCODE='23514';
+  END IF;
+  IF OLD.state IN ('CLEAN','REJECTED','CANCELLED','EXPIRED') AND NEW.state<>OLD.state THEN
+    RAISE EXCEPTION 'upload_session terminal state is final' USING ERRCODE='23514';
+  END IF;
+  RETURN NEW;
+END $$;
+CREATE TRIGGER upload_session_guard BEFORE UPDATE ON impact.upload_session FOR EACH ROW EXECUTE FUNCTION impact.upload_session_guard();
+REVOKE ALL ON FUNCTION impact.upload_session_guard() FROM PUBLIC;
+
+-- One evidence revision cited by one exact revision of an observation or calculated result. The
+-- cited record is not changed (an approved record stays immutable); a later revision of either side
+-- is a new citation. Never updated or deleted.
+CREATE TABLE impact.evidence_attachment(
+  tenant_id uuid NOT NULL,
+  attachment_id uuid NOT NULL,
+  evidence_id uuid NOT NULL,
+  evidence_revision uuid NOT NULL,
+  evidence_revision_kind text GENERATED ALWAYS AS ('Evidence') STORED,
+  target_id uuid NOT NULL,
+  target_revision uuid NOT NULL,
+  target_type text NOT NULL CHECK(target_type IN ('Observation','CalculatedResult')),
+  reason text NOT NULL CHECK(char_length(reason) BETWEEN 1 AND 2000),
+  attached_by uuid NOT NULL,
+  attached_at timestamptz NOT NULL,
+  PRIMARY KEY(tenant_id,attachment_id),
+  UNIQUE(tenant_id,evidence_revision,target_revision),
+  FOREIGN KEY(tenant_id,evidence_id,evidence_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,evidence_revision,evidence_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,target_id,target_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,target_revision,target_type) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,attached_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX evidence_attachment_target ON impact.evidence_attachment(tenant_id,target_id,attached_at);
+
+-- One row per mediated content response: who read which evidence revision's bytes, when, under which
+-- correlation. Never updated or deleted.
+CREATE TABLE impact.evidence_access(
+  tenant_id uuid NOT NULL,
+  access_id uuid NOT NULL,
+  evidence_id uuid NOT NULL,
+  evidence_revision uuid NOT NULL,
+  blob_id uuid NOT NULL,
+  principal_id uuid NOT NULL,
+  membership_id uuid NOT NULL,
+  accessed_at timestamptz NOT NULL,
+  correlation_id uuid NOT NULL,
+  PRIMARY KEY(tenant_id,access_id),
+  FOREIGN KEY(tenant_id,evidence_id,evidence_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,blob_id) REFERENCES impact.file_blob(tenant_id,blob_id),
+  FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX evidence_access_evidence ON impact.evidence_access(tenant_id,evidence_id,accessed_at);
+
+-- The history of an upload session (create, content received, sealed, scan verdict): upload sessions
+-- are not registry objects, so an audit event cannot reference them; this register links each
+-- audited action to its upload. Never updated or deleted.
+CREATE TABLE impact.upload_event(
+  tenant_id uuid NOT NULL,
+  event_id uuid NOT NULL,
+  upload_id uuid NOT NULL,
+  action varchar(64) NOT NULL,
+  outcome varchar(64) NOT NULL,
+  actor_id uuid NOT NULL,
+  occurred_at timestamptz NOT NULL,
+  correlation_id uuid NOT NULL,
+  PRIMARY KEY(tenant_id,event_id),
+  FOREIGN KEY(tenant_id,upload_id) REFERENCES impact.upload_session(tenant_id,upload_id),
+  FOREIGN KEY(tenant_id,actor_id) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX upload_event_upload ON impact.upload_event(tenant_id,upload_id,occurred_at);
+
+ALTER TABLE impact.upload_event ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.upload_event FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.upload_event USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.evidence_attachment ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.evidence_attachment FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.evidence_attachment USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.evidence_access ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.evidence_access FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.evidence_access USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+-- Insert-only for the application; nothing for the worker, identity or control plane.
+GRANT SELECT,INSERT ON impact.evidence_attachment TO impact_app;
+GRANT SELECT,INSERT ON impact.evidence_access TO impact_app;
+GRANT SELECT,INSERT ON impact.upload_event TO impact_app;
+COMMIT;
+```
+
+### 0024 report exports
+
+Source: infrastructure/migrations/0024_report_exports.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Report exports (v0.23): PDF, XLSX and DOCX renderings of an approved, frozen report package,
+-- produced by the worker as its first executed job class. A request writes one impact.job row
+-- (job_class REPORT_EXPORT, state Queued) and one report_export row in the business transaction;
+-- the worker claims due rows under a generation-fenced lease on the database clock, renders outside
+-- any transaction and stores the artifact in a fenced outcome transaction. Artifacts are insert-only
+-- and immutable; a disclosure binds the exact artifacts it was approved with, never re-pointed.
+-- Nothing here depends on migrations 0022, 0023 or 0025.
+
+-- Server-resolved export artifacts a disclosure names (the requester names formats; the server pins
+-- each to the exact artifact before review). Payload columns of the Disclosure projection.
+ALTER TABLE impact.disclosure_current
+ ADD COLUMN export_formats jsonb CHECK(export_formats IS NULL OR jsonb_typeof(export_formats)='array'),
+ ADD COLUMN export_artifacts jsonb CHECK(export_artifacts IS NULL OR jsonb_typeof(export_artifacts)='array');
+
+-- The export-specific lease state of a REPORT_EXPORT job. The job row carries the lifecycle state,
+-- lease generation, lease expiry and cancellation request; this row the pinned package, the lease
+-- owner, attempts, backoff and the error class (never a message).
+CREATE TABLE impact.report_export(
+  tenant_id uuid NOT NULL,
+  job_id uuid NOT NULL,
+  report_id uuid NOT NULL,
+  report_revision uuid NOT NULL,
+  report_revision_kind text GENERATED ALWAYS AS ('Report') STORED,
+  format text NOT NULL CHECK(format IN ('PDF','XLSX','DOCX')),
+  renderer_version varchar(32) NOT NULL CHECK(renderer_version ~ '^[a-z0-9.-]{1,32}$'),
+  reconciliation_digest bytea NOT NULL CHECK(octet_length(reconciliation_digest)=32),
+  requested_by uuid NOT NULL,
+  requested_at timestamptz NOT NULL,
+  attempts integer NOT NULL DEFAULT 0 CHECK(attempts>=0),
+  next_attempt_at timestamptz NOT NULL,
+  lease_owner varchar(128) CHECK(lease_owner ~ '^[A-Za-z0-9._:-]{1,128}$'),
+  last_attempt_at timestamptz,
+  last_error_class varchar(64) CHECK(last_error_class ~ '^[A-Z0-9_]{1,64}$'),
+  completed_at timestamptz,
+  PRIMARY KEY(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.job(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,report_id,report_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,report_revision,report_revision_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+  FOREIGN KEY(tenant_id,report_id,report_revision) REFERENCES impact.report_package_binding(tenant_id,report_id,report_revision),
+  FOREIGN KEY(tenant_id,requested_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX report_export_report ON impact.report_export(tenant_id,report_id,report_revision,format);
+CREATE INDEX report_export_due ON impact.report_export(tenant_id,next_attempt_at) WHERE completed_at IS NULL;
+
+-- One immutable artifact per successful export job: written once by the worker's fenced outcome.
+CREATE TABLE impact.report_export_artifact(
+  tenant_id uuid NOT NULL,
+  job_id uuid NOT NULL,
+  report_id uuid NOT NULL,
+  report_revision uuid NOT NULL,
+  format text NOT NULL CHECK(format IN ('PDF','XLSX','DOCX')),
+  renderer_version varchar(32) NOT NULL,
+  media_type text NOT NULL,
+  body bytea NOT NULL CHECK(octet_length(body) BETWEEN 1 AND 10485760),
+  content_sha256 bytea NOT NULL CHECK(octet_length(content_sha256)=32),
+  lease_generation bigint NOT NULL CHECK(lease_generation>0),
+  created_at timestamptz NOT NULL,
+  PRIMARY KEY(tenant_id,job_id),
+  CHECK((format='PDF' AND media_type='application/pdf')
+    OR (format='XLSX' AND media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    OR (format='DOCX' AND media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.report_export(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,report_id,report_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id)
+);
+
+-- The export artifacts a published disclosure delivers: one row per format, written in the publish
+-- transaction from the artifacts the reviewed disclosure pinned, never re-pointed.
+CREATE TABLE impact.report_publication_export(
+  tenant_id uuid NOT NULL,
+  disclosure_id uuid NOT NULL,
+  disclosure_revision uuid NOT NULL,
+  format text NOT NULL CHECK(format IN ('PDF','XLSX','DOCX')),
+  job_id uuid NOT NULL,
+  content_sha256 bytea NOT NULL CHECK(octet_length(content_sha256)=32),
+  created_at timestamptz NOT NULL,
+  PRIMARY KEY(tenant_id,disclosure_id,format),
+  FOREIGN KEY(tenant_id,disclosure_id,disclosure_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.report_export_artifact(tenant_id,job_id)
+);
+
+-- Every mediated download of an export artifact: internal (report.export) or by a named recipient.
+CREATE TABLE impact.report_export_access(
+  tenant_id uuid NOT NULL,
+  access_id uuid NOT NULL,
+  job_id uuid NOT NULL,
+  disclosure_id uuid,
+  principal_id uuid NOT NULL,
+  membership_id uuid NOT NULL,
+  format text NOT NULL CHECK(format IN ('PDF','XLSX','DOCX')),
+  access_mode text NOT NULL CHECK(access_mode IN ('INTERNAL_DOWNLOAD','RECIPIENT_DOWNLOAD')),
+  accessed_at timestamptz NOT NULL,
+  correlation_id uuid NOT NULL,
+  PRIMARY KEY(tenant_id,access_id),
+  CHECK((disclosure_id IS NULL)=(access_mode='INTERNAL_DOWNLOAD')),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.report_export_artifact(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,disclosure_id) REFERENCES impact.disclosure_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+  FOREIGN KEY(tenant_id,membership_id) REFERENCES impact.membership_current(tenant_id,object_id)
+);
+
+ALTER TABLE impact.report_export ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_export FORCE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_export_artifact ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_export_artifact FORCE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_publication_export ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_publication_export FORCE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_export_access ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.report_export_access FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.report_export USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+CREATE POLICY tenant_fence ON impact.report_export_artifact USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+CREATE POLICY tenant_fence ON impact.report_publication_export USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+CREATE POLICY tenant_fence ON impact.report_export_access USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+
+-- The worker's directory of tenants with due export jobs (identifiers and counts only), read by the
+-- definer through owner-only SELECT policies, as impact.worker_tenants reads outbox_delivery (0018).
+CREATE POLICY worker_export_directory ON impact.job FOR SELECT TO impact_owner USING(true);
+CREATE POLICY worker_export_directory ON impact.report_export FOR SELECT TO impact_owner USING(true);
+CREATE FUNCTION impact.worker_export_tenants(at timestamptz)
+ RETURNS TABLE(tenant_id uuid, due_exports bigint)
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+SELECT t.tenant_id,count(*) FROM impact.tenant_root t
+ JOIN impact.job j ON j.tenant_id=t.tenant_id AND j.job_class='REPORT_EXPORT'
+ JOIN impact.report_export e ON e.tenant_id=j.tenant_id AND e.job_id=j.job_id
+ WHERE t.lifecycle_state='Active'
+  AND ((j.state='Queued' AND j.cancellation_requested_at IS NULL AND e.next_attempt_at<=at)
+   OR (j.state='Running' AND j.lease_expires_at<=at))
+ GROUP BY t.tenant_id ORDER BY t.tenant_id
+$$;
+REVOKE ALL ON FUNCTION impact.worker_export_tenants(timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.worker_export_tenants(timestamptz) TO impact_worker;
+
+-- Application: request, status, internal download, publication binding and access log.
+GRANT SELECT,INSERT ON impact.report_export TO impact_app;
+GRANT SELECT ON impact.report_export_artifact TO impact_app;
+GRANT SELECT,INSERT ON impact.report_publication_export TO impact_app;
+GRANT INSERT ON impact.report_export_access TO impact_app;
+
+-- Worker: exactly what export execution needs, stated explicitly so that a later narrowing of the
+-- broad 0003 worker grants can keep them (job and job_item are also granted by 0003).
+GRANT SELECT,UPDATE ON impact.job TO impact_worker;
+GRANT SELECT,INSERT ON impact.job_item TO impact_worker;
+GRANT SELECT,UPDATE ON impact.report_export TO impact_worker;
+GRANT SELECT,INSERT ON impact.report_export_artifact TO impact_worker;
+GRANT SELECT ON impact.report_package_binding,impact.object_revision TO impact_worker;
+COMMIT;
+```
+
+### 0025 worker grants
+
+Source: infrastructure/migrations/0025_worker_grants.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Worker privileges and operator re-queue (quality hardening, October 2026).
+-- Part 1 narrows impact_worker. Migration 0003 granted impact_worker the
+-- same SELECT/INSERT/UPDATE as impact_app on nearly every domain table. The worker of build 0.20.0
+-- (impact_api/worker.py with store.write/audit and delivery.enqueue) touches only:
+--   object_registry, object_revision, notification_current, audit_event_current: reminder notices
+--     and their audit events (INSERT; SELECT for the reminder scan and the audit revision number)
+--   tenant_principal      SELECT, INSERT (the SERVICE principal, ON CONFLICT DO NOTHING; recipients)
+--   membership_current    SELECT (reminder recipients hold an active membership)
+--   outbox_event          SELECT, INSERT;  outbox_delivery  SELECT, INSERT, UPDATE
+--   consumer_receipt      SELECT, INSERT (worker.in_app)
+--   job, job_item         cancellation of not-started jobs
+--   from 0018: notification_delivery, recovery_channel_challenge, member_invitation,
+--     grant_authority, worker_heartbeat, authority_reminder and EXECUTE on worker_tenants.
+-- Tenant discovery goes through the SECURITY DEFINER impact.worker_tenants, so tenant_root is not
+-- needed. Everything else is revoked below, one explicit statement per table: no dynamic
+-- revoke-all-then-grant, which would undo explicit grants of other migrations.
+-- Deliberately not touched, left for a follow-up once report exports (0024) have settled the
+-- worker's export-job privileges: job, job_item, report_current, report_template_current.
+-- Foreign-key checks run as the table owner and no row-level policy reads another table, so the
+-- kept privileges cover every statement the worker issues. Nothing here depends on 0022-0024.
+REVOKE ALL ON impact.a_i_task_current FROM impact_worker;
+REVOKE ALL ON impact.allocation_rule_current FROM impact_worker;
+REVOKE ALL ON impact.assignment_current FROM impact_worker;
+REVOKE ALL ON impact.audit_batch_root FROM impact_worker;
+REVOKE ALL ON impact.budget_line_current FROM impact_worker;
+REVOKE ALL ON impact.calculated_result_current FROM impact_worker;
+REVOKE ALL ON impact.connection_current FROM impact_worker;
+REVOKE ALL ON impact.dashboard_current FROM impact_worker;
+REVOKE ALL ON impact.dataset_current FROM impact_worker;
+REVOKE ALL ON impact.decision_current FROM impact_worker;
+REVOKE ALL ON impact.deletion_ledger FROM impact_worker;
+REVOKE ALL ON impact.device_current FROM impact_worker;
+REVOKE ALL ON impact.dimension_current FROM impact_worker;
+REVOKE ALL ON impact.disclosure_current FROM impact_worker;
+REVOKE ALL ON impact.evaluation_current FROM impact_worker;
+REVOKE ALL ON impact.evidence_current FROM impact_worker;
+REVOKE ALL ON impact.exchange_rate_current FROM impact_worker;
+REVOKE ALL ON impact.file_blob FROM impact_worker;
+REVOKE ALL ON impact.finance_transaction_current FROM impact_worker;
+REVOKE ALL ON impact.form_current FROM impact_worker;
+REVOKE ALL ON impact.form_field_current FROM impact_worker;
+REVOKE ALL ON impact.framework_current FROM impact_worker;
+REVOKE ALL ON impact.funding_agreement_current FROM impact_worker;
+REVOKE ALL ON impact.grant_current FROM impact_worker;
+REVOKE ALL ON impact.handling_record_current FROM impact_worker;
+REVOKE ALL ON impact.import_job_current FROM impact_worker;
+REVOKE ALL ON impact.indicator_definition_current FROM impact_worker;
+REVOKE ALL ON impact.indicator_instance_current FROM impact_worker;
+REVOKE ALL ON impact.lineage_edge FROM impact_worker;
+REVOKE INSERT,UPDATE ON impact.membership_current FROM impact_worker;
+REVOKE UPDATE ON impact.notification_current FROM impact_worker;
+REVOKE UPDATE ON impact.object_registry FROM impact_worker;
+REVOKE ALL ON impact.observation_current FROM impact_worker;
+REVOKE ALL ON impact.offline_grant FROM impact_worker;
+REVOKE ALL ON impact.operation_receipt FROM impact_worker;
+REVOKE ALL ON impact.organisation_unit_current FROM impact_worker;
+REVOKE ALL ON impact.participant_current FROM impact_worker;
+REVOKE ALL ON impact.period_current FROM impact_worker;
+REVOKE ALL ON impact.privacy_case_current FROM impact_worker;
+REVOKE ALL ON impact.privacy_store_action FROM impact_worker;
+REVOKE ALL ON impact.programme_current FROM impact_worker;
+REVOKE ALL ON impact.qualitative_extract_current FROM impact_worker;
+REVOKE ALL ON impact.quality_issue_current FROM impact_worker;
+REVOKE ALL ON impact.retention_hold FROM impact_worker;
+REVOKE ALL ON impact.retention_policy_current FROM impact_worker;
+REVOKE ALL ON impact.review_decision FROM impact_worker;
+REVOKE ALL ON impact.schedule_current FROM impact_worker;
+REVOKE ALL ON impact.scope_definition FROM impact_worker;
+REVOKE ALL ON impact.scope_member FROM impact_worker;
+REVOKE ALL ON impact.service_event_current FROM impact_worker;
+REVOKE ALL ON impact.service_identity FROM impact_worker;
+REVOKE ALL ON impact.snapshot_current FROM impact_worker;
+REVOKE ALL ON impact.snapshot_member FROM impact_worker;
+REVOKE ALL ON impact.source_key_registry FROM impact_worker;
+REVOKE ALL ON impact.source_revision_receipt FROM impact_worker;
+REVOKE ALL ON impact.submission_current FROM impact_worker;
+REVOKE ALL ON impact.subscription_current FROM impact_worker;
+REVOKE ALL ON impact.support_request_current FROM impact_worker;
+REVOKE ALL ON impact.sync_receipt FROM impact_worker;
+REVOKE ALL ON impact.target_current FROM impact_worker;
+REVOKE ALL ON impact.tenant_current FROM impact_worker;
+REVOKE UPDATE ON impact.tenant_principal FROM impact_worker;
+REVOKE ALL ON impact.tenant_root FROM impact_worker;
+REVOKE ALL ON impact.tenant_schedule_hold FROM impact_worker;
+REVOKE ALL ON impact.upload_part FROM impact_worker;
+REVOKE ALL ON impact.upload_session FROM impact_worker;
+REVOKE ALL ON impact.webhook_delivery FROM impact_worker;
+REVOKE ALL ON impact.work_item_current FROM impact_worker;
+REVOKE ALL ON impact.workflow_author FROM impact_worker;
+REVOKE ALL ON impact.workflow_current FROM impact_worker;
+
+-- Operator re-queue (control plane, platform API 1.5.0). impact_platform may not read or write the
+-- tenant outbox; these two functions expose exactly the attention list (dispatchable rows that are
+-- DEAD or held by a suspension, optionally of one tenant; no address, reference or payload) and one
+-- fenced transition per row.
+-- They read through the owner-only SELECT policies of 0018 and update under tenant_fence, so the
+-- caller must have set impact.tenant_id. The lease generation is the row's revision: a re-queue or
+-- a release advances it, so a worker that still believes it holds the row matches nothing (0018).
+CREATE FUNCTION impact.operator_delivery_attention(requested_tenant uuid, max_rows integer)
+ RETURNS TABLE(tenant_id uuid, lifecycle_state text, event_id uuid, channel text, template text,
+  state text, held boolean, attempts integer, last_error_class text, last_attempt_at timestamptz,
+  completed_at timestamptz, lease_generation bigint)
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT d.tenant_id,t.lifecycle_state,d.event_id,d.channel,d.template,d.state,d.held_at IS NOT NULL,
+  d.attempts,d.last_error_class,d.last_attempt_at,d.completed_at,d.lease_generation
+ FROM impact.outbox_delivery d JOIN impact.tenant_root t ON t.tenant_id=d.tenant_id
+ WHERE d.channel IS NOT NULL AND (d.state='DEAD' OR (d.held_at IS NOT NULL AND d.state IN ('PENDING','LEASED')))
+  AND (requested_tenant IS NULL OR d.tenant_id=requested_tenant)
+ ORDER BY coalesce(d.last_attempt_at,d.next_attempt_at) DESC,d.tenant_id,d.event_id
+ LIMIT least(greatest(max_rows,1),50)
+$$;
+REVOKE ALL ON FUNCTION impact.operator_delivery_attention(uuid,integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.operator_delivery_attention(uuid,integer) TO impact_platform;
+-- 'requeue': a DEAD row becomes PENDING with a fresh attempt budget, due now, released from any
+-- hold. 'release': a held PENDING row is released, due now. Anything else changes nothing and
+-- answers a reason. The caller holds the tenant advisory lock and checks the tenant is Active.
+CREATE FUNCTION impact.operator_requeue_delivery(requested_event uuid, mode text, expected_generation bigint)
+ RETURNS TABLE(outcome text, state text, held boolean, attempts integer, lease_generation bigint,
+  previous_state text, previous_attempts integer, previous_error_class text)
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+#variable_conflict use_column
+DECLARE tenant uuid := impact.current_tenant(); r impact.outbox_delivery%ROWTYPE;
+BEGIN
+ IF tenant IS NULL OR mode NOT IN ('requeue','release') THEN
+  RAISE EXCEPTION 'operator re-queue needs a tenant context and a known mode' USING ERRCODE='42501';
+ END IF;
+ SELECT * INTO r FROM impact.outbox_delivery d WHERE d.tenant_id=tenant AND d.event_id=requested_event
+  AND d.channel IS NOT NULL FOR UPDATE;
+ IF NOT FOUND THEN
+  RETURN QUERY SELECT 'NOT_FOUND'::text,NULL::text,NULL::boolean,NULL::integer,NULL::bigint,NULL::text,NULL::integer,NULL::text;
+  RETURN;
+ END IF;
+ IF r.lease_generation<>expected_generation THEN outcome := 'STALE';
+ ELSIF mode='requeue' AND r.state<>'DEAD' THEN outcome := 'NOT_DEAD';
+ ELSIF mode='release' AND r.held_at IS NULL THEN outcome := 'NOT_HELD';
+ ELSIF mode='release' AND r.state<>'PENDING' THEN outcome := 'NOT_PENDING';
+ ELSIF mode='requeue' THEN
+  UPDATE impact.outbox_delivery d SET state='PENDING',attempts=0,completed_at=NULL,held_at=NULL,
+   next_attempt_at=now(),lease_generation=d.lease_generation+1
+   WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+  outcome := 'REQUEUED';
+ ELSE
+  UPDATE impact.outbox_delivery d SET held_at=NULL,next_attempt_at=now(),lease_generation=d.lease_generation+1
+   WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+  outcome := 'RELEASED';
+ END IF;
+ RETURN QUERY SELECT outcome,d.state::text,d.held_at IS NOT NULL,d.attempts,d.lease_generation,
+  r.state::text,r.attempts,r.last_error_class::text
+  FROM impact.outbox_delivery d WHERE d.tenant_id=tenant AND d.event_id=requested_event;
+END $$;
+REVOKE ALL ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.operator_requeue_delivery(uuid,text,bigint) TO impact_platform;
+COMMIT;
+```
+
+### 0026 worker job grants
+
+Source: infrastructure/migrations/0026_worker_job_grants.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Worker privileges, part 2 (integration of builds 0.21.0-0.24.0, October 2026).
+-- Migration 0025 left four tables of migration 0003's SELECT/INSERT/UPDATE grant to impact_worker
+-- untouched until report exports (0024) had settled the worker's job privileges. 0024 grants the
+-- worker exactly what the REPORT_EXPORT job class and the cancellation pass use (worker.py):
+--   job        SELECT, UPDATE  (claim, lease renewal, fenced outcome, cancellation before start)
+--   job_item   SELECT, INSERT  (artifact and cancellation outcomes; never updated)
+-- The worker never inserts a job (jobs are requested by the application) and never reads or writes
+-- report_current or report_template_current (an export reads the pinned package through
+-- object_revision and report_package_binding). Those privileges are revoked here; a REVOKE removes
+-- only what it names, so the grants of 0024 that the worker uses stay in place. impact_app is not
+-- touched.
+REVOKE INSERT ON impact.job FROM impact_worker;
+REVOKE UPDATE ON impact.job_item FROM impact_worker;
+REVOKE ALL ON impact.report_current FROM impact_worker;
+REVOKE ALL ON impact.report_template_current FROM impact_worker;
+COMMIT;
+```
+
+### 0027 privacy execution
+
+Source: infrastructure/migrations/0027_privacy_execution.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Privacy execution (v0.25 part B): data-subject requests for a member of the tenant (access export
+-- and erasure propagation) and a scheduled retention sweep with an insert-only proof record.
+--
+-- Data-subject requests. PrivacyCase has been a registry kind with a typed projection since 0002;
+-- this migration adds the payload columns the implemented case writes (the subject membership, the
+-- request reason and verification note, the evidence and import batches the privacy officer names,
+-- and the server-set approval, plan, execution and package fields). An erasure is an approved plan
+-- of per-store actions (privacy_store_action, 0002) executed in one transaction: earlier revision
+-- payloads are removed only through the SECURITY DEFINER impact.privacy_remove_revisions below,
+-- under the revision_removal_guard trigger of 0003, which still requires the privacy case context,
+-- an EXECUTING DATABASE/DELETE store action, a durable deletion_ledger row and no active hold.
+--
+-- Why a definer and a replaced guard: the guard admits only a role that holds impact_privacy, but
+-- the API's login is a member of impact_app alone and a migration cannot grant role membership (the
+-- migrator holds neither CREATEROLE nor ADMIN OPTION). The removal therefore runs inside
+-- impact.privacy_remove_revisions, owned by impact_owner, which the guard now also admits when (and
+-- only when) that definer has set its transaction-local executor marker. impact_app still holds no
+-- UPDATE privilege on object_revision, so no other path reaches the trigger; every other condition
+-- of the original guard is unchanged.
+ALTER TABLE impact.privacy_case_current
+ ADD COLUMN subject_membership_id uuid,
+ ADD COLUMN subject_membership_id_kind text GENERATED ALWAYS AS ('Membership') STORED,
+ ADD COLUMN subject_principal_id uuid,
+ ADD COLUMN purpose varchar(64),
+ ADD COLUMN reason varchar(2000),
+ ADD COLUMN verification_note varchar(2000),
+ ADD COLUMN evidence_ids jsonb CHECK(evidence_ids IS NULL OR jsonb_typeof(evidence_ids)='array'),
+ ADD COLUMN import_ids jsonb CHECK(import_ids IS NULL OR jsonb_typeof(import_ids)='array'),
+ ADD COLUMN approved_by uuid,
+ ADD COLUMN approved_at timestamptz,
+ ADD COLUMN approved_revision uuid,
+ ADD COLUMN plan_sha256 varchar(64) CHECK(plan_sha256 IS NULL OR plan_sha256 ~ '^[0-9a-f]{64}$'),
+ ADD COLUMN executed_by uuid,
+ ADD COLUMN executed_at timestamptz,
+ ADD COLUMN completed_at timestamptz,
+ ADD COLUMN outcome varchar(32) CHECK(outcome IS NULL OR outcome IN ('COMPLETED','PARTIALLY_COMPLETED')),
+ ADD COLUMN package_id uuid,
+ ADD COLUMN package_sha256 varchar(64) CHECK(package_sha256 IS NULL OR package_sha256 ~ '^[0-9a-f]{64}$'),
+ ADD COLUMN manifest jsonb CHECK(manifest IS NULL OR jsonb_typeof(manifest)='object'),
+ ADD CONSTRAINT privacy_case_request_type CHECK(request_type IS NULL OR request_type IN ('ACCESS','ERASURE')),
+ ADD CONSTRAINT privacy_case_subject_fk FOREIGN KEY(tenant_id,subject_membership_id,subject_membership_id_kind)
+  REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ ADD CONSTRAINT privacy_case_subject_principal_fk FOREIGN KEY(tenant_id,subject_principal_id)
+  REFERENCES impact.tenant_principal(tenant_id,principal_id) DEFERRABLE INITIALLY DEFERRED;
+
+-- The export package of an approved access request: one per case, bounded, written once with its
+-- SHA-256 and section manifest, and deleted by the retention sweep when it expires.
+CREATE TABLE impact.privacy_export_package(
+  tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
+  package_id uuid NOT NULL,
+  case_id uuid NOT NULL,
+  case_revision uuid NOT NULL,
+  subject_membership_id uuid NOT NULL,
+  body bytea NOT NULL CHECK(octet_length(body) BETWEEN 2 AND 5242880),
+  content_sha256 bytea NOT NULL CHECK(octet_length(content_sha256)=32),
+  manifest jsonb NOT NULL CHECK(jsonb_typeof(manifest)='object'),
+  created_by uuid NOT NULL,
+  created_at timestamptz NOT NULL,
+  expires_at timestamptz NOT NULL CHECK(expires_at>created_at),
+  PRIMARY KEY(tenant_id,package_id),
+  UNIQUE(tenant_id,case_id),
+  FOREIGN KEY(tenant_id,case_id) REFERENCES impact.privacy_case_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,case_id,case_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+  FOREIGN KEY(tenant_id,created_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX privacy_export_package_expiry ON impact.privacy_export_package(tenant_id,expires_at);
+
+-- One row per mediated download of an export package. No foreign key to the package: the access
+-- record outlives the package's deletion. Never updated or deleted.
+CREATE TABLE impact.privacy_export_access(
+  tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
+  access_id uuid NOT NULL,
+  case_id uuid NOT NULL,
+  package_id uuid NOT NULL,
+  content_sha256 bytea NOT NULL CHECK(octet_length(content_sha256)=32),
+  principal_id uuid NOT NULL,
+  membership_id uuid NOT NULL,
+  purpose varchar(64) NOT NULL,
+  accessed_at timestamptz NOT NULL,
+  correlation_id uuid NOT NULL,
+  PRIMARY KEY(tenant_id,access_id),
+  FOREIGN KEY(tenant_id,case_id) REFERENCES impact.privacy_case_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+
+-- Erasure bookkeeping on the stores it reaches. A redacted sealed recipient is overwritten with
+-- random bytes (the address cannot be recovered even with the delivery secret); a purged blob's
+-- bytes were deleted from the object store by the case that names it.
+ALTER TABLE impact.outbox_delivery ADD COLUMN recipient_redacted_at timestamptz;
+ALTER TABLE impact.file_blob
+ ADD COLUMN purged_at timestamptz,
+ ADD COLUMN purge_case_id uuid;
+
+-- Retention sweep: job class RETENTION_SWEEP, executed by the worker under a generation-fenced
+-- lease on database time, like REPORT_EXPORT (0024). The job row carries the lifecycle and lease
+-- generation; this row carries the holder and attempt bookkeeping.
+CREATE TABLE impact.retention_sweep(
+  tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
+  job_id uuid NOT NULL,
+  lease_owner varchar(128),
+  attempts integer NOT NULL DEFAULT 0 CHECK(attempts>=0),
+  next_attempt_at timestamptz NOT NULL,
+  last_attempt_at timestamptz,
+  last_error_class varchar(64) CHECK(last_error_class IS NULL OR last_error_class ~ '^[A-Z][A-Z0-9_]{0,63}$'),
+  completed_at timestamptz,
+  PRIMARY KEY(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.job(tenant_id,job_id)
+);
+
+-- Proof of retention: one insert-only row per data class per sweep, with the policy applied, the
+-- cutoff, the number of items deleted or redacted and the SHA-256 of their sorted keys. Written in
+-- the same fenced transaction as the deletions it proves; never updated or deleted.
+CREATE TABLE impact.retention_proof(
+  tenant_id uuid NOT NULL REFERENCES impact.tenant_root,
+  proof_id uuid NOT NULL,
+  job_id uuid NOT NULL,
+  lease_generation bigint NOT NULL CHECK(lease_generation>0),
+  data_class varchar(64) NOT NULL CHECK(data_class ~ '^[A-Z][A-Z0-9_]{0,63}$'),
+  action varchar(16) NOT NULL CHECK(action IN ('DELETE','REDACT','EXPIRE')),
+  retention_days integer NOT NULL CHECK(retention_days>=0),
+  cutoff timestamptz NOT NULL,
+  affected_count integer NOT NULL CHECK(affected_count>=0),
+  items_sha256 bytea NOT NULL CHECK(octet_length(items_sha256)=32),
+  executed_at timestamptz NOT NULL,
+  worker_id varchar(128) NOT NULL,
+  PRIMARY KEY(tenant_id,proof_id),
+  UNIQUE(tenant_id,job_id,data_class),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.retention_sweep(tenant_id,job_id)
+);
+CREATE INDEX retention_proof_recent ON impact.retention_proof(tenant_id,executed_at);
+
+ALTER TABLE impact.privacy_export_package ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.privacy_export_package FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.privacy_export_package USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.privacy_export_access ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.privacy_export_access FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.privacy_export_access USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.retention_sweep ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.retention_sweep FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.retention_sweep USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.retention_proof ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.retention_proof FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.retention_proof USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+
+-- The original guard of 0003, plus the definer path described above.
+CREATE OR REPLACE FUNCTION impact.guard_revision_removal() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE case_ref uuid;
+BEGIN
+ IF NOT (pg_has_role(current_user,'impact_privacy','USAGE')
+         OR (current_user='impact_owner' AND current_setting('impact.privacy_executor',true)='privacy_remove_revisions')) THEN
+   RAISE EXCEPTION 'immutable revision';
+ END IF;
+ case_ref := nullif(current_setting('impact.privacy_case_id',true),'')::uuid;
+ IF case_ref IS NULL OR NEW.tenant_id<>impact.current_tenant() THEN RAISE EXCEPTION 'privacy context required'; END IF;
+ IF (to_jsonb(OLD)-'payload'-'restriction_state') IS DISTINCT FROM (to_jsonb(NEW)-'payload'-'restriction_state') THEN RAISE EXCEPTION 'immutable metadata'; END IF;
+ IF NEW.payload IS NOT NULL OR NEW.restriction_state<>'REMOVED' THEN RAISE EXCEPTION 'removal only'; END IF;
+ IF EXISTS(SELECT 1 FROM impact.retention_hold WHERE tenant_id=OLD.tenant_id AND object_id=OLD.object_id AND released_at IS NULL) THEN RAISE EXCEPTION 'active hold'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM impact.privacy_store_action WHERE tenant_id=OLD.tenant_id AND case_id=case_ref AND object_id=OLD.object_id AND store='DATABASE' AND action='DELETE' AND state='EXECUTING') THEN RAISE EXCEPTION 'approved executing plan required'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM impact.deletion_ledger WHERE tenant_id=OLD.tenant_id AND case_id=case_ref AND object_id=OLD.object_id) THEN RAISE EXCEPTION 'durable ledger prerequisite'; END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_revision_removal() FROM PUBLIC;
+
+-- The upload guard of 0023, plus one transition: a declared file name may be cleared (never
+-- changed) by impact.privacy_redact_uploads for an erasure case. Everything else is unchanged.
+CREATE OR REPLACE FUNCTION impact.upload_session_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+  IF NEW.tenant_id<>OLD.tenant_id OR NEW.upload_id<>OLD.upload_id OR NEW.owner_id<>OLD.owner_id
+     OR NEW.purpose<>OLD.purpose OR NEW.mode<>OLD.mode OR NEW.expected_bytes<>OLD.expected_bytes
+     OR NEW.expected_digest<>OLD.expected_digest
+     OR (NEW.filename IS DISTINCT FROM OLD.filename AND NOT (NEW.filename IS NULL AND current_user='impact_owner'
+         AND current_setting('impact.privacy_executor',true)='privacy_redact_uploads'))
+     OR NEW.media_type IS DISTINCT FROM OLD.media_type
+     OR (OLD.blob_id IS NOT NULL AND NEW.blob_id IS DISTINCT FROM OLD.blob_id) THEN
+    RAISE EXCEPTION 'upload_session declaration is immutable' USING ERRCODE='23514';
+  END IF;
+  IF OLD.state IN ('CLEAN','REJECTED','CANCELLED','EXPIRED') AND NEW.state<>OLD.state THEN
+    RAISE EXCEPTION 'upload_session terminal state is final' USING ERRCODE='23514';
+  END IF;
+  RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.upload_session_guard() FROM PUBLIC;
+
+-- An erasure case that is approved (or executing) for the current tenant, or an exception.
+CREATE FUNCTION impact.privacy_require_case(case_ref uuid) RETURNS void
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+  IF impact.current_tenant() IS NULL OR NOT EXISTS(
+    SELECT 1 FROM impact.privacy_case_current p JOIN impact.object_registry r
+      ON r.tenant_id=p.tenant_id AND r.object_id=p.object_id
+     WHERE p.tenant_id=impact.current_tenant() AND p.object_id=case_ref AND p.request_type='ERASURE'
+       AND p.approved_by IS NOT NULL AND r.lifecycle_state IN ('Approved','Executing')) THEN
+    RAISE EXCEPTION 'approved erasure case required' USING ERRCODE='42501';
+  END IF;
+END $$;
+REVOKE ALL ON FUNCTION impact.privacy_require_case(uuid) FROM PUBLIC;
+
+-- Remove the payload of every revision of one object except keep_revision (the tombstone the
+-- application has just written, or NULL to remove every revision), for an approved erasure case
+-- whose plan names this object with an EXECUTING DATABASE/DELETE action. The deletion_ledger row is
+-- written first (the guard requires it); the guard re-checks everything. Returns the number removed.
+CREATE FUNCTION impact.privacy_remove_revisions(case_ref uuid, target uuid, keep_revision uuid) RETURNS integer
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE removed integer;
+BEGIN
+  PERFORM impact.privacy_require_case(case_ref);
+  IF NOT EXISTS(SELECT 1 FROM impact.privacy_store_action WHERE tenant_id=impact.current_tenant()
+      AND case_id=case_ref AND object_id=target AND store='DATABASE' AND action='DELETE' AND state='EXECUTING') THEN
+    RAISE EXCEPTION 'approved executing plan required' USING ERRCODE='42501';
+  END IF;
+  INSERT INTO impact.deletion_ledger(tenant_id,entry_id,case_id,object_id,effective_at,disposition)
+   SELECT impact.current_tenant(),gen_random_uuid(),case_ref,target,statement_timestamp(),
+     CASE WHEN keep_revision IS NULL THEN 'ALL_REVISIONS_REMOVED' ELSE 'EARLIER_REVISIONS_REMOVED_TOMBSTONE_KEPT' END
+   WHERE NOT EXISTS(SELECT 1 FROM impact.deletion_ledger WHERE tenant_id=impact.current_tenant()
+     AND case_id=case_ref AND object_id=target);
+  PERFORM set_config('impact.privacy_case_id',case_ref::text,true);
+  PERFORM set_config('impact.privacy_executor','privacy_remove_revisions',true);
+  UPDATE impact.object_revision SET payload=NULL,restriction_state='REMOVED'
+   WHERE tenant_id=impact.current_tenant() AND object_id=target AND restriction_state<>'REMOVED'
+     AND (keep_revision IS NULL OR revision_id<>keep_revision);
+  GET DIAGNOSTICS removed = ROW_COUNT;
+  PERFORM set_config('impact.privacy_executor','',true);
+  RETURN removed;
+END $$;
+REVOKE ALL ON FUNCTION impact.privacy_remove_revisions(uuid,uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.privacy_remove_revisions(uuid,uuid,uuid) TO impact_app;
+
+-- Clear the declared file name of the uploads one evidence object was built from, for an approved
+-- erasure case whose plan names that evidence with an EXECUTING PROJECTION/REDACT action. Must run
+-- before the evidence revisions are removed (it finds the uploads through their payloads).
+CREATE FUNCTION impact.privacy_redact_uploads(case_ref uuid, target uuid) RETURNS integer
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE redacted integer;
+BEGIN
+  PERFORM impact.privacy_require_case(case_ref);
+  IF NOT EXISTS(SELECT 1 FROM impact.privacy_store_action WHERE tenant_id=impact.current_tenant()
+      AND case_id=case_ref AND object_id=target AND store='PROJECTION' AND action='REDACT' AND state='EXECUTING') THEN
+    RAISE EXCEPTION 'approved executing plan required' USING ERRCODE='42501';
+  END IF;
+  PERFORM set_config('impact.privacy_executor','privacy_redact_uploads',true);
+  UPDATE impact.upload_session u SET filename=NULL
+   WHERE u.tenant_id=impact.current_tenant() AND u.filename IS NOT NULL AND u.upload_id IN (
+     SELECT (v.payload->>'upload_id')::uuid FROM impact.object_revision v
+      WHERE v.tenant_id=impact.current_tenant() AND v.object_id=target AND v.object_type='Evidence'
+        AND v.payload ? 'upload_id');
+  GET DIAGNOSTICS redacted = ROW_COUNT;
+  PERFORM set_config('impact.privacy_executor','',true);
+  RETURN redacted;
+END $$;
+REVOKE ALL ON FUNCTION impact.privacy_redact_uploads(uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.privacy_redact_uploads(uuid,uuid) TO impact_app;
+
+-- Supersede the open delivery intents that reference one object (an invitation or a notice of the
+-- subject) and overwrite every sealed recipient address they carry, for an approved erasure case
+-- whose plan names that reference with an EXECUTING OUTBOX/SUPERSEDE action. The lease generation
+-- advances, so a worker holding one of these rows cannot record an outcome for it.
+CREATE FUNCTION impact.privacy_supersede_deliveries(case_ref uuid, reference uuid) RETURNS integer
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE superseded integer; redacted integer;
+BEGIN
+  PERFORM impact.privacy_require_case(case_ref);
+  IF NOT EXISTS(SELECT 1 FROM impact.privacy_store_action WHERE tenant_id=impact.current_tenant()
+      AND case_id=case_ref AND object_id=reference AND store='OUTBOX' AND action='SUPERSEDE' AND state='EXECUTING') THEN
+    RAISE EXCEPTION 'approved executing plan required' USING ERRCODE='42501';
+  END IF;
+  UPDATE impact.outbox_delivery SET state='SUPERSEDED',lease_owner=NULL,lease_expires_at=NULL,
+    lease_generation=lease_generation+1,last_error_class='SUBJECT_ERASED',completed_at=statement_timestamp()
+   WHERE tenant_id=impact.current_tenant() AND reference_id=reference AND channel IS NOT NULL
+     AND state IN ('PENDING','LEASED');
+  GET DIAGNOSTICS superseded = ROW_COUNT;
+  UPDATE impact.outbox_delivery SET recipient_sealed=sha256(convert_to(gen_random_uuid()::text,'UTF8')),
+    recipient_redacted_at=statement_timestamp()
+   WHERE tenant_id=impact.current_tenant() AND reference_id=reference AND channel='EMAIL'
+     AND recipient_redacted_at IS NULL;
+  GET DIAGNOSTICS redacted = ROW_COUNT;
+  RETURN superseded+redacted;
+END $$;
+REVOKE ALL ON FUNCTION impact.privacy_supersede_deliveries(uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.privacy_supersede_deliveries(uuid,uuid) TO impact_app;
+
+-- Retention definers for the worker, which holds no privilege on operation_receipt or
+-- upload_session (0025). Each acts on the current tenant only, compares with the database clock
+-- (never a cutoff the caller supplies) and returns the keys it affected, for the proof digest.
+CREATE FUNCTION impact.retention_purge_receipts(max_rows integer) RETURNS TABLE(item text)
+ LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DELETE FROM impact.operation_receipt o USING (
+  SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt
+   WHERE tenant_id=impact.current_tenant() AND expires_at<=statement_timestamp()
+   ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d
+ WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type
+   AND o.operation_id=d.operation_id
+ RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text
+$$;
+REVOKE ALL ON FUNCTION impact.retention_purge_receipts(integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.retention_purge_receipts(integer) TO impact_worker;
+
+CREATE FUNCTION impact.retention_expire_uploads(max_rows integer) RETURNS TABLE(item text)
+ LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+UPDATE impact.upload_session u SET state='EXPIRED' FROM (
+  SELECT tenant_id,upload_id FROM impact.upload_session
+   WHERE tenant_id=impact.current_tenant() AND state='OPEN' AND expires_at<=statement_timestamp()
+   ORDER BY expires_at,upload_id LIMIT greatest(least(max_rows,5000),0)) d
+ WHERE u.tenant_id=d.tenant_id AND u.upload_id=d.upload_id
+ RETURNING u.upload_id::text
+$$;
+REVOKE ALL ON FUNCTION impact.retention_expire_uploads(integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.retention_expire_uploads(integer) TO impact_worker;
+
+-- Schedule one RETENTION_SWEEP job for the current tenant when none is queued or running and none
+-- completed within the interval. The requester is the tenant's SERVICE principal (no identity), the
+-- scope its TENANT scope. Returns the new job, or NULL when nothing is due.
+CREATE FUNCTION impact.worker_schedule_retention(service_principal uuid, interval_seconds integer) RETURNS uuid
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE v_tenant uuid := impact.current_tenant(); v_scope uuid; v_job uuid;
+BEGIN
+  IF v_tenant IS NULL OR interval_seconds<60 THEN RAISE EXCEPTION 'tenant context required' USING ERRCODE='42501'; END IF;
+  IF NOT EXISTS(SELECT 1 FROM impact.tenant_principal p WHERE p.tenant_id=v_tenant AND p.principal_id=service_principal
+      AND p.principal_kind='SERVICE' AND p.identity_id IS NULL) THEN
+    RAISE EXCEPTION 'service principal required' USING ERRCODE='42501';
+  END IF;
+  IF EXISTS(SELECT 1 FROM impact.job j LEFT JOIN impact.retention_sweep s ON s.tenant_id=j.tenant_id AND s.job_id=j.job_id
+      WHERE j.tenant_id=v_tenant AND j.job_class='RETENTION_SWEEP' AND (j.state IN ('Queued','Running')
+        OR (s.completed_at IS NOT NULL AND s.completed_at>statement_timestamp()-make_interval(secs=>interval_seconds)))) THEN
+    RETURN NULL;
+  END IF;
+  SELECT d.scope_id INTO v_scope FROM impact.scope_definition d WHERE d.tenant_id=v_tenant AND d.scope_type='TENANT'
+   ORDER BY d.scope_id LIMIT 1;
+  IF v_scope IS NULL THEN RETURN NULL; END IF;
+  v_job := gen_random_uuid();
+  INSERT INTO impact.job(tenant_id,job_id,job_class,requester_id,scope_id,state,input_manifest)
+   VALUES(v_tenant,v_job,'RETENTION_SWEEP',service_principal,v_scope,'Queued',
+     jsonb_build_object('scheduled_at',statement_timestamp(),'interval_seconds',interval_seconds));
+  INSERT INTO impact.retention_sweep(tenant_id,job_id,next_attempt_at) VALUES(v_tenant,v_job,statement_timestamp());
+  RETURN v_job;
+END $$;
+REVOKE ALL ON FUNCTION impact.worker_schedule_retention(uuid,integer) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.worker_schedule_retention(uuid,integer) TO impact_worker;
+
+-- Application: case packages, access log and read-only views of the sweep and its proof.
+GRANT SELECT,INSERT ON impact.privacy_export_package TO impact_app;
+GRANT SELECT,INSERT ON impact.privacy_export_access TO impact_app;
+GRANT SELECT ON impact.retention_sweep,impact.retention_proof TO impact_app;
+-- Worker: exactly what the RETENTION_SWEEP job class uses (worker.py). It already holds SELECT and
+-- UPDATE on job, SELECT and INSERT on job_item (0024) and SELECT, INSERT and UPDATE on
+-- outbox_delivery (0003/0018); receipts and uploads are reached only through the definers above.
+GRANT SELECT,UPDATE ON impact.retention_sweep TO impact_worker;
+GRANT SELECT,INSERT ON impact.retention_proof TO impact_worker;
+GRANT SELECT,DELETE ON impact.privacy_export_package TO impact_worker;
 COMMIT;
 ```

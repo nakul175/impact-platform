@@ -1,0 +1,724 @@
+"""Qualification of import and data quality (v0.21): bounded CSV/XLSX import batches mapped by header
+name to indicator instances, a unit column and one period; a staging preview that classifies every row
+ACCEPTED, QUARANTINED or DUPLICATE with quality findings; and an atomic commit that writes IMPORT
+observations into the existing independent observation review."""
+# ruff: noqa: F811
+
+import base64
+import io
+import os
+import uuid
+import zipfile
+
+import pytest
+from impact_api.contracts import validate
+from test_live_application import cmd, expect
+from test_measurement import get, create, action, approve  # noqa: F401
+from test_native_roles import connect, denied, query  # noqa: F401
+from test_planning import db_counts, failure, post
+from test_forms import planned, workflow_of, workflow_version
+
+HOUSEHOLDS = dict(code="IMP", name="Households reached")
+PERCENT = dict(
+    code="IMPP",
+    measurement_type="PERCENTAGE",
+    unit="percent",
+    combination_rule="POOLED_RATIO",
+    numerator_meaning="Households with safe water",
+    denominator_meaning="Households visited",
+    display_decimals=2,
+)
+
+
+def mapping(indicator, **extra):
+    return {
+        "unit_column": "district",
+        "columns": [
+            {
+                "column": "households",
+                "indicator_id": indicator["object_id"],
+                "value_role": "VALUE",
+                "unit": "households",
+            }
+        ],
+        **extra,
+    }
+
+
+def batch_data(indicator, period, content, **extra):
+    return {
+        "format": "CSV",
+        "file_name": "districts.csv",
+        "content": content,
+        "programme_id": indicator["data"]["programme_id"],
+        "period_id": period["object_id"],
+        "mode": "APPEND",
+        "atomic": False,
+        "mapping": mapping(indicator),
+        **extra,
+    }
+
+
+def preview(live, batch, actor="author", status=200):
+    receipt = expect(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/preview",
+            actor=actor,
+            method="POST",
+            body=cmd({}, batch["revision_id"]),
+        ),
+        status,
+    )
+    return get(live, "imports", batch["object_id"]) if status == 200 else receipt
+
+
+def commit_body(batch, accept=None, operation=None, wf=None, live=None):
+    data = {"preview_hash": batch["data"]["preview"]["preview_hash"], "workflow_version": wf}
+    if accept is not None:
+        data["accept_warnings"] = accept
+    return cmd(data, batch["revision_id"], operation)
+
+
+def commit(live, batch, actor="author", status=200, accept=None, operation=None):
+    return expect(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/commit",
+            actor=actor,
+            method="POST",
+            body=commit_body(batch, accept, operation, workflow_version(live)),
+        ),
+        status,
+    )
+
+
+def outcomes(batch):
+    return [
+        (r["row_number"], r["row_key"], r["outcome"], r["reasons"]) for r in batch["data"]["preview"]["rows"]
+    ]
+
+
+@pytest.fixture
+def counted(live):
+    indicator, period, _ = planned(live, **HOUSEHOLDS)
+    return indicator, period
+
+
+def test_csv_import_preview_commit_review_and_receipts(live, counted):
+    indicator, period = counted
+    unit = "D" + str(uuid.uuid4())[:6]
+    content = (
+        "district,households,remarks\n"
+        f"{unit}-001,12,first\n"
+        f"{unit}-002,,blank is missing\n"
+        f"{unit}-003,NA,declared not applicable\n"
+        f"{unit}-004,0,zero is a value\n"
+        f'00123{unit},7,"quoted, comma"\n'
+        "12345678901234567890,3,twenty-digit identifier\n"
+    )
+    batch = create(
+        live,
+        "imports",
+        batch_data(
+            indicator, period, content, mapping=mapping(indicator, missing_codes={"NA": "NOT_APPLICABLE"})
+        ),
+    )
+    validate("ImportJob", batch)
+    assert batch["lifecycle_state"] == "Draft" and batch["data"]["source_namespace"] == "IMPORT"
+    assert db_counts(live, batch["object_id"], "create_imports") == {
+        "revisions": 1,
+        "audit": 1,
+        "outbox": 1,
+        "receipts": 1,
+    }
+    staged = preview(live, batch)
+    validate("ImportJob", staged)
+    assert staged["lifecycle_state"] == "Previewed"
+    view = staged["data"]["preview"]
+    assert view["counts"] == {
+        "rows": 6,
+        "accepted": 6,
+        "quarantined": 0,
+        "duplicate": 0,
+        "warnings": 0,
+        "observations": 6,
+    }
+    assert view["dropped_columns"] == ["remarks"]
+    states = [
+        (r["row_key"], r["observations"][0]["value_state"], r["observations"][0]["value"])
+        for r in view["rows"]
+    ]
+    # A blank is MISSING and a declared token keeps its state; neither becomes zero. Leading zeros
+    # and the quoted comma are kept exactly (raw beside the interpretation).
+    assert states == [
+        (unit + "-001", "PRESENT", "12"),
+        (unit + "-002", "MISSING", None),
+        (unit + "-003", "NOT_APPLICABLE", None),
+        (unit + "-004", "PRESENT", "0"),
+        ("00123" + unit, "PRESENT", "7"),
+        ("12345678901234567890", "PRESENT", "3"),
+    ]
+    assert view["rows"][4]["raw"] == {"district": "00123" + unit, "households": "7"}
+    # Nothing is written by preview.
+    with live.db() as c:
+        assert (
+            c.execute(
+                "SELECT count(*) AS n FROM impact.observation_current WHERE source_namespace='IMPORT' AND source_key LIKE %s",
+                (batch["object_id"] + "/%",),
+            ).fetchone()["n"]
+            == 0
+        )
+    operation = str(uuid.uuid4())
+    receipt = commit(live, staged, operation=operation)
+    # Exact retry returns the original receipt; another payload with the same identifier conflicts.
+    assert commit(live, staged, operation=operation) == receipt
+    other = commit_body(staged, accept=True, operation=operation, wf=workflow_version(live))
+    conflict = failure(
+        live.request(live.path("imports", batch["object_id"]) + "/actions/commit", method="POST", body=other),
+        409,
+    )
+    assert conflict["code"] == "CONFLICT_OPERATION"
+    done = get(live, "imports", batch["object_id"])
+    validate("ImportJob", done)
+    assert done["lifecycle_state"] == "Committed"
+    ids = done["data"]["committed"]["observation_ids"]
+    assert len(ids) == 6
+    first = get(live, "observations", ids[0])
+    assert first["lifecycle_state"] == "Submitted"
+    assert first["data"]["source_namespace"] == "IMPORT"
+    assert first["data"]["source_key"] == batch["object_id"] + "/" + unit + "-001/" + indicator["object_id"]
+    assert first["data"]["source_version"] == staged["revision_id"]
+    assert first["data"]["event_at"] == period["data"]["starts_at"]
+    # Batch: draft, preview and commit revisions; one audit, receipt and outbox event per command.
+    assert db_counts(live, batch["object_id"], "action_imports_commit") == {
+        "revisions": 3,
+        "audit": 1,
+        "outbox": 3,
+        "receipts": 1,
+    }
+    # Each observation and its review workflow carry their own audit and outbox events.
+    obs_counts = db_counts(live, ids[0], "action_imports_commit")
+    assert (obs_counts["revisions"], obs_counts["audit"], obs_counts["outbox"]) == (2, 1, 1)
+    with live.db() as c:
+        register = c.execute(
+            "SELECT unit_key,observation_id::text AS o FROM impact.import_unit_register WHERE import_id=%s ORDER BY row_number",
+            (batch["object_id"],),
+        ).fetchall()
+    assert [r["o"] for r in register] == ids
+    # The importer authored every produced observation and cannot approve it.
+    workflow = workflow_of(live, ids[0])
+    body = cmd(
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Mine"},
+        workflow["revision_id"],
+    )
+    failure(
+        live.request(
+            live.path("workflows", workflow["object_id"]) + "/actions/approve", method="POST", body=body
+        ),
+        403,
+        "INDEPENDENCE_REQUIRED",
+    )
+    approve(live, workflow)
+    assert get(live, "observations", ids[0])["data"]["approval_state"] == "APPROVED"
+    # A committed batch is final: no second commit, no edit, no cancel.
+    failure(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/commit",
+            method="POST",
+            body=commit_body(done, wf=workflow_version(live)),
+        ),
+        409,
+    )
+    failure(
+        post(live, "imports", {"file_name": "x.csv"}, revision=done["revision_id"], obj=batch["object_id"]),
+        409,
+    )
+
+
+def test_quarantine_duplicates_and_atomic_mode(live, counted):
+    indicator, period = counted
+    unit = "Q" + str(uuid.uuid4())[:6]
+    first = create(live, "imports", batch_data(indicator, period, f"district,households\n{unit}-A,5\n"))
+    commit(live, preview(live, first))
+    content = (
+        "district,households,date\n"
+        f"{unit}-A,9,2026-08-01T00:00:00Z\n"  # already imported for this period
+        f"{unit}-B,4,2026-08-02T00:00:00Z\n"
+        f"{unit}-B,6,2026-08-03T00:00:00Z\n"  # same unit twice in the batch
+        f"{unit}-C,abc,2026-08-04T00:00:00Z\n"
+        f"{unit}-D,2.5,2026-08-05T00:00:00Z\n"  # a COUNT must be an integer
+        f"{unit}-E,-3,2026-08-06T00:00:00Z\n"
+        f"{unit}-F,3,2025-01-01T00:00:00Z\n"  # outside the period
+        f"{unit}-G,3,03/04/2026\n"  # ambiguous date without a declared pattern
+        f",3,2026-08-07T00:00:00Z\n"
+        f"{unit}-H,3\n"  # short row
+        f"{unit}-I,1001,2026-08-08T00:00:00Z\n"  # above the mapped maximum
+        f"{unit}-J,8,2026-08-09T00:00:00Z\n"
+    )
+    columns = [
+        {
+            "column": "households",
+            "indicator_id": indicator["object_id"],
+            "value_role": "VALUE",
+            "unit": "households",
+            "minimum": "0",
+            "maximum": "1000",
+        }
+    ]
+    data = batch_data(
+        indicator,
+        period,
+        content,
+        atomic=True,
+        mapping={"unit_column": "district", "event_at_column": "date", "columns": columns},
+    )
+    batch = preview(live, create(live, "imports", data))
+    assert outcomes(batch) == [
+        (2, unit + "-A", "DUPLICATE", ["DUPLICATE_UNIT_PERIOD"]),
+        (3, unit + "-B", "ACCEPTED", []),
+        (4, unit + "-B", "DUPLICATE", ["DUPLICATE_IN_BATCH"]),
+        (5, unit + "-C", "QUARANTINED", ["VALUE_NOT_NUMERIC"]),
+        (6, unit + "-D", "QUARANTINED", ["VALUE_TYPE_INVALID"]),
+        (7, unit + "-E", "QUARANTINED", ["VALUE_OUT_OF_RANGE"]),
+        (8, unit + "-F", "QUARANTINED", ["EVENT_OUTSIDE_PERIOD"]),
+        (9, unit + "-G", "QUARANTINED", ["EVENT_AT_INVALID"]),
+        (10, None, "QUARANTINED", ["UNIT_KEY_MISSING"]),
+        (11, None, "QUARANTINED", ["ROW_SHAPE_INVALID"]),
+        (12, unit + "-I", "QUARANTINED", ["VALUE_OUT_OF_RANGE"]),
+        (13, unit + "-J", "ACCEPTED", []),
+    ]
+    counts = batch["data"]["preview"]["counts"]
+    # Every row is accounted for exactly once.
+    assert counts["rows"] == 12 == counts["accepted"] + counts["quarantined"] + counts["duplicate"]
+    assert (counts["accepted"], counts["quarantined"], counts["duplicate"]) == (2, 8, 2)
+    # Atomic mode commits nothing when any row is not accepted.
+    assert failure(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/commit",
+            method="POST",
+            body=commit_body(batch, wf=workflow_version(live)),
+        ),
+        422,
+        "IMPORT_ATOMIC_REJECTED",
+    )
+    with live.db() as c:
+        assert (
+            c.execute(
+                "SELECT count(*) AS n FROM impact.observation_current WHERE source_key LIKE %s",
+                (batch["object_id"] + "/%",),
+            ).fetchone()["n"]
+            == 0
+        )
+    # Partial mode commits exactly the accepted rows; the rest stay on the batch as its manifest.
+    edited = expect(
+        post(live, "imports", {"atomic": False}, revision=batch["revision_id"], obj=batch["object_id"]), 200
+    )
+    batch = get(live, "imports", edited["object_id"])
+    # The edit discarded the staged preview: the batch must be previewed again.
+    assert batch["lifecycle_state"] == "Draft" and batch["data"]["preview"] is None
+    batch = preview(live, batch)
+    commit(live, batch)
+    done = get(live, "imports", batch["object_id"])
+    assert len(done["data"]["committed"]["observation_ids"]) == 2
+    # A declared date pattern reads an ambiguous date exactly as declared.
+    fixed = create(
+        live,
+        "imports",
+        {
+            **data,
+            "content": f"district,households,date\n{unit}-G,3,03/08/2026\n",
+            "date_pattern": "DD/MM/YYYY",
+        },
+    )
+    staged = preview(live, fixed)
+    assert outcomes(staged) == [(2, unit + "-G", "ACCEPTED", [])]
+    assert staged["data"]["preview"]["rows"][0]["event_at"] == "2026-08-03T00:00:00Z"
+
+
+def test_commit_refuses_a_stale_preview(live, counted):
+    indicator, period = counted
+    unit = "S" + str(uuid.uuid4())[:6]
+    one = preview(
+        live, create(live, "imports", batch_data(indicator, period, f"district,households\n{unit},1\n"))
+    )
+    two = preview(
+        live, create(live, "imports", batch_data(indicator, period, f"district,households\n{unit},2\n"))
+    )
+    commit(live, one)
+    # The second batch staged the unit as new; it is now a duplicate, so its preview is stale.
+    failure(
+        live.request(
+            live.path("imports", two["object_id"]) + "/actions/commit",
+            method="POST",
+            body=commit_body(two, wf=workflow_version(live)),
+        ),
+        409,
+        "PREVIEW_STALE",
+    )
+    failure(
+        live.request(
+            live.path("imports", two["object_id"]) + "/actions/commit",
+            method="POST",
+            body=cmd(
+                {"preview_hash": "0" * 64, "workflow_version": workflow_version(live)}, two["revision_id"]
+            ),
+        ),
+        409,
+        "PREVIEW_HASH_MISMATCH",
+    )
+    again = preview(live, get(live, "imports", two["object_id"]))
+    assert outcomes(again) == [(2, unit, "DUPLICATE", ["DUPLICATE_UNIT_PERIOD"])]
+    assert failure(
+        live.request(
+            live.path("imports", two["object_id"]) + "/actions/commit",
+            method="POST",
+            body=commit_body(again, wf=workflow_version(live)),
+        ),
+        422,
+        "IMPORT_NOTHING_TO_COMMIT",
+    )
+    cancelled = action(live, "imports", again, "cancel", {"reason": "Duplicate of an earlier batch"})
+    assert get(live, "imports", cancelled["object_id"])["lifecycle_state"] == "Cancelled"
+
+
+def test_anomaly_warns_without_blocking(live, counted):
+    indicator, period = counted
+    unit = "N" + str(uuid.uuid4())[:6]
+    history = "district,households\n" + "".join(
+        f"{unit}-{i},{v}\n" for i, v in enumerate([10, 11, 12, 9, 10, 11])
+    )
+    batch = preview(live, create(live, "imports", batch_data(indicator, period, history)))
+    assert batch["data"]["preview"]["counts"]["warnings"] == 0
+    commit(live, batch)
+    for observation_id in get(live, "imports", batch["object_id"])["data"]["committed"]["observation_ids"]:
+        approve(live, workflow_of(live, observation_id))
+    spike = preview(
+        live,
+        create(
+            live,
+            "imports",
+            batch_data(indicator, period, f"district,households\n{unit}-X,100\n{unit}-Y,10\n"),
+        ),
+    )
+    rows = spike["data"]["preview"]["rows"]
+    assert [r["outcome"] for r in rows] == ["ACCEPTED", "ACCEPTED"]
+    assert rows[0]["warnings"] == ["ANOMALY_ROBUST_OUTLIER"] and rows[1]["warnings"] == []
+    assert rows[0]["anomalies"][0]["median"] == "10.5" and rows[0]["anomalies"][0]["value"] == "100"
+    method = spike["data"]["preview"]["anomaly_method"]
+    assert method["method"] == "MODIFIED_Z_MAD" and method["blocking"] is False
+    assert indicator["object_id"] in method["evaluated_indicators"]
+    # A warning needs an explicit acceptance; the flag never changes the value.
+    failure(
+        live.request(
+            live.path("imports", spike["object_id"]) + "/actions/commit",
+            method="POST",
+            body=commit_body(spike, wf=workflow_version(live)),
+        ),
+        422,
+        "WARNINGS_NOT_ACCEPTED",
+    )
+    commit(live, spike, accept=True)
+    done = get(live, "imports", spike["object_id"])
+    assert done["data"]["committed"]["accepted_warnings"] is True
+    assert (
+        get(live, "observations", done["data"]["committed"]["observation_ids"][0])["data"]["value"] == "100"
+    )
+
+
+def test_ratio_components_dimensions_and_mapping_refusals(live):
+    indicator, period, _ = planned(live, **PERCENT)
+    unit = "R" + str(uuid.uuid4())[:6]
+    columns = [
+        {
+            "column": "safe",
+            "indicator_id": indicator["object_id"],
+            "value_role": "NUMERATOR",
+            "unit": "percent",
+        },
+        {
+            "column": "visited",
+            "indicator_id": indicator["object_id"],
+            "value_role": "DENOMINATOR",
+            "unit": "percent",
+        },
+    ]
+    content = (
+        "district,safe,visited\n"
+        f"{unit}-1,50,100\n"
+        f"{unit}-2,1,10\n"
+        f"{unit}-3,0,0\n"  # zero denominator: UNDEFINED, never zero
+        f"{unit}-4,5,\n"  # one component blank: MISSING
+        f"{unit}-5,60,50\n"  # numerator above denominator
+    )
+    data = batch_data(indicator, period, content, mapping={"unit_column": "district", "columns": columns})
+    staged = preview(live, create(live, "imports", data))
+    rows = staged["data"]["preview"]["rows"]
+    assert [r["outcome"] for r in rows] == ["ACCEPTED"] * 4 + ["QUARANTINED"]
+    assert rows[4]["reasons"] == ["INVALID_COMPONENTS"]
+    got = [(o["value_state"], o["value"], o.get("numerator")) for r in rows[:4] for o in r["observations"]]
+    assert got == [
+        ("PRESENT", "50", "50"),
+        ("PRESENT", "10", "1"),
+        ("UNDEFINED", None, None),
+        ("MISSING", None, None),
+    ]
+    commit(live, staged)
+    # Mapping refusals stop the whole batch before any row is staged.
+    for change, reason in [
+        ({"columns": columns[:1]}, "MAPPING_ROLE_INVALID"),
+        ({"columns": [{**columns[0], "unit": "households"}, columns[1]]}, "MAPPING_UNIT_MISMATCH"),
+        ({"columns": [{**columns[0], "column": "safe_renamed"}, columns[1]]}, "MAPPING_COLUMN_MISSING"),
+        (
+            {"dimension_columns": [{"column": "visited2", "dimension_code": "sex"}]},
+            "MAPPING_DIMENSION_INVALID",
+        ),
+    ]:
+        bad = create(live, "imports", {**data, "mapping": {**data["mapping"], **change}})
+        failure(
+            live.request(
+                live.path("imports", bad["object_id"]) + "/actions/preview",
+                method="POST",
+                body=cmd({}, bad["revision_id"]),
+            ),
+            422,
+            reason,
+        )
+
+
+def test_dimension_column_and_xlsx_source(live):
+    indicator, period, _ = planned(live)  # sex-disaggregated household count
+    unit = "X" + str(uuid.uuid4())[:6]
+    columns = [
+        {
+            "column": "households",
+            "indicator_id": indicator["object_id"],
+            "value_role": "VALUE",
+            "unit": "households",
+        }
+    ]
+    sheet = [
+        ["district", "households", "sex", "date"],
+        [unit + "-1", 4, "F", 46235],  # 2026-08-01 as a spreadsheet serial day
+        [unit + "-2", 3, "M", "2026-08-02T00:00:00Z"],
+        [unit + "-3", 2, "", "2026-08-03T00:00:00Z"],  # exhaustive dimension left blank
+        [unit + "-4", ("formula", 5), "F", "2026-08-04T00:00:00Z"],
+    ]
+    data = batch_data(
+        indicator,
+        period,
+        xlsx(sheet),
+        format="XLSX",
+        file_name="districts.xlsx",
+        mapping={
+            "unit_column": "district",
+            "event_at_column": "date",
+            "columns": columns,
+            "dimension_columns": [{"column": "sex", "dimension_code": "sex"}],
+        },
+    )
+    staged = preview(live, create(live, "imports", data))
+    assert outcomes(staged) == [
+        (2, unit + "-1", "ACCEPTED", []),
+        (3, unit + "-2", "ACCEPTED", []),
+        (4, unit + "-3", "QUARANTINED", ["DIMENSION_INVALID"]),
+        (5, unit + "-4", "QUARANTINED", ["FORMULA_NOT_PERMITTED"]),
+    ]
+    rows = staged["data"]["preview"]["rows"]
+    assert rows[0]["event_at"] == "2026-08-01T00:00:00Z"
+    assert rows[0]["observations"][0]["dimension_values"] == {"sex": "F"}
+    commit(live, staged)
+    # An unreadable or unsafe file is refused before any row is staged.
+    for content, reason in [
+        ("not base64!", "FILE_UNREADABLE"),
+        (base64.b64encode(b"PK-not-a-zip").decode(), "FILE_UNREADABLE"),
+    ]:
+        bad = create(live, "imports", {**data, "content": content})
+        failure(
+            live.request(
+                live.path("imports", bad["object_id"]) + "/actions/preview",
+                method="POST",
+                body=cmd({}, bad["revision_id"]),
+            ),
+            422,
+            reason,
+        )
+    unsafe = xlsx(sheet, doctype=True)
+    bad = create(live, "imports", {**data, "content": unsafe})
+    failure(
+        live.request(
+            live.path("imports", bad["object_id"]) + "/actions/preview",
+            method="POST",
+            body=cmd({}, bad["revision_id"]),
+        ),
+        422,
+        "FILE_UNSAFE",
+    )
+
+
+def test_access_tenancy_independence_and_reserved_namespace(live, counted):
+    indicator, period = counted
+    unit = "A" + str(uuid.uuid4())[:6]
+    data = batch_data(indicator, period, f"district,households\n{unit},3\n")
+    # A role without import capabilities is refused; another tenant sees nothing.
+    failure(live.request(live.path("imports"), actor="enumerator", method="POST", body=cmd(data)), 403)
+    batch = create(live, "imports", data)
+    expect(live.request(live.path("imports", batch["object_id"]), actor="other_tenant"), 404)
+    expect(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/preview",
+            actor="other_tenant",
+            method="POST",
+            body=cmd({}, batch["revision_id"]),
+        ),
+        404,
+    )
+    # A stale expected revision conflicts.
+    staged = preview(live, batch)
+    failure(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/preview",
+            method="POST",
+            body=cmd({}, batch["revision_id"]),
+        ),
+        409,
+    )
+    # Server-owned fields are never accepted from the body.
+    failure(
+        post(live, "imports", {"preview": None}, revision=staged["revision_id"], obj=batch["object_id"]),
+        422,
+    )
+    # The reviewer drafts the batch and the author commits it: both are authors of the produced
+    # observation, so neither can approve it.
+    other = "B" + str(uuid.uuid4())[:6]
+    receipt = expect(
+        live.request(
+            live.path("imports"),
+            actor="reviewer",
+            method="POST",
+            body=cmd(batch_data(indicator, period, f"district,households\n{other},4\n")),
+        ),
+        201,
+    )
+    drafted = preview(live, get(live, "imports", receipt["object_id"]))
+    commit(live, drafted)
+    [observation_id] = get(live, "imports", drafted["object_id"])["data"]["committed"]["observation_ids"]
+    workflow = workflow_of(live, observation_id)
+    body = cmd(
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Drafted it"},
+        workflow["revision_id"],
+    )
+    failure(
+        live.request(
+            live.path("workflows", workflow["object_id"]) + "/actions/approve",
+            actor="reviewer",
+            method="POST",
+            body=body,
+        ),
+        403,
+        "INDEPENDENCE_REQUIRED",
+    )
+    # IMPORT is reserved for observations produced by a committed batch.
+    direct = {
+        "source_namespace": "IMPORT",
+        "source_key": "x/" + unit + "/" + indicator["object_id"],
+        "indicator_id": indicator["object_id"],
+        "event_at": "2026-08-15T12:00:00Z",
+        "captured_at": "2026-08-15T13:00:00Z",
+        "capture_zone": "UTC",
+        "value_state": "PRESENT",
+        "value": "1",
+        "source_version": "1",
+    }
+    failure(
+        live.request(live.path("observations"), method="POST", body=cmd(direct)),
+        422,
+        "SOURCE_NAMESPACE_RESERVED",
+    )
+
+
+def test_bounds_are_enforced(live, counted):
+    indicator, period = counted
+    many = "district,households\n" + "".join(f"L{i},1\n" for i in range(501))
+    batch = create(live, "imports", batch_data(indicator, period, many))
+    failure(
+        live.request(
+            live.path("imports", batch["object_id"]) + "/actions/preview",
+            method="POST",
+            body=cmd({}, batch["revision_id"]),
+        ),
+        422,
+        "IMPORT_ROW_LIMIT",
+    )
+    # The content field is bounded by the contract below the 256 KiB request cap.
+    too_big = batch_data(indicator, period, "district,households\n" + "x" * 196608)
+    failure(live.request(live.path("imports"), method="POST", body=cmd(too_big)), 422)
+
+
+@pytest.mark.skipif(
+    os.environ.get("IMPACT_NATIVE_TEST") != "1",
+    reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role "
+    "topology to test (run scripts/run.py test --native)",
+)
+def test_native_import_unit_register_is_fenced_and_insert_only(connect, live, counted):
+    indicator, period = counted
+    unit = "F" + str(uuid.uuid4())[:6]
+    batch = preview(
+        live, create(live, "imports", batch_data(indicator, period, f"district,households\n{unit},2\n"))
+    )
+    commit(live, batch)
+    tenant_a, tenant_b = live.fixture["tenant_a"], live.fixture["tenant_b"]
+    c = connect("APP")
+    assert query(c, "SELECT count(*) FROM impact.import_unit_register", role="impact_app") == [(0,)]
+    for statement in [
+        "UPDATE impact.import_unit_register SET registered_at=now()",
+        "DELETE FROM impact.import_unit_register",
+    ]:
+        assert "permission denied" in denied(c, statement, role="impact_app", tenant=tenant_a)
+    count = "SELECT count(*) FROM impact.import_unit_register WHERE import_id=%s"
+    assert query(c, count, (batch["object_id"],), role="impact_app", tenant=tenant_a) == [(1,)]
+    assert query(c, count, (batch["object_id"],), role="impact_app", tenant=tenant_b) == [(0,)]
+    for login, role in [("PLATFORM", "impact_platform"), ("IDENTITY", "impact_identity")]:
+        other = connect(login)
+        assert "permission denied" in denied(
+            other, "SELECT count(*) FROM impact.import_unit_register", role=role, tenant=tenant_a
+        )
+
+
+def xlsx(rows, doctype=False):
+    """A minimal .xlsx (first worksheet, inline strings, numbers and one formula form) built with the
+    standard library, base64-encoded as the import contract carries it."""
+
+    def ref(r, c):
+        return chr(65 + c) + str(r + 1)
+
+    cells = []
+    for r, row in enumerate(rows):
+        out = []
+        for c, value in enumerate(row):
+            if isinstance(value, tuple):
+                out.append(f'<c r="{ref(r, c)}"><f>2+3</f><v>{value[1]}</v></c>')
+            elif isinstance(value, (int, float)):
+                out.append(f'<c r="{ref(r, c)}"><v>{value}</v></c>')
+            elif value != "":
+                out.append(f'<c r="{ref(r, c)}" t="inlineStr"><is><t>{value}</t></is></c>')
+        cells.append(f'<row r="{r + 1}">' + "".join(out) + "</row>")
+    main = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+    rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    prolog = '<?xml version="1.0" encoding="UTF-8"?>' + ('<!DOCTYPE x [<!ENTITY a "b">]>' if doctype else "")
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as z:
+        z.writestr(
+            "xl/workbook.xml",
+            f'{prolog}<workbook xmlns="{main}" xmlns:r="{rel}"><sheets><sheet name="Data" sheetId="1" r:id="rId1"/></sheets></workbook>',
+        )
+        z.writestr(
+            "xl/_rels/workbook.xml.rels",
+            '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>',
+        )
+        z.writestr(
+            "xl/worksheets/sheet1.xml",
+            f'<?xml version="1.0" encoding="UTF-8"?><worksheet xmlns="{main}"><sheetData>'
+            + "".join(cells)
+            + "</sheetData></worksheet>",
+        )
+    return base64.b64encode(buffer.getvalue()).decode()

@@ -4,10 +4,15 @@ import "./styles.css";
 import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
+import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
+import { ImportsPanel } from "./Imports";
+import { EvidencePanel } from "./Evidence";
+import { ReportExports } from "./ReportExports";
 import { WorkCenterPanel } from "./WorkCenter";
 import { WorkspaceSettings, AccountPanel } from "./WorkspaceSettings";
 import { TenantLifecycle } from "./TenantLifecycle";
+import { AuditExportPanel } from "./AuditExport";
 import {
   ConfigurationPanel,
   ProgrammeReadiness,
@@ -18,6 +23,7 @@ import {
   JoinInvitation,
   readInvitation,
 } from "./Administration";
+import { PrivacyPanel } from "./Privacy";
 type RecordRow = {
   object_id: string;
   revision_id: string;
@@ -38,7 +44,10 @@ type Page = {
   next_cursor: string | null;
   scope_label: string;
 };
-type Access = { capabilities: string[] };
+type Access = {
+  capabilities: string[];
+  purpose_capabilities?: [string, string][];
+};
 let csrf = "";
 class ApiError extends Error {
   constructor(
@@ -74,7 +83,9 @@ const nav = [
   ["observations", "Measurement", "↗"],
   ["configuration", "Measurement setup", "⚙"],
   ["planning", "Results framework", "◇"],
+  ["dashboards", "Dashboards", "◔"],
   ["forms", "Forms", "☰"],
+  ["imports", "Imports", "⇪"],
   ["changes", "Change requests", "⇄"],
   ["period-governance", "Period close", "▣"],
   ["work", "My work", "◷"],
@@ -106,9 +117,17 @@ const titles: Record<string, [string, string]> = {
     "My work",
     "Resolve assigned recalculations and acknowledge safe in-app notices.",
   ],
+  imports: [
+    "Imports",
+    "Load tabular data, check every row, then commit accepted rows for review.",
+  ],
   forms: [
     "Forms",
     "Design, review and publish forms, then collect responses as observations.",
+  ],
+  dashboards: [
+    "Dashboards",
+    "Official results from locked snapshots, kept apart from provisional figures.",
   ],
   planning: [
     "Results framework",
@@ -610,7 +629,9 @@ function Workspace({
       route === "account" ||
       route === "configuration" ||
       route === "planning" ||
+      route === "dashboards" ||
       route === "forms" ||
+      route === "imports" ||
       route === "changes" ||
       route === "period-governance" ||
       route === "work"
@@ -643,6 +664,16 @@ function Workspace({
   const [title, description] = titles[route];
   return (
     <>
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("main-content")?.focus();
+        }}
+      >
+        Skip to main content
+      </a>
       <aside className="sidebar">
         <a className="brand" href="/">
           impact<span>.</span>
@@ -699,7 +730,7 @@ function Workspace({
             </button>
           </div>
         </header>
-        <main className="content">
+        <main className="content" id="main-content" tabIndex={-1}>
           {development && (
             <div className="demo-note">
               <span /> Development workspace · synthetic sample data
@@ -748,11 +779,10 @@ function Workspace({
               )}
             </div>
           </div>
-          {toast && (
-            <div className="success" role="status">
-              ✓ {toast}
-            </div>
-          )}
+          {/* Kept mounted so assistive technology announces each new message. */}
+          <div className={toast ? "success" : "sr-only"} role="status">
+            {toast && "✓ " + toast}
+          </div>
           <ErrorBox error={error} />
           {route === "workspace-settings" ? (
             <WorkspaceSettings
@@ -788,6 +818,14 @@ function Workspace({
               explain={explain}
               Dialog={Dialog}
             />
+          ) : route === "imports" ? (
+            <ImportsPanel
+              key={tenant}
+              base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
+            />
           ) : route === "forms" ? (
             <FormsPanel
               key={tenant}
@@ -796,6 +834,14 @@ function Workspace({
               request={api}
               explain={explain}
               Dialog={Dialog}
+            />
+          ) : route === "dashboards" ? (
+            <DashboardsPanel
+              key={tenant}
+              base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
             />
           ) : route === "planning" ? (
             <PlanningPanel
@@ -815,13 +861,27 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "memberships" ? (
-            <AdministrationPanel
-              base={base}
-              capabilities={access.capabilities}
-              request={api}
-              explain={explain}
-              Dialog={Dialog}
-            />
+            <>
+              <AdministrationPanel
+                base={base}
+                capabilities={access.capabilities}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
+              {access.capabilities.includes("audit.export") && (
+                <AuditExportPanel base={base} request={api} explain={explain} />
+              )}
+              <PrivacyPanel
+                key={tenant}
+                base={base}
+                capabilities={access.capabilities}
+                purposeCapabilities={access.purpose_capabilities || []}
+                request={api}
+                explain={explain}
+                Dialog={Dialog}
+              />
+            </>
           ) : (
             <>
               <section className="metrics" aria-label="Loaded records">
@@ -845,7 +905,7 @@ function Workspace({
                 </div>
                 <div className="metric-note">
                   <span className="eyebrow">BUILT ON EVIDENCE</span>
-                  <h3>Every revision tells a story.</h3>
+                  <h2>Every revision tells a story.</h2>
                   <p>
                     Decisions and results stay connected to their source
                     records.
@@ -884,12 +944,17 @@ function Workspace({
                 </div>
                 <div className="table-wrap">
                   <table>
+                    <caption className="sr-only">
+                      {nav.find((x) => x[0] === route)?.[1]} records
+                    </caption>
                     <thead>
                       <tr>
-                        <th>{route === "memberships" ? "Member" : "Record"}</th>
-                        <th>Status</th>
-                        <th>Last updated</th>
-                        <th>
+                        <th scope="col">
+                          {route === "memberships" ? "Member" : "Record"}
+                        </th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Last updated</th>
+                        <th scope="col">
                           <span className="sr-only">Open record</span>
                         </th>
                       </tr>
@@ -1040,7 +1105,16 @@ function Dialog({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
+    // The modal dialog keeps focus inside itself; when it unmounts, focus returns to the
+    // control that opened it (if that control is still on the page).
+    const opener =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
     ref.current?.showModal();
+    return () => {
+      if (opener?.isConnected) opener.focus();
+    };
   }, []);
   return (
     <dialog
@@ -1353,6 +1427,9 @@ function Editor({
         expires_at: new Date(get("expires_at") + ":00Z").toISOString(),
         public: false,
         workflow_version: get("workflow_version"),
+        ...(exportFormats(f).length
+          ? { export_formats: exportFormats(f) }
+          : {}),
       });
     if (mode === "publish-report")
       return send(
@@ -1372,6 +1449,10 @@ function Editor({
         row!.revision_id,
       );
   }
+  const exportFormats = (f: FormData) =>
+    ["PDF", "XLSX", "DOCX"].filter(
+      (format) => f.get("export_" + format) === "on",
+    );
   const selection = (
     key: string,
     name: string,
@@ -1400,6 +1481,20 @@ function Editor({
           <span>Revision {row.revision_id.slice(0, 8)}</span>
         </div>
         <Fields data={row.data} />
+        {(route === "observations" || route === "calculated-results") && (
+          <EvidencePanel
+            base={base}
+            route={route}
+            row={row}
+            allowed={allowed}
+            token={() => csrf}
+          />
+        )}
+        {route === "reports" &&
+          row.lifecycle_state === "Approved" &&
+          allowed("report.export") && (
+            <ReportExports {...{ base, row, request: api, explain }} />
+          )}
         {route === "programmes" &&
           ["Draft", "Ready"].includes(row.lifecycle_state) && (
             <ProgrammeReadiness
@@ -1876,8 +1971,18 @@ function Editor({
           </label>
           <label className="check-row">
             <input type="checkbox" name="allow_download" defaultChecked />
-            Permit the selected recipient to download the bound-values CSV
+            Permit the selected recipient to download the bound-values CSV and
+            any rendered exports below
           </label>
+          <fieldset>
+            <legend>Rendered exports to disclose</legend>
+            {["PDF", "XLSX", "DOCX"].map((format) => (
+              <label className="check-row" key={format}>
+                <input type="checkbox" name={"export_" + format} />
+                {format} (must already be rendered for this revision)
+              </label>
+            ))}
+          </fieldset>
           {selection(
             "workflow_version",
             "Disclosure review template",

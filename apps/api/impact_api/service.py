@@ -26,9 +26,14 @@ from .changes import Changes
 from .period_governance import PeriodGovernance
 from .period_contracts import READS as PERIOD_READS
 from .reporting import Reporting
+from .exports import Exports
 from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
+from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
+from .evidence import Evidence
+from .privacy import Privacy
 from .work import WorkCenter
+from .keyring import ring
 from .store import (
     context,
     authorize,
@@ -72,6 +77,7 @@ READ_ROUTES = {
     "frameworks",
     "targets",
     "submissions",
+    "imports",
 }
 
 
@@ -98,6 +104,8 @@ WRITE_ROUTES = {
     "targets",
     "forms",
     "submissions",
+    "imports",
+    "evidence",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -116,13 +124,15 @@ ACTIONS = {
     "collection-plans": {"submit"},
     "measurement-changes": {"submit"},
     "periods": {"close", "restate"},
-    "reports": {"submit", "publish", "withdraw"},
+    "reports": {"submit", "publish", "withdraw", "export", "cancel-export"},
     "work-items": {"recalculate"},
     "notifications": {"acknowledge"},
     "frameworks": {"submit"},
     "targets": {"submit"},
     "forms": {"submit", "publish"},
     "submissions": {"submit"},
+    "imports": {"preview", "commit", "cancel"},
+    "evidence": {"attach"},
 }
 
 
@@ -168,9 +178,13 @@ class Service:
         self.changes = Changes(self)
         self.periods = PeriodGovernance(self)
         self.reporting = Reporting(self)
+        self.exports = Exports(self)
         self.work = WorkCenter(self)
         self.forms = Forms(self)
+        self.imports = Imports(self)
         self.planning = Planning(self)
+        self.evidence = Evidence(self)
+        self.privacy = Privacy(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -201,6 +215,11 @@ class Service:
                 "tenant_id": tenant,
                 "principal_id": ctx.principal_id,
                 "capabilities": sorted({g["capability"] for g in ctx.grants if g["purpose"] is None}),
+                # Purpose-bound grants (privacy cases, v0.25 part B) authorise only requests that
+                # name the same purpose; listed separately so a client never treats them as general.
+                "purpose_capabilities": sorted(
+                    {(g["capability"], g["purpose"]) for g in ctx.grants if g["purpose"] is not None}
+                ),
                 "policy_epoch": ctx.policy_epoch,
                 "subject_epoch": ctx.subject_epoch,
             }
@@ -281,8 +300,11 @@ class Service:
         ).hex()
 
     def cursor(self, payload):
-        raw = base64.urlsafe_b64encode(canonical(payload)).rstrip(b"=")
-        mac = hmac.new(self.s.cookie_secret.encode(), raw, hashlib.sha256).hexdigest()
+        """'<payload>.<HMAC>' under the current cookie secret; the payload names the kid (v0.25
+        part A), so a cursor signed before a rotation keeps working while its secret is in grace."""
+        keys = ring(self.s, "cookie")
+        raw = base64.urlsafe_b64encode(canonical({**payload, "kid": keys.current_id})).rstrip(b"=")
+        mac = hmac.new(keys.current.encode(), raw, hashlib.sha256).hexdigest()
         return raw.decode() + "." + mac
 
     def cursor_key(self, bound, cursor):
@@ -292,15 +314,21 @@ class Service:
             return None
         try:
             raw, mac = cursor.split(".")
-            if len(cursor) > 4096 or not hmac.compare_digest(
-                mac, hmac.new(self.s.cookie_secret.encode(), raw.encode(), hashlib.sha256).hexdigest()
-            ):
+            if len(cursor) > 4096:
                 raise ValueError
             data = json.loads(base64.urlsafe_b64decode(raw + "=" * ((-len(raw)) % 4)))
+            kid = data.get("kid")
+            if kid is not None and not isinstance(kid, str):
+                raise ValueError
+            if not any(
+                hmac.compare_digest(mac, hmac.new(secret.encode(), raw.encode(), hashlib.sha256).hexdigest())
+                for secret in ring(self.s, "cookie").candidates(kid)
+            ):
+                raise ValueError
             if data["binding"] != bound or data["expires"] < time.time():
                 raise ValueError
             return data["key"]
-        except (ValueError, KeyError, TypeError):
+        except (ValueError, KeyError, TypeError, AttributeError):
             raise DomainError("INVALID_CURSOR", 400) from None
 
     def next_cursor(self, bound, key):
@@ -423,7 +451,7 @@ class Service:
         if action:
             if action not in ACTIONS.get(route, set()):
                 unavailable()
-            op = "action_" + route.replace("-", "_") + "_" + action
+            op = "action_" + route.replace("-", "_") + "_" + action.replace("-", "_")
         else:
             if route not in WRITE_ROUTES and route not in REQUEST_ROUTES:
                 unavailable()
@@ -461,6 +489,11 @@ class Service:
                 "recalculate",
                 "publish",
                 "withdraw",
+                "preview",
+                "commit",
+                "cancel",
+                "export",
+                "cancel-export",
             } and not any(
                 g["capability"] == OPERATIONS[op]["capability"]
                 and g["scope_type"] == "TENANT"
@@ -491,6 +524,14 @@ class Service:
                 receipt = self.forms.submit(c, ctx, previous, body["data"], correlation)
             elif action == "publish" and kind == "Form":
                 receipt = self.forms.publish(c, ctx, previous, body["data"])
+            elif kind == "ImportJob" and action == "preview":
+                receipt = self.imports.preview(c, ctx, previous)
+            elif kind == "ImportJob" and action == "commit":
+                receipt = self.imports.commit(c, ctx, previous, body["data"], correlation)
+            elif kind == "ImportJob" and action == "cancel":
+                receipt = self.imports.cancel(c, ctx, previous, body["data"])
+            elif kind == "ImportJob" and not action:
+                receipt = self.imports.save(c, ctx, previous, body["data"])
             elif action == "submit":
                 receipt = self.submit(c, ctx, kind, previous, body["data"])
             elif action in {"approve", "return", "reject"}:
@@ -511,6 +552,12 @@ class Service:
                 receipt = self.reporting.publish(c, ctx, previous, body["data"])
             elif action == "withdraw":
                 receipt = self.reporting.withdraw(c, ctx, previous, body["data"], correlation)
+            elif action == "attach":
+                receipt = self.evidence.attach(c, ctx, previous, body["data"])
+            elif action == "export":
+                receipt = self.exports.request(c, ctx, previous, body["data"])
+            elif action == "cancel-export":
+                receipt = self.exports.cancel(c, ctx, previous, body["data"])
             else:
                 # A published form is revised by a new draft revision: the published version stays in
                 # the publication register and keeps serving collection until a successor publishes.
@@ -520,8 +567,9 @@ class Service:
                 data = {**(previous["payload"] if previous else {}), **body["data"]}
                 if kind == "Observation":
                     data["approval_state"] = "DRAFT"
-                if kind == "Observation" and data.get("source_namespace") == "FORM":
-                    # Reserved for observations produced from a submitted form response.
+                if kind == "Observation" and data.get("source_namespace") in {"FORM", IMPORT_NAMESPACE}:
+                    # Reserved for observations produced from a submitted form response or a
+                    # committed import batch.
                     raise DomainError("VALIDATION_FAILED", reason="SOURCE_NAMESPACE_RESERVED")
                 if kind == "Submission":
                     data["review_state"] = "DRAFT"
@@ -529,6 +577,9 @@ class Service:
                 if kind == "Target":
                     # Pinned again by the next submission; never carried into an edited draft.
                     data.pop("indicator_version", None)
+                if kind == "Evidence":
+                    # Name, media type, size, digest and verdict come from the CLEAN upload only.
+                    data = self.evidence.stamp(c, ctx, data, previous)
                 if kind == "Framework":
                     data = self.planning.stamp_exceptions(
                         c, ctx, previous["payload"] if previous else None, data

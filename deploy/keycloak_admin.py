@@ -21,6 +21,9 @@ Commands (each prints one JSON object without secrets):
                          authenticator is configured
     reset  --email E [--totp]   set a new temporary password (UPDATE_PASSWORD again); with --totp
                          also remove the account's TOTP authenticators (CONFIGURE_TOTP again)
+    list                 every account of the realm (at most 500): e-mail, name, enabled, whether a
+                         temporary password is pending, whether an authenticator is configured,
+                         whether sign-in is temporarily locked after failed attempts
 """
 
 import argparse
@@ -206,6 +209,35 @@ def reset_user(admin, realm, email, password, totp=False):
     return {"subject": user["id"], "password_reset": True, "totp_removed": removed, "lockout_cleared": True}
 
 
+def list_users(admin, realm, limit=500):
+    _, users, _ = admin.call(
+        "GET",
+        "/"
+        + realm
+        + "/users?"
+        + urllib.parse.urlencode({"briefRepresentation": "false", "first": 0, "max": limit}),
+    )
+    result = []
+    for user in sorted(users or [], key=lambda u: (u.get("email") or u.get("username") or "").lower()):
+        path = "/" + realm + "/users/" + user["id"]
+        _, credentials, _ = admin.call("GET", path + "/credentials")
+        _, attacks, _ = admin.call(
+            "GET", "/" + realm + "/attack-detection/brute-force/users/" + user["id"], expect=(200, 404)
+        )
+        result.append(
+            {
+                "email": user.get("email") or user.get("username"),
+                "name": " ".join(n for n in (user.get("firstName"), user.get("lastName")) if n),
+                "enabled": bool(user.get("enabled")),
+                "temporary_password_pending": "UPDATE_PASSWORD" in (user.get("requiredActions") or []),
+                "totp_configured": any(c.get("type") == "otp" for c in credentials or []),
+                "locked": bool((attacks or {}).get("disabled")),
+                "created": user.get("createdTimestamp"),
+            }
+        )
+    return {"users": result, "truncated": len(users or []) >= limit}
+
+
 def connect(env, attempts=60, delay=5):
     """The admin API, waiting for a provider that is still starting."""
     last = None
@@ -224,6 +256,7 @@ def main(argv=None, env=os.environ):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("realm").add_argument("--file", required=True)
+    sub.add_parser("list")
     for name in ("user", "status", "reset"):
         s = sub.add_parser(name)
         s.add_argument("--email", required=True)
@@ -242,6 +275,8 @@ def main(argv=None, env=os.environ):
             result = ensure_user(
                 admin, realm, args.email, env.get("IMPACT_TEMP_PASSWORD", ""), args.first_name, args.last_name
             )
+        elif args.command == "list":
+            result = list_users(admin, realm)
         elif args.command == "status":
             result = user_status(admin, realm, args.email)
         else:

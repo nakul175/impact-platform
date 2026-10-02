@@ -1,5 +1,5 @@
 {
-  "version": "1.13.0",
+  "version": "1.15.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -1468,13 +1468,12 @@
       "path": "/v1/tenants/{tenant_id}/imports",
       "capability": "imports.read",
       "role_templates": [
+        "DATA_STEWARD",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",
         "AUTHOR",
         "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
+        "ANALYST"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
@@ -1490,13 +1489,12 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}",
       "capability": "imports.read",
       "role_templates": [
+        "DATA_STEWARD",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",
         "AUTHOR",
         "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
+        "ANALYST"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
@@ -2091,70 +2089,6 @@
       "field_filter_required": true,
       "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
       "audit": false
-    },
-    {
-      "operation_id": "list_privacy_cases",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases",
-      "capability": "privacy-cases.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_privacy_cases",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases",
-      "capability": "privacy-cases.draft.create",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
-      "operation_id": "get_privacy_cases",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
-      "capability": "privacy-cases.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "patch_privacy_cases",
-      "method": "PATCH",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
-      "capability": "privacy-cases.draft.edit",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
-      "audit": true
     },
     {
       "operation_id": "list_audit_events",
@@ -3341,14 +3275,17 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview",
       "capability": "import.preview",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE and records the quality checks and the preview hash; writes no observation.",
       "audit": true
     },
     {
@@ -3357,15 +3294,26 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit",
       "capability": "import.commit",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
+      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose).",
+      "audit": true,
+      "additional_capabilities": [
+        "observation.submit",
+        "indicator-instances.read",
+        "indicator-definitions.read",
+        "programmes.read",
+        "periods.read",
+        "workflow-templates.read"
+      ]
     },
     {
       "operation_id": "action_imports_cancel",
@@ -3373,14 +3321,17 @@
       "path": "/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel",
       "capability": "import.cancel",
       "role_templates": [
-        "DATA_STEWARD"
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
       ],
       "scope": "tenant + object/programme/assignment scope; explicit grant required",
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Draft or Previewed only; nothing was committed, so nothing is rolled back.",
       "audit": true
     },
     {
@@ -3590,38 +3541,6 @@
       "fresh_assurance_seconds": null,
       "independence_required": false,
       "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
-    },
-    {
-      "operation_id": "action_privacy_cases_approve",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve",
-      "capability": "privacy.approve",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": 300,
-      "independence_required": true,
-      "purpose_required": true,
-      "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": true
-    },
-    {
-      "operation_id": "action_privacy_cases_execute",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute",
-      "capability": "privacy.execute",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": 300,
-      "independence_required": false,
-      "purpose_required": true,
       "field_filter_required": false,
       "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
       "audit": true
@@ -4069,7 +3988,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Owner of the upload only; any other caller receives RESOURCE_UNAVAILABLE.",
       "audit": false
     },
     {
@@ -4105,7 +4024,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "WHOLE mode only. Check current owner, tenant, byte count and SHA256; immutable first write, identical replay returns same receipt. MULTIPART mode uses numbered parts and exact completion manifest. Media max 25,000,000 bytes; imports max 100,000,000 bytes.",
+      "state_guard": "WHOLE mode only, owner only, request body at most 25,000,000 bytes (the 256 KiB JSON cap does not apply to this route alone). Exact byte count and SHA-256, magic-byte sniffing against the declared allow-listed type; identical replay returns the same status, different bytes conflict.",
       "audit": true
     },
     {
@@ -4123,7 +4042,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Seal exact ordered part manifest and whole-file digest under upload lock. Missing/changed/extra parts conflict. Freeze new parts, queue assembly and scan. Blob remains quarantined until verified CLEAN. Job generation fences stale workers.",
+      "state_guard": "Seals the received whole file (no parts) and scans it with the configured scanner outside the transaction; the blob stays quarantined until the verdict is CLEAN. Replays re-run a scan that was interrupted.",
       "audit": true
     },
     {
@@ -4142,8 +4061,8 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": true,
-      "state_guard": "Mediated content response. Reauthorise before stream and at bounded intervals/chunks; Range requests independently checked. No signed redirect. Current restrictions override historical access.",
-      "audit": false
+      "state_guard": "Mediated content response through the API only: re-authorised per request, tenant-fenced, only a CLEAN blob whose bytes still match the recorded SHA-256; attachment disposition, nosniff, no-store; each response recorded. No range requests, no signed redirect.",
+      "audit": true
     },
     {
       "operation_id": "put_upload_part",
@@ -5308,6 +5227,435 @@
         "AUTHOR",
         "REVIEWER",
         "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_imports",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/imports",
+      "capability": "imports.draft.create",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft or Previewed only; an edit discards the staged preview. Server-owned namespace, digest, receipt, preview and commit fields are never accepted.",
+      "audit": true
+    },
+    {
+      "operation_id": "patch_imports",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/imports/{object_id}",
+      "capability": "imports.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR"
+      ],
+      "scope": "tenant + object/programme/assignment scope; explicit grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft or Previewed only; an edit discards the staged preview. Server-owned namespace, digest, receipt, preview and commit fields are never accepted.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_evidence_attach",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach",
+      "capability": "evidence.attach",
+      "role_templates": [
+        "AUTHOR",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "File-backed evidence must hold a CLEAN upload; the caller must also read the target (observations.read or calculated-results.read). Insert-only citation of exact revisions."
+    },
+    {
+      "operation_id": "list_observation_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/observations/{object_id}/evidence",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_calculated_result_evidence",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence",
+      "capability": "evidence.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_reports_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/export",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_reports_cancel_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/actions/cancel-export",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_report_exports",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/exports",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_report_export",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download",
+      "capability": "report.export",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_pdf",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.pdf",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_xlsx",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.xlsx",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "download_controlled_publication_docx",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/publications/{object_id}/download.docx",
+      "capability": "publication.download",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL",
+        "PRIVACY"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "programme_dashboard",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/programmes/{object_id}/dashboard",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "indicator_dashboard_series",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_audit_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/audit-exports",
+      "capability": "audit.export",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": true,
+      "field_filter_required": true,
+      "state_guard": "The request names a purpose; only a TENANT-scope audit.export grant without a purpose or with that purpose authorises it. Bounded window and page; identifiers, codes and digests only; the export and its manifest digest are recorded (audit event and receipt).",
+      "audit": true
+    },
+    {
+      "operation_id": "list_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "get_privacy_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "create_privacy_cases",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases",
+      "capability": "privacy-cases.draft.create",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "patch_privacy_cases",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}",
+      "capability": "privacy-cases.draft.edit",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "get_privacy_case_plan",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/plan",
+      "capability": "privacy-cases.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "audit": false,
+      "state_guard": "Purpose-bound grant required; the subject must be a member of this tenant."
+    },
+    {
+      "operation_id": "action_privacy_cases_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve",
+      "capability": "privacy.approve",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "audit": true,
+      "state_guard": "Independent natural person: never an author of the case nor the subject. Confirms the plan SHA-256 the approver reviewed; a changed plan is refused."
+    },
+    {
+      "operation_id": "action_privacy_cases_execute",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute",
+      "capability": "privacy.execute",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Executes exactly the approved plan (hash re-computed and compared). Erasure removes or redacts the subject's personal data in each store; held items stay and are reported; approved official results are never altered. Access writes one bounded export package."
+    },
+    {
+      "operation_id": "read_privacy_case_export",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/privacy-cases/{object_id}/export",
+      "capability": "privacy.export",
+      "role_templates": [
+        "PRIVACY"
+      ],
+      "purpose_required": true,
+      "purposes": [
+        "DATA_SUBJECT_REQUEST"
+      ],
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "audit": true,
+      "state_guard": "Mediated JSON attachment, re-authorised per request with purpose and fresh assurance, recorded in privacy_export_access and the audit trail."
+    },
+    {
+      "operation_id": "list_retention_schedule",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-schedule",
+      "capability": "retention.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_retention_proofs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-proofs",
+      "capability": "retention.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

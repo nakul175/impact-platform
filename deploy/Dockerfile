@@ -23,17 +23,20 @@ RUN pip install --no-cache-dir --require-hashes --only-binary=:all: -r /tmp/requ
     && rm /tmp/requirements.runtime.txt \
     && useradd --system --uid 10001 --user-group --home-dir /app --shell /usr/sbin/nologin impact
 WORKDIR /app
-# Only what the processes read at run time: the API package, the generated contracts, the two
+# Only what the processes read at run time: the version source, the API package, the generated contracts, the two
 # specification files the contract loader reads, the migrations and the operational scripts.
+COPY VERSION.json VERSION.json
 COPY apps/api/impact_api apps/api/impact_api
 COPY packages/contracts packages/contracts
 COPY specification/contracts/entity-catalogue.json specification/contracts/entity-catalogue.json
 COPY specification/database/reference-map.json specification/database/reference-map.json
 COPY infrastructure/migrations infrastructure/migrations
 COPY scripts/migrate.py scripts/provision_logins.py scripts/fixture_support.py scripts/bootstrap_operator.py scripts/smoke.py scripts/
-COPY deploy/prepare_database.py deploy/keycloak_admin.py deploy/mail_sink.py deploy/
+COPY deploy/prepare_database.py deploy/keycloak_admin.py deploy/mail_sink.py deploy/restore_check.py deploy/
 COPY --from=web /src/apps/web/dist apps/web/dist
-RUN mkdir -p /var/lib/impact/mail && chown impact:impact /var/lib/impact/mail
+RUN mkdir -p /var/lib/impact/mail /var/lib/impact/objects \
+    && chown impact:impact /var/lib/impact/mail /var/lib/impact/objects \
+    && chmod 700 /var/lib/impact/objects
 USER impact
 EXPOSE 8000
 # The API. The worker, the database job and the bootstrap override the command (deploy/compose.yaml).

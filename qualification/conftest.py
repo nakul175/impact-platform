@@ -7,6 +7,7 @@ import jwt
 import pytest
 import psycopg
 from psycopg.rows import dict_row
+from impact_api.keyring import rsa_key_id
 
 ROOT = Path(__file__).resolve().parents[1]
 # A fresh-assurance operation needs auth_time within 300 s. Tokens are minted per actor on demand
@@ -28,7 +29,14 @@ def signed(config, local, identity, **overrides):
         "auth_time": time.time(),
         **overrides,
     }
-    return jwt.encode(claims, (local / "private.pem").read_bytes(), algorithm="RS256")
+    # Signed with the current development key and tagged with its kid (v0.25 part A), so tokens
+    # minted before a key rotation keep verifying while that key is in grace.
+    return jwt.encode(
+        claims,
+        (local / "private.pem").read_bytes(),
+        algorithm="RS256",
+        headers={"kid": rsa_key_id((local / "public.pem").read_bytes())},
+    )
 
 
 @pytest.fixture(scope="session")

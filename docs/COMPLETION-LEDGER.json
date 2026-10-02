@@ -1,11 +1,11 @@
 {
-  "build": "0.20.0",
-  "assessment_date": "2026-09-30",
+  "build": "0.25.0",
+  "assessment_date": "2026-10-01",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
   "summary": {
-    "PARTIAL": 87,
-    "PENDING": 220
+    "PARTIAL": 106,
+    "PENDING": 201
   },
   "requirements": [
     {
@@ -19,7 +19,7 @@
       "acceptance": "Suspend tenant A with a running import and a report schedule; accepted rows remain recorded, future writes stop at the cancellation boundary and tenant B continues normally.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.10\u20130.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14). v0.16 (qualification/test_worker.py, test_native_worker.py) adds a worker that honours the suspension hold on queued deliveries: a row carrying held_at (what quiesce_tenant sets on suspension; the test sets it directly on an Active tenant) is never sent, a held row whose lease ends returns to PENDING and stays held, and nothing is re-queued on reactivation (no automatic replay, as the validation text requires; no operator re-queue exists); the worker lists Provisioning, Active and Suspended tenants and runs its reminder and cancellation scans for Active tenants only; queued jobs whose cancellation was requested become Cancelled and a started job is recorded NOT_CANCELLED_STARTED, exercised only with test-inserted jobs because no job class is executed; a recovery contact's nominee can confirm the registered email address with a single-use code (15 minutes, 5 attempts, 3 requests per hour), recorded as evidence only \u2014 it changes neither readiness nor what a contact may do. Still open: source-credential rechecks on reactivation, a real import and report schedule for the acceptance scenario, support and exit access, closure, and the external email provider.",
+      "assessment": "v0.10\u20130.13 implement operator-requested profiles, owner acceptance, independent activation, readiness/impact checks, access fencing and durable work holds. Initial access now requires an owner proposal, separate administrator acceptance and independent operator approval of fixed capability/expiry ceilings; business grants still require separate review. Recovery-contact nomination, registered-account/MFA verification, independent approval, replacement/renewal, revocation and current eligibility now gate activation/reactivation. v0.13 adds reviewed renewal/extension of unexpired delegated authority: the owner pins the exact current ceilings, grants and administrative assignments of both administrators, the second administrator accepts, an independent operator approves within 7 days and within 90 days of expiry, and a database-owned applicator re-dates only the pinned rows. Limits: expired authority is not renewable, tenants without exactly one second administrator are unsupported, and renewal requires current readiness including recovery-contact evidence. Partial: external channel verification/invitations, unavailable-owner recovery, support/exit access, workers, credential rechecks and archival/deletion remain open; native concurrency evidence is limited to the renewal-approval-versus-grant-revocation race in qualification/test_native_concurrency.py (v0.14). v0.16 (qualification/test_worker.py, test_native_worker.py) adds a worker that honours the suspension hold on queued deliveries: a row carrying held_at (what quiesce_tenant sets on suspension; the test sets it directly on an Active tenant) is never sent, a held row whose lease ends returns to PENDING and stays held, and nothing is re-queued on reactivation (no automatic replay, as the validation text requires; no operator re-queue exists); the worker lists Provisioning, Active and Suspended tenants and runs its reminder and cancellation scans for Active tenants only; queued jobs whose cancellation was requested become Cancelled and a started job is recorded NOT_CANCELLED_STARTED, exercised only with test-inserted jobs because no job class is executed; a recovery contact's nominee can confirm the registered email address with a single-use code (15 minutes, 5 attempts, 3 requests per hour), recorded as evidence only \u2014 it changes neither readiness nor what a contact may do. Quality 2026-10 (qualification/test_delivery_requeue.py) adds an operator-only, fresh-assurance, reasoned re-queue of a DEAD delivery and release of a held one for an Active tenant, each a separate recorded platform decision (platform_event and receipt), refused while the tenant is Suspended; nothing is replayed automatically. Still open: source-credential rechecks on reactivation, a real import and report schedule for the acceptance scenario, support and exit access, closure, and the external email provider.",
       "evidence_paths": [
         "apps/api/impact_api/tenant_lifecycle.py",
         "qualification/test_tenant_lifecycle.py",
@@ -41,7 +41,13 @@
         "apps/api/impact_api/worker.py",
         "qualification/test_worker.py",
         "qualification/test_native_worker.py",
-        "docs/RELEASE-0.16.md"
+        "docs/RELEASE-0.16.md",
+        "apps/api/impact_api/delivery_operations.py",
+        "qualification/test_delivery_requeue.py",
+        "docs/QUALITY-2026-10.md",
+        "tools/browser/requeue-check.mjs",
+        "docs/evidence/requeue-browser-tests.json",
+        "docs/QA-BROWSER-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -2008,9 +2014,18 @@
       "validation": "Ambiguous dates require an explicit pattern. Mixed types produce row errors; leading zeros and long IDs are preserved. File safety checks precede parsing.",
       "acceptance": "Import 00123, a 20 digit ID, 03/04/2026 and a quoted comma; show each exact interpretation before commit.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.21 ingests a bounded tabular file carried in the import batch (CSV text or the first worksheet of an XLSX read with the standard library; at most 192 KiB of content, 500 rows and 500 observations): every cell is read as text, so leading zeros (00123), a 20-digit identifier and a quoted comma are kept exactly and shown raw beside their interpretation; dates are never guessed (03/04/2026 without a declared pattern is EVENT_AT_INVALID, read exactly with DD/MM/YYYY); a formula in a mapped column is quarantined; an unreadable archive or an XML DOCTYPE is refused before parsing (qualification/test_import.py::test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode, test_dimension_column_and_xlsx_source). Not covered: encoding, delimiter, sheet and header-row choice, locale-aware numbers, a formula mode other than reject, upload sessions and worker execution for larger files.",
+      "evidence_paths": [
+        "apps/api/impact_api/imports.py",
+        "apps/api/impact_api/import_contracts.py",
+        "infrastructure/migrations/0022_import_quality.sql",
+        "qualification/test_import.py",
+        "apps/web/src/Imports.tsx",
+        "docs/RELEASE-0.21.md",
+        "tools/browser/import-check.mjs",
+        "docs/evidence/import-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2023,9 +2038,18 @@
       "validation": "A renamed or type changed source column requires reviewed remapping; positional column order alone is never stable identity. Preview expires when source or mapping changes.",
       "acceptance": "Reorder columns and rename one numeric field; the system preserves known bindings and pauses the unknown mapping instead of shifting values.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.21 maps source columns by header name to active manual indicator instances with role (VALUE, NUMERATOR, DENOMINATOR), stated unit, bounds, dimension columns and declared missing-value tokens, and previews every row before anything is written; a renamed or missing mapped column refuses the whole batch (MAPPING_COLUMN_MISSING) rather than shifting values, unit and role mismatches are refused, dropped columns are listed and an edit discards the staged preview (test_import.py::test_ratio_components_dimensions_and_mapping_refusals, test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode). Not covered: versioned, independently reviewed mapping objects (the mapping lives in the batch), transformations and AI-suggested mappings.",
+      "evidence_paths": [
+        "apps/api/impact_api/imports.py",
+        "apps/api/impact_api/import_contracts.py",
+        "infrastructure/migrations/0022_import_quality.sql",
+        "qualification/test_import.py",
+        "apps/web/src/Imports.tsx",
+        "docs/RELEASE-0.21.md",
+        "tools/browser/import-check.mjs",
+        "docs/evidence/import-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2053,9 +2077,18 @@
       "validation": "Mode is selected before execution. Rejected rows carry safe field errors; raw input remains unchanged. Cancelled jobs identify committed rows and never claim full rollback.",
       "acceptance": "Load 100 rows with 90 valid, five duplicates and five invalid in partial mode; reconcile all 100 outcomes and retry only the corrected five.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.21 classifies every staged row ACCEPTED, QUARANTINED with reason codes or DUPLICATE with reconciled counts; an atomic batch commits nothing when any row is not accepted, a partial batch commits exactly its accepted rows, and commit recomputes the staged outcome under the tenant lock and refuses a stale or mismatched preview hash; accepted rows become IMPORT-namespace observations submitted into the existing independent review in the same transaction (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview, test_access_tenancy_independence_and_reserved_namespace). Not covered: the accepted-update versus unchanged-duplicate distinction, rejected versus quarantined outcomes, keyed update and controlled replacement (FR-DAT-003), and retrying corrected rows as a linked batch.",
+      "evidence_paths": [
+        "apps/api/impact_api/imports.py",
+        "apps/api/impact_api/import_contracts.py",
+        "infrastructure/migrations/0022_import_quality.sql",
+        "qualification/test_import.py",
+        "apps/web/src/Imports.tsx",
+        "docs/RELEASE-0.21.md",
+        "tools/browser/import-check.mjs",
+        "docs/evidence/import-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2226,9 +2259,18 @@
       "validation": "Do not merge solely on a shared name. Unmerge or corrective split must restore affected relationships and recalculate counts; source confidentiality survives a merge.",
       "acceptance": "Two participants named Asha remain separate until reviewed evidence supports identity equivalence; a rejected match does not silently reappear as confirmed.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.21 detects exact duplicates on declared business keys: the same unit twice in one batch (DUPLICATE_IN_BATCH), the same unit, indicator and period already committed by an import, backed by the insert-only import_unit_register (DUPLICATE_UNIT_PERIOD), a form observation for the same unit and indicator in the period (DUPLICATE_SOURCE_KEY), and a duplicate arising between preview and commit (PREVIEW_STALE) (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview; the register's fence and insert-only grants natively in test_native_import_unit_register_is_fenced_and_insert_only). Not covered: fuzzy matching, a review decision on a suspected duplicate, merge and unmerge, and comparison with manual observations.",
+      "evidence_paths": [
+        "apps/api/impact_api/imports.py",
+        "apps/api/impact_api/import_contracts.py",
+        "infrastructure/migrations/0022_import_quality.sql",
+        "qualification/test_import.py",
+        "apps/web/src/Imports.tsx",
+        "docs/RELEASE-0.21.md",
+        "tools/browser/import-check.mjs",
+        "docs/evidence/import-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2290,9 +2332,18 @@
       "validation": "A flag never modifies data or labels a person fraudulent. False positive and missed issue evidence is retained under minimised policy.",
       "acceptance": "A seasonal spike is flagged, reviewed as expected and retained unchanged; the dismissed suggestion remains distinct from a confirmed quality defect.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.21 flags anomalies as warnings only: a modified z-score (threshold 3.5) against the indicator's 200 most recent approved PRESENT values, evaluated only with at least five values and a non-zero MAD; method, version and evaluated indicators are recorded on the batch, a flagged batch commits only with an explicit acceptance recorded on the batch, and the value is never changed or blocked (test_import.py::test_anomaly_warns_without_blocking). Not covered: suggested-state findings with an owner, confirm/dismiss/defer decisions and feedback, seasonality and period awareness.",
+      "evidence_paths": [
+        "apps/api/impact_api/imports.py",
+        "apps/api/impact_api/import_contracts.py",
+        "infrastructure/migrations/0022_import_quality.sql",
+        "qualification/test_import.py",
+        "apps/web/src/Imports.tsx",
+        "docs/RELEASE-0.21.md",
+        "tools/browser/import-check.mjs",
+        "docs/evidence/import-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2440,9 +2491,23 @@
       "validation": "A source URL remains an external reference with last checked status, not an archived guarantee. Replacing a file creates a new version; it never overwrites a published citation.",
       "acceptance": "Link version 1 of a survey to an achievement, upload version 2 and verify the earlier achievement still cites version 1.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.22 stores evidence files in a private, content-addressed object store that is never served directly, backs evidence draft revisions by a CLEAN upload or an https reference with server-owned file name, type, size and digest, records citations of exact evidence revisions from observation and calculated-result revisions in the insert-only evidence_attachment register, and serves content only through a mediated, re-authorised, audited download (qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download exercises FT-EVD-001: version 1 is attached to an observation, version 2 is uploaded, and the observation still cites and serves version 1; test_attach_to_calculated_result_and_attachment_rules; test_access_is_capability_owner_and_tenant_bound; the registers natively in test_native_evidence_registers_are_fenced_and_insert_only). QA 2026-10 degradation adds that a full or unavailable object store fails cleanly: uploads answer 503 OBJECT_STORE_FULL or OBJECT_STORE_UNAVAILABLE with no blob row, object or temporary file, and a download of a CLEAN object whose bytes cannot be read answers 503 with none of its bytes and no access row, the verdict staying CLEAN (qualification/test_native_degradation.py::test_object_store_full_or_unreadable_fails_cleanly_and_downloads_fail_closed; test_evidence_unit.py::test_store_failures_are_bounded_reason_codes_and_leave_no_partial_object). Not covered: sensitivity and retention, verification and dispute, repository search, annotations, links to findings and decisions, external-reference checking, an S3-compatible backend and a backup of the object volume.",
+      "evidence_paths": [
+        "apps/api/impact_api/object_store.py",
+        "apps/api/impact_api/content_safety.py",
+        "apps/api/impact_api/evidence.py",
+        "apps/api/impact_api/evidence_contracts.py",
+        "infrastructure/migrations/0023_evidence_objects.sql",
+        "qualification/test_evidence.py",
+        "qualification/test_evidence_unit.py",
+        "apps/web/src/Evidence.tsx",
+        "docs/RELEASE-0.22.md",
+        "tools/browser/evidence-check.mjs",
+        "docs/evidence/evidence-browser-tests.json",
+        "qualification/test_native_degradation.py",
+        "docs/QA-DEGRADATION-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -2896,7 +2961,7 @@
       "acceptance": "Display lower-is-better target ten with actual eight and show the correct status and declared deviation without an inverted success interpretation.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.18 implements one comparison view, the targets-versus-actuals table (GET /programmes/{id}/targets-vs-actuals and the Targets vs actuals tab), binding the actual, the baseline and the selected target revision with its direction, basis (original or revised), binding version and period; the actual's source is shown (OFFICIAL only from the programme's own locked snapshot, PROVISIONAL from its own calculations) and overachievement stays visible. Validation and acceptance exercised (test_planning_unit.py::test_zero_target_and_zero_baseline_are_undefined_not_divided, test_negative_baseline_has_no_percentage_change, test_lower_target_reports_signed_deviation_without_inverting_success; test_planning.py::test_targets_baselines_milestones_and_provisional_progress, test_period_close_pins_targets_and_uses_official_result): a zero or negative baseline gives an Undefined percentage change (NON_POSITIVE_BASELINE), never an infinite trend, and a lower-is-better target of 10 with actual 8 shows ACHIEVED and the declared deviation without inverting success. Not covered: charts, widgets and axis scales, cumulative curves (no cumulative target exists, so the cumulative-to-flow conversion rule is untested), and time semantics beyond one period.",
+      "assessment": "v0.18 implements one comparison view, the targets-versus-actuals table (GET /programmes/{id}/targets-vs-actuals and the Targets vs actuals tab), binding the actual, the baseline and the selected target revision with its direction, basis (original or revised), binding version and period; the actual's source is shown (OFFICIAL only from the programme's own locked snapshot, PROVISIONAL from its own calculations) and overachievement stays visible. Validation and acceptance exercised (test_planning_unit.py::test_zero_target_and_zero_baseline_are_undefined_not_divided, test_negative_baseline_has_no_percentage_change, test_lower_target_reports_signed_deviation_without_inverting_success; test_planning.py::test_targets_baselines_milestones_and_provisional_progress, test_period_close_pins_targets_and_uses_official_result): a zero or negative baseline gives an Undefined percentage change (NON_POSITIVE_BASELINE), never an infinite trend, and a lower-is-better target of 10 with actual 8 shows ACHIEVED and the declared deviation without inverting success. v0.24 adds the dashboard comparison: the target pinned by the snapshot, status against the official value naming which value it compared (compared_with), a zero-baseline axis in the trend chart and an Undefined status for a zero target or an UNDEFINED result (test_dashboards.py::test_official_pooled_ratio_from_the_programme_snapshot, test_undefined_result_is_never_zero). Not covered: widgets and configurable axis scales, cumulative curves (no cumulative target exists, so the cumulative-to-flow conversion rule is untested), revised-target labelling on charts beyond the basis text, and time semantics beyond one period.",
       "evidence_paths": [
         "apps/api/impact_api/planning.py",
         "apps/api/impact_api/planning_contracts.py",
@@ -2906,7 +2971,14 @@
         "tools/browser/planning-check.mjs",
         "docs/evidence/planning-browser-tests.json",
         "docs/evidence/application-tests.xml",
-        "docs/RELEASE-0.18.md"
+        "docs/RELEASE-0.18.md",
+        "apps/api/impact_api/dashboards.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "qualification/test_dashboards.py",
+        "apps/web/src/Dashboards.tsx",
+        "tools/browser/dashboard-check.mjs",
+        "docs/evidence/dashboard-browser-tests.json",
+        "docs/RELEASE-0.24.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -2921,11 +2993,18 @@
       "acceptance": "Fail a source refresh and export the dashboard; the exported result remains marked stale with the last valid data time.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Decimal SUM and pooled ratios, revision-bound lineage, explicit contributor coverage and stale-result flags are implemented. Hierarchy, stock, overlap, weighting, dimensions and production workload qualification are not implemented.",
+      "assessment": "Calculated results carry lineage, coverage and stale flags (v0.7, v0.19). v0.24 adds a read-only programme dashboard and indicator series in which every value distinguishes OFFICIAL (only from this programme's locked snapshot) from PROVISIONAL, exposes lock time, calculation times, last source change and coverage from the period's obligation set (zero required is not applicable, never 100 percent), and stays marked stale under a stated rule until recalculated or re-closed; a read never makes a value fresh (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions, test_official_pooled_ratio_from_the_programme_snapshot, test_coverage_with_no_required_obligation_is_not_applicable; dashboard-browser check). Not covered: export with embedded context (FT-ANA-004's export half), external source refresh state (no connectors exist), dashboard authoring and saved dashboards.",
       "evidence_paths": [
         "apps/api/impact_api/domain.py",
         "apps/api/impact_api/service.py",
-        "qualification/test_measurement.py"
+        "qualification/test_measurement.py",
+        "apps/api/impact_api/dashboards.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "qualification/test_dashboards.py",
+        "apps/web/src/Dashboards.tsx",
+        "tools/browser/dashboard-check.mjs",
+        "docs/evidence/dashboard-browser-tests.json",
+        "docs/RELEASE-0.24.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3060,13 +3139,19 @@
       "acceptance": "Correct live source data and regenerate the old quarter; its authorised numeric content stays unchanged and the later correction is a separate report version.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
       "evidence_paths": [
         "apps/api/impact_api/reporting.py",
         "qualification/test_reporting.py",
         "qualification/test_publication.py",
         "docs/RELEASE-0.6.md",
-        "docs/RELEASE-0.8.md"
+        "docs/RELEASE-0.8.md",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/export_render.py",
+        "qualification/test_report_exports.py",
+        "docs/RELEASE-0.23.md",
+        "tools/browser/export-check.mjs",
+        "docs/evidence/export-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3081,11 +3166,16 @@
       "acceptance": "Change a narrative from 180 to 200 participants while its metric remains 180; reconciliation blocks approval until the discrepancy is resolved.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3100,13 +3190,19 @@
       "acceptance": "Export a 50-page report with twenty charts and confirm no clipped values or missing caveats and exact agreement with the snapshot.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
       "evidence_paths": [
         "apps/api/impact_api/reporting.py",
         "qualification/test_reporting.py",
         "qualification/test_publication.py",
         "docs/RELEASE-0.6.md",
-        "docs/RELEASE-0.8.md"
+        "docs/RELEASE-0.8.md",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/export_render.py",
+        "qualification/test_report_exports.py",
+        "docs/RELEASE-0.23.md",
+        "tools/browser/export-check.mjs",
+        "docs/evidence/export-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3136,13 +3232,19 @@
       "acceptance": "Guess the URL of a draft report, then publish its approved version to a funder; only the eligible funder can access the published artifact.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
       "evidence_paths": [
         "apps/api/impact_api/reporting.py",
         "qualification/test_reporting.py",
         "qualification/test_publication.py",
         "docs/RELEASE-0.6.md",
-        "docs/RELEASE-0.8.md"
+        "docs/RELEASE-0.8.md",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/export_render.py",
+        "qualification/test_report_exports.py",
+        "docs/RELEASE-0.23.md",
+        "tools/browser/export-check.mjs",
+        "docs/evidence/export-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3172,13 +3274,19 @@
       "acceptance": "Supersede report v1 with v2 and verify old links expose only permitted supersession status while the distribution log identifies v1 recipients.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
       "evidence_paths": [
         "apps/api/impact_api/reporting.py",
         "qualification/test_reporting.py",
         "qualification/test_publication.py",
         "docs/RELEASE-0.6.md",
-        "docs/RELEASE-0.8.md"
+        "docs/RELEASE-0.8.md",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/export_render.py",
+        "qualification/test_report_exports.py",
+        "docs/RELEASE-0.23.md",
+        "tools/browser/export-check.mjs",
+        "docs/evidence/export-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3193,13 +3301,19 @@
       "acceptance": "Change one approved metric and identify every affected narrative and chart location before approving the new report candidate.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. Charts, PDF/DOCX/XLSX, anonymous publication, delivery, supersession notices and distributed-artifact handling remain open.",
+      "assessment": "Internal reports bind to a locked snapshot, approved template and official result/evidence revisions. Independent approval records an append-only reconciliation digest. Numeric narrative claims must use known binding placeholders; deterministic semantic HTML and CSV artifacts are frozen for an independently reviewed, named-recipient, expiring disclosure and every view/download is logged. Withdrawal closes access without deleting artifacts or history. v0.23: worker-rendered PDF, XLSX and DOCX artifacts of the same frozen package (deterministic bytes, displayed values only, SHA-256 per artifact; qualification/test_report_exports.py::test_renderers_are_byte_deterministic_and_carry_only_displayed_values, test_pdf_refuses_glyphs_it_cannot_draw_instead_of_dropping_them, test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html, test_transient_failures_back_off_then_fail_with_an_error_class_only) are delivered only through a reviewed disclosure that pins exact artifacts, with logged recipient downloads and withdrawal (test_published_exports_reach_named_recipients_only_and_withdrawal_blocks_them, test_export_request_needs_an_approved_package_the_capability_and_the_tenant). Charts, page-break/caveat validation, accessibility conformance, non-Latin PDF fonts, anonymous publication, scheduled delivery, supersession notices and distributed-artifact handling remain open. QA 2026-10 adds the export-browser check (tools/browser/export-check.mjs: request PDF, XLSX and DOCX in the UI, worker run, download with matching SHA-256, a disclosure pinning the PDF reaches the named partner while undisclosed formats and non-recipients get 404); browser evidence supports, it does not move, these requirements.",
       "evidence_paths": [
         "apps/api/impact_api/reporting.py",
         "qualification/test_reporting.py",
         "qualification/test_publication.py",
         "docs/RELEASE-0.6.md",
-        "docs/RELEASE-0.8.md"
+        "docs/RELEASE-0.8.md",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/export_render.py",
+        "qualification/test_report_exports.py",
+        "docs/RELEASE-0.23.md",
+        "tools/browser/export-check.mjs",
+        "docs/evidence/export-browser-tests.json"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -3806,9 +3920,17 @@
       "validation": "HLD selects qualified cryptography and key custody. Loss or revocation of a required key returns controlled unavailable state, never a plaintext fallback. Rotation preserves authorised recoverability.",
       "acceptance": "Rotate a test data protection key and verify approved records and backups remain accessible only through authorised paths, with no exposed key values.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part A: the application's own secrets (cookie, invitation signing, delivery sealing) are versioned keyrings with grace secrets and a key id (12 hex characters of SHA-256 over family and secret) carried in CSRF tokens, signed cursors and the header of sealed delivery recipients and logout hints; new values always use the current secret, values made before a rotation keep working while their secret is in grace and fail once it is retired, legacy unheaded values still open, and a missing key answers a controlled failure (RECIPIENT_UNREADABLE, logout without hint), never plaintext (qualification/test_key_rotation.py::test_sealed_recipients_carry_the_kid_and_legacy_values_still_open, test_logout_hints_rotate_and_an_oversized_token_is_not_sealed, test_values_made_before_rotation_work_during_grace_and_fail_after_retirement, test_delivery_and_invitation_secrets_rotate_for_the_worker). docs/current/KEY-AND-ENCRYPTION-REGISTER.md inventories every secret, its kid, holders and grace, the keys the application does not hold, and states plainly what is not encrypted by the application (database files, the evidence object store, dumps and backup sets, captured mail, logs). Not covered: encryption at rest under a platform data-protection key, rotation of such a key over backups (FT-SEC-002), KMS or HSM custody, Keycloak signing-key rotation (documented, not exercised), an operator interface showing key status.",
+      "evidence_paths": [
+        "apps/api/impact_api/keyring.py",
+        "apps/api/impact_api/delivery.py",
+        "apps/api/impact_api/auth.py",
+        "apps/api/impact_api/config.py",
+        "qualification/test_key_rotation.py",
+        "docs/current/KEY-AND-ENCRYPTION-REGISTER.md",
+        "docs/RELEASE-0.25a.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -3865,9 +3987,21 @@
       "validation": "R1 excludes executables and macro enabled documents. Password protected unscannable files remain quarantined or are rejected; archives need a specifically qualified bounded profile.",
       "acceptance": "Upload a misleading extension, malicious document and archive expansion fixture; none reaches normal preview or satisfies mandatory evidence requirements.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.22 checks evidence uploads before any byte is accepted and again on the bytes: an allow-list of media types (PDF, PNG, JPEG, plain text, CSV), a plain file name whose single extension the declared type permits, a declared size (at most 25,000,000 bytes) and SHA-256 matched exactly, magic bytes matched to the declared type, executables and PDFs naming active content refused, text required to be UTF-8 without leading markup; a scan verdict precedes any download and a FAILED or INFECTED blob, or bytes that no longer hash to the recorded digest, are never served (test_evidence.py::test_allow_list_names_and_declared_size_are_refused_before_any_byte, test_magic_bytes_size_and_digest_are_checked, test_eicar_is_infected_rejected_and_never_downloadable, test_failed_scan_and_changed_bytes_are_never_served, test_replay_resumes_a_scan_interrupted_after_the_seal, test_raw_upload_route_alone_exceeds_the_json_cap; test_evidence_unit.py). The shipped scanners are not anti-malware engines (eicar-signature recognises only the EICAR test file). Not covered: a real scanning engine, archive expansion and macro profiles (the FT-SEC-005 archive fixture), password-protected files, previews and re-encoding, multipart uploads and external fetch validation.",
+      "evidence_paths": [
+        "apps/api/impact_api/object_store.py",
+        "apps/api/impact_api/content_safety.py",
+        "apps/api/impact_api/evidence.py",
+        "apps/api/impact_api/evidence_contracts.py",
+        "infrastructure/migrations/0023_evidence_objects.sql",
+        "qualification/test_evidence.py",
+        "qualification/test_evidence_unit.py",
+        "apps/web/src/Evidence.tsx",
+        "docs/RELEASE-0.22.md",
+        "tools/browser/evidence-check.mjs",
+        "docs/evidence/evidence-browser-tests.json"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -3880,9 +4014,17 @@
       "validation": "Secrets cannot appear in ordinary admin views, client storage, generated reports or diagnostics. An export of a connection never exports a reusable credential.",
       "acceptance": "Rotate a connector credential, export its configuration and inspect permitted logs; the old credential is rejected and neither secret is present in the artifacts.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part A: rotation and retirement of the application secrets are explicit operations (scripts/rotate_secrets.py status, rotate, retire, dry run; deploy/rotate-secrets.sh on the server under the deployment lock, recreating the API and worker) with atomic 0600 writes and a register beside the secrets file that names kids, dates, actor and reason, never a value; old values are rejected after retirement; settings refuse short, repeated or shared secrets and keep every secret and DSN out of their repr; no value reaches the rotation output, responses, logs or the API log (qualification/test_key_rotation.py::test_env_file_rotation_is_atomic_private_and_prints_kids_only, test_settings_validate_keyrings_and_never_print_secrets, test_values_made_before_rotation_work_during_grace_and_fail_after_retirement; the CI container-stack job rotates every family, smokes, retires, smokes and compares every secrets.env value with what was printed). Not covered: connector credentials and credential references with fingerprints in an admin view (no connectors exist), configuration export, automatic rotation and expiry alerts, database passwords and TLS keys (outside the keyrings).",
+      "evidence_paths": [
+        "apps/api/impact_api/keyring.py",
+        "apps/api/impact_api/config.py",
+        "scripts/rotate_secrets.py",
+        "deploy/rotate-secrets.sh",
+        "qualification/test_key_rotation.py",
+        "docs/current/KEY-AND-ENCRYPTION-REGISTER.md",
+        "docs/RELEASE-0.25a.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -3896,11 +4038,15 @@
       "acceptance": "Attempt to change an approval event through ordinary administration; it fails, and the attempt plus original decision remain attributable.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts. Native concurrency evidence is limited to the raced approvals, operation replays, close reviews and renewal-versus-revocation cases of qualification/test_native_concurrency.py (v0.14); every future module, audit tamper evidence and production assurance remain open.",
+      "assessment": "Implemented routes enforce explicit grants, tenant fences, natural-person independence, revisions and retry receipts; audit events are written in the same transaction as every command and object revisions carry a payload SHA-256. v0.25 part A adds a tamper-evident audit export (create_audit_export, purpose-required, 300 s fresh assurance, audited): JSON Lines ordered by occurrence with a hash chain across pages, a manifest with the content SHA-256 and an HMAC seal under a key derived from the current cookie secret, and verify functions that detect a changed, removed or reordered line and a changed manifest (qualification/test_audit_export.py::test_chain_digest_and_seal_verify_and_detect_tampering, test_export_pages_verify_and_each_export_is_audited). The seal is verifiable by the platform only while its key is current or in grace; it is not a public signature. Native concurrency evidence is limited to qualification/test_native_concurrency.py (v0.14). Not covered: tamper evidence of the stored audit table itself (an operator with database ownership can alter rows), external anchoring, a durable export register.",
       "evidence_paths": [
         "apps/api/impact_api/store.py",
         "apps/api/impact_api/auth.py",
-        "qualification/test_live_application.py"
+        "qualification/test_live_application.py",
+        "apps/api/impact_api/audit_export.py",
+        "apps/api/impact_api/audit_export_contracts.py",
+        "qualification/test_audit_export.py",
+        "docs/RELEASE-0.25a.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4084,7 +4230,7 @@
       "acceptance": "Configure 90 day diagnostic logs and a separate approved evidence term; each expires through its own schedule with accountable exceptions.",
       "category": "functional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Related v0.25 part B evidence, recorded so that it is not mistaken for coverage: the worker runs one fixed retention schedule for every tenant (job class RETENTION_SWEEP; operation receipts past their 7-day window deleted, OPEN uploads past 24 hours expired, privacy export packages deleted after 7 days, sealed delivery addresses redacted 30 days after a final state), each class with its own trigger, duration and action, and writes one insert-only retention_proof row per class (qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class). There are no tenant retention policies with purpose and owner, no preview of affected objects and holds, no approval gate before collection and no record or evidence class, so the validation and acceptance text (a 90-day diagnostic-log class and a separate approved evidence term) is not exercised. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4098,9 +4244,15 @@
       "validation": "Deletion cannot be marked complete while active accessible copies remain. Held content is isolated for the approved purpose; a hold is not general continued operational use.",
       "acceptance": "Delete a participant record with one held attachment; active data disappears within the target and the case explicitly reports the held item and review date.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part B: an erasure case is executed only from its independently approved, enumerated per-store plan (member profile, invitation register and revisions, revision payloads, projections, delivery intents, object-store bytes), re-computed and compared by SHA-256 at execution; each store action records its own outcome, an item under an active retention_hold or still used by another evidence revision is HELD with its review date, a failed object-store deletion leaves the case PartiallyCompleted until a retry completes it, and revision payloads are removable only through the definer privacy_remove_revisions under revision_removal_guard with a deletion_ledger row (qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers, test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried, test_erasure_of_a_named_import_batch_removes_its_raw_content, test_revision_removal_is_reachable_only_through_an_approved_executing_plan). Not covered: an API to place or release holds (tests insert them), restriction before deletion, anonymisation, derivatives beyond the listed stores, deletion handling in backups (FR-PRV-006).",
+      "evidence_paths": [
+        "apps/api/impact_api/privacy.py",
+        "apps/api/impact_api/object_store.py",
+        "infrastructure/migrations/0027_privacy_execution.sql",
+        "qualification/test_privacy_requests.py",
+        "docs/RELEASE-0.25b.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4128,9 +4280,16 @@
       "validation": "Do not hardcode one jurisdiction's response deadline as universal. Verification collects minimal evidence and never creates a public participant lookup.",
       "acceptance": "Process one household member's access request and deliver only their permitted information, excluding another member's confidential answers.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part B: data-subject request cases for a member of the tenant (no participant records exist): intake with request type ACCESS or ERASURE, subject membership, reason, verification note and handling authority, purpose-bound to DATA_SUBJECT_REQUEST (a purpose-less grant never authorises), independent approval by a natural person other than every author and the subject against the SHA-256 of the per-store plan they reviewed, and an access response that is one canonical export package with a manifest (per-section count, completeness and SHA-256), holding only the subject's data, downloaded through a mediated, logged, purpose-bound route and expiring after 7 days (qualification/test_privacy_requests.py::test_access_export_holds_only_the_subjects_data_with_a_manifest_and_is_mediated, test_case_approval_requires_an_independent_natural_person, test_case_operations_are_purpose_bound_and_never_authorised_by_a_general_grant, test_exact_retry_changed_payload_stale_revision_and_changed_plan). Not covered: participants and household members, a response-deadline policy, rejected and on-hold outcomes chosen by the handler, a subject channel or self-service, free text other members wrote about the subject.",
+      "evidence_paths": [
+        "apps/api/impact_api/privacy.py",
+        "apps/api/impact_api/privacy_contracts.py",
+        "infrastructure/migrations/0027_privacy_execution.sql",
+        "qualification/test_privacy_requests.py",
+        "apps/web/src/Privacy.tsx",
+        "docs/RELEASE-0.25b.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4249,7 +4408,7 @@
       "acceptance": "Fail a connector while the core remains healthy; show integration delay and stale results without falsely declaring all programme operations unavailable.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. v0.14 adds to the health surface: with unprivileged connections required, /health/ready first verifies that the app, identity and platform connections are three distinct unprivileged logins and answers 503 with a reason code only (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN, PLATFORM_NOT_CONFIGURED; no login name reaches a response), the same check refuses every transaction, and the native restart check shows readiness and the runtime manifest unchanged across an API restart. Service monitoring proper remains open: no health view separated by component, no journey success, latency, backlog, freshness or quota measurement, no incident record, no tenant-cohort view, no metrics, log pipeline or alerting exists; full accessibility/usability qualification, anonymous publication and all remaining screens are also open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. v0.14 adds to the health surface: with unprivileged connections required, /health/ready first verifies that the app, identity and platform connections are three distinct unprivileged logins and answers 503 with a reason code only (PRIVILEGED_RUNTIME_CONNECTION, SHARED_RUNTIME_LOGIN, PLATFORM_NOT_CONFIGURED; no login name reaches a response), the same check refuses every transaction, and the native restart check shows readiness and the runtime manifest unchanged across an API restart. Service monitoring proper remains open: no health view separated by component, no journey success, latency, backlog, freshness or quota measurement, no incident record, no tenant-cohort view, no metrics, log pipeline or alerting exists; full accessibility/usability qualification, anonymous publication and all remaining screens are also open. Operations hardening (October 2026) adds the operator-only GET /v1/platform/metrics (platform API 1.6.0; apps/api/impact_api/ops_metrics.py): request counts by route family and status class with a latency histogram, worker freshness, DEAD and held deliveries, unsent deliveries and unfinished jobs, tenants by state and object-store space, no path, tenant data or identity (qualification/test_ops_metrics.py::test_operators_read_counts_and_no_tenant_data, test_metrics_are_for_platform_operators_only; test_ops_unit.py::test_request_metrics_count_families_classes_and_latency_without_paths), and a five-minute alert check into deploy-status.json (deploy/ops-check.sh, deploy/ops_alerts.py). Still open: journey success by tenant cohort, connector and AI separation, incident linkage, metric history and any notification channel.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
@@ -4259,7 +4418,13 @@
         "qualification/test_native_roles.py",
         "qualification/test_native_restart.py",
         "docs/evidence/native-qualification.json",
-        "docs/RELEASE-0.14.md"
+        "docs/RELEASE-0.14.md",
+        "apps/api/impact_api/ops_metrics.py",
+        "apps/api/impact_api/metrics_contracts.py",
+        "qualification/test_ops_metrics.py",
+        "qualification/test_ops_unit.py",
+        "deploy/ops_alerts.py",
+        "docs/RELEASE-OPS-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4273,9 +4438,18 @@
       "validation": "Missing required evidence files or governance state prevents declaring a complete restore. Recovery region and key policy remain enforced.",
       "acceptance": "Recover a representative tenant and compare structured records, attachment integrity, report snapshots and effective grants before allowing normal access.",
       "category": "functional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "Operations hardening (October 2026), staging server only: nightly backup sets hold the application and identity-provider databases, the roles without passwords, the evidence object volume and a SHA-256 manifest, are verified before they are published and kept 7 daily and 4 weekly; a weekly restore drill restores the newest complete set into throwaway containers and refuses to declare success unless every object matches its digest, every blob row finds its object, the migrator finds every ledgered checksum, ownership and forced fences are intact and the realm is present, recording duration and backup age (deploy/backup.sh, deploy/restore-drill.sh, deploy/drill_restore.sh, deploy/restore_check.py; qualification/test_ops_unit.py::test_backup_set_holds_databases_roles_objects_and_a_verified_manifest, test_disk_guard_refuses_and_reports_without_touching_the_sets, test_drill_restore_reports_a_damaged_set_or_a_failed_restore, test_object_digests_match_names_and_blob_rows_find_their_objects, test_drill_record_measures_duration_and_backup_age; the CI container-stack job takes a set, restores it and runs the drill with every check passing). Not covered: an off-server or immutable copy (sets share the server's disk and root account), reconciliation of accepted writes and reapplication of deletions and revocations before controlled reopening, comparison of effective grants and report snapshots against the source, recovery region and key policy, and a representative tenant's full recovery; no RPO or RTO target is met.",
+      "evidence_paths": [
+        "deploy/backup.sh",
+        "deploy/restore-drill.sh",
+        "deploy/drill_restore.sh",
+        "deploy/restore_check.py",
+        "deploy/compose.yaml",
+        "qualification/test_ops_unit.py",
+        "docs/current/DEPLOYMENT-GUIDE.md",
+        "docs/RELEASE-OPS-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4469,11 +4643,16 @@
       "acceptance": "A new enumerator opens an assigned form in two primary navigation actions and sees its due time, save status and sync requirement.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4488,11 +4667,16 @@
       "acceptance": "Create a simple programme from a template and inspect the exact sum rule and reporting calendar that produce its first result.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4507,11 +4691,16 @@
       "acceptance": "Time out an import confirmation, reconnect and recover the existing job receipt without creating another load.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4526,11 +4715,16 @@
       "acceptance": "Complete collection, correction and approval with keyboard and a qualified screen reader, including an invalid field and a stale revision conflict.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4545,11 +4739,16 @@
       "acceptance": "Complete a form, review evidence and return a submission on the supported mobile profile without horizontal dependence for ordinary fields.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4609,11 +4808,16 @@
       "acceptance": "Submit a large file and observe separate receipt, validation, review and calculation stages with no premature published result.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. Full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
+      "assessment": "Browser workspaces, labelled dialogs, bound narrative authoring, controlled-publication actions, explicit status and health endpoints are implemented. QA 2026-10 adds automated WCAG A/AA scans of every workspace area (tools/browser/a11y-check.mjs, group a11y-browser: 43 page states, 0 serious or critical violations, no accepted exceptions), visible focus with 3:1 outline contrast, dialog focus return, keyboard-operable tab lists, a skip link and status announcements for saves, export states and evidence notices. Screen-reader review, drag alternatives (no drag exists), the invalid-field and stale-revision acceptance, full accessibility/usability qualification, anonymous publication, service monitoring and all remaining screens are open.",
       "evidence_paths": [
         "apps/web/src/main.tsx",
         "tools/browser/reporting-check.mjs",
-        "docs/IMPLEMENTATION.md"
+        "docs/IMPLEMENTATION.md",
+        "apps/web/src/a11y.ts",
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4642,9 +4846,17 @@
       "procedure": "Instrument action start, usable response and durable confirmation for reads, 100-row lists, saves and approvals separately. Run the complete peak and soak profile with concurrent background work; report per tenant p95, p99, timeout and error counts.",
       "failure": "Fail any action class or material tenant cohort outside its bound; do not combine fast reads with slow approvals to hide a failure.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "QA 2026-10 performance (scripts/perf.py, make perf, qualification/perf_harness.py, perf_support.py, test_perf_unit.py; docs/QA-PERFORMANCE-2026-10.md) measured one sandbox run on 1 October 2026: native PostgreSQL 16.13, one API process on the provisioned logins, 2 shared vCPUs under load from other suites, loopback HTTP timed by the client, workload seeded through the governed API only. Within the 2 s p95 / 5 s p99 bound with zero errors: record reads p95 97.5 ms (n 2020), 100-row lists p95 112.7 ms (n 400), saves p95 169.0 ms (n 1358), independent approvals p95 192.0 ms (n 1142) (performance-2026-10-01.json classes read.record, read.list100, write.save, write.approval). Outside the bound if counted as a save: the synchronous 500-row import commit took 14.4 s in one request under the tenant advisory lock (class import.commit, n 1). Not met: the FSD standard workload, peak and soak profiles are not quantified; no browser-side user-action timing; no run on the staging droplet; one sample on contended hardware is not a capacity statement.",
+      "evidence_paths": [
+        "scripts/perf.py",
+        "qualification/perf_harness.py",
+        "qualification/perf_support.py",
+        "qualification/test_perf_unit.py",
+        "docs/evidence/performance-2026-10-01.json",
+        "docs/evidence/performance-2026-10-01.md",
+        "docs/QA-PERFORMANCE-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4658,7 +4870,7 @@
       "failure": "A placeholder or partially loaded chart is not usable completion. Record failed widgets rather than excluding their samples.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json classes dashboard.warm and dashboard.cold; docs/QA-PERFORMANCE-2026-10.md): a 10-card programme dashboard read p95 242.0 ms over 50 reads at concurrency 4 in one sandbox run; cold reads have 3 samples only and no cache exists. No browser-rendered usability timing, filter change, drill-down or concurrent imports and report jobs were measured. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4688,7 +4900,7 @@
       "failure": "Human approval and external transfer are separately reported exclusions; validation, internal queuing and ordinary retries remain measured.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Not measurable in this build: imports are bounded at 500 rows per batch and commit synchronously. QA 2026-10 performance (docs/evidence/performance-2026-10-01.json scenario import_max_batch) recorded one 500-row commit in 14.4 s, about 29 ms per produced observation under the tenant advisory lock; linear extrapolation to 100,000 rows would be far outside the 10-minute bound. No recalculation of 1,000 indicators was run. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4703,7 +4915,7 @@
       "failure": "A ready link to an incomplete artifact fails. Permission revocation before download must prevent retrieval even when performance targets passed.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. v0.23 renders PDF, XLSX and DOCX exports of a frozen package through the worker with acknowledgement as one synchronous transaction, job state as progress and cancellation before start (qualification/test_report_exports.py::test_export_request_is_one_queued_job_with_receipt_audit_and_exact_retry, test_cancellation_before_start_is_honoured_and_nothing_is_rendered). QA 2026-10 performance (docs/evidence/performance-2026-10-01.json, docs/QA-PERFORMANCE-2026-10.md) timed acknowledgement (9 samples, p95 81.9 ms) and in-process render of the small fixture packages (9 samples, p95 142.8 ms, no queue wait): too few samples and not the target workload. No 100,000-row export, 50-page report or twenty-chart report exists to measure. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4717,9 +4929,16 @@
       "procedure": "Record source receipt, validation, approval, calculation completion and first visible updated dashboard result. Use version identifiers to prove the new result is actually shown.",
       "failure": "Measure the sixty-second propagation from calculation completion, while separately exposing collection and human review delay.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.24's dashboard reads are uncached and computed per request, and the freshness block separates calculation and lock times (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions). QA 2026-10 performance measured propagation from calculation completion to the dashboard showing the new result_revision: 20 samples, p95 71.5 ms, p99 78.1 ms, zero errors, bounded by one dashboard read because nothing is cached (performance-2026-10-01.json class freshness.propagation, scenario freshness; one sandbox run on 2 shared vCPUs, docs/QA-PERFORMANCE-2026-10.md). Not met: collection and human-review delays are not recorded or displayed separately; no load, peak or staging measurement.",
+      "evidence_paths": [
+        "apps/api/impact_api/dashboards.py",
+        "qualification/test_dashboards.py",
+        "scripts/perf.py",
+        "qualification/perf_harness.py",
+        "docs/evidence/performance-2026-10-01.json",
+        "docs/QA-PERFORMANCE-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4763,7 +4982,7 @@
       "failure": "Fail unbounded queue growth, unexplained starvation or target violations hidden by service-wide averages.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json isolation.tenant_b.*): one probe of tenant B list reads during tenant A's 500-row import (p95 53.2 ms against 37.1 ms idle) and during 500 concurrent approvals (p95 103.0 ms, CPU sharing on 2 cores). No admission control, queue limits, burst recovery or per-tenant cohort report exists. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4792,9 +5011,16 @@
       "procedure": "Independently fail AI, email, survey connector and BI retrieval. Complete manual entry, deterministic calculations and existing approved report access while inspecting queued work and status labels.",
       "failure": "Do not claim isolation when the failed dependency is actually required for the tested journey; declare that dependency and report the affected cohort.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "QA 2026-10 degradation (qualification/test_native_degradation.py, six tests: five on PGlite and natively, one native-only; docs/QA-DEGRADATION-2026-10.md) qualifies a bounded subset. Email is an isolated dependency: with no worker running, manual observation work continues, the invitation intent waits PENDING with no attempt, and one worker pass delivers it exactly once (test_worker_down_api_serves_intents_wait_and_one_pass_delivers_each_once); an SMTP server refusing connections is retried with backoff and dead-lettered with the class SMTP_CONNECTION and no secret in the log (test_smtp_refusing_connections_backs_off_then_dead_without_secrets_in_logs). The database and the identity provider are declared required dependencies of every authenticated journey, so the claim is fail closed and recover without restart, not isolation: a refused database answers 503 SERVICE_UNAVAILABLE, retryable, reason DATABASE_UNAVAILABLE (readiness too), leaves no receipt and the same operation commits once after recovery in the same process; a connection lost mid-write commits nothing (native only); after the 60-second cached key set expires bearer tokens are refused with 503 IDENTITY_PROVIDER_UNAVAILABLE, never accepted, while cookie sessions continue (stub provider). Object-store full or unavailable answers 503 OBJECT_STORE_FULL or OBJECT_STORE_UNAVAILABLE with no row, object or partial bytes (test_object_store_full_or_unreadable_fails_cleanly_and_downloads_fail_closed; test_evidence_unit.py::test_store_failures_are_bounded_reason_codes_and_leave_no_partial_object). Not met: no screen shows users the affected function, stale data or queued actions; AI, survey-connector and BI dependencies do not exist; PostgreSQL and Keycloak were never actually stopped (a TCP proxy and a stub provider stand in); no affected-cohort report.",
+      "evidence_paths": [
+        "qualification/test_native_degradation.py",
+        "qualification/test_evidence_unit.py",
+        "apps/api/impact_api/main.py",
+        "apps/api/impact_api/auth.py",
+        "apps/api/impact_api/object_store.py",
+        "docs/QA-DEGRADATION-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4838,13 +5064,20 @@
       "failure": "A successful archive download is not a completed restore. Record retention exceptions and their owner instead of extending the default window silently.",
       "category": "nonfunctional",
       "status": "PARTIAL",
-      "assessment": "A scripted, verified restore exists and has been executed (scripts/restore_drill.py; 29 September 2026 on PostgreSQL 16.13, and in the CI native job on 17.11 for commit c759e9e): pg_dump -Fc of the qualification database (3,427,234 bytes in 0.45 s), pg_restore into a sibling database (1.56 s), a migrator checksum pass that applies nothing and verifies all 16 ledgered checksums, the seeded OFFICIAL 46.36 present in its snapshot revision with its payload hash, equal row counts in all 151 impact tables (30,016 rows), identical ownership, RLS flags, policies, functions and grants, the tenant fences and control-plane denials intact for impact_app, and no credential altered. This is a CI-scale restore drill of a disposable qualification database, not a backup regime: no scheduled backup, retention window, off-site or immutable copy, protection against alteration or credential compromise, monthly restore cadence, quarterly disaster exercise, key recovery, attachment integrity (no attachments exist) or deletion/restriction replay before reopening exists, and no RPO or RTO is established. A restore of a production-scale database is not qualified.",
+      "assessment": "A scripted, verified restore exists and has been executed (scripts/restore_drill.py; 29 September 2026 on PostgreSQL 16.13, and in the CI native job on 17.11 for commit c759e9e): pg_dump -Fc of the qualification database (3,427,234 bytes in 0.45 s), pg_restore into a sibling database (1.56 s), a migrator checksum pass that applies nothing and verifies all 16 ledgered checksums, the seeded OFFICIAL 46.36 present in its snapshot revision with its payload hash, equal row counts in all 151 impact tables (30,016 rows), identical ownership, RLS flags, policies, functions and grants, the tenant fences and control-plane denials intact for impact_app, and no credential altered. This is a CI-scale restore drill of a disposable qualification database, not a backup regime: no scheduled backup, retention window, off-site or immutable copy, protection against alteration or credential compromise, monthly restore cadence, quarterly disaster exercise, key recovery, attachment integrity (no attachments exist) or deletion/restriction replay before reopening exists, and no RPO or RTO is established. A restore of a production-scale database is not qualified. Operations hardening (October 2026) adds, on the staging server, nightly verified backup sets (both databases, roles without passwords, the evidence object volume as a tar, SHA-256 manifest; written in a hidden directory, verified with pg_restore --list, a full tar read and sha256sum, then renamed; 7 daily and 4 weekly within the 35-day default; a disk guard) and a weekly on-server restore drill into throwaway containers that checks object digests against their names, blob rows against objects, a migrator checksum pass, ownership, forced fences and the identity-provider realm and records duration and backup age (deploy/backup.sh, deploy/restore-drill.sh, deploy/drill_restore.sh, deploy/restore_check.py; qualification/test_ops_unit.py::test_backup_set_holds_databases_roles_objects_and_a_verified_manifest, test_sundays_set_is_kept_weekly_by_hard_link_and_retention_prunes_oldest, test_verification_catches_a_changed_file, test_drill_restores_the_newest_set_and_skips_the_bootstrap_superuser, test_object_digests_match_names_and_blob_rows_find_their_objects, test_drill_record_measures_duration_and_backup_age; the CI container-stack job restores a set and runs the drill). Still open: protection against alteration and credential compromise (sets live on the same server and root account), an off-server copy, the quarterly disaster exercise, key recovery and deletion replay before reopening (TH27); no RPO or RTO target is met.",
       "evidence_paths": [
         "scripts/restore_drill.py",
         "docs/evidence/native-restore-drill.json",
         "docs/evidence/native-qualification.json",
         "docs/RELEASE-0.14.md",
-        "docs/current/OPERATIONS-GUIDE.md"
+        "docs/current/OPERATIONS-GUIDE.md",
+        "deploy/backup.sh",
+        "deploy/restore-drill.sh",
+        "deploy/drill_restore.sh",
+        "deploy/restore_check.py",
+        "qualification/test_ops_unit.py",
+        "docs/current/DEPLOYMENT-GUIDE.md",
+        "docs/RELEASE-OPS-2026-10.md"
       ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -4966,9 +5199,15 @@
       "procedure": "Execute every audit event class in section 35, including denied operations, restricted reads and privileged actions. Reconcile command receipts to immutable events and a permitted audit export.",
       "failure": "Verify default metadata expiry and longer governed business retention separately. Inspect events for secrets and unnecessary personal payloads.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part A: a permitted audit export (create_audit_export; capability audit.export for OWNER and TENANT_ADMIN, purpose-required with SECURITY_REVIEW, INCIDENT_INVESTIGATION, REGULATORY_REQUEST or INTERNAL_AUDIT, fresh assurance 300 s) returns the tenant's audit events of an ended window of at most 366 days as JSON Lines (projected audit columns and the revision digest only: no payload, secret, sealed value or address) with a manifest, a hash chain and a seal, paged by a signed cursor bound to tenant, principal, window and purpose; each page is itself an audited command with a receipt, so receipts reconcile to the export's own events (qualification/test_audit_export.py::test_export_pages_verify_and_each_export_is_audited, test_exact_retry_is_identical_and_a_changed_payload_conflicts, test_refusals_tenant_capability_assurance_and_revocation, test_purpose_is_required_and_a_purpose_bound_grant_authorises_only_its_purpose, test_owner_may_export_and_the_content_holds_no_secret, test_cursor_is_signed_and_bound_to_window_and_purpose). Not covered, so the gate is not met: every audit event class of FSD section 35 (denied operations and restricted reads are not recorded as events), the 365-day metadata retention and governed business retention, search by reviewers beyond a window export, and a durable export register (the window and digest live in the 7-day receipt).",
+      "evidence_paths": [
+        "apps/api/impact_api/audit_export.py",
+        "apps/api/impact_api/audit_export_contracts.py",
+        "apps/web/src/AuditExport.tsx",
+        "qualification/test_audit_export.py",
+        "docs/RELEASE-0.25a.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4981,9 +5220,14 @@
       "procedure": "Run a deletion with no hold, one with a partial hold and one with a failed derivative store. Query primary records, search, AI, caches and generated artifacts after the active-store deadline.",
       "failure": "A partial manifest cannot be labelled complete. Restore an old backup and verify deletion before exposing restored content.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "v0.25 part B: an approved erasure removes or restricts the subject's data in active primary records, projections, sealed delivery addresses (overwritten with random bytes and the intents SUPERSEDED with the lease generation advanced), object-store bytes (after the commit, recorded per object) and named import raw content within the request, keeps audit, identifiers and every official number unchanged (every CalculatedResult, Snapshot and Observation revision compared before and after), and reports a no-hold, a partial-hold and a failed-derivative-store run distinctly (qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers, test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried; natively test_native_privacy_tables_are_fenced_for_the_application_login). Not covered: backup expiry and deletion replay on restore (FR-PRV-006, TH27; erased values stay in nightly sets until they age out), search, AI and cache stores (none exist), external recipients of earlier publications.",
+      "evidence_paths": [
+        "apps/api/impact_api/privacy.py",
+        "infrastructure/migrations/0027_privacy_execution.sql",
+        "qualification/test_privacy_requests.py",
+        "docs/RELEASE-0.25b.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -4997,7 +5241,7 @@
       "failure": "AI content, diagnostic logs, security metadata and business evidence require distinct schedules; hidden orphan copies fail the gate.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Related v0.25 part B evidence: scheduled action receipts exist for four fixed data classes (retention_proof with cutoff on the database clock, affected count and the SHA-256 of the sorted affected keys, written by a lease-fenced sweep that a stale holder cannot complete; qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class, test_a_stale_lease_holder_neither_deletes_nor_proves, test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class, test_worker_holds_exactly_the_retention_privileges). Approved record and evidence policies before collection, diagnostic-log, AI-content and security-metadata classes and orphan-copy detection do not exist, so the target is not met. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
@@ -5086,9 +5330,14 @@
       "procedure": "Review complete processes against WCAG 2.2 AA with automated checks plus manual keyboard, screen reader, focus, error and generated-template tests.",
       "failure": "A clean automated scan alone does not pass. Record environment, user-content boundaries and remediation evidence for each material issue.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "QA 2026-10 (tools/browser/a11y-check.mjs, group a11y-browser) scans 43 page states of the web client (every workspace area and tab, record and decision dialogs, tenant lifecycle, Workers, recovery contacts, initial access, authority renewal, sign-in, one 390 px state) with axe-core 4.13.0 at the WCAG 2.0/2.1/2.2 A and AA tags: 0 serious or critical violations and no accepted exceptions after the fixes (759 colour-contrast nodes before). A scripted keyboard-only flow submits an observation and has an independent reviewer approve it, and checks focus visibility (outline contrast at least 3:1), dialog focus containment and return, tab-list arrow keys and the skip link. Chromium 153 only. Not covered, so the failure rule (a clean automated scan alone does not pass) is not met: screen-reader review, other browsers, zoom and reflow at 400 percent, a manual WCAG 2.2 AA audit, the identity-provider pages, generated report templates, the invalid-field and stale-revision cases and keyboard walk-throughs of the other processes.",
+      "evidence_paths": [
+        "tools/browser/a11y-check.mjs",
+        "docs/evidence/a11y-browser-tests.json",
+        "docs/current/ACCESSIBILITY-STATEMENT.md",
+        "docs/QA-A11Y-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -5161,9 +5410,15 @@
       "procedure": "Inject failures at report receipt, calculation, rendering and delivery. Trace one safe correlation reference across the authorised stages and measure alert creation after the defined detection condition.",
       "failure": "Missing tenant context, secret payloads in diagnostics or critical alert delay beyond five minutes fails the relevant gate.",
       "category": "nonfunctional",
-      "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
-      "evidence_paths": [],
+      "status": "PARTIAL",
+      "assessment": "Alerting clause only. Operations hardening (October 2026): a check every five minutes (systemd timer on the server, and after each deployment and drill) raises closed alert codes for missing, stale, failed or disk-refused backups, low disk, an unhealthy or absent container, a stale worker heartbeat, DEAD deliveries, a queue backlog, a schema mismatch, an unavailable summary and a failed or stale restore drill, writes them into deploy-status.json with secret values scrubbed, and an injected failure (worker stopped) is alerted by the next check and cleared after restart (deploy/ops-check.sh, deploy/ops_alerts.py; qualification/test_ops_unit.py::test_a_healthy_server_has_no_alerts, test_each_problem_raises_its_alert, test_evaluate_writes_the_ops_file_and_merges_into_the_status_files, test_host_units_run_the_check_every_five_minutes_and_the_drill_weekly; CI container-stack step 'An injected failure (worker stopped) is alerted by the next check'). Every request already carries a correlation identifier returned in errors. Not covered: correlation references traced across jobs and integrations, tenant-scoped diagnosis and audit separation of logs, any notification channel (alerts reach only the status page; nobody is paged), metric history.",
+      "evidence_paths": [
+        "deploy/ops-check.sh",
+        "deploy/ops_alerts.py",
+        "deploy/update.sh",
+        "qualification/test_ops_unit.py",
+        "docs/RELEASE-OPS-2026-10.md"
+      ],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },
     {
@@ -5207,7 +5462,7 @@
       "failure": "Every critical capability needs an accountable operational owner and rehearsed recovery path before production exposure.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Related QA 2026-10 documentation: docs/current/SUPPORT-RUNBOOK.md (support roles, health checks, the 13 closed alert codes of deploy/ops_alerts.py with first steps, incident first steps, escalation, ticket hygiene), with the owner console scripts deploy/reset-user.sh, list-users.sh, restore-drill.sh, rotate-secrets.sh and ops-check.sh exercised in the CI container-stack job. Open: named on-call and operational owners, support hours and response targets, alert delivery to a person, and rehearsed readiness exercises (critical incident, identity recovery, failed import, privacy deletion, report correction). Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     }

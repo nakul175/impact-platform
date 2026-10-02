@@ -15,7 +15,14 @@ from impact_api.publication_contracts import augment as augment_publication  # n
 from impact_api.planning_contracts import augment as augment_planning  # noqa: E402
 from impact_api.calculation_contracts import augment as augment_calculation  # noqa: E402
 from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
+from impact_api.import_contracts import augment as augment_imports  # noqa: E402
+from impact_api.evidence_contracts import augment as augment_evidence  # noqa: E402
+from impact_api.export_contracts import augment as augment_exports  # noqa: E402
+from impact_api.dashboard_contracts import augment as augment_dashboards  # noqa: E402
+from impact_api.audit_export_contracts import augment as augment_audit_export  # noqa: E402
+from impact_api.privacy_contracts import augment as augment_privacy  # noqa: E402
 from impact_api.tenant_contracts import openapi as platform_openapi  # noqa: E402
+from impact_api.version import DOMAIN_API  # noqa: E402
 
 spec = json.loads((ROOT / "packages/contracts/openapi-baseline.json").read_text())
 policy = json.loads((ROOT / "specification/contracts/access-policy.json").read_text())
@@ -136,6 +143,12 @@ augment_publication(spec, policy)
 augment_planning(spec, policy)
 augment_calculation(spec, policy)
 augment_forms(spec, policy)
+augment_imports(spec, policy)
+augment_evidence(spec, policy)
+augment_exports(spec, policy)
+augment_dashboards(spec, policy)
+augment_audit_export(spec, policy)
+augment_privacy(spec, policy)
 # A baseline policy row whose operation no longer exists in the contract (its path and method
 # were taken over by an implemented operation under another identifier) is dropped: the policy
 # must describe exactly the operations of the contract (#19: create_organisation_units, superseded
@@ -147,8 +160,9 @@ contract_operations = {
     if isinstance(operation, dict) and "operationId" in operation
 }
 policy["operations"] = [row for row in policy["operations"] if row["operation_id"] in contract_operations]
-spec["info"]["version"] = "1.13.0"
-policy["version"] = "1.13.0"
+# The published domain API version comes from VERSION.json (impact_api/version.py).
+spec["info"]["version"] = DOMAIN_API
+policy["version"] = DOMAIN_API
 for name, value in [("openapi.json", spec), ("access-policy.json", policy), ("event.schema.json", event)]:
     (ROOT / "packages/contracts" / name).write_text(json.dumps(value, indent=2) + "\n")
 (ROOT / "packages/contracts/openapi-platform.json").write_text(

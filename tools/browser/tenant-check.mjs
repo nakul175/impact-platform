@@ -175,11 +175,11 @@ try {
     const entry = admin.getByLabel("Worker " + workerId, { exact: true });
     await entry.waitFor();
     assert.match(await entry.innerText(), /Stopped/);
-    // The heartbeat carries this build's version, read from the client package, not a literal.
-    const { version } = JSON.parse(
-      await fs.readFile(path.join(root, "apps/web/package.json"), "utf8"),
+    // The heartbeat carries this build's version, read from the single version source.
+    const { build } = JSON.parse(
+      await fs.readFile(path.join(root, "VERSION.json"), "utf8"),
     );
-    assert.ok((await entry.innerText()).includes("build " + version));
+    assert.ok((await entry.innerText()).includes("build " + build));
     await nominated
       .getByRole("button", { name: "Refresh tenants", exact: true })
       .click();

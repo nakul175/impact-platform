@@ -1,4 +1,4 @@
-.PHONY: setup dev worker test native idp unit reference browser lint build package ledger
+.PHONY: setup dev worker test native idp unit reference browser lint build package ledger perf
 PYTHON ?= python3
 PY = .venv/bin/python
 setup:
@@ -28,9 +28,12 @@ idp:
 	node tools/browser/prepare.mjs
 	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
-	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_golden.py qualification/test_deploy_unit.py
+	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_golden.py qualification/test_deploy_unit.py qualification/test_ops_unit.py qualification/test_version_unit.py qualification/test_evidence_unit.py qualification/test_key_rotation.py qualification/test_audit_export.py qualification/test_perf_unit.py
 # VF-DIN-001: golden corpus through the independent reference, the domain code and the live API;
 # writes docs/evidence/golden-reconciliation.json.
+# Performance measurement harness (QA 2026-10); needs IMPACT_FIXTURE_DSN like native. PERF_ARGS e.g. --scale smoke --recreate
+perf:
+	$(PY) scripts/perf.py $(PERF_ARGS)
 golden:
 	$(PY) scripts/run.py test --pytest-path qualification/test_golden.py
 reference:
@@ -42,6 +45,7 @@ browser:
 	$(PY) scripts/run.py admin-browser
 	$(PY) scripts/run.py measurement-browser
 	$(PY) scripts/run.py planning-browser
+	$(PY) scripts/run.py dashboard-browser
 	$(PY) scripts/run.py forms-browser
 	$(PY) scripts/run.py reporting-browser
 	$(PY) scripts/run.py workspace-browser
@@ -49,6 +53,11 @@ browser:
 	$(PY) scripts/run.py bootstrap-browser
 	$(PY) scripts/run.py recovery-browser
 	$(PY) scripts/run.py renewal-browser
+	$(PY) scripts/run.py import-browser
+	$(PY) scripts/run.py evidence-browser
+	$(PY) scripts/run.py export-browser
+	$(PY) scripts/run.py requeue-browser
+	$(PY) scripts/run.py a11y-browser
 lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy

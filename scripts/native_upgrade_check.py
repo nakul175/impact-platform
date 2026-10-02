@@ -1,7 +1,11 @@
-"""Native-only upgrade check: a populated database at the previous schema is upgraded to the latest.
+"""Native-only upgrade check: a populated database at an earlier schema is upgraded to the latest.
 
-LATEST is the number of migration files (26 since build 0.24.0; scripts/migrate.py refuses a numbering
-gap) and BASELINE is LATEST - 1. On a
+LATEST is the number of migration files (32 since build 0.27.0; scripts/migrate.py refuses a numbering
+gap) and BASELINE is LATEST - 1 unless IMPACT_UPGRADE_BASELINE names an earlier schema (at least 21):
+a build that adds several migrations sets it to the schema deployed on staging, so the upgrade is
+rehearsed from the schema it will actually meet (build 0.27.0: 28 -> 32, set in the CI native job).
+Since 0.27.0 one platform operator row is also present at the baseline, so 0029's ALTER of
+`impact.platform_operator` runs on a populated table, and the 0029-0032 additions are verified. On a
 fresh disposable database next to the one named by IMPACT_FIXTURE_DSN this script applies
 migrations 0001-BASELINE as the provisioned `impact_migrator` login, loads the acceptance fixture as
 the superuser (the fixture touches only migration 0002/0003 tables), adds one browser session row
@@ -22,6 +26,7 @@ these failing fails the check. The result is merged into the JSON report named b
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
+    IMPACT_UPGRADE_BASELINE                     optional schema to upgrade from (21 <= n < LATEST)
 """
 
 import argparse
@@ -48,7 +53,29 @@ from provision_logins import login_dsn, passwords_from_env, provision  # noqa: E
 DICTIONARY = ROOT / "docs/current/CURRENT-DATA-DICTIONARY.md"
 # The number of migration files, contiguous from 0001 (scripts/migrate.py refuses a gap).
 LATEST = migrate.LATEST
-BASELINE = LATEST - 1
+# The oldest baseline whose population this check knows how to write (forms and calculations, 0021).
+OLDEST_BASELINE = 21
+
+
+def baseline_from_env():
+    """LATEST - 1, or the earlier schema named by IMPACT_UPGRADE_BASELINE (the deployed one)."""
+    value = os.environ.get("IMPACT_UPGRADE_BASELINE", "").strip()
+    if not value:
+        return LATEST - 1
+    if not value.isdigit() or not OLDEST_BASELINE <= int(value) < LATEST:
+        raise RuntimeError(
+            "IMPACT_UPGRADE_BASELINE must be an integer from "
+            + str(OLDEST_BASELINE)
+            + " to "
+            + str(LATEST - 1)
+        )
+    return int(value)
+
+
+BASELINE = baseline_from_env()
+# The platform operator row inserted at the baseline (0029 alters platform_operator); its
+# identity is the fixture author's, an existing auth_identity.
+OPERATOR_REFERENCE = "upgrade-check-operator"
 # The session row inserted at the baseline; its identity is the fixture author.
 SESSION_IDENTITY = "69407b72-0f5f-5126-8d04-a1355db5a9c5"
 # The outbox row inserted at the baseline, in fixture tenant A.
@@ -164,6 +191,16 @@ def run(admin_dsn, fixture_dsn, passwords):
         )
         insert_planning_rows(c)
         result["baseline"]["revisions"] += 2
+        c.execute(
+            "INSERT INTO impact.platform_operator(identity_id,active,expires_at,authority_reference) VALUES(%s,true,now()+interval '30 days',%s)",
+            (SESSION_IDENTITY, OPERATOR_REFERENCE),
+        )
+        result["baseline"]["platform_operators"] = c.execute(
+            "SELECT count(*) FROM impact.platform_operator"
+        ).fetchone()[0]
+        result["baseline"]["assignment_rows"] = c.execute(
+            "SELECT count(*) FROM impact.assignment_current"
+        ).fetchone()[0]
         result["baseline"]["calculation_rows"] = c.execute(
             "SELECT (SELECT count(*) FROM impact.indicator_definition_current)+(SELECT count(*) FROM impact.calculated_result_current)"
         ).fetchone()[0]
@@ -249,6 +286,32 @@ def run(admin_dsn, fixture_dsn, passwords):
             "SELECT count(*) FROM impact.outbox_delivery WHERE tenant_id=%s AND event_id=%s AND channel IS NULL AND state='PENDING' AND lease_generation=0 AND lease_owner IS NULL",
             (OUTBOX_TENANT, OUTBOX_EVENT),
         ).fetchone()[0]
+        # 0029-0032 (build 0.27.0): operator lifecycle, security and privacy, theory of change,
+        # forms languages and rounds.
+        v027_columns = c.execute(
+            "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' AND ((table_name='platform_operator' AND column_name IN ('revision_id','updated_at')) OR (table_name='framework_current' AND column_name='assumptions') OR (table_name='target_current' AND column_name='status_thresholds') OR (table_name='form_current' AND column_name='default_language') OR (table_name='submission_current' AND column_name IN ('language','correction_of_revision','correction_reason')) OR (table_name='assignment_current' AND column_name IN ('unit_key','previous_assignee_id','reason')))"
+        ).fetchone()[0]
+        v027_tables = [
+            c.execute("SELECT to_regclass(%s)", ("impact." + name,)).fetchone()[0]
+            for name in [
+                "platform_operator_change",
+                "access_denial",
+                "audit_export_register",
+                "retention_policy_binding",
+            ]
+        ]
+        legacy_operator = c.execute(
+            "SELECT count(*) FROM impact.platform_operator WHERE identity_id=%s AND authority_reference=%s AND active AND revision_id IS NOT NULL AND updated_at IS NOT NULL",
+            (SESSION_IDENTITY, OPERATOR_REFERENCE),
+        ).fetchone()[0]
+        operators = c.execute("SELECT count(*) FROM impact.platform_operator").fetchone()[0]
+        legacy_v027 = c.execute(
+            "SELECT (SELECT count(*) FROM impact.framework_current WHERE tenant_id=%s AND object_id=%s AND assumptions IS NULL)+(SELECT count(*) FROM impact.target_current WHERE tenant_id=%s AND object_id=%s AND status_thresholds IS NULL)",
+            (OUTBOX_TENANT, FRAMEWORK[0], OUTBOX_TENANT, TARGET[0]),
+        ).fetchone()[0]
+        assignments = c.execute(
+            "SELECT count(*) FROM impact.assignment_current WHERE unit_key IS NULL AND previous_assignee_id IS NULL AND reason IS NULL"
+        ).fetchone()[0]
     ledger = {int(name[:4]): sha for name, sha in register.items()}
     recorded = {int(v): s for v, s in rows}
     mismatches = [v for v in sorted(set(ledger) | set(recorded)) if ledger.get(v) != recorded.get(v)]
@@ -273,6 +336,11 @@ def run(admin_dsn, fixture_dsn, passwords):
         "form_rows_preserved": legacy_forms,
         "export_tables_present": all(export_tables),
         "disclosure_rows_preserved": legacy_disclosures == disclosures,
+        "v027_columns_present": v027_columns == 11,
+        "v027_tables_present": all(v027_tables),
+        "operator_rows_preserved": legacy_operator == 1
+        and operators == result["baseline"]["platform_operators"],
+        "assignment_rows_preserved": assignments == result["baseline"]["assignment_rows"],
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -283,7 +351,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         and result["baseline"]["calculation_rows"] > 0
         and legacy_calculation == result["baseline"]["calculation_rows"]
         and result["baseline"]["form_rows"] > 0
-        and legacy_forms == result["baseline"]["form_rows"],
+        and legacy_forms == result["baseline"]["form_rows"]
+        and legacy_v027 == 2,
     }
     if (
         mismatches
@@ -300,6 +369,10 @@ def run(admin_dsn, fixture_dsn, passwords):
         or form_table is None
         or not all(export_tables)
         or legacy_disclosures != disclosures
+        or v027_columns != 11
+        or not all(v027_tables)
+        or not result["verification"]["operator_rows_preserved"]
+        or not result["verification"]["assignment_rows_preserved"]
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

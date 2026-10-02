@@ -28,7 +28,7 @@ idp:
 	node tools/browser/prepare.mjs
 	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
-	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_golden.py qualification/test_deploy_unit.py qualification/test_ops_unit.py qualification/test_version_unit.py qualification/test_evidence_unit.py qualification/test_key_rotation.py qualification/test_audit_export.py qualification/test_perf_unit.py qualification/test_pooler_unit.py qualification/test_usable_staging_unit.py qualification/test_email_readiness_unit.py
+	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_golden.py qualification/test_deploy_unit.py qualification/test_ops_unit.py qualification/test_version_unit.py qualification/test_evidence_unit.py qualification/test_key_rotation.py qualification/test_audit_export.py qualification/test_perf_unit.py qualification/test_pooler_unit.py qualification/test_usable_staging_unit.py qualification/test_email_readiness_unit.py qualification/test_status_alerts_unit.py qualification/test_security_privacy.py
 # VF-DIN-001: golden corpus through the independent reference, the domain code and the live API;
 # writes docs/evidence/golden-reconciliation.json.
 # Performance measurement harness (QA 2026-10); needs IMPACT_FIXTURE_DSN like native. PERF_ARGS e.g. --scale smoke --recreate

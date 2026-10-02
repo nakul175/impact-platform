@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.16.0",
+    "version": "1.17.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -4429,7 +4429,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4538,7 +4538,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4669,7 +4669,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4758,7 +4758,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -8557,7 +8557,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -8666,7 +8666,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -8797,7 +8797,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -8886,7 +8886,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -10480,7 +10480,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23310,7 +23310,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23432,7 +23432,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23541,7 +23541,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23672,7 +23672,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -23761,7 +23761,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -24134,7 +24134,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -24245,7 +24245,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -25810,7 +25810,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -25950,7 +25950,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -26666,7 +26666,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -26788,7 +26788,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -26878,7 +26878,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -27009,7 +27009,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {
@@ -27131,7 +27131,7 @@
             }
           },
           "503": {
-            "description": "DEPENDENCY_UNAVAILABLE",
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
             "content": {
               "application/json": {
                 "schema": {

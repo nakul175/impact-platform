@@ -130,8 +130,11 @@ jobs:
         env:
           IMPACT_PG_BIN: /usr/lib/postgresql/17/bin
         run: .venv/bin/python scripts/restore_drill.py --report docs/evidence/native-qualification.json
-      - name: Upgrade a populated database at the previous schema to the latest
+      - name: Upgrade a populated database at the deployed schema to the latest
         if: always()
+        env:
+          # The schema staging runs (build 0.26.0); move it when a build with new migrations is deployed.
+          IMPACT_UPGRADE_BASELINE: '28'
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
       - uses: actions/setup-java@v5
         if: always()

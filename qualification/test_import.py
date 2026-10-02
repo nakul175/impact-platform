@@ -867,11 +867,9 @@ def test_unplanned_import_units_still_block_close(live):
     )
 
 
-def monthly_periods(live, year=2025):
-    """July and August of a monthly calendar the tenant administrator creates through the governed
-    reference-data command (v0.26a), so that a unit can be imported in two periods. The year is 2025
-    on purpose: `assert_source_mutable` resolves an event's period tenant-wide by time, so a second
-    calendar whose periods overlap the fixture quarter would change other tests' outcomes."""
+def calendar_periods(live, frequency, year, codes):
+    """A calendar of `frequency` for `year` that the tenant administrator creates through the governed
+    reference-data command (v0.26a), and its periods with the given codes, in code order."""
     receipt = expect(
         live.request(
             live.path("reporting-calendars"),
@@ -879,12 +877,12 @@ def monthly_periods(live, year=2025):
             method="POST",
             body=cmd(
                 {
-                    "title": "Monthly import calendar " + str(uuid.uuid4())[:8],
-                    "frequency": "MONTHLY",
+                    "title": frequency.title() + " import calendar " + str(uuid.uuid4())[:8],
+                    "frequency": frequency,
                     "zone": "UTC",
                     "first_year": year,
                     "years": 1,
-                    "reason": "A unit reports in every month",
+                    "reason": "A unit reports in every period",
                 }
             ),
         ),
@@ -893,11 +891,19 @@ def monthly_periods(live, year=2025):
     with live.db() as c:
         rows = c.execute(
             "SELECT r.object_id::text AS id FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
-            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' IN (%s,%s) ORDER BY v.payload->>'code'",
-            (live.fixture["tenant_a"], receipt["revision_id"], f"{year}-07", f"{year}-08"),
+            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' = ANY(%s) ORDER BY v.payload->>'code'",
+            (live.fixture["tenant_a"], receipt["revision_id"], list(codes)),
         ).fetchall()
-    assert len(rows) == 2
+    assert len(rows) == len(codes)
     return receipt["object_id"], [get(live, "periods", r["id"]) for r in rows]
+
+
+def monthly_periods(live, year=2025):
+    """July and August of a monthly calendar, so that a unit can be imported in two periods. The year
+    is kept apart from the fixture quarter (2026) so that no other test's calendar or period listing
+    changes; the period lock check itself has considered every overlapping calendar since build
+    0.27.0 (`test_a_locked_period_refuses_late_values_when_another_calendar_overlaps_it`)."""
+    return calendar_periods(live, "MONTHLY", year, [f"{year}-07", f"{year}-08"])
 
 
 def test_a_unit_imports_again_in_a_later_period_without_colliding(live):
@@ -930,6 +936,53 @@ def test_a_unit_imports_again_in_a_later_period_without_colliding(live):
     assert [k["source_key"] for k in keys] == sorted(
         f"{unit}/{indicator['object_id']}/{p['object_id']}" for p in [july, august]
     )
+
+
+def test_a_locked_period_refuses_late_values_when_another_calendar_overlaps_it(live):
+    """Regression (build 0.27.0 integration; defect found by the v0.27 imports slice): with two
+    calendars in one tenant, a value whose event lies inside a programme's locked quarter is refused
+    although another calendar's later-starting month that also contains it is Open for that
+    programme. Before the fix the lock check looked only at the latest-starting containing period
+    (the month) and admitted the late value."""
+    year = 2024
+    quarterly, [quarter] = calendar_periods(live, "QUARTERLY", year, [f"{year}-Q3"])
+    _, [august] = calendar_periods(live, "MONTHLY", year, [f"{year}-08"])
+    assert august["data"]["starts_at"] > quarter["data"]["starts_at"]
+    unit = "Q" + str(uuid.uuid4())[:6]
+    programme, indicator, period, _ = import_planned(
+        live, [unit], calendar_id=quarterly, period=quarter, year=year
+    )
+    import_and_approve(live, indicator, period, {unit: "9"})
+    action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    workflow, candidate = close_candidate(live, programme, period)
+    assert candidate["blockers"] == []
+    approve(live, workflow)
+    late = create(
+        live,
+        "observations",
+        {
+            "source_namespace": "MANUAL",
+            "source_key": "late-" + str(uuid.uuid4()),
+            "indicator_id": indicator["object_id"],
+            "event_at": f"{year}-08-15T12:00:00Z",
+            "captured_at": f"{year}-08-15T13:00:00Z",
+            "capture_zone": "UTC",
+            "value_state": "PRESENT",
+            "value": "4",
+            "source_version": "1",
+            "dimension_values": {},
+        },
+    )
+    denied = action(
+        live, "observations", late, "submit", {"workflow_version": workflow_version(live)}, status=409
+    )
+    assert denied["reason_code"] == "PERIOD_RESTATEMENT_REQUIRED"
+    # The month of the other calendar is still Open for this programme: only the locked quarter refuses.
+    with live.db() as c:
+        assert not c.execute(
+            "SELECT 1 FROM impact.programme_period_state WHERE tenant_id=%s AND programme_id=%s AND period_id=%s",
+            (live.fixture["tenant_a"], programme["object_id"], august["object_id"]),
+        ).fetchone()
 
 
 def test_bounds_are_enforced(live, counted):

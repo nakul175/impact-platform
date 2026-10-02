@@ -312,6 +312,9 @@ main() {
   ensure_secret IMPACT_COOKIE_SECRET 48
   ensure_secret IMPACT_INVITATION_SECRET 48
   ensure_secret IMPACT_DELIVERY_SECRET 48
+  # v0.26a: the client secret of the realm's account-provisioning service account (user management
+  # only), with which the API creates sign-in accounts from the control plane.
+  ensure_secret IMPACT_PROVISIONER_SECRET 48
   if [ -z "$(env_value "$SECRETS_FILE" OWNER_TEMP_PASSWORD)" ]; then
     set_env_value "$SECRETS_FILE" OWNER_TEMP_PASSWORD "$(readable_password)"
     log "generated OWNER_TEMP_PASSWORD"
@@ -425,6 +428,14 @@ main() {
     --file deploy/keycloak/realm-staging.json | tee /dev/stderr | last_json)" || true
   log "realm: $realm"
   [ -n "$realm" ] && [ -z "$(printf '%s' "$realm" | json_field error)" ] || die "realm import failed"
+
+  step "account provisioning client"
+  local provisioner
+  provisioner="$(compose run --rm -T idp-admin python deploy/keycloak_admin.py provisioner |
+    tee /dev/stderr | last_json)" || true
+  log "provisioner: $provisioner"
+  [ -n "$provisioner" ] && [ -z "$(printf '%s' "$provisioner" | json_field error)" ] ||
+    die "the account provisioning client could not be set up"
 
   step "owner account"
   local account subject

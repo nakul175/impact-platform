@@ -1,0 +1,18 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "An operator nominates a colleague and creates their sign-in",
+      "status": "passed"
+    },
+    {
+      "name": "The colleague signs in, reads the start page and accepts",
+      "status": "passed"
+    },
+    {
+      "name": "A workspace administrator sets up the standard reference data",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

@@ -756,3 +756,155 @@ def test_logout_after_idle_timeout_still_clears_the_cookie(idp, browser):
         ).status_code
         == 401
     )
+
+
+def raw_totp(secret, period=30, digits=6, at=None):
+    """RFC 6238 for a secret read from Keycloak's enrolment form (its hidden totpSecret field)."""
+    counter = int((at or time.time()) // period)
+    mac = hmac.new(secret.encode(), struct.pack(">Q", counter), hashlib.sha1).digest()
+    offset = mac[-1] & 15
+    return str((struct.unpack(">I", mac[offset : offset + 4])[0] & 0x7FFFFFFF) % 10**digits).zfill(digits)
+
+
+def hidden_fields(page, form_id):
+    start = page.find('id="' + form_id + '"')
+    end = page.find("</form>", start)
+    fields = {}
+    for tag in re.findall(r"<input[^>]*>", page[start:end]):
+        attrs = dict(re.findall(r'([a-zA-Z-]+)="([^"]*)"', tag))
+        if attrs.get("type") == "hidden" and attrs.get("name"):
+            fields[attrs["name"]] = html.unescape(attrs.get("value", ""))
+    return fields
+
+
+def first_sign_in(b, email, password):
+    """A created account's first sign-in, as the person does it: the one-time password, a password
+    of their own, an authenticator app; back on the platform with a session."""
+    page = b.client.get(b.begin())
+    page = b.client.post(
+        form_action(page.text, "kc-form-login"),
+        data={"username": email, "password": password, "credentialId": ""},
+    )
+    secret, steps = None, []
+    for _ in range(10):
+        if page.status_code == 302:
+            location = page.headers["location"]
+            if location.startswith(b.origin + "/auth/callback?"):
+                break
+            # The provider moves to its next required action by redirect.
+            page = b.client.get(location)
+            continue
+        assert page.status_code == 200, (page.status_code, feedback(page.text))
+        if 'id="kc-passwd-update-form"' in page.text:
+            chosen = "Own-" + secrets.token_urlsafe(16)
+            page = b.client.post(
+                form_action(page.text, "kc-passwd-update-form"),
+                data={"password-new": chosen, "password-confirm": chosen},
+            )
+            steps.append("update-password")
+        elif 'name="totpSecret"' in page.text:
+            fields = hidden_fields(page.text, "kc-totp-settings-form")
+            secret = fields["totpSecret"]
+            page = b.client.post(
+                form_action(page.text, "kc-totp-settings-form"),
+                data={**fields, "totp": raw_totp(secret), "userLabel": "live qualification"},
+            )
+            steps.append("configure-totp")
+        elif 'name="otp"' in page.text and secret:
+            page = b.client.post(form_action(page.text, "kc-otp-login-form"), data={"otp": raw_totp(secret)})
+            steps.append("otp")
+        else:
+            raise AssertionError("unexpected provider page: " + feedback(page.text))
+    response = b.client.get(b.returned(page))
+    assert response.status_code == 303, response.text
+    me = b.get("/auth/me")
+    assert me.status_code == 200, me.text
+    b.csrf = me.json()["csrf_token"]
+    return steps
+
+
+def test_operator_onboarding_through_the_provider_account_operations(idp, browser):
+    """v0.26a (gap A3): an operator nominates a person and creates their account in the realm through
+    the provisioner service account; the one-time password works once, the person sets their own
+    password and authenticator, signs in to the platform and accepts the operator role with fresh
+    MFA. The nominating operator cannot accept for them, and the credential cannot be reissued once
+    the person has chosen their own password."""
+    operator = browser()
+    operator.sign_in("admin")
+    email = "live-operator-" + uuid.uuid4().hex[:8] + "@example.test"
+    now = datetime.now(timezone.utc)
+    nomination = operator.post(
+        "/v1/platform/operator-nominations",
+        {
+            "operation_id": str(uuid.uuid4()),
+            "data": {
+                "email": email,
+                "operator_expires_at": (now + timedelta(days=30)).isoformat(),
+                "reason": "Second operator through the live provider",
+            },
+        },
+    )
+    assert nomination.status_code == 200, nomination.text
+    nomination = nomination.json()
+    created = operator.post(
+        "/v1/platform/accounts",
+        {
+            "operation_id": str(uuid.uuid4()),
+            "data": {
+                "email": email,
+                "first_name": "Live",
+                "last_name": "Operator",
+                "nomination_id": nomination["nomination_id"],
+                "tenant_id": None,
+                "reason": "Sign-in for the nominee",
+            },
+        },
+    )
+    assert created.status_code == 200, created.text
+    account = created.json()
+    password = account["temporary_password"]
+    assert account["provider_created"] and password
+    with admin(idp) as kc:
+        (user,) = kc.get("/users", params={"email": email, "exact": "true"}).json()
+        assert user["emailVerified"] is True
+        assert set(user["requiredActions"]) == {"UPDATE_PASSWORD", "CONFIGURE_TOTP"}
+    with db() as c:
+        identity = c.execute(
+            "SELECT * FROM impact.auth_identity WHERE identity_id=%s", (account["identity_id"],)
+        ).fetchone()
+        assert identity["issuer"] == idp["issuer"] and identity["provider_subject"] == user["id"]
+    accept = operator.post(
+        "/v1/platform/operator-nominations/" + nomination["nomination_id"] + "/actions/accept",
+        {
+            "operation_id": str(uuid.uuid4()),
+            "expected_revision": nomination["revision_id"],
+            "data": {"reason": "Accepting for someone else"},
+        },
+    )
+    assert accept.status_code == 404, accept.text
+    nominee = browser()
+    steps = first_sign_in(nominee, email, password)
+    assert "update-password" in steps and "configure-totp" in steps, steps
+    (mine,) = nominee.get("/v1/platform/operators").json()["nominations"]
+    accepted = nominee.post(
+        "/v1/platform/operator-nominations/" + nomination["nomination_id"] + "/actions/accept",
+        {
+            "operation_id": str(uuid.uuid4()),
+            "expected_revision": mine["revision_id"],
+            "data": {"reason": "I accept"},
+        },
+    )
+    assert accepted.status_code == 200, accepted.text
+    assert accepted.json()["state"] == "Accepted"
+    assert nominee.get("/v1/platform/tenants").json()["operator"] is True
+    reissue = operator.post(
+        "/v1/platform/accounts/" + account["account_id"] + "/actions/reissue",
+        {
+            "operation_id": str(uuid.uuid4()),
+            "expected_revision": account["revision_id"],
+            "data": {"email": email, "reason": "Lost"},
+        },
+    )
+    assert reissue.status_code == 409 and reissue.json()["reason_code"] == "ACCOUNT_IN_USE", reissue.text
+    local = Path(os.environ["IMPACT_TEST_LOCAL"])
+    assert password not in (local / "api.log").read_text()

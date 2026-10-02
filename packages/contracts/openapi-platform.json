@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.6.0"
+    "version": "1.7.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -2233,11 +2233,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -2371,11 +2437,77 @@
                                     },
                                     "uniqueItems": true,
                                     "maxItems": 200
+                                  },
+                                  "MEL_ADMIN": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "DATA_STEWARD": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "ENUMERATOR": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "PRIVACY": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "AUDIT_READER": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
                                   }
                                 },
                                 "required": [
                                   "TENANT_ADMIN"
                                 ]
+                              },
+                              "purpose_bound": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 64,
+                                  "pattern": "\\S"
+                                },
+                                "uniqueItems": true,
+                                "maxItems": 200
                               }
                             },
                             "required": [
@@ -2630,11 +2762,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -2750,11 +2948,16 @@
                             "REVIEWER",
                             "PROGRAMME_MANAGER",
                             "ANALYST",
-                            "EXTERNAL"
+                            "EXTERNAL",
+                            "MEL_ADMIN",
+                            "DATA_STEWARD",
+                            "ENUMERATOR",
+                            "PRIVACY",
+                            "AUDIT_READER"
                           ]
                         },
                         "minItems": 1,
-                        "maxItems": 5,
+                        "maxItems": 10,
                         "uniqueItems": true
                       },
                       "expires_at": {
@@ -2934,11 +3137,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -3207,11 +3476,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -3480,11 +3815,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -3753,11 +4154,77 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "MEL_ADMIN": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "DATA_STEWARD": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "ENUMERATOR": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "PRIVACY": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
                             "TENANT_ADMIN"
                           ]
+                        },
+                        "purpose_bound": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64,
+                            "pattern": "\\S"
+                          },
+                          "uniqueItems": true,
+                          "maxItems": 200
                         }
                       },
                       "required": [
@@ -10396,6 +10863,1472 @@
           },
           "default": {
             "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/operators": {
+      "get": {
+        "operationId": "list_platform_operators",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "operator": {
+                      "type": "boolean"
+                    },
+                    "identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "accounts_enabled": {
+                      "type": "boolean"
+                    },
+                    "operators": {
+                      "type": "array",
+                      "maxItems": 200,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "display_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "email_mask": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 254,
+                                "pattern": "\\S"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "active": {
+                            "type": "boolean"
+                          },
+                          "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "authority_reference": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 300,
+                            "pattern": "\\S"
+                          }
+                        },
+                        "required": [
+                          "identity_id",
+                          "display_name",
+                          "email_mask",
+                          "active",
+                          "expires_at",
+                          "authority_reference"
+                        ]
+                      }
+                    },
+                    "nominations": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "nomination_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "state": {
+                            "enum": [
+                              "Nominated",
+                              "Accepted",
+                              "Declined",
+                              "Cancelled",
+                              "Expired"
+                            ]
+                          },
+                          "email_mask": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 254,
+                            "pattern": "\\S"
+                          },
+                          "nominated_by": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "nominator_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "operator_expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1000,
+                            "pattern": "\\S"
+                          },
+                          "nominee_identity_id": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "accepted_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "account_created_by_nominator": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "nomination_id",
+                          "revision_id",
+                          "state",
+                          "email_mask",
+                          "nominated_by",
+                          "nominator_name",
+                          "operator_expires_at",
+                          "expires_at",
+                          "reason",
+                          "nominee_identity_id",
+                          "accepted_at",
+                          "account_created_by_nominator"
+                        ]
+                      }
+                    },
+                    "identities": {
+                      "type": "array",
+                      "maxItems": 200,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "display_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "email_mask": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 254,
+                                "pattern": "\\S"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "signed_in": {
+                            "type": "boolean"
+                          },
+                          "operator": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "identity_id",
+                          "display_name",
+                          "email_mask",
+                          "signed_in",
+                          "operator"
+                        ]
+                      }
+                    },
+                    "accounts": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "account_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "email_mask": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 254,
+                            "pattern": "\\S"
+                          },
+                          "identity_id": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "created_by": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "tenant_id": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "nomination_id": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "provider_created": {
+                            "type": "boolean"
+                          },
+                          "credentials_issued": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "last_issued_at": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "account_id",
+                          "revision_id",
+                          "email_mask",
+                          "identity_id",
+                          "created_by",
+                          "tenant_id",
+                          "nomination_id",
+                          "provider_created",
+                          "credentials_issued",
+                          "created_at",
+                          "last_issued_at"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "operator",
+                    "identity_id",
+                    "accounts_enabled",
+                    "operators",
+                    "nominations",
+                    "identities",
+                    "accounts"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/operator-nominations": {
+      "post": {
+        "operationId": "nominate_platform_operator",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "nomination_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Accepted",
+                        "Declined",
+                        "Cancelled",
+                        "Expired"
+                      ]
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "nominated_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominator_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "operator_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "nominee_identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_created_by_nominator": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "nomination_id",
+                    "revision_id",
+                    "state",
+                    "email_mask",
+                    "nominated_by",
+                    "nominator_name",
+                    "operator_expires_at",
+                    "expires_at",
+                    "reason",
+                    "nominee_identity_id",
+                    "accepted_at",
+                    "account_created_by_nominator",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                      },
+                      "operator_expires_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "operator_expires_at",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/operator-nominations/{nomination_id}/actions/accept": {
+      "parameters": [
+        {
+          "name": "nomination_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "operator_nomination_accept",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "nomination_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Accepted",
+                        "Declined",
+                        "Cancelled",
+                        "Expired"
+                      ]
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "nominated_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominator_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "operator_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "nominee_identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_created_by_nominator": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "nomination_id",
+                    "revision_id",
+                    "state",
+                    "email_mask",
+                    "nominated_by",
+                    "nominator_name",
+                    "operator_expires_at",
+                    "expires_at",
+                    "reason",
+                    "nominee_identity_id",
+                    "accepted_at",
+                    "account_created_by_nominator",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/operator-nominations/{nomination_id}/actions/cancel": {
+      "parameters": [
+        {
+          "name": "nomination_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "operator_nomination_cancel",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "nomination_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Accepted",
+                        "Declined",
+                        "Cancelled",
+                        "Expired"
+                      ]
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "nominated_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominator_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "operator_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "nominee_identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_created_by_nominator": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "nomination_id",
+                    "revision_id",
+                    "state",
+                    "email_mask",
+                    "nominated_by",
+                    "nominator_name",
+                    "operator_expires_at",
+                    "expires_at",
+                    "reason",
+                    "nominee_identity_id",
+                    "accepted_at",
+                    "account_created_by_nominator",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/operator-nominations/{nomination_id}/actions/decline": {
+      "parameters": [
+        {
+          "name": "nomination_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "operator_nomination_decline",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "nomination_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "state": {
+                      "enum": [
+                        "Nominated",
+                        "Accepted",
+                        "Declined",
+                        "Cancelled",
+                        "Expired"
+                      ]
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "nominated_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "nominator_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "operator_expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "nominee_identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "accepted_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_created_by_nominator": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "nomination_id",
+                    "revision_id",
+                    "state",
+                    "email_mask",
+                    "nominated_by",
+                    "nominator_name",
+                    "operator_expires_at",
+                    "expires_at",
+                    "reason",
+                    "nominee_identity_id",
+                    "accepted_at",
+                    "account_created_by_nominator",
+                    "operation_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/accounts": {
+      "post": {
+        "operationId": "create_provider_account",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "account_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "created_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "nomination_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "provider_created": {
+                      "type": "boolean"
+                    },
+                    "credentials_issued": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_issued_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "temporary_password": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 12,
+                          "maxLength": 64
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "password_shown": {
+                      "type": "boolean"
+                    },
+                    "sign_in_url": {
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "account_id",
+                    "revision_id",
+                    "email_mask",
+                    "identity_id",
+                    "created_by",
+                    "tenant_id",
+                    "nomination_id",
+                    "provider_created",
+                    "credentials_issued",
+                    "created_at",
+                    "last_issued_at",
+                    "operation_id",
+                    "temporary_password",
+                    "password_shown",
+                    "sign_in_url"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                      },
+                      "first_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80,
+                        "pattern": "\\S"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80,
+                        "pattern": "\\S"
+                      },
+                      "nomination_id": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "tenant_id": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "first_name",
+                      "last_name",
+                      "nomination_id",
+                      "tenant_id",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/accounts/{account_id}/actions/reissue": {
+      "parameters": [
+        {
+          "name": "account_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "reissue_provider_account",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "account_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email_mask": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 254,
+                      "pattern": "\\S"
+                    },
+                    "identity_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "created_by": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "nomination_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "provider_created": {
+                      "type": "boolean"
+                    },
+                    "credentials_issued": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_issued_at": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "temporary_password": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 12,
+                          "maxLength": 64
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "password_shown": {
+                      "type": "boolean"
+                    },
+                    "sign_in_url": {
+                      "type": "string",
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "account_id",
+                    "revision_id",
+                    "email_mask",
+                    "identity_id",
+                    "created_by",
+                    "tenant_id",
+                    "nomination_id",
+                    "provider_created",
+                    "credentials_issued",
+                    "created_at",
+                    "last_issued_at",
+                    "operation_id",
+                    "temporary_password",
+                    "password_shown",
+                    "sign_in_url"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "email",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
           }
         }
       }

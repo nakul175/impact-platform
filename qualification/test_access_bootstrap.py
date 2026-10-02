@@ -116,9 +116,11 @@ def test_onboarding_to_first_programme_requires_two_reviews(live):
             "SELECT capability,expires_at FROM impact.grant_authority WHERE tenant_id=%s",
             (tenant["tenant_id"],),
         ).fetchall()
+        # initial-access-v2 (v0.26a): the ceiling is the role bundles plus the purpose-bound list.
         assert {r["capability"] for r in authorities} == set().union(
             *map(set, row["manifest"]["roles"].values())
-        )
+        ) | set(row["manifest"]["purpose_bound"])
+        assert set(row["manifest"]["purpose_bound"]) >= {"audit.export", "privacy.approve"}
         assert len(authorities) == 2 * len({r["capability"] for r in authorities})
 
 

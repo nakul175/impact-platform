@@ -11,8 +11,23 @@ from .platform_security import registered_person, current_owner
 from .store import Context, hash_data, write
 from .tenant_lifecycle import now
 
+# initial-access-v2 since v0.26a (scripts/build_access_profile.py derives it from the access policy).
+# A request pins the profile hash, so a request made under v1 and still pending is refused at
+# acceptance or approval (ACCESS_PROFILE_CHANGED) and must be cancelled and proposed again.
 PROFILE = json.loads(Path(__file__).with_name("bootstrap_profile.json").read_text())
 PROFILE_HASH = hash_data(PROFILE).hex()
+
+
+def manifest_for(role_names):
+    """The reviewed manifest: TENANT_ADMIN, the named role bundles and the profile's purpose-bound
+    capabilities (delegation ceiling only; never granted by a role)."""
+    manifest = {
+        "version": PROFILE["version"],
+        "roles": {name: PROFILE["roles"].get(name) for name in ["TENANT_ADMIN", *sorted(role_names)]},
+    }
+    if PROFILE.get("purpose_bound"):
+        manifest["purpose_bound"] = PROFILE["purpose_bound"]
+    return manifest
 
 
 def denied(reason):
@@ -197,10 +212,7 @@ class AccessBootstrap:
             denied("INDEPENDENCE_REQUIRED")
         self.eligible_second(c, tenant, data["second_identity_id"])
         owner = self.owner(c, tenant)
-        manifest = {
-            "version": PROFILE["version"],
-            "roles": {name: PROFILE["roles"][name] for name in ["TENANT_ADMIN", *sorted(data["role_names"])]},
-        }
+        manifest = manifest_for(data["role_names"])
         request_id = str(uuid4())
         c.execute(
             "INSERT INTO impact.tenant_access_bootstrap(request_id,tenant_id,revision_id,state,owner_identity_id,second_identity_id,tenant_revision,owner_revision,manifest,profile_hash,expires_at,review_expires_at,owner_auth_time,reason) VALUES(%s,%s,%s,'Requested',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -248,10 +260,9 @@ class AccessBootstrap:
             denied("INITIAL_ACCESS_EXPIRED")
         if not all(self.lifecycle.readiness(c, tenant).values()):
             denied("TENANT_NOT_READY")
-        if row["profile_hash"] != PROFILE_HASH or row["manifest"] != {
-            "version": PROFILE["version"],
-            "roles": {name: PROFILE["roles"].get(name) for name in row["manifest"]["roles"]},
-        }:
+        if row["profile_hash"] != PROFILE_HASH or row["manifest"] != manifest_for(
+            [name for name in row["manifest"]["roles"] if name != "TENANT_ADMIN"]
+        ):
             raise DomainError("CONFLICT_VERSION", 409, reason="ACCESS_PROFILE_CHANGED")
         people = [self.person(c, row[key]) for key in ["owner_identity_id", "second_identity_id"]]
         if people[0]["natural_identity_id"] == people[1]["natural_identity_id"]:

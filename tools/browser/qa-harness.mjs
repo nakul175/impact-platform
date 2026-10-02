@@ -84,7 +84,9 @@ export async function harness(group) {
   // One browser context per actor, so cookie sessions never mix. The 560 px height keeps the
   // fixed, scrolling sidebar honest: every entry must be reached by scrolling, as on CI runners
   // whose fonts are taller than local ones.
-  async function as(user, height = 560) {
+  async function as(user, height = 560, password = null) {
+    // A sign-in created during the run (v0.26a operators-browser) brings its own one-time password.
+    if (password) passwords[user] = password;
     if (pages[user]) {
       last = pages[user];
       return last;
@@ -116,7 +118,7 @@ export async function harness(group) {
     // alone passed for the administrator only by winning that race.
     await page
       .getByRole("heading", {
-        name: /^(Programme portfolio|People & access)$/,
+        name: /^(Programme portfolio|People & access|No active workspace)$/,
       })
       .and(page.locator("h1"))
       .waitFor();

@@ -46,6 +46,9 @@ from uuid import NAMESPACE_URL, uuid5
 import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "deploy"))
+from keycloak_admin import PROVISIONER_ID, ensure_provisioner  # noqa: E402
+
 KEYCLOAK_VERSION = "26.7.4"
 # SHA-256 of keycloak-26.7.4.tar.gz from the GitHub release, computed 29 Sep 2026.
 KEYCLOAK_SHA256 = "04823c336b797a7e18889a44262a7a64e6bf624cbbcc518c85e2622176ff2eee"
@@ -392,6 +395,27 @@ def admin_token(client, base, username, password):
     return response.json()["access_token"]
 
 
+class HttpxAdmin:
+    """The `call` interface of deploy/keycloak_admin.py Admin over this runner's httpx client
+    (no proxy from the environment), for ensure_provisioner."""
+
+    def __init__(self, client, base, token):
+        self.client, self.base, self.token = client, base, token
+
+    def call(self, method, path, data=None, expect=(200, 201, 204)):
+        response = self.client.request(
+            method,
+            self.base + "/admin/realms" + path,
+            json=data,
+            headers={"Authorization": "Bearer " + self.token},
+        )
+        if response.status_code >= 400 and response.status_code not in expect:
+            raise RuntimeError(
+                method + " " + path.split("?")[0] + " failed: HTTP " + str(response.status_code)
+            )
+        return response.status_code, (response.json() if response.content else None), response.headers
+
+
 def import_realm(client, base, token, data):
     response = client.post(
         base + "/admin/realms", json=data, headers={"Authorization": "Bearer " + token}, timeout=60
@@ -461,6 +485,10 @@ def start(local, origin, log=None):
             foreign = foreign_template()
             foreign_credentials = credentials_for(foreign)
             import_realm(client, base, token, realm(foreign, origin, foreign_credentials))
+            # v0.26a: the account-provisioning service account, set up exactly as on the server
+            # (deploy/keycloak_admin.py provisioner), so the API creates accounts in this realm.
+            provisioner = {"client_id": PROVISIONER_ID, "secret": secrets.token_urlsafe(36)}
+            ensure_provisioner(HttpxAdmin(client, base, token), REALM, provisioner["secret"])
             discovery = client.get(base + "/realms/" + REALM + "/.well-known/openid-configuration")
             discovery.raise_for_status()
             discovery = discovery.json()
@@ -497,6 +525,7 @@ def start(local, origin, log=None):
         "ready_seconds": ready,
         "imported_seconds": round(time.monotonic() - started, 2),
         "admin": {"username": DEFAULT_ADMIN, "password": admin_password},
+        "provisioner": provisioner,
         "users": credentials,
         "foreign_users": foreign_credentials,
         "otp": OTP_POLICY,

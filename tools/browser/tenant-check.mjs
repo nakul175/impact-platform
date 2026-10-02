@@ -90,9 +90,10 @@ try {
       .getByRole("button", { name: "Request tenant", exact: true })
       .click();
     await admin.getByLabel("Operating name", { exact: true }).fill(name);
-    await admin
-      .getByLabel("Nominated owner identity UUID", { exact: true })
-      .fill(fixture.actors.author.identity_id);
+    // v0.26a: operators choose the owner by name from the registered people.
+    const owner = admin.getByLabel("Organisation owner", { exact: true });
+    await owner.waitFor();
+    await owner.selectOption(fixture.actors.author.identity_id);
     await admin
       .getByLabel("Qualified deployment", { exact: true })
       .selectOption({ index: 1 });

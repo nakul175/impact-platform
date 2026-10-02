@@ -16,6 +16,9 @@ from .identity_profile import email_hash, masked_email
 from .store import context, authorize, scopes, load, write, audit, hash_data
 from .workspace_contracts import COMMANDS as WORKSPACE_COMMANDS, KINDS as WORKSPACE_KINDS
 from .workspace_administration import WorkspaceAdministration
+from .reference_contracts import COMMANDS as REFERENCE_COMMANDS
+from .reference_data import ReferenceData
+from .purpose_grants import PURPOSE_CAPABILITIES
 
 
 def now():
@@ -34,6 +37,7 @@ class Administration:
     def __init__(self, s, db, service):
         self.s, self.db, self.service = s, db, service
         self.workspace = WorkspaceAdministration(self)
+        self.reference = ReferenceData(self)
 
     def role(self, c, ctx, object_id, revision_id=None):
         row = load(c, ctx, object_id, "RoleTemplate")
@@ -268,7 +272,14 @@ class Administration:
             previous = load(c, ctx, obj, lock=True) if obj else None
             if expected and (not previous or str(previous["head_revision"]) != body["expected_revision"]):
                 raise DomainError("CONFLICT_VERSION", 409)
-            if (route, action) in WORKSPACE_COMMANDS:
+            if (route, action) in REFERENCE_COMMANDS:
+                created = []
+                result = self.reference.command(c, ctx, route, previous, action, body["data"], created)
+                # Every further record of the command (periods, the default set) gets its own audit
+                # and outbox event in this transaction; record() audits the primary receipt.
+                for item in created:
+                    audit(c, ctx, operation, item, correlation)
+            elif (route, action) in WORKSPACE_COMMANDS:
                 result = self.workspace.command(c, ctx, route, previous, action, body["data"])
             elif route == "memberships":
                 result = self.lifecycle(c, ctx, previous, action, body["data"])
@@ -280,6 +291,8 @@ class Administration:
                 result = self.create_scope(c, ctx, body["data"])
             elif route == "access-requests":
                 result = self.access_request(c, ctx, previous, action, body["data"])
+            elif route == "purpose-grants":
+                result = self.purpose_grant(c, ctx, previous, action, body["data"])
             else:
                 unavailable()
             return self.record(c, ctx, operation, body, fingerprint, result, correlation)
@@ -697,6 +710,130 @@ class Administration:
             track_author=False,
         )
 
+    def purpose_grant(self, c, ctx, previous, action, data):
+        """A purpose-bound grant (v0.26a, gap A4): one purpose-required capability, one stated
+        purpose, TENANT scope, an expiry within 90 days and the member's own expiry. Requested by an
+        administrator holding grant.request; approved by an administrator holding grant.approve who
+        is a different natural person from the requester and from the member. Both administrators'
+        delegation ceilings must cover the capability until the expiry, at request and again at
+        approval. The tenant owner's access is never changed this way (LAST_OWNER_PROTECTED)."""
+        if not previous:
+            member = load(c, ctx, data["membership_id"], "Membership")
+            self.protect_owner(c, ctx, member)
+            if member["lifecycle_state"] != "Active":
+                raise DomainError("STATE_TRANSITION_DENIED", 409)
+            if str(member["head_revision"]) != data["expected_membership_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
+            expiry = self.purpose_terms(c, ctx, member, data)
+            self.delegation(c, ctx, [data["capability"]], [data["scope_id"]], expiry)
+            principal = self.principal(c, ctx, member)
+            if c.execute(
+                "SELECT 1 FROM impact.grant_current g JOIN impact.object_registry r ON r.tenant_id=g.tenant_id AND r.object_id=g.object_id WHERE g.tenant_id=%s AND g.subject_id=%s AND g.capability=%s AND g.purpose=%s AND r.lifecycle_state='Active' AND (g.expires_at IS NULL OR g.expires_at>now())",
+                (ctx.tenant_id, principal["principal_id"], data["capability"], data["purpose"]),
+            ).fetchone():
+                raise DomainError("CONFLICT_OPERATION", 409, reason="PURPOSE_GRANT_EXISTS")
+            payload = {
+                "kind": "PURPOSE_GRANT_REQUEST",
+                **data,
+                "requested_by": ctx.principal_id,
+                "requester_identity_id": ctx.identity.identity_id,
+                "requester_natural_id": ctx.identity.natural_identity_id,
+                "requester_auth_time": ctx.identity.auth_time.isoformat(),
+            }
+            return write(c, ctx, "EntitlementApproval", payload, "Requested", track_author=False)
+        if (
+            previous["object_type"] != "EntitlementApproval"
+            or previous["payload"].get("kind") != "PURPOSE_GRANT_REQUEST"
+        ):
+            unavailable()
+        if previous["lifecycle_state"] != "Requested":
+            raise DomainError("STATE_TRANSITION_DENIED", 409)
+        request = previous["payload"]
+        member = load(c, ctx, request["membership_id"], "Membership", lock=True)
+        target_principal = self.principal(c, ctx, member)
+        target_natural = c.execute(
+            "SELECT impact.member_natural_identity(%s,%s) AS natural_id",
+            (ctx.tenant_id, target_principal["principal_id"]),
+        ).fetchone()["natural_id"]
+        # Independence by natural person: never the requester, never the person who receives it.
+        if not target_natural or ctx.identity.natural_identity_id in {
+            request["requester_natural_id"],
+            str(target_natural),
+        }:
+            deny("INDEPENDENCE_REQUIRED")
+        decision = {**request, "decision_reason": data["reason"], "decided_by": ctx.principal_id}
+        if action == "reject":
+            return write(c, ctx, "EntitlementApproval", decision, "Rejected", previous, track_author=False)
+        self.protect_owner(c, ctx, member)
+        if (
+            member["lifecycle_state"] != "Active"
+            or str(member["head_revision"]) != request["expected_membership_revision"]
+        ):
+            raise DomainError("CONFLICT_VERSION", 409)
+        expiry = self.purpose_terms(c, ctx, member, request)
+        requester = context(
+            c,
+            SimpleNamespace(
+                identity_id=request["requester_identity_id"],
+                auth_time=timestamp(request["requester_auth_time"]),
+            ),
+            ctx.tenant_id,
+            write=True,
+        )
+        if not scopes(c, requester, "grant.request"):
+            deny("REQUESTER_NO_LONGER_AUTHORIZED")
+        self.delegation(c, requester, [request["capability"]], [request["scope_id"]], expiry)
+        self.delegation(c, ctx, [request["capability"]], [request["scope_id"]], expiry)
+        grant = write(
+            c,
+            ctx,
+            "Grant",
+            {
+                "subject_id": str(target_principal["principal_id"]),
+                "capability": request["capability"],
+                "scope_id": request["scope_id"],
+                "starts_at": now().isoformat(),
+                "expires_at": expiry.isoformat(),
+                "purpose": request["purpose"],
+                "issuer_id": ctx.principal_id,
+            },
+            "Active",
+            track_author=False,
+        )
+        self.bump(c, ctx, target_principal["principal_id"])
+        return write(
+            c,
+            ctx,
+            "EntitlementApproval",
+            {**decision, "grant_id": grant["object_id"]},
+            "Applied",
+            previous,
+            track_author=False,
+        )
+
+    def purpose_terms(self, c, ctx, member, data):
+        """The checks shared by request and approval; returns the expiry instant."""
+        purposes = PURPOSE_CAPABILITIES.get(data["capability"])
+        if purposes is None:
+            deny("NON_DELEGABLE_CAPABILITY")
+        if data["purpose"] not in purposes:
+            deny("PURPOSE_NOT_PERMITTED")
+        scope = c.execute(
+            "SELECT scope_type FROM impact.scope_definition WHERE tenant_id=%s AND scope_id=%s",
+            (ctx.tenant_id, data["scope_id"]),
+        ).fetchone()
+        if not scope:
+            unavailable()
+        # Purpose-bound authorisation reads TENANT-scope grants only (store.authorize exact_purpose).
+        if scope["scope_type"] != "TENANT":
+            deny("PURPOSE_GRANT_REQUIRES_TENANT_SCOPE")
+        expiry = timestamp(data["expires_at"])
+        if not now() < expiry <= now() + timedelta(days=90):
+            raise DomainError("VALIDATION_FAILED", reason="GRANT_EXPIRY_BOUNDS")
+        if member["payload"].get("expires_at") and expiry > timestamp(member["payload"]["expires_at"]):
+            deny("MEMBERSHIP_EXPIRY_EXCEEDED")
+        return expiry
+
     def listing(self, identity, tenant, route, limit=50, cursor=None):
         if route not in ADMIN_READS or not 1 <= limit <= 100:
             raise DomainError("VALIDATION_FAILED")
@@ -725,6 +862,8 @@ class Administration:
                     query += " AND v.payload->>'kind'='MEMBER_INVITATION'"
                 if route == "access-requests":
                     query += " AND v.payload->>'kind'='ACCESS_REQUEST'"
+                if route == "purpose-grants":
+                    query += " AND v.payload->>'kind'='PURPOSE_GRANT_REQUEST'"
                 if route == "role-templates":
                     query += " AND v.payload->>'managed_by'='impact-access-v1' AND r.lifecycle_state='Active'"
                 if key:
@@ -811,6 +950,23 @@ class Administration:
                         "reason",
                     ]
                 },
+            }
+        if route == "purpose-grants":
+            return {
+                **common,
+                **{
+                    k: data[k]
+                    for k in [
+                        "membership_id",
+                        "requested_by",
+                        "capability",
+                        "purpose",
+                        "scope_id",
+                        "expires_at",
+                        "reason",
+                    ]
+                },
+                "grant_id": data.get("grant_id"),
             }
         principal = self.principal(c, ctx, row)
         profile = (

@@ -24,6 +24,8 @@ import {
   readInvitation,
 } from "./Administration";
 import { PrivacyPanel } from "./Privacy";
+import { NoWorkspace } from "./Landing";
+import { ReferenceDataPanel } from "./ReferenceData";
 type RecordRow = {
   object_id: string;
   revision_id: string;
@@ -249,6 +251,48 @@ function explain(e: unknown) {
       return "The tenant owner’s custody membership is no longer active. Only the current owner can propose or withdraw a renewal.";
     if (e.reason === "DELEGATION_NOT_PERMITTED")
       return "The requested role, scope or expiry exceeds your delegated authority.";
+    // v0.26a: operator onboarding, sign-in accounts, reference data and purpose-bound access.
+    const staging: Record<string, string> = {
+      SELF_NOMINATION:
+        "You cannot nominate yourself. Nominate a different person; they accept with their own sign-in.",
+      SELF_ACCOUNT: "You cannot create a sign-in for your own address.",
+      ALREADY_OPERATOR: "That person is already a platform operator.",
+      NOMINATION_PENDING:
+        "A nomination for this address is already waiting. Cancel it or wait for the answer.",
+      NOMINATION_CLOSED: "This nomination has already been decided.",
+      NOMINATION_EXPIRED:
+        "This nomination has expired. Ask an operator for a new one.",
+      NOMINATION_MISMATCH:
+        "The address does not match the open nomination. Check it and try again.",
+      NOMINATOR_NOT_OPERATOR:
+        "The operator who nominated you is no longer an operator. Ask for a new nomination.",
+      OPERATOR_EXPIRY_BOUNDS:
+        "Choose an end date within a year and no later than your own operator role.",
+      ACCOUNT_IN_USE:
+        "This person has already chosen their own password; only they can sign in. Use the console's reset-user script if they are locked out.",
+      INVITATION_REQUIRED:
+        "Invite this person to the workspace first; then create their sign-in.",
+      EMAIL_MISMATCH: "That is not the address of this sign-in account.",
+      PROVIDER_ADMIN_NOT_CONFIGURED:
+        "This deployment cannot create sign-in accounts from the platform.",
+      PROVIDER_ADMIN_UNAVAILABLE:
+        "The sign-in service did not answer. Try again in a minute.",
+      REFERENCE_DEFAULTS_APPLIED:
+        "The standard reference data is already set up in this workspace.",
+      GEOGRAPHY_CODE_EXISTS: "A geography with this code already exists.",
+      INVALID_TIME_ZONE:
+        "Enter a time zone name such as Asia/Kolkata or Africa/Kigali.",
+      NON_DELEGABLE_CAPABILITY:
+        "Only audit export and data-subject request capabilities are granted for a stated purpose.",
+      PURPOSE_NOT_PERMITTED: "That purpose is not allowed for this capability.",
+      PURPOSE_GRANT_EXISTS:
+        "This person already holds that capability for that purpose.",
+      PURPOSE_GRANT_REQUIRES_TENANT_SCOPE:
+        "Purpose-bound access is granted for the whole workspace scope only.",
+      LAST_OWNER_PROTECTED:
+        "The workspace owner's access is not changed through ordinary administration.",
+    };
+    if (e.reason && staging[e.reason]) return staging[e.reason];
     if (e.reason === "INITIAL_ACCESS_ALREADY_PROVISIONED")
       return "Initial access has already been provisioned. Use access administration for later changes.";
     if (e.reason === "INITIAL_ACCESS_PENDING")
@@ -418,21 +462,13 @@ function App() {
     );
   if (!session.tenants.length)
     return (
-      <main className="join-page">
-        <section className="panel">
-          <h1>No active workspace</h1>
-          <p>
-            Open your invitation link after signing in with the intended
-            verified account.
-          </p>
-          <button className="secondary" onClick={logout}>
-            Sign out
-          </button>
-          <button className="secondary" onClick={() => setTenantConsole(true)}>
-            Tenant lifecycle
-          </button>
-        </section>
-      </main>
+      <NoWorkspace
+        identity={session.identity_id}
+        request={api}
+        explain={explain}
+        logout={logout}
+        openConsole={() => setTenantConsole(true)}
+      />
     );
   return (
     <div className="app">
@@ -869,7 +905,19 @@ function Workspace({
                 explain={explain}
                 Dialog={Dialog}
               />
-              {access.capabilities.includes("audit.export") && (
+              {access.capabilities.includes("reference-data.manage") && (
+                <ReferenceDataPanel
+                  key={tenant + ":reference"}
+                  base={base}
+                  request={api}
+                  explain={explain}
+                />
+              )}
+              {(access.capabilities.includes("audit.export") ||
+                (access.purpose_capabilities || []).some(
+                  ([capability]: [string, string]) =>
+                    capability === "audit.export",
+                )) && (
                 <AuditExportPanel base={base} request={api} explain={explain} />
               )}
               <PrivacyPanel

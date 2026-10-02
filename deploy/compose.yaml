@@ -79,6 +79,7 @@ services:
       KC_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?}
       IMPACT_REALM: impact
       IMPACT_PUBLIC_ORIGIN: https://${APP_HOST}
+      IMPACT_PROVISIONER_SECRET: ${IMPACT_PROVISIONER_SECRET:-}
     volumes:
       - ./keycloak/realm-staging.json:/app/deploy/keycloak/realm-staging.json:ro
     networks: [backend]
@@ -162,6 +163,13 @@ services:
       # Operations summary written by deploy/ops-check.sh (backup age, disk, drill, alerts), read by
       # the operator-only GET /v1/platform/metrics.
       IMPACT_OPS_STATUS_FILE: /var/lib/impact/ops/ops-status.json
+      # Sign-in accounts from the control plane (v0.26a): the realm's admin API on the internal
+      # network through the impact-provisioner service account (user management only).
+      IMPACT_PROVIDER_ADMIN: keycloak
+      IMPACT_PROVIDER_ADMIN_URL: http://keycloak:8080
+      IMPACT_PROVIDER_ADMIN_REALM: impact
+      IMPACT_PROVIDER_ADMIN_CLIENT_ID: impact-provisioner
+      IMPACT_PROVIDER_ADMIN_CLIENT_SECRET: ${IMPACT_PROVISIONER_SECRET:?}
     volumes:
       - ${IMPACT_CA_DIR:?}:/etc/impact-ca:ro
       - objects:/var/lib/impact/objects

@@ -26,6 +26,7 @@ from .authority_renewal import AuthorityRenewal
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
+from .operators import Operators
 from .ops_metrics import OpsMetrics, RequestMetrics
 from .version import BUILD, DOMAIN_API, SCHEMA
 from .audit_export import AuditExports
@@ -101,6 +102,7 @@ def create_app():
     dashboards = Dashboards(service)
     audit_exports = AuditExports(service)
     delivery_operations = DeliveryOperations(lifecycle)
+    operators = Operators(lifecycle)
     request_metrics = RequestMetrics()
     ops_metrics = OpsMetrics(lifecycle, request_metrics)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
@@ -302,6 +304,35 @@ def create_app():
         body = await strict_body(request)
         return await run_in_threadpool(
             authority_renewal.command, auth.resolve(request), action, body, None, uuid(request_id)
+        )
+
+    # Operator onboarding and sign-in accounts (v0.26a): identity-authorised control-plane commands.
+    @app.get("/v1/platform/operators")
+    def operator_directory(request: Request):
+        return operators.directory(auth.resolve(request))
+
+    @app.post("/v1/platform/operator-nominations")
+    async def nominate_operator(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(operators.nomination, auth.resolve(request), "nominate", body)
+
+    @app.post("/v1/platform/operator-nominations/{nomination_id}/actions/{action}")
+    async def operator_nomination_action(request: Request, nomination_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            operators.nomination, auth.resolve(request), action, body, uuid(nomination_id)
+        )
+
+    @app.post("/v1/platform/accounts")
+    async def create_account(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(operators.account, auth.resolve(request), "create", body)
+
+    @app.post("/v1/platform/accounts/{account_id}/actions/{action}")
+    async def account_action(request: Request, account_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            operators.account, auth.resolve(request), action, body, uuid(account_id)
         )
 
     @app.post("/v1/platform/tenants")

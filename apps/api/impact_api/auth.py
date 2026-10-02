@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from .domain import DomainError, unavailable
 from .keyring import KeyringError, ring, signing_keys
 from .identity_profile import normalize_email, email_hash, masked_email
+from .provider_accounts import mark_signed_in
 
 
 LOG = logging.getLogger("impact")
@@ -356,10 +357,14 @@ class Auth:
         computed = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, 600000).hex()
         if not user or not hmac.compare_digest(computed, user["password_hash"]):
             raise DomainError("AUTH_REQUIRED", 401)
-        return self.session(
-            self.identity({"sub": user["subject"], "iat": int(time.time()), "auth_time": time.time()}),
-            device_label=self.device_label(request),
-        )
+        claims = {"sub": user["subject"], "iat": int(time.time()), "auth_time": time.time()}
+        if user.get("email"):
+            # An account created through the control plane (v0.26a, development backend): the
+            # development stand-in for the provider's verified e-mail claim.
+            claims.update(email=user["email"], email_verified=True, name=user.get("name") or "Member")
+            if user.get("temporary"):
+                mark_signed_in(self.s.dev_users_file, username)
+        return self.session(self.identity(claims), device_label=self.device_label(request))
 
     def device_label(self, request):
         agent = request.headers.get("user-agent", "")

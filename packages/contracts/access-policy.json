@@ -3268,7 +3268,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE and records the quality checks and the preview hash; writes no observation.",
+      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE, records the quality checks, each value's plannable source key (<unit>/<indicator>/<period>) and whether the approved collection plan names it, and the preview hash; writes no observation.",
       "audit": true
     },
     {
@@ -3287,7 +3287,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose).",
+      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator under the staged source key and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose). Values an approved plan names count as planned at period close; others block it (UNPLANNED_VALUES).",
       "audit": true,
       "additional_capabilities": [
         "observation.submit",

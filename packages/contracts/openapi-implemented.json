@@ -30339,6 +30339,10 @@
                       "observations": {
                         "type": "integer",
                         "minimum": 0
+                      },
+                      "unplanned": {
+                        "type": "integer",
+                        "minimum": 0
                       }
                     },
                     "required": [
@@ -30348,6 +30352,23 @@
                       "duplicate",
                       "warnings",
                       "observations"
+                    ]
+                  },
+                  "plan_check": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "evaluated_indicators": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    },
+                    "required": [
+                      "evaluated_indicators"
                     ]
                   },
                   "rows": {
@@ -30411,6 +30432,13 @@
                               "indicator_id": {
                                 "type": "string",
                                 "format": "uuid"
+                              },
+                              "source_key": {
+                                "type": "string",
+                                "maxLength": 200
+                              },
+                              "planned": {
+                                "type": "boolean"
                               },
                               "value_state": {
                                 "enum": [

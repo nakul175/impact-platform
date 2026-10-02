@@ -9,7 +9,14 @@ warnings (a robust outlier against prior approved values) are recorded beside it
 outcome is pinned by a hash. Commit recomputes the outcome under the tenant lock, refuses it when it
 no longer matches the preview, and then writes one observation per accepted row and bound indicator
 in the reserved IMPORT namespace and submits each into the independent observation review — all in
-one transaction, so a batch is applied completely or not at all."""
+one transaction, so a batch is applied completely or not at all.
+
+Source identity (v0.27, acceptance gap A5): an imported value's source key is `<unit key>/<indicator
+id>/<period id>` — unit, indicator and period, nothing else — so an approved collection plan can name
+it as an obligation before the file exists, period close counts the approved value as planned, and a
+unit imported again in a later period never collides with its earlier key. Which batch produced the
+value is recorded on the observation (`source_version`, the batch revision) and in
+`import_unit_register`, never in the key."""
 
 import base64
 import binascii
@@ -52,6 +59,11 @@ XML_PACKAGE = "{http://schemas.openxmlformats.org/package/2006/relationships}"
 
 def fail(reason, status=422, code="VALIDATION_FAILED", fields=None):
     return DomainError(code, status, reason=reason, fields=fields)
+
+
+def source_key(unit, indicator_id, period_id):
+    """The plannable source identity of one imported value (see the module docstring)."""
+    return unit + "/" + str(indicator_id) + "/" + str(period_id)
 
 
 # Parsing ----------------------------------------------------------------------------------------
@@ -395,6 +407,18 @@ class Imports:
         ).fetchall()
         return [Decimal(r["value"]) for r in rows]
 
+    def planned_keys(self, c, ctx, indicator_id, period_id):
+        """The (namespace, source key) pairs the approved collection plan of this indicator and period
+        names, or None when there is no approved plan or the caller cannot read it — then no row is
+        marked planned or unplanned (the preview never guesses)."""
+        try:
+            plan = self.service.measurement.plan(c, ctx, indicator_id, period_id)
+        except DomainError:
+            return None
+        if not plan:
+            return None
+        return {(o["source_namespace"], o["source_key"]) for o in plan["payload"]["obligations"]}
+
     def duplicate(self, c, ctx, indicator_id, period, unit):
         """Why this unit's value for this indicator and period already exists, or None: an earlier
         import registered it, or a form response for the same unit and indicator with an event in the
@@ -464,6 +488,7 @@ class Imports:
         if len(data_rows) * len(bound) > MAX_OBSERVATIONS:
             raise fail("IMPORT_OBSERVATION_LIMIT", code="LIMIT_EXCEEDED")
         histories = {indicator: self.history(c, ctx, indicator) for indicator in bound}
+        plans = {indicator: self.planned_keys(c, ctx, indicator, payload["period_id"]) for indicator in bound}
         dims = {d["dimension_code"]: d["column"] for d in mapping.get("dimension_columns") or []}
         seen, staged = set(), []
         for number_, cells in data_rows:
@@ -523,7 +548,11 @@ class Imports:
                 except DomainError:
                     reasons.append("DIMENSION_INVALID")
                     continue
-                observations.append({"indicator_id": indicator, **measured})
+                key = source_key(unit, indicator, payload["period_id"])
+                planned = (
+                    {} if plans[indicator] is None else {"planned": (NAMESPACE, key) in plans[indicator]}
+                )
+                observations.append({"indicator_id": indicator, "source_key": key, **measured, **planned})
             outcome = "QUARANTINED" if reasons else "ACCEPTED"
             if not reasons:
                 found = (
@@ -582,6 +611,13 @@ class Imports:
                 "duplicate": sum(r["outcome"] == "DUPLICATE" for r in staged),
                 "warnings": sum(bool(r["warnings"]) for r in accepted),
                 "observations": sum(len(r["observations"]) for r in accepted),
+                # Accepted values an approved plan does not name: they commit, but they block the
+                # period's close (UNPLANNED_VALUES) until a reviewed plan names them. Values whose
+                # plan could not be evaluated are not counted either way.
+                "unplanned": sum(o.get("planned") is False for r in accepted for o in r["observations"]),
+            },
+            "plan_check": {
+                "evaluated_indicators": sorted(i for i, keys in plans.items() if keys is not None)
             },
             "rows": staged,
         }
@@ -651,11 +687,8 @@ class Imports:
             for o in staged_row["observations"]:
                 observation = {
                     "source_namespace": NAMESPACE,
-                    "source_key": str(row["object_id"])
-                    + "/"
-                    + staged_row["row_key"]
-                    + "/"
-                    + o["indicator_id"],
+                    # Unit, indicator and period: the key a collection plan names (never the batch).
+                    "source_key": source_key(staged_row["row_key"], o["indicator_id"], payload["period_id"]),
                     "indicator_id": o["indicator_id"],
                     "event_at": staged_row["event_at"],
                     "captured_at": payload["received_at"],

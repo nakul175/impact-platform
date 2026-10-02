@@ -280,7 +280,10 @@ jobs:
             pg_restore --exit-on-error -d impact_restore_check "$s/impact.dump";
             n=$(psql -Atd impact_restore_check -c "select count(*) from impact.schema_migration");
             o=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator");
-            echo "restored $s: $n migrations, $o platform operator(s)"; test "$n" -ge 20; test "$o" -eq 1;
+            a=$(psql -Atd impact_restore_check -c "select count(*) from impact.platform_operator_nomination where state='"'"'Accepted'"'"'");
+            echo "restored $s: $n migrations, $o platform operator(s), $a accepted nomination(s)"; test "$n" -ge 20;
+            # The bootstrap operator plus operator2, onboarded through the platform in an earlier step.
+            test "$o" -eq 2; test "$a" -eq 1;
             dropdb impact_restore_check'
       - name: Restore drill on throwaway containers (measured restore time)
         run: |

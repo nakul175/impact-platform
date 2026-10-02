@@ -999,7 +999,9 @@ async function openApp() {
 const landing = () =>
   page
     .getByRole("heading", {
-      name: /^(Programme portfolio|People & access|No active workspace|Join the workspace|Tenant lifecycle)$/,
+      // Since build 0.27.0 a member without any capability (the owner before initial access is
+      // applied) lands on the access gate's waiting page instead of a refused portfolio.
+      name: /^(Programme portfolio|People & access|No active workspace|Join the workspace|Tenant lifecycle|Your administrator access is being set up|Your access is being set up)$/,
     })
     .and(page.locator("h1"));
 // The development sign-in counts every attempt, successful or not, against the account and the
@@ -1143,22 +1145,29 @@ async function decide(reason) {
   await dialog().waitFor({ state: "hidden" });
 }
 // The console's change forms: a reason, then the confirm button; "Change saved." follows.
-async function confirmIn(region, buttonName, reason) {
-  const form = page.getByRole("region", { name: region, exact: true });
+// Since build 0.27.0 the tenant change form is a dialog beside its card; the recovery-contact
+// and initial-access forms are still regions at the foot of their pages.
+const changeRegion = (name) =>
+  page.getByRole("region", { name, exact: true });
+async function confirmIn(form, buttonName, reason) {
   await humanType(form.getByLabel("Reason", { exact: true }), reason);
   await humanClick(form.getByRole("button", { name: buttonName, exact: true }));
   await page.getByRole("status").filter({ hasText: "Change saved." }).waitFor();
 }
 const confirmTenant = (reason) =>
-  confirmIn("Tenant change", "Confirm tenant change", reason);
+  confirmIn(dialog(), "Confirm tenant change", reason);
 const confirmContact = (reason) =>
   confirmIn(
-    "Recovery contact change",
+    changeRegion("Recovery contact change"),
     "Confirm recovery contact change",
     reason,
   );
 const confirmAccess = (reason) =>
-  confirmIn("Initial access change", "Confirm initial access change", reason);
+  confirmIn(
+    changeRegion("Initial access change"),
+    "Confirm initial access change",
+    reason,
+  );
 const inDays = (days) =>
   new Date(Date.now() + days * 86400000).toISOString().slice(0, 16);
 const orgCard = () => page.getByRole("article", { name: orgName, exact: true });
@@ -1361,7 +1370,7 @@ async function part1() {
   );
   await console_();
   await humanClick(button("Request tenant"));
-  const request = page.getByRole("region", { name: "Tenant change" });
+  const request = dialog();
   await humanType(
     request.getByLabel("Operating name", { exact: true }),
     orgName,

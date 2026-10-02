@@ -59,6 +59,19 @@ def sweep_jobs(live):
         ).fetchall()
 
 
+def swept(live, run):
+    """Run one retention pass (`run()`) and return the sweep job it created, identified by identity.
+    Ordering by `next_attempt_at` is not enough across tests: a sweep that backed off on a skewed
+    worker clock (test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class) keeps
+    a `next_attempt_at` hours ahead, so `sweep_jobs(live)[-1]` named it rather than the new sweep
+    when this file ran before test_security_privacy.py (found at the build 0.27.0 integration)."""
+    known = {j["job_id"] for j in sweep_jobs(live)}
+    run()
+    fresh = [j for j in sweep_jobs(live) if j["job_id"] not in known]
+    assert len(fresh) == 1, fresh
+    return fresh[0]
+
+
 def expected_items(live):
     """The keys each class would affect now, computed independently with the superuser connection."""
     t = tenant(live)

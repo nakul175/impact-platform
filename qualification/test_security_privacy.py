@@ -21,7 +21,7 @@ from test_audit_export import body as export_body, export
 from test_live_application import cmd, draft
 from test_privacy_requests import create_case, grant, member, member_evidence, plan, revoke
 from test_native_roles import connect, denied, query  # noqa: F401
-from test_retention import make_due, proofs, receipt_of, sweep_jobs
+from test_retention import make_due, proofs, receipt_of, swept
 from test_worker import empty_summary, make_worker
 
 CSV = b"household,visited\nH1,yes\n"
@@ -397,9 +397,8 @@ def test_retention_policies_need_independent_approval_and_the_sweep_honours_them
     make_due(live)
     worker = make_worker(live)
     summary = empty_summary()
-    worker.run_retention(tenant(live), summary)
+    job = swept(live, lambda: worker.run_retention(tenant(live), summary))
     assert summary["retention_swept"] == 1
-    job = sweep_jobs(live)[-1]
     proof = proofs(live, job["job_id"])
     assert proof["OPERATION_RECEIPT"]["retention_days"] == 45
     assert proof["SECURITY_EVENT"]["retention_days"] == AUDIT_DEFAULT_DAYS
@@ -456,8 +455,8 @@ def test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept(live
     # Default window (seven years): the 3000-day row goes, the 400-day row stays.
     make_due(live)
     worker = make_worker(live)
-    worker.run_retention(t, empty_summary())
-    proof = proofs(live, sweep_jobs(live)[-1]["job_id"])["SECURITY_EVENT"]
+    job = swept(live, lambda: worker.run_retention(t, empty_summary()))
+    proof = proofs(live, job["job_id"])["SECURITY_EVENT"]
     assert proof["retention_days"] == AUDIT_DEFAULT_DAYS and proof["action"] == "DELETE"
     assert proof["affected_count"] >= 1
     remaining = {str(r["denial_id"]) for r in denials(live, "enumerator")}
@@ -478,8 +477,8 @@ def test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept(live
     created = propose(live, data_class="SECURITY_EVENT", days=AUDIT_FLOOR_DAYS)
     approve_policy(live, created["object_id"], actor="admin")
     make_due(live)
-    worker.run_retention(t, empty_summary())
-    proof = proofs(live, sweep_jobs(live)[-1]["job_id"])["SECURITY_EVENT"]
+    job = swept(live, lambda: worker.run_retention(t, empty_summary()))
+    proof = proofs(live, job["job_id"])["SECURITY_EVENT"]
     assert proof["retention_days"] == AUDIT_FLOOR_DAYS
     assert str(recent) not in {str(r["denial_id"]) for r in denials(live, "enumerator")}
     with live.db() as c:

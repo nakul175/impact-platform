@@ -17,6 +17,9 @@
 //   TRAINING_VIDEO_SCENES  all (default) or a comma list of intro,part1,part2,outro
 //   TRAINING_VIDEO_UNIQUE  1 adds a suffix to every name the film creates, for repeated runs
 //                          against one instance (the final take runs on a fresh instance)
+//   TRAINING_VIDEO_AUDIO_DIR  clips.json and WAV clips from `narrate.py synth`; with it the
+//                          captions are held for their spoken length and timeline.json is written
+//                          for `narrate.py mix` (without it the film is paced for reading only)
 //   TRAINING_VIDEO_CRF     x264 quality (default 23; higher is smaller)
 //   TRAINING_VIDEO_RESET_LOGIN_LIMIT  0 leaves the development sign-in counters alone (see
 //                          resetSignInLimit below; the film signs people in about twenty times)
@@ -49,6 +52,33 @@ const tag = suffix.trim();
 const scenes = new Set((process.env.TRAINING_VIDEO_SCENES || "all").split(","));
 const want = (name) => scenes.has("all") || scenes.has(name);
 const ffmpeg = process.env.FFMPEG || "ffmpeg";
+// Voice-over (tools/browser/narrate.py): narration.json pairs every caption and card with its
+// spoken text; TRAINING_VIDEO_AUDIO_DIR holds the synthesized clips and their durations
+// (clips.json). With clips present a caption stays on screen until its clip would have been
+// spoken (clip length + 0.8 s) before the next action, and every caption, card and chapter is
+// logged with its time in timeline.json so that narrate.py mix can place the clips.
+const narration = JSON.parse(
+  await fs.readFile(path.join(root, "tools/browser/narration.json"), "utf8"),
+);
+const audioDir = process.env.TRAINING_VIDEO_AUDIO_DIR || "";
+const clipSeconds = audioDir
+  ? JSON.parse(await fs.readFile(path.join(audioDir, "clips.json"), "utf8"))
+      .clips
+  : {};
+const narrated = new Map(
+  narration.map((line) => [
+    line.kind + ":" + line.screen,
+    { id: line.id, seconds: clipSeconds[line.id]?.seconds || 0 },
+  ]),
+);
+const timeline = [];
+function narrate(kind, screen, at) {
+  const line = narrated.get(kind + ":" + screen);
+  timeline.push({ kind, id: line?.id || null, screen, t: at });
+  if (!line && kind !== "chapter")
+    console.warn("no narration line for " + kind + ": " + screen);
+  return line?.seconds || 0;
+}
 
 const fixture = JSON.parse(
   await fs.readFile(
@@ -713,6 +743,11 @@ await context.addInitScript(() => {
   if (document.readyState !== "loading") ensure();
   else document.addEventListener("DOMContentLoaded", ensure);
 });
+// Part 2's configuration is created before the recording starts, so the film has no dead time.
+if (want("part2")) {
+  console.log("preparing part 2 through the API");
+  await prepare();
+}
 const page = await context.newPage();
 page.setDefaultTimeout(30000);
 const started = Date.now();
@@ -733,7 +768,8 @@ async function caption(text, settle = 1100) {
   captionText = text;
   await page.evaluate((t) => window.__caption && window.__caption(t), text);
   captionAt = Date.now();
-  await hold(settle);
+  const spoken = narrate("caption", text, captionAt - started);
+  await hold(Math.max(settle, spoken ? spoken * 1000 + 800 : 0));
 }
 // Re-apply the current caption after a navigation replaced the document.
 async function restoreCaption() {
@@ -743,8 +779,10 @@ async function restoreCaption() {
   );
 }
 function chapter(title) {
-  chapters.push({ title, at: Date.now() - started });
-  console.log("chapter " + format(Date.now() - started) + " " + title);
+  const at = Date.now() - started;
+  chapters.push({ title, at });
+  timeline.push({ kind: "chapter", id: null, screen: title, t: at });
+  console.log("chapter " + format(at) + " " + title);
 }
 function format(ms) {
   const s = Math.round(ms / 1000);
@@ -950,7 +988,8 @@ async function card(
   );
   captionText = "";
   captionAt = 0;
-  await hold(dwell);
+  const spoken = narrate("card", title, Date.now() - started);
+  await hold(Math.max(dwell, spoken ? spoken * 1000 + 1000 : 0));
 }
 async function openApp() {
   await page.goto(base);
@@ -1916,10 +1955,9 @@ async function outro() {
 // ---------------------------------------------------------------------------------------------
 let failed = null;
 try {
-  if (want("part2")) {
-    console.log("preparing part 2 through the API");
-    await prepare();
-  }
+  // A short blank lead, so that the first title card's appearance is a visible transition that
+  // narrate.py can measure against the logged time.
+  await sleep(1000);
   if (want("intro")) await intro();
   if (want("part1")) await part1();
   if (want("part2")) await part2();
@@ -1945,6 +1983,20 @@ try {
   await fs.writeFile(
     path.join(outDir, "chapters.json"),
     JSON.stringify(index, null, 2) + "\n",
+  );
+  await fs.writeFile(
+    path.join(outDir, "timeline.json"),
+    JSON.stringify(
+      {
+        started: new Date(started).toISOString(),
+        trimMs: Math.round(trim * 1000),
+        pace,
+        audioDir,
+        entries: timeline,
+      },
+      null,
+      2,
+    ) + "\n",
   );
   const mp4 = path.join(outDir, "impact-platform-walkthrough.mp4");
   const conversion = spawnSync(

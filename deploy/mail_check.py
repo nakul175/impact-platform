@@ -67,7 +67,7 @@ def settings_from_environment(env):
         raise ValueError("INVALID_SMTP_PORT")
     if s["starttls"] not in {"auto", "required"}:
         raise ValueError("INVALID_SMTP_STARTTLS")
-    if bool(s["username"]) != bool(s["password"]):
+    if s["username"] and not s["password"]:
         raise ValueError("SMTP_CREDENTIALS_INCOMPLETE")
     if s["ca_file"] and not os.access(s["ca_file"], os.R_OK):
         raise ValueError("SMTP_CA_FILE_UNREADABLE")

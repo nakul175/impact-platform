@@ -243,7 +243,9 @@ class WorkerSettings:
             raise ConfigurationError("INVALID_SMTP_STARTTLS")
         if self.smtp_ca_file and not os.access(self.smtp_ca_file, os.R_OK):
             raise ConfigurationError("SMTP_CA_FILE_UNREADABLE")
-        if self.email_adapter == "smtp" and bool(self.smtp_username) != bool(self.smtp_password):
+        if self.email_adapter == "smtp" and self.smtp_username and not self.smtp_password:
+            # A username with no password would authenticate with an empty secret on every attempt.
+            # (A password with no username is inert: AUTH is only attempted with a username.)
             raise ConfigurationError("SMTP_CREDENTIALS_INCOMPLETE")
         if not (
             0 <= self.email_rate_limit <= 1_000_000

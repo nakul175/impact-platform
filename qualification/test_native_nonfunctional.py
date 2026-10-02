@@ -323,6 +323,22 @@ def test_native_database_restart_api_and_worker_recover_without_restart_and_rece
         t = time.monotonic()
         wait_for(lambda: probe.get("/health/ready").status_code == 200, timeout=90, interval=0.5)
         seconds_to_ready = round(time.monotonic() - t, 1)
+        # Behind a pooler, readiness answering 200 does not mean every pooled server connection is
+        # alive: idle ones that died with the server are handed out unchecked until the pooler's
+        # server_check_delay, and their first use fails once with a retryable 503. Directly
+        # connected, the first read succeeds at once.
+        t = time.monotonic()
+        attempts = {"n": 0}
+
+        def read_back():
+            attempts["n"] += 1
+            return probe.get(live.path("observations", kept["object_id"]), headers=headers).status_code == 200
+
+        wait_for(read_back, timeout=30, interval=0.5)
+        read_attempts_after_ready = attempts["n"]
+        seconds_to_read_after_ready = round(time.monotonic() - t, 1)
+        if not POOLER:
+            assert read_attempts_after_ready == 1
         probe.close()
     finally:
         if not database_up(live):
@@ -374,6 +390,8 @@ def test_native_database_restart_api_and_worker_recover_without_restart_and_rece
                 "seconds_to_first_503_readiness": seconds_to_first_503,
                 "seconds_to_read_503": seconds_to_read_503,
                 "seconds_to_ready_after_start": seconds_to_ready,
+                "read_attempts_after_ready": read_attempts_after_ready,
+                "seconds_to_read_after_ready": seconds_to_read_after_ready,
                 "worker_survived": worker_alive,
                 "worker_refused_classes": refused_classes,
             },

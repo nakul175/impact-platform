@@ -83,6 +83,7 @@
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | `indicator-definitions.read` |
 | PATCH | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | `indicator-definitions.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/actions/submit` | `indicator.submit` |
+| GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/portfolio` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances` | `indicator-instances.read` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances` | `indicator-instances.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}` | `indicator-instances.read` |
@@ -90,6 +91,7 @@
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/activate` | `indicator.activate` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/calculate` | `indicator.calculate` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | `dashboards.read` |
+| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/invitation-acceptances` | `invitation.accept` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | `lineage-manifests.read` |

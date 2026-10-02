@@ -1006,13 +1006,22 @@ class Worker:
         template = revision(binding["template_revision"], "ReportTemplate")
         snapshot = revision(binding["snapshot_revision"], "Snapshot")
         official = set(snapshot.get("result_versions", []))
-        values = {}
+        pinned_targets = set(snapshot.get("target_versions", []))
+        values, targets = {}, {}
         for section in report["sections"]:
             for numeric in section["bindings"]:
                 result = revision(numeric["result_revision"], "CalculatedResult")
                 if result.get("mode") != "OFFICIAL" or numeric["result_revision"] not in official:
                     raise RenderError("RESULT_NOT_OFFICIAL")
                 values[(section["section_code"], numeric["binding_code"])] = result
+            # Chart targets (v0.27): only Target revisions the snapshot locked, read as revisions.
+            for chart in section.get("charts") or []:
+                for series in chart["series"]:
+                    target_revision = series.get("target_revision")
+                    if target_revision and target_revision not in targets:
+                        if target_revision not in pinned_targets:
+                            raise RenderError("RESULT_NOT_OFFICIAL")
+                        targets[target_revision] = revision(target_revision, "Target")
         return build_model(
             row["report_id"],
             row["report_revision"],
@@ -1022,6 +1031,7 @@ class Worker:
             snapshot,
             bytes(binding["reconciliation_digest"]).hex(),
             values,
+            targets,
         )
 
     def process_export(self, tenant, row, summary):

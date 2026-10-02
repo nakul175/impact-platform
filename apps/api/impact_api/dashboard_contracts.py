@@ -21,7 +21,19 @@ SPECIAL_READS = {
         "dashboards.read",
         "IndicatorDashboardSeries",
     ),
+    # v0.27: drill-down to the source observations behind a card; portfolio across programmes.
+    "indicator-instances/{object_id}/dashboard-sources": (
+        "indicator_dashboard_sources",
+        "dashboards.read",
+        "IndicatorDashboardSources",
+    ),
+    "indicator-definitions/{object_id}/portfolio": (
+        "indicator_definition_portfolio",
+        "dashboards.read",
+        "IndicatorPortfolio",
+    ),
 }
+PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
 VERSION = "1.14.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
@@ -224,6 +236,117 @@ def augment(spec, policy):
         ["indicator_id", "programme_id", "points", "next_cursor"],
     )
 
+    # Drill-down (v0.27): the source observations behind the value a card shows, as the reader may
+    # see them; `source_check` PARTIAL means rows are withheld, never how many.
+    source = closed(
+        {
+            "observation_id": UUID,
+            "revision_id": UUID,
+            "source_namespace": {"type": ["string", "null"]},
+            "source_key": {"type": ["string", "null"]},
+            "event_at": NULLABLE_TEXT,
+            "value_state": {"enum": VALUE_STATES + [None]},
+            "value": NULLABLE_DECIMAL,
+            "displayed_value": NULLABLE_TEXT,
+            "numerator": NULLABLE_DECIMAL,
+            "denominator": NULLABLE_DECIMAL,
+            "approval_state": {"type": ["string", "null"]},
+            "lifecycle_state": {"type": ["string", "null"]},
+            "contribution": {"enum": ["INCLUDED", "EXCLUDED", "NOT_IN_RESULT", None]},
+            "contribution_reason": NULLABLE_TEXT,
+            "changed_since_calculation": {"type": "boolean"},
+            "updated_at": NULLABLE_TEXT,
+        },
+        ["observation_id", "revision_id", "value_state", "value", "displayed_value", "contribution"],
+    )
+    schemas["IndicatorDashboardSources"] = closed(
+        {
+            **deepcopy(head),
+            "programme_id": UUID,
+            "period": closed(deepcopy(period), ["period_id", "period_state"]),
+            "value": closed(
+                {
+                    "mode": {"enum": ["OFFICIAL", "PROVISIONAL", None]},
+                    "result_id": NULLABLE_UUID,
+                    "result_revision": NULLABLE_UUID,
+                },
+                ["mode", "result_id", "result_revision"],
+            ),
+            "source_check": {"enum": ["COMPLETE", "PARTIAL"]},
+            "items": {"type": "array", "maxItems": 100, "items": source},
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+        },
+        ["indicator_id", "programme_id", "period", "value", "source_check", "items", "next_cursor"],
+    )
+    # Portfolio (v0.27): one definition across programmes; a pooled total only where the method
+    # pools, from stored components, and only over a complete, fully official set.
+    pooled_block = closed(
+        {
+            "method": {"type": ["string", "null"]},
+            "value_state": {"enum": VALUE_STATES},
+            "value": NULLABLE_DECIMAL,
+            "displayed_value": NULLABLE_TEXT,
+            "numerator": NULLABLE_DECIMAL,
+            "denominator": NULLABLE_DECIMAL,
+            "instance_count": {"type": "integer", "minimum": 0},
+            "contributing_count": {"type": "integer", "minimum": 0},
+            "reason_code": NULLABLE_TEXT,
+        },
+        [
+            "method",
+            "value_state",
+            "value",
+            "displayed_value",
+            "instance_count",
+            "contributing_count",
+            "reason_code",
+        ],
+    )
+    programme_row = closed(
+        {
+            **deepcopy(head),
+            "programme_id": UUID,
+            "programme_title": {"type": ["string", "null"]},
+            "period_state": {"enum": ["Open", "Locked", "RestatementOpen"]},
+            "snapshot_version": {"type": ["integer", "null"], "minimum": 1},
+            "locked_at": NULLABLE_TEXT,
+            "official": value,
+            "coverage": {"$ref": "#/components/schemas/DashboardCoverage"},
+        },
+        ["indicator_id", "programme_id", "period_state", "official", "coverage"],
+    )
+    schemas["IndicatorPortfolio"] = closed(
+        {
+            "definition_id": UUID,
+            "definition_name": {"type": ["string", "null"]},
+            "unit": {"type": ["string", "null"]},
+            "measurement_type": {"type": ["string", "null"]},
+            "combination_rule": {"type": ["string", "null"]},
+            "display_decimals": {"type": "integer", "minimum": 0, "maximum": 6},
+            "period": closed(
+                {k: v for k, v in deepcopy(period).items() if k != "period_state"}, ["period_id"]
+            ),
+            "scope": {"enum": ["COMPLETE", "PARTIAL"]},
+            "versions": {
+                "type": "array",
+                "maxItems": 500,
+                "items": closed(
+                    {
+                        "definition_revision": NULLABLE_UUID,
+                        "version_number": {"type": ["integer", "null"]},
+                        "combination_rule": {"type": ["string", "null"]},
+                        "instance_count": {"type": "integer", "minimum": 0},
+                        "pooled": pooled_block,
+                    },
+                    ["definition_revision", "instance_count", "pooled"],
+                ),
+            },
+            "programmes": {"type": "array", "maxItems": 100, "items": programme_row},
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+        },
+        ["definition_id", "period", "scope", "versions", "programmes", "next_cursor"],
+    )
+
     page = [
         {
             "name": "limit",
@@ -247,7 +370,7 @@ def augment(spec, policy):
         )
         entry["parameters"] = deepcopy(page) + (
             [{"name": "period_id", "in": "query", "required": True, "schema": UUID}]
-            if op == "programme_dashboard"
+            if op in PERIOD_REQUIRED
             else []
         )
         paths[prefix + route] = {"parameters": template["parameters"], "get": entry}

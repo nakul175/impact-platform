@@ -25,6 +25,7 @@ import {
 } from "./Administration";
 import { PrivacyPanel } from "./Privacy";
 import { NoWorkspace } from "./Landing";
+import { AccessGate } from "./AccessGate";
 import { ReferenceDataPanel } from "./ReferenceData";
 import { StatusBanner } from "./StatusBanner";
 type RecordRow = {
@@ -50,6 +51,9 @@ type Page = {
 type Access = {
   capabilities: string[];
   purpose_capabilities?: [string, string][];
+  // True for the workspace owner's custody membership (v0.27). Custody never implies data
+  // access; the flag only lets the waiting page say what happens next for an owner.
+  custody?: boolean;
 };
 let csrf = "";
 class ApiError extends Error {
@@ -99,6 +103,71 @@ const nav = [
   ["workspace-settings", "Workspace settings", "⚙"],
   ["account", "My account", "◉"],
 ] as const;
+// An area is listed only when the person holds at least one capability it can use (prefix
+// match on the capability name; an empty list means always). Hidden entries are never
+// security: the server authorises every request. "My account" needs no grant.
+const areaCapabilities: Record<string, string[]> = {
+  programmes: ["programmes.", "programme."],
+  observations: ["observations.", "observation."],
+  configuration: [
+    "indicator-definitions.",
+    "indicator-instances.",
+    "collection-plans.",
+    "collection-plan.",
+    "indicator.",
+  ],
+  planning: ["frameworks.", "framework.", "targets.", "target."],
+  dashboards: ["dashboards."],
+  forms: ["forms.", "form.", "submissions.", "submission."],
+  imports: ["imports.", "import."],
+  changes: ["measurement-changes."],
+  "period-governance": [
+    "period-closes.",
+    "restatement-requests.",
+    "period.",
+    "snapshots.",
+  ],
+  work: ["work-items.", "notifications."],
+  workflows: ["workflows.", "workflow."],
+  "calculated-results": ["calculated-results.", "indicator.calculate"],
+  reports: ["reports.", "report.", "disclosures.", "disclosure."],
+  memberships: [
+    "memberships.",
+    "member.",
+    "membership.",
+    "grants.",
+    "grant.",
+    "access-requests.",
+    "access-scopes.",
+    "role-templates.",
+    "reference-data.",
+    "audit.",
+    "privacy",
+    // v0.27 security and privacy panels (Privacy.tsx): denials, retention policies and holds.
+    "access-denials.",
+    "retention.",
+    "retention-policies.",
+    "retention-policy.",
+    "retention-holds.",
+  ],
+  "workspace-settings": [
+    "roles.",
+    "groups.",
+    "organisation-units.",
+    "ownership.",
+    "memberships.read",
+  ],
+  account: [],
+};
+function areaVisible(key: string, access: Access) {
+  const prefixes = areaCapabilities[key] || [];
+  if (!prefixes.length) return true;
+  const held = [
+    ...access.capabilities,
+    ...(access.purpose_capabilities || []).map(([capability]) => capability),
+  ];
+  return held.some((cap) => prefixes.some((prefix) => cap.startsWith(prefix)));
+}
 const titles: Record<string, [string, string]> = {
   "workspace-settings": [
     "Workspace settings",
@@ -396,10 +465,7 @@ function App() {
     };
     window.addEventListener("impact:preferences", preferencesChanged);
     const reauthenticate = () => {
-      csrf = "";
-      setSession(null);
-      setTenantConsole(false);
-      setTenant("");
+      forget();
       setError("Your session requires a fresh sign-in before continuing.");
     };
     window.addEventListener("impact:reauthentication", reauthenticate);
@@ -416,11 +482,20 @@ function App() {
       window.removeEventListener("impact:reauthentication", reauthenticate);
     };
   }, []);
+  // Every per-person state goes with the session: the next person to sign in on this tab
+  // starts at their own landing page, never in the previous person's tenant console or
+  // workspace. An invitation read from the URL stays: it belongs to the link, not the person.
+  function forget() {
+    csrf = "";
+    setSession(null);
+    setTenantConsole(false);
+    setTenant("");
+  }
   async function logout() {
     try {
       const result = await api("/auth/logout", { method: "POST" });
-      csrf = "";
-      setSession(null);
+      forget();
+      setError("");
       // With a live identity provider the provider session is ended too: the browser visits
       // its logout endpoint, which returns to the platform's front page.
       if (result?.logout_url) window.location.assign(result.logout_url);
@@ -455,6 +530,7 @@ function App() {
         explain={explain}
         identity={session.identity_id}
         logout={logout}
+        Dialog={Dialog}
         close={() => {
           setTenantConsole(false);
           refresh().catch((e) => setError(explain(e)));
@@ -602,6 +678,14 @@ function Workspace({
 }) {
   const [route, setRoute] = useState("programmes"),
     [access, setAccess] = useState<Access>({ capabilities: [] }),
+    // "loading" until GET me/access answers. The sidebar and headings render meanwhile as they
+    // always did (workspace-browser proves the settings panel initialises after late
+    // permissions by holding that answer back); the record list waits for it, and once it is
+    // known the sidebar keeps only the areas the person can use (v0.27).
+    [accessState, setAccessState] = useState<"loading" | "ready" | "failed">(
+      "loading",
+    ),
+    [accessTick, setAccessTick] = useState(0),
     [page, setPage] = useState<Page | null>(null),
     [query, setQuery] = useState(""),
     [error, setError] = useState(""),
@@ -617,24 +701,38 @@ function Workspace({
   useEffect(() => {
     const c = new AbortController();
     setAccess({ capabilities: [] });
+    setAccessState("loading");
     if (tenant)
       api(base + "me/access", { signal: c.signal })
-        .then((a) => {
+        .then((a: Access) => {
           if (c.signal.aborted) return;
           setAccess(a);
-          if (
-            !a.capabilities.includes("programmes.read") &&
-            a.capabilities.includes("memberships.read")
-          )
-            setRoute((current) =>
-              current === "programmes" ? "memberships" : current,
+          setAccessState("ready");
+          // Land on the portfolio, else People & access (administrators), else the first
+          // area the person can use; with no usable area the gate below shows the waiting page.
+          setRoute((current) => {
+            if (current !== "programmes" || areaVisible(current, a))
+              return current;
+            if (areaVisible("memberships", a)) return "memberships";
+            return (
+              nav.find(
+                ([key]) => key !== "account" && areaVisible(key, a),
+              )?.[0] || current
             );
+          });
         })
         .catch((e) => {
-          if (e.name !== "AbortError") setError(explain(e));
+          if (e.name !== "AbortError") {
+            setAccessState("failed");
+            setError(explain(e));
+          }
         });
     return () => c.abort();
-  }, [tenant]);
+  }, [tenant, accessTick]);
+  const waiting =
+    accessState === "ready" &&
+    !access.capabilities.length &&
+    !(access.purpose_capabilities || []).length;
   async function loadMore() {
     if (!page?.next_cursor) return;
     setBusy(true);
@@ -657,10 +755,12 @@ function Workspace({
     const c = new AbortController();
     request.current = c;
     setPage(null);
-    setError("");
+    if (accessState !== "failed") setError("");
     setBusy(true);
     if (
       !tenant ||
+      accessState !== "ready" ||
+      waiting ||
       route === "memberships" ||
       route === "workspace-settings" ||
       route === "account" ||
@@ -687,7 +787,7 @@ function Workspace({
         if (!c.signal.aborted) setBusy(false);
       });
     return () => c.abort();
-  }, [route, tenant, tick]);
+  }, [route, tenant, tick, accessState, waiting]);
   function completed(message: string) {
     setDialog(null);
     setToast(message);
@@ -699,6 +799,9 @@ function Workspace({
       .includes(query.toLowerCase()),
   );
   const [title, description] = titles[route];
+  // "gated": the person holds no capability at all, so instead of this area's heading and
+  // panels the waiting page says what happens next.
+  const gated = waiting && route !== "account";
   return (
     <>
       <a
@@ -717,22 +820,27 @@ function Workspace({
         </a>
         <div className="workspace-label">MEASUREMENT WORKSPACE</div>
         <nav aria-label="Main navigation">
-          {nav.map(([key, name, icon]) => (
-            <button
-              key={key}
-              className={route === key ? "active" : ""}
-              onClick={() => {
-                setRoute(key);
-                setQuery("");
-                setToast("");
-              }}
-              aria-current={route === key ? "page" : undefined}
-            >
-              <span aria-hidden="true">{icon}</span>
-              {name}
-              {key === "workflows" && <span className="nav-dot" />}
-            </button>
-          ))}
+          {/* Once access is known, only the areas the person can use are listed. */}
+          {nav
+            .filter(
+              ([key]) => accessState !== "ready" || areaVisible(key, access),
+            )
+            .map(([key, name, icon]) => (
+              <button
+                key={key}
+                className={route === key ? "active" : ""}
+                onClick={() => {
+                  setRoute(key);
+                  setQuery("");
+                  setToast("");
+                }}
+                aria-current={route === key ? "page" : undefined}
+              >
+                <span aria-hidden="true">{icon}</span>
+                {name}
+                {key === "workflows" && <span className="nav-dot" />}
+              </button>
+            ))}
           <button onClick={openTenants}>Tenant lifecycle</button>
         </nav>
         <div className="sidebar-bottom">
@@ -774,55 +882,69 @@ function Workspace({
               <span /> Development workspace · synthetic sample data
             </div>
           )}
-          <div className="page-heading">
-            <div>
-              <span className="eyebrow">YOUR IMPACT, IN FOCUS</span>
-              <h1>{title}</h1>
-              <p>{description}</p>
-            </div>
-            <div>
-              {route === "programmes" && allowed("programmes.draft.create") && (
-                <button
-                  className="primary"
-                  onClick={() => setDialog({ mode: "programme" })}
-                >
-                  ＋ New programme
-                </button>
-              )}
-              {route === "observations" &&
-                allowed("observations.draft.create") && (
+          {gated && (
+            <AccessGate
+              custody={Boolean(access.custody)}
+              tenantName={
+                session.tenants.find((t) => t.tenant_id === tenant)?.name ||
+                "Workspace"
+              }
+              openTenants={openTenants}
+              retry={() => setAccessTick((t) => t + 1)}
+            />
+          )}
+          {!gated && (
+            <div className="page-heading">
+              <div>
+                <span className="eyebrow">YOUR IMPACT, IN FOCUS</span>
+                <h1>{title}</h1>
+                <p>{description}</p>
+              </div>
+              <div>
+                {route === "programmes" &&
+                  allowed("programmes.draft.create") && (
+                    <button
+                      className="primary"
+                      onClick={() => setDialog({ mode: "programme" })}
+                    >
+                      ＋ New programme
+                    </button>
+                  )}
+                {route === "observations" &&
+                  allowed("observations.draft.create") && (
+                    <button
+                      className="primary"
+                      onClick={() => setDialog({ mode: "observation" })}
+                    >
+                      ＋ Add observation
+                    </button>
+                  )}
+                {route === "calculated-results" &&
+                  allowed("indicator.calculate") && (
+                    <button
+                      className="primary"
+                      onClick={() => setDialog({ mode: "calculate" })}
+                    >
+                      ↗ Calculate result
+                    </button>
+                  )}
+                {route === "reports" && allowed("reports.draft.create") && (
                   <button
                     className="primary"
-                    onClick={() => setDialog({ mode: "observation" })}
+                    onClick={() => setDialog({ mode: "report" })}
                   >
-                    ＋ Add observation
+                    ＋ Draft report
                   </button>
                 )}
-              {route === "calculated-results" &&
-                allowed("indicator.calculate") && (
-                  <button
-                    className="primary"
-                    onClick={() => setDialog({ mode: "calculate" })}
-                  >
-                    ↗ Calculate result
-                  </button>
-                )}
-              {route === "reports" && allowed("reports.draft.create") && (
-                <button
-                  className="primary"
-                  onClick={() => setDialog({ mode: "report" })}
-                >
-                  ＋ Draft report
-                </button>
-              )}
+              </div>
             </div>
-          </div>
+          )}
           {/* Kept mounted so assistive technology announces each new message. */}
           <div className={toast ? "success" : "sr-only"} role="status">
             {toast && "✓ " + toast}
           </div>
           <ErrorBox error={error} />
-          {route === "workspace-settings" ? (
+          {gated ? null : route === "workspace-settings" ? (
             <WorkspaceSettings
               key={tenant}
               base={base}
@@ -1092,7 +1214,7 @@ function Workspace({
               </section>
             </>
           )}
-          {route === "memberships" && (
+          {!gated && route === "memberships" && (
             <section className="panel permissions">
               <h2>Your effective capabilities</h2>
               <p>Access is evaluated by the server for each request.</p>
@@ -1216,6 +1338,69 @@ function Fields({ data }: { data: Record<string, any> }) {
         </React.Fragment>
       ))}
     </dl>
+  );
+}
+// A review's stages as people read them (v0.27): which stage, who may decide, when it was
+// submitted or decided, and the decision. The raw stage objects stay in the record; this is only
+// their presentation.
+function ReviewStages({ row }: { row: RecordRow }) {
+  const stages: any[] = Array.isArray(row.data.stages) ? row.data.stages : [];
+  const decided = !["InReview", "Submitted"].includes(row.lifecycle_state);
+  const when = new Date(row.updated_at).toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  const outcome: Record<string, string> = {
+    Approved: "Approved",
+    Returned: "Returned for changes",
+    Rejected: "Rejected",
+  };
+  return (
+    <section aria-label="Review stages" className="review-stages">
+      <h3>Review stages</h3>
+      <ol>
+        {stages.map((stage, index) => {
+          const named = stage.candidate_membership_ids?.length || 0;
+          const capability = String(
+            stage.required_capability || "workflow.approve",
+          );
+          return (
+            <li key={stage.stage_id || index}>
+              <strong>
+                Stage {Number(stage.position ?? index) + 1}
+                {stage.independent ? " · independent review" : ""}
+              </strong>
+              <dl className="fields">
+                <dt>Who may decide</dt>
+                <dd>
+                  {named
+                    ? named +
+                      " named reviewer" +
+                      (named === 1 ? "" : "s") +
+                      " holding " +
+                      capability
+                    : "Any member holding " + capability}
+                  {stage.independent
+                    ? ", never a person who authored the submitted version"
+                    : ""}
+                </dd>
+                <dt>Approvals required</dt>
+                <dd>{stage.required_approvals ?? 1}</dd>
+                <dt>Decision</dt>
+                <dd>
+                  {decided
+                    ? (outcome[row.lifecycle_state] || row.lifecycle_state) +
+                      " · " +
+                      when
+                    : "Awaiting a decision · submitted " + when}
+                </dd>
+              </dl>
+            </li>
+          );
+        })}
+      </ol>
+      {!stages.length && <p>No review stage is recorded.</p>}
+    </section>
   );
 }
 function dimensionCodes(text: string) {
@@ -1530,7 +1715,16 @@ function Editor({
           <Badge value={row.lifecycle_state} />
           <span>Revision {row.revision_id.slice(0, 8)}</span>
         </div>
-        <Fields data={row.data} />
+        {route === "workflows" && <ReviewStages row={row} />}
+        <Fields
+          data={
+            route === "workflows"
+              ? Object.fromEntries(
+                  Object.entries(row.data).filter(([k]) => k !== "stages"),
+                )
+              : row.data
+          }
+        />
         {(route === "observations" || route === "calculated-results") && (
           <EvidencePanel
             base={base}

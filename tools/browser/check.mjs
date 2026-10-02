@@ -121,10 +121,18 @@ try {
       await links.nth(i).click();
       const inspect = page.getByRole("dialog");
       const text = await inspect.innerText();
-      if (text.includes("Submitted") || text.includes("candidate")) {
+      // A review record names its candidate (the field labels are rendered capitalised, and
+      // since v0.27 the stage objects no longer appear as lower-case JSON).
+      if (/submitted|candidate/i.test(text)) {
         await page
           .getByRole("button", { name: "Review submission", exact: true })
           .click();
+        // Wait until the exact submitted revision has loaded before looking for this run's
+        // source: on a loaded machine the fetch can outlast the short probe below.
+        await page
+          .getByText("Loading the submitted record…", { exact: true })
+          .waitFor({ state: "detached" })
+          .catch(() => {});
         try {
           await page
             .getByText(source, { exact: true })
@@ -155,6 +163,17 @@ try {
       .getByRole("button", { name: "Review queue", exact: true })
       .click();
     await page.getByRole("button", { name: workflowName, exact: true }).click();
+    // v0.27: the review's stages read as a list (stage, who, when, decision), not raw JSON.
+    const stages = page.getByRole("region", { name: "Review stages" });
+    await stages.waitFor();
+    const stageText = await stages.innerText();
+    assert.match(stageText, /Stage 1 · independent review/);
+    assert.match(stageText, /Who may decide/i);
+    assert.match(stageText, /Awaiting a decision · submitted/);
+    assert.doesNotMatch(
+      await page.getByRole("dialog").innerText(),
+      /"stage_id"/,
+    );
     await page
       .getByRole("button", { name: "Review submission", exact: true })
       .click();
@@ -208,11 +227,13 @@ try {
       ),
       "Page fits viewport",
     );
+    // The sidebar lists only the areas the signed-in reviewer can use (v0.27), so the
+    // second area reached on the narrow viewport is one they hold: the review queue.
     await page
-      .getByRole("button", { name: "People & access", exact: true })
+      .getByRole("button", { name: "Review queue", exact: true })
       .click();
     await page
-      .getByRole("heading", { name: "People & access", exact: true })
+      .getByRole("heading", { name: "Review queue", exact: true, level: 1 })
       .waitFor();
   });
   await test("Logout invalidates the browser session", async () => {

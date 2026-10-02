@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, type FormEvent } from "react";
+import React, { useEffect, useState, useRef, type FormEvent } from "react";
 import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
 import { AuthorityRenewal } from "./AuthorityRenewal";
@@ -6,6 +6,11 @@ import { Workers } from "./Workers";
 import { StatusBanner } from "./StatusBanner";
 import { Operators } from "./Operators";
 
+export type DialogComponent = React.ComponentType<{
+  title: string;
+  close: () => void;
+  children: React.ReactNode;
+}>;
 type Props = {
   development: boolean;
   request: (path: string, options?: RequestInit) => Promise<any>;
@@ -13,6 +18,7 @@ type Props = {
   identity: string;
   close: () => void;
   logout: () => void;
+  Dialog: DialogComponent;
 };
 export function TenantLifecycle({
   development,
@@ -21,6 +27,7 @@ export function TenantLifecycle({
   identity,
   close,
   logout,
+  Dialog,
 }: Props) {
   const [directory, setDirectory] = useState<any>(null);
   const [error, setError] = useState("");
@@ -42,6 +49,23 @@ export function TenantLifecycle({
       .catch(() => setPeople([]));
   }, [creating]);
   const base = "/v1/platform/tenants";
+  // The change form opens as a modal dialog from the card that was clicked (v0.27): before,
+  // it rendered at the foot of the page, below the operators, workers and deliveries panels.
+  const open = creating || Boolean(selected);
+  const actionLabels: Record<string, string> = {
+    "accept-owner": "Accept ownership",
+    activate: "Activate tenant",
+    suspend: "Suspend tenant",
+    reactivate: "Reactivate tenant",
+    "begin-closure": "Begin closure",
+  };
+  function cancel() {
+    if (busy) return;
+    setCreating(false);
+    setSelected(null);
+    setAction("");
+    setError("");
+  }
   async function refresh(after?: string) {
     const result = await request(
       base + (after ? "?cursor=" + encodeURIComponent(after) : ""),
@@ -166,7 +190,7 @@ export function TenantLifecycle({
         Review ownership and deployment policy before activation. Ownership does
         not grant programme-data access.
       </p>
-      {error && (
+      {error && !open && (
         <div className="error" role="alert">
           {error}
         </div>
@@ -315,13 +339,22 @@ export function TenantLifecycle({
           )}
         </>
       )}
-      {(creating || selected) && (
-        <section className="panel" aria-label="Tenant change">
-          <h2>
-            {creating
+      {open && (
+        <Dialog
+          title={
+            creating
               ? "New tenant request"
-              : action.replaceAll("-", " ") + ": " + selected.operating_name}
-          </h2>
+              : (actionLabels[action] || action.replaceAll("-", " ")) +
+                ": " +
+                selected.operating_name
+          }
+          close={cancel}
+        >
+          {error && (
+            <div className="error" role="alert">
+              {error}
+            </div>
+          )}
           {!creating && (
             <p>
               {action === "accept-owner"
@@ -427,7 +460,7 @@ export function TenantLifecycle({
               Reason
               <textarea name="reason" required maxLength={1000} />
             </label>
-            <div className="toolbar">
+            <div className="dialog-actions">
               <button type="submit" className="primary" disabled={busy}>
                 {busy ? "Saving…" : "Confirm tenant change"}
               </button>
@@ -435,16 +468,13 @@ export function TenantLifecycle({
                 type="button"
                 disabled={busy}
                 className="secondary"
-                onClick={() => {
-                  setCreating(false);
-                  setSelected(null);
-                }}
+                onClick={cancel}
               >
                 Cancel
               </button>
             </div>
           </form>
-        </section>
+        </Dialog>
       )}
     </main>
   );

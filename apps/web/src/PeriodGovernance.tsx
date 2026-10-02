@@ -19,11 +19,22 @@ type Props = {
     children: React.ReactNode;
   }>;
 };
-const label = (row: Row) =>
-  row.data.code ||
+// People read names, not codes or identifiers (v0.27): a programme shows as "Title (CODE)", a
+// period or source by its title or key, and a review policy by its title — the fixture's
+// untitled template by what it does.
+const label = (row: Row) => {
+  const { title, code, source_key } = row.data;
+  if (title && code) return `${title} (${code})`;
+  return title || code || source_key || row.object_id.slice(0, 8);
+};
+const policyLabel = (row: Row) =>
   row.data.title ||
-  row.data.source_key ||
-  row.object_id.slice(0, 8);
+  row.data.name ||
+  (row.data.independent
+    ? `Independent review, ${row.data.required_approvals ?? 1} approval${
+        (row.data.required_approvals ?? 1) === 1 ? "" : "s"
+      } (${row.object_id.slice(0, 8)})`
+    : `Review policy ${row.object_id.slice(0, 8)}`);
 
 export function PeriodGovernancePanel({
   base,
@@ -478,7 +489,7 @@ export function PeriodGovernancePanel({
                   .filter((t) => t.lifecycle_state === "Active")
                   .map((t) => (
                     <option key={t.object_id} value={t.revision_id}>
-                      {label(t)}
+                      {policyLabel(t)}
                     </option>
                   ))}
               </select>

@@ -119,7 +119,7 @@ export function StatusBanner({ request }: { request: Request }) {
             type="button"
             className="text"
             aria-expanded={open}
-            aria-controls="status-detail"
+            aria-controls={open ? "status-detail" : undefined}
             onClick={() => setOpen((o) => !o)}
           >
             {open ? "Hide details" : "Details for operators"}

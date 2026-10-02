@@ -164,6 +164,29 @@ jobs:
             docs/evidence/native-restore-drill.json
             docs/evidence/idp-native-tests.xml
             docs/evidence/idp-qualification.json
+      - name: Native critical subset through PgBouncer in transaction mode (QA 2026-10 non-functional; advisory)
+        # Opt-in evidence, not a gate: the API and the worker reach the service database through a
+        # PgBouncer the runner starts in transaction pooling mode (scripts/pooler.py) on a separate
+        # empty database; the focused run overwrites the native evidence files, so it runs after
+        # their upload and keeps its own copies.
+        if: always()
+        continue-on-error: true
+        env:
+          IMPACT_FIXTURE_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test_pooler
+          IMPACT_PORT: '8472'
+        run: |
+          sudo apt-get install -y --no-install-recommends pgbouncer
+          .venv/bin/python -c "import psycopg; c = psycopg.connect('postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test', autocommit=True); c.execute('DROP DATABASE IF EXISTS impact_test_pooler WITH (FORCE)'); c.execute('CREATE DATABASE impact_test_pooler')"
+          code=0
+          .venv/bin/python scripts/run.py test --native --pooler pgbouncer --pytest-path qualification/test_native_nonfunctional.py --pytest-path qualification/test_native_concurrency.py --skip-restart-check --skip-restore-drill --skip-upgrade-check || code=$?
+          mkdir -p .local/pooler-evidence
+          cp docs/evidence/native-application-tests.xml docs/evidence/native-qualification.json .local/pooler-evidence/ || true
+          exit $code
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: native-pooler-qualification
+          path: .local/pooler-evidence/
   container-stack:
     # The staging deployment package (v0.17) end to end on the runner: deploy/update.sh builds the
     # image and brings up PostgreSQL, Keycloak (production mode), the API, the worker with its mail

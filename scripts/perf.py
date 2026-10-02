@@ -22,7 +22,7 @@ from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "qualification"))
-from perf_support import SCALES, markdown, workload  # noqa: E402
+from perf_support import PROFILES, SCALES, markdown, profile, workload  # noqa: E402
 
 
 def recreate(dsn):
@@ -40,16 +40,32 @@ def main():
     parser.add_argument("--seed", type=int, default=20261001)
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument("--recreate", action="store_true", help="Drop and create the fixture database first")
-    parser.add_argument("--output", help="JSON path (default docs/evidence/performance-<date>.json)")
+    parser.add_argument(
+        "--profile",
+        choices=sorted(PROFILES),
+        default="base",
+        help="base: the one-pass workload; peak: the closed-loop mix at 4x concurrency; soak: the mix at "
+        "the base concurrency for a long run; cohorts: tenant A noisy while tenants B and C read quietly",
+    )
+    parser.add_argument(
+        "--duration",
+        type=int,
+        help="Seconds of the closed-loop phase (peak 120, soak 600, cohorts 120 by default; shorter for smoke)",
+    )
+    parser.add_argument(
+        "--output", help="JSON path (default docs/evidence/performance-<date>[-<profile>].json)"
+    )
     args = parser.parse_args()
     workload(args.scale, args.seed, args.concurrency)  # validates the arguments
+    prof = profile(args.profile, args.duration)
     dsn = os.environ.get("IMPACT_FIXTURE_DSN")
     if not dsn:
         raise SystemExit("Set IMPACT_FIXTURE_DSN to an empty disposable impact_test_<x> database (superuser)")
     if args.recreate:
         recreate(dsn)
+    suffix = "" if prof.name == "base" else "-" + prof.name
     output = Path(
-        args.output or ROOT / "docs/evidence" / ("performance-" + date.today().isoformat() + ".json")
+        args.output or ROOT / "docs/evidence" / ("performance-" + date.today().isoformat() + suffix + ".json")
     )
     output = output.resolve()
     env = os.environ.copy()
@@ -59,6 +75,8 @@ def main():
         IMPACT_PERF_SEED=str(args.seed),
         IMPACT_PERF_CONCURRENCY=str(args.concurrency),
         IMPACT_PERF_OUTPUT=str(output),
+        IMPACT_PERF_PROFILE=prof.name,
+        IMPACT_PERF_DURATION=str(prof.duration),
     )
     code = subprocess.call(
         [

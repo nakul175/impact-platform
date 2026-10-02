@@ -300,8 +300,9 @@ def test_a_new_operator_counts_at_activation_only_as_a_different_person(live):
     row = expect(request_tenant(live)[0], 200)
     accepted = tenant_action(live, row, "accept-owner", actor="author")
     recovery_contact(live, accepted)
-    current = expect(live.request("/v1/platform/tenants", actor="admin"), 200)["items"]
-    current = next(t for t in current if t["tenant_id"] == row["tenant_id"])
+    # A recovery contact does not change the tenant's revision (the listing is paged, so it is
+    # not searched here: in a full run the tenant may be beyond its first page).
+    current = accepted
     activated = expect(
         as_person(
             live,
@@ -339,8 +340,7 @@ def test_a_new_operator_counts_at_activation_only_as_a_different_person(live):
     )
     accepted = tenant_action(live, requested, "accept-owner", actor="author")
     recovery_contact(live, accepted)
-    current = expect(live.request("/v1/platform/tenants", actor="admin"), 200)["items"]
-    current = next(t for t in current if t["tenant_id"] == requested["tenant_id"])
+    current = accepted
     refused = as_person(
         live,
         subject,

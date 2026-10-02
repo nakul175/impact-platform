@@ -86,15 +86,36 @@ What the owner cannot do alone — by design. The platform's rules require diffe
 - a platform operator **requests** a tenant and names its **owner**, who must be a different person;
 - the named owner **accepts** custody;
 - the owner nominates a **recovery contact**, who consents, and a platform operator who is neither the owner nor the nominee approves it (the requesting operator may approve);
-- a platform operator who is **neither the requester nor the owner activates** the tenant.
+- a platform operator who is **neither the requester nor the owner activates** the tenant;
+- the owner proposes **initial access** with a second administrator (a different person), who accepts, and a platform operator who is neither of them approves it.
 
-So a first tenant needs at least three people (for example: you as requesting operator, a colleague as tenant owner, and a second operator to activate and approve), plus a recovery contact. The deployment makes only you an operator. To give others a sign-in, run in the console, once per person:
+So a first organisation needs **three different people**: you, one colleague who becomes the **second platform operator**, and one colleague who becomes the **organisation's owner**. No setting or waiver changes that; it is what makes every approval independent. Everything below happens in the web application (since build 0.26.0); no console step is needed.
+
+### 4.1 From your first sign-in to an active organisation (click-path)
+
+Names used here: **you** (the deployment owner, already the first operator), **B** (a colleague who will be the second operator) and **P** (the colleague who will own the organisation). You will also be P's recovery contact and the organisation's second administrator.
+
+1. **You:** sign in at https://168-144-78-191.sslip.io/. The start page, **No active workspace**, lists these steps and shows *your identity reference* (a long code; **Copy** puts it on the clipboard). Click **Tenant lifecycle**.
+2. **You — add B as second operator:** in **Platform operators** click **Nominate an operator**, enter B's e-mail address, keep or change the end date, and click **Nominate**. A **Create a sign-in** form opens straight away: enter B's first and last name and a reason, click **Create sign-in**. A box shows B's **one-time password once** (with **Copy password**). Give it to B yourself, by phone or in person, then click **I have noted it — hide the password**. (If it is lost before B uses it: **Sign-in accounts created here → Issue a new one-time password**.)
+3. **You — a sign-in for P:** click **Create a sign-in for someone**, enter P's address and name, and pass P the one-time password the same way.
+4. **B:** opens the address, signs in with the e-mail address and the one-time password, chooses their own password and sets up an authenticator app (Google or Microsoft Authenticator). The start page says *You have been nominated as a platform operator*; **Tenant lifecycle → Accept operator role**. You now see two active operators.
+5. **P:** signs in once the same way (own password, authenticator app). P sees the start page with their identity reference.
+6. **You — request the organisation:** **Tenant lifecycle → Request tenant**: operating name, **Organisation owner** = P (chosen by name), the qualified deployment, reporting time zone, retention days, privacy reference `staging-privacy-notice-v1`, a reason → **Confirm tenant change**.
+7. **P:** **Tenant lifecycle → Accept ownership**; then **Recovery contacts → Nominate recovery contact** with your identity reference (from step 1). **You:** **Recovery contacts →** confirm (verify) it. **B:** **Recovery contacts →** approve it.
+8. **B:** **Tenant lifecycle → Activate tenant** (B is neither the requester nor the owner).
+9. **P:** **Initial access →** propose it with you as second administrator (your identity reference), an expiry within 90 days and the business roles the organisation needs (profile `initial-access-v2`: MEL admin, author, reviewer, programme manager, data steward, enumerator, analyst, privacy, audit reader, external). **You:** **Initial access → Accept**. **B:** **Approve**.
+10. **P** (or you): sign out and in again; the workspace now appears. **People & access → Reference data → Set up the standard reference data** adds a quarterly calendar for this year and next in the organisation's time zone (8 periods), a review template with one independent approval, a standard results report template and an organisation-wide geography.
+11. From here on the organisation runs itself: roles through **People & access → Access requests** (one administrator requests, the other approves), new members through **Invitations** — after creating an invitation the owner can click **Create a sign-in for this person** and pass on both the invitation link and the one-time password — and data-subject or audit-export rights through **Purpose-bound access** (requested by one administrator, approved by the other; never for the owner).
+
+The only steps that need another person are B's (steps 4, 7, 8, 9) and P's (steps 5, 7, 9, 10). Every one-time password is shown once to the person who created it and is never stored; that person sees it, so it must be handed over directly and the recipient replaces it at first sign-in. The platform cannot tell whether two sign-ins belong to one human being: give B and P their passwords in person.
+
+The console script still works and does the same as **Create a sign-in for someone**:
 
 ```
 sudo /opt/impact/repo/deploy/add-user.sh colleague@example.org "First" "Last"
 ```
 
-It creates their sign-in account with a one-time password (shown once in the console, not stored; hand it over yourself) and registers them as a platform identity with no authority. They must sign in once (setting their password and authenticator) before they can be named as a tenant owner, because the platform learns their verified email address at sign-in.
+Either way the account is a platform identity with no authority until a reviewed procedure gives it some. People must sign in once (setting their password and authenticator) before they can be named as an owner, recovery contact or second administrator, because the platform learns their verified address at sign-in. The web application creates accounts through a dedicated service account of the `impact` realm (`impact-provisioner`, user management only), set up by every deployment; it never uses the Keycloak administrator.
 
 **Everyday tasks for the owner.** All of them are typed into the DigitalOcean browser console (droplet → **Access → Launch Droplet Console**), one line each, then Enter. Nothing here needs a password of your own; the console already runs as the server's administrator. A one-time password is shown only on your screen: it is never written to a log, a file or the status page, so copy it before you close the console and give it to the person yourself.
 
@@ -109,7 +130,7 @@ It creates their sign-in account with a one-time password (shown once in the con
 | Run the restore drill now instead of waiting for Sunday | `sudo /opt/impact/repo/deploy/restore-drill.sh` | PASS or FAIL with the time the restore took; the result also appears in the status page (section 6.2) |
 | Check the server is healthy | open https://168-144-78-191.sslip.io/deploy-status.json in a browser | `"result": "ok"` and `"alerts": []` when all is well (section 6.4) |
 
-Every add and reset is recorded (who, when, never the password) in `/opt/impact/state/admin-actions.log`. A **second platform operator** cannot be created by the scripts (the first-operator bootstrap refuses once any operator exists, and there is no operator-management screen yet); adding one is a deliberate database change by the owner and is not automated in this build.
+Every add and reset is recorded (who, when, never the password) in `/opt/impact/state/admin-actions.log`. A **second platform operator** is added in the web application (§4.1 step 2), never by a script: the first-operator bootstrap still refuses once any operator exists, and an operator row is written at run time only when a nominated person accepts (a different natural person from the nominating operator, with a sign-in from the last five minutes). Nominations, account creation and acceptance are recorded as platform events (who, when, never a password).
 
 For running user acceptance on this server see the [UAT pack](UAT-PACK.md) (and [what still blocks hosted UAT](RELEASE-1-ACCEPTANCE-GAPS.md) §1); for incidents, alert codes and escalation see the [support runbook](SUPPORT-RUNBOOK.md).
 
@@ -230,7 +251,7 @@ Server files: `/opt/impact/secrets.env` (generated secrets, never edit casually:
 - **sslip.io host names** depend on a free third-party DNS service; if it is unavailable, the site cannot be reached by name. Let's Encrypt rate limits apply to the shared sslip.io domain.
 - **Staging only**: synthetic or test data only, no real personal data (repository rule 11), no penetration test. Alerts are written to the status page only (section 6.4): nobody is paged or e-mailed, metrics are kept in memory by the running application and reset when it restarts, there is no history or dashboard, and logs stay on the server (10 MB × 5 per container; host logs rotated).
 - **Sign-in:** self-hosted Keycloak on the same server; no refresh tokens are issued (as qualified in v0.15; for the owner to accept); key rotation, provider outage and account recovery beyond the console reset have not been exercised. The Keycloak administration console is reachable only from inside the server.
-- **Operators:** only the first operator is created automatically; a second operator, operator renewal and qualification renewal are manual database changes.
+- **Operators:** only the first operator is created automatically; further operators are nominated and accept in the web application (v0.26a); operator renewal, operator deactivation and qualification renewal are manual database changes.
 - The image base versions (`python:3.12-slim-bookworm`, `node:24-bookworm-slim`, `postgres:17`, `caddy:2`) follow their tags and are refreshed at each build; Keycloak is pinned to 26.7.4; Python packages are pinned by SHA-256.
 
 ## 10. Rotating the application secrets

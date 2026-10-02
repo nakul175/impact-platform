@@ -13,8 +13,10 @@ import zipfile
 import pytest
 from impact_api.contracts import validate
 from test_live_application import cmd, expect
-from test_measurement import get, create, action, approve  # noqa: F401
+from test_measurement import get, create, action, approve, submit  # noqa: F401
+from test_measurement_unit import definition
 from test_native_roles import connect, denied, query  # noqa: F401
+from test_period_governance import request_close
 from test_planning import db_counts, failure, post
 from test_forms import planned, workflow_of, workflow_version
 
@@ -141,6 +143,7 @@ def test_csv_import_preview_commit_review_and_receipts(live, counted):
         "duplicate": 0,
         "warnings": 0,
         "observations": 6,
+        "unplanned": 6,
     }
     assert view["dropped_columns"] == ["remarks"]
     states = [
@@ -158,12 +161,19 @@ def test_csv_import_preview_commit_review_and_receipts(live, counted):
         ("12345678901234567890", "PRESENT", "3"),
     ]
     assert view["rows"][4]["raw"] == {"district": "00123" + unit, "households": "7"}
+    # Each staged value carries the plannable source key (unit, indicator and period; never the
+    # batch); this indicator's approved plan names form units only, so every value is unplanned.
+    keys = [r["observations"][0]["source_key"] for r in view["rows"]]
+    assert keys == [f"{u}/{indicator['object_id']}/{period['object_id']}" for u, _, _ in states]
+    assert all(r["observations"][0]["planned"] is False for r in view["rows"])
+    assert view["counts"]["unplanned"] == 6
+    assert view["plan_check"] == {"evaluated_indicators": [indicator["object_id"]]}
     # Nothing is written by preview.
     with live.db() as c:
         assert (
             c.execute(
-                "SELECT count(*) AS n FROM impact.observation_current WHERE source_namespace='IMPORT' AND source_key LIKE %s",
-                (batch["object_id"] + "/%",),
+                "SELECT count(*) AS n FROM impact.observation_current WHERE source_namespace='IMPORT' AND source_version=%s",
+                (staged["revision_id"],),
             ).fetchone()["n"]
             == 0
         )
@@ -185,7 +195,9 @@ def test_csv_import_preview_commit_review_and_receipts(live, counted):
     first = get(live, "observations", ids[0])
     assert first["lifecycle_state"] == "Submitted"
     assert first["data"]["source_namespace"] == "IMPORT"
-    assert first["data"]["source_key"] == batch["object_id"] + "/" + unit + "-001/" + indicator["object_id"]
+    assert (
+        first["data"]["source_key"] == keys[0] == f"{unit}-001/{indicator['object_id']}/{period['object_id']}"
+    )
     assert first["data"]["source_version"] == staged["revision_id"]
     assert first["data"]["event_at"] == period["data"]["starts_at"]
     # Batch: draft, preview and commit revisions; one audit, receipt and outbox event per command.
@@ -303,8 +315,8 @@ def test_quarantine_duplicates_and_atomic_mode(live, counted):
     with live.db() as c:
         assert (
             c.execute(
-                "SELECT count(*) AS n FROM impact.observation_current WHERE source_key LIKE %s",
-                (batch["object_id"] + "/%",),
+                "SELECT count(*) AS n FROM impact.observation_current WHERE source_namespace='IMPORT' AND source_version=%s",
+                (batch["revision_id"],),
             ).fetchone()["n"]
             == 0
         )
@@ -632,6 +644,291 @@ def test_access_tenancy_independence_and_reserved_namespace(live, counted):
         live.request(live.path("observations"), method="POST", body=cmd(direct)),
         422,
         "SOURCE_NAMESPACE_RESERVED",
+    )
+
+
+# Planned imports and period close (acceptance gap A5) --------------------------------------------
+def import_planned(live, planned_units, calendar_id=None, period=None, year=2026):
+    """An active programme (calendar year `year`) with one COUNT indicator on the fixture period (or
+    `period` of `calendar_id`) whose approved collection plan names the IMPORT source key of each
+    unit in `planned_units`, before any file exists: IMPORT/"<unit>/<indicator id>/<period id>"."""
+    programme = create(
+        live,
+        "programmes",
+        {
+            "code": "IMPL",
+            "title": "Planned imports " + str(uuid.uuid4())[:8],
+            "programme_type": "Health",
+            "starts_at": f"{year}-01-01T00:00:00Z",
+            "ends_at": f"{year + 1}-01-01T00:00:00Z",
+            "reporting_calendar_id": calendar_id or get(live, "reporting-calendars")["items"][0]["object_id"],
+            "geography_id": get(live, "geographies")["items"][0]["object_id"],
+        },
+    )
+    d = create(live, "indicator-definitions", definition(code="IMPC", name="Households counted"))
+    approve(live, submit(live, "indicator-definitions", d))
+    d = get(live, "indicator-definitions", d["object_id"])
+    indicator = create(
+        live,
+        "indicator-instances",
+        {
+            "programme_id": programme["object_id"],
+            "definition_version": d["revision_id"],
+            "local_applicability": "District registers",
+            "collector_id": live.fixture["actors"]["author"]["principal_id"],
+            "reviewer_id": live.fixture["actors"]["reviewer"]["principal_id"],
+        },
+    )
+    period = period or get(live, "periods", live.records["period"]["object_id"])
+    plan = create(
+        live,
+        "collection-plans",
+        {
+            "title": "District register import",
+            "indicator_id": indicator["object_id"],
+            "period_id": period["object_id"],
+            "obligations": [
+                {
+                    "label": unit,
+                    "source_namespace": "IMPORT",
+                    "source_key": f"{unit}/{indicator['object_id']}/{period['object_id']}",
+                    "due_at": f"{year}-09-01T00:00:00Z",
+                }
+                for unit in planned_units
+            ],
+        },
+    )
+    approve(live, submit(live, "collection-plans", plan))
+    action(live, "indicator-instances", indicator, "activate")
+    indicator = get(live, "indicator-instances", indicator["object_id"])
+    action(live, "programmes", programme, "ready")
+    action(live, "programmes", get(live, "programmes", programme["object_id"]), "activate")
+    return programme, indicator, period, get(live, "collection-plans", plan["object_id"])
+
+
+def import_and_approve(live, indicator, period, values):
+    """Import `values` ({unit: households}), commit the batch and approve every produced observation
+    independently; returns the committed batch and the previewed view."""
+    content = "district,households\n" + "".join(f"{u},{v}\n" for u, v in values.items())
+    batch = preview(live, create(live, "imports", batch_data(indicator, period, content)))
+    commit(live, batch)
+    done = get(live, "imports", batch["object_id"])
+    for observation_id in done["data"]["committed"]["observation_ids"]:
+        approve(live, workflow_of(live, observation_id))
+    return done, batch["data"]["preview"]
+
+
+def close_candidate(live, programme, period):
+    workflow = request_close(live, programme, period)
+    candidate = get(live, "workflows", workflow["object_id"] + "/candidate", actor="reviewer")
+    return workflow, candidate["record"]["data"]
+
+
+def test_planned_import_units_close_the_period(live):
+    """A plan names two import units before the file exists; the imported, approved values are the
+    planned ones, so the period closes with coverage complete and the OFFICIAL sum from them."""
+    units = ["P" + str(uuid.uuid4())[:6] + "-" + str(i) for i in range(2)]
+    programme, indicator, period, _ = import_planned(live, units)
+    done, view = import_and_approve(live, indicator, period, {units[0]: "12", units[1]: "30"})
+    assert [r["observations"][0]["planned"] for r in view["rows"]] == [True, True]
+    assert view["counts"]["unplanned"] == 0
+    assert view["plan_check"] == {"evaluated_indicators": [indicator["object_id"]]}
+    ids = done["data"]["committed"]["observation_ids"]
+    first = get(live, "observations", ids[0])
+    assert first["data"]["source_key"] == f"{units[0]}/{indicator['object_id']}/{period['object_id']}"
+    assert first["data"]["approval_state"] == "APPROVED"
+    # The batch that produced the value is on the observation (its revision) and in the register,
+    # not in the key.
+    with live.db() as c:
+        register = c.execute(
+            "SELECT import_id::text AS i, unit_key FROM impact.import_unit_register WHERE observation_id=%s",
+            (ids[0],),
+        ).fetchone()
+        produced_by = c.execute(
+            "SELECT object_id::text AS o FROM impact.object_revision WHERE revision_id=%s",
+            (first["data"]["source_version"],),
+        ).fetchone()
+    assert (register["i"], register["unit_key"]) == (done["object_id"], units[0])
+    assert produced_by["o"] == done["object_id"]
+    receipt = action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    assert get(live, "calculated-results", receipt["object_id"])["data"]["value"] == "42"
+    workflow, candidate = close_candidate(live, programme, period)
+    assert candidate["blockers"] == []
+    [entry] = candidate["entries"]
+    measured = entry["coverage"]
+    assert (measured["expected_count"], measured["approved_count"], measured["unplanned_count"]) == (2, 2, 0)
+    assert measured["complete"] is True and measured["approval_percent"] == "100.00"
+    assert {o["source_key"]: o["status"] for o in measured["obligations"]} == {
+        first["data"]["source_key"]: "APPROVED",
+        f"{units[1]}/{indicator['object_id']}/{period['object_id']}": "APPROVED",
+    }
+    approve(live, workflow)
+    snapshot = next(
+        s
+        for s in get(live, "snapshots")["items"]
+        if s["data"]["period_id"] == period["object_id"]
+        and s["data"].get("programme_id") == programme["object_id"]
+    )
+    assert snapshot["lifecycle_state"] == "Locked" and len(snapshot["data"]["result_versions"]) == 1
+    # The locked period refuses a further import batch for this programme.
+    late = create(live, "imports", batch_data(indicator, period, f"district,households\n{units[0]}-late,1\n"))
+    assert (
+        failure(
+            live.request(
+                live.path("imports", late["object_id"]) + "/actions/preview",
+                method="POST",
+                body=cmd({}, late["revision_id"]),
+            ),
+            409,
+        )["reason_code"]
+        == "PERIOD_RESTATEMENT_REQUIRED"
+    )
+
+
+def test_unplanned_import_units_still_block_close(live):
+    """Only one of two imported units is named by the plan: the other commits and is approved, but
+    close is blocked (UNPLANNED_VALUES) and nothing locks — until an independently approved plan
+    amendment names the imported key exactly, after which the period closes."""
+    units = ["U" + str(uuid.uuid4())[:6] + "-" + str(i) for i in range(2)]
+    programme, indicator, period, plan = import_planned(live, units[:1])
+    done, view = import_and_approve(live, indicator, period, {units[0]: "5", units[1]: "7"})
+    assert [r["observations"][0]["planned"] for r in view["rows"]] == [True, False]
+    assert view["counts"]["unplanned"] == 1 and view["counts"]["accepted"] == 2
+    assert len(done["data"]["committed"]["observation_ids"]) == 2
+    action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    workflow, candidate = close_candidate(live, programme, period)
+    [entry] = candidate["entries"]
+    assert (entry["coverage"]["approved_count"], entry["coverage"]["unplanned_count"]) == (1, 1)
+    assert [b["code"] for b in candidate["blockers"]] == ["UNPLANNED_VALUES"]
+    denied = action(
+        live,
+        "workflows",
+        workflow,
+        "approve",
+        {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Cannot close."},
+        actor="reviewer",
+        status=422,
+    )
+    assert denied["reason_code"] == "PERIOD_CLOSE_BLOCKED"
+    assert get(live, "workflows", workflow["object_id"])["lifecycle_state"] == "InReview"
+    assert not any(
+        s["data"]["period_id"] == period["object_id"]
+        and s["data"].get("programme_id") == programme["object_id"]
+        for s in get(live, "snapshots")["items"]
+    )
+    # A reviewed plan amendment names the imported key exactly (the value already exists for this
+    # indicator inside the period, so the key is available to this plan); the amended plan makes the
+    # value planned, the result is recalculated against it and the period closes.
+    unplanned_key = view["rows"][1]["observations"][0]["source_key"]
+    assert unplanned_key == f"{units[1]}/{indicator['object_id']}/{period['object_id']}"
+    proposal = expect(
+        live.request(
+            live.path("measurement-changes"),
+            method="POST",
+            body=cmd(
+                {
+                    "target_kind": "CollectionPlan",
+                    "target_id": plan["object_id"],
+                    "target_revision": plan["revision_id"],
+                    "reason": "The register import also covers the second district.",
+                    "proposed_data": {
+                        "obligations": plan["data"]["obligations"]
+                        + [
+                            {
+                                "label": units[1],
+                                "source_namespace": "IMPORT",
+                                "source_key": unplanned_key,
+                                "due_at": "2026-09-01T00:00:00Z",
+                            }
+                        ]
+                    },
+                }
+            ),
+        ),
+        201,
+    )
+    approve(
+        live, submit(live, "measurement-changes", get(live, "measurement-changes", proposal["object_id"]))
+    )
+    amended = get(live, "collection-plans", plan["object_id"])
+    assert amended["lifecycle_state"] == "Approved" and len(amended["data"]["obligations"]) == 2
+    receipt = action(live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]})
+    assert get(live, "calculated-results", receipt["object_id"])["data"]["value"] == "12"
+    second, candidate = close_candidate(live, programme, period)
+    assert candidate["blockers"] == []
+    [entry] = candidate["entries"]
+    assert (entry["coverage"]["approved_count"], entry["coverage"]["unplanned_count"]) == (2, 0)
+    approve(live, second)
+    assert any(
+        s["lifecycle_state"] == "Locked"
+        and s["data"]["period_id"] == period["object_id"]
+        and s["data"].get("programme_id") == programme["object_id"]
+        for s in get(live, "snapshots")["items"]
+    )
+
+
+def monthly_periods(live, year=2025):
+    """July and August of a monthly calendar the tenant administrator creates through the governed
+    reference-data command (v0.26a), so that a unit can be imported in two periods. The year is 2025
+    on purpose: `assert_source_mutable` resolves an event's period tenant-wide by time, so a second
+    calendar whose periods overlap the fixture quarter would change other tests' outcomes."""
+    receipt = expect(
+        live.request(
+            live.path("reporting-calendars"),
+            actor="admin",
+            method="POST",
+            body=cmd(
+                {
+                    "title": "Monthly import calendar " + str(uuid.uuid4())[:8],
+                    "frequency": "MONTHLY",
+                    "zone": "UTC",
+                    "first_year": year,
+                    "years": 1,
+                    "reason": "A unit reports in every month",
+                }
+            ),
+        ),
+        200,
+    )
+    with live.db() as c:
+        rows = c.execute(
+            "SELECT r.object_id::text AS id FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' IN (%s,%s) ORDER BY v.payload->>'code'",
+            (live.fixture["tenant_a"], receipt["revision_id"], f"{year}-07", f"{year}-08"),
+        ).fetchall()
+    assert len(rows) == 2
+    return receipt["object_id"], [get(live, "periods", r["id"]) for r in rows]
+
+
+def test_a_unit_imports_again_in_a_later_period_without_colliding(live):
+    """The key carries the period, so the same unit and indicator imported for a second period is a
+    new source identity: the tenant-wide source key register holds one key per period and the
+    second batch is neither a duplicate nor a conflict."""
+    calendar_id, (july, august) = monthly_periods(live)
+    unit = "R" + str(uuid.uuid4())[:6]
+    programme, indicator, _, _ = import_planned(live, [unit], calendar_id=calendar_id, period=july, year=2025)
+    first = preview(
+        live, create(live, "imports", batch_data(indicator, july, f"district,households\n{unit},3\n"))
+    )
+    assert first["data"]["preview"]["rows"][0]["observations"][0]["planned"] is True
+    commit(live, first)
+    second = preview(
+        live, create(live, "imports", batch_data(indicator, august, f"district,households\n{unit},4\n"))
+    )
+    assert outcomes(second) == [(2, unit, "ACCEPTED", [])]
+    value = second["data"]["preview"]["rows"][0]["observations"][0]
+    assert value["source_key"] == f"{unit}/{indicator['object_id']}/{august['object_id']}"
+    # August has no approved plan for this indicator: nothing is marked planned or unplanned.
+    assert "planned" not in value and second["data"]["preview"]["counts"]["unplanned"] == 0
+    assert second["data"]["preview"]["plan_check"] == {"evaluated_indicators": []}
+    commit(live, second)
+    with live.db() as c:
+        keys = c.execute(
+            "SELECT source_key FROM impact.source_key_registry WHERE tenant_id=%s AND namespace='IMPORT' AND source_key LIKE %s ORDER BY source_key",
+            (live.fixture["tenant_a"], unit + "/%"),
+        ).fetchall()
+    assert [k["source_key"] for k in keys] == sorted(
+        f"{unit}/{indicator['object_id']}/{p['object_id']}" for p in [july, august]
     )
 
 

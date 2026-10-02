@@ -648,10 +648,10 @@ def test_access_tenancy_independence_and_reserved_namespace(live, counted):
 
 
 # Planned imports and period close (acceptance gap A5) --------------------------------------------
-def import_planned(live, planned_units, calendar_id=None, period=None):
-    """An active programme with one COUNT indicator on the fixture period (or `period` of
-    `calendar_id`) whose approved collection plan names the IMPORT source key of each unit in
-    `planned_units`, before any file exists: IMPORT/"<unit>/<indicator id>/<period id>"."""
+def import_planned(live, planned_units, calendar_id=None, period=None, year=2026):
+    """An active programme (calendar year `year`) with one COUNT indicator on the fixture period (or
+    `period` of `calendar_id`) whose approved collection plan names the IMPORT source key of each
+    unit in `planned_units`, before any file exists: IMPORT/"<unit>/<indicator id>/<period id>"."""
     programme = create(
         live,
         "programmes",
@@ -659,8 +659,8 @@ def import_planned(live, planned_units, calendar_id=None, period=None):
             "code": "IMPL",
             "title": "Planned imports " + str(uuid.uuid4())[:8],
             "programme_type": "Health",
-            "starts_at": "2026-01-01T00:00:00Z",
-            "ends_at": "2027-01-01T00:00:00Z",
+            "starts_at": f"{year}-01-01T00:00:00Z",
+            "ends_at": f"{year + 1}-01-01T00:00:00Z",
             "reporting_calendar_id": calendar_id or get(live, "reporting-calendars")["items"][0]["object_id"],
             "geography_id": get(live, "geographies")["items"][0]["object_id"],
         },
@@ -692,7 +692,7 @@ def import_planned(live, planned_units, calendar_id=None, period=None):
                     "label": unit,
                     "source_namespace": "IMPORT",
                     "source_key": f"{unit}/{indicator['object_id']}/{period['object_id']}",
-                    "due_at": "2026-09-01T00:00:00Z",
+                    "due_at": f"{year}-09-01T00:00:00Z",
                 }
                 for unit in planned_units
             ],
@@ -867,9 +867,11 @@ def test_unplanned_import_units_still_block_close(live):
     )
 
 
-def monthly_periods(live):
-    """July and August 2026 of a monthly calendar the tenant administrator creates through the
-    governed reference-data command (v0.26a), so that a unit can be imported in two periods."""
+def monthly_periods(live, year=2025):
+    """July and August of a monthly calendar the tenant administrator creates through the governed
+    reference-data command (v0.26a), so that a unit can be imported in two periods. The year is 2025
+    on purpose: `assert_source_mutable` resolves an event's period tenant-wide by time, so a second
+    calendar whose periods overlap the fixture quarter would change other tests' outcomes."""
     receipt = expect(
         live.request(
             live.path("reporting-calendars"),
@@ -880,7 +882,7 @@ def monthly_periods(live):
                     "title": "Monthly import calendar " + str(uuid.uuid4())[:8],
                     "frequency": "MONTHLY",
                     "zone": "UTC",
-                    "first_year": 2026,
+                    "first_year": year,
                     "years": 1,
                     "reason": "A unit reports in every month",
                 }
@@ -891,8 +893,8 @@ def monthly_periods(live):
     with live.db() as c:
         rows = c.execute(
             "SELECT r.object_id::text AS id FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
-            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' IN ('2026-07','2026-08') ORDER BY v.payload->>'code'",
-            (live.fixture["tenant_a"], receipt["revision_id"]),
+            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' IN (%s,%s) ORDER BY v.payload->>'code'",
+            (live.fixture["tenant_a"], receipt["revision_id"], f"{year}-07", f"{year}-08"),
         ).fetchall()
     assert len(rows) == 2
     return receipt["object_id"], [get(live, "periods", r["id"]) for r in rows]
@@ -904,7 +906,7 @@ def test_a_unit_imports_again_in_a_later_period_without_colliding(live):
     second batch is neither a duplicate nor a conflict."""
     calendar_id, (july, august) = monthly_periods(live)
     unit = "R" + str(uuid.uuid4())[:6]
-    programme, indicator, _, _ = import_planned(live, [unit], calendar_id=calendar_id, period=july)
+    programme, indicator, _, _ = import_planned(live, [unit], calendar_id=calendar_id, period=july, year=2025)
     first = preview(
         live, create(live, "imports", batch_data(indicator, july, f"district,households\n{unit},3\n"))
     )

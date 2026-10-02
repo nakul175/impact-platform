@@ -198,16 +198,18 @@ def denied(ctx, operation, object_id, error):
     (principal, operation, capability, selector, status and reason; never a payload) so the request
     layer can record it after the refused transaction rolled back (security_events.record). The
     refusal itself is unchanged."""
-    error.denial = {
-        "tenant_id": ctx.tenant_id,
-        "principal_id": ctx.principal_id,
-        "operation_id": operation,
-        "capability": OPERATIONS[operation]["capability"],
-        "object_id": str(object_id) if object_id else None,
-        "status": error.status,
-        "code": error.code,
-        "reason_code": error.reason or error.code,
-    }
+    tenant, principal = getattr(ctx, "tenant_id", None), getattr(ctx, "principal_id", None)
+    if tenant and principal:
+        error.denial = {
+            "tenant_id": tenant,
+            "principal_id": principal,
+            "operation_id": operation,
+            "capability": OPERATIONS[operation]["capability"],
+            "object_id": str(object_id) if object_id else None,
+            "status": error.status,
+            "code": error.code,
+            "reason_code": error.reason or error.code,
+        }
     raise error
 
 

@@ -158,8 +158,8 @@ def test_route_template_strips_identifiers():
 
 def test_denials_are_recorded_collapsed_listed_and_exported(live):
     before = len(denials(live, "author", operation_id="create_audit_export"))
-    window_start = (datetime.now(timezone.utc) - timedelta(seconds=2)).isoformat()
-    # The author holds no audit.export: the same refusal five times collapses into one row.
+    # The author holds no audit.export: the same refusal five times collapses into one row (or into
+    # the row an earlier suite opened in the same 300-second window).
     correlations = []
     for _ in range(5):
         refused = export(live, export_body(), actor="author")
@@ -167,8 +167,9 @@ def test_denials_are_recorded_collapsed_listed_and_exported(live):
         correlations.append(refused.json()["correlation_id"])
     time.sleep(0.2)
     rows = denials(live, "author", operation_id="create_audit_export")
-    assert len(rows) == before + 1
+    assert len(rows) in (before, before + 1)
     row = rows[-1]
+    window_start = (row["first_at"] - timedelta(seconds=1)).isoformat()
     assert row["occurrences"] >= 5 and row["status"] == 403 and row["reason_code"] == "POLICY_DENIED"
     assert row["capability"] == "audit.export" and row["route"] == "/v1/tenants/{tenant_id}/audit-exports"
     assert str(row["last_correlation_id"]) == correlations[-1]
@@ -443,11 +444,15 @@ def test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept(live
             "SELECT count(*) AS n FROM impact.audit_event_current WHERE tenant_id=%s", (t,)
         ).fetchone()["n"]
         # An audit event far beyond any window: it must survive every sweep of this build.
-        ancient = c.execute(
-            "UPDATE impact.audit_event_current SET occurred_at=now()-interval '4000 days' WHERE tenant_id=%s AND object_id=("
-            "SELECT object_id FROM impact.audit_event_current WHERE tenant_id=%s ORDER BY occurred_at LIMIT 1) RETURNING object_id",
-            (t, t),
-        ).fetchone()["object_id"]
+        oldest = c.execute(
+            "SELECT object_id,occurred_at FROM impact.audit_event_current WHERE tenant_id=%s ORDER BY occurred_at LIMIT 1",
+            (t,),
+        ).fetchone()
+        ancient = oldest["object_id"]
+        c.execute(
+            "UPDATE impact.audit_event_current SET occurred_at=now()-interval '4000 days' WHERE tenant_id=%s AND object_id=%s",
+            (t, ancient),
+        )
     # Default window (seven years): the 3000-day row goes, the 400-day row stays.
     make_due(live)
     worker = make_worker(live)
@@ -485,6 +490,11 @@ def test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept(live
             "SELECT 1 FROM impact.audit_event_current WHERE tenant_id=%s AND object_id=%s", (t, ancient)
         ).fetchone()
     assert after >= audit_events
+    with live.db() as c:
+        c.execute(
+            "UPDATE impact.audit_event_current SET occurred_at=%s WHERE tenant_id=%s AND object_id=%s",
+            (oldest["occurred_at"], t, ancient),
+        )
     # Back to the seven-year default for the suites that follow.
     floor_policy = expect(
         live.request(live.path("retention-policies", created["object_id"]), actor="admin"), 200

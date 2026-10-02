@@ -573,7 +573,7 @@ groups = [
     ),
     (
         "FR-EVD-001",
-        "v0.22 stores evidence files in a private, content-addressed object store that is never served directly, backs evidence draft revisions by a CLEAN upload or an https reference with server-owned file name, type, size and digest, records citations of exact evidence revisions from observation and calculated-result revisions in the insert-only evidence_attachment register, and serves content only through a mediated, re-authorised, audited download (qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download exercises FT-EVD-001: version 1 is attached to an observation, version 2 is uploaded, and the observation still cites and serves version 1; test_attach_to_calculated_result_and_attachment_rules; test_access_is_capability_owner_and_tenant_bound; the registers natively in test_native_evidence_registers_are_fenced_and_insert_only). Not covered: sensitivity and retention, verification and dispute, repository search, annotations, links to findings and decisions, external-reference checking, an S3-compatible backend and a backup of the object volume.",
+        "v0.22 stores evidence files in a private, content-addressed object store that is never served directly, backs evidence draft revisions by a CLEAN upload or an https reference with server-owned file name, type, size and digest, records citations of exact evidence revisions from observation and calculated-result revisions in the insert-only evidence_attachment register, and serves content only through a mediated, re-authorised, audited download (qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download exercises FT-EVD-001: version 1 is attached to an observation, version 2 is uploaded, and the observation still cites and serves version 1; test_attach_to_calculated_result_and_attachment_rules; test_access_is_capability_owner_and_tenant_bound; the registers natively in test_native_evidence_registers_are_fenced_and_insert_only). QA 2026-10 degradation adds that a full or unavailable object store fails cleanly: uploads answer 503 OBJECT_STORE_FULL or OBJECT_STORE_UNAVAILABLE with no blob row, object or temporary file, and a download of a CLEAN object whose bytes cannot be read answers 503 with none of its bytes and no access row, the verdict staying CLEAN (qualification/test_native_degradation.py::test_object_store_full_or_unreadable_fails_cleanly_and_downloads_fail_closed; test_evidence_unit.py::test_store_failures_are_bounded_reason_codes_and_leave_no_partial_object). Not covered: sensitivity and retention, verification and dispute, repository search, annotations, links to findings and decisions, external-reference checking, an S3-compatible backend and a backup of the object volume.",
         [
             "apps/api/impact_api/object_store.py",
             "apps/api/impact_api/content_safety.py",
@@ -586,6 +586,8 @@ groups = [
             "docs/RELEASE-0.22.md",
             "tools/browser/evidence-check.mjs",
             "docs/evidence/evidence-browser-tests.json",
+            "qualification/test_native_degradation.py",
+            "docs/QA-DEGRADATION-2026-10.md",
         ],
     ),
     (
@@ -739,6 +741,43 @@ groups = [
             "docs/QA-A11Y-2026-10.md",
         ],
     ),
+    (
+        "VF-AVL-002",
+        "QA 2026-10 degradation (qualification/test_native_degradation.py, six tests: five on PGlite and natively, one native-only; docs/QA-DEGRADATION-2026-10.md) qualifies a bounded subset. Email is an isolated dependency: with no worker running, manual observation work continues, the invitation intent waits PENDING with no attempt, and one worker pass delivers it exactly once (test_worker_down_api_serves_intents_wait_and_one_pass_delivers_each_once); an SMTP server refusing connections is retried with backoff and dead-lettered with the class SMTP_CONNECTION and no secret in the log (test_smtp_refusing_connections_backs_off_then_dead_without_secrets_in_logs). The database and the identity provider are declared required dependencies of every authenticated journey, so the claim is fail closed and recover without restart, not isolation: a refused database answers 503 SERVICE_UNAVAILABLE, retryable, reason DATABASE_UNAVAILABLE (readiness too), leaves no receipt and the same operation commits once after recovery in the same process; a connection lost mid-write commits nothing (native only); after the 60-second cached key set expires bearer tokens are refused with 503 IDENTITY_PROVIDER_UNAVAILABLE, never accepted, while cookie sessions continue (stub provider). Object-store full or unavailable answers 503 OBJECT_STORE_FULL or OBJECT_STORE_UNAVAILABLE with no row, object or partial bytes (test_object_store_full_or_unreadable_fails_cleanly_and_downloads_fail_closed; test_evidence_unit.py::test_store_failures_are_bounded_reason_codes_and_leave_no_partial_object). Not met: no screen shows users the affected function, stale data or queued actions; AI, survey-connector and BI dependencies do not exist; PostgreSQL and Keycloak were never actually stopped (a TCP proxy and a stub provider stand in); no affected-cohort report.",
+        [
+            "qualification/test_native_degradation.py",
+            "qualification/test_evidence_unit.py",
+            "apps/api/impact_api/main.py",
+            "apps/api/impact_api/auth.py",
+            "apps/api/impact_api/object_store.py",
+            "docs/QA-DEGRADATION-2026-10.md",
+        ],
+    ),
+    (
+        "VF-PER-001",
+        "QA 2026-10 performance (scripts/perf.py, make perf, qualification/perf_harness.py, perf_support.py, test_perf_unit.py; docs/QA-PERFORMANCE-2026-10.md) measured one sandbox run on 1 October 2026: native PostgreSQL 16.13, one API process on the provisioned logins, 2 shared vCPUs under load from other suites, loopback HTTP timed by the client, workload seeded through the governed API only. Within the 2 s p95 / 5 s p99 bound with zero errors: record reads p95 97.5 ms (n 2020), 100-row lists p95 112.7 ms (n 400), saves p95 169.0 ms (n 1358), independent approvals p95 192.0 ms (n 1142) (performance-2026-10-01.json classes read.record, read.list100, write.save, write.approval). Outside the bound if counted as a save: the synchronous 500-row import commit took 14.4 s in one request under the tenant advisory lock (class import.commit, n 1). Not met: the FSD standard workload, peak and soak profiles are not quantified; no browser-side user-action timing; no run on the staging droplet; one sample on contended hardware is not a capacity statement.",
+        [
+            "scripts/perf.py",
+            "qualification/perf_harness.py",
+            "qualification/perf_support.py",
+            "qualification/test_perf_unit.py",
+            "docs/evidence/performance-2026-10-01.json",
+            "docs/evidence/performance-2026-10-01.md",
+            "docs/QA-PERFORMANCE-2026-10.md",
+        ],
+    ),
+    (
+        "VF-PER-006",
+        "v0.24's dashboard reads are uncached and computed per request, and the freshness block separates calculation and lock times (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions). QA 2026-10 performance measured propagation from calculation completion to the dashboard showing the new result_revision: 20 samples, p95 71.5 ms, p99 78.1 ms, zero errors, bounded by one dashboard read because nothing is cached (performance-2026-10-01.json class freshness.propagation, scenario freshness; one sandbox run on 2 shared vCPUs, docs/QA-PERFORMANCE-2026-10.md). Not met: collection and human-review delays are not recorded or displayed separately; no load, peak or staging measurement.",
+        [
+            "apps/api/impact_api/dashboards.py",
+            "qualification/test_dashboards.py",
+            "scripts/perf.py",
+            "qualification/perf_harness.py",
+            "docs/evidence/performance-2026-10-01.json",
+            "docs/QA-PERFORMANCE-2026-10.md",
+        ],
+    ),
 ]
 # Requirements that stay PENDING, with what the latest increments do and do not show for them.
 pending_notes = {
@@ -747,8 +786,11 @@ pending_notes = {
     "FR-IAM-007": "PENDING. Related v0.16 evidence, recorded so that it is not mistaken for coverage: the nominee of a recovery contact can confirm the registered email address with a single-use eight-digit code (channel-request/channel-confirm; 15-minute expiry, 5 attempts, at most 3 requests per contact per hour; the code is derived, never stored, and only its keyed hash is kept; qualification/test_worker.py). That verifies a channel for contact evidence only; it is not an identity change, a lost-factor recovery or a support path, and no test exercises the validation text (no support reset refusal, no restricted recovery case, no withheld privileges pending verification). Retain the original acceptance criteria; this requirement remains open.",
     "FR-ACC-008": "PENDING. Not touched by v0.16 although the delivery plan listed it for that increment: no support case, elevation grant, support session or tenant-ended access exists. The v0.16 worker runs on its own login and writes reminder notices as a per-tenant SERVICE principal without identity, membership or grant; that is not support access. Retain the original acceptance criteria; this requirement remains open.",
     "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). v0.16's worker re-reads each delivery intent immediately before sending and supersedes it when the invitation generation, the recovery-channel challenge or the notice recipient is no longer current (qualification/test_worker.py); that is a recheck of the intent, not a measured revocation bound, and no sensitive job class exists for the worker to reauthorise. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-PER-005": "PENDING. v0.23 renders PDF, XLSX and DOCX exports of a frozen package through the worker with acknowledgement as one synchronous transaction, job state as progress and cancellation before start (qualification/test_report_exports.py::test_export_request_is_one_queued_job_with_receipt_audit_and_exact_retry, test_cancellation_before_start_is_honoured_and_nothing_is_rendered); that is functional evidence only. No 100,000-row export, 50-page report, twenty-chart report, p95 or mixed-load measurement has been executed. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-PER-006": "PENDING. v0.24's dashboard reads are uncached and computed per request, so after approval and calculation the next read reflects the new value, and the freshness block separates calculation and lock times (qualification/test_dashboards.py::test_provisional_to_official_and_freshness_transitions); that is functional evidence only. No 60-second p95 timing, load or separate display of review delay has been measured. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-005": "PENDING. v0.23 renders PDF, XLSX and DOCX exports of a frozen package through the worker with acknowledgement as one synchronous transaction, job state as progress and cancellation before start (qualification/test_report_exports.py::test_export_request_is_one_queued_job_with_receipt_audit_and_exact_retry, test_cancellation_before_start_is_honoured_and_nothing_is_rendered). QA 2026-10 performance (docs/evidence/performance-2026-10-01.json, docs/QA-PERFORMANCE-2026-10.md) timed acknowledgement (9 samples, p95 81.9 ms) and in-process render of the small fixture packages (9 samples, p95 142.8 ms, no queue wait): too few samples and not the target workload. No 100,000-row export, 50-page report or twenty-chart report exists to measure. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-002": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json classes dashboard.warm and dashboard.cold; docs/QA-PERFORMANCE-2026-10.md): a 10-card programme dashboard read p95 242.0 ms over 50 reads at concurrency 4 in one sandbox run; cold reads have 3 samples only and no cache exists. No browser-rendered usability timing, filter change, drill-down or concurrent imports and report jobs were measured. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-004": "PENDING. Not measurable in this build: imports are bounded at 500 rows per batch and commit synchronously. QA 2026-10 performance (docs/evidence/performance-2026-10-01.json scenario import_max_batch) recorded one 500-row commit in 14.4 s, about 29 ms per produced observation under the tenant advisory lock; linear extrapolation to 100,000 rows would be far outside the 10-minute bound. No recalculation of 1,000 indicators was run. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-CAP-002": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json isolation.tenant_b.*): one probe of tenant B list reads during tenant A's 500-row import (p95 53.2 ms against 37.1 ms idle) and during 500 concurrent approvals (p95 103.0 ms, CPU sharing on 2 cores). No admission control, queue limits, burst recovery or per-tenant cohort report exists. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-SUP-001": "PENDING. Related QA 2026-10 documentation: docs/current/SUPPORT-RUNBOOK.md (support roles, health checks, the 13 closed alert codes of deploy/ops_alerts.py with first steps, incident first steps, escalation, ticket hygiene), with the owner console scripts deploy/reset-user.sh, list-users.sh, restore-drill.sh, rotate-secrets.sh and ops-check.sh exercised in the CI container-stack job. Open: named on-call and operational owners, support hours and response targets, alert delivery to a person, and rehearsed readiness exercises (critical incident, identity recovery, failed import, privacy deletion, report correction). Retain the original acceptance criteria; this requirement remains open.",
 }
 partial = {key: (description, evidence) for ids, description, evidence in groups for key in ids.split()}
 requirements = []

@@ -17,6 +17,10 @@ This set describes the full target product and the current development implement
 | Know which keys exist, what they protect and how they rotate | [Key and encryption register](KEY-AND-ENCRYPTION-REGISTER.md) (build 0.25.0) |
 | Check what accessibility has and has not been verified | [Accessibility statement](ACCESSIBILITY-STATEMENT.md) and [QA accessibility record](../QA-A11Y-2026-10.md) (build 0.25.0) |
 | Read the build 0.25.0 increment records | [v0.25 part A](../RELEASE-0.25a.md), [v0.25 part B](../RELEASE-0.25b.md), [operations hardening](../RELEASE-OPS-2026-10.md), [QA browser coverage](../QA-BROWSER-2026-10.md) |
+| Run Release 1 user acceptance | [UAT pack](UAT-PACK.md) — Release 1 user-acceptance pack (staging and local tracks, 22 scenarios, sign-off sheet) |
+| Support the staging service | [Support runbook](SUPPORT-RUNBOOK.md) — support roles, health checks, alert codes, incident first steps, escalation, ticket hygiene |
+| See what blocks Release 1 acceptance | [Release 1 acceptance gaps](RELEASE-1-ACCEPTANCE-GAPS.md) — what blocks Release 1 acceptance at build 0.25.0 |
+| Read the QA 2026-10 records merged onto build 0.25.0 | [degradation](../QA-DEGRADATION-2026-10.md), [performance harness](../QA-PERFORMANCE-2026-10.md) (evidence `../evidence/performance-2026-10-01.json`), [UAT pack, runbook and gaps](../QA-UAT-2026-10.md) |
 | Assess release readiness | [Release acceptance record](RELEASE-ACCEPTANCE.md) and [qualification evidence](../QUALIFICATION.md) |
 | Review exact requirement coverage | [Traceability CSV](TRACEABILITY.csv) and [completion ledger](../COMPLETION-LEDGER.md) |
 
@@ -57,7 +61,7 @@ Each Word document has a Markdown reading copy for GitHub. The editable Word fil
 
 ## Status and acceptance
 
-The ledger has **81 PARTIAL**, **226 PENDING** and **0 fully accepted** requirements (build 0.18.0, assessed 29 September 2026). The workbook records 29 exact integration/smoke passes, one blocked offline case, 176 cases with partial supporting coverage and 619 not run as full product cases. Those 29 passes already belong to the application checks (325 at edition 1.1; 441 on PGlite and 474 on native PostgreSQL at build 0.18.0); they are not additional executions.
+The ledger currently has **106 PARTIAL**, **201 PENDING** and **0 fully accepted** requirements (build 0.25.0 with the QA 2026-10 merges, 1 October 2026; `make ledger` regenerates it). The rest of this paragraph is the build 0.18.0 record: the ledger then had **81 PARTIAL**, **226 PENDING** and **0 fully accepted** requirements (assessed 29 September 2026). The workbook records 29 exact integration/smoke passes, one blocked offline case, 176 cases with partial supporting coverage and 619 not run as full product cases. Those 29 passes already belong to the application checks (325 at edition 1.1; 441 on PGlite and 474 on native PostgreSQL at build 0.18.0); they are not additional executions.
 
 The recorded runs used fresh in-memory PGlite and local identity/assurance, and since build 0.14.0 also single-node native PostgreSQL (16.13 locally, 17.11 in CI) with separately provisioned login roles, an API restart check, a CI-scale restore drill and a previous-schema upgrade check, since build 0.15.0 a live identity provider (a per-run development-mode Keycloak 26.7.4 with TOTP step-up and provider logout), and since build 0.16.0 a worker process on its own login delivering to a loopback SMTP sink and a synthetic sink, and since build 0.18.0 the results framework, targets and targets versus actuals (PGlite and native, plus a planning browser group). A connection pooler, database restart persistence, a backup regime, the owner's chosen identity provider, an email provider and other live providers, production operations, full UAT and formal approvals remain open. This edition adds no fabricated signoffs or test results. The baseline R1/R2/R3 requirement assignments are distinct from the later delivery-stage roadmap.
 

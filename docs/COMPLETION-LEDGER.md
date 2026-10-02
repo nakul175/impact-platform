@@ -2,7 +2,7 @@
 
 PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.
 
-Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 103, 'PENDING': 204}. Enterprise completion: **false**.
+Scope: 270 functional requirements and 37 non-functional qualification requirements. Status: {'PARTIAL': 106, 'PENDING': 201}. Enterprise completion: **false**.
 
 | Requirement | Title | Status | Evidence |
 |---|---|---|---|
@@ -139,7 +139,7 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-PAR-006 | Cohorts and follow up | PENDING | Pending |
 | FR-PAR-007 | Safeguarding and vulnerable people | PENDING | Pending |
 | FR-PAR-008 | Participant requests and corrections | PENDING | Pending |
-| FR-EVD-001 | Evidence repository | PARTIAL | [object_store.py](../apps/api/impact_api/object_store.py), [content_safety.py](../apps/api/impact_api/content_safety.py), [evidence.py](../apps/api/impact_api/evidence.py), [evidence_contracts.py](../apps/api/impact_api/evidence_contracts.py), [0023_evidence_objects.sql](../infrastructure/migrations/0023_evidence_objects.sql), [test_evidence.py](../qualification/test_evidence.py), [test_evidence_unit.py](../qualification/test_evidence_unit.py), [Evidence.tsx](../apps/web/src/Evidence.tsx), [RELEASE-0.22.md](../docs/RELEASE-0.22.md), [evidence-check.mjs](../tools/browser/evidence-check.mjs), [evidence-browser-tests.json](../docs/evidence/evidence-browser-tests.json) |
+| FR-EVD-001 | Evidence repository | PARTIAL | [object_store.py](../apps/api/impact_api/object_store.py), [content_safety.py](../apps/api/impact_api/content_safety.py), [evidence.py](../apps/api/impact_api/evidence.py), [evidence_contracts.py](../apps/api/impact_api/evidence_contracts.py), [0023_evidence_objects.sql](../infrastructure/migrations/0023_evidence_objects.sql), [test_evidence.py](../qualification/test_evidence.py), [test_evidence_unit.py](../qualification/test_evidence_unit.py), [Evidence.tsx](../apps/web/src/Evidence.tsx), [RELEASE-0.22.md](../docs/RELEASE-0.22.md), [evidence-check.mjs](../tools/browser/evidence-check.mjs), [evidence-browser-tests.json](../docs/evidence/evidence-browser-tests.json), [test_native_degradation.py](../qualification/test_native_degradation.py), [QA-DEGRADATION-2026-10.md](../docs/QA-DEGRADATION-2026-10.md) |
 | FR-EVD-002 | Evidence verification and provenance | PENDING | Pending |
 | FR-EVD-003 | Search and knowledge retrieval | PENDING | Pending |
 | FR-EVD-004 | Document versioning and annotations | PENDING | Pending |
@@ -276,17 +276,17 @@ Scope: 270 functional requirements and 37 non-functional qualification requireme
 | FR-UX-008 | Discoverability and help | PENDING | Pending |
 | FR-UX-009 | Status and trust cues | PARTIAL | [main.tsx](../apps/web/src/main.tsx), [reporting-check.mjs](../tools/browser/reporting-check.mjs), [IMPLEMENTATION.md](../docs/IMPLEMENTATION.md), [a11y.ts](../apps/web/src/a11y.ts), [a11y-check.mjs](../tools/browser/a11y-check.mjs), [a11y-browser-tests.json](../docs/evidence/a11y-browser-tests.json), [ACCESSIBILITY-STATEMENT.md](../docs/current/ACCESSIBILITY-STATEMENT.md), [QA-A11Y-2026-10.md](../docs/QA-A11Y-2026-10.md) |
 | FR-UX-010 | Usability evidence | PENDING | Pending |
-| VF-PER-001 | Interactive response | PENDING | Pending |
+| VF-PER-001 | Interactive response | PARTIAL | [perf.py](../scripts/perf.py), [perf_harness.py](../qualification/perf_harness.py), [perf_support.py](../qualification/perf_support.py), [test_perf_unit.py](../qualification/test_perf_unit.py), [performance-2026-10-01.json](../docs/evidence/performance-2026-10-01.json), [performance-2026-10-01.md](../docs/evidence/performance-2026-10-01.md), [QA-PERFORMANCE-2026-10.md](../docs/QA-PERFORMANCE-2026-10.md) |
 | VF-PER-002 | Dashboard response | PENDING | Pending |
 | VF-PER-003 | Search response | PENDING | Pending |
 | VF-PER-004 | Import and recalculation throughput | PENDING | Pending |
 | VF-PER-005 | Export and report generation | PENDING | Pending |
-| VF-PER-006 | Data freshness | PENDING | Pending |
+| VF-PER-006 | Data freshness | PARTIAL | [dashboards.py](../apps/api/impact_api/dashboards.py), [test_dashboards.py](../qualification/test_dashboards.py), [perf.py](../scripts/perf.py), [perf_harness.py](../qualification/perf_harness.py), [performance-2026-10-01.json](../docs/evidence/performance-2026-10-01.json), [QA-PERFORMANCE-2026-10.md](../docs/QA-PERFORMANCE-2026-10.md) |
 | VF-PER-007 | AI responsiveness | PENDING | Pending |
 | VF-CAP-001 | Supported object limits | PENDING | Pending |
 | VF-CAP-002 | Scaling and workload isolation | PENDING | Pending |
 | VF-AVL-001 | Core availability | PENDING | Pending |
-| VF-AVL-002 | Dependency degradation | PENDING | Pending |
+| VF-AVL-002 | Dependency degradation | PARTIAL | [test_native_degradation.py](../qualification/test_native_degradation.py), [test_evidence_unit.py](../qualification/test_evidence_unit.py), [main.py](../apps/api/impact_api/main.py), [auth.py](../apps/api/impact_api/auth.py), [object_store.py](../apps/api/impact_api/object_store.py), [QA-DEGRADATION-2026-10.md](../docs/QA-DEGRADATION-2026-10.md) |
 | VF-DR-001 | Disaster recovery | PENDING | Pending |
 | VF-DR-002 | Ordinary failure durability | PENDING | Pending |
 | VF-DR-003 | Recovery testing and backups | PARTIAL | [restore_drill.py](../scripts/restore_drill.py), [native-restore-drill.json](../docs/evidence/native-restore-drill.json), [native-qualification.json](../docs/evidence/native-qualification.json), [RELEASE-0.14.md](../docs/RELEASE-0.14.md), [OPERATIONS-GUIDE.md](../docs/current/OPERATIONS-GUIDE.md), [backup.sh](../deploy/backup.sh), [restore-drill.sh](../deploy/restore-drill.sh), [drill_restore.sh](../deploy/drill_restore.sh), [restore_check.py](../deploy/restore_check.py), [test_ops_unit.py](../qualification/test_ops_unit.py), [DEPLOYMENT-GUIDE.md](../docs/current/DEPLOYMENT-GUIDE.md), [RELEASE-OPS-2026-10.md](../docs/RELEASE-OPS-2026-10.md) |

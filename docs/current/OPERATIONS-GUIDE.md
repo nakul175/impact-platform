@@ -175,6 +175,8 @@ Infrastructure identifiers, production regions, accounts, domains, secrets custo
 
 ## Recovery and incident limits
 
+First steps for incidents, the closed alert codes, escalation and what must never be copied into a ticket are in the [support runbook](SUPPORT-RUNBOOK.md) (QA 2026-10); since build 0.24.0 DEAD and held deliveries are re-queued or released through the operator-only control-plane actions it describes, not by database edits.
+
 For compromised identities, current local session and account revocation tests establish denial under the implemented cutoff checks. Since v0.15 ending the person's sessions at the provider revokes the matching platform sessions through back-channel logout; no refresh token is issued, but an access token already issued remains valid on bearer requests until `exp` (keep access-token lifetimes short), and the identity cutoff (`auth_not_before`) remains the platform-side control. Distributed cache propagation and downstream cancellation require live qualification. For incorrect official results, preserve the approved snapshot, withdraw affected publication if authorized, and use governed correction and restatement.
 
 For unavailable owners, there is no qualified bypass. Recovery contacts are consent evidence only. For database outage or data loss, the target operational runbooks define the required recovery behavior; the scripted restore drill above has been executed only against disposable qualification databases; the staging server takes nightly backup sets and runs a weekly restore drill on the same server (deployment guide, section 6), but no production backup exists and no production restore drill has been performed. Incident records must distinguish attempted steps from verified outcomes.

@@ -85,7 +85,7 @@ What the owner cannot do alone — by design. The platform's rules require diffe
 
 - a platform operator **requests** a tenant and names its **owner**, who must be a different person;
 - the named owner **accepts** custody;
-- the owner nominates a **recovery contact**, who consents, and a platform operator who is neither requester nor owner approves it;
+- the owner nominates a **recovery contact**, who consents, and a platform operator who is neither the owner nor the nominee approves it (the requesting operator may approve);
 - a platform operator who is **neither the requester nor the owner activates** the tenant.
 
 So a first tenant needs at least three people (for example: you as requesting operator, a colleague as tenant owner, and a second operator to activate and approve), plus a recovery contact. The deployment makes only you an operator. To give others a sign-in, run in the console, once per person:
@@ -110,6 +110,8 @@ It creates their sign-in account with a one-time password (shown once in the con
 | Check the server is healthy | open https://168-144-78-191.sslip.io/deploy-status.json in a browser | `"result": "ok"` and `"alerts": []` when all is well (section 6.4) |
 
 Every add and reset is recorded (who, when, never the password) in `/opt/impact/state/admin-actions.log`. A **second platform operator** cannot be created by the scripts (the first-operator bootstrap refuses once any operator exists, and there is no operator-management screen yet); adding one is a deliberate database change by the owner and is not automated in this build.
+
+For running user acceptance on this server see the [UAT pack](UAT-PACK.md) (and [what still blocks hosted UAT](RELEASE-1-ACCEPTANCE-GAPS.md) §1); for incidents, alert codes and escalation see the [support runbook](SUPPORT-RUNBOOK.md).
 
 The tenant request form in **Tenant lifecycle** offers the server's deployment qualification: region `do-blr1`, privacy reference `staging-privacy-notice-v1` (a placeholder until a real privacy notice exists), retention up to 3,650 days, valid for one year. The operator authority and the qualification both expire after 365 days and must then be renewed by a deliberate database change; nothing renews them automatically.
 

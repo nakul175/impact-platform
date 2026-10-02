@@ -1,5 +1,14 @@
 # Documentation change record
 
+## QA 2026-10 merges onto build 0.25.0 — 1 October 2026
+
+Three qualification slices merged onto `integration/0.25` (PRs #63, #64, #65); build 0.25.0, schema 27, domain API 1.15.0 and platform API 1.6.0 are unchanged, and no requirement, priority, release assignment or expected behaviour changed.
+
+- QA 2026-10 degradation (#63): reason codes for database, identity-provider and object-store unavailability (D1–D3: `DATABASE_UNAVAILABLE`, `IDENTITY_PROVIDER_UNAVAILABLE`, `OBJECT_STORE_FULL`, `OBJECT_STORE_UNAVAILABLE`, all on `503 SERVICE_UNAVAILABLE`, retryable); degradation qualification for worker, database, provider, SMTP and object store (`qualification/test_native_degradation.py`, `docs/QA-DEGRADATION-2026-10.md`).
+- QA 2026-10 performance (#65): `scripts/perf.py`, `make perf`, `qualification/perf_harness.py`, `perf_support.py`, `test_perf_unit.py`; `scripts/run.py --perf`; one sandbox run recorded in `docs/evidence/performance-2026-10-01.json` (`docs/QA-PERFORMANCE-2026-10.md`).
+- QA 2026-10 — UAT pack, support runbook, Release 1 acceptance gaps (#64, documentation only): `UAT-PACK.md`, `SUPPORT-RUNBOOK.md`, `RELEASE-1-ACCEPTANCE-GAPS.md`, `docs/QA-UAT-2026-10.md`.
+- Integration: ledger 103 → 106 PARTIAL (VF-AVL-002, VF-PER-001, VF-PER-006 on the named evidence; VF-PER-002/004/005, VF-CAP-002 and VF-SUP-001 stay PENDING with related evidence recorded; FR-EVD-001 gains the object-store degradation evidence); DEPLOYMENT-GUIDE §4 recovery-contact approver wording corrected (the approving operator must be neither the owner nor the nominee); next delivery puts the hosted-UAT blockers A1–A4 before the rest of v0.26.
+
 ## Build 0.25.0 — 1 October 2026
 
 Integrated v0.25 security and privacy P0 as two parts (A: key governance, secrets rotation and audit export; B: privacy execution) with the October 2026 operations hardening and two QA passes (browser coverage and accessibility), without changing any requirement, priority, release assignment or expected outcome. Schema 27 (migration 0027 `b7fca975…728e1e9d`); domain API 1.15.0 (197 operations; 11 added); control plane 1.6.0 (35 operations; one added). Documentation edition 1.1 unchanged. Branch `integration/0.25`: PRs #57, #58, #60, #59 and #61 merged in that order onto build 0.24.0 (`integration/0.21-0.24`, PR #56).

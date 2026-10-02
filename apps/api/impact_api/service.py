@@ -78,6 +78,8 @@ READ_ROUTES = {
     "targets",
     "submissions",
     "imports",
+    "collection-rounds",
+    "assignments",
 }
 
 
@@ -106,6 +108,8 @@ WRITE_ROUTES = {
     "submissions",
     "imports",
     "evidence",
+    "collection-rounds",
+    "assignments",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -114,6 +118,8 @@ READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route
     **READS,
     "measurement-changes": "MeasurementChange",
     **PERIOD_READS,
+    # v0.27: a registry kind of 0002 without a projection, like CollectionPlan.
+    "collection-rounds": "CollectionRound",
 }
 ACTIONS = {
     "observations": {"submit"},
@@ -130,9 +136,10 @@ ACTIONS = {
     "frameworks": {"submit"},
     "targets": {"submit"},
     "forms": {"submit", "publish"},
-    "submissions": {"submit"},
+    "submissions": {"submit", "correct"},
     "imports": {"preview", "commit", "cancel"},
     "evidence": {"attach"},
+    "assignments": {"reassign"},
 }
 
 
@@ -494,6 +501,8 @@ class Service:
                 "cancel",
                 "export",
                 "cancel-export",
+                "correct",
+                "reassign",
             } and not any(
                 g["capability"] == OPERATIONS[op]["capability"]
                 and g["scope_type"] == "TENANT"
@@ -522,6 +531,10 @@ class Service:
                 receipt = self.reporting.request_disclosure(c, ctx, body["data"])
             elif action == "submit" and kind == "Submission":
                 receipt = self.forms.submit(c, ctx, previous, body["data"], correlation)
+            elif action == "correct" and kind == "Submission":
+                receipt = self.forms.correct(c, ctx, previous, body["data"], correlation)
+            elif action == "reassign" and kind == "Assignment":
+                receipt = self.forms.reassign(c, ctx, previous, body["data"])
             elif action == "publish" and kind == "Form":
                 receipt = self.forms.publish(c, ctx, previous, body["data"])
             elif kind == "ImportJob" and action == "preview":
@@ -574,6 +587,10 @@ class Service:
                 if kind == "Submission":
                     data["review_state"] = "DRAFT"
                     self.forms.validate_submission(c, ctx, data, previous)
+                if kind == "CollectionRound":
+                    self.forms.validate_round(c, ctx, data, previous)
+                if kind == "Assignment":
+                    self.forms.validate_assignment(c, ctx, data, previous)
                 if kind == "Target":
                     # Pinned again by the next submission; never carried into an edited draft.
                     data.pop("indicator_version", None)

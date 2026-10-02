@@ -3144,7 +3144,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Open (Draft) assignments only; a completed assignment is never reassigned. The new assignee must be an active principal other than the current one; the previous assignee and the reason are recorded in the new revision.",
       "audit": true
     },
     {
@@ -5174,6 +5174,85 @@
       "audit": false
     },
     {
+      "operation_id": "action_submissions_correct",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct",
+      "capability": "submission.correct",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "additional_capabilities_when_bound": [
+        "observation.submit",
+        "indicator-instances.read",
+        "indicator-definitions.read",
+        "programmes.read",
+        "workflow-templates.read"
+      ],
+      "state_guard": "Submitted only, with every produced observation Returned by its reviewer. The corrected answers are validated against the pinned version; each returned observation gets a new revision submitted into the same review, and the corrector joins its authors."
+    },
+    {
+      "operation_id": "list_collection_rounds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds",
+      "capability": "collection-rounds.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_collection_rounds",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds",
+      "capability": "collection-rounds.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_collection_rounds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}",
+      "capability": "collection-rounds.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "patch_collection_rounds",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}",
+      "capability": "collection-rounds.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "action_forms_submit",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit",
@@ -5192,6 +5271,38 @@
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/forms/{object_id}/published",
       "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_form_completeness",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/completeness",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_round_coverage",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage",
+      "capability": "collection-rounds.read",
       "role_templates": [
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",

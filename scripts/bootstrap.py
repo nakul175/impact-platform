@@ -97,6 +97,11 @@ def bootstrap(local, idp=None):
                 "disclosures.read",
                 "publication.download",
                 "form.submit",
+                # v0.27: collection rounds, the correction of returned responses.
+                "collection-rounds.read",
+                "collection-rounds.draft.create",
+                "collection-rounds.draft.edit",
+                "submission.correct",
                 "imports.read",
                 "imports.draft.create",
                 "imports.draft.edit",

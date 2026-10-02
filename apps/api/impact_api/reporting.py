@@ -10,6 +10,7 @@ from html import escape
 from uuid import uuid4
 
 from .domain import DomainError, unavailable
+from .report_charts import CHART_NOTE, MAX_BARS, MAX_CHARTS_PER_SECTION, chart_models, chart_rows, chart_svg
 from .store import audit, authorize, context, hash_data, load, write
 
 
@@ -22,6 +23,8 @@ REPORT_STYLE = (
     "border-bottom:1px solid #ccd6cf}th{background:#f1f5ed}.bound-number{font-weight:700}"
     "footer{margin-top:48px;padding-top:16px;border-top:1px solid #ccd6cf;font-size:12px;"
     "color:#586d62}code{overflow-wrap:anywhere}"
+    "figure{margin:24px 0}figure svg{max-width:100%;height:auto;font-family:system-ui}"
+    "figcaption{font-size:13px;color:#586d62;margin-top:8px}"
 )
 REPORT_STYLE_HASH = base64.b64encode(hashlib.sha256(REPORT_STYLE.encode()).digest()).decode()
 REPORT_CSP = (
@@ -72,12 +75,16 @@ class Reporting:
             raise DomainError("VALIDATION_FAILED", reason="REQUIRED_REPORT_SECTION_MISSING")
         snapshot_results = set(snapshot["payload"].get("result_versions", []))
         snapshot_evidence = set(snapshot["payload"].get("evidence_versions", []))
+        snapshot_targets = set(snapshot["payload"].get("target_versions", []))
         bindings = []
         evidence = []
+        charts = []
+        targets = {}
         for section in sections:
             codes = [binding["binding_code"] for binding in section["bindings"]]
             if len(codes) != len(set(codes)):
                 raise DomainError("VALIDATION_FAILED", reason="DUPLICATE_NUMERIC_BINDING")
+            section_results = {}
             template_section = next(
                 (
                     item
@@ -111,6 +118,7 @@ class Reporting:
                     raise DomainError("INVALID_STATE", 409, reason="OFFICIAL_RESULT_REQUIRED")
                 if any(binding[key] != payload.get(key) for key in ["unit", "display_decimals"]):
                     raise DomainError("INCOMPATIBLE_MEASURE")
+                section_results[binding["binding_code"]] = result
                 bindings.append(
                     {
                         "section_code": section["section_code"],
@@ -121,6 +129,7 @@ class Reporting:
                         "display_decimals": payload.get("display_decimals"),
                     }
                 )
+            charts += self._reconcile_charts(c, ctx, section, section_results, snapshot_targets, targets)
             for evidence_revision in section["evidence_revisions"]:
                 if evidence_revision not in snapshot_evidence:
                     raise DomainError("VALIDATION_FAILED", reason="EVIDENCE_NOT_IN_SNAPSHOT")
@@ -142,12 +151,76 @@ class Reporting:
             "bindings": bindings,
             "evidence": evidence,
         }
+        if charts:
+            # Packages without charts keep the digest they were frozen with.
+            digest_input["charts"] = charts
         return {
             "snapshot": snapshot,
             "template": template,
             "bindings": bindings,
+            "targets": targets,
             "digest": hash_data(digest_input),
         }
+
+    def _reconcile_charts(self, c, ctx, section, section_results, snapshot_targets, targets):
+        """Every chart bar is one of the section's own bound OFFICIAL results; a pinned target is a
+        Target revision the snapshot locked for the same indicator and period; bars of one chart
+        share unit and display places. Returns the digest entries of the section's charts and fills
+        `targets` with the pinned target payloads."""
+        from .service import revision
+
+        charts = section.get("charts") or []
+        if len(charts) > MAX_CHARTS_PER_SECTION:
+            raise DomainError("VALIDATION_FAILED", reason="REPORT_CHART_LIMIT")
+        chart_codes = [chart["chart_code"] for chart in charts]
+        if len(chart_codes) != len(set(chart_codes)):
+            raise DomainError("VALIDATION_FAILED", reason="DUPLICATE_REPORT_CHART")
+        entries = []
+        for chart in charts:
+            if not 1 <= len(chart["series"]) <= MAX_BARS:
+                raise DomainError("VALIDATION_FAILED", reason="REPORT_CHART_SERIES_LIMIT")
+            measures = set()
+            series_entries = []
+            for series in chart["series"]:
+                result = section_results.get(series["binding_code"])
+                if result is None:
+                    raise DomainError("VALIDATION_FAILED", reason="UNKNOWN_CHART_BINDING")
+                payload = result["payload"]
+                measures.add((payload.get("unit"), payload.get("display_decimals")))
+                target_revision = series.get("target_revision")
+                if target_revision:
+                    if target_revision not in snapshot_targets:
+                        raise DomainError("VALIDATION_FAILED", reason="TARGET_NOT_IN_SNAPSHOT")
+                    target = revision(c, ctx, target_revision, "Target", "targets.read")
+                    bound = c.execute(
+                        "SELECT indicator_id,period_id FROM impact.result_binding WHERE tenant_id=%s AND result_id=%s",
+                        (ctx.tenant_id, result["object_id"]),
+                    ).fetchone()
+                    if (
+                        not bound
+                        or str(bound["indicator_id"]) != target["payload"].get("indicator_id")
+                        or str(bound["period_id"]) != target["payload"].get("period_id")
+                        or target["payload"].get("target_basis") == "BASELINE"
+                    ):
+                        raise DomainError("VALIDATION_FAILED", reason="CHART_TARGET_MISMATCH")
+                    targets[target_revision] = target["payload"]
+                series_entries.append(
+                    {
+                        "binding_code": series["binding_code"],
+                        "result_revision": str(result["revision_id"]),
+                        "target_revision": target_revision,
+                    }
+                )
+            if len(measures) > 1:
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="CHART_MIXED_MEASURES")
+            entries.append(
+                {
+                    "section_code": section["section_code"],
+                    "chart_code": chart["chart_code"],
+                    "series": series_entries,
+                }
+            )
+        return entries
 
     def bind(self, c, ctx, report, approved):
         package = self.reconcile(c, ctx, report["payload"], complete=True)
@@ -240,6 +313,27 @@ class Reporting:
                         )
                     )
                 chunks.append("</tbody></table>")
+            for chart in chart_models(section, values, package.get("targets")):
+                chunks.append(
+                    '<figure id="chart-%s">%s<figcaption>%s. %s</figcaption>'
+                    % (
+                        escape(chart["chart_code"]),
+                        chart_svg(chart),
+                        escape(chart["title"]),
+                        escape(CHART_NOTE),
+                    )
+                )
+                chunks.append(
+                    '<table><caption>Chart data: %s</caption><thead><tr><th scope="col">Bar</th>'
+                    '<th scope="col">Official value</th><th scope="col">Unit</th><th scope="col">Target</th>'
+                    '<th scope="col">Value state</th></tr></thead><tbody>' % escape(chart["title"])
+                )
+                for row in chart_rows(chart):
+                    chunks.append(
+                        '<tr><th scope="row">%s</th>%s</tr>'
+                        % (escape(row[0]), "".join("<td>%s</td>" % escape(cell) for cell in row[1:]))
+                    )
+                chunks.append("</tbody></table></figure>")
             chunks.append("</section>")
         chunks.append(
             "<footer><p>Report <code>%s</code> · revision <code>%s</code></p>"

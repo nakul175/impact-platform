@@ -285,6 +285,52 @@ try {
       fullPage: true,
     });
   });
+  await test("Drill-down lists the official value's source rows with their disposition", async () => {
+    await card()
+      .getByRole("button", { name: "Show sources", exact: true })
+      .click();
+    const sources = page.getByRole("region", { name: "Source observations" });
+    await sources.waitFor();
+    await sources
+      .getByText("Dispositions refer to the official value shown on the card", {
+        exact: false,
+      })
+      .waitFor();
+    await sources
+      .getByText("every source row of the period is listed", { exact: false })
+      .waitFor();
+    const table = sources.getByRole("table", { name: "Source observations" });
+    await table.getByText("included", { exact: true }).first().waitFor();
+    assert.equal(await table.locator("tbody tr").count(), 2);
+    await table.getByText("(50/100)", { exact: false }).waitFor();
+    await table.getByText("(1/10)", { exact: false }).waitFor();
+    await card()
+      .getByRole("button", { name: "Hide sources", exact: true })
+      .click();
+    await sources.waitFor({ state: "detached" });
+  });
+  await test("The portfolio pools the official value across programmes from stored components", async () => {
+    await page.getByRole("tab", { name: "Portfolio", exact: true }).click();
+    await label("Portfolio definition").selectOption({ label: name });
+    await label("Portfolio period").selectOption({ label: period.data.code });
+    const totals = page.locator(".portfolio-totals");
+    await totals.getByText("46.36", { exact: true }).waitFor();
+    await totals.getByText("(51/110)", { exact: false }).waitFor();
+    await totals
+      .getByText("pooled ratio over 1 of 1", { exact: false })
+      .waitFor();
+    const rows = page.getByRole("table", { name: "Portfolio programmes" });
+    await rows.getByText(programme, { exact: true }).waitFor();
+    await rows.getByText("Locked", { exact: true }).waitFor();
+    await page.screenshot({
+      path: path.join(root, "docs/evidence/dashboard-portfolio.png"),
+      fullPage: true,
+    });
+    await page
+      .getByRole("tab", { name: "Programme dashboard", exact: true })
+      .click();
+    await card().waitFor();
+  });
   await test("The seeded fixture 46.36 is never attributed to a programme", async () => {
     await label("Dashboard programme").selectOption({
       label: "Safe Water 2026",

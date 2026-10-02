@@ -511,6 +511,44 @@ def create_app():
             cursor=cursor,
         )
 
+    @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-sources")
+    def indicator_dashboard_sources(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_dashboard_sources",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/indicator-definitions/{obj}/portfolio")
+    def indicator_definition_portfolio(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_definition_portfolio",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
+
     @app.get("/v1/tenants/{tenant}/publication-recipients")
     def publication_recipients(request: Request, tenant: str):
         return service.reporting.recipients(auth.resolve(request), uuid(tenant))

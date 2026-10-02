@@ -28,6 +28,7 @@ from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
 from .operators import Operators
 from .ops_metrics import OpsMetrics, RequestMetrics
+from .status import Status
 from .version import BUILD, DOMAIN_API, SCHEMA
 from .audit_export import AuditExports
 from .dashboards import Dashboards
@@ -105,6 +106,7 @@ def create_app():
     operators = Operators(lifecycle)
     request_metrics = RequestMetrics()
     ops_metrics = OpsMetrics(lifecycle, request_metrics)
+    status = Status(lifecycle)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
@@ -415,6 +417,11 @@ def create_app():
     @app.post("/auth/sessions/{session_id}/revoke")
     def revoke_session(request: Request, session_id: str):
         return account.revoke(auth.resolve(request), uuid(session_id))
+
+    @app.get("/v1/status")
+    def service_status(request: Request):
+        # Every signed-in identity; the closed notice catalogue, plus detail for platform operators.
+        return status.read(auth.resolve(request))
 
     @app.get("/v1/runtime-manifest")
     def manifest(request: Request):

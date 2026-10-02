@@ -334,23 +334,53 @@ jobs:
           systemctl list-timers 'impact-*' --all --no-pager
           test -s /etc/logrotate.d/impact || { echo "::error title=logrotate::no /etc/logrotate.d/impact"; exit 1; }
           sudo logrotate --debug /etc/logrotate.d/impact > logrotate.out 2>&1 || { echo "::error title=logrotate::$(tail -n 5 logrotate.out | tr '\n' ' ')"; exit 1; }
-      - name: An injected failure (worker stopped) is alerted by the next check, and clears
+      - name: Readiness exercise - an injected failure (worker stopped) is alerted, delivered to a webhook, and clears
         run: |
-          compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
-          compose stop worker
-          stopped=$(date +%s)
-          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh | tee injected.json
-          alerted=$(date +%s)
-          python3 -c "import json,sys; c=json.load(open('injected.json'))['alerts']; ok='CONTAINER_UNHEALTHY' in c and 'WORKER_STALE' in c; print('' if ok else '::error title=injected failure::alerts '+json.dumps(c)); sys.exit(0 if ok else 1)"
-          echo "::notice title=alert latency::worker stopped -> alerts $(python3 -c "import json; print(json.load(open('injected.json'))['alerts'])") in $((alerted - stopped)) s of one check (the timer runs every 300 s)"
-          compose start worker
-          for i in $(seq 1 30); do
-            sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh > cleared.json
-            python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; sys.exit(0 if 'WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c else 1)" && break
-            sleep 5
-          done
-          cat cleared.json
-          python3 -c "import json,sys; c=json.load(open('cleared.json'))['alerts']; ok='WORKER_STALE' not in c and 'CONTAINER_UNHEALTHY' not in c; print('' if ok else '::error title=alerts after restart::'+json.dumps(c)); sys.exit(0 if ok else 1)"
+          # Release 0.27: the exercise script stops the worker, expects WORKER_STALE and
+          # CONTAINER_UNHEALTHY from the next check, restarts it, waits for the alerts to clear, and
+          # simulates a nearly full disk against a scratch copy. Alert transitions are delivered to a
+          # loopback webhook receiver that verifies the HMAC signature.
+          export ALERT_WEBHOOK_SECRET="ci-webhook-secret-$(date +%s)"
+          python3 scripts/webhook_receiver.py --port 18080 --log "$RUNNER_TEMP/webhook.jsonl" > receiver.out 2>&1 &
+          sleep 1
+          printf 'ALERT_WEBHOOK_URL=http://127.0.0.1:18080/hook\nALERT_WEBHOOK_SECRET=%s\n' "$ALERT_WEBHOOK_SECRET" | sudo tee -a "$IMPACT_HOME/config.env" >/dev/null
+          # The baseline check consumes the alerts that were already active, so the exercise sees only its own.
+          sudo IMPACT_HOME="$IMPACT_HOME" deploy/ops-check.sh >/dev/null
+          started=$(date +%s)
+          if ! sudo IMPACT_HOME="$IMPACT_HOME" deploy/readiness-exercise.sh | tee exercise.out; then
+            echo "::error title=readiness exercise::failed; see readiness-exercise.json"
+            sudo cat "$IMPACT_HOME/ops/readiness-exercise.json" || true
+            exit 1
+          fi
+          sudo cat "$IMPACT_HOME/ops/readiness-exercise.json" | tee readiness-exercise.json
+          python3 - <<'PY'
+          import json
+          record = json.load(open("readiness-exercise.json"))
+          steps = {s["step"]: s for s in record["steps"]}
+          assert record["outcome"] == "PASS", record
+          assert "WORKER_STALE" in steps["worker_stopped"]["detail"]["alerts"], steps["worker_stopped"]
+          assert "CONTAINER_UNHEALTHY" in steps["worker_stopped"]["detail"]["alerts"], steps["worker_stopped"]
+          print("::notice title=readiness exercise::PASS; worker stopped -> alerted in %ss, restarted -> cleared in %ss (%s checks); disk simulation %s" % (
+              steps["worker_stopped"]["seconds"], steps["worker_started"]["seconds"],
+              steps["worker_started"]["detail"]["checks"], steps["disk_simulation"]["outcome"]))
+          PY
+          cp "$RUNNER_TEMP/webhook.jsonl" webhook.jsonl
+          python3 - <<'PY'
+          import json
+          received = [json.loads(line) for line in open("webhook.jsonl")]
+          assert received, "the webhook receiver got nothing"
+          assert all(r["signature_valid"] is True for r in received), [r["signature_valid"] for r in received]
+          events = [(e["event"], sorted(a["code"] for a in e["alerts"])) for r in received for e in r["body"]["events"]]
+          assert any(k == "NEW" and "WORKER_STALE" in codes for k, codes in events), events
+          assert any(k == "CLEARED" and "WORKER_STALE" in codes for k, codes in events), events
+          assert any(k == "NEW" and "DISK_LOW" in codes for k, codes in events), events
+          assert any(k == "CLEARED" and "DISK_LOW" in codes for k, codes in events), events
+          text = json.dumps(received)
+          assert "ci-webhook-secret" not in text and all(r["body"]["schema"] == "impact-alert-v1" for r in received)
+          assert all(r["body"]["text"].startswith("[impact ") for r in received), [r["body"]["text"][:60] for r in received]
+          print("::notice title=alert delivery::%d signed webhook deliveries: %s" % (len(received), json.dumps(events)))
+          PY
+          pkill -f scripts/webhook_receiver.py || true
       - name: Smoke check after the sign-in
         run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-final.json
       - name: Status and logs on failure

@@ -82,6 +82,7 @@ BROWSER_MODES = {
     "requeue-browser": "requeue-check.mjs",
     "a11y-browser": "a11y-check.mjs",
     "operators-browser": "operators-check.mjs",
+    "status-browser": "status-check.mjs",
     "idp-browser": "idp-check.mjs",
 }
 # Browser modes that sign in through the live provider rather than the development login.

@@ -1,0 +1,26 @@
+{
+  "schema": "impact-on-call-v1",
+  "updated_at": "2026-10-02",
+  "valid_until": "2027-01-01T00:00:00Z",
+  "timezone": "Asia/Kolkata",
+  "primary": {
+    "name": "Server owner (example)",
+    "role": "Engineer on call",
+    "contact": "+91 00000 00000 · oncall@example.org",
+    "hours": "Mon-Fri 09:00-18:00 IST; critical alerts any time"
+  },
+  "secondary": {
+    "name": "Second operator (example)",
+    "role": "Platform operator",
+    "contact": "operator@example.org",
+    "hours": "Mon-Fri 09:00-18:00 IST"
+  },
+  "escalation": [
+    {
+      "name": "Product owner (example)",
+      "role": "Decisions: data loss, rollback past a migration, scope",
+      "contact": "owner@example.org"
+    }
+  ],
+  "notes": "Copy this file to <impact home>/ops/on-call.json (mode 0644) and edit it; the API shows it to platform operators only (Tenant lifecycle > Workers and the service-notice detail)."
+}

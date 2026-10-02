@@ -162,6 +162,28 @@ contract_operations = {
     if isinstance(operation, dict) and "operationId" in operation
 }
 policy["operations"] = [row for row in policy["operations"] if row["operation_id"] in contract_operations]
+# Release 0.27 (the error-enum erratum of QA 2026-10): every dependency failure has answered
+# `503 SERVICE_UNAVAILABLE` since v0.1 while the baseline named the code DEPENDENCY_UNAVAILABLE.
+# The wire behaviour is unchanged; the contract now admits the code that is sent (the baseline's
+# name stays in the enum as the documented design alias) and describes 503 responses by what the
+# implementation returns. Response-side only: no request schema or policy row changes.
+error_code = schemas["Error"]["properties"]["code"]
+if "SERVICE_UNAVAILABLE" not in error_code["enum"]:
+    error_code["enum"].insert(error_code["enum"].index("DEPENDENCY_UNAVAILABLE") + 1, "SERVICE_UNAVAILABLE")
+error_code["description"] = (
+    "SERVICE_UNAVAILABLE is the code sent for every dependency failure (HTTP 503, retryable), with "
+    "reason_code DATABASE_UNAVAILABLE, IDENTITY_PROVIDER_UNAVAILABLE, OBJECT_STORE_FULL, "
+    "OBJECT_STORE_UNAVAILABLE, OBJECT_MISSING or PLATFORM_NOT_CONFIGURED when the cause is known. "
+    "DEPENDENCY_UNAVAILABLE is the design name for the same condition and is never sent."
+)
+for node in spec["paths"].values():
+    for operation in node.values():
+        response = operation.get("responses", {}).get("503") if isinstance(operation, dict) else None
+        if isinstance(response, dict) and response.get("description") == "DEPENDENCY_UNAVAILABLE":
+            response["description"] = (
+                "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency "
+                "failed; retryable, with reason_code when the cause is known."
+            )
 # The published domain API version comes from VERSION.json (impact_api/version.py).
 spec["info"]["version"] = DOMAIN_API
 policy["version"] = DOMAIN_API

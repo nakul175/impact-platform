@@ -12,6 +12,7 @@ server-side encryption, bucket versioning off since keys are immutable); it is n
 this build and `object_store()` refuses any backend other than "filesystem".
 """
 
+import errno
 import hashlib
 import os
 import re
@@ -20,6 +21,17 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from .domain import DomainError
+
+# A full volume or exhausted quota; any other operating-system failure of the store is unavailability.
+FULL = {errno.ENOSPC, errno.EDQUOT}
+
+
+def store_failure(exc):
+    """The bounded error for an operating-system failure of the store: never a traceback, a path or
+    the bytes, always SERVICE_UNAVAILABLE (retryable) with a reason code."""
+    reason = "OBJECT_STORE_FULL" if getattr(exc, "errno", None) in FULL else "OBJECT_STORE_UNAVAILABLE"
+    return DomainError("SERVICE_UNAVAILABLE", 503, reason=reason)
+
 
 KEY = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[0-9a-f]{2}/[0-9a-f]{64}$")
 
@@ -79,6 +91,12 @@ class FilesystemObjectStore(ObjectStore):
             # which a write never repairs silently.
             self.get(key, sha256_hex)
             return key
+        try:
+            return self.write(key, target, data)
+        except OSError as exc:
+            raise store_failure(exc) from None
+
+    def write(self, key, target, data):
         old = os.umask(0o077)
         try:
             target.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -108,6 +126,8 @@ class FilesystemObjectStore(ObjectStore):
             data = self.path(key).read_bytes()
         except FileNotFoundError:
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="OBJECT_MISSING") from None
+        except OSError as exc:
+            raise store_failure(exc) from None
         if hashlib.sha256(data).hexdigest() != sha256_hex:
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="OBJECT_INTEGRITY_FAILED")
         return data

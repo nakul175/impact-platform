@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 import hashlib
 import hmac
 import json
+import logging
 import secrets
 import time
 import base64
@@ -17,6 +18,7 @@ from .keyring import KeyringError, ring, signing_keys
 from .identity_profile import normalize_email, email_hash, masked_email
 
 
+LOG = logging.getLogger("impact")
 SESSION_ACTIVITY_INTERVAL_SECONDS = 30
 # OpenID Connect Back-Channel Logout 1.0, section 2.4.
 BACKCHANNEL_LOGOUT_EVENT = "http://schemas.openid.net/event/backchannel-logout"
@@ -102,6 +104,12 @@ class Auth:
             if claims.get("azp", self.s.client_id) != self.s.client_id:
                 raise ValueError
             return claims
+        except jwt.PyJWKClientConnectionError:
+            # The provider's key set could not be fetched (outage, timeout, refused connection) and no
+            # cached key set is current: no bearer token is accepted, and the caller is told the
+            # provider is unavailable rather than that its credential is wrong.
+            LOG.warning("identity provider key set unavailable")
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="IDENTITY_PROVIDER_UNAVAILABLE") from None
         except (jwt.PyJWTError, ValueError, OSError):
             raise DomainError("AUTH_REQUIRED", 401) from None
 
@@ -458,6 +466,8 @@ class Auth:
                 timeout=8,
                 follow_redirects=False,
             )
+            if response.status_code >= 500:
+                raise httpx.TransportError("provider token endpoint status " + str(response.status_code))
             response.raise_for_status()
             id_token = response.json()["id_token"]
             claims = self.claims(id_token, self.s.client_id)
@@ -468,6 +478,11 @@ class Auth:
             sid = claims.get("sid")
             if sid is not None and (not isinstance(sid, str) or not sid or len(sid) > 255):
                 raise ValueError
+        except httpx.TransportError:
+            # Provider outage at the code exchange: no session is created and the consumed state
+            # cannot be replayed; the caller must start a new sign-in once the provider is back.
+            LOG.warning("identity provider token endpoint unavailable")
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="IDENTITY_PROVIDER_UNAVAILABLE") from None
         except (httpx.HTTPError, KeyError, ValueError, TypeError):
             raise DomainError("AUTH_REQUIRED", 401) from None
         identity = self.identity(claims)

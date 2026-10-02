@@ -40,7 +40,7 @@ from psycopg.types.json import Jsonb
 
 from .contracts import validate
 from .domain import DomainError, unavailable
-from .retention import SCHEDULE
+from .retention import effective
 from .store import audit, authorize, canonical, context, envelope, hash_data, load, write
 
 ERASED_NAME = "Erased member"
@@ -1018,7 +1018,12 @@ class Privacy:
         with self.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "list_retention_schedule")
-            return {"items": SCHEDULE, "next_cursor": None, "scope_label": "Retention schedule of this build"}
+            # v0.27: the effective schedule (approved tenant policies over the fixed defaults).
+            return {
+                "items": effective(c, tenant),
+                "next_cursor": None,
+                "scope_label": "Effective retention schedule of this workspace",
+            }
 
     def retention_proofs(self, identity, tenant):
         with self.db.transaction(tenant) as c:

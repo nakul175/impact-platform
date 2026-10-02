@@ -21,6 +21,7 @@ from impact_api.export_contracts import augment as augment_exports  # noqa: E402
 from impact_api.dashboard_contracts import augment as augment_dashboards  # noqa: E402
 from impact_api.audit_export_contracts import augment as augment_audit_export  # noqa: E402
 from impact_api.privacy_contracts import augment as augment_privacy  # noqa: E402
+from impact_api.retention_contracts import augment as augment_retention  # noqa: E402
 from impact_api.tenant_contracts import openapi as platform_openapi  # noqa: E402
 from impact_api.version import DOMAIN_API  # noqa: E402
 
@@ -149,6 +150,7 @@ augment_exports(spec, policy)
 augment_dashboards(spec, policy)
 augment_audit_export(spec, policy)
 augment_privacy(spec, policy)
+augment_retention(spec, policy)
 # v0.26a: reference-data commands, after the read paths the measurement and period augmenters rebuild.
 augment_reference(spec, policy)
 # A baseline policy row whose operation no longer exists in the contract (its path and method

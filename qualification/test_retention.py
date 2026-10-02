@@ -257,7 +257,14 @@ def test_sweep_removes_only_expired_items_and_proves_each_class(live):
     assert {p["job_id"] for p in listed["items"][:4]} == {str(sweep_jobs(live)[-1]["job_id"])}
     schedule = expect(live.request(live.path("retention-schedule"), actor="admin"), 200)
     validate("RetentionSchedule", schedule)
-    assert schedule["items"] == SCHEDULE
+    # v0.27: the read is the effective schedule; every class still on its default equals the catalogue.
+    expected = {c["data_class"]: c for c in SCHEDULE}
+    assert {i["data_class"] for i in schedule["items"]} == set(expected)
+    for item in schedule["items"]:
+        if item["source"] == "DEFAULT":
+            assert {k: v for k, v in item.items() if k not in {"source", "policy_id"}} == expected[
+                item["data_class"]
+            ]
     expect(live.request(live.path("retention-proofs"), actor="author"), 403)
     expect(live.request(live.path("retention-proofs"), actor="other_tenant"), 404)
 

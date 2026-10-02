@@ -1189,8 +1189,8 @@ class Worker:
                 ):
                     raise StaleLease()
                 results = retention_schedule.apply(c, tenant)
-                for data_class, (cutoff, items) in sorted(results.items()):
-                    policy = retention_schedule.CLASSES[data_class]
+                # v0.27: the effective policy per class (an approved tenant binding or the default).
+                for data_class, (cutoff, items, policy) in sorted(results.items()):
                     digest = retention_schedule.digest(items)
                     c.execute(
                         "INSERT INTO impact.retention_proof(tenant_id,proof_id,job_id,lease_generation,data_class,"

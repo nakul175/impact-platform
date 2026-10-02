@@ -2,6 +2,7 @@
 
 | Method | Path | Capability |
 |---|---|---|
+| GET | `/v1/tenants/{tenant_id}/access-denials` | `access-denials.read` |
 | GET | `/v1/tenants/{tenant_id}/access-groups` | `groups.read` |
 | POST | `/v1/tenants/{tenant_id}/access-groups` | `groups.manage` |
 | POST | `/v1/tenants/{tenant_id}/access-groups/{object_id}/actions/remove-member` | `groups.manage` |
@@ -175,6 +176,14 @@
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download` | `report.export` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests` | `restatement-requests.read` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests/{object_id}` | `restatement-requests.read` |
+| GET | `/v1/tenants/{tenant_id}/retention-holds` | `retention-holds.read` |
+| POST | `/v1/tenants/{tenant_id}/retention-holds` | `retention.hold` |
+| POST | `/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release` | `retention.release` |
+| GET | `/v1/tenants/{tenant_id}/retention-policies` | `retention-policies.read` |
+| POST | `/v1/tenants/{tenant_id}/retention-policies` | `retention-policies.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | `retention-policies.read` |
+| PATCH | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | `retention-policies.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve` | `retention-policy.approve` |
 | GET | `/v1/tenants/{tenant_id}/retention-proofs` | `retention.read` |
 | GET | `/v1/tenants/{tenant_id}/retention-schedule` | `retention.read` |
 | GET | `/v1/tenants/{tenant_id}/role-templates` | `role-templates.read` |

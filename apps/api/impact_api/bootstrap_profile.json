@@ -2,6 +2,7 @@
   "version": "initial-access-v2",
   "roles": {
     "TENANT_ADMIN": [
+      "access-denials.read",
       "access-requests.read",
       "access-scopes.create",
       "access-scopes.read",
@@ -27,7 +28,14 @@
       "organisation-units.read",
       "ownership.transfer",
       "reference-data.manage",
+      "retention-holds.read",
+      "retention-policies.draft.create",
+      "retention-policies.draft.edit",
+      "retention-policies.read",
+      "retention-policy.approve",
+      "retention.hold",
       "retention.read",
+      "retention.release",
       "role-templates.read",
       "roles.manage",
       "uploads.read"
@@ -353,7 +361,14 @@
       "publication.download",
       "report.withdraw",
       "reports.read",
+      "retention-holds.read",
+      "retention-policies.draft.create",
+      "retention-policies.draft.edit",
+      "retention-policies.read",
+      "retention-policy.approve",
+      "retention.hold",
       "retention.read",
+      "retention.release",
       "uploads.read"
     ],
     "AUDIT_READER": [

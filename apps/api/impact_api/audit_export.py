@@ -6,7 +6,9 @@ The tenant's audit events are AuditEvent registry objects whose revisions are in
 
 - content: JSON Lines, one canonical JSON object per event with identifiers, codes, the revision
   digest and a running hash chain (no payload text, secret, sealed value or address exists in these
-  columns, and nothing else is read);
+  columns, and nothing else is read); since v0.27 the collapsed access denials of the window are
+  lines of the same stream (outcome DENIED, occurrences = the collapsed count, no revision) and
+  every page is registered durably in impact.audit_export_register;
 - manifest: tenant, window, purpose, page, counts, the SHA-256 of the content, the chain start and
   end, the fields, and an HMAC-SHA256 seal over the manifest under a key derived from the current
   cookie secret (named by its kid; verifiable by the platform during the key's grace window);
@@ -48,16 +50,28 @@ FIELDS = [
     "object_reference",
     "correlation_id",
     "specification_ref",
+    "occurrences",
     "chain",
 ]
 CHAIN_ALGORITHM = "chain_i = SHA-256(chain_{i-1} bytes || SHA-256(canonical JSON line without chain)); hex"
 SEAL_PURPOSE = b"impact-audit-export-seal-v1"
+# v0.27: audit events and collapsed access denials (security events) in one ordered stream. A
+# denial line has outcome DENIED, action_type = the refused operation, the principal as actor, the
+# selector as object_reference, the first correlation id, specification_ref FR-SEC-007/<reason>
+# and occurrences = the collapsed count; it has no revision (null revision fields).
 QUERY = (
-    "SELECT a.object_id,a.revision_id,a.occurred_at,a.action_type,a.outcome,a.real_actor_id,"
-    "a.effective_actor_id,a.object_reference,a.correlation_id,a.specification_ref,v.payload_sha256 "
+    "SELECT * FROM ("
+    "SELECT a.object_id AS event_id,a.revision_id,v.payload_sha256,a.occurred_at,a.action_type,a.outcome,"
+    "a.real_actor_id,a.effective_actor_id,a.object_reference,a.correlation_id,a.specification_ref,"
+    "NULL::integer AS occurrences "
     "FROM impact.audit_event_current a JOIN impact.object_revision v "
     "ON v.tenant_id=a.tenant_id AND v.object_id=a.object_id AND v.revision_id=a.revision_id "
-    "WHERE a.tenant_id=%s AND a.occurred_at>=%s AND a.occurred_at<%s"
+    "WHERE a.tenant_id=%s AND a.occurred_at>=%s AND a.occurred_at<%s "
+    "UNION ALL "
+    "SELECT d.denial_id,NULL::uuid,NULL::bytea,d.first_at,d.operation_id,'DENIED',d.principal_id,d.principal_id,"
+    "d.object_id,d.first_correlation_id,'FR-SEC-007/'||d.reason_code,d.occurrences "
+    "FROM impact.access_denial d WHERE d.tenant_id=%s AND d.first_at>=%s AND d.first_at<%s"
+    ") a WHERE TRUE"
 )
 
 
@@ -159,27 +173,26 @@ class AuditExports:
             [self.service.cursor_binding(ctx, ROUTE), window[0], window[1], data["purpose"]]
         ).hex()
         position = self.service.cursor_key(binding, data.get("cursor"))
-        query, args = QUERY, [ctx.tenant_id, start, end]
+        query, args = QUERY, [ctx.tenant_id, start, end, ctx.tenant_id, start, end]
         if position:
             after, after_id, sequence, chain, page = position
-            query += " AND (a.occurred_at,a.object_id)>(%s::timestamptz,%s::uuid)"
+            query += " AND (a.occurred_at,a.event_id)>(%s::timestamptz,%s::uuid)"
             args += [after, after_id]
             page += 1
         else:
             sequence, chain, page = 0, genesis(ctx.tenant_id, *window), 1
         limit = data.get("limit", DEFAULT_LIMIT)
-        rows = c.execute(
-            query + " ORDER BY a.occurred_at,a.object_id LIMIT %s", args + [limit + 1]
-        ).fetchall()
+        rows = c.execute(query + " ORDER BY a.occurred_at,a.event_id LIMIT %s", args + [limit + 1]).fetchall()
         more, rows = len(rows) > limit, rows[:limit]
-        chain_start, first, lines = chain, sequence + 1 if rows else None, []
+        chain_start, first, lines, denials = chain, sequence + 1 if rows else None, [], 0
         for row in rows:
             sequence += 1
+            denials += row["occurrences"] is not None
             record = {
                 "sequence": sequence,
-                "event_id": str(row["object_id"]),
-                "revision_id": str(row["revision_id"]),
-                "revision_sha256": bytes(row["payload_sha256"]).hex(),
+                "event_id": str(row["event_id"]),
+                "revision_id": text(row["revision_id"]),
+                "revision_sha256": bytes(row["payload_sha256"]).hex() if row["payload_sha256"] else None,
                 "occurred_at": stamp(row["occurred_at"]),
                 "action_type": row["action_type"],
                 "outcome": row["outcome"],
@@ -188,6 +201,7 @@ class AuditExports:
                 "object_reference": text(row["object_reference"]),
                 "correlation_id": text(row["correlation_id"]),
                 "specification_ref": row["specification_ref"],
+                "occurrences": row["occurrences"],
             }
             chain = link(chain, record)
             lines.append(canonical({**record, "chain": chain}).decode())
@@ -224,6 +238,7 @@ class AuditExports:
             "page": page,
             "first_sequence": first,
             "event_count": len(lines),
+            "denial_count": denials,
             "complete": not more,
             "media_type": "application/x-ndjson",
             "content_sha256": hashlib.sha256(content.encode()).hexdigest(),
@@ -234,10 +249,36 @@ class AuditExports:
             "fields": FIELDS,
         }
         manifest["seal"] = seal(self.s, manifest)
+        # v0.27: the durable register row (insert-only) keyed by the export's own audit event, so the
+        # window, purpose, digest, chain and seal key outlive the 7-day operation receipt.
+        c.execute(
+            "INSERT INTO impact.audit_export_register(tenant_id,export_id,principal_id,purpose,reason,window_start,"
+            "window_end,page,first_sequence,event_count,denial_count,content_sha256,chain_start,chain_end,"
+            "seal_key_id,correlation_id,created_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+            (
+                ctx.tenant_id,
+                export_id,
+                ctx.principal_id,
+                data["purpose"],
+                data["reason"],
+                start,
+                end,
+                page,
+                first,
+                len(lines),
+                denials,
+                bytes.fromhex(manifest["content_sha256"]),
+                bytes.fromhex(chain_start),
+                bytes.fromhex(chain),
+                manifest["seal"]["key_id"],
+                correlation,
+                generated,
+            ),
+        )
         next_cursor = None
         if more:
             last = rows[-1]
             next_cursor = self.service.next_cursor(
-                binding, [last["occurred_at"].isoformat(), str(last["object_id"]), sequence, chain, page]
+                binding, [last["occurred_at"].isoformat(), str(last["event_id"]), sequence, chain, page]
             )
         return {"manifest": manifest, "content": content, "next_cursor": next_cursor}

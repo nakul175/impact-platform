@@ -108,6 +108,15 @@ def bootstrap(local, idp=None):
                 # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
                 "audit.export",
                 "retention.read",
+                # v0.27: denial auditing read, retention policies with approval, retention holds.
+                "access-denials.read",
+                "retention-policies.read",
+                "retention-policies.draft.create",
+                "retention-policies.draft.edit",
+                "retention-policy.approve",
+                "retention-holds.read",
+                "retention.hold",
+                "retention.release",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",

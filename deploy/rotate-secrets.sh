@@ -2,7 +2,7 @@
 # Rotate or retire the application's own secrets on the staging server without printing a value.
 #
 #   sudo /opt/impact/repo/deploy/rotate-secrets.sh status
-#   sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family cookie|invitation|delivery|all \
+#   sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family cookie|invitation|delivery|provisioner|all \
 #        [--grace-days N] [--reason TEXT] [--dry-run]
 #   sudo /opt/impact/repo/deploy/rotate-secrets.sh retire --family F (--kid K | --all-previous | --expired) \
 #        [--reason TEXT] [--dry-run]
@@ -13,6 +13,13 @@
 # family changed) so they read the new keyring. The output names key ids (kids) only. A rotation
 # keeps the old secret in IMPACT_<FAMILY>_SECRET_PREVIOUS until it is retired; see
 # docs/current/DEPLOYMENT-GUIDE.md "Rotating the application secrets".
+#
+# The provisioner family (v0.27) is the `impact-provisioner` client secret shared with Keycloak: it
+# has no grace list. The new value is written to the env files first, then Keycloak is re-aligned
+# to it through deploy/keycloak_admin.py rotate-provisioner (inside the idp-admin job, which reads
+# compose.env), then the api is recreated. Should the re-alignment fail, the files already hold the
+# new value and the next deploy/update.sh run re-aligns the provider itself (its "account
+# provisioning client" step); until then account creation answers PROVIDER_ADMIN_UNAVAILABLE.
 #
 # The identity provider's token-signing keys are Keycloak's and are rotated in Keycloak (the API
 # verifies bearer tokens through the realm JWKS by kid); database login passwords are not covered.
@@ -62,6 +69,14 @@ if [ "$command" = "status" ] || [ -n "$dry_run" ]; then
 fi
 
 require_compose_env
+realign="$(printf '%s' "$result" | python3 -c 'import json,sys; print(" ".join(json.load(sys.stdin).get("provider_realign", [])))')"
+if [ -n "$realign" ]; then
+  log "re-aligning the identity provider: $realign"
+  provider="$(compose run --rm -T idp-admin python deploy/keycloak_admin.py rotate-provisioner 2>/dev/null | last_json)" || true
+  log "provider: $provider"
+  [ -n "$provider" ] && [ -z "$(printf '%s' "$provider" | json_field error)" ] ||
+    die "the identity provider was not re-aligned; the files hold the new secret and the next deploy/update.sh run re-aligns it (see the header)"
+fi
 services="$(printf '%s' "$result" | python3 -c 'import json,sys; print(" ".join(json.load(sys.stdin).get("restart_required", [])))')"
 if [ -z "$services" ]; then
   log "nothing to restart"

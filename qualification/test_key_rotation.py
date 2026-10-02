@@ -260,6 +260,58 @@ def test_env_file_rotation_is_atomic_private_and_prints_kids_only(tmp_path, caps
     assert env_secrets(env)["IMPACT_DELIVERY_SECRET_PREVIOUS"] == ""
 
 
+def test_provisioner_family_rotates_without_grace_and_asks_for_the_provider_realignment(tmp_path, capsys):
+    """v0.27: the identity provider's client secret is one value on each side. A rotation writes the
+    new value to the env file only (the wrapper re-aligns Keycloak and recreates the api), keeps no
+    previous value, cannot be retired, exists only in env-file mode, and prints kids only."""
+    env = tmp_path / "secrets.env"
+    env.write_text("IMPACT_COOKIE_SECRET=" + "c" * 96 + "\nIMPACT_PROVISIONER_SECRET=" + "p" * 48 + "\n")
+    env.chmod(0o600)
+    code, status, _ = run_script(capsys, "--env-file", str(env), "status")
+    assert code == 0 and status["families"]["provisioner"]["grace"] == []
+    assert status["families"]["provisioner"]["current"]["kid"] == key_id("provisioner", "p" * 48)
+    code, out, _ = run_script(
+        capsys, "--env-file", str(env), "--dry-run", "rotate", "--family", "provisioner"
+    )
+    assert code == 0 and out["dry_run"] and env_secrets(env)["IMPACT_PROVISIONER_SECRET"] == "p" * 48
+    assert out["provider_realign"] == ["provisioner"] and out["restart_required"] == []
+    code, out, _ = run_script(
+        capsys, "--env-file", str(env), "rotate", "--family", "provisioner", "--reason", "drill"
+    )
+    rotated = env_secrets(env)
+    assert code == 0 and rotated["IMPACT_PROVISIONER_SECRET"] != "p" * 48
+    assert (
+        len(rotated["IMPACT_PROVISIONER_SECRET"]) >= 48
+        and "IMPACT_PROVISIONER_SECRET_PREVIOUS" not in rotated
+    )
+    assert rotated["IMPACT_COOKIE_SECRET"] == "c" * 96
+    assert out["restart_required"] == ["api"] and out["provider_realign"] == ["provisioner"]
+    (result,) = out["results"]
+    assert result["grace_kid"] is None and result["new_kid"] == key_id(
+        "provisioner", rotated["IMPACT_PROVISIONER_SECRET"]
+    )
+    register = json.loads((tmp_path / "secrets.env.keys.json").read_text())
+    assert register["keys"]["provisioner:" + key_id("provisioner", "p" * 48)]["retired_at"]
+    assert register["events"][-1]["replaced"] == key_id("provisioner", "p" * 48)
+    printed = json.dumps([out, register])
+    assert "p" * 48 not in printed and rotated["IMPACT_PROVISIONER_SECRET"] not in printed
+    # `all` rotates it with the rest and asks for the re-alignment; retirement is refused.
+    code, out, _ = run_script(capsys, "--env-file", str(env), "rotate", "--family", "all")
+    assert code == 0 and out["provider_realign"] == ["provisioner"]
+    assert sorted(r["family"] for r in out["results"]) == ["cookie", "provisioner"]
+    code, _, err = run_script(
+        capsys, "--env-file", str(env), "retire", "--family", "provisioner", "--all-previous"
+    )
+    assert code == 2 and "no grace secret" in err
+    code, out, _ = run_script(capsys, "--env-file", str(env), "retire", "--family", "all", "--all-previous")
+    assert code == 0 and [r["family"] for r in out["results"]] == ["cookie"] and out["provider_realign"] == []
+    run = tmp_path / "run"
+    run.mkdir()
+    (run / "config.json").write_text(json.dumps({"cookie_secret": "c" * 96}))
+    code, _, err = run_script(capsys, "--config-dir", str(run), "rotate", "--family", "provisioner")
+    assert code == 2 and "not configured" in err
+
+
 def test_signing_family_needs_a_run_directory(tmp_path, capsys):
     env = tmp_path / "secrets.env"
     env.write_text("IMPACT_COOKIE_SECRET=" + "c" * 96 + "\n")

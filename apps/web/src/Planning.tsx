@@ -29,7 +29,42 @@ type Node = {
   owner_id: string | null;
   indicator_ids: string[];
 };
+type Relationship = {
+  relationship_id: string;
+  from_node_id: string;
+  to_node_id: string;
+  relationship_type: string;
+  rationale: string;
+  evidence_strength: string;
+  assumption_ids: string[];
+  external_context: string | null;
+};
+type Assumption = {
+  assumption_id: string;
+  kind: string;
+  node_ids: string[];
+  statement: string;
+  expected_condition: string | null;
+  evidence: string | null;
+  owner_id: string | null;
+  review_date: string;
+  status: string;
+  assessed_by?: string;
+  assessed_at?: string;
+};
 const LEVELS = ["IMPACT", "OUTCOME", "OUTPUT", "ACTIVITY"];
+const RELATIONSHIP_TYPES: Record<string, string> = {
+  CONTRIBUTES_TO: "contributes to",
+  DEPENDS_ON: "depends on",
+};
+const EVIDENCE = ["STRONG", "MODERATE", "WEAK", "UNTESTED"];
+const ASSUMPTION_KINDS = ["ASSUMPTION", "RISK", "CONTEXT"];
+const ASSUMPTION_STATUSES = ["UNTESTED", "HOLDS", "AT_RISK", "INVALID"];
+const BAND_LABELS: Record<string, string> = {
+  ON_TRACK: "On track",
+  AT_RISK: "At risk",
+  OFF_TRACK: "Off track",
+};
 const tabs = {
   framework: "Framework",
   targets: "Targets",
@@ -115,6 +150,73 @@ function Tree({
   return (
     <section className="planning-tree" aria-label="Results hierarchy">
       {nodes.length ? render(null, 0) : <p className="muted">No nodes yet.</p>}
+    </section>
+  );
+}
+
+function TheoryOfChange({
+  nodes,
+  relationships,
+  assumptions,
+  members,
+}: {
+  nodes: Node[];
+  relationships: Relationship[];
+  assumptions: Assumption[];
+  members: any[];
+}) {
+  const title = (id: string) =>
+    nodes.find((n) => n.node_id === id)?.title || id.slice(0, 8);
+  const name = (id: string | null) =>
+    members.find((m) => m.principal_id === id)?.display_name ||
+    (id ? id.slice(0, 8) : "not assigned");
+  if (!relationships.length && !assumptions.length) return null;
+  return (
+    <section className="planning-theory" aria-label="Theory of change">
+      <h3>Theory of change</h3>
+      {relationships.length ? (
+        <ul aria-label="Relationships">
+          {relationships.map((r) => (
+            <li key={r.relationship_id}>
+              <strong>{title(r.from_node_id)}</strong>{" "}
+              {RELATIONSHIP_TYPES[r.relationship_type] || r.relationship_type}{" "}
+              <strong>{title(r.to_node_id)}</strong>
+              <small className="muted">
+                {" "}
+                · {r.evidence_strength.toLowerCase()} evidence · {r.rationale}
+                {r.assumption_ids?.length
+                  ? " · rests on " + r.assumption_ids.length + " assumption(s)"
+                  : ""}
+                {r.external_context ? " · context: " + r.external_context : ""}
+              </small>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">No relationships recorded.</p>
+      )}
+      {assumptions.length > 0 && (
+        <ul aria-label="Assumptions">
+          {assumptions.map((a) => (
+            <li key={a.assumption_id}>
+              <span className={"badge assumption-" + a.status.toLowerCase()}>
+                {a.status.replaceAll("_", " ")}
+              </span>{" "}
+              <strong>{a.kind.toLowerCase()}</strong>: {a.statement}
+              <small className="muted">
+                {" "}
+                · owner {name(a.owner_id)} · review by {a.review_date}
+                {a.node_ids.length
+                  ? " · conditions " + a.node_ids.map(title).join(", ")
+                  : ""}
+                {a.assessed_at
+                  ? " · assessed " + a.assessed_at.slice(0, 10)
+                  : ""}
+              </small>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
@@ -644,6 +746,35 @@ const SOURCES: Record<string, string> = {
   CALCULATION: "latest calculation",
 };
 
+function ProgressCell({ progress }: { progress: any }) {
+  return (
+    <>
+      {progress.status.replaceAll("_", " ")}
+      {progress.band && (
+        <span className={"badge band-" + progress.band.toLowerCase()}>
+          {" "}
+          {BAND_LABELS[progress.band]}
+        </span>
+      )}
+      {progress.attainment_percent && (
+        <small>
+          {" "}
+          ·{" "}
+          {progress.attainment_percent === "Undefined"
+            ? "attainment undefined"
+            : progress.attainment_percent + "% of target"}
+        </small>
+      )}
+      {progress.displayed_deviation && (
+        <small className="muted">
+          {" "}
+          · deviation {progress.displayed_deviation}
+        </small>
+      )}
+    </>
+  );
+}
+
 function Progress({
   view,
   framework,
@@ -691,6 +822,19 @@ function Progress({
                         · {r.node_ids.map(nodeTitle).join(", ")}
                       </small>
                     ) : null}
+                    {(r.assumption_flags || []).map((a: any) => (
+                      <small key={a.assumption_id}>
+                        <br />
+                        <span
+                          className={
+                            "badge assumption-" + a.status.toLowerCase()
+                          }
+                        >
+                          {a.kind.toLowerCase()} {a.status.replaceAll("_", " ")}
+                        </span>{" "}
+                        {a.statement}
+                      </small>
+                    ))}
                   </td>
                   <td>
                     {r.period_code || r.period_id.slice(0, 8)}
@@ -717,6 +861,17 @@ function Progress({
                         {(m.due_at || "").slice(0, 10)}
                       </small>
                     ))}
+                    {r.amended_after_close && r.amended_target && (
+                      <small>
+                        <br />
+                        <span className="badge amended">
+                          Amended after close
+                        </span>{" "}
+                        {targetValue(r.amended_target)} ·{" "}
+                        {r.amended_target.target_basis.toLowerCase()} · applies
+                        prospectively
+                      </small>
+                    )}
                   </td>
                   <td>
                     {r.actual.mode === "NONE" ? (
@@ -742,20 +897,12 @@ function Progress({
                     )}
                   </td>
                   <td>
-                    {r.progress.status.replaceAll("_", " ")}
-                    {r.progress.attainment_percent && (
+                    <ProgressCell progress={r.progress} />
+                    {r.amended_progress && (
                       <small>
-                        {" "}
-                        ·{" "}
-                        {r.progress.attainment_percent === "Undefined"
-                          ? "attainment undefined"
-                          : r.progress.attainment_percent + "% of target"}
-                      </small>
-                    )}
-                    {r.progress.displayed_deviation && (
-                      <small className="muted">
-                        {" "}
-                        · deviation {r.progress.displayed_deviation}
+                        <br />
+                        Against the amended target:{" "}
+                        <ProgressCell progress={r.amended_progress} />
                       </small>
                     )}
                   </td>
@@ -846,6 +993,17 @@ function FrameworkEditor(
           },
         ]);
   const [nodes, setNodes] = useState<Node[]>(seed.map((n) => ({ ...n })));
+  const source = row?.data || baseline || {};
+  const [relationships, setRelationships] = useState<Relationship[]>(
+    (source.relationships || []).map((r: Relationship) => ({
+      ...r,
+      assumption_ids: r.assumption_ids || [],
+      external_context: r.external_context || null,
+    })),
+  );
+  const [assumptions, setAssumptions] = useState<Assumption[]>(
+    (source.assumptions || []).map((a: Assumption) => ({ ...a })),
+  );
   const [label, setLabel] = useState(
     row?.data.version_label || (baseline ? "Revision" : "Baseline"),
   );
@@ -854,6 +1012,15 @@ function FrameworkEditor(
   );
   const update = (i: number, change: Partial<Node>) =>
     setNodes(nodes.map((n, j) => (j === i ? { ...n, ...change } : n)));
+  const updateLink = (i: number, change: Partial<Relationship>) =>
+    setRelationships(
+      relationships.map((r, j) => (j === i ? { ...r, ...change } : r)),
+    );
+  const updateAssumption = (i: number, change: Partial<Assumption>) =>
+    setAssumptions(
+      assumptions.map((a, j) => (j === i ? { ...a, ...change } : a)),
+    );
+  const nodeTitle = (n: Node) => n.title || n.node_type.toLowerCase();
   function submit(e: React.FormEvent) {
     e.preventDefault();
     const data: Record<string, any> = {
@@ -863,13 +1030,25 @@ function FrameworkEditor(
         owner_id: n.owner_id || null,
         parent_node_id: n.parent_node_id || null,
       })),
+      relationships: relationships.map((r) => ({
+        ...r,
+        external_context: r.external_context || null,
+      })),
+      // Who assessed an assumption's status is server-owned; send only its content.
+      assumptions: assumptions.map(
+        ({ assessed_by: _by, assessed_at: _at, ...a }) => ({
+          ...a,
+          owner_id: a.owner_id || null,
+          expected_condition: a.expected_condition || null,
+          evidence: a.evidence || null,
+        }),
+      ),
       ...(effective
         ? { effective_from: new Date(effective + "T00:00:00Z").toISOString() }
         : {}),
     };
     if (!row) {
       data.programme_id = programme;
-      data.relationships = [];
       if (baseline) data.supersedes_revision = baseline.revision_id;
     }
     void send(
@@ -1034,8 +1213,315 @@ function FrameworkEditor(
       >
         Add node
       </button>
+      <h3>Theory of change</h3>
+      <p className="muted">
+        A relationship states how one result contributes to another, with its
+        rationale and evidence strength. It never creates a numeric rule: the
+        parent result stays uncalculated until an approved method exists.
+      </p>
+      {relationships.map((r, i) => (
+        <fieldset key={r.relationship_id} className="planning-node-editor">
+          <legend>Relationship {i + 1}</legend>
+          <div className="form-grid">
+            <label>
+              From node {i + 1}
+              <select
+                aria-label={"Relationship from " + (i + 1)}
+                value={r.from_node_id}
+                onChange={(e) =>
+                  updateLink(i, { from_node_id: e.target.value })
+                }
+              >
+                {nodes.map((n) => (
+                  <option key={n.node_id} value={n.node_id}>
+                    {nodeTitle(n)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Relationship type {i + 1}
+              <select
+                aria-label={"Relationship type " + (i + 1)}
+                value={r.relationship_type}
+                onChange={(e) =>
+                  updateLink(i, { relationship_type: e.target.value })
+                }
+              >
+                {Object.entries(RELATIONSHIP_TYPES).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              To node {i + 1}
+              <select
+                aria-label={"Relationship to " + (i + 1)}
+                value={r.to_node_id}
+                onChange={(e) => updateLink(i, { to_node_id: e.target.value })}
+              >
+                {nodes.map((n) => (
+                  <option key={n.node_id} value={n.node_id}>
+                    {nodeTitle(n)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Evidence strength {i + 1}
+              <select
+                aria-label={"Evidence strength " + (i + 1)}
+                value={r.evidence_strength}
+                onChange={(e) =>
+                  updateLink(i, { evidence_strength: e.target.value })
+                }
+              >
+                {EVIDENCE.map((s) => (
+                  <option key={s} value={s}>
+                    {s.toLowerCase()}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <label>
+            Rationale {i + 1}
+            <textarea
+              required
+              maxLength={2000}
+              value={r.rationale}
+              onChange={(e) => updateLink(i, { rationale: e.target.value })}
+            />
+          </label>
+          <label>
+            External context {i + 1}
+            <input
+              maxLength={2000}
+              value={r.external_context || ""}
+              onChange={(e) =>
+                updateLink(i, { external_context: e.target.value })
+              }
+            />
+          </label>
+          {assumptions.length > 0 && (
+            <div
+              role="group"
+              aria-label={"Relationship assumptions " + (i + 1)}
+            >
+              {assumptions.map((a) => (
+                <label key={a.assumption_id} className="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={r.assumption_ids.includes(a.assumption_id)}
+                    onChange={(e) =>
+                      updateLink(i, {
+                        assumption_ids: e.target.checked
+                          ? [...r.assumption_ids, a.assumption_id]
+                          : r.assumption_ids.filter(
+                              (x) => x !== a.assumption_id,
+                            ),
+                      })
+                    }
+                  />{" "}
+                  Relationship {i + 1} rests on: {a.statement || a.kind}
+                </label>
+              ))}
+            </div>
+          )}
+          <button
+            type="button"
+            className="secondary"
+            onClick={() =>
+              setRelationships(relationships.filter((_, j) => j !== i))
+            }
+          >
+            Remove relationship {i + 1}
+          </button>
+        </fieldset>
+      ))}
+      <button
+        type="button"
+        className="secondary"
+        disabled={nodes.length < 2}
+        onClick={() =>
+          setRelationships([
+            ...relationships,
+            {
+              relationship_id: crypto.randomUUID(),
+              from_node_id: nodes[1].node_id,
+              to_node_id: nodes[0].node_id,
+              relationship_type: "CONTRIBUTES_TO",
+              rationale: "",
+              evidence_strength: "MODERATE",
+              assumption_ids: [],
+              external_context: null,
+            },
+          ])
+        }
+      >
+        Add relationship
+      </button>
+      <h3>Assumptions and context</h3>
+      <p className="muted">
+        An assumption, risk or context record conditions the results it is
+        linked to. Marking it invalid flags those results for review; it never
+        changes a recorded actual.
+      </p>
+      {assumptions.map((a, i) => (
+        <fieldset key={a.assumption_id} className="planning-node-editor">
+          <legend>Assumption {i + 1}</legend>
+          <div className="form-grid">
+            <label>
+              Assumption kind {i + 1}
+              <select
+                aria-label={"Assumption kind " + (i + 1)}
+                value={a.kind}
+                onChange={(e) => updateAssumption(i, { kind: e.target.value })}
+              >
+                {ASSUMPTION_KINDS.map((k) => (
+                  <option key={k} value={k}>
+                    {k.toLowerCase()}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Assumption status {i + 1}
+              <select
+                aria-label={"Assumption status " + (i + 1)}
+                value={a.status}
+                onChange={(e) =>
+                  updateAssumption(i, { status: e.target.value })
+                }
+              >
+                {ASSUMPTION_STATUSES.map((s) => (
+                  <option key={s} value={s}>
+                    {s.replaceAll("_", " ").toLowerCase()}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Assumption owner {i + 1}
+              <select
+                aria-label={"Assumption owner " + (i + 1)}
+                value={a.owner_id || ""}
+                onChange={(e) =>
+                  updateAssumption(i, { owner_id: e.target.value || null })
+                }
+              >
+                <option value="">Not assigned</option>
+                {members.map((m) => (
+                  <option key={m.principal_id} value={m.principal_id}>
+                    {m.display_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Assumption review date {i + 1}
+              <input
+                type="date"
+                required
+                value={a.review_date}
+                onChange={(e) =>
+                  updateAssumption(i, { review_date: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <label>
+            Assumption statement {i + 1}
+            <textarea
+              required
+              maxLength={2000}
+              value={a.statement}
+              onChange={(e) =>
+                updateAssumption(i, { statement: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Expected condition {i + 1}
+            <input
+              maxLength={2000}
+              value={a.expected_condition || ""}
+              onChange={(e) =>
+                updateAssumption(i, { expected_condition: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Assumption evidence {i + 1}
+            <input
+              maxLength={2000}
+              value={a.evidence || ""}
+              onChange={(e) =>
+                updateAssumption(i, { evidence: e.target.value })
+              }
+            />
+          </label>
+          <div role="group" aria-label={"Assumption nodes " + (i + 1)}>
+            {nodes.map((n) => (
+              <label key={n.node_id} className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={a.node_ids.includes(n.node_id)}
+                  onChange={(e) =>
+                    updateAssumption(i, {
+                      node_ids: e.target.checked
+                        ? [...a.node_ids, n.node_id]
+                        : a.node_ids.filter((x) => x !== n.node_id),
+                    })
+                  }
+                />{" "}
+                Assumption {i + 1} conditions {nodeTitle(n)}
+              </label>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="secondary"
+            onClick={() =>
+              setAssumptions(assumptions.filter((_, j) => j !== i))
+            }
+          >
+            Remove assumption {i + 1}
+          </button>
+        </fieldset>
+      ))}
+      <button
+        type="button"
+        className="secondary"
+        onClick={() =>
+          setAssumptions([
+            ...assumptions,
+            {
+              assumption_id: crypto.randomUUID(),
+              kind: "ASSUMPTION",
+              node_ids: [],
+              statement: "",
+              expected_condition: null,
+              evidence: null,
+              owner_id: null,
+              review_date: "",
+              status: "UNTESTED",
+            },
+          ])
+        }
+      >
+        Add assumption
+      </button>
       <h3>Hierarchy preview</h3>
       <Tree nodes={nodes} indicators={indicators} members={members} />
+      <TheoryOfChange
+        nodes={nodes}
+        relationships={relationships}
+        assumptions={assumptions}
+        members={members}
+      />
       <div className="dialog-actions">
         <button className="primary" disabled={busy}>
           Save framework draft
@@ -1130,6 +1616,12 @@ function FrameworkDetail(
       <Tree
         nodes={row.data.nodes || []}
         indicators={indicators}
+        members={members}
+      />
+      <TheoryOfChange
+        nodes={row.data.nodes || []}
+        relationships={row.data.relationships || []}
+        assumptions={row.data.assumptions || []}
         members={members}
       />
       <Issues report={report} />
@@ -1235,6 +1727,9 @@ function TargetEditor(
     row?.data.indicator_id || indicators[0]?.object_id || "",
   );
   const [period, setPeriod] = useState(row?.data.period_id || "");
+  const [scheme, setScheme] = useState(
+    row?.data.status_thresholds?.scheme || "",
+  );
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = Object.fromEntries(new FormData(e.currentTarget)) as Record<
@@ -1264,6 +1759,14 @@ function TargetEditor(
           : null,
       supersedes_revision: basis === "REVISED" ? form.supersedes : null,
       reason: basis === "REVISED" ? form.reason : null,
+      status_thresholds:
+        kind !== "MILESTONE" && form.scheme
+          ? {
+              scheme: form.scheme,
+              on_track: form.on_track.trim(),
+              at_risk: form.at_risk.trim(),
+            }
+          : null,
     };
     void send(
       "targets" + (row ? "/" + row.object_id : ""),
@@ -1325,7 +1828,11 @@ function TargetEditor(
           <select
             aria-label="Target kind"
             value={kind}
-            onChange={(e) => setKind(e.target.value)}
+            onChange={(e) => {
+              setKind(e.target.value);
+              // An attainment scheme belongs to a higher-is-better value target only.
+              setScheme("");
+            }}
           >
             <option value="VALUE">Value</option>
             <option value="RANGE">Range</option>
@@ -1440,6 +1947,72 @@ function TargetEditor(
           </label>
         </div>
       )}
+      {kind !== "MILESTONE" && (
+        <fieldset>
+          <legend>Status thresholds</legend>
+          <p className="muted">
+            Thresholds are reviewed with the target and shown beside every
+            comparison. Attainment bands apply to higher-is-better values; a
+            deviation band measures the adverse distance from the target in the
+            indicator&apos;s unit. A missing, undefined or stale actual is never
+            banded.
+          </p>
+          <div className="form-grid">
+            <label>
+              Threshold scheme
+              <select
+                aria-label="Threshold scheme"
+                name="scheme"
+                value={scheme}
+                onChange={(e) => setScheme(e.target.value)}
+              >
+                <option value="">No thresholds</option>
+                {(kind === "VALUE" ? ["ATTAINMENT_PERCENT"] : [])
+                  .concat(["DEVIATION"])
+                  .map((s) => (
+                    <option key={s} value={s}>
+                      {s.replaceAll("_", " ").toLowerCase()}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            {scheme && (
+              <>
+                <label>
+                  {scheme === "ATTAINMENT_PERCENT"
+                    ? "On track at or above (%)"
+                    : "On track within (deviation)"}
+                  <input
+                    name="on_track"
+                    required
+                    inputMode="decimal"
+                    pattern="(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?"
+                    defaultValue={
+                      row?.data.status_thresholds?.on_track ??
+                      (scheme === "ATTAINMENT_PERCENT" ? "100" : "0")
+                    }
+                  />
+                </label>
+                <label>
+                  {scheme === "ATTAINMENT_PERCENT"
+                    ? "At risk at or above (%)"
+                    : "At risk within (deviation)"}
+                  <input
+                    name="at_risk"
+                    required
+                    inputMode="decimal"
+                    pattern="(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?"
+                    defaultValue={
+                      row?.data.status_thresholds?.at_risk ??
+                      (scheme === "ATTAINMENT_PERCENT" ? "80" : "")
+                    }
+                  />
+                </label>
+              </>
+            )}
+          </div>
+        </fieldset>
+      )}
       {basis === "REVISED" && (
         <>
           <label>
@@ -1506,6 +2079,18 @@ function TargetDetail(
           ["Direction", row.data.direction],
           ["Value", targetValue(row.data)],
           ["Milestone", row.data.milestone_label || "—"],
+          [
+            "Status thresholds",
+            row.data.status_thresholds
+              ? row.data.status_thresholds.scheme
+                  .replaceAll("_", " ")
+                  .toLowerCase() +
+                " · on track " +
+                row.data.status_thresholds.on_track +
+                " · at risk " +
+                row.data.status_thresholds.at_risk
+              : "None",
+          ],
           ["Pinned definition", row.data.indicator_version || "At submission"],
         ].map(([k, v]) => (
           <React.Fragment key={k}>
@@ -1575,6 +2160,12 @@ function Review(
             indicators={indicators}
             members={members}
           />
+          <TheoryOfChange
+            nodes={record.data.nodes}
+            relationships={record.data.relationships || []}
+            assumptions={record.data.assumptions || []}
+            members={members}
+          />
           <Issues report={candidate.completeness} />
           {candidate.superseded && (
             <p className="muted">
@@ -1587,14 +2178,43 @@ function Review(
       ) : (
         <>
           <h3>Submitted target</h3>
-          <p>
-            {record.data.target_kind} · {record.data.direction} ·{" "}
-            {record.data.target_basis} · {targetValue(record.data)}
-          </p>
-          {candidate.superseded && (
-            <p className="muted">
-              Currently effective: {targetValue(candidate.superseded.data)} ·
-              reason for revision: {record.data.reason}
+          <dl className="fields" aria-label="Target amendment comparison">
+            {candidate.original && (
+              <>
+                <dt>Original</dt>
+                <dd>{targetValue(candidate.original.data)}</dd>
+              </>
+            )}
+            {candidate.superseded && (
+              <>
+                <dt>Currently effective</dt>
+                <dd>{targetValue(candidate.superseded.data)}</dd>
+              </>
+            )}
+            <dt>Proposed</dt>
+            <dd>
+              {record.data.target_kind} · {record.data.direction} ·{" "}
+              {record.data.target_basis} · {targetValue(record.data)}
+              {record.data.status_thresholds
+                ? " · thresholds " +
+                  record.data.status_thresholds.scheme
+                    .replaceAll("_", " ")
+                    .toLowerCase() +
+                  " " +
+                  record.data.status_thresholds.on_track +
+                  " / " +
+                  record.data.status_thresholds.at_risk
+                : ""}
+            </dd>
+          </dl>
+          {record.data.reason && (
+            <p className="muted">Reason for revision: {record.data.reason}</p>
+          )}
+          {candidate.amendment?.prospective_only && (
+            <p className="muted" role="note">
+              The period is {candidate.amendment.period_state.toLowerCase()}:
+              this amendment applies prospectively. The official comparison
+              stays against the target pinned at close.
             </p>
           )}
         </>

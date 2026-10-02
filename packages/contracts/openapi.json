@@ -41612,7 +41612,17 @@
           },
           "relationships": {
             "type": "array",
-            "maxItems": 0
+            "items": {
+              "$ref": "#/components/schemas/FrameworkRelationship"
+            },
+            "maxItems": 1000
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FrameworkAssumption"
+            },
+            "maxItems": 500
           },
           "effective_from": {
             "type": "string",
@@ -41636,7 +41646,11 @@
                   "enum": [
                     "UNMEASURED_RESULT",
                     "ORPHAN_NODE",
-                    "ORPHAN_INDICATOR"
+                    "ORPHAN_INDICATOR",
+                    "UNTESTED_RELATIONSHIP",
+                    "UNLINKED_ASSUMPTION",
+                    "ASSUMPTION_INVALID",
+                    "ASSUMPTION_REVIEW_DUE"
                   ]
                 },
                 "reason": {
@@ -41784,7 +41798,87 @@
           },
           "relationships": {
             "type": "array",
-            "maxItems": 0
+            "items": {
+              "$ref": "#/components/schemas/FrameworkRelationship"
+            },
+            "maxItems": 1000
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "assumption_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "kind": {
+                  "enum": [
+                    "ASSUMPTION",
+                    "RISK",
+                    "CONTEXT"
+                  ]
+                },
+                "node_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "maxItems": 50,
+                  "uniqueItems": true
+                },
+                "statement": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000,
+                  "pattern": "\\S"
+                },
+                "expected_condition": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 2000
+                },
+                "evidence": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 2000
+                },
+                "owner_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "review_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "status": {
+                  "enum": [
+                    "UNTESTED",
+                    "HOLDS",
+                    "AT_RISK",
+                    "INVALID"
+                  ]
+                }
+              },
+              "required": [
+                "assumption_id",
+                "kind",
+                "node_ids",
+                "statement",
+                "review_date",
+                "status"
+              ]
+            },
+            "maxItems": 500
           },
           "effective_from": {
             "type": "string",
@@ -41808,7 +41902,11 @@
                   "enum": [
                     "UNMEASURED_RESULT",
                     "ORPHAN_NODE",
-                    "ORPHAN_INDICATOR"
+                    "ORPHAN_INDICATOR",
+                    "UNTESTED_RELATIONSHIP",
+                    "UNLINKED_ASSUMPTION",
+                    "ASSUMPTION_INVALID",
+                    "ASSUMPTION_REVIEW_DUE"
                   ]
                 },
                 "reason": {
@@ -42662,6 +42760,38 @@
             ],
             "maxLength": 2000
           },
+          "status_thresholds": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "scheme": {
+                    "enum": [
+                      "ATTAINMENT_PERCENT",
+                      "DEVIATION"
+                    ]
+                  },
+                  "on_track": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  },
+                  "at_risk": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  }
+                },
+                "required": [
+                  "scheme",
+                  "on_track",
+                  "at_risk"
+                ]
+              }
+            ]
+          },
           "indicator_version": {
             "type": "string",
             "format": "uuid"
@@ -42883,6 +43013,38 @@
               "null"
             ],
             "maxLength": 2000
+          },
+          "status_thresholds": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "scheme": {
+                    "enum": [
+                      "ATTAINMENT_PERCENT",
+                      "DEVIATION"
+                    ]
+                  },
+                  "on_track": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  },
+                  "at_risk": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  }
+                },
+                "required": [
+                  "scheme",
+                  "on_track",
+                  "at_risk"
+                ]
+              }
+            ]
           }
         },
         "required": [],
@@ -54548,15 +54710,39 @@
             "format": "uuid"
           },
           "relationship_type": {
-            "type": "string",
             "enum": [
               "CONTRIBUTES_TO",
-              "DEPENDS_ON",
-              "ASSUMES"
+              "DEPENDS_ON"
             ]
           },
           "rationale": {
             "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "evidence_strength": {
+            "enum": [
+              "STRONG",
+              "MODERATE",
+              "WEAK",
+              "UNTESTED"
+            ]
+          },
+          "assumption_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "external_context": {
+            "type": [
+              "string",
+              "null"
+            ],
             "maxLength": 2000
           }
         },
@@ -54565,7 +54751,8 @@
           "from_node_id",
           "to_node_id",
           "relationship_type",
-          "rationale"
+          "rationale",
+          "evidence_strength"
         ]
       },
       "Category": {
@@ -60177,6 +60364,29 @@
           },
           "completeness": {
             "$ref": "#/components/schemas/FrameworkCompleteness"
+          },
+          "original": {
+            "$ref": "#/components/schemas/Target"
+          },
+          "amendment": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "period_state": {
+                "enum": [
+                  "Open",
+                  "Locked",
+                  "RestatementOpen"
+                ]
+              },
+              "prospective_only": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "period_state",
+              "prospective_only"
+            ]
           }
         },
         "required": [
@@ -61581,6 +61791,112 @@
           "items"
         ]
       },
+      "FrameworkAssumption": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assumption_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "ASSUMPTION",
+              "RISK",
+              "CONTEXT"
+            ]
+          },
+          "node_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "uniqueItems": true
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "expected_condition": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "evidence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "owner_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "review_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "enum": [
+              "UNTESTED",
+              "HOLDS",
+              "AT_RISK",
+              "INVALID"
+            ]
+          },
+          "assessed_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assessed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "assumption_id",
+          "kind",
+          "node_ids",
+          "statement",
+          "review_date",
+          "status"
+        ]
+      },
+      "StatusThresholds": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "scheme": {
+            "enum": [
+              "ATTAINMENT_PERCENT",
+              "DEVIATION"
+            ]
+          },
+          "on_track": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "at_risk": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          }
+        },
+        "required": [
+          "scheme",
+          "on_track",
+          "at_risk"
+        ]
+      },
       "FrameworkCompleteness": {
         "type": "object",
         "additionalProperties": false,
@@ -61655,7 +61971,11 @@
                           "enum": [
                             "UNMEASURED_RESULT",
                             "ORPHAN_NODE",
-                            "ORPHAN_INDICATOR"
+                            "ORPHAN_INDICATOR",
+                            "UNTESTED_RELATIONSHIP",
+                            "UNLINKED_ASSUMPTION",
+                            "ASSUMPTION_INVALID",
+                            "ASSUMPTION_REVIEW_DUE"
                           ]
                         },
                         "reason": {
@@ -61803,6 +62123,18 @@
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/FrameworkNode"
+                    }
+                  },
+                  "relationships": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FrameworkRelationship"
+                    }
+                  },
+                  "assumptions": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FrameworkAssumption"
                     }
                   }
                 },
@@ -61956,6 +62288,38 @@
                         "binding_version": {
                           "type": "integer",
                           "minimum": 1
+                        },
+                        "status_thresholds": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "scheme": {
+                                  "enum": [
+                                    "ATTAINMENT_PERCENT",
+                                    "DEVIATION"
+                                  ]
+                                },
+                                "on_track": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                },
+                                "at_risk": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                }
+                              },
+                              "required": [
+                                "scheme",
+                                "on_track",
+                                "at_risk"
+                              ]
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -62050,6 +62414,38 @@
                         "binding_version": {
                           "type": "integer",
                           "minimum": 1
+                        },
+                        "status_thresholds": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "scheme": {
+                                  "enum": [
+                                    "ATTAINMENT_PERCENT",
+                                    "DEVIATION"
+                                  ]
+                                },
+                                "on_track": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                },
+                                "at_risk": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                }
+                              },
+                              "required": [
+                                "scheme",
+                                "on_track",
+                                "at_risk"
+                              ]
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -62141,6 +62537,38 @@
                       "binding_version": {
                         "type": "integer",
                         "minimum": 1
+                      },
+                      "status_thresholds": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "scheme": {
+                                "enum": [
+                                  "ATTAINMENT_PERCENT",
+                                  "DEVIATION"
+                                ]
+                              },
+                              "on_track": {
+                                "type": "string",
+                                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                              },
+                              "at_risk": {
+                                "type": "string",
+                                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                              }
+                            },
+                            "required": [
+                              "scheme",
+                              "on_track",
+                              "at_risk"
+                            ]
+                          }
+                        ]
                       }
                     },
                     "required": [
@@ -62281,6 +62709,26 @@
                         "string",
                         "null"
                       ]
+                    },
+                    "band": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "enum": [
+                            "ON_TRACK",
+                            "AT_RISK",
+                            "OFF_TRACK"
+                          ]
+                        }
+                      ]
+                    },
+                    "band_reason": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     }
                   },
                   "required": [
@@ -62289,6 +62737,265 @@
                     "deviation",
                     "reason_code"
                   ]
+                },
+                "amended_target": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "target_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "revision_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "target_kind": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "target_basis": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "value_state": {
+                          "enum": [
+                            "PRESENT",
+                            "MISSING",
+                            "NOT_COLLECTED",
+                            "NOT_APPLICABLE",
+                            "INVALID",
+                            "UNDEFINED"
+                          ]
+                        },
+                        "value": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "low": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "high": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "milestone_label": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "due_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "binding_version": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "status_thresholds": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "scheme": {
+                                  "enum": [
+                                    "ATTAINMENT_PERCENT",
+                                    "DEVIATION"
+                                  ]
+                                },
+                                "on_track": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                },
+                                "at_risk": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                                }
+                              },
+                              "required": [
+                                "scheme",
+                                "on_track",
+                                "at_risk"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "target_id",
+                        "revision_id",
+                        "target_kind",
+                        "target_basis",
+                        "direction",
+                        "value_state"
+                      ]
+                    }
+                  ]
+                },
+                "amended_progress": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64,
+                          "pattern": "\\S"
+                        },
+                        "attainment_percent": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "deviation": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "displayed_deviation": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "change_from_baseline": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "change_from_baseline_percent": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "change_from_baseline_reason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "reason_code": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "band": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "enum": [
+                                "ON_TRACK",
+                                "AT_RISK",
+                                "OFF_TRACK"
+                              ]
+                            }
+                          ]
+                        },
+                        "band_reason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "attainment_percent",
+                        "deviation",
+                        "reason_code"
+                      ]
+                    }
+                  ]
+                },
+                "amended_after_close": {
+                  "type": "boolean"
+                },
+                "assumption_flags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "assumption_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "kind": {
+                        "enum": [
+                          "ASSUMPTION",
+                          "RISK",
+                          "CONTEXT"
+                        ]
+                      },
+                      "status": {
+                        "enum": [
+                          "UNTESTED",
+                          "HOLDS",
+                          "AT_RISK",
+                          "INVALID"
+                        ]
+                      },
+                      "statement": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "assumption_id",
+                      "kind",
+                      "status",
+                      "statement"
+                    ]
+                  },
+                  "maxItems": 500
                 }
               },
               "required": [
@@ -62300,7 +63007,11 @@
                 "target",
                 "milestones",
                 "actual",
-                "progress"
+                "progress",
+                "amended_target",
+                "amended_progress",
+                "amended_after_close",
+                "assumption_flags"
               ]
             }
           },

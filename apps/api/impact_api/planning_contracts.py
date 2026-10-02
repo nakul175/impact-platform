@@ -1,5 +1,7 @@
 """Results framework and planning contracts (v0.18): the design contract's framework and target
-routes, tightened to what this build implements, plus two read models."""
+routes, tightened to what this build implements, plus two read models. v0.27 adds theory-of-change
+relationships, assumption records, status thresholds, the amendment fields of targets versus actuals
+and the review candidate's amendment comparison (no new route or capability)."""
 
 from copy import deepcopy
 
@@ -10,7 +12,25 @@ DATE = {"type": "string", "format": "date-time"}
 DECIMAL = r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"
 NULLABLE_DECIMAL = {"type": ["string", "null"], "pattern": DECIMAL}
 NODE_TYPES = ["IMPACT", "OUTCOME", "OUTPUT", "ACTIVITY"]
-EXCEPTABLE_RULES = ["UNMEASURED_RESULT", "ORPHAN_NODE", "ORPHAN_INDICATOR"]
+EXCEPTABLE_RULES = [
+    "UNMEASURED_RESULT",
+    "ORPHAN_NODE",
+    "ORPHAN_INDICATOR",
+    "UNTESTED_RELATIONSHIP",
+    "UNLINKED_ASSUMPTION",
+    "ASSUMPTION_INVALID",
+    "ASSUMPTION_REVIEW_DUE",
+]
+# Theory-of-change links are directed contributions between two nodes of one framework (FR-PLN-002);
+# DEPENDS_ON states the same contribution from the dependent side. Neither creates a numeric rule.
+RELATIONSHIP_TYPES = ["CONTRIBUTES_TO", "DEPENDS_ON"]
+EVIDENCE_STRENGTHS = ["STRONG", "MODERATE", "WEAK", "UNTESTED"]
+ASSUMPTION_KINDS = ["ASSUMPTION", "RISK", "CONTEXT"]
+ASSUMPTION_STATUSES = ["UNTESTED", "HOLDS", "AT_RISK", "INVALID"]
+# ATTAINMENT_PERCENT bands a higher-is-better value target by attainment; DEVIATION bands any value
+# or range target by the adverse distance from the target in the indicator's unit.
+THRESHOLD_SCHEMES = ["ATTAINMENT_PERCENT", "DEVIATION"]
+BANDS = ["ON_TRACK", "AT_RISK", "OFF_TRACK"]
 VALUE_STATES = ["PRESENT", "MISSING", "NOT_COLLECTED", "NOT_APPLICABLE", "INVALID", "UNDEFINED"]
 SPECIAL_READS = {
     "frameworks/{object_id}/completeness": (
@@ -32,8 +52,6 @@ def augment(spec, policy):
     prefix = "/v1/tenants/{tenant_id}/"
 
     # A framework node: stable identity, intended result level, owner and indicator placement.
-    # Theory-of-change relationships (FR-PLN-002, P1) and assumption nodes (FR-PLN-007) are not
-    # implemented, so the design's relationship array is accepted only empty.
     schemas["FrameworkNode"] = closed(
         {
             "node_id": UUID,
@@ -46,6 +64,48 @@ def augment(spec, policy):
         },
         ["node_id", "node_type", "title", "definition"],
     )
+    # A theory-of-change relationship (FR-PLN-002): a directed contribution between two nodes with
+    # its rationale, evidence strength, the assumptions it rests on and optional external context.
+    schemas["FrameworkRelationship"] = closed(
+        {
+            "relationship_id": UUID,
+            "from_node_id": UUID,
+            "to_node_id": UUID,
+            "relationship_type": {"enum": RELATIONSHIP_TYPES},
+            "rationale": text_field(2000),
+            "evidence_strength": {"enum": EVIDENCE_STRENGTHS},
+            "assumption_ids": {"type": "array", "items": UUID, "maxItems": 20, "uniqueItems": True},
+            "external_context": {"type": ["string", "null"], "maxLength": 2000},
+        },
+        [
+            "relationship_id",
+            "from_node_id",
+            "to_node_id",
+            "relationship_type",
+            "rationale",
+            "evidence_strength",
+        ],
+    )
+    # An assumption, risk or context record (FR-PLN-007) linked to nodes, with the expected condition,
+    # evidence, owner, review date and status. Its status changes interpretation, never an actual.
+    assumption = closed(
+        {
+            "assumption_id": UUID,
+            "kind": {"enum": ASSUMPTION_KINDS},
+            "node_ids": {"type": "array", "items": UUID, "maxItems": 50, "uniqueItems": True},
+            "statement": text_field(2000),
+            "expected_condition": {"type": ["string", "null"], "maxLength": 2000},
+            "evidence": {"type": ["string", "null"], "maxLength": 2000},
+            "owner_id": {"type": ["string", "null"], "format": "uuid"},
+            "review_date": {"type": "string", "format": "date"},
+            "status": {"enum": ASSUMPTION_STATUSES},
+        },
+        ["assumption_id", "kind", "node_ids", "statement", "review_date", "status"],
+    )
+    # Who last assessed an assumption's status, and when, is server-owned: stored revisions only.
+    assessed = deepcopy(assumption)
+    assessed["properties"].update(assessed_by=UUID, assessed_at=DATE)
+    schemas["FrameworkAssumption"] = assessed
     exception = closed(
         {
             "object_id": UUID,
@@ -62,18 +122,39 @@ def augment(spec, policy):
         "programme_id": UUID,
         "version_label": text_field(64),
         "nodes": {"type": "array", "items": {"$ref": "#/components/schemas/FrameworkNode"}, "maxItems": 500},
-        "relationships": {"type": "array", "maxItems": 0},
+        "relationships": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/FrameworkRelationship"},
+            "maxItems": 1000,
+        },
+        "assumptions": {"type": "array", "items": assumption, "maxItems": 500},
         "effective_from": DATE,
         "supersedes_revision": UUID,
         "exceptions": {"type": "array", "items": exception, "maxItems": 500},
     }
     schemas["FrameworkDraftData"] = closed(deepcopy(framework))
     framework["exceptions"] = {"type": "array", "items": recorded, "maxItems": 500}
+    framework["assumptions"] = {
+        "type": "array",
+        "items": {"$ref": "#/components/schemas/FrameworkAssumption"},
+        "maxItems": 500,
+    }
     schemas["FrameworkData"] = closed(deepcopy(framework))
 
     # Targets, baselines and milestones for one indicator instance in one programme period. The
     # definition revision is pinned by submission (never accepted from a draft command); a blank
     # target keeps its value state and no value, never zero.
+    # Status thresholds travel with the target version they qualify (FSD 32.2: thresholds are
+    # visible and reviewed; they never conceal a missing, undefined, stale or unapproved state).
+    thresholds = closed(
+        {
+            "scheme": {"enum": THRESHOLD_SCHEMES},
+            "on_track": {"type": "string", "pattern": DECIMAL},
+            "at_risk": {"type": "string", "pattern": DECIMAL},
+        },
+        ["scheme", "on_track", "at_risk"],
+    )
+    schemas["StatusThresholds"] = thresholds
     target = {
         "indicator_id": UUID,
         "period_id": UUID,
@@ -88,6 +169,7 @@ def augment(spec, policy):
         "due_at": {"type": ["string", "null"], "format": "date-time"},
         "supersedes_revision": {"type": ["string", "null"], "format": "uuid"},
         "reason": {"type": ["string", "null"], "maxLength": 2000},
+        "status_thresholds": {"oneOf": [{"type": "null"}, thresholds]},
     }
     # A stated non-PRESENT value state carries no value or bounds; a patch that changes only the
     # value is merged first and the merged record is checked by the service (and the database).
@@ -174,8 +256,35 @@ def augment(spec, policy):
             "milestone_label": {"type": ["string", "null"]},
             "due_at": {"type": ["string", "null"]},
             "binding_version": {"type": "integer", "minimum": 1},
+            "status_thresholds": {"oneOf": [{"type": "null"}, thresholds]},
         },
         ["target_id", "revision_id", "target_kind", "target_basis", "direction", "value_state"],
+    )
+    progress = closed(
+        {
+            "status": text_field(64),
+            "attainment_percent": {"type": ["string", "null"]},
+            "deviation": NULLABLE_DECIMAL,
+            "displayed_deviation": {"type": ["string", "null"]},
+            "change_from_baseline": NULLABLE_DECIMAL,
+            "change_from_baseline_percent": {"type": ["string", "null"]},
+            "change_from_baseline_reason": {"type": ["string", "null"]},
+            "reason_code": {"type": ["string", "null"]},
+            # The performance band from the target's thresholds; null, with a reason, whenever a
+            # separately visible state (no actual, no target, undefined, stale, milestone) comes first.
+            "band": {"oneOf": [{"type": "null"}, {"enum": BANDS}]},
+            "band_reason": {"type": ["string", "null"]},
+        },
+        ["status", "attainment_percent", "deviation", "reason_code"],
+    )
+    flag = closed(
+        {
+            "assumption_id": UUID,
+            "kind": {"enum": ASSUMPTION_KINDS},
+            "status": {"enum": ASSUMPTION_STATUSES},
+            "statement": text_field(2000),
+        },
+        ["assumption_id", "kind", "status", "statement"],
     )
     row = closed(
         {
@@ -205,19 +314,15 @@ def augment(spec, policy):
                 },
                 ["mode", "source", "value_state", "value", "displayed_value", "stale"],
             ),
-            "progress": closed(
-                {
-                    "status": text_field(64),
-                    "attainment_percent": {"type": ["string", "null"]},
-                    "deviation": NULLABLE_DECIMAL,
-                    "displayed_deviation": {"type": ["string", "null"]},
-                    "change_from_baseline": NULLABLE_DECIMAL,
-                    "change_from_baseline_percent": {"type": ["string", "null"]},
-                    "change_from_baseline_reason": {"type": ["string", "null"]},
-                    "reason_code": {"type": ["string", "null"]},
-                },
-                ["status", "attainment_percent", "deviation", "reason_code"],
-            ),
+            "progress": progress,
+            # FR-IND-004: a target approved after the period closed is shown beside the comparison
+            # the close pinned, distinctly labelled; it never replaces the official comparison.
+            "amended_target": {"oneOf": [{"type": "null"}, target_view]},
+            "amended_progress": {"oneOf": [{"type": "null"}, progress]},
+            "amended_after_close": {"type": "boolean"},
+            # FR-PLN-007: assumptions linked to the nodes placing this indicator that are at risk or
+            # invalid, so the affected planning view is highlighted.
+            "assumption_flags": {"type": "array", "items": flag, "maxItems": 500},
         },
         [
             "indicator_id",
@@ -229,6 +334,10 @@ def augment(spec, policy):
             "milestones",
             "actual",
             "progress",
+            "amended_target",
+            "amended_progress",
+            "amended_after_close",
+            "assumption_flags",
         ],
     )
     schemas["TargetsVersusActuals"] = closed(
@@ -247,6 +356,14 @@ def augment(spec, policy):
                             "nodes": {
                                 "type": "array",
                                 "items": {"$ref": "#/components/schemas/FrameworkNode"},
+                            },
+                            "relationships": {
+                                "type": "array",
+                                "items": {"$ref": "#/components/schemas/FrameworkRelationship"},
+                            },
+                            "assumptions": {
+                                "type": "array",
+                                "items": {"$ref": "#/components/schemas/FrameworkAssumption"},
                             },
                         },
                         ["framework_id", "revision_id", "baseline_version", "effective_from", "nodes"],
@@ -310,4 +427,14 @@ def augment(spec, policy):
         "oneOf": [{"$ref": "#/components/schemas/Framework"}, {"$ref": "#/components/schemas/Target"}]
     }
     candidate["completeness"] = {"$ref": "#/components/schemas/FrameworkCompleteness"}
+    # FR-IND-004: a target amendment's review compares the original, the currently effective
+    # (`superseded`) and the proposed values, and says whether the period is already closed.
+    candidate["original"] = {"$ref": "#/components/schemas/Target"}
+    candidate["amendment"] = closed(
+        {
+            "period_state": {"enum": ["Open", "Locked", "RestatementOpen"]},
+            "prospective_only": {"type": "boolean"},
+        },
+        ["period_state", "prospective_only"],
+    )
     spec["info"]["version"] = policy["version"] = VERSION

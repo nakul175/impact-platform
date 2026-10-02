@@ -1526,6 +1526,36 @@ html[data-reduced-motion="true"] *::after {
 .badge.superseded {
   opacity: 0.7;
 }
+/* Theory of change, assumption status, amendments and bands (v0.27 planning): the badges reuse
+   the existing positive / pending / attention colours, so every state keeps its contrast. */
+.planning-theory ul {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.planning-theory li {
+  padding: 4px 0;
+  overflow-wrap: anywhere;
+}
+.badge.band-on_track,
+.badge.assumption-holds {
+  background: #edf6e9;
+  border-color: #deebd4;
+  color: var(--badge-positive-text);
+}
+.badge.band-at_risk,
+.badge.assumption-at_risk,
+.badge.amended {
+  background: #fbf5e7;
+  border-color: #f3e5bc;
+  color: var(--badge-pending-text);
+}
+.badge.band-off_track,
+.badge.assumption-invalid {
+  background: #fcf0e9;
+  border-color: #eddbd1;
+  color: var(--badge-attention-text);
+}
 
 /* Import batches (v0.21) */
 .import-new {

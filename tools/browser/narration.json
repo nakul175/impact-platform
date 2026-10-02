@@ -1,0 +1,428 @@
+[
+  {
+    "id": "n001",
+    "kind": "card",
+    "screen": "Impact Platform — how it works",
+    "spoken": "Impact Platform: how it works. A walkthrough in two parts. First, setting up an organisation. Second, the measurement cycle. All data shown is synthetic test data on a local test instance."
+  },
+  {
+    "id": "n002",
+    "kind": "card",
+    "screen": "One rule explains most of the steps",
+    "spoken": "One rule explains most of the steps. Nobody can approve their own work. Every approval — of an organisation, a data entry, a report — is made by a different person. That is what makes the numbers trustworthy."
+  },
+  {
+    "id": "n003",
+    "kind": "card",
+    "screen": "Part 1 — Setting up an organisation",
+    "spoken": "Part one: setting up an organisation. Three people take part: Nakul, who runs the platform; a colleague who becomes the second operator; and the colleague who will own the organisation. Each step is done by the person it belongs to."
+  },
+  {
+    "id": "n004",
+    "kind": "caption",
+    "screen": "Nakul signs in as a platform operator (test account 'admin').",
+    "spoken": "Nakul signs in as a platform operator, using the test account admin."
+  },
+  {
+    "id": "n005",
+    "kind": "caption",
+    "screen": "Organisations are set up in the Tenant lifecycle console, linked at the bottom of the left-hand menu.",
+    "spoken": "Organisations are set up in the Tenant lifecycle console, linked at the bottom of the left-hand menu."
+  },
+  {
+    "id": "n006",
+    "kind": "caption",
+    "screen": "Step 1 — add a second operator. Nakul nominates a colleague by e-mail address.",
+    "spoken": "Step one: add a second operator. Nakul nominates a colleague by e-mail address."
+  },
+  {
+    "id": "n007",
+    "kind": "caption",
+    "screen": "A sign-in form opens straight away. Nakul creates the colleague's sign-in: name and a reason.",
+    "spoken": "A sign-in form opens straight away. Nakul creates the colleague's sign-in: name and a reason."
+  },
+  {
+    "id": "n008",
+    "kind": "caption",
+    "screen": "The one-time password is shown once and never stored. Nakul passes it on in person or by phone.",
+    "spoken": "The one-time password is shown once and never stored. Nakul passes it on in person or by phone."
+  },
+  {
+    "id": "n009",
+    "kind": "caption",
+    "screen": "Step 2 — a sign-in for the person who will own the organisation. Same form, same one-time password.",
+    "spoken": "Step two: a sign-in for the person who will own the organisation. Same form, same one-time password."
+  },
+  {
+    "id": "n010",
+    "kind": "caption",
+    "screen": "Both colleagues have a sign-in now. Nakul signs out so that they can take their turns.",
+    "spoken": "Both colleagues have a sign-in now. Nakul signs out so that they can take their turns."
+  },
+  {
+    "id": "n011",
+    "kind": "caption",
+    "screen": "The second operator signs in with the one-time password. On the live server they also choose their own password and set up an authenticator app.",
+    "spoken": "The second operator signs in with the one-time password. On the live server they also choose their own password and set up an authenticator app."
+  },
+  {
+    "id": "n012",
+    "kind": "caption",
+    "screen": "The start page says what happens next: they have been nominated as an operator. Only they can accept it.",
+    "spoken": "The start page says what happens next: they have been nominated as an operator. Only they can accept it."
+  },
+  {
+    "id": "n013",
+    "kind": "caption",
+    "screen": "There are now two active operators — two different people.",
+    "spoken": "There are now two active operators — two different people."
+  },
+  {
+    "id": "n014",
+    "kind": "caption",
+    "screen": "The future owner signs in once, so that the platform knows them. Their start page shows an identity reference.",
+    "spoken": "The future owner signs in once, so that the platform knows them. Their start page shows an identity reference."
+  },
+  {
+    "id": "n015",
+    "kind": "caption",
+    "screen": "Step 3 — Nakul requests the organisation.",
+    "spoken": "Step three: Nakul requests the organisation."
+  },
+  {
+    "id": "n016",
+    "kind": "caption",
+    "screen": "The owner is chosen by name from the people who have signed in — a different person from Nakul.",
+    "spoken": "The owner is chosen by name from the people who have signed in — a different person from Nakul."
+  },
+  {
+    "id": "n017",
+    "kind": "caption",
+    "screen": "Recorded as 'Requested'. Nakul cannot activate it: the owner must accept, and a different operator must activate.",
+    "spoken": "It is recorded as Requested. Nakul cannot activate it: the owner must accept, and a different operator must activate."
+  },
+  {
+    "id": "n018",
+    "kind": "caption",
+    "screen": "Step 4 — the owner accepts the organisation.",
+    "spoken": "Step four: the owner accepts the organisation."
+  },
+  {
+    "id": "n019",
+    "kind": "caption",
+    "screen": "'Provisioning': accepted, not yet active. Next the owner names a recovery contact — a safety net, not a key. Here it is Nakul.",
+    "spoken": "Provisioning means accepted, but not yet active. Next, the owner names a recovery contact — a safety net, not a key. Here it is Nakul."
+  },
+  {
+    "id": "n020",
+    "kind": "caption",
+    "screen": "The contact must confirm, and another operator must approve — the owner can do neither.",
+    "spoken": "The contact must confirm, and another operator must approve — the owner can do neither."
+  },
+  {
+    "id": "n021",
+    "kind": "caption",
+    "screen": "Nakul confirms that he accepts being the recovery contact.",
+    "spoken": "Nakul confirms that he accepts being the recovery contact."
+  },
+  {
+    "id": "n022",
+    "kind": "caption",
+    "screen": "Step 5 — the second operator approves the recovery contact and activates the organisation.",
+    "spoken": "Step five: the second operator approves the recovery contact and activates the organisation."
+  },
+  {
+    "id": "n023",
+    "kind": "caption",
+    "screen": "Activation is allowed for this operator: neither the requester nor the owner.",
+    "spoken": "Activation is allowed for this operator: neither the requester nor the owner."
+  },
+  {
+    "id": "n024",
+    "kind": "caption",
+    "screen": "The organisation is Active. Still nobody can open it: access is granted in the next step.",
+    "spoken": "The organisation is Active. Still nobody can open it: access is granted in the next step."
+  },
+  {
+    "id": "n025",
+    "kind": "caption",
+    "screen": "Step 6 — the owner proposes the initial access, naming Nakul as second administrator.",
+    "spoken": "Step six: the owner proposes the initial access, naming Nakul as second administrator."
+  },
+  {
+    "id": "n026",
+    "kind": "caption",
+    "screen": "The proposal lists the roles the organisation may give out later. It needs the second administrator's acceptance and an operator's approval.",
+    "spoken": "The proposal lists the roles the organisation may give out later. It needs the second administrator's acceptance and an operator's approval."
+  },
+  {
+    "id": "n027",
+    "kind": "caption",
+    "screen": "Nakul accepts the administrator role.",
+    "spoken": "Nakul accepts the administrator role."
+  },
+  {
+    "id": "n028",
+    "kind": "caption",
+    "screen": "The second operator — neither owner nor administrator — approves the initial access.",
+    "spoken": "The second operator — neither owner nor administrator — approves the initial access."
+  },
+  {
+    "id": "n029",
+    "kind": "caption",
+    "screen": "'Applied': the owner and Nakul can now administer the organisation. Access to programme data is a separate, reviewed request.",
+    "spoken": "Applied: the owner and Nakul can now administer the organisation. Access to programme data is a separate, reviewed request."
+  },
+  {
+    "id": "n030",
+    "kind": "caption",
+    "screen": "Step 7 — the owner signs in again. The workspace is there, and the standard reference data is one click.",
+    "spoken": "Step seven: the owner signs in again. The workspace is there, and the standard reference data is one click."
+  },
+  {
+    "id": "n031",
+    "kind": "caption",
+    "screen": "This adds quarterly reporting periods, an approval workflow, a report template and a geography. The organisation is ready for work.",
+    "spoken": "This adds quarterly reporting periods, an approval workflow, a report template and a geography. The organisation is ready for work."
+  },
+  {
+    "id": "n032",
+    "kind": "card",
+    "screen": "Part 2 — The measurement cycle",
+    "spoken": "Part two: the measurement cycle. Inside an organisation that is already running: entering data, independent approval, calculation, closing the quarter, the dashboard and the report. Two people do the day-to-day work: a data author and an independent reviewer."
+  },
+  {
+    "id": "n033",
+    "kind": "caption",
+    "screen": "The data author signs in (test account 'author').",
+    "spoken": "The data author signs in, using the test account author."
+  },
+  {
+    "id": "n034",
+    "kind": "caption",
+    "screen": "The portfolio lists the organisation's programmes. We open the clean water programme.",
+    "spoken": "The portfolio lists the organisation's programmes. We open the clean water programme."
+  },
+  {
+    "id": "n035",
+    "kind": "caption",
+    "screen": "A programme becomes Active only after its indicators and collection plan were reviewed. Its indicator is a measurement contract: once approved, a change is a new version.",
+    "spoken": "A programme becomes Active only after its indicators and collection plan were reviewed. Its indicator is a measurement contract: once approved, a change is a new version."
+  },
+  {
+    "id": "n036",
+    "kind": "caption",
+    "screen": "Every quarter each site reports. Two sites have reported already; the author enters the third: 8 of 10 households have safe water.",
+    "spoken": "Every quarter each site reports. Two sites have reported already; the author enters the third: 8 of 10 households have safe water."
+  },
+  {
+    "id": "n037",
+    "kind": "caption",
+    "screen": "A blank is never recorded as zero — every value carries an explicit state.",
+    "spoken": "A blank is never recorded as zero — every value carries an explicit state."
+  },
+  {
+    "id": "n038",
+    "kind": "caption",
+    "screen": "Evidence can be attached to an entry — here a photo of the water point. The file is checked and scanned before it is accepted.",
+    "spoken": "Evidence can be attached to an entry — here a photo of the water point. The file is checked and scanned before it is accepted."
+  },
+  {
+    "id": "n039",
+    "kind": "caption",
+    "screen": "The author submits the entry for review. From now on it cannot be edited quietly.",
+    "spoken": "The author submits the entry for review. From now on it cannot be edited quietly."
+  },
+  {
+    "id": "n040",
+    "kind": "caption",
+    "screen": "The author also holds a reviewer role — but may not approve their own entry. Only a different person can.",
+    "spoken": "The author also holds a reviewer role — but may not approve their own entry. Only a different person can."
+  },
+  {
+    "id": "n041",
+    "kind": "caption",
+    "screen": "The independent reviewer signs in (test account 'reviewer').",
+    "spoken": "The independent reviewer signs in, using the test account reviewer."
+  },
+  {
+    "id": "n042",
+    "kind": "caption",
+    "screen": "The reviewer sees the exact version that was submitted and can approve it, return it for changes or reject it.",
+    "spoken": "The reviewer sees the exact version that was submitted and can approve it, return it for changes or reject it."
+  },
+  {
+    "id": "n043",
+    "kind": "caption",
+    "screen": "Approved. Now the quarter's result can be calculated.",
+    "spoken": "Approved. Now the quarter's result can be calculated."
+  },
+  {
+    "id": "n044",
+    "kind": "caption",
+    "screen": "59 of 120 households: 49.17 %. Totals are pooled — never an average of percentages. The result stays provisional until the quarter is closed.",
+    "spoken": "Fifty-nine of one hundred and twenty households: 49.17 %. Totals are pooled — never an average of percentages. The result stays provisional until the quarter is closed."
+  },
+  {
+    "id": "n045",
+    "kind": "caption",
+    "screen": "Back as the author: the target for the quarter, then the period close.",
+    "spoken": "Back as the author: the target for the quarter, then the period close."
+  },
+  {
+    "id": "n046",
+    "kind": "caption",
+    "screen": "Targets versus actuals: the quarterly target was 55 %; the actual is 49.17 %, still provisional.",
+    "spoken": "Targets versus actuals: the quarterly target was 55 %; the actual is 49.17 %, still provisional."
+  },
+  {
+    "id": "n047",
+    "kind": "caption",
+    "screen": "The quarter has ended. Closing it freezes the official numbers.",
+    "spoken": "The quarter has ended. Closing it freezes the official numbers."
+  },
+  {
+    "id": "n048",
+    "kind": "caption",
+    "screen": "Even the close needs a second person: the reviewer approves it.",
+    "spoken": "Even the close needs a second person: the reviewer approves it."
+  },
+  {
+    "id": "n049",
+    "kind": "caption",
+    "screen": "The reviewer approves the period close.",
+    "spoken": "The reviewer approves the period close."
+  },
+  {
+    "id": "n050",
+    "kind": "caption",
+    "screen": "The close preview pins every source and result. The reviewer checks it like any other submission.",
+    "spoken": "The close preview pins every source and result. The reviewer checks it like any other submission."
+  },
+  {
+    "id": "n051",
+    "kind": "caption",
+    "screen": "Closed. The official numbers are frozen in a locked snapshot.",
+    "spoken": "Closed. The official numbers are frozen in a locked snapshot."
+  },
+  {
+    "id": "n052",
+    "kind": "caption",
+    "screen": "The dashboard shows the official value from the locked snapshot: 49.17 %, with coverage of the three sites and how fresh the data is. Later corrections create a new version; nothing is overwritten.",
+    "spoken": "The dashboard shows the official value from the locked snapshot: 49.17 %, with coverage of the three sites and how fresh the data is. Later corrections create a new version; nothing is overwritten."
+  },
+  {
+    "id": "n053",
+    "kind": "caption",
+    "screen": "The author drafts the quarterly report from the locked snapshot.",
+    "spoken": "The author drafts the quarterly report from the locked snapshot."
+  },
+  {
+    "id": "n054",
+    "kind": "caption",
+    "screen": "Numbers in the text are placeholders bound to the official result. A typed-in number would be refused.",
+    "spoken": "Numbers in the text are placeholders bound to the official result. A typed-in number would be refused."
+  },
+  {
+    "id": "n055",
+    "kind": "caption",
+    "screen": "The report package goes to the reviewer. Meanwhile, two other ways data comes in.",
+    "spoken": "The report package goes to the reviewer. Meanwhile, two other ways data comes in."
+  },
+  {
+    "id": "n056",
+    "kind": "caption",
+    "screen": "Web forms: this published form feeds the household count of a second programme.",
+    "spoken": "Web forms: this published form feeds the household count of a second programme."
+  },
+  {
+    "id": "n057",
+    "kind": "caption",
+    "screen": "The response became a data entry, waiting for the same independent review.",
+    "spoken": "The response became a data entry, waiting for the same independent review."
+  },
+  {
+    "id": "n058",
+    "kind": "caption",
+    "screen": "Spreadsheets are checked row by row: accepted, quarantined (not a number) or duplicate. Nothing is written until the batch is committed.",
+    "spoken": "Spreadsheets are checked row by row: accepted, quarantined (not a number) or duplicate. Nothing is written until the batch is committed."
+  },
+  {
+    "id": "n059",
+    "kind": "caption",
+    "screen": "The reviewer approves the report package, then asks for a PDF.",
+    "spoken": "The reviewer approves the report package, then asks for a PDF."
+  },
+  {
+    "id": "n060",
+    "kind": "caption",
+    "screen": "The report package is reviewed as a whole: template, snapshot and the exact bound result.",
+    "spoken": "The report package is reviewed as a whole: template, snapshot and the exact bound result."
+  },
+  {
+    "id": "n061",
+    "kind": "caption",
+    "screen": "Approved. The reviewer now asks for a PDF of the frozen package.",
+    "spoken": "Approved. The reviewer now asks for a PDF of the frozen package."
+  },
+  {
+    "id": "n062",
+    "kind": "caption",
+    "screen": "A background worker renders the PDF from the frozen package. The panel updates on its own.",
+    "spoken": "A background worker renders the PDF from the frozen package. The panel updates on its own."
+  },
+  {
+    "id": "n063",
+    "kind": "caption",
+    "screen": "Done: the PDF can be downloaded. Sending it to a named recipient is a separate, reviewed publication step.",
+    "spoken": "Done: the PDF can be downloaded. Sending it to a named recipient is a separate, reviewed publication step."
+  },
+  {
+    "id": "n064",
+    "kind": "caption",
+    "screen": "Finally, People & access — where an administrator manages who may do what.",
+    "spoken": "Finally, People and access — where an administrator manages who may do what."
+  },
+  {
+    "id": "n065",
+    "kind": "caption",
+    "screen": "Members and their roles. A role change is requested by one administrator and approved by another.",
+    "spoken": "Members and their roles. A role change is requested by one administrator and approved by another."
+  },
+  {
+    "id": "n066",
+    "kind": "caption",
+    "screen": "Reference data: the reporting calendar, review workflow and report templates.",
+    "spoken": "Reference data: the reporting calendar, review workflow and report templates."
+  },
+  {
+    "id": "n067",
+    "kind": "caption",
+    "screen": "Audit export: a sealed record of who did what, for a stated purpose.",
+    "spoken": "Audit export: a sealed record of who did what, for a stated purpose."
+  },
+  {
+    "id": "n068",
+    "kind": "caption",
+    "screen": "Data-subject requests: access and erasure requests about members — planned, approved by a second person, then executed.",
+    "spoken": "Data-subject requests: access and erasure requests about members — planned, approved by a second person, then executed."
+  },
+  {
+    "id": "n069",
+    "kind": "card",
+    "screen": "What you need to start",
+    "spoken": "What you need to start. On the live server you need three people: you, as operator and second administrator; a second operator; and the organisation's owner. After that, day-to-day work needs two: one who enters data and one who approves."
+  },
+  {
+    "id": "n070",
+    "kind": "caption",
+    "screen": "The review queue lists what is waiting for a decision.",
+    "spoken": "The review queue lists what is waiting for a decision."
+  },
+  {
+    "id": "n071",
+    "kind": "card",
+    "screen": "Chapters",
+    "spoken": "These are the chapters, with the time each one starts."
+  }
+]

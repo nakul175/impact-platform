@@ -532,11 +532,15 @@ def test_native_close_new_source_and_restatement_released_together_never_deadloc
         members = snapshot_member_revisions(live, tenant, bindings[0]["snapshot_id"])
         assert members, "the locked snapshot holds the official results"
         assert source_after["revision_id"] not in json.dumps(members, default=str)
-        assert state_after in {"Locked", "RestatementOpen"}, state_after
+        # A restatement request is itself reviewed: admitted after the lock it opens a workflow
+        # (InReview) and the state stays Locked until an independent approval; admitted before the
+        # close it was refused for the open period and may be requested again now.
+        assert state_after == "Locked", state_after
         if restate_r["status"] == 200:
-            assert state_after == "RestatementOpen"
+            assert restate_r["body"]["business_state"] == "InReview", restate_r
             assert receipts(live, tenant, bodies["restate"]["operation_id"]) == 1
         else:
+            assert restate_r["body"]["reason_code"] == "LOCKED_SNAPSHOT_REQUIRED", restate_r
             assert receipts(live, tenant, bodies["restate"]["operation_id"]) == 0
         assert receipts(live, tenant, bodies["close"]["operation_id"]) == 1
     else:
@@ -550,14 +554,21 @@ def test_native_close_new_source_and_restatement_released_together_never_deadloc
         assert receipts(live, tenant, bodies["restate"]["operation_id"]) == 0
         assert get(live, "workflows", close_workflow["object_id"])["lifecycle_state"] == "InReview"
     # Stable afterwards: the exact retry of every command replays its receipt or is refused the
-    # same way, and nothing moves.
+    # same way, and nothing moves — except a restatement refused before a close that then
+    # happened, which is a fresh request against the now-locked period (one receipt either way).
+    retries = {}
     for name in names:
         again = sender(live, live.token(actors[name]), "POST", paths[name], bodies[name])()
+        retries[name] = again["status"]
         if results[name]["status"] in {200, 201}:
             assert again["body"] == results[name]["body"], (name, again)
+        elif name == "restate" and order == "close_first":
+            assert again["status"] in {200, 409}, again
+            assert receipts(live, tenant, bodies["restate"]["operation_id"]) == (again["status"] == 200)
         else:
             assert again["status"] == 409, (name, again)
     assert snapshot_bindings(live, tenant, programme, period) == bindings
+    assert programme_period_state(live, tenant, programme, period) == state_after
     if mode != "race":
         assert order == mode, (mode, order)
     recorded = live.local / RACE_FILE
@@ -571,6 +582,7 @@ def test_native_close_new_source_and_restatement_released_together_never_deadloc
         },
         "seconds": {n: results[n]["seconds"] for n in names},
         "programme_period_state_after": state_after,
+        "retry_statuses": retries,
     }
     recorded.write_text(json.dumps(data, indent=2) + "\n")
 

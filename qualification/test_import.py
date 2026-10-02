@@ -648,10 +648,10 @@ def test_access_tenancy_independence_and_reserved_namespace(live, counted):
 
 
 # Planned imports and period close (acceptance gap A5) --------------------------------------------
-def import_planned(live, planned_units):
-    """An active programme with one COUNT indicator on the fixture period whose approved collection
-    plan names the IMPORT source key of each unit in `planned_units`, before any file exists:
-    IMPORT/"<unit>/<indicator id>/<period id>"."""
+def import_planned(live, planned_units, calendar_id=None, period=None):
+    """An active programme with one COUNT indicator on the fixture period (or `period` of
+    `calendar_id`) whose approved collection plan names the IMPORT source key of each unit in
+    `planned_units`, before any file exists: IMPORT/"<unit>/<indicator id>/<period id>"."""
     programme = create(
         live,
         "programmes",
@@ -661,7 +661,7 @@ def import_planned(live, planned_units):
             "programme_type": "Health",
             "starts_at": "2026-01-01T00:00:00Z",
             "ends_at": "2027-01-01T00:00:00Z",
-            "reporting_calendar_id": get(live, "reporting-calendars")["items"][0]["object_id"],
+            "reporting_calendar_id": calendar_id or get(live, "reporting-calendars")["items"][0]["object_id"],
             "geography_id": get(live, "geographies")["items"][0]["object_id"],
         },
     )
@@ -679,7 +679,7 @@ def import_planned(live, planned_units):
             "reviewer_id": live.fixture["actors"]["reviewer"]["principal_id"],
         },
     )
-    period = get(live, "periods", live.records["period"]["object_id"])
+    period = period or get(live, "periods", live.records["period"]["object_id"])
     plan = create(
         live,
         "collection-plans",
@@ -864,6 +864,69 @@ def test_unplanned_import_units_still_block_close(live):
         and s["data"]["period_id"] == period["object_id"]
         and s["data"].get("programme_id") == programme["object_id"]
         for s in get(live, "snapshots")["items"]
+    )
+
+
+def monthly_periods(live):
+    """July and August 2026 of a monthly calendar the tenant administrator creates through the
+    governed reference-data command (v0.26a), so that a unit can be imported in two periods."""
+    receipt = expect(
+        live.request(
+            live.path("reporting-calendars"),
+            actor="admin",
+            method="POST",
+            body=cmd(
+                {
+                    "title": "Monthly import calendar " + str(uuid.uuid4())[:8],
+                    "frequency": "MONTHLY",
+                    "zone": "UTC",
+                    "first_year": 2026,
+                    "years": 1,
+                    "reason": "A unit reports in every month",
+                }
+            ),
+        ),
+        200,
+    )
+    with live.db() as c:
+        rows = c.execute(
+            "SELECT r.object_id::text AS id FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+            "WHERE r.tenant_id=%s AND r.object_type='Period' AND v.payload->>'calendar_version'=%s AND v.payload->>'code' IN ('2026-07','2026-08') ORDER BY v.payload->>'code'",
+            (live.fixture["tenant_a"], receipt["revision_id"]),
+        ).fetchall()
+    assert len(rows) == 2
+    return receipt["object_id"], [get(live, "periods", r["id"]) for r in rows]
+
+
+def test_a_unit_imports_again_in_a_later_period_without_colliding(live):
+    """The key carries the period, so the same unit and indicator imported for a second period is a
+    new source identity: the tenant-wide source key register holds one key per period and the
+    second batch is neither a duplicate nor a conflict."""
+    calendar_id, (july, august) = monthly_periods(live)
+    unit = "R" + str(uuid.uuid4())[:6]
+    programme, indicator, _, _ = import_planned(live, [unit], calendar_id=calendar_id, period=july)
+    first = preview(
+        live, create(live, "imports", batch_data(indicator, july, f"district,households\n{unit},3\n"))
+    )
+    assert first["data"]["preview"]["rows"][0]["observations"][0]["planned"] is True
+    commit(live, first)
+    second = preview(
+        live, create(live, "imports", batch_data(indicator, august, f"district,households\n{unit},4\n"))
+    )
+    assert outcomes(second) == [(2, unit, "ACCEPTED", [])]
+    value = second["data"]["preview"]["rows"][0]["observations"][0]
+    assert value["source_key"] == f"{unit}/{indicator['object_id']}/{august['object_id']}"
+    # August has no approved plan for this indicator: nothing is marked planned or unplanned.
+    assert "planned" not in value and second["data"]["preview"]["counts"]["unplanned"] == 0
+    assert second["data"]["preview"]["plan_check"] == {"evaluated_indicators": []}
+    commit(live, second)
+    with live.db() as c:
+        keys = c.execute(
+            "SELECT source_key FROM impact.source_key_registry WHERE tenant_id=%s AND namespace='IMPORT' AND source_key LIKE %s ORDER BY source_key",
+            (live.fixture["tenant_a"], unit + "/%"),
+        ).fetchall()
+    assert [k["source_key"] for k in keys] == sorted(
+        f"{unit}/{indicator['object_id']}/{p['object_id']}" for p in [july, august]
     )
 
 

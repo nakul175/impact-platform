@@ -51,6 +51,8 @@ def proofs(live, job_id):
 
 
 def sweep_jobs(live):
+    """Tenant A's sweeps ordered by next_attempt_at. That is not creation order: a failed sweep
+    records next_attempt_at from the worker clock, and a test may have moved that clock hours ahead."""
     with live.db() as c:
         return c.execute(
             "SELECT j.*,s.attempts,s.lease_owner,s.completed_at FROM impact.job j JOIN impact.retention_sweep s "
@@ -59,17 +61,15 @@ def sweep_jobs(live):
         ).fetchall()
 
 
-def swept(live, run):
-    """Run one retention pass (`run()`) and return the sweep job it created, identified by identity.
-    Ordering by `next_attempt_at` is not enough across tests: a sweep that backed off on a skewed
-    worker clock (test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class) keeps
-    a `next_attempt_at` hours ahead, so `sweep_jobs(live)[-1]` named it rather than the new sweep
-    when this file ran before test_security_privacy.py (found at the build 0.27.0 integration)."""
-    known = {j["job_id"] for j in sweep_jobs(live)}
-    run()
-    fresh = [j for j in sweep_jobs(live) if j["job_id"] not in known]
-    assert len(fresh) == 1, fresh
-    return fresh[0]
+def sweep_ids(live):
+    return {row["job_id"] for row in sweep_jobs(live)}
+
+
+def sweep_created_since(live, known):
+    """The single sweep queued after `known` (ids from sweep_ids) was captured."""
+    created = [row for row in sweep_jobs(live) if row["job_id"] not in known]
+    assert len(created) == 1
+    return created[0]
 
 
 def expected_items(live):
@@ -187,6 +187,7 @@ def test_sweep_removes_only_expired_items_and_proves_each_class(live):
     new_mail, new_sealed = email_delivery(live, 1)
 
     make_due(live)
+    known = sweep_ids(live)
     expected = expected_items(live)
     assert old["operation_id"] in {k.split(":")[2] for k in expected["OPERATION_RECEIPT"]}
     assert stale_upload in expected["UPLOAD_SESSION"] and old_mail in expected["OUTBOX_RECIPIENT"]
@@ -199,7 +200,7 @@ def test_sweep_removes_only_expired_items_and_proves_each_class(live):
         1,
         1,
     )
-    job = sweep_jobs(live)[-1]
+    job = sweep_created_since(live, known)
     assert job["state"] == "Succeeded" and job["lease_generation"] == 1 and job["completed_at"]
     proof = proofs(live, job["job_id"])
     assert set(proof) == set(CLASSES)
@@ -255,10 +256,12 @@ def test_sweep_removes_only_expired_items_and_proves_each_class(live):
     worker.run_retention(tenant(live), again)
     assert (again["retention_scheduled"], again["retention_swept"]) == (0, 0)
     make_due(live)
+    known = sweep_ids(live)
     later = empty_summary()
     make_worker(live).run_retention(tenant(live), later)
     assert later["retention_swept"] == 1
-    repeat = proofs(live, sweep_jobs(live)[-1]["job_id"])
+    repeat_job = sweep_created_since(live, known)
+    repeat = proofs(live, repeat_job["job_id"])
     for data_class in ["UPLOAD_SESSION", "PRIVACY_EXPORT_PACKAGE", "OUTBOX_RECIPIENT"]:
         assert repeat[data_class]["affected_count"] == 0
         assert bytes(repeat[data_class]["items_sha256"]) == digest([])
@@ -267,7 +270,7 @@ def test_sweep_removes_only_expired_items_and_proves_each_class(live):
     # The proofs, newest first, through the API; the schedule is the catalogue.
     listed = expect(live.request(live.path("retention-proofs"), actor="privacy"), 200)
     validate("RetentionProofList", listed)
-    assert {p["job_id"] for p in listed["items"][:4]} == {str(sweep_jobs(live)[-1]["job_id"])}
+    assert {p["job_id"] for p in listed["items"][:4]} == {str(repeat_job["job_id"])}
     schedule = expect(live.request(live.path("retention-schedule"), actor="admin"), 200)
     validate("RetentionSchedule", schedule)
     # v0.27: the read is the effective schedule; every class still on its default equals the catalogue.
@@ -317,6 +320,7 @@ def test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class(liv
     import impact_api.retention as retention
 
     make_due(live)
+    known = sweep_ids(live)
     worker = make_worker(live, max_attempts=2)
     clock = worker.skew
 
@@ -326,15 +330,17 @@ def test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class(liv
     monkeypatch.setattr(retention, "apply", broken)
     first = empty_summary()
     worker.run_retention(tenant(live), first)
-    job = sweep_jobs(live)[-1]
+    job = sweep_created_since(live, known)
     assert (job["state"], job["attempts"], first["retention_swept"]) == ("Queued", 1, 0)
     with live.db() as c:
         sweep = c.execute("SELECT * FROM impact.retention_sweep WHERE job_id=%s", (job["job_id"],)).fetchone()
     assert sweep["last_error_class"] == "SWEEP_FAILED" and sweep["lease_owner"] is None
+    # The retry records next_attempt_at from this clock (about two hours ahead). Later tests must
+    # select the sweep they queued themselves; the last row by next_attempt_at is this failed job.
     clock.advance(hours=2)
     second = empty_summary()
     worker.run_retention(tenant(live), second)
-    job = sweep_jobs(live)[-1]
+    job = next(row for row in sweep_jobs(live) if row["job_id"] == job["job_id"])
     assert job["state"] == "Failed" and job["output_manifest"]["error_class"] == "SWEEP_FAILED"
     assert second["retention_failed"] == 1 and proofs(live, job["job_id"]) == {}
 

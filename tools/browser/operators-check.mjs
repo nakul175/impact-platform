@@ -67,6 +67,12 @@ await finish(async () => {
     await colleague
       .getByRole("heading", { name: "No active workspace", exact: true })
       .waitFor();
+    // The start page loads the nominations after its heading renders ("Checking what is
+    // next…"); since build 0.27.0 the status banner's first poll shares PGlite's single
+    // connection with that read, so wait for the page to finish loading before reading it.
+    await colleague
+      .getByText("Checking what is next…", { exact: true })
+      .waitFor({ state: "detached" });
     const start = await colleague.locator("main").innerText();
     assert.match(start, /nominated as a platform operator/);
     assert.match(start, /Your identity reference/);

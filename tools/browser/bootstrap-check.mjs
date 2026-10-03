@@ -223,7 +223,10 @@ try {
     await second
       .getByLabel("Access scope", { exact: true })
       .selectOption({ label: "All workspace records" });
+    // Scoped to the dialog: since build 0.27.0 People & access also carries the
+    // retention-policy and retention-hold forms, each with its own "Reason" field.
     await second
+      .getByRole("dialog")
       .getByLabel("Reason", { exact: true })
       .fill("Create first programme");
     await second
@@ -241,6 +244,7 @@ try {
       .getByRole("button", { name: "Approve request", exact: true })
       .click();
     await owner
+      .getByRole("dialog")
       .getByLabel("Reason", { exact: true })
       .fill("Independent business review");
     await owner

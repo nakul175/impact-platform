@@ -69,7 +69,10 @@ async function member(p, name) {
     .click();
 }
 async function confirm(p, button) {
+  // The reason of this change lives in the dialog; since build 0.27.0 People & access also
+  // carries the retention-policy and retention-hold forms, each with its own "Reason" field.
   await p
+    .getByRole("dialog")
     .getByLabel("Reason", { exact: true })
     .fill("Browser qualification: " + button);
   await p
@@ -206,6 +209,7 @@ try {
       .getByRole("button", { name: "Approve request", exact: true })
       .click();
     await page
+      .getByRole("dialog")
       .getByLabel("Reason", { exact: true })
       .fill("Negative independence test");
     await page

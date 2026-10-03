@@ -3,9 +3,9 @@ implements — a bounded tabular source carried in the request body, a header-na
 instances, a unit column and one period, a staging preview that classifies every row, and an atomic
 commit of the staged outcome.
 
-The design's upload sessions, reusable mapping versions, keyed update, controlled replacement and
-asynchronous jobs are not implemented: an import batch here carries its own file and mapping, and
-preview and commit run synchronously within the bounds below.
+An import batch carries its own file and mapping. Batches above the threshold queue an application
+executor job; smaller batches commit synchronously. Upload sessions and reusable mapping versions
+remain outside this bounded implementation.
 
 Since v0.27 an imported value's source key is `<unit key>/<indicator id>/<period id>`, so a
 collection plan can name it in advance; the preview reports each staged value's key and, when the
@@ -22,6 +22,7 @@ CODE = r"^[A-Za-z][A-Za-z0-9_]{0,63}$"
 UNIT_KEY = r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,99}$"
 HEX64 = r"^[0-9a-f]{64}$"
 VERSION = "1.14.0"
+ASYNC_THRESHOLD = 50  # staged rows; 51–500 queue, 1–50 retain the existing synchronous path
 # Bounds (the request body cap is 256 KiB for every command; these keep a batch inside it and keep
 # a commit to a bounded number of observations in one transaction).
 MAX_CONTENT = 196608
@@ -177,6 +178,36 @@ def augment(spec, policy):
         },
         ["committed_at", "committed_by", "preview_hash", "observation_ids"],
     )
+    commit_request = closed(
+        {
+            "job_id": UUID,
+            "principal_id": UUID,
+            "identity_id": UUID,
+            "auth_time": DATE,
+            "preview_hash": {"type": "string", "pattern": HEX64},
+            "workflow_version": UUID,
+            "accept_warnings": {"type": "boolean"},
+        },
+        [
+            "job_id",
+            "principal_id",
+            "identity_id",
+            "auth_time",
+            "preview_hash",
+            "workflow_version",
+            "accept_warnings",
+        ],
+    )
+    processing = closed(
+        {
+            "job_id": UUID,
+            "state": {"enum": ["Queued", "Running", "Committed", "Failed", "Cancelled"]},
+            "attempts": {"type": "integer", "minimum": 0},
+            "last_error_class": {"type": ["string", "null"], "pattern": REASON["pattern"]},
+            "completed_at": {"type": ["string", "null"], "format": "date-time"},
+        },
+        ["job_id", "state", "attempts", "last_error_class", "completed_at"],
+    )
     schemas["ImportJobDraftData"] = closed(deepcopy(draft))
     # Server-owned: the reserved source namespace, the content digest and receipt time, the staged
     # preview, the commit manifest and the cancellation reason.
@@ -188,6 +219,8 @@ def augment(spec, policy):
             "received_at": DATE,
             "preview": {"oneOf": [{"type": "null"}, preview]},
             "committed": {"oneOf": [{"type": "null"}, committed]},
+            "commit_request": {"oneOf": [{"type": "null"}, commit_request]},
+            "processing": processing,
             "cancel_reason": {"type": ["string", "null"], "maxLength": 2000},
         }
     )
@@ -264,7 +297,9 @@ def augment(spec, policy):
         "hash; writes no observation.",
         "action_imports_commit": "Previewed only; expected_revision is the staged preview and preview_hash "
         "must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need "
-        "accept_warnings. Writes one IMPORT observation per accepted row and bound indicator under the "
+        "accept_warnings. Up to 50 staged rows commit synchronously; larger batches queue an "
+        "IMPORT_COMMIT job for an application-role executor that rechecks the committer's current "
+        "authority. Writes one IMPORT observation per accepted row and bound indicator under the "
         "staged source key and submits each into the independent observation review in the same "
         "transaction; the caller must also hold observation.submit (TENANT scope, no purpose). Values an "
         "approved plan names count as planned at period close; others block it (UNPLANNED_VALUES).",

@@ -11,6 +11,7 @@ import uuid
 import zipfile
 
 import pytest
+from impact_api.application_executor import ApplicationExecutor, ExecutorSettings
 from impact_api.contracts import validate
 from test_live_application import cmd, expect
 from test_measurement import get, create, action, approve, submit  # noqa: F401
@@ -1003,10 +1004,92 @@ def test_bounds_are_enforced(live, counted):
     failure(live.request(live.path("imports"), method="POST", body=cmd(too_big)), 422)
 
 
+def test_queued_commit_fails_when_requester_loses_authority(live, counted):
+    indicator, period = counted
+    prefix = "R" + uuid.uuid4().hex[:8]
+    content = "district,households\n" + "".join(f"{prefix}-{n:03},1\n" for n in range(51))
+    batch = preview(live, create(live, "imports", batch_data(indicator, period, content)))
+    commit(live, batch)
+    executor = ApplicationExecutor(ExecutorSettings(live.config["app_dsn"], require_unprivileged_db=False))
+    tenant = live.fixture["tenant_a"]
+    principal = live.fixture["actors"]["author"]["principal_id"]
+    try:
+        with live.db() as c:
+            c.execute(
+                "UPDATE impact.tenant_principal SET active=false WHERE tenant_id=%s AND principal_id=%s",
+                (tenant, principal),
+            )
+        executor.run_once()
+    finally:
+        with live.db() as c:
+            c.execute(
+                "UPDATE impact.tenant_principal SET active=true WHERE tenant_id=%s AND principal_id=%s",
+                (tenant, principal),
+            )
+    failed = get(live, "imports", batch["object_id"])
+    assert failed["lifecycle_state"] == "Failed"
+    assert failed["data"]["processing"]["last_error_class"] == "AUTHORITY_CHANGED"
+    assert failed["data"]["committed"] is None
+
+
+def test_large_commit_is_queued_fenced_and_reviewed(live, counted):
+    indicator, period = counted
+    prefix = "A" + uuid.uuid4().hex[:8]
+    content = "district,households\n" + "".join(f"{prefix}-{n:03},1\n" for n in range(51))
+    batch = preview(live, create(live, "imports", batch_data(indicator, period, content)))
+    queued_receipt = commit(live, batch)
+    assert queued_receipt["business_state"] == "Queued"
+    queued = get(live, "imports", batch["object_id"])
+    validate("ImportJob", queued)
+    assert queued["lifecycle_state"] == queued["data"]["processing"]["state"] == "Queued"
+    assert "commit_request" not in queued["data"]
+    executor = ApplicationExecutor(ExecutorSettings(live.config["app_dsn"], require_unprivileged_db=False))
+    tenant = live.fixture["tenant_a"]
+    job_id = queued["data"]["processing"]["job_id"]
+    assert tenant in executor.due_tenants()
+    assert executor.claim(tenant) == (job_id, 1)
+    with live.db() as c:
+        c.execute(
+            "UPDATE impact.job SET lease_expires_at=statement_timestamp()-interval '1 second' "
+            "WHERE tenant_id=%s AND job_id=%s",
+            (tenant, job_id),
+        )
+    assert executor.claim(tenant) == (job_id, 2)
+    assert executor.perform(tenant, job_id, 1) is False
+    assert executor.fail(tenant, job_id, 1, "COMMIT_DEFECT") is False
+    assert executor.perform(tenant, job_id, 2) is True
+    done = get(live, "imports", batch["object_id"])
+    validate("ImportJob", done)
+    assert done["lifecycle_state"] == done["data"]["processing"]["state"] == "Committed"
+    assert done["data"]["processing"]["attempts"] == 2
+    assert len(done["data"]["committed"]["observation_ids"]) == 51
+    assert executor.fail(tenant, job_id, 2, "COMMIT_DEFECT") is False
+    executor.heartbeat()
+    operators = expect(live.request("/v1/platform/workers", actor="admin"), 200)
+    assert any(
+        w["worker_id"] == executor.s.executor_id and w["kind"] == "application" and not w["stale"]
+        for w in operators["items"]
+    )
+    first = done["data"]["committed"]["observation_ids"][0]
+    workflow = workflow_of(live, first)
+    failure(
+        live.request(
+            live.path("workflows", workflow["object_id"]) + "/actions/approve",
+            method="POST",
+            body=cmd(
+                {"candidate_revision": workflow["data"]["candidate_revision"], "reason": "Mine"},
+                workflow["revision_id"],
+            ),
+        ),
+        403,
+        "INDEPENDENCE_REQUIRED",
+    )
+    approve(live, workflow)
+
+
 @pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
-    reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role "
-    "topology to test (run scripts/run.py test --native)",
+    reason="native PostgreSQL only: PGlite serves one superuser session and has no login-role topology",
 )
 def test_native_import_unit_register_is_fenced_and_insert_only(connect, live, counted):
     indicator, period = counted

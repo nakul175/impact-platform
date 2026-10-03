@@ -1,5 +1,7 @@
 # Handover — Impact Platform at build 0.27.0
 
+**PR 1 candidate (not merged):** Proposed build 0.28.0, migration 0033 adds the separate application executor and queues import commits above 50 rows. The live staging facts below still describe deployed build 0.27.0 at #80. See [RELEASE-0.28-import-executor.md](RELEASE-0.28-import-executor.md); CI and staging verification remain pending.
+
 **Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
 
 ## 1. In plain words

@@ -106,7 +106,8 @@ function WorkerHeartbeats({ request, explain }: Props) {
         <ul className="worker-list">
           {workers.items.map((w: any) => (
             <li key={w.worker_id} aria-label={`Worker ${w.worker_id}`}>
-              <strong>{w.worker_id}</strong> ·{" "}
+              <strong>{w.worker_id}</strong> (
+              {w.kind === "application" ? "Application jobs" : "Deliveries"}) ·{" "}
               {w.stale ? "Stale" : states[w.state] || w.state} · build {w.build}
               <br />
               Last heartbeat: {new Date(w.beat_at).toLocaleString()}
@@ -114,8 +115,18 @@ function WorkerHeartbeats({ request, explain }: Props) {
                 ? "; stopped " + new Date(w.stopped_at).toLocaleString()
                 : ""}
               <br />
-              {w.iterations} iterations · {w.sent} sent · {w.retried} retried ·{" "}
-              {w.dead} failed permanently · {w.failures} tenant errors
+              {w.iterations} iterations ·{" "}
+              {w.kind === "application" ? (
+                <>
+                  {w.succeeded} committed · {w.failed} failed · {w.failures}{" "}
+                  process errors
+                </>
+              ) : (
+                <>
+                  {w.sent} sent · {w.retried} retried · {w.dead} failed
+                  permanently · {w.failures} tenant errors
+                </>
+              )}
             </li>
           ))}
         </ul>

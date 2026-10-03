@@ -1,5 +1,5 @@
 {
-  "build": "0.27.0",
+  "build": "0.28.0",
   "assessment_date": "2026-10-03",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
@@ -2071,7 +2071,7 @@
       "acceptance": "Import 00123, a 20 digit ID, 03/04/2026 and a quoted comma; show each exact interpretation before commit.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.21 ingests a bounded tabular file carried in the import batch (CSV text or the first worksheet of an XLSX read with the standard library; at most 192 KiB of content, 500 rows and 500 observations): every cell is read as text, so leading zeros (00123), a 20-digit identifier and a quoted comma are kept exactly and shown raw beside their interpretation; dates are never guessed (03/04/2026 without a declared pattern is EVENT_AT_INVALID, read exactly with DD/MM/YYYY); a formula in a mapped column is quarantined; an unreadable archive or an XML DOCTYPE is refused before parsing (qualification/test_import.py::test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode, test_dimension_column_and_xlsx_source). Not covered: encoding, delimiter, sheet and header-row choice, locale-aware numbers, a formula mode other than reject, upload sessions and worker execution for larger files.",
+      "assessment": "v0.21 ingests a bounded tabular file carried in the import batch (CSV text or the first worksheet of an XLSX read with the standard library; at most 192 KiB of content, 500 rows and 500 observations): every cell is read as text, so leading zeros (00123), a 20-digit identifier and a quoted comma are kept exactly and shown raw beside their interpretation; dates are never guessed (03/04/2026 without a declared pattern is EVENT_AT_INVALID, read exactly with DD/MM/YYYY); a formula in a mapped column is quarantined; an unreadable archive or an XML DOCTYPE is refused before parsing (qualification/test_import.py::test_csv_import_preview_commit_review_and_receipts, test_quarantine_duplicates_and_atomic_mode, test_dimension_column_and_xlsx_source). Not covered: encoding, delimiter, sheet and header-row choice, locale-aware numbers, a formula mode other than reject, upload sessions and files above the bounded 500 rows; proposed 0.28.0 queues commits above 50 rows on the application executor (not the outbox worker).",
       "evidence_paths": [
         "apps/api/impact_api/imports.py",
         "apps/api/impact_api/import_contracts.py",
@@ -2134,12 +2134,15 @@
       "acceptance": "Load 100 rows with 90 valid, five duplicates and five invalid in partial mode; reconcile all 100 outcomes and retry only the corrected five.",
       "category": "functional",
       "status": "PARTIAL",
-      "assessment": "v0.21 classifies every staged row ACCEPTED, QUARANTINED with reason codes or DUPLICATE with reconciled counts; an atomic batch commits nothing when any row is not accepted, a partial batch commits exactly its accepted rows, and commit recomputes the staged outcome under the tenant lock and refuses a stale or mismatched preview hash; accepted rows become IMPORT-namespace observations submitted into the existing independent review in the same transaction (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview, test_access_tenancy_independence_and_reserved_namespace). Not covered: the accepted-update versus unchanged-duplicate distinction, rejected versus quarantined outcomes, keyed update and controlled replacement (FR-DAT-003), and retrying corrected rows as a linked batch. Build 0.27.0 (PR #68): imported values carry the plannable source key <unit>/<indicator>/<period>, so an approved plan names them in advance and planned imports close the period while unplanned ones still block it until a reviewed amendment names their key (qualification/test_import.py::test_planned_import_units_close_the_period, ::test_unplanned_import_units_still_block_close).",
+      "assessment": "v0.21 classifies every staged row ACCEPTED, QUARANTINED with reason codes or DUPLICATE with reconciled counts; an atomic batch commits nothing when any row is not accepted, a partial batch commits exactly its accepted rows, and commit recomputes the staged outcome under the tenant lock and refuses a stale or mismatched preview hash; accepted rows become IMPORT-namespace observations submitted into the existing independent review in the same transaction (test_import.py::test_quarantine_duplicates_and_atomic_mode, test_commit_refuses_a_stale_preview, test_access_tenancy_independence_and_reserved_namespace). Proposed 0.28.0: batches above 50 rows queue an application-role executor commit with a 60-second fenced lease and independent review (test_import.py::test_large_commit_is_queued_fenced_and_reviewed, ::test_queued_commit_fails_when_requester_loses_authority); native login test pending CI. Not covered: the accepted-update versus unchanged-duplicate distinction, rejected versus quarantined outcomes, keyed update and controlled replacement (FR-DAT-003), and retrying corrected rows as a linked batch. Build 0.27.0 (PR #68): imported values carry the plannable source key <unit>/<indicator>/<period>, so an approved plan names them in advance and planned imports close the period while unplanned ones still block it until a reviewed amendment names their key (qualification/test_import.py::test_planned_import_units_close_the_period, ::test_unplanned_import_units_still_block_close).",
       "evidence_paths": [
         "apps/api/impact_api/imports.py",
         "apps/api/impact_api/import_contracts.py",
         "infrastructure/migrations/0022_import_quality.sql",
         "qualification/test_import.py",
+        "apps/api/impact_api/application_executor.py",
+        "infrastructure/migrations/0033_application_executor.sql",
+        "docs/RELEASE-0.28-import-executor.md",
         "apps/web/src/Imports.tsx",
         "docs/RELEASE-0.21.md",
         "tools/browser/import-check.mjs",
@@ -5011,7 +5014,7 @@
       "failure": "Human approval and external transfer are separately reported exclusions; validation, internal queuing and ordinary retries remain measured.",
       "category": "nonfunctional",
       "status": "PENDING",
-      "assessment": "PENDING. Not measurable in this build: imports are bounded at 500 rows per batch and commit synchronously. QA 2026-10 performance (docs/evidence/performance-2026-10-01.json scenario import_max_batch) recorded one 500-row commit in 14.4 s, about 29 ms per produced observation under the tenant advisory lock; linear extrapolation to 100,000 rows would be far outside the 10-minute bound. No recalculation of 1,000 indicators was run. Retain the original acceptance criteria; this requirement remains open.",
+      "assessment": "PENDING. Proposed 0.28.0 queues commits above 50 rows, but 100,000-row throughput remains unmeasured: imports remain bounded at 500 rows per batch. QA 2026-10 performance (docs/evidence/performance-2026-10-01.json scenario import_max_batch) recorded one 500-row commit in 14.4 s, about 29 ms per produced observation under the tenant advisory lock; linear extrapolation to 100,000 rows would be far outside the 10-minute bound. No recalculation of 1,000 indicators was run. Retain the original acceptance criteria; this requirement remains open.",
       "evidence_paths": [],
       "release_gate": "Complete the original acceptance criteria and record passing implementation and qualification evidence."
     },

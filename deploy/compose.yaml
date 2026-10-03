@@ -52,6 +52,7 @@ services:
       IMPACT_LOGIN_PASSWORD_IDENTITY: ${IMPACT_LOGIN_PASSWORD_IDENTITY:?}
       IMPACT_LOGIN_PASSWORD_PLATFORM: ${IMPACT_LOGIN_PASSWORD_PLATFORM:?}
       IMPACT_LOGIN_PASSWORD_WORKER: ${IMPACT_LOGIN_PASSWORD_WORKER:?}
+      IMPACT_LOGIN_PASSWORD_EXECUTOR: ${IMPACT_LOGIN_PASSWORD_EXECUTOR:?}
       IMPACT_LOGIN_PASSWORD_MIGRATOR: ${IMPACT_LOGIN_PASSWORD_MIGRATOR:?}
       IMPACT_KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?}
     networks: [backend]
@@ -230,7 +231,20 @@ services:
       mailsink: {condition: service_started}
       postgres: {condition: service_healthy}
 
+  executor:
+    <<: [*app, *hardened]
+    restart: unless-stopped
+    command: ["python", "-m", "impact_api.application_executor", "--executor-id", "staging-executor-1"]
+    networks: [backend]
+    environment:
+      IMPACT_ENVIRONMENT: staging
+      IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"
+      IMPACT_EXECUTOR_DSN: postgresql://impact_executor_login:${IMPACT_LOGIN_PASSWORD_EXECUTOR}@postgres:5432/impact
+    depends_on:
+      postgres: {condition: service_healthy}
+
   caddy:
+    # Public reverse proxy; the executor remains solely on backend.
     image: caddy:2
     restart: unless-stopped
     logging: *logging

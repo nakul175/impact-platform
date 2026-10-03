@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.8.0"
+    "version": "1.9.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -9809,6 +9809,12 @@
                             "maxLength": 128,
                             "pattern": "\\S"
                           },
+                          "kind": {
+                            "enum": [
+                              "delivery",
+                              "application"
+                            ]
+                          },
                           "build": {
                             "type": "string",
                             "minLength": 1,
@@ -9849,16 +9855,59 @@
                             "minimum": 0
                           },
                           "sent": {
-                            "type": "integer",
-                            "minimum": 0
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "retried": {
-                            "type": "integer",
-                            "minimum": 0
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "dead": {
-                            "type": "integer",
-                            "minimum": 0
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "succeeded": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "failed": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "failures": {
                             "type": "integer",
@@ -9867,6 +9916,7 @@
                         },
                         "required": [
                           "worker_id",
+                          "kind",
                           "build",
                           "state",
                           "started_at",
@@ -9877,6 +9927,8 @@
                           "sent",
                           "retried",
                           "dead",
+                          "succeeded",
+                          "failed",
                           "failures"
                         ]
                       }

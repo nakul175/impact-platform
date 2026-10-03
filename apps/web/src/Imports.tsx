@@ -182,6 +182,7 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
 
   const preview = batch?.data.preview;
   const counts = preview?.counts;
+  const processing = batch?.data.processing;
   return (
     <>
       <div className="planning-toolbar">
@@ -450,6 +451,23 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
         {batch && preview && (
           <div className="import-preview">
             <h3>Preview of {batch.data.file_name}</h3>
+            {processing && (
+              <p role="status">
+                Commit {processing.state.toLowerCase()}.
+                {processing.last_error_class
+                  ? " Reason: " + processing.last_error_class + "."
+                  : ""}
+                {processing.state === "Queued" || processing.state === "Running"
+                  ? " Refresh to check progress."
+                  : ""}
+                <button
+                  className="secondary"
+                  onClick={() => refresh("Batch status refreshed.")}
+                >
+                  Refresh
+                </button>
+              </p>
+            )}
             <p>
               {counts.rows} rows: {counts.accepted} accepted,{" "}
               {counts.quarantined} quarantined, {counts.duplicate} duplicate;{" "}

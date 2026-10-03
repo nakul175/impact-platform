@@ -30,6 +30,7 @@ from .exports import Exports
 from .planning import PLANNING_KINDS, Planning
 from .forms import Forms
 from .imports import NAMESPACE as IMPORT_NAMESPACE, Imports
+from .import_contracts import ASYNC_THRESHOLD
 from .evidence import Evidence
 from .privacy import Privacy
 from .work import WorkCenter
@@ -241,6 +242,25 @@ class Service:
 
     def result(self, c, ctx, row):
         result = envelope(row)
+        if row["object_type"] == "ImportJob":
+            request = row["payload"].get("commit_request")
+            if request:
+                job = c.execute(
+                    "SELECT j.state,i.attempts,i.last_error_class,i.completed_at FROM impact.job j "
+                    "JOIN impact.import_commit i ON i.tenant_id=j.tenant_id AND i.job_id=j.job_id "
+                    "WHERE j.tenant_id=%s AND j.job_id=%s AND i.import_id=%s",
+                    (ctx.tenant_id, request["job_id"], row["object_id"]),
+                ).fetchone()
+                result["data"].pop("commit_request", None)
+                if job:
+                    result["lifecycle_state"] = "Committed" if job["state"] == "Succeeded" else job["state"]
+                    result["data"]["processing"] = {
+                        "job_id": request["job_id"],
+                        "state": result["lifecycle_state"],
+                        "attempts": job["attempts"],
+                        "last_error_class": job["last_error_class"],
+                        "completed_at": job["completed_at"].isoformat() if job["completed_at"] else None,
+                    }
         if row["object_type"] in {"WorkItem", "Notification"}:
             return self.work.decorate(c, ctx, row, result)
         if row["object_type"] == "MeasurementChange":
@@ -548,7 +568,12 @@ class Service:
             elif kind == "ImportJob" and action == "preview":
                 receipt = self.imports.preview(c, ctx, previous)
             elif kind == "ImportJob" and action == "commit":
-                receipt = self.imports.commit(c, ctx, previous, body["data"], correlation)
+                if (previous["payload"].get("preview") or {}).get("counts", {}).get(
+                    "rows", 0
+                ) > ASYNC_THRESHOLD:
+                    receipt = self.imports.enqueue(c, ctx, previous, body["data"])
+                else:
+                    receipt = self.imports.commit(c, ctx, previous, body["data"], correlation)
             elif kind == "ImportJob" and action == "cancel":
                 receipt = self.imports.cancel(c, ctx, previous, body["data"])
             elif kind == "ImportJob" and not action:

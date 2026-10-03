@@ -29,9 +29,12 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation, localcontext
 from xml.etree import ElementTree
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from uuid import uuid4
+
+from psycopg.types.json import Jsonb
 
 from .domain import NUMBER, RATIO_TYPES, DomainError, aware, ratio, stored, validate_dimensions
-from .import_contracts import MAX_COLUMNS, MAX_OBSERVATIONS, MAX_ROWS
+from .import_contracts import ASYNC_THRESHOLD, MAX_COLUMNS, MAX_OBSERVATIONS, MAX_ROWS
 from .store import canonical, load, write
 
 NAMESPACE = "IMPORT"
@@ -49,7 +52,16 @@ ANOMALY = {
     "history_limit": 200,
     "blocking": False,
 }
-SERVER_FIELDS = ["source_namespace", "content_sha256", "received_at", "preview", "committed", "cancel_reason"]
+SERVER_FIELDS = [
+    "source_namespace",
+    "content_sha256",
+    "received_at",
+    "preview",
+    "committed",
+    "cancel_reason",
+    "commit_request",
+    "processing",
+]
 MAX_UNCOMPRESSED = 8 * 1024 * 1024
 MAX_CELL = 1000
 XML_MAIN = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
@@ -313,6 +325,7 @@ class Imports:
             else previous["payload"].get("received_at"),
             "preview": None,
             "committed": None,
+            "commit_request": None,
             "cancel_reason": None,
         }
         if stamped["content_sha256"] is None:
@@ -650,8 +663,8 @@ class Imports:
         return write(c, ctx, "ImportJob", payload, "Cancelled", row, track_author=False)
 
     # Commit -------------------------------------------------------------------------------------
-    def commit(self, c, ctx, row, data, correlation=None):
-        if row["lifecycle_state"] != "Previewed":
+    def prepare_commit(self, c, ctx, row, data, *, executor=False):
+        if row["lifecycle_state"] != ("Queued" if executor else "Previewed"):
             raise DomainError("INVALID_STATE", 409)
         if not any(
             g["capability"] == "observation.submit" and g["scope_type"] == "TENANT" and g["purpose"] is None
@@ -675,6 +688,63 @@ class Imports:
             raise fail("WARNINGS_NOT_ACCEPTED")
         if not counts["accepted"]:
             raise fail("IMPORT_NOTHING_TO_COMMIT")
+        return payload, staged, period
+
+    def enqueue(self, c, ctx, row, data):
+        """Pin a large commit request and its job in the command transaction. The request
+        identity and auth time are server-owned; a later executor rechecks current authority."""
+        payload, staged, _ = self.prepare_commit(c, ctx, row, data)
+        if staged["counts"]["rows"] <= ASYNC_THRESHOLD:
+            raise DomainError("INVALID_STATE", 409, reason="IMPORT_BELOW_ASYNC_THRESHOLD")
+        job_id = str(uuid4())
+        scope_id = next(
+            (
+                g["scope_id"]
+                for g in ctx.grants
+                if g["capability"] == "import.commit" and g["scope_type"] == "TENANT" and g["purpose"] is None
+            ),
+            None,
+        )
+        if scope_id is None:
+            raise DomainError("POLICY_DENIED", 403)
+        requested = {
+            "job_id": job_id,
+            "principal_id": ctx.principal_id,
+            "identity_id": ctx.identity.identity_id,
+            "auth_time": ctx.identity.auth_time.isoformat(),
+            "preview_hash": data["preview_hash"],
+            "workflow_version": data["workflow_version"],
+            "accept_warnings": bool(data.get("accept_warnings")),
+        }
+        receipt = write(
+            c,
+            ctx,
+            "ImportJob",
+            {**payload, "commit_request": requested},
+            "Queued",
+            row,
+            track_author=False,
+        )
+        c.execute(
+            "INSERT INTO impact.job(tenant_id,job_id,job_class,requester_id,scope_id,state,input_manifest) "
+            "VALUES(%s,%s,'IMPORT_COMMIT',%s,%s,'Queued',%s)",
+            (
+                ctx.tenant_id,
+                job_id,
+                ctx.principal_id,
+                scope_id,
+                Jsonb({"import_id": str(row["object_id"]), "queued_revision": receipt["revision_id"]}),
+            ),
+        )
+        c.execute(
+            "INSERT INTO impact.import_commit(tenant_id,job_id,import_id,requested_by) VALUES(%s,%s,%s,%s)",
+            (ctx.tenant_id, job_id, row["object_id"], ctx.principal_id),
+        )
+        return {**receipt, "job_id": job_id}
+
+    def commit(self, c, ctx, row, data, correlation=None, *, executor=False):
+        payload, staged, period = self.prepare_commit(c, ctx, row, data, executor=executor)
+        counts = staged["counts"]
         reporting_zone = period["payload"].get("reporting_zone") or "UTC"
         registered = []
         ids = []

@@ -19,6 +19,7 @@ from pathlib import Path
 import httpx
 import psycopg
 import pytest
+from impact_api.application_executor import ApplicationExecutor, ExecutorSettings
 from psycopg import sql
 from psycopg.errors import InsufficientPrivilege
 
@@ -115,6 +116,27 @@ def test_each_login_is_unprivileged_and_assumes_exactly_its_own_role(connect, lo
             assert not assumable(c, other), user + " may assume " + other
     # Without SET ROLE the login itself holds nothing: no schema usage was granted to it (0001, 0013).
     denied(c, "SELECT count(*) FROM impact.schema_migration")
+
+
+def test_executor_login_has_only_application_role_and_its_own_topology(connect, live):
+    c = connect("EXECUTOR")
+    login, superuser, bypass, inherit = c.execute(
+        "SELECT current_user,rolsuper,rolbypassrls,rolinherit FROM pg_roles WHERE rolname=current_user"
+    ).fetchone()
+    assert login == "impact_executor_login" and not (superuser or bypass or inherit)
+    assert assumable(c, "impact_app")
+    for other in PRIVILEGE_ROLES:
+        if other != "impact_app":
+            assert not assumable(c, other)
+    denied(c, "SELECT count(*) FROM impact.schema_migration")
+    denied(c, "SELECT count(*) FROM impact.import_commit")
+    executor = ApplicationExecutor(ExecutorSettings(dsn("EXECUTOR")))
+    executor.heartbeat()
+    assert isinstance(executor.due_tenants(), list)
+    with executor.transaction(live.fixture["tenant_a"]) as tenant_c:
+        tenant_c.execute("SELECT count(*) FROM impact.import_commit").fetchone()
+    with pytest.raises(RuntimeError, match="EXECUTOR_LOGIN_TOPOLOGY"):
+        ApplicationExecutor(ExecutorSettings(dsn("APP"))).heartbeat()
 
 
 def test_app_role_cannot_read_control_plane_tables(connect, live):

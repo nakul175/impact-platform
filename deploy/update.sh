@@ -306,6 +306,7 @@ main() {
   ensure_secret IMPACT_LOGIN_PASSWORD_IDENTITY 32
   ensure_secret IMPACT_LOGIN_PASSWORD_PLATFORM 32
   ensure_secret IMPACT_LOGIN_PASSWORD_WORKER 32
+  ensure_secret IMPACT_LOGIN_PASSWORD_EXECUTOR 32
   ensure_secret IMPACT_LOGIN_PASSWORD_MIGRATOR 32
   ensure_secret KEYCLOAK_DB_PASSWORD 32
   ensure_secret KEYCLOAK_ADMIN_PASSWORD 32
@@ -378,7 +379,8 @@ main() {
 
   if [ "$(cat "$STATE_DIR/last-success" 2>/dev/null || true)" = "$COMMIT" ] &&
     [ "$(container_health api)" = "healthy" ] && [ "$(container_health keycloak)" = "healthy" ] &&
-    [ "$(container_health caddy)" = "healthy" ] && [ "$(container_health worker)" = "running" ]; then
+    [ "$(container_health caddy)" = "healthy" ] && [ "$(container_health worker)" = "running" ] &&
+    [ "$(container_health executor)" = "running" ]; then
     step "unchanged"
     log "commit $COMMIT is already deployed and healthy"
     OPERATOR_OUTCOME="$(cat "$STATE_DIR/operator" 2>/dev/null || true)"
@@ -468,6 +470,7 @@ main() {
   wait_for api healthy 240
   wait_for caddy healthy 60
   wait_for worker running 60
+  wait_for executor running 60
   wait_for mailsink running 30
   wait_for backup running 30
 

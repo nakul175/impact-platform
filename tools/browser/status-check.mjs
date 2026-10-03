@@ -131,6 +131,12 @@ await finish(async () => {
     await banner(operator).waitFor();
     const line = operator.getByLabel("Who is on call", { exact: true });
     await line.waitFor();
+    // The line says "Reading the on-call rota…" until its own GET /v1/status answers; on PGlite
+    // that read shares the single connection with the banner's poll and the panel's other reads,
+    // so wait for the placeholder to go before reading the line (it failed once at integration).
+    await operator
+      .getByText("Reading the on-call rota…", { exact: true })
+      .waitFor({ state: "detached" });
     assert.match(await line.innerText(), /^On call: Server owner \(example\)/);
     await noHorizontalScroll(operator);
   });

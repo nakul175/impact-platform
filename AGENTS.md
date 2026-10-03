@@ -61,7 +61,7 @@ Engineering invariants (HLD/LLD/MIG; verified in code):
 
 ## Working with the owner
 
-The owner is a non-engineer who decides product scope and approves merges. Use plain language without jargon, short direct answers, the uncomfortable facts first, and state your confidence explicitly ("high / medium / low confidence", and why). Confirm before merges, deployments or spending money. When something cannot be done, say so and offer the nearest safe alternative. Owner decisions that are still open are listed in `docs/HANDOVER.md`.
+The owner is a non-engineer who decides product scope and approves merges. Use plain language without jargon, short direct answers, the uncomfortable facts first, and state your confidence explicitly ("high / medium / low confidence", and why). Confirm before merges, deployments or spending money. When something cannot be done, say so and offer the nearest safe alternative. Owner decisions that are still open are listed in `docs/HANDOVER.md`. The owner has also used Cursor's agent on this repository, so a branch may receive commits from another tool while you work on it: fetch again before you merge or push, and never push to someone else's branch.
 
 ## Set up, run and test
 

@@ -119,19 +119,19 @@ sudo /opt/impact/repo/deploy/rotate-secrets.sh rotate --family all --reason "sch
 
 The old value stays in **grace**: the cookie secret 1 day, the invitation and delivery secrets 8 days by default (`--grace-days N`). Sessions, open tabs, invitation e-mails and recovery codes made before the rotation keep working during grace. After the window: `sudo /opt/impact/repo/deploy/rotate-secrets.sh retire --family all --expired --reason "grace ended"`. After a suspected compromise retire at once with `--all-previous`, accepting that queued e-mails sealed with the retired delivery secret become `DEAD RECIPIENT_UNREADABLE` and old invitation links stop working (issue new invitations). Output names key ids only; the API (and the worker for invitation/delivery) is recreated, a few seconds of unavailability. Not covered by the script: Keycloak token-signing keys, database passwords, TLS (deployment guide §10).
 
-### 4.8a A member reports being refused, or a privacy case shows HELD
+### 4.8 A member reports being refused, or a privacy case shows HELD
 
 Since build 0.27.0 refusals are recorded. An owner or tenant administrator opens **People & access → Access denied** (or `GET /v1/tenants/{tenant}/access-denials`) and finds the member's row: `POLICY_DENIED` (missing capability: request a role or grant), `RESOURCE_UNAVAILABLE` (the record is hidden from them or does not exist), `PURPOSE_REQUIRED` (a purpose-bound capability without its purpose), `FRESH_AUTHENTICATION_REQUIRED` or `MFA_ASSURANCE_REQUIRED` (sign out and in again). A `DENIAL_LIMIT` row means more than 50 different refusals in five minutes from one person: treat it as a scan — check the member's session and grants. A data-subject request that shows an item as HELD is blocked by a retention hold: list them under **People & access → Retention holds**; releasing one needs a person other than the one who placed it.
 
-### 4.8b Readiness exercise
+### 4.9 Readiness exercise
 
 `sudo /opt/impact/repo/deploy/readiness-exercise.sh` (console, root) stops the worker for one check, confirms that `WORKER_STALE` and `CONTAINER_UNHEALTHY` are raised and delivered, restarts it, confirms they clear, and simulates a full disk on a scratch copy; the record is `/opt/impact/ops/readiness-exercise.json`. Queued deliveries wait while the worker is stopped and are sent when it is back.
 
-### 4.8 A user reports wrong or missing numbers
+### 4.10 A user reports wrong or missing numbers
 
 Do not edit anything in the database. Ask for the programme, indicator, period and the correlation ID; check whether the value is PROVISIONAL or OFFICIAL and whether it is marked stale. Corrections go through the product's own flows (return or amendment before close, restatement after close). Report a suspected calculation defect to the engineer with the IDs.
 
-### 4.9 Suspected personal-data exposure or security incident
+### 4.11 Suspected personal-data exposure or security incident
 
 Staging must hold no real personal data. If some appears, or access looks wrong: record time and correlation IDs, tell the owner at once, consider suspending the affected membership (tenant administrator) and rotating secrets (§4.7). There is no incident-response procedure, detection tooling or notification process beyond this (FR-SEC-011 PENDING).
 

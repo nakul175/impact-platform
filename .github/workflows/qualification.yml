@@ -1,10 +1,39 @@
 name: Application qualification
-on: [push, pull_request, workflow_dispatch]
+# Push runs only on main. Every other branch is qualified by its pull request, so a commit
+# is not billed twice (once for the branch push and once for the same pull request). A
+# documentation-only change does not start the suite. workflow_dispatch still runs the full
+# suite on any ref, with no path filter.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  workflow_dispatch:
+# One in-flight run per pull request, and one per branch for a main push or a manual run.
+# A newer commit cancels the run it replaces. A main push is left to finish: that run is the
+# record of what landed, and merges are not the rapid-push case this cancellation is for.
+concurrency:
+  group: qualification-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 permissions:
   contents: read
 jobs:
+  # native-postgresql-gate is not gated on this job. On the last green main run (2026-10-02,
+  # 36963825369) this job took 12m24s and the native job 14m43s, overlapping. Waiting would
+  # add this job's duration to every green run's wall clock and would not reduce the minutes
+  # of a green run, because both jobs would still execute. The minutes it would save are only
+  # the native job's when this job has already failed. Duplicate runs, cancelled superseded
+  # pull requests, documentation skips and the timeouts below save minutes on the common path.
   local-reference-and-browser:
     runs-on: ubuntu-24.04
+    # Last green main run: 12m24s. 30 leaves headroom for a slow runner and stops a hang
+    # well short of the 6-hour default.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -27,6 +56,8 @@ jobs:
             .local/test-*/api.log
   live-identity-provider:
     runs-on: ubuntu-24.04
+    # Last green main run: 2m59s. 20 covers a cache miss on the Keycloak archive.
+    timeout-minutes: 20
     env:
       # Keep in step with KEYCLOAK_VERSION in scripts/idp.py; the script verifies the pinned SHA-256
       # of the cached or downloaded archive before unpacking it.
@@ -69,6 +100,10 @@ jobs:
             docs/evidence/idp-browser-tests.json
   native-postgresql-gate:
     runs-on: ubuntu-24.04
+    # Last green main run: 14m43s, including the client install, restore drill, upgrade
+    # check and the live-provider pass. 40 is the hang cap; the job still starts with the
+    # others (see the note on local-reference-and-browser).
+    timeout-minutes: 40
     services:
       postgres:
         image: postgres:17.11

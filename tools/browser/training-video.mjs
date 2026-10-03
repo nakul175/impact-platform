@@ -1147,8 +1147,7 @@ async function decide(reason) {
 // The console's change forms: a reason, then the confirm button; "Change saved." follows.
 // Since build 0.27.0 the tenant change form is a dialog beside its card; the recovery-contact
 // and initial-access forms are still regions at the foot of their pages.
-const changeRegion = (name) =>
-  page.getByRole("region", { name, exact: true });
+const changeRegion = (name) => page.getByRole("region", { name, exact: true });
 async function confirmIn(form, buttonName, reason) {
   await humanType(form.getByLabel("Reason", { exact: true }), reason);
   await humanClick(form.getByRole("button", { name: buttonName, exact: true }));

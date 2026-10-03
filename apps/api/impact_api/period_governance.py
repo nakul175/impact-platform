@@ -65,9 +65,19 @@ class PeriodGovernance:
     def assert_source_mutable(self, c, ctx, indicator_id, event_at, source_id):
         indicator = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
         programme_id = indicator["payload"]["programme_id"]
+        # The period is the one on this programme's reporting calendar. A tenant-wide match by
+        # time picks another calendar's period (several calendars have been allowed since the
+        # v0.26a reference-data commands). That other period's state for this programme is Open
+        # by default, so a locked quarter would accept a late change. An event that falls in no
+        # period of this calendar is unchanged: there is no locked period to protect.
         period = c.execute(
-            "SELECT object_id FROM impact.period_current WHERE tenant_id=%s AND starts_at<=%s AND ends_at>%s ORDER BY starts_at DESC LIMIT 1",
-            (ctx.tenant_id, event_at, event_at),
+            "SELECT p.object_id FROM impact.period_current p "
+            "JOIN impact.programme_current prog ON prog.tenant_id=p.tenant_id AND prog.object_id=%s "
+            "JOIN impact.object_revision cal ON cal.tenant_id=p.tenant_id "
+            "AND cal.revision_id=p.calendar_version AND cal.object_type='ReportingCalendar' "
+            "WHERE p.tenant_id=%s AND cal.object_id=prog.reporting_calendar_id "
+            "AND p.starts_at<=%s AND p.ends_at>%s ORDER BY p.starts_at DESC LIMIT 1",
+            (programme_id, ctx.tenant_id, event_at, event_at),
         ).fetchone()
         if not period:
             return

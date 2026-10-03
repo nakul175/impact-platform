@@ -870,8 +870,7 @@ def test_unplanned_import_units_still_block_close(live):
 def monthly_periods(live, year=2025):
     """July and August of a monthly calendar the tenant administrator creates through the governed
     reference-data command (v0.26a), so that a unit can be imported in two periods. The year is 2025
-    on purpose: `assert_source_mutable` resolves an event's period tenant-wide by time, so a second
-    calendar whose periods overlap the fixture quarter would change other tests' outcomes."""
+    so these periods do not sit on the fixture quarter the other suites close."""
     receipt = expect(
         live.request(
             live.path("reporting-calendars"),

@@ -82,6 +82,27 @@ def test_close_creates_immutable_snapshot_and_official_results(live, setup):
     action(
         live, "indicator-instances", indicator, "calculate", {"period_id": period["object_id"]}, status=409
     )
+    # August of a second calendar starts later than the fixture quarter that contains
+    # 2026-08-15. Lookup by time across the tenant would select that month, whose state
+    # for this programme is Open, and the late submission below would be accepted.
+    expect(
+        live.request(
+            live.path("reporting-calendars"),
+            actor="admin",
+            method="POST",
+            body=cmd(
+                {
+                    "title": "Overlapping month " + str(uuid.uuid4())[:8],
+                    "frequency": "MONTHLY",
+                    "zone": "UTC",
+                    "first_year": 2026,
+                    "years": 1,
+                    "reason": "Prove a locked quarter is resolved on the programme calendar.",
+                }
+            ),
+        ),
+        200,
+    )
     late = observation(live, indicator, "late-" + str(uuid.uuid4()))
     denied = action(
         live,

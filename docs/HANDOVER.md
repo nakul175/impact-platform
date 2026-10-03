@@ -1,10 +1,12 @@
 # Handover — Impact Platform at build 0.27.0
 
+**PR 1 candidate (not merged):** Proposed build 0.28.0, migration 0033 adds the separate application executor and queues import commits above 50 rows. The live staging facts below still describe deployed build 0.27.0 at #80. See [RELEASE-0.28-import-executor.md](RELEASE-0.28-import-executor.md); CI and staging verification remain pending.
+
 **Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
 
 ## 1. In plain words
 
-The platform lets an organisation plan its programmes, collect data (by hand, web forms or spreadsheet import, with evidence files), have every record approved by a different person, calculate results, lock reporting periods and publish frozen reports to named people. It runs on one test ("staging") server. It is **not** production-ready: none of the 307 written requirements is accepted, and the first organisation has not yet used it for real work. Build 0.27.0 combines eleven pieces of work done in parallel on 2–3 October 2026. It is waiting for its automated checks (CI) and for the owner's go-ahead to merge; merging puts it on the staging server within about three minutes.
+The platform lets an organisation plan its programmes, collect data (by hand, web forms or spreadsheet import, with evidence files), have every record approved by a different person, calculate results, lock reporting periods and publish frozen reports to named people. It runs on one test ("staging") server. It is **not** production-ready: none of the 307 written requirements is accepted, and the first organisation has not yet used it for real work. Build 0.27.0 combines eleven pieces of work done in parallel on 2–3 October 2026. Pull request #80 passed all four CI jobs and was merged on 3 October; it deployed to staging at 02:35 UTC.
 
 Confidence: high on what is written here about the code and the tests (checked on the integrated tree on 3 October); medium on the live server's state (the development sandbox cannot reach it — see §3).
 
@@ -12,9 +14,9 @@ Confidence: high on what is written here about the code and the tests (checked o
 
 | Item | Value |
 |---|---|
-| Build | **0.27.0** on branch `integration/0.27`, in the integration pull request to `main` titled "Build 0.27.0: integrate #67–#77 and GPT handover docs" (not merged) |
-| `main` | build 0.26.0 at 0025767 (25a8dca plus #78, a CI-workflow-only change merged on 3 October 2026) until that pull request is merged |
-| Schema | 32 migrations (0029–0032 new in this build; staging runs 28) |
+| Build | **0.27.0**, merged in #80 at `c6ac17a` and deployed to staging |
+| `main` | `c6ac17a3d4af9025b69a1daccdb12f48e0bb8c3f` (#80 merge) |
+| Schema | 32 migrations (0029–0032 new in this build; staging runs 32) |
 | Domain API | 1.17.0, 230 implemented operations (`packages/contracts/openapi-implemented.json`) |
 | Platform (control-plane) API | 1.8.0, 44 operations (`openapi-platform.json`); plus the support route `GET /v1/status` |
 | Requirement ledger | **113 PARTIAL, 194 PENDING, 0 accepted** of 307 (`docs/COMPLETION-LEDGER.md`; was 106/201 at 0.26.0) |
@@ -28,19 +30,19 @@ What 0.27.0 adds, in one line each (details: [RELEASE-0.27.md](RELEASE-0.27.md))
 - **Staging**: https://168-144-78-191.sslip.io — one DigitalOcean droplet in Bangalore (2 vCPU, 4 GB) running everything with Docker Compose: the API and web client, the worker, PostgreSQL 17, Keycloak 26.7.4 (sign-in at `auth.168-144-78-191.sslip.io`, realm `impact`), Caddy with Let's Encrypt, a local mail capture (no e-mail provider), nightly verified backup sets, a weekly restore drill and a five-minute alert check.
 - **How it updates**: a timer on the server pulls `main` every 3 minutes and runs `deploy/update.sh` (builds the image on the server, applies migrations, restarts services). Nobody pushes to the server and there is no inbound SSH from development sandboxes; the owner reaches the server only through the DigitalOcean web console (droplet → Access → Launch Droplet Console) and the console scripts in [DEPLOYMENT-GUIDE.md](current/DEPLOYMENT-GUIDE.md) §4.
 - **Status page**: https://168-144-78-191.sslip.io/deploy-status.json (`result`, deployed `commit`, `schema_version`, `alerts`, `operations`; secrets redacted).
-- **Live state, read on 3 October 2026 at about 02:05 UTC** (the status page fetched over the web; the development sandbox has no other route to the server): `result` ok, `commit` 0025767 (`main`: build 0.26.0 plus the CI-only #78), `schema_version` 28, last deployment finished 00:41 UTC; the nightly backup succeeded (two daily sets); **one warning, `RESTORE_DRILL_STALE`** — the weekly restore drill has never recorded a result on this server (`operations.restore_drill.outcome` is null; its timer runs on Sundays at about 23:15 UTC). The owner can run it now from the DigitalOcean console with `sudo /opt/impact/repo/deploy/restore-drill.sh` (DEPLOYMENT-GUIDE.md §6.2; SUPPORT-RUNBOOK.md §4.6). After the merge of build 0.27.0, `commit` should show the merge commit and `schema_version` 32.
-- **On merge of build 0.27.0** the server applies migrations 0029–0032 (rehearsed on a populated schema-28 database, not on the staging data). Initial-access requests proposed but not applied fail with `ACCESS_PROFILE_CHANGED` and must be proposed again; an organisation that already applied initial access cannot grant the 16 capabilities this build added until a reviewed ceiling widening exists. Nothing else needs a manual step; new optional settings are listed in RELEASE-0.27.md "Owner-facing notes".
+- **Live state, checked on 3 October 2026 at 03:55 UTC**: `result` ok, commit `c6ac17a` deployed at 02:35 UTC, `schema_version` 32, all services up. The sole alert is `RESTORE_DRILL_STALE`; the weekly timer runs Sunday at about 23:15 UTC. This report came from the owner after a live check; it has not been independently rechecked in this development workspace. Use a cache-busting query string when fetching `deploy-status.json`.
+- **After the 0.27.0 deployment**, initial-access requests proposed but not applied must be proposed again (`ACCESS_PROFILE_CHANGED`); an organisation that already applied initial access cannot grant the 16 capabilities this build added until a reviewed ceiling widening exists. New optional settings are listed in RELEASE-0.27.md "Owner-facing notes".
 
 ## 4. CI
 
 - One workflow, [`.github/workflows/qualification.yml`](../.github/workflows/qualification.yml), four jobs: `local-reference-and-browser` (lint, the PGlite suite, the reference suite, all browser groups), `live-identity-provider` (a real Keycloak), `native-postgresql-gate` (native PostgreSQL 17 on provisioned logins, restore drill, upgrade from schema 28, live provider on native logins, and an advisory pooled subset) and `container-stack` (the whole deployment path in Docker: `update.sh`, smoke, first sign-in, secret rotation, backup set, restore drill, alert exercise). **`container-stack` is the only check of the deployment path; it cannot run in a development sandbox.** Since #78 (merged into `main` on 3 October 2026) a push runs the workflow only on `main`; any other branch is qualified by its pull request, once per push, and a newer push cancels the run in progress; a change that touches only `**.md` or `docs/**` starts nothing; the jobs are capped at 30, 20, 40 and 45 minutes; `workflow_dispatch` runs the full suite on any branch.
 - The GitHub Actions spending limit has been exhausted three times (1–3 October 2026). When it is, every job fails within seconds **with zero steps** and the annotation "The job was not started because recent account payments have failed or your spending limit needs to be increased" — that is billing, not code: raise the budget, then re-run the jobs from the pull request's Checks tab.
-- At handover: Actions refused every job from about 00:30 to 00:46 UTC on 3 October 2026 — the checks of `main` at 0025767 (#78), of #79 and of the imports branch head bd1f43f failed that way and have not been re-run — and ran again from about 00:46 UTC: #69 and #77 passed all four jobs on their updated heads (which merged `main`), and #74's final head (fde4411) passed all four at 01:59 UTC. The integration pull request's own result is on its Checks tab; it is the first CI run of the integrated build. If a job there failed within seconds with zero steps, it is billing again.
+- At handover: Actions refused every job from about 00:30 to 00:46 UTC on 3 October 2026. The integration pull request #80 subsequently passed all four jobs on its final head `ff9ba7f`; it was merged as `c6ac17a`. If future jobs fail within seconds with zero steps, check the spending limit before retrying.
 - Before the integration, four component pull requests (#68, #69, #74, #77) had no CI on their final heads; #69, #74 and #77 have since passed on their updated heads, and #68's final head (with #79) and `main` at 0025767 (#78) have had no CI run at all. The integration's local runs (§9) and the integration pull request's CI are the verification of the combination.
 
 ## 5. Open pull requests
 
-After this integration the only open pull request that matters is the integration pull request from `integration/0.27` ("Build 0.27.0: integrate #67–#77 and GPT handover docs"). The eleven component pull requests #67–#77 stay open until it is merged **with a merge commit** (not squash, not rebase): GitHub then marks them merged. Do not close them by hand.
+Pull requests #67–#80 are merged. None was open at the owner's 03:55 UTC check on 3 October 2026.
 
 ## 6. Owner decisions still open
 
@@ -93,7 +95,7 @@ Not run locally: the live identity-provider suite (17 tests) and the container s
 
 ## 10. Prioritised next steps
 
-1. **Get the integration pull request green** in CI (all four jobs), then ask the owner to merge it with a merge commit; watch `deploy-status.json` until `result` is `ok` with schema 32 (§3). Independently of the merge, ask the owner to run the restore drill once by hand (`sudo /opt/impact/repo/deploy/restore-drill.sh` in the DigitalOcean console) to clear `RESTORE_DRILL_STALE` and prove the backups restore on the server.
+1. **Build the application-job executor and asynchronous import commit** in one pull request, then the KoboToolbox connector in a second pull request after the first is green, merged with the owner's approval, and healthy on staging. `main` auto-deploys after merge; never merge without four green CI jobs and the owner's explicit confirmation. The weekly restore-drill timer should clear `RESTORE_DRILL_STALE` after its Sunday run; verify the result then.
 2. **Hosted user acceptance on staging** with [UAT-PACK.md](current/UAT-PACK.md) (22 scenarios), after the first organisation is set up (§8). Record results in the sign-off sheet.
 3. **Owner decisions** in §6, starting with the e-mail provider and off-server backup storage.
 4. **Release 1 remainder without an owner decision** ([NEXT-DELIVERY.md](NEXT-DELIVERY.md)): the reviewed ceiling widening for applied tenants; screens for collection rounds and assignments; browser checks for the Access denied, Retention policies and Retention holds panels; Keycloak signing-key rotation in the live-provider suite; the asynchronous import executor; the quantified standard workload on the staging droplet; a crash restart and per-tenant fairness; penetration testing.

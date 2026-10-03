@@ -1,5 +1,10 @@
 # Current data dictionary and schema evolution
 
+Proposed build 0.28.0, schema 33 (PR 1, not merged): 0033 adds the application executor's
+tenant-fenced `import_commit` register, its due-tenant directory and an operational heartbeat.
+The executor login is separately provisioned with membership in `impact_app` only. No
+`impact_worker` privilege changes. The migration remains additive to deployed schema 32.
+
 Build 0.27.0; schema 32 (integrated 3 October 2026 on branch `integration/0.27`; the four v0.27 slices each numbered their migration 0029 locally and were renumbered in merge order by renaming the files only, so their bytes and SHA-256 values are those the slices recorded). 0029 (operator lifecycle, PR #72) adds `platform_operator.revision_id` and `updated_at` with the guard trigger `guard_platform_operator` (identity immutable; every update refreshes the revision), widens the CHECK `platform_event_tenant_scope` to the tenant-less actions `operator-renew` and `operator-deactivate`, adds the insert-only register `platform_operator_change` (who renewed or deactivated whom, from which revision and expiry to which, the actor's assurance instant and reason; SELECT to `impact_platform` only) and the SECURITY DEFINER `apply_operator_change` (EXECUTE to `impact_platform` only): the only run-time writer of `platform_operator` besides `accept_operator_nomination` — the actor must be an active operator other than the subject and of another natural person, the subject at the expected revision and still active and unexpired, a renewal later than the current expiry and at most 365 days ahead, a deactivation leaving at least one other active operator. 0030 (security and privacy, PR #74) adds `access_denial` (collapsed refused authorisations per tenant, principal, operation, reason and 300-second window with an occurrence counter; written only through the SECURITY DEFINER `record_access_denial`, which also folds a principal's denials beyond a per-window cap into one overflow row; `impact_app` holds SELECT only; the trigger `access_denial_guard` lets only the counter and the last-seen fields advance), the insert-only `audit_export_register` (one row per exported audit page: principal, purpose, reason, window, page, counts, content digest, chain start and end, seal key id; keyed by the export's AuditEvent; `impact_app` SELECT/INSERT), the approval columns of `retention_policy_current` (reason, approved_by/at/revision, supersedes_revision with a typed foreign key) and the insert-only `retention_policy_binding` (one row per independently approved policy revision; `impact_app` SELECT/INSERT, `impact_worker` SELECT), the hold columns of `retention_hold` (reason, placed_by/at, released_by, release_reason; CHECK `retention_hold_release`) with the trigger `retention_hold_guard` (immutable except for one release, a released hold final), and the worker definers `retention_purge_receipts(integer,integer)` (a policy can only lengthen the 7-day receipt window) and `retention_purge_security_events(integer,integer)` (never below the 365-day floor); all new tables with forced RLS and `tenant_fence`. Nothing is revoked or granted back. 0031 (theory of change, PR #70) adds the payload columns of this build's planning contract and nothing else: `framework_current.assumptions` (a JSON array of the assumption, risk and context records a framework revision carries beside its 0002 `relationships` column, which this build writes for the first time) and `target_current.status_thresholds` (the JSON object of reviewed status thresholds a target carries). No grant, policy, trigger or role change; the closed contract schemas validate both documents before they are written. 0032 (web forms continued, PR #73) is additive and changes no grant, role or policy: `form_current.default_language` (the language of the field definitions; the existing `translation_versions` array now carries the language versions), `submission_current.language` (the language presented to the respondent), `submission_current.correction_of_revision` and `correction_reason` (a correction of returned work names the Submitted revision it supersedes), a typed composite foreign key `submission_assignment_kind` from the existing `assignment_id` column to `object_registry`, and on `assignment_current` the columns `unit_key`, `previous_assignee_id` and `reason` with the composite foreign keys `assignment_round_kind` (to the `CollectionRound` registry row) and `assignment_assignee` (to `tenant_principal`). Collection rounds are the 0002 registry kind `CollectionRound` kept in `object_registry`/`object_revision` without a projection, as `CollectionPlan` is.
 
 Build 0.26.0; schema 28 (v0.26a usable staging, 1 October 2026, branch `release/0.26a-usable-staging`). 0028 lets `platform_event.tenant_id` be NULL only for the tenant-less control-plane actions (`operator-nominate/cancel/decline/accept`, `account-create/reissue`; CHECK `platform_event_tenant_scope`); adds `platform_operator_nomination` (one open nomination per e-mail hash, no clear address, an immutability and finality trigger `guard_operator_nomination` that admits an acceptance only from the definer) and `provider_account` (who created which identity-provider subject for which address hash, credentials issued, never a password; UNIQUE issuer and subject), both readable and insertable by `impact_platform` only with UPDATE on a few decision columns; the SECURITY DEFINER functions `register_provider_account_identity` (the identity of a provisioned account, only for an active qualification's issuer), `accept_operator_nomination` (the only run-time writer of `platform_operator`: open, unexpired nomination, nominating operator still active, the actor's verified address, a natural person different from the nominator and from every active operator) and `tenant_pending_invitation` (whether the transaction's tenant has a pending invitation for an address hash), EXECUTE to `impact_platform` only; and replaces `apply_initial_authority` so the reviewed ceiling also covers a v2 manifest's `purpose_bound` capabilities (every other condition unchanged).
@@ -44,6 +49,7 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0030_security_privacy.sql | 5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12 |
 | 0031_theory_of_change.sql | 2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac |
 | 0032_forms_languages_rounds.sql | 999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b |
+| 0033_application_executor.sql | a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33 |
 
 ## Executable schema definitions
 
@@ -4557,5 +4563,77 @@ ALTER TABLE impact.assignment_current ADD CONSTRAINT assignment_round_kind
  FOREIGN KEY(tenant_id,round_id,round_id_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE impact.assignment_current ADD CONSTRAINT assignment_assignee
  FOREIGN KEY(tenant_id,assignee_id) REFERENCES impact.tenant_principal(tenant_id,principal_id) DEFERRABLE INITIALLY DEFERRED;
+COMMIT;
+```
+
+### 0033 application executor
+
+Source: infrastructure/migrations/0033_application_executor.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+ALTER TABLE impact.import_job_current ADD COLUMN commit_request jsonb;
+
+-- The application executor uses a separate LOGIN with membership in impact_app only. It never
+-- receives the migration or worker role. This register tracks one governed import commit job.
+CREATE TABLE impact.import_commit(
+  tenant_id uuid NOT NULL,
+  job_id uuid NOT NULL,
+  import_id uuid NOT NULL,
+  requested_by uuid NOT NULL,
+  attempts integer NOT NULL DEFAULT 0 CHECK(attempts>=0),
+  next_attempt_at timestamptz NOT NULL DEFAULT statement_timestamp(),
+  lease_owner varchar(128) CHECK(lease_owner ~ '^[A-Za-z0-9._:-]{1,128}$'),
+  last_attempt_at timestamptz,
+  last_error_class varchar(64) CHECK(last_error_class ~ '^[A-Z0-9_]{1,64}$'),
+  completed_at timestamptz,
+  PRIMARY KEY(tenant_id,job_id),
+  UNIQUE(tenant_id,import_id),
+  FOREIGN KEY(tenant_id,job_id) REFERENCES impact.job(tenant_id,job_id),
+  FOREIGN KEY(tenant_id,import_id) REFERENCES impact.import_job_current(tenant_id,object_id),
+  FOREIGN KEY(tenant_id,requested_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX import_commit_due ON impact.import_commit(tenant_id,next_attempt_at)
+  WHERE completed_at IS NULL;
+ALTER TABLE impact.import_commit ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.import_commit FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.import_commit
+  USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT,UPDATE ON impact.import_commit TO impact_app;
+
+-- The owner-side directory returns only identifiers for Active tenants with due application jobs.
+-- Tenant rows and job payloads remain behind their forced RLS fences.
+CREATE POLICY executor_import_directory ON impact.import_commit FOR SELECT TO impact_owner USING(true);
+CREATE FUNCTION impact.executor_due_tenants(at timestamptz)
+ RETURNS TABLE(tenant_id uuid) LANGUAGE sql STABLE SECURITY DEFINER
+ SET search_path=pg_catalog,impact AS $$
+ SELECT DISTINCT t.tenant_id FROM impact.tenant_root t
+ JOIN impact.job j ON j.tenant_id=t.tenant_id AND j.job_class='IMPORT_COMMIT'
+ JOIN impact.import_commit i ON i.tenant_id=j.tenant_id AND i.job_id=j.job_id
+ WHERE t.lifecycle_state='Active' AND
+   ((j.state='Queued' AND j.cancellation_requested_at IS NULL AND i.next_attempt_at<=at)
+    OR (j.state='Running' AND j.lease_expires_at<=at))
+ ORDER BY t.tenant_id
+$$;
+REVOKE ALL ON FUNCTION impact.executor_due_tenants(timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.executor_due_tenants(timestamptz) TO impact_app;
+
+-- Process health is operational metadata, never a tenant data read or an approval identity.
+CREATE TABLE impact.executor_heartbeat(
+ executor_id varchar(128) PRIMARY KEY CHECK(executor_id ~ '^[A-Za-z0-9._:-]{1,128}$'),
+ build varchar(32) NOT NULL,
+ state text NOT NULL CHECK(state IN ('RUNNING','STOPPING','STOPPED')),
+ started_at timestamptz NOT NULL,
+ beat_at timestamptz NOT NULL,
+ stopped_at timestamptz,
+ iterations bigint NOT NULL DEFAULT 0,
+ succeeded bigint NOT NULL DEFAULT 0,
+ failed bigint NOT NULL DEFAULT 0,
+ failures bigint NOT NULL DEFAULT 0
+);
+GRANT SELECT,INSERT,UPDATE ON impact.executor_heartbeat TO impact_app;
+GRANT SELECT ON impact.executor_heartbeat TO impact_platform;
 COMMIT;
 ```

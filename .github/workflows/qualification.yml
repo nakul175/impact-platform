@@ -124,9 +124,9 @@ jobs:
           python-version: '3.12'
       - run: python -m venv .venv
       - run: .venv/bin/pip install -r requirements.lock
-      - name: Generate throwaway passwords for the five runtime logins
+      - name: Generate throwaway passwords for the six runtime logins
         run: |
-          for name in APP IDENTITY PLATFORM WORKER MIGRATOR; do
+          for name in APP IDENTITY PLATFORM WORKER EXECUTOR MIGRATOR; do
             value=$(python3 -c 'import secrets; print(secrets.token_urlsafe(24))')
             echo "::add-mask::$value"
             echo "IMPACT_LOGIN_PASSWORD_$name=$value" >> "$GITHUB_ENV"
@@ -169,7 +169,7 @@ jobs:
         if: always()
         env:
           # The schema staging runs (build 0.26.0); move it when a build with new migrations is deployed.
-          IMPACT_UPGRADE_BASELINE: '28'
+          IMPACT_UPGRADE_BASELINE: '32'
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
       - uses: actions/setup-java@v5
         if: always()
@@ -264,6 +264,18 @@ jobs:
         run: sudo cat "$IMPACT_HOME/ca/caddy-root.crt" > caddy-root.crt
       - name: Smoke check over HTTPS
         run: .venv/bin/python scripts/smoke.py "https://$APP_HOST" --cacert caddy-root.crt | tee smoke-first.json
+      - name: Executor heartbeat and backend-only network
+        run: |
+          compose() { sudo docker compose -p impact -f deploy/compose.yaml --env-file "$IMPACT_HOME/compose.env" "$@"; }
+          for i in $(seq 1 20); do
+            beat=$(compose exec -T postgres psql -U postgres -d impact -Atc "SELECT count(*) FROM impact.executor_heartbeat WHERE executor_id='staging-executor-1' AND state='RUNNING' AND beat_at>statement_timestamp()-interval '60 seconds'")
+            [ "$beat" = 1 ] && break
+            sleep 3
+          done
+          [ "$beat" = 1 ]
+          container=$(compose ps -q executor)
+          networks=$(sudo docker inspect "$container" --format '{{range $name, $network := .NetworkSettings.Networks}}{{$name}} {{end}}')
+          [ "$(echo "$networks" | xargs)" = impact_backend ]
       - name: Second deployment run changes nothing
         run: |
           sudo IMPACT_HOME="$IMPACT_HOME" deploy/update.sh | tee second-run.log
@@ -475,7 +487,7 @@ jobs:
               logs = open("compose-logs.txt", errors="replace").read().splitlines()
           except OSError:
               logs = []
-          for service in ("api", "keycloak", "caddy", "worker", "postgres", "backup", "mailsink"):
+          for service in ("api", "keycloak", "caddy", "worker", "executor", "postgres", "backup", "mailsink"):
               mine = [l for l in logs if re.match(r"^" + service + r"[-_ ]", l)]
               if mine:
                   annotate("logs " + service, mine[-25:])

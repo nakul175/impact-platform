@@ -18,22 +18,39 @@ class WorkerStatus:
                 unavailable()
             # Staleness by the database clock, the same clock the worker stamps its beats with.
             rows = c.execute(
-                "SELECT *,state<>'STOPPED' AND beat_at<statement_timestamp()-make_interval(secs=>%s) AS stale "
-                "FROM impact.worker_heartbeat ORDER BY beat_at DESC,worker_id LIMIT 50",
+                "SELECT *,state<>'STOPPED' AND beat_at<statement_timestamp()-make_interval(secs=>%s) AS stale FROM ("
+                "SELECT 'delivery' AS kind,worker_id AS id,build,state,started_at,beat_at,"
+                "stopped_at,iterations,sent,retried,dead,NULL::bigint AS succeeded,"
+                "NULL::bigint AS failed,failures FROM impact.worker_heartbeat "
+                "UNION ALL SELECT 'application',executor_id,build,state,started_at,beat_at,"
+                "stopped_at,iterations,NULL,NULL,NULL,succeeded,failed,failures "
+                "FROM impact.executor_heartbeat) h ORDER BY beat_at DESC,id LIMIT 50",
                 (STALE_AFTER_SECONDS,),
             ).fetchall()
         return {
             "stale_after_seconds": STALE_AFTER_SECONDS,
             "items": [
                 {
-                    "worker_id": row["worker_id"],
+                    "worker_id": row["id"],
+                    "kind": row["kind"],
                     "build": row["build"],
                     "state": row["state"],
                     "started_at": row["started_at"].isoformat(),
                     "beat_at": row["beat_at"].isoformat(),
                     "stopped_at": row["stopped_at"].isoformat() if row["stopped_at"] else None,
                     "stale": row["stale"],
-                    **{key: row[key] for key in ["iterations", "sent", "retried", "dead", "failures"]},
+                    **{
+                        key: row[key]
+                        for key in [
+                            "iterations",
+                            "sent",
+                            "retried",
+                            "dead",
+                            "succeeded",
+                            "failed",
+                            "failures",
+                        ]
+                    },
                 }
                 for row in rows
             ],

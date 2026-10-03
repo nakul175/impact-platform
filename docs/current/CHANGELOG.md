@@ -1,5 +1,9 @@
 # Documentation change record
 
+## Proposed build 0.28.0 — application executor (PR 1, not merged)
+
+Imports above 50 staged rows queue a governed commit on a separate application-role executor. The batch and Workers screens expose progress. Migration 0033, the executor login and a backend-only compose service are proposed; current staging remains build 0.27.0. See [RELEASE-0.28-import-executor.md](../RELEASE-0.28-import-executor.md).
+
 ## Build 0.27.0 — eleven parallel slices integrated, GPT handover — 3 October 2026
 
 Branch `integration/0.27` from `main` (25a8dca) merging, in order, PRs #75, #69, #72, #74, #76, #68, #70, #73, #71, #77 and #67 with merge commits, then `main` at 0025767 (#78, CI workflow: one run per pull request, documentation-only changes skipped, job timeouts) and `release/0.27-imports` again at bd1f43f (#79, a narrower fix of the period-lock defect; the integration's broader check kept, #79's test kept), both of which landed during the integration without CI (the Actions spending limit refused every job), then #69 (433fb3d), #74 (5c0c1b6, its own sweep-selection fix) and #77 (e24d36b) again after those branches merged `main`, and finally #74 twice more (999d68e: a distinct label for each reason field on People & access; fde4411: the bootstrap check's label, already in the integration). Build 0.27.0, schema 32 (`0029_operator_lifecycle.sql`, `0030_security_privacy.sql`, `0031_theory_of_change.sql`, `0032_forms_languages_rounds.sql` — renumbered from each slice's 0029 by renaming the files only), domain API 1.17.0 (230 operations), platform API 1.8.0 (44 operations). Ledger 106 → 113 PARTIAL, 201 → 194 PENDING, 0 accepted: FR-PLN-002, FR-PLN-007, FR-IND-004, FR-FRM-004, FR-FRM-005, FR-PRV-004 and FR-ANA-002 move to PARTIAL on named tests; related-evidence notes on FR-OPS-001, VF-PRV-002, VF-PER-002, VF-CAP-002, VF-SUP-001, VF-AVL-001, FR-ANA-007 and FR-CAL-014 (all PENDING).

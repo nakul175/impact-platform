@@ -205,7 +205,10 @@ def test_owner_account_is_created_once_with_required_actions_and_reset_restores_
 def test_only_caddy_publishes_ports_and_the_database_network_is_internal():
     assert COMPOSE.count("ports:") == 1 and '"80:80"' in COMPOSE and '"443:443"' in COMPOSE
     assert re.search(r"backend:\n\s+internal: true", COMPOSE)
-    assert COMPOSE.count('IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"') == 2
+    assert COMPOSE.count('IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"') == 3
+    executor = COMPOSE.split("  executor:\n", 1)[1].split("\n  caddy:\n", 1)[0]
+    assert "networks: [backend]" in executor and "edge" not in executor
+    assert "impact_executor_login" in executor and "impact_worker_login" not in executor
     assert "IMPACT_ALLOW_FIXTURE_LOAD" not in COMPOSE and "dev_auth" not in COMPOSE.lower()
     assert "IMPACT_ENVIRONMENT: staging" in COMPOSE
     idp = (ROOT / "scripts/idp.py").read_text()
@@ -216,6 +219,7 @@ def test_only_caddy_publishes_ports_and_the_database_network_is_internal():
         "impact_identity_login",
         "impact_platform_login",
         "impact_worker_login",
+        "impact_executor_login",
     ):
         assert COMPOSE.count("postgresql://" + login + ":") == 1
     assert "postgresql://postgres:" in COMPOSE.split("  migrate:")[1].split("  operator-bootstrap:")[0]

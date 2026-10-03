@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.17.0",
+    "version": "1.18.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -33494,6 +33494,99 @@
                   "observation_ids"
                 ]
               }
+            ]
+          },
+          "commit_request": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "job_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "principal_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "identity_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "auth_time": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "preview_hash": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "workflow_version": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "accept_warnings": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "job_id",
+                  "principal_id",
+                  "identity_id",
+                  "auth_time",
+                  "preview_hash",
+                  "workflow_version",
+                  "accept_warnings"
+                ]
+              }
+            ]
+          },
+          "processing": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "state": {
+                "enum": [
+                  "Queued",
+                  "Running",
+                  "Committed",
+                  "Failed",
+                  "Cancelled"
+                ]
+              },
+              "attempts": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "last_error_class": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+              },
+              "completed_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "job_id",
+              "state",
+              "attempts",
+              "last_error_class",
+              "completed_at"
             ]
           },
           "cancel_reason": {

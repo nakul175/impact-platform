@@ -2,7 +2,7 @@
 
 Idempotent, and run on every deployment before the API and worker start:
 
-1. provision the five runtime and migration logins on the application database with
+1. provision the six runtime and migration logins on the application database with
    scripts/provision_logins.py (passwords from IMPACT_LOGIN_PASSWORD_*), revoking PUBLIC's
    CONNECT on it (`--revoke-public-connect`);
 2. create or re-password the identity provider's own login role and database (`keycloak`), which
@@ -13,7 +13,7 @@ It never loads the acceptance fixture, never creates tenants, identities or gran
 prints a password. Environment:
 
     IMPACT_ADMIN_DSN              superuser connection to the application database
-    IMPACT_LOGIN_PASSWORD_APP/IDENTITY/PLATFORM/WORKER/MIGRATOR
+    IMPACT_LOGIN_PASSWORD_APP/IDENTITY/PLATFORM/WORKER/EXECUTOR/MIGRATOR
     IMPACT_KEYCLOAK_DB_PASSWORD   password of the provider's `keycloak` login
     IMPACT_KEYCLOAK_DB            provider database name (default keycloak)
 """

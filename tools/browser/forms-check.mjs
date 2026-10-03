@@ -393,8 +393,16 @@ try {
       .first()
       .waitFor();
     await button("New round").click();
-    await label("Published form").selectOption({ label: formTitle });
-    await label("Period").selectOption(period);
+    await dialog()
+      .locator('select[aria-label="Published form"] option')
+      .filter({ hasText: formTitle })
+      .waitFor({ state: "attached" });
+    await dialog()
+      .getByRole("combobox", { name: "Published form" })
+      .selectOption({ label: formTitle });
+    await dialog()
+      .getByRole("combobox", { name: "Period" })
+      .selectOption(period);
     await label("Title").fill("Round " + unique);
     await label("Due date and time").fill("2026-09-01T12:00");
     await label("Expected unit keys, one per line").fill(assignedUnit);

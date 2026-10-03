@@ -776,6 +776,7 @@ function Workspace({
       route === "planning" ||
       route === "dashboards" ||
       route === "forms" ||
+      route === "rounds" ||
       route === "imports" ||
       route === "changes" ||
       route === "period-governance" ||

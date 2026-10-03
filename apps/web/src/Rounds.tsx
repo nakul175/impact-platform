@@ -88,8 +88,14 @@ export function RoundsPanel({
     let active = true;
     const list = (route: string) =>
       request(base + route + "?limit=100").then((page) => page.items);
+    // One unavailable optional list must not hide forms and periods needed to create a round.
     const guarded = (cap: string, route: string) =>
-      allowed(cap) ? list(route) : Promise.resolve([]);
+      allowed(cap)
+        ? list(route).catch((e) => {
+            if (active) setError(`${route}: ${explain(e)}`);
+            return [];
+          })
+        : Promise.resolve([]);
     Promise.all([
       guarded("collection-rounds.read", "collection-rounds"),
       guarded("assignments.read", "assignments"),
@@ -575,6 +581,7 @@ function RoundEditor({
           <label>
             Published form
             <select
+              aria-label="Published form"
               required
               value={form}
               onChange={(e) => setForm(e.target.value)}
@@ -592,6 +599,7 @@ function RoundEditor({
           <label>
             Period
             <select
+              aria-label="Period"
               required
               value={period}
               onChange={(e) => setPeriod(e.target.value)}

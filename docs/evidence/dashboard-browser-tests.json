@@ -14,6 +14,14 @@
       "status": "passed"
     },
     {
+      "name": "Drill-down lists the official value's source rows with their disposition",
+      "status": "passed"
+    },
+    {
+      "name": "The portfolio pools the official value across programmes from stored components",
+      "status": "passed"
+    },
+    {
       "name": "The seeded fixture 46.36 is never attributed to a programme",
       "status": "passed"
     },

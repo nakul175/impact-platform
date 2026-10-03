@@ -233,11 +233,16 @@ await finish(async () => {
       await row(prefix + "-Q1").innerText(),
       /QUARANTINED[\s\S]*VALUE_NOT_NUMERIC/,
     );
+    // The plan names a form unit only, so every imported value is marked unplanned (v0.27).
     assert.match(
       await row(prefix + "-S1").innerText(),
-      /ACCEPTED[\s\S]*PRESENT 100[\s\S]*ANOMALY_ROBUST_OUTLIER/,
+      /ACCEPTED[\s\S]*PRESENT 100 \(unplanned\)[\s\S]*ANOMALY_ROBUST_OUTLIER/,
     );
     assert.match(await row(prefix + "-A1").innerText(), /ACCEPTED/);
+    await page
+      .getByRole("note")
+      .filter({ hasText: "not named by the approved collection plan" })
+      .waitFor();
     // Nothing is written by a preview.
     const batch = await read("imports/" + batchId);
     assert.equal(batch.lifecycle_state, "Previewed");
@@ -304,9 +309,12 @@ await finish(async () => {
   await test("Committed rows appear in Measurement as observations pending review", async () => {
     await nav(page, "Measurement");
     for (const unit of [prefix + "-S1", prefix + "-A1"]) {
+      // The plannable source key (v0.27): unit, indicator and period, never the batch.
       const entry = await loadUntil(
         page,
-        page.getByRole("button", { name: new RegExp(batchId + "/" + unit) }),
+        page.getByRole("button", {
+          name: new RegExp(unit + "/" + instance.object_id + "/" + period),
+        }),
       );
       await entry.click();
       const detail = page.getByRole("dialog");

@@ -99,6 +99,32 @@ try {
     await page.screenshot({
       path: path.join(root, "docs/evidence/period-close.png"),
     });
+    // v0.27: the close dialog names programmes ("Title (CODE)") and the review policy by what
+    // it is, never by a bare code or identifier prefix.
+    await button("Preview period close").click();
+    const dialog = page.getByRole("dialog");
+    await dialog.waitFor();
+    // The panel loads its records after the heading renders: wait for the first real option.
+    const programmeOptions = dialog
+      .getByLabel("Programme", { exact: true })
+      .locator("option");
+    await programmeOptions.nth(1).waitFor({ state: "attached" });
+    const programmes = await programmeOptions.allInnerTexts();
+    assert.ok(programmes.length > 1, "an active programme is offered");
+    for (const option of programmes.slice(1))
+      assert.match(option, /^.+ \(.+\)$/, option);
+    const policyOptions = dialog
+      .getByLabel("Review policy", { exact: true })
+      .locator("option");
+    await policyOptions.nth(1).waitFor({ state: "attached" });
+    const policies = await policyOptions.allInnerTexts();
+    assert.ok(policies.length > 1, "a review policy is offered");
+    for (const option of policies.slice(1))
+      assert.doesNotMatch(option, /^[0-9a-f]{8}$/, option);
+    await page
+      .getByRole("button", { name: "Close dialog", exact: true })
+      .click();
+    await dialog.waitFor({ state: "detached" });
   });
   await test("Author drafts a report from a locked snapshot", async () => {
     await button("Reports").click();

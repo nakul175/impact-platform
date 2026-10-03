@@ -57,6 +57,37 @@ def augment(spec, policy):
         ]
         policy["operations"].append(row)
 
+    # Charts in a report section (v0.27): bars are the section's own numeric binding codes (OFFICIAL
+    # results of the locked snapshot), each optionally beside the Target revision the snapshot
+    # pinned for the same indicator and period. Optional, so earlier packages validate unchanged.
+    schemas["ReportChartSeries"] = closed(
+        {
+            "binding_code": {"type": "string", "minLength": 1, "maxLength": 64},
+            "label": {"type": "string", "minLength": 1, "maxLength": 64},
+            "target_revision": UUID,
+        },
+        ["binding_code"],
+    )
+    schemas["ReportChart"] = closed(
+        {
+            "chart_code": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-z0-9_]+$"},
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "kind": {"enum": ["BAR"]},
+            "series": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "items": {"$ref": "#/components/schemas/ReportChartSeries"},
+            },
+        },
+        ["chart_code", "title", "kind", "series"],
+    )
+    schemas["ReportSection"]["properties"]["charts"] = {
+        "type": "array",
+        "maxItems": 10,
+        "items": {"$ref": "#/components/schemas/ReportChart"},
+    }
+
     # Actions on an approved report: request one export job, request its cancellation.
     for action, name, data in [
         ("export", "ActionReportsExport", closed({"format": {"enum": FORMATS}}, ["format"])),

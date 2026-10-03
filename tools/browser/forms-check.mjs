@@ -292,9 +292,24 @@ try {
     await label("Feeds indicator 2").selectOption({ label: indicatorLabel });
     await label("Ask only when 2").selectOption("consent");
     await label("equals 2").fill("true");
+    // v0.27: the default language and one complete Hindi language version.
+    await label("Default language").fill("en");
+    await button("Add language version").click();
+    await label("Language code 1").fill("hi");
+    await label("Language name 1").fill("हिन्दी");
+    await label("hi label for question 1").fill("सहमति दी गई");
+    await label("hi label for question 2").fill("पहुँचे हुए परिवार");
     await button("Save draft").click();
     await dialog().waitFor({ state: "hidden" });
     await page.getByRole("cell", { name: new RegExp(formTitle) }).waitFor();
+    const forms = await read("forms?limit=100");
+    const form = forms.items.find((f) => f.data.title === formTitle);
+    assert.equal(form.data.default_language, "en");
+    assert.equal(form.data.translation_versions[0].language, "hi");
+    const completeness = await read(
+      "forms/" + form.object_id + "/completeness",
+    );
+    assert.equal(completeness.complete, true);
   });
   let formId;
   await test("Send for review; the reviewer approves in the review queue and publishes", async () => {
@@ -341,9 +356,16 @@ try {
     await button("Fill in").click();
     await dialog().getByText("Version 1", { exact: false }).waitFor();
     await label("Reporting unit").fill(unit);
+    // v0.27: switching the language changes the question text, not the stable codes.
+    await label("Language").selectOption("hi");
+    await dialog().getByText("सहमति दी गई", { exact: false }).first().waitFor();
     await label("Consent given").selectOption("false");
     assert.equal(await label("Households reached").count(), 0);
     await label("Consent given").selectOption("true");
+    await dialog()
+      .getByText("पहुँचे हुए परिवार", { exact: false })
+      .first()
+      .waitFor();
     await label("Households reached").fill("12");
     await button("Save draft").click();
     await dialog().getByText("Server draft saved", { exact: false }).waitFor();
@@ -354,6 +376,7 @@ try {
     assert.equal(receipt.business_state, "Submitted");
     await dialog().waitFor({ state: "hidden" });
     const submission = await read("submissions/" + receipt.object_id);
+    assert.equal(submission.data.language, "hi");
     assert.equal(submission.data.observation_ids.length, 1);
     const observation = await read(
       "observations/" + submission.data.observation_ids[0],

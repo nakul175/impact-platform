@@ -67,6 +67,12 @@ await finish(async () => {
     await colleague
       .getByRole("heading", { name: "No active workspace", exact: true })
       .waitFor();
+    // The start page loads the nominations after its heading renders ("Checking what is
+    // next…"); since build 0.27.0 the status banner's first poll shares PGlite's single
+    // connection with that read, so wait for the page to finish loading before reading it.
+    await colleague
+      .getByText("Checking what is next…", { exact: true })
+      .waitFor({ state: "detached" });
     const start = await colleague.locator("main").innerText();
     assert.match(start, /nominated as a platform operator/);
     assert.match(start, /Your identity reference/);
@@ -93,6 +99,67 @@ await finish(async () => {
       ),
       JSON.stringify(directory.operators),
     );
+  });
+
+  await test("Another operator renews the colleague's role, then deactivates it", async () => {
+    // v0.27 operator lifecycle: the nominating operator (a different person) renews the new
+    // operator's role to a later date, then deactivates it (self-service is refused by the
+    // server; qualification/test_operator_lifecycle.py covers it).
+    await operators()
+      .getByRole("button", { name: "Refresh operators", exact: true })
+      .click();
+    const row = operators()
+      .getByRole("listitem")
+      .filter({ hasText: "op***@" })
+      .first();
+    await row.getByRole("button", { name: "Renew operator role" }).waitFor();
+    const before = (
+      await read("/v1/platform/operators", "admin")
+    ).operators.find((o) => o.email_mask.startsWith("op***@"));
+    await row.getByRole("button", { name: "Renew operator role" }).click();
+    const renew = admin.getByRole("form", { name: "Renew operator role" });
+    const later = new Date(Date.now() + 300 * 86400000)
+      .toISOString()
+      .slice(0, 10);
+    await renew.getByLabel("Operator role until", { exact: true }).fill(later);
+    await renew
+      .getByLabel("Reason", { exact: true })
+      .fill("Renewed for the coming review cycle");
+    await renew.getByRole("button", { name: "Renew", exact: true }).click();
+    await operators()
+      .getByRole("status")
+      .filter({ hasText: "Operator role renewed." })
+      .waitFor();
+    let directory = await read("/v1/platform/operators", "admin");
+    const renewed = directory.operators.find(
+      (o) => o.identity_id === before.identity_id,
+    );
+    assert(
+      new Date(renewed.expires_at) > new Date(before.expires_at) &&
+        renewed.revision_id !== before.revision_id,
+      JSON.stringify([before, renewed]),
+    );
+    assert.equal(directory.changes[0].action, "renew");
+    assert.match(await operators().innerText(), /Operator changes/);
+    await row.getByRole("button", { name: "Deactivate", exact: true }).click();
+    const deactivate = admin.getByRole("form", { name: "Deactivate operator" });
+    await deactivate
+      .getByLabel("Reason", { exact: true })
+      .fill("Left the organisation");
+    await deactivate
+      .getByRole("button", { name: "Deactivate operator", exact: true })
+      .click();
+    await operators()
+      .getByRole("status")
+      .filter({ hasText: "Operator deactivated." })
+      .waitFor();
+    directory = await read("/v1/platform/operators", "admin");
+    const gone = directory.operators.find(
+      (o) => o.identity_id === before.identity_id,
+    );
+    assert.equal(gone.state, "Deactivated");
+    assert(!gone.active && directory.changes[0].action === "deactivate");
+    assert.match(await row.innerText(), /deactivated since/);
   });
 
   await test("A workspace administrator sets up the standard reference data", async () => {

@@ -63,25 +63,37 @@ class PeriodGovernance:
         )
 
     def assert_source_mutable(self, c, ctx, indicator_id, event_at, source_id):
+        """Refuse a source change whose event lies in a period this programme no longer has Open.
+
+        Every period of the tenant that contains the event is checked, not only the latest-starting
+        one: since v0.26a a tenant may hold several reporting calendars, and an event inside a
+        programme's locked quarter is also inside another calendar's month, which is Open for that
+        programme by default, so checking that month alone admitted a late value into a locked
+        period (found by the v0.27 imports slice; fixed at the build 0.27.0 integration). Resolving
+        the period on the programme's own calendar (#79) refuses a subset of these cases: period
+        close does not require calendar membership, so a period this programme locked outside its
+        current calendar must stay protected too. A period the programme never closed is Open for
+        it and never blocks."""
         indicator = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
         programme_id = indicator["payload"]["programme_id"]
-        period = c.execute(
-            "SELECT object_id FROM impact.period_current WHERE tenant_id=%s AND starts_at<=%s AND ends_at>%s ORDER BY starts_at DESC LIMIT 1",
+        periods = c.execute(
+            "SELECT object_id FROM impact.period_current WHERE tenant_id=%s AND starts_at<=%s AND ends_at>%s ORDER BY starts_at DESC, object_id",
             (ctx.tenant_id, event_at, event_at),
-        ).fetchone()
-        if not period:
-            return
-        state = self.state(c, ctx, programme_id, period["object_id"])["lifecycle_state"]
-        permitted = (
-            source_id
-            and state == "RestatementOpen"
-            and c.execute(
-                "SELECT 1 FROM impact.restatement_source_permission WHERE tenant_id=%s AND programme_id=%s AND period_id=%s AND source_id=%s AND expires_at>now() LIMIT 1",
-                (ctx.tenant_id, programme_id, period["object_id"], source_id),
-            ).fetchone()
-        )
-        if state != "Open" and not permitted:
-            raise DomainError("INVALID_STATE", 409, reason="PERIOD_RESTATEMENT_REQUIRED")
+        ).fetchall()
+        for period in periods:
+            state = self.state(c, ctx, programme_id, period["object_id"])["lifecycle_state"]
+            if state == "Open":
+                continue
+            permitted = (
+                source_id
+                and state == "RestatementOpen"
+                and c.execute(
+                    "SELECT 1 FROM impact.restatement_source_permission WHERE tenant_id=%s AND programme_id=%s AND period_id=%s AND source_id=%s AND expires_at>now() LIMIT 1",
+                    (ctx.tenant_id, programme_id, period["object_id"], source_id),
+                ).fetchone()
+            )
+            if not permitted:
+                raise DomainError("INVALID_STATE", 409, reason="PERIOD_RESTATEMENT_REQUIRED")
 
     def workflow(self, c, ctx, candidate, workflow_version, related):
         from .service import revision

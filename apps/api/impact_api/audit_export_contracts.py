@@ -22,7 +22,7 @@ PURPOSES = ["SECURITY_REVIEW", "INCIDENT_INVESTIGATION", "REGULATORY_REQUEST", "
 MAX_LIMIT = 1000
 DEFAULT_LIMIT = 500
 MAX_WINDOW_DAYS = 366
-FORMAT = "impact-audit-export-v1"
+FORMAT = "impact-audit-export-v2"  # v2 (v0.27): access-denial lines and the occurrences field
 # Explicit routes this module serves (method, path below the tenant prefix).
 IMPLEMENTED = [("post", ROUTE)]
 VERSION = "1.15.0"
@@ -59,6 +59,7 @@ def augment(spec, policy):
             "page": {"type": "integer", "minimum": 1},
             "first_sequence": {"type": ["integer", "null"], "minimum": 1},
             "event_count": {"type": "integer", "minimum": 0, "maximum": MAX_LIMIT},
+            "denial_count": {"type": "integer", "minimum": 0, "maximum": MAX_LIMIT},
             "complete": {"type": "boolean"},
             "media_type": {"const": "application/x-ndjson"},
             "content_sha256": SHA256,
@@ -87,6 +88,7 @@ def augment(spec, policy):
             "generated_by",
             "page",
             "event_count",
+            "denial_count",
             "complete",
             "media_type",
             "content_sha256",
@@ -112,7 +114,7 @@ def augment(spec, policy):
         operationId=OPERATION,
         summary="create audit export",
         description="One bounded page (at most 1000 events, window at most 366 days and not in the future) "
-        "of the tenant's audit events ordered by occurrence, as JSON Lines with a SHA-256 hash chain, a "
+        "of the tenant's audit events and collapsed access denials (v0.27) ordered by occurrence, as JSON Lines with a SHA-256 hash chain, a "
         "manifest with the content digest and an HMAC-SHA256 platform seal. Requires audit.export at TENANT "
         "scope for the stated purpose and authentication within 300 seconds; the export is itself audited. "
         "Identifiers, codes and digests only: no payload, secret or sealed value is exported.",

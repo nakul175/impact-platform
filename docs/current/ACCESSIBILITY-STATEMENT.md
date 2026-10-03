@@ -20,7 +20,7 @@ Evidence: `docs/evidence/a11y-browser-tests.json` (per-page results, focus trail
 - Skip link to the main content (`#main-content`, focusable without entering the tab order).
 - Dialog focus return: the shared `Dialog` returns focus to its opener when it closes.
 - Tab lists (access administration, measurement setup, results planning): arrow-key, Home and End movement (`apps/web/src/a11y.ts`).
-- Status announcements: the workspace save message is a status region that stays mounted, so each new message is announced; export job states in the report exports table are a polite live region; the evidence attach/scan notice is a mounted status region.
+- Status announcements: the workspace save message is a status region that stays mounted, so each new message is announced; since build 0.27.0 the service-notice banner (`StatusBanner.tsx`) is a `role="status"` region with a disclosure button (`aria-expanded`, `aria-controls`) for operators, coloured from `:root` tokens at 4.5:1, checked by `status-browser`; export job states in the report exports table are a polite live region; the evidence attach/scan notice is a mounted status region.
 - Structure: the records table has a caption and column scopes; the portfolio note heading and the dashboard indicator cards no longer skip a heading level.
 - Reduced motion: the operating-system `prefers-reduced-motion` setting is honoured in addition to the account preference.
 

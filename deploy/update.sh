@@ -366,7 +366,8 @@ main() {
     printf 'SMTP_FROM=%s\n' "${smtp_from:-impact@$APP_HOST}"
     printf 'IMPACT_STATUS_DIR=%s\nIMPACT_CA_DIR=%s\nIMPACT_CA_BUNDLE=%s\n' "$STATUS_DIR" "$CA_DIR" "$ca_bundle"
     printf 'IMPACT_OPS_DIR=%s\n' "$OPS_DIR"
-    for key in SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD BACKUP_HOUR_UTC BACKUP_MIN_FREE_MB; do
+    for key in SMTP_HOST SMTP_PORT SMTP_USERNAME SMTP_PASSWORD SMTP_STARTTLS SMTP_CA_FILE \
+      EMAIL_RATE_LIMIT EMAIL_TENANT_RATE_LIMIT EMAIL_RATE_WINDOW_SECONDS BACKUP_HOUR_UTC BACKUP_MIN_FREE_MB; do
       local value
       value="$(env_value "$CONFIG_FILE" "$key")"
       if [ -n "$value" ]; then printf '%s=%s\n' "$key" "$value"; fi

@@ -36,6 +36,8 @@ from .operator_contracts import (
     ACTION,
     NOMINATE,
     NOMINATION_ACTIONS,
+    OPERATOR_ACTIONS,
+    RENEW,
     validate_body,
 )
 from .platform_security import current_owner
@@ -153,12 +155,51 @@ class Operators:
             "last_issued_at": iso(row["last_issued_at"]),
         }
 
+    def present_operator(self, row):
+        return {
+            "identity_id": str(row["identity_id"]),
+            "revision_id": str(row["revision_id"]),
+            "display_name": row["display_name"] or "Registered identity",
+            "email_mask": row["email_mask"],
+            "active": bool(row["active"] and row["expires_at"] > now()),
+            "state": "Deactivated"
+            if not row["active"]
+            else "Expired"
+            if row["expires_at"] <= now()
+            else "Active",
+            "expires_at": row["expires_at"].isoformat(),
+            "updated_at": row["updated_at"].isoformat(),
+            "authority_reference": row["authority_reference"],
+        }
+
+    def operator_entry(self, c, identity_id):
+        # No row lock here: the platform role only reads platform_operator (the definer locks the
+        # row FOR UPDATE), and the onboarding advisory lock serialises operator changes.
+        return c.execute(
+            "SELECT o.*,p.display_name,p.email_mask FROM impact.platform_operator o LEFT JOIN impact.identity_profile p USING(identity_id) WHERE o.identity_id=%s",
+            (str(identity_id),),
+        ).fetchone()
+
+    def present_change(self, row):
+        return {
+            "change_id": str(row["change_id"]),
+            "operator_identity_id": str(row["operator_identity_id"]),
+            "action": row["action"],
+            "actor_identity_id": str(row["actor_identity_id"]),
+            "actor_name": row["actor_name"] or "Platform operator",
+            "reason": row["reason"],
+            "previous_expires_at": row["previous_expires_at"].isoformat(),
+            "expires_at": row["expires_at"].isoformat(),
+            "created_at": row["created_at"].isoformat(),
+        }
+
     def directory(self, identity):
         result = {
             "operator": False,
             "identity_id": identity.identity_id,
             "accounts_enabled": self.accounts is not None,
             "operators": [],
+            "changes": [],
             "nominations": [],
             "identities": [],
             "accounts": [],
@@ -170,16 +211,15 @@ class Operators:
             result["operator"] = operator
             if operator:
                 result["operators"] = [
-                    {
-                        "identity_id": str(row["identity_id"]),
-                        "display_name": row["display_name"] or "Registered identity",
-                        "email_mask": row["email_mask"],
-                        "active": bool(row["active"] and row["expires_at"] > now()),
-                        "expires_at": row["expires_at"].isoformat(),
-                        "authority_reference": row["authority_reference"],
-                    }
+                    self.present_operator(row)
                     for row in c.execute(
                         "SELECT o.*,p.display_name,p.email_mask FROM impact.platform_operator o LEFT JOIN impact.identity_profile p USING(identity_id) ORDER BY o.expires_at DESC,o.identity_id LIMIT 200"
+                    ).fetchall()
+                ]
+                result["changes"] = [
+                    self.present_change(row)
+                    for row in c.execute(
+                        "SELECT g.*,p.display_name AS actor_name FROM impact.platform_operator_change g LEFT JOIN impact.identity_profile p ON p.identity_id=g.actor_identity_id ORDER BY g.created_at DESC,g.change_id LIMIT 100"
                     ).fetchall()
                 ]
                 nominations = c.execute(
@@ -362,6 +402,85 @@ class Operators:
             "UPDATE impact.platform_operator_nomination SET decision_reason=%s WHERE nomination_id=%s",
             ("Accepted with fresh MFA at " + identity.auth_time.isoformat(), row["nomination_id"]),
         )
+
+    # ---- operator lifecycle (v0.27): renewal and deactivation ---------------------------------
+
+    def lifecycle_change(self, identity, action, body, subject_id):
+        """Renew (a later expiry, at most 365 days ahead) or deactivate one operator, by a different
+        active operator who is a different natural person, with fresh assurance and a reason. The
+        definer `impact.apply_operator_change` rechecks everything and is the only writer of
+        `platform_operator`; the checks here only choose the reason code. A non-operator never
+        learns whether the subject exists (404); the last active operator is never deactivated,
+        which the actor rule already implies and the definer counts again."""
+        if action not in OPERATOR_ACTIONS:
+            unavailable()
+        validate_body(body, RENEW if action == "renew" else ACTION)
+        self.lifecycle.assurance(identity)
+        subject = str(subject_id)
+        fingerprint = hash_data({"operator_lifecycle": action, "subject": subject, "body": body})
+        with self.db.transaction(platform=True) as c:
+            self.begin(c, identity, body["operation_id"])
+            if not self.lifecycle.operator(c, identity):
+                unavailable()
+            row = self.operator_entry(c, subject)
+            if not row:
+                unavailable()
+            old = self.replay(c, identity, body["operation_id"], fingerprint)
+            if old:
+                return old
+            if str(row["revision_id"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
+            if subject == identity.identity_id or self.natural(c, subject) == self.natural(
+                c, identity.identity_id
+            ):
+                denied("INDEPENDENCE_REQUIRED")
+            if not row["active"]:
+                raise DomainError("CONFLICT_VERSION", 409, reason="OPERATOR_DEACTIVATED")
+            if row["expires_at"] <= now():
+                raise DomainError("CONFLICT_VERSION", 409, reason="OPERATOR_EXPIRED")
+            expiry = None
+            if action == "renew":
+                expiry = datetime.fromisoformat(body["data"]["expires_at"].replace("Z", "+00:00"))
+                if not row["expires_at"] < expiry <= now() + timedelta(days=OPERATOR_MAX_DAYS):
+                    raise DomainError("VALIDATION_FAILED", reason="OPERATOR_EXPIRY_BOUNDS")
+            else:
+                others = c.execute(
+                    "SELECT count(*) AS n FROM impact.platform_operator WHERE active AND expires_at>now() AND identity_id<>%s",
+                    (subject,),
+                ).fetchone()["n"]
+                if others < 1:
+                    denied("LAST_OPERATOR")
+            change = str(uuid4())
+            # The definer rechecks every condition above and is the only writer of platform_operator.
+            revision = c.execute(
+                "SELECT impact.apply_operator_change(%s,%s,%s,%s,%s,%s,%s,%s) AS revision",
+                (
+                    change,
+                    subject,
+                    identity.identity_id,
+                    action,
+                    body["expected_revision"],
+                    expiry,
+                    identity.auth_time,
+                    body["data"]["reason"],
+                ),
+            ).fetchone()["revision"]
+            response = {
+                **self.present_operator(self.operator_entry(c, subject)),
+                "operation_id": body["operation_id"],
+                "change_id": change,
+            }
+            self.record(
+                c,
+                identity,
+                body["operation_id"],
+                fingerprint,
+                "operator-" + action,
+                str(revision),
+                body["data"]["reason"],
+                response,
+            )
+            return response
 
     # ---- sign-in accounts --------------------------------------------------------------------
 

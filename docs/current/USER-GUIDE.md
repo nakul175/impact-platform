@@ -1,107 +1,168 @@
 # Impact Platform user guide
 
-Documentation 1.1 applies to application 0.12.0; build 0.13.0 added the administrator-only authority renewal described in the administrator guide, build 0.14.0 (native PostgreSQL qualification) changes no user workflow in this guide, build 0.15.0 qualifies sign-in, step-up and sign-out through a live identity provider (below), and build 0.16.0 adds background delivery: notices reach the work centre through the worker, invitations are also emailed, and a nominated recovery contact can confirm their email address with a code (below), build 0.18.0 adds the results framework, targets and the targets-versus-actuals view (below), and build 0.20.0 adds web forms (below). This guide covers the implemented development application. It does not describe a production-approved service. Screens show only actions permitted by current server authority; having a visible record does not authorize its approval, export or publication.
+This guide describes build 0.26.0 of the development and staging application, refreshed for the v0.27 usability work (`docs/RELEASE-0.27-ux.md`). It is written by task. Each section names the release note that describes the feature in full and its exact limits; where this guide and a release note disagree, the release note is right. Nothing here describes a production-approved service: Release 1 is in progress and no requirement is accepted (`docs/COMPLETION-LEDGER.md`).
 
-## Sign in and select a workspace
+Two rules explain most of what you will see. First, the screen shows only the actions your current permissions allow, and the server checks every request again: seeing a record never means you may approve, export or publish it. Second, nothing is overwritten. A change is a new revision, an approval is tied to the exact revision that was submitted, and official numbers come only from a closed period.
 
-1. In the local environment, use the generated account credentials supplied by the authorized developer. The development sign-in is limited to loopback and uses synthetic identities.
-2. Select the intended workspace from the tenant selector. Confirm the workspace before entering or approving data.
-3. If a workspace or action is missing, ask its authorized administrator to review your membership and explicit grants. Switching roles or knowing a URL does not create authority.
-4. Use Account settings to view preferences and your sessions. Sign out when finished. Session revocation requires fresh configured assurance. With a live identity provider, signing out also ends your provider session: the browser visits the provider and returns to the front page.
+## Sign in
 
-Local sign-in proves the development workflow only. With a live identity provider (qualified since build 0.15.0 against a test Keycloak), Sign in sends you to the provider for your password and then a one-time code from your authenticator app; actions that need fresh assurance are accepted for five minutes after that sign-in, after which the platform asks you to sign in again. If your account has no second factor the provider asks you to set one up first. The provider your organisation will use, MFA enrolment and unavailable-account recovery remain release gates.
+*Release notes: `docs/RELEASE-0.15.md` (live identity provider), `docs/RELEASE-0.26a.md` (start page and sign-in accounts).*
 
-## Establish a programme and measurement plan
+1. Open the platform address. In a development environment you enter the username and password generated for you; on staging you choose **Continue with your organisation**, which sends you to the organisation's sign-in service for your password and a one-time code from your authenticator app. On your first staging sign-in the service asks you to set your own password and to add the authenticator.
+2. If you belong to more than one workspace, choose the right one in the **Workspace** list at the top of the page before you enter or approve anything.
+3. If you belong to no workspace yet, you see **No active workspace**. It tells you what happens next for your situation: an invitation link to open, a nomination to accept, or an ownership request to review in the Tenant lifecycle console. Your identity reference is shown there with a **Copy** button; an administrator may ask you for it.
+4. If you are a member but have no permission yet, you see **Your access is being set up** (for a workspace owner: **Your administrator access is being set up**). The page explains the steps that are still outstanding. Choose **Check again** once the approval has been recorded.
+5. Actions that change who may do what, close a period, publish a report or touch personal data require that you signed in within the last five minutes. If such an action answers "Sign out and sign in again", do exactly that; the time your session was issued does not count, only the moment you authenticated.
+6. **My account** shows your display name, a reduced-motion preference and your signed-in sessions. **Sign out** ends the platform session and, on staging, the sign-in service's session too. After fifteen minutes without activity, or eight hours in all, you are signed out automatically.
 
-1. Obtain explicit programme-management authority through the reviewed access flow. Tenant ownership alone does not provide it.
-2. Create the programme with the fields shown in the setup form. Save and wait for the server's successful-save confirmation.
-3. Create the manual indicator definition, including unit, calculation method and precision. Current support is bounded to FLOW measures with SUM or pooled ratio/percentage calculations.
-4. Submit the definition for independent review. The material author cannot approve it through another account belonging to the same natural person.
-5. Create the measurement plan and its collection obligations and responsibility assignments. Review the intended period and source requirements before submission.
-6. An eligible independent reviewer approves the exact candidate revision. Activate only when readiness checks pass.
+Signing out also clears the page for the next person: whoever signs in on the same browser tab starts at their own landing page.
 
-The source's definition, unit, period and precision govern interpretation. Missing data is different from a present zero. A later definition or plan change follows a reviewed amendment; it does not silently rewrite prior approved data.
+## Find your way around
+
+The sidebar narrows to the areas you can use as soon as your access has been checked. **Portfolio** holds programmes. **Measurement** holds observations. **Measurement setup** holds indicator definitions, indicator assignments and collection plans. **Results framework**, **Dashboards**, **Forms**, **Imports**, **Change requests**, **Period close**, **My work**, **Review queue**, **Results** and **Reports** are described below. **People & access** and **Workspace settings** are for administrators (`docs/current/ADMINISTRATOR-GUIDE.md`). **Tenant lifecycle** opens the operators' console, in which you see only the requests addressed to you.
+
+Every list shows the records you are permitted to read, fifty at a time; use **Load more** for the rest and the search box to filter what is loaded. Opening a record shows its current revision, its state and the fields the server stores. Record identifiers are shown short (the first eight characters) only where no name exists.
+
+## Set up a programme and its measurements
+
+*Release notes: `docs/RELEASE-0.19.md` (calculation methods and disaggregation), `docs/RELEASE-0.26a.md` (reference data).*
+
+A programme needs a reporting calendar and a geography before it can be activated. Both come from the workspace's reference data, which an administrator sets up under People & access (the standard set creates a yearly calendar with its periods, a review template, a report template and a geography).
+
+1. In **Portfolio**, choose **New programme**: title, code, dates, type, reporting calendar and geography. Open the saved programme to see its readiness checks; **Mark ready** and then **Activate programme** become available when they pass.
+2. In **Measurement setup**, create an indicator **definition**: unit, measurement type, calculation method (sum, pooled ratio, count, last valid value, mean, median, minimum, maximum — each allowed only for the measurement types and time semantics it suits), display precision and, where needed, a disaggregation scheme of dimensions and category codes. Submit it for review; approved versions never change, a later change is a new version.
+3. Create an **indicator** (an indicator assignment): it pins one approved definition version to a programme, names the collector and an independent reviewer, and sets the schedule. Activate it.
+4. Create the **collection plan** for a period: which sources are expected from whom. The plan is reviewed like everything else and its approved obligations become the denominator of coverage; a period with no obligations shows coverage as not applicable, never as 100 %.
 
 ## Build the results framework and set targets
 
-Open **Results framework** and choose the programme. You need the framework and target draft capabilities to edit, a separate reviewer to approve, and `targets.read` to see progress.
+*Release note: `docs/RELEASE-0.18.md`.*
 
-1. On **Framework**, create the draft: add impact, outcome, output and activity nodes, give each a title, description and owner, place a parent at the same or a higher level, and place each programme indicator on one node. Renaming a node keeps its identity and its indicators.
-2. Saving refuses a structure that cannot be valid — a cycle, a parent that is not in the framework, a child above its parent, an indicator placed twice or from another programme. Correct the named node; these cannot be excepted.
-3. Read the **Completeness review**. Each issue shows severity, rule, object and the person assigned to resolve it. Resolve errors. A warning (for example an output with no indicator, or a programme indicator not placed) can be accepted with **Document exception**: give a reason and a review date that is not in the past. The platform records who documented it and when.
-4. Submit when nothing is unresolved. An eligible reviewer who is a different person opens **Reviews**, re-reads the exact candidate with its completeness report, and approves, returns or rejects it. Approval freezes baseline 1; its exceptions stay visible in it.
-5. To change an approved framework, create a new draft from it with an effective date after the previous one. The review shows what changed; the earlier baseline keeps its approved wording and governs the periods before the new date.
-6. On **Targets**, create per indicator and period a target (a value, a range, or a milestone with a label and due date), a baseline, or both, with the direction (higher, lower, within range, milestone) and a value state — a blank target is recorded as missing, never as zero. Submit it for independent review. To change an approved target or correct a baseline, create a revised one that names the approved one and gives a reason; the original stays on record.
-7. **Targets vs actuals** shows each target, baseline and milestone beside the actual and its source. An official actual appears only from this programme's own locked snapshot; before close the actual is provisional. Attainment is not capped, a lower-is-better target shows its signed deviation, and a zero target or a zero or negative baseline shows Undefined rather than a percentage. Use **Load more** for further indicators.
+Open **Results framework** and choose the programme.
 
-Closing a period freezes its approved targets and the framework that governed it; a locked period accepts no new or revised target. Status thresholds, disaggregated and cumulative targets, theory-of-change relationships and charts are not available in this build, and a programme without a reporting calendar cannot carry targets.
+1. On **Framework**, create the draft: impact, outcome, output and activity nodes with a title, description and owner, each placed under a parent at the same or a higher level, and each programme indicator placed on one node. Saving refuses a structure that cannot be valid (a cycle, a child above its parent, an indicator placed twice) and names the node to correct.
+2. Read the **Completeness review**. Resolve errors. A warning can be accepted with **Document exception**, with a reason and a review date that is not in the past.
+3. Submit. A different person approves, returns or rejects the exact candidate in **Reviews**. Approval freezes baseline 1. A later change is a new draft with a later effective date; earlier baselines keep governing the periods before it.
+4. On **Targets**, create per indicator and period a target (value, range or milestone), a baseline, or both, with the direction and a value state; a blank is recorded as missing, never as zero. Submit for review. A change to an approved target is a revised target that names the one it replaces, with a reason.
+5. **Targets vs actuals** shows targets, baselines and milestones beside the actual and its source. An official actual appears only from this programme's locked snapshot; before close the actual is provisional.
 
-## Enter and review observations
+Status thresholds, disaggregated and cumulative targets, theory-of-change relationships and charts are not available. A programme without a reporting calendar cannot carry targets.
 
-1. Open the assigned collection obligation in the correct programme and period.
-2. Enter the requested value or numerator and denominator as ordinary decimal input. Do not use exponent notation or append a percent sign to a numeric field.
-3. Confirm the source reference and contextual fields, then save. A local entry or loading message is not a server receipt.
-4. Submit the candidate for review. An eligible independent reviewer inspects its exact content and evidence, then approves, returns or rejects it.
-5. Address a returned candidate in a new reviewed revision. Approved values and their earlier lineage remain immutable.
+## Enter data
 
-Unplanned sources are visible in coverage but do not silently enter the official denominator or result lineage. A missing obligation requires collection or an explicitly reviewed exception. All obligations cannot be removed through exceptions.
+You can record a value in three ways. Whichever you use, the result is an **observation** in the ordinary review, with an explicit value state: present, missing, not collected, not applicable, invalid or undefined. A blank is never a zero.
 
-## Calculate and inspect lineage
+### By hand
 
-Run the permitted calculation for the programme, indicator and period. Inspect the source contributions, exclusions, unit, precision and result state. A pooled percentage is calculated from summed numerators divided by summed denominators; it is not an average of displayed percentages. Rounding is applied once at the defined display boundary.
+*Release notes: `docs/RELEASE-0.19.md`; the original workflow is in `docs/IMPLEMENTATION.md`.*
 
-A provisional result may become stale after an approved source or plan changes. The work centre shows the assigned recalculation task and a safe notice. Acknowledging the notice does not complete the task. Recalculation creates a replacement result and resolves the relevant invalidation while preserving prior history. Since build 0.16.0 each notice is delivered to your work centre once by the background worker, and administrators of delegated authority also receive notices 14 and 3 days before it expires; no notice is sent by email, SMS or push.
+1. In **Measurement**, choose **Add observation**: the indicator, a source namespace and key (the stable identity of the record you are entering; `FORM` and `IMPORT` are reserved for the other two routes), the event date, the value and, for a ratio or percentage, the numerator and denominator. Enter ordinary decimals, without exponent notation or a percent sign. Dimension codes must belong to the indicator's approved scheme.
+2. Open the saved observation and choose **Submit for review**, picking the review template. The submitted revision is locked while it is reviewed.
+3. A returned observation is corrected in a new revision and submitted again. Approved values never change.
 
-If you are nominated as a tenant's recovery contact, you can confirm your email address after verifying the nomination: choose **Email me a verification code**, enter the address of your registered account, then **Enter verification code** with the eight-digit code from the email within 15 minutes (five wrong attempts lock the code; at most three codes per hour). The confirmation is recorded as evidence only and gives you no access. In development the email goes to a local file, never to a real mailbox.
+### Through a form
 
-## Design, publish and fill in a form
+*Release note: `docs/RELEASE-0.20.md`.*
 
-Open **Forms** and choose the programme. Designing needs the form draft capabilities, sending for review `form.submit`, publishing `form.publish` (and a sign-in within the last five minutes), filling in the submission draft capabilities and `submission.submit`.
+1. In **Forms**, a designer creates a form for a programme: coded questions of type text, decimal, whole number, yes/no or single choice, each optionally required, bounded, shown only when an earlier answer has a stated value, and bound to an indicator as its value or as the numerator or denominator of a ratio. A choice question can supply a disaggregation dimension.
+2. **Send for review**; a different person approves it in the Review queue; then **Publish**. Published versions are numbered; **New version** starts the next draft while the current version keeps collecting.
+3. **Fill in** opens the current version. Enter the reporting unit if the collection plan names one, answer the questions, and give a reason instead of a blank where you cannot answer. **Save draft** stores it on the server. **Submit response** validates every answer against the published version and sends one observation per bound indicator into review. Submitting a bound form also needs the observation-submit permission.
+4. A response started on a version that was replaced meanwhile is kept as entered but quarantined: it produces no observation.
 
-1. **New form**: give a code and title, then add questions. Each question has a code that never changes, a label, a type (text, decimal, whole number, yes/no or a single choice with coded options), whether it is required, and optional bounds or a maximum length. To feed an indicator, choose it under **Feeds indicator** with its role (the value, or the numerator and denominator of a ratio). A choice question can instead supply a disaggregation dimension of the indicator it accompanies; such a question must be required and asked whenever the value is. **Ask only when** shows a question only when an earlier yes/no or choice question has the stated answer.
-2. **Save draft**, then **Send for review**. The review refuses a form that cannot work (for example a ratio without both components, or an indicator from another programme) and names the problem. A different person approves it in **Review queue**, seeing the exact questions and bindings.
-3. **Publish** the approved form. The published version is numbered; **New version** starts a draft of the next one while the published version keeps collecting.
-4. **Fill in** opens the current version. Enter the reporting unit if the collection plan names one, answer the questions (questions that do not apply are hidden), and give a reason instead of a blank where you cannot answer (not collected, not applicable, declined, unknown). **Save draft** stores it on the server; reopen it later to continue. **Submit response** validates every answer against the published version and sends one observation per indicator into the ordinary review; a blank is recorded as missing, never as zero. If the connection drops, submit again from the same dialog: the platform returns the original receipt rather than a second submission.
+Everyone who drafted or submitted a response is an author of its observations and cannot approve them. Repeat groups, photos, locations, translations, collection rounds, assignments, correcting a returned response and offline collection are not available.
 
-A response started on a version that is later replaced is kept exactly as entered but quarantined: it produces no observation and is not converted to the new version. Everyone who drafted or submitted a response is an author of its observations and cannot approve them. Submitting a form that feeds indicators also needs the observation-submit capability; without it the submit is refused and the draft stays as it was. Repeat groups, photos and locations, translations, collection rounds and assignments, correcting a returned response, and offline or Android collection are not available in this build.
+### From a spreadsheet
 
-## Close a period and restate it
+*Release note: `docs/RELEASE-0.21.md`.*
 
-1. Open the close preview and review missing, pending, invalid, rejected or unplanned sources and plan readiness.
-2. Resolve blockers through the normal source and review workflows. Recreate the preview if any input changes.
-3. An eligible independent reviewer approves the pinned preview. Successful close creates official result revisions and a locked snapshot atomically.
-4. A locked period rejects ordinary new submissions, corrections and recalculation.
-5. A correction after close requires an independently approved, time-bounded restatement covering named sources from the latest snapshot. Close again to create a superseding snapshot.
+1. In **Imports**, start a **New batch**: choose the programme and period and a CSV or XLSX file (first sheet; at most 500 rows and 40 columns, about 190 KB). The file travels inside the request, so there is no upload step.
+2. Map the columns by their header names: the unit column, optionally an event-date column, and for each indicator the column holding its value or the two holding its numerator and denominator. Choose whether a commit is **all rows or nothing** or accepted rows only, then save the batch and **Preview** it.
+3. The preview lists every row as accepted, quarantined with a reason code (for example a value that is not a number, or a unit already imported for this indicator and period) or duplicate. Nothing is written yet.
+4. **Commit** the accepted rows. The platform recomputes the preview first and refuses to commit if the file or mapping changed. Each accepted row becomes an observation (namespace `IMPORT`) submitted into the ordinary review, and the unit is registered for that indicator and period so it cannot be imported twice.
+5. **Cancel** a batch you no longer need.
 
-Do not edit an old official number to make it agree with a later correction. The earlier snapshot remains historical evidence.
+Preview and commit run while you wait; a large batch takes some seconds, and other people's saves in the workspace wait behind a commit. Imported values are unplanned where a collection plan exists, which matters at period close (see below).
 
-## Prepare an internal report
+## Attach evidence
 
-Choose an approved report template and the intended locked snapshot. Bind numeric narrative placeholders to permitted immutable result revisions. Supply required sections and evidence bindings, then submit for independent approval. Bare unsupported numeric claims are rejected; narrative editing cannot overwrite a bound official value.
+*Release note: `docs/RELEASE-0.22.md`.*
 
-The approved package freezes its selected versions. Later live recalculation does not change its numbers. Current output formats are authenticated semantic HTML and spreadsheet-safe CSV. PDF, DOCX and XLSX reporting exports are not implemented.
+Open an observation or a result. If you may read evidence, its **Evidence** section lists the files and references cited against it, with the version that was cited and a download link when you are permitted to download.
 
-## Publish to named recipients
+1. To add a file, choose it in the Evidence section: PDF, PNG, JPEG, plain text or CSV up to 25 MB, with a plain file name. The browser computes the file's fingerprint, uploads it, and waits for the check. A file whose contents do not match its declared type, an executable, a PDF with active content or a file that fails the scan is refused and cannot be downloaded by anyone.
+2. Give the evidence a type, source and date, or cite an `https://` reference instead of a file.
+3. **Upload and attach** cites the exact evidence revision against the exact revision of the record you have open. The record itself is not changed, so an approved observation or an official result stays as it was.
 
-1. Propose disclosure of one approved report revision with an explicit purpose, expiry and named active recipients.
-2. Set download permission separately for each recipient. Review the exact candidate with an eligible independent approver.
-3. Publication rechecks current recipient authority and freezes the approved HTML/CSV artifacts.
-4. A recipient must still have current permitted access to view or download. Expired, withdrawn, inactive and unlisted access is unavailable.
-5. Withdraw an incorrect disclosure through the authorized action and retain its audit history.
+The scan recognises only the standard anti-virus test file; it is not malware protection. Treat downloaded evidence as you would any file received from outside.
 
-There is no anonymous public link or external message delivery in this build. Withdrawal prevents future controlled access; it cannot recall bytes already downloaded.
+## Review
 
-## Handle errors without losing evidence
+*Release notes: `docs/IMPLEMENTATION.md` (the single independent stage); `docs/RELEASE-0.27-ux.md` (readable stages).*
 
-| Outcome | Required action |
+1. **Review queue** lists the reviews you may see. Open one: the **Review stages** section states who may decide (any member with the approval permission, or the named reviewers), that the decision must come from someone who did not author the submitted version, and whether it is still awaiting a decision or has been decided and when.
+2. Choose **Review submission**. The dialog re-reads the exact submitted revision; if it changed since you opened the queue, you are told to refresh. For a change request it also shows the currently approved record.
+3. Give a reason and **Approve**, **Return for changes** or **Reject**. A return or rejection needs a reason; an approval may carry one.
+
+You cannot approve your own work, and a second account, a group or a delegation does not change that: independence is decided by the natural person. A decision on an older revision never carries over to a newer one.
+
+## Calculate and inspect results
+
+*Release note: `docs/RELEASE-0.19.md`.*
+
+In **Results**, choose **Calculate result** for an indicator and an open period. The result is **provisional** and is calculated only from approved observations: a pooled percentage is the sum of numerators over the sum of denominators (50/100 and 1/10 give 51/110 = 46.36, never 30), a zero denominator gives **undefined**, and rounding happens once, at display. Open a result to see its coverage (expected, received, valid, approved, pending, missing), its contributors and exclusions, and its breakdown by category where the definition is disaggregated. Category values are shown rounded; the total is never the sum of them.
+
+When an approved source or plan changes after a calculation, the result is marked stale and **My work** shows the recalculation task and a notice. Acknowledging the notice does not complete the task; recalculating does, and keeps the earlier result in history.
+
+## Close a period
+
+*Release notes: `docs/IMPLEMENTATION.md` (period governance), `docs/RELEASE-0.18.md` (what close pins).*
+
+1. In **Period close**, choose **Preview period close**: the programme (shown by name, with its code in brackets), the open period, a reason and the review policy (shown by its name; the development fixture's unnamed policy appears as "Independent review, 1 approval").
+2. The preview lists every blocker: an obligation not yet approved, a pending or invalid source, an unplanned value (`UNPLANNED_VALUES`) and sources changed since the preview. Resolve them through the ordinary workflows and create the preview again; a preview whose inputs changed cannot be approved.
+3. An independent reviewer approves the preview in the Review queue. The close creates the **official** result versions and a locked **snapshot** in one step, and pins the approved targets and the governing framework baseline with them.
+4. A locked period refuses new submissions, corrections and recalculation. A correction after close goes through **Request scoped restatement**: named sources, a window of at most seven days, independent approval; after the correction you close again and a new snapshot version supersedes the old one, which stays on record.
+
+Imported values and form responses without a planned unit are unplanned, and unplanned values block a close. Until a reviewed way to plan them exists (acceptance gap A5 in `docs/current/RELEASE-1-ACCEPTANCE-GAPS.md`), plan the units in the collection plan before importing, or keep imports out of periods you intend to close.
+
+## Read dashboards
+
+*Release note: `docs/RELEASE-0.24.md`.*
+
+**Dashboards** shows, per programme and period, each indicator's **official** value (only from this programme's locked snapshot), its **provisional** value (never merged into the official one), its status against a target where one exists, its coverage, and a freshness note with the rule that decides when a value is stale. Coverage shows **not applicable** when nothing is required and **unavailable** when you cannot read every source. Values are read live, card by card; a page with many indicators is correct but not quick. There is no dashboard authoring, saving or drill-down.
+
+## Prepare, export and publish a report
+
+*Release notes: `docs/IMPLEMENTATION.md` (packages and publication), `docs/RELEASE-0.23.md` (PDF, XLSX and DOCX).*
+
+1. In **Reports**, choose **Draft report**: an approved report template, a locked snapshot, a section heading and narrative, and the official result to reference. Write every number in the narrative as a placeholder such as `{{RESULT}}`; a bare number is refused.
+2. **Submit frozen package for review**. An independent reviewer approves the package, which freezes the exact template, snapshot and result revisions it binds; later recalculation never changes it.
+3. An approved report offers **Open approved export** (HTML) and **Download bound values (CSV)** at once. Under **Rendered exports**, request a **PDF**, **XLSX** or **DOCX**: a background worker renders it, the status refreshes while it works, and you download the finished file. Every number in every format is the stored displayed value; nothing is recalculated. A queued export can be cancelled; one that failed names the reason.
+4. **Request controlled publication** names one active member as recipient, a purpose, an expiry, whether the recipient may download, and which rendered formats to include; those formats are pinned to the exact files that already exist. An independent reviewer approves the disclosure.
+5. **Publish approved disclosure** rechecks that the recipient is still active and creates immutable HTML and CSV artifacts (plus the pinned renderings). The recipient downloads them from their own session; each access is recorded.
+6. **Withdraw publications** stops future access and keeps the record. It cannot recall files already downloaded.
+
+There is no public or anonymous link and no email of a report. The PDF uses a Latin typeface; text in other scripts fails the rendering, and the file keeps a fixed metadata date.
+
+## Correct approved data
+
+*Release note: `docs/IMPLEMENTATION.md` (governed amendments).*
+
+**Change requests** corrects an approved observation, collection plan or indicator assignment through a reviewed amendment: choose the approved record, describe the change and the reason, submit, and an independent reviewer approves it against the exact revision you targeted. If the record moved on meanwhile, the request is returned for an update. Approved history stays visible; a correction never rewrites it.
+
+## When something goes wrong
+
+| What you see | What to do |
 | --- | --- |
-| Validation error | Correct the named field; retain the rest of the draft |
-| Revision conflict | Reload the current record and review the differences before resubmitting |
-| Uncertain network outcome | Reconcile the saved operation or retry the identical command; do not duplicate it with a new operation identifier |
-| Access unavailable | Check workspace, current membership, grant, scope, purpose and tenant state with the authorized administrator |
-| Fresh authentication required | Sign in again through the configured identity flow; a refreshed token issue time alone is insufficient |
-| Stale result | Complete the assigned recalculation workflow; acknowledging a notice is insufficient |
+| A field is refused | Correct the named field; the rest of the draft is kept. |
+| "Someone changed this record" | Close the dialog, refresh, read the differences, then save again. |
+| The connection dropped while saving | Save again from the same dialog. The platform recognises the repeated operation and returns the original receipt rather than saving twice. |
+| "Sign out and sign in again" | The action needs authentication within the last five minutes. |
+| "The action is not permitted" or a record you expected is missing | Ask your administrator to check your membership, grant, scope and purpose. Knowing a URL creates no access. |
+| A result is marked stale | Complete the recalculation task in My work. Acknowledging the notice is not enough. |
+| A form response is quarantined | The form version was replaced after you started. Fill in the current version. |
+| An import row is quarantined | Read its reason code in the preview, correct the file or the mapping and preview again. |
+| An evidence file is refused | Its contents, name or type did not pass the checks. It cannot be made downloadable. |
 
-## Current exclusions
+## What this build does not do
 
-Repeat groups, translations, rounds and assignments of the form designer/runtime, Android offline collection, generalized ingestion, evidence-file processing, evaluation, participant case management, finance, rich analytics, live integrations and AI assistance remain incomplete or pending. A placeholder, object read route or proposed wireframe is not an available operational workflow. See the current FSD, implementation profile and requirement ledger for the exact boundary.
+Offline and Android collection, participant records, evaluation, finance, AI assistance, integrations, public publication, charts in reports, dashboard authoring, keyed import updates, quality issues and exceptions, a real malware scanner, SMS or push notices, and email through a real provider are not implemented. A visible placeholder is not a feature. The exact boundary is in `docs/IMPLEMENTATION.md` and `docs/COMPLETION-LEDGER.md`.

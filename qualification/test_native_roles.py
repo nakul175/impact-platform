@@ -135,6 +135,8 @@ def test_app_role_cannot_read_control_plane_tables(connect, live):
         # 0028 (v0.26a): operator nominations and provisioned accounts, platform only.
         "platform_operator_nomination",
         "provider_account",
+        # 0029 (v0.27): the operator change register, platform only.
+        "platform_operator_change",
     ]:
         message = denied(c, "SELECT count(*) FROM impact." + table, role="impact_app", tenant=tenant)
         assert "permission denied" in message
@@ -308,6 +310,74 @@ def test_platform_role_cannot_make_operators_or_rewrite_nominations(connect, liv
             "SELECT count(*) FROM impact.provider_account",
             "SELECT impact.register_provider_account_identity(gen_random_uuid())",
             "SELECT impact.accept_operator_nomination(gen_random_uuid(),gen_random_uuid())",
+        ]:
+            assert "permission denied" in denied(other, statement, role=role), (login, statement)
+
+
+def test_platform_role_changes_operators_only_through_the_definer(connect, live):
+    """0029 (v0.27): impact_platform reads platform_operator_change and still writes nothing on
+    platform_operator; renewal and deactivation go through the definer apply_operator_change, which
+    refuses the subject as actor, another identity of the subject's natural person, a non-operator
+    actor, a stale revision and a renewal that does not move the expiry later. app, identity and
+    worker logins reach neither the register nor the definer."""
+    c = connect("PLATFORM")
+    admin, owner, author = (live.fixture["actors"][k] for k in ["admin", "owner", "author"])
+    for statement, params in [
+        ("UPDATE impact.platform_operator SET active=false", None),
+        ("UPDATE impact.platform_operator SET expires_at=expires_at+interval '1 day'", None),
+        (
+            "INSERT INTO impact.platform_operator_change(change_id,operator_identity_id,action,actor_identity_id,actor_auth_time,reason,previous_revision_id,revision_id,previous_expires_at,expires_at,previous_active,active) VALUES(gen_random_uuid(),%s,'deactivate',%s,now(),'x',gen_random_uuid(),gen_random_uuid(),now(),now(),true,false)",
+            (owner["identity_id"], admin["identity_id"]),
+        ),
+        ("DELETE FROM impact.platform_operator_change", None),
+        ("UPDATE impact.platform_operator_change SET reason='x'", None),
+    ]:
+        assert "permission denied" in denied(c, statement, params, role="impact_platform"), statement
+    revision = query(
+        c,
+        "SELECT revision_id FROM impact.platform_operator WHERE identity_id=%s",
+        (owner["identity_id"],),
+        role="impact_platform",
+    )[0][0]
+    for actor, expected, action, expiry in [
+        (owner["identity_id"], revision, "deactivate", None),  # the subject as actor
+        (author["identity_id"], revision, "deactivate", None),  # not an operator
+        (admin["identity_id"], uuid.uuid4(), "deactivate", None),  # stale revision
+        (admin["identity_id"], revision, "renew", "now()"),  # not later than the current expiry
+    ]:
+        with pytest.raises(psycopg.Error, match="operator change denied") as refused:
+            with c.transaction():
+                c.execute("SET LOCAL ROLE impact_platform")
+                c.execute(
+                    "SELECT impact.apply_operator_change(gen_random_uuid(),%s,%s,%s,%s,"
+                    + (expiry or "NULL")
+                    + ",now(),'native check')",
+                    (owner["identity_id"], actor, action, expected),
+                )
+        assert refused.value.sqlstate == "42501"
+    # Another identity of the subject's natural person is the subject: with admin linked to the
+    # owner's natural person (inside a transaction that is rolled back), admin cannot act on owner.
+    with live.db() as superuser:
+        with pytest.raises(Rollback):
+            with superuser.transaction():
+                superuser.execute(
+                    "UPDATE impact.auth_identity SET natural_identity_id=(SELECT natural_identity_id FROM impact.auth_identity WHERE identity_id=%s) WHERE identity_id=%s",
+                    (owner["identity_id"], admin["identity_id"]),
+                )
+                with pytest.raises(psycopg.Error, match="operator change denied"):
+                    with superuser.transaction():
+                        superuser.execute("SET LOCAL ROLE impact_platform")
+                        superuser.execute(
+                            "SELECT impact.apply_operator_change(gen_random_uuid(),%s,%s,'deactivate',%s,NULL,now(),'x')",
+                            (owner["identity_id"], admin["identity_id"], revision),
+                        )
+                raise Rollback
+    assert query(c, "SELECT count(*) FROM impact.platform_operator_change", role="impact_platform")[0][0] >= 0
+    for login, role in [("APP", "impact_app"), ("IDENTITY", "impact_identity"), ("WORKER", "impact_worker")]:
+        other = connect(login)
+        for statement in [
+            "SELECT count(*) FROM impact.platform_operator_change",
+            "SELECT impact.apply_operator_change(gen_random_uuid(),gen_random_uuid(),gen_random_uuid(),'renew',gen_random_uuid(),now(),now(),'x')",
         ]:
             assert "permission denied" in denied(other, statement, role=role), (login, statement)
 

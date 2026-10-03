@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.7.0"
+    "version": "1.8.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -10909,6 +10909,10 @@
                             "type": "string",
                             "format": "uuid"
                           },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
                           "display_name": {
                             "type": "string",
                             "minLength": 1,
@@ -10931,7 +10935,18 @@
                           "active": {
                             "type": "boolean"
                           },
+                          "state": {
+                            "enum": [
+                              "Active",
+                              "Expired",
+                              "Deactivated"
+                            ]
+                          },
                           "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updated_at": {
                             "type": "string",
                             "format": "date-time"
                           },
@@ -10944,11 +10959,77 @@
                         },
                         "required": [
                           "identity_id",
+                          "revision_id",
                           "display_name",
                           "email_mask",
                           "active",
+                          "state",
                           "expires_at",
+                          "updated_at",
                           "authority_reference"
+                        ]
+                      }
+                    },
+                    "changes": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "change_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "operator_identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "action": {
+                            "enum": [
+                              "renew",
+                              "deactivate"
+                            ]
+                          },
+                          "actor_identity_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "actor_name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200,
+                            "pattern": "\\S"
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1000,
+                            "pattern": "\\S"
+                          },
+                          "previous_expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "expires_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "change_id",
+                          "operator_identity_id",
+                          "action",
+                          "actor_identity_id",
+                          "actor_name",
+                          "reason",
+                          "previous_expires_at",
+                          "expires_at",
+                          "created_at"
                         ]
                       }
                     },
@@ -11196,6 +11277,7 @@
                     "identity_id",
                     "accounts_enabled",
                     "operators",
+                    "changes",
                     "nominations",
                     "identities",
                     "accounts"
@@ -11206,6 +11288,323 @@
           },
           "default": {
             "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        }
+      }
+    },
+    "/v1/platform/operators/{identity_id}/actions/deactivate": {
+      "parameters": [
+        {
+          "name": "identity_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "deactivate_platform_operator",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "email_mask": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 254,
+                          "pattern": "\\S"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "enum": [
+                        "Active",
+                        "Expired",
+                        "Deactivated"
+                      ]
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "authority_reference": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300,
+                      "pattern": "\\S"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "change_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "identity_id",
+                    "revision_id",
+                    "display_name",
+                    "email_mask",
+                    "active",
+                    "state",
+                    "expires_at",
+                    "updated_at",
+                    "authority_reference",
+                    "operation_id",
+                    "change_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/operators/{identity_id}/actions/renew": {
+      "parameters": [
+        {
+          "name": "identity_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "renew_platform_operator",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "identity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    },
+                    "email_mask": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 254,
+                          "pattern": "\\S"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "enum": [
+                        "Active",
+                        "Expired",
+                        "Deactivated"
+                      ]
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "authority_reference": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300,
+                      "pattern": "\\S"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "change_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "identity_id",
+                    "revision_id",
+                    "display_name",
+                    "email_mask",
+                    "active",
+                    "state",
+                    "expires_at",
+                    "updated_at",
+                    "authority_reference",
+                    "operation_id",
+                    "change_id"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "expected_revision": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "data": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "expires_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "expires_at",
+                      "reason"
+                    ]
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "expected_revision",
+                  "data"
+                ]
+              }
+            }
           }
         }
       }

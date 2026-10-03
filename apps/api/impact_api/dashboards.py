@@ -160,12 +160,17 @@ class Dashboards:
             authorize(c, ctx, op, obj, hidden=True)
             if not 1 <= limit <= 100:
                 raise DomainError("VALIDATION_FAILED")
-            if op == "programme_dashboard":
+            if op in {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}:
                 if not period_id:
                     raise DomainError(
                         "VALIDATION_FAILED", fields=[{"path": "period_id", "message": "Required."}]
                     )
+            if op == "programme_dashboard":
                 return self.programme(c, ctx, obj, period_id, limit, cursor)
+            if op == "indicator_dashboard_sources":
+                return self.drilldown(c, ctx, obj, period_id, limit, cursor)
+            if op == "indicator_definition_portfolio":
+                return self.portfolio(c, ctx, obj, period_id, limit, cursor)
             return self.series(c, ctx, obj, limit, cursor)
 
     # Shared lookups ----------------------------------------------------------------------------
@@ -524,3 +529,257 @@ class Dashboards:
             if last
             else None,
         }
+
+    # Drill-down: the source observations behind a card (v0.27, FR-ANA-002 subset) ----------------
+    def drilldown(self, c, ctx, obj, period_id, limit, cursor):
+        """The period's source observations of one indicator instance as the reader may see them,
+        each marked with its disposition in the value the card shows (INCLUDED, EXCLUDED, or not an
+        input of that calculation). Rows the reader cannot read are absent and the response says
+        the set is PARTIAL — never a count of hidden rows; the card's coverage already says
+        UNAVAILABLE in that case."""
+        instance = load(c, ctx, obj, "IndicatorInstance", "indicator-instances.read")
+        period = load(c, ctx, period_id, "Period", "periods.read")
+        pid = str(instance["payload"]["programme_id"])
+        load(c, ctx, pid, "Programme", "programmes.read")
+        indicator_id = str(instance["object_id"])
+        pin = instance["payload"].get("definition_version")
+        definition = self.definition(c, ctx, pin)
+        places = definition.get("display_decimals", 2)
+        bound = self.service.cursor_binding(
+            ctx,
+            "dashboards/indicator-instances/" + indicator_id + "/sources?period=" + str(period["object_id"]),
+        )
+        key = self.service.cursor_key(bound, cursor)
+        state = self.service.periods.state(c, ctx, pid, str(period["object_id"]))
+        snapshot = self.snapshot(c, ctx, pid, period["object_id"])
+        official = self.official(c, ctx, snapshot, indicator_id, pin)
+        latest = self.provisional(c, ctx, indicator_id, str(period["object_id"]), pin)
+        shown_value = official or latest
+        edges = {}
+        if shown_value:
+            for edge in c.execute(
+                "SELECT source_revision,contribution_identity,disposition,reason_code FROM impact.lineage_edge WHERE tenant_id=%s AND result_revision=%s",
+                (ctx.tenant_id, str(shown_value["result_revision"])),
+            ).fetchall():
+                edges[edge["contribution_identity"]] = edge
+        complete = self.sources(c, ctx, indicator_id, period["payload"]) is not None
+        predicate, args = visible_sql(ctx, "observations.read")
+        rows = c.execute(
+            "SELECT r.object_id,r.head_revision,r.lifecycle_state,r.updated_at,v.payload FROM impact.observation_current o JOIN impact.object_registry r ON r.tenant_id=o.tenant_id AND r.object_id=o.object_id JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE o.tenant_id=%s AND o.indicator_id=%s AND o.event_at>=%s AND o.event_at<%s AND r.classification<>'RESTRICTED' AND v.restriction_state='AVAILABLE' AND "
+            + predicate
+            + (" AND r.object_id>%s::uuid" if key else "")
+            + " ORDER BY r.object_id LIMIT %s",
+            [
+                ctx.tenant_id,
+                indicator_id,
+                period["payload"]["starts_at"],
+                period["payload"]["ends_at"],
+                *args,
+                *([key[0]] if key else []),
+                limit + 1,
+            ],
+        ).fetchall()
+        more = len(rows) > limit
+        rows = rows[:limit]
+        items = []
+        for row in rows:
+            p = row["payload"]
+            present = p.get("value_state") == "PRESENT" and p.get("value") is not None
+            edge = edges.get(str(row["object_id"]))
+            items.append(
+                {
+                    "observation_id": str(row["object_id"]),
+                    "revision_id": str(row["head_revision"]),
+                    "source_namespace": p.get("source_namespace"),
+                    "source_key": p.get("source_key"),
+                    "event_at": p.get("event_at"),
+                    "value_state": p.get("value_state"),
+                    "value": p.get("value") if present else None,
+                    "displayed_value": shown(p.get("value"), places) if present else None,
+                    "numerator": p.get("numerator"),
+                    "denominator": p.get("denominator"),
+                    "approval_state": p.get("approval_state"),
+                    "lifecycle_state": row["lifecycle_state"],
+                    "contribution": edge["disposition"]
+                    if edge
+                    else ("NOT_IN_RESULT" if shown_value else None),
+                    "contribution_reason": edge["reason_code"] if edge else None,
+                    "changed_since_calculation": bool(edge)
+                    and str(edge["source_revision"]) != str(row["head_revision"]),
+                    "updated_at": iso(row["updated_at"]),
+                }
+            )
+        return {
+            **self.indicator_head(instance, definition),
+            "programme_id": pid,
+            "period": self.period_head(period, state),
+            "value": {
+                "mode": shown_value["payload"].get("mode", "PROVISIONAL") if shown_value else None,
+                "result_id": str(shown_value["result_id"]) if shown_value else None,
+                "result_revision": str(shown_value["result_revision"]) if shown_value else None,
+            },
+            "source_check": "COMPLETE" if complete else "PARTIAL",
+            "items": items,
+            "next_cursor": self.service.next_cursor(bound, [str(rows[-1]["object_id"])]) if more else None,
+        }
+
+    # Portfolio: one indicator definition across every programme (v0.27) -------------------------
+    def portfolio(self, c, ctx, obj, period_id, limit, cursor):
+        """For one indicator definition and period: the official value of every instance of it in
+        the tenant (one row per programme instance, keyset on the instance identifier), grouped by
+        definition version, with a pooled total per version only where the version's method pools
+        (SUM, COUNT: sum of the official values; POOLED_RATIO: sum of numerators over sum of
+        denominators from the stored components — never a sum of displayed percentages). A total
+        is withheld when the reader cannot see every instance, when any visible instance lacks an
+        official PRESENT value for the period, or when the method does not pool."""
+        head = load(c, ctx, obj, "IndicatorDefinition", "indicator-definitions.read")
+        period = load(c, ctx, period_id, "Period", "periods.read")
+        did = str(head["object_id"])
+        bound = self.service.cursor_binding(
+            ctx, "dashboards/indicator-definitions/" + did + "/portfolio?period=" + str(period["object_id"])
+        )
+        key = self.service.cursor_key(bound, cursor)
+        predicate, args = visible_sql(ctx, "indicator-instances.read")
+        everything = c.execute(
+            "SELECT count(*) AS n FROM impact.indicator_instance_current i JOIN impact.object_revision d ON d.tenant_id=i.tenant_id AND d.revision_id=i.definition_version WHERE i.tenant_id=%s AND d.object_id=%s",
+            (ctx.tenant_id, did),
+        ).fetchone()["n"]
+        visible = c.execute(
+            "SELECT r.object_id,r.lifecycle_state,v.payload,i.programme_id FROM impact.indicator_instance_current i JOIN impact.object_revision d ON d.tenant_id=i.tenant_id AND d.revision_id=i.definition_version JOIN impact.object_registry r ON r.tenant_id=i.tenant_id AND r.object_id=i.object_id JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE i.tenant_id=%s AND d.object_id=%s AND r.classification<>'RESTRICTED' AND v.restriction_state='AVAILABLE' AND "
+            + predicate
+            + " ORDER BY r.object_id LIMIT %s",
+            [ctx.tenant_id, did, *args, PORTFOLIO_LIMIT + 1],
+        ).fetchall()
+        too_many = len(visible) > PORTFOLIO_LIMIT
+        visible = visible[:PORTFOLIO_LIMIT]
+        scope = "COMPLETE" if everything == len(visible) and not too_many else "PARTIAL"
+        definitions, snapshots, cells = {}, {}, {}
+        for instance in visible:
+            pin = instance["payload"].get("definition_version")
+            if pin not in definitions:
+                definitions[pin] = self.definition(c, ctx, pin)
+            pid = str(instance["programme_id"])
+            if pid not in snapshots:
+                snapshots[pid] = (
+                    self.snapshot(c, ctx, pid, period["object_id"])
+                    if scopes(c, ctx, "programmes.read", pid)
+                    else None
+                )
+            cells[str(instance["object_id"])] = self.official(
+                c, ctx, snapshots[pid], str(instance["object_id"]), pin
+            )
+        versions = []
+        for pin in sorted(definitions, key=lambda p: (definitions[p].get("version_number") or 0, p)):
+            members = [i for i in visible if i["payload"].get("definition_version") == pin]
+            versions.append(
+                {
+                    "definition_revision": pin,
+                    "version_number": definitions[pin].get("version_number"),
+                    "combination_rule": definitions[pin].get("combination_rule"),
+                    "instance_count": len(members),
+                    "pooled": pooled(definitions[pin], [cells[str(i["object_id"])] for i in members], scope),
+                }
+            )
+        page = [i for i in visible if not key or str(i["object_id"]) > key[0]][: limit + 1]
+        more = len(page) > limit
+        page = page[:limit]
+        programmes = []
+        for instance in page:
+            pid = str(instance["programme_id"])
+            pin = instance["payload"].get("definition_version")
+            definition = definitions[pin]
+            places = definition.get("display_decimals", 2)
+            programme = (
+                load(c, ctx, pid, "Programme", "programmes.read")
+                if scopes(c, ctx, "programmes.read", pid)
+                else None
+            )
+            snapshot = snapshots.get(pid)
+            official = cells[str(instance["object_id"])]
+            state = self.service.periods.state(c, ctx, pid, str(period["object_id"]))
+            programmes.append(
+                {
+                    **self.indicator_head(instance, definition),
+                    "programme_id": pid,
+                    "programme_title": (programme["payload"].get("title") or programme["payload"].get("code"))
+                    if programme
+                    else None,
+                    "period_state": state["lifecycle_state"],
+                    "snapshot_version": snapshot["snapshot_version"] if snapshot else None,
+                    "locked_at": iso(snapshot["created_at"]) if snapshot else None,
+                    "official": value_block(official, places) if official else None,
+                    "coverage": self.coverage(
+                        c, ctx, str(instance["object_id"]), definition, period, snapshot
+                    ),
+                }
+            )
+        p = period["payload"]
+        return {
+            "definition_id": did,
+            "definition_name": head["payload"].get("name"),
+            "unit": head["payload"].get("unit"),
+            "measurement_type": head["payload"].get("measurement_type"),
+            "combination_rule": head["payload"].get("combination_rule"),
+            "display_decimals": head["payload"].get("display_decimals", 2),
+            "period": {
+                "period_id": str(period["object_id"]),
+                "period_code": p.get("code"),
+                "starts_at": p.get("starts_at"),
+                "ends_at": p.get("ends_at"),
+            },
+            "scope": scope,
+            "versions": versions,
+            "programmes": programmes,
+            "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])]) if more else None,
+        }
+
+
+PORTFOLIO_LIMIT = 500
+POOLABLE = {"SUM", "COUNT", "POOLED_RATIO"}
+
+
+def pooled(definition, officials, scope):
+    """The pooled total of one definition version's official values, or a withheld block. Pooled
+    ratios come from the stored numerators and denominators (51/110 + 8/10 -> 59/120 = 49.17,
+    never an average of displayed percentages); a zero denominator is UNDEFINED, never 0."""
+    from decimal import Decimal, localcontext
+
+    from .domain import PRECISION, stored
+
+    rule = definition.get("combination_rule")
+    places = definition.get("display_decimals", 2)
+    block = {
+        "method": rule,
+        "value_state": "UNDEFINED",
+        "value": None,
+        "displayed_value": None,
+        "numerator": None,
+        "denominator": None,
+        "instance_count": len(officials),
+        "contributing_count": sum(1 for o in officials if o is not None),
+        "reason_code": None,
+    }
+    if rule not in POOLABLE:
+        return {**block, "value_state": "NOT_APPLICABLE", "reason_code": "NOT_POOLABLE"}
+    if scope != "COMPLETE":
+        return {**block, "value_state": "MISSING", "reason_code": "SCOPE_PARTIAL"}
+    if not officials:
+        return {**block, "value_state": "MISSING", "reason_code": "NO_INSTANCES"}
+    payloads = [o["payload"] for o in officials if o is not None]
+    if len(payloads) != len(officials) or any(p.get("value_state") != "PRESENT" for p in payloads):
+        return {**block, "value_state": "MISSING", "reason_code": "OFFICIAL_VALUES_INCOMPLETE"}
+    with localcontext() as context:
+        context.prec = PRECISION
+        if rule == "POOLED_RATIO":
+            if any(p.get("numerator") is None or p.get("denominator") is None for p in payloads):
+                return {**block, "value_state": "MISSING", "reason_code": "COMPONENTS_MISSING"}
+            n = sum((decimal_value(p["numerator"]) for p in payloads), Decimal(0))
+            d = sum((decimal_value(p["denominator"]) for p in payloads), Decimal(0))
+            block.update(numerator=stored(n), denominator=stored(d))
+            if d == 0:
+                return {**block, "value_state": "UNDEFINED", "reason_code": "ZERO_DENOMINATOR"}
+            value = n / d * (100 if definition.get("measurement_type") == "PERCENTAGE" else 1)
+        else:
+            value = sum((decimal_value(p["value"]) for p in payloads), Decimal(0))
+    kept = stored(value)
+    return {**block, "value_state": "PRESENT", "value": kept, "displayed_value": shown(kept, places)}

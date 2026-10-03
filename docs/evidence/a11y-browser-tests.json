@@ -78,7 +78,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
@@ -140,7 +140,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -202,7 +202,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -236,7 +236,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -270,7 +270,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -304,7 +304,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -338,7 +338,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -372,7 +372,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -406,7 +406,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -440,7 +440,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -485,7 +485,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -519,7 +519,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -553,7 +553,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -598,7 +598,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -643,7 +643,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -692,7 +692,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -726,7 +726,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -760,7 +760,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 12,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -822,7 +822,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
@@ -856,18 +856,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -905,18 +905,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": ".active > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -958,18 +958,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": ".active > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1011,18 +1011,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": ".active > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1060,18 +1060,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1081,6 +1081,59 @@
           "impact": "serious",
           "nodes": 2,
           "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/purpose-bound-access",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
             {
               "target": ".table-scroll:nth-child(4) > table",
               "reason": "Table data cells are missing or empty"
@@ -1109,18 +1162,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1154,18 +1207,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1199,18 +1252,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1244,18 +1297,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1289,18 +1342,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1334,18 +1387,18 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 13,
+          "nodes": 3,
           "examples": [
             {
               "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             },
             {
-              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "target": "button:nth-child(4) > span[aria-hidden=\"true\"]",
               "reason": "Element content contains only non-text characters"
             }
           ]
@@ -1375,7 +1428,19 @@
       "accepted": [],
       "minor_wcag": [],
       "advisory_best_practice": [],
-      "needs_manual_review": []
+      "needs_manual_review": [
+        {
+          "rule": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": ".on-call",
+              "reason": "aria-label attribute is not well supported on a p with no valid role attribute."
+            }
+          ]
+        }
+      ]
     },
     {
       "page": "recovery-contacts",
@@ -1435,7 +1500,7 @@
         {
           "rule": "color-contrast",
           "impact": "serious",
-          "nodes": 14,
+          "nodes": 13,
           "examples": [
             {
               "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
@@ -1480,7 +1545,7 @@
     },
     {
       "control": "First configuration tab",
-      "tab_presses": 17,
+      "tab_presses": 16,
       "visible": true,
       "matches": true,
       "outline": "solid 3px rgb(47, 107, 74)",
@@ -1498,7 +1563,7 @@
     },
     {
       "control": "Add observation",
-      "tab_presses": 18,
+      "tab_presses": 17,
       "visible": true,
       "matches": true,
       "outline": "solid 3px rgb(47, 107, 74)",
@@ -1624,7 +1689,7 @@
     },
     {
       "control": "Search loaded records",
-      "tab_presses": 9,
+      "tab_presses": 8,
       "visible": true,
       "matches": true,
       "outline": "solid 3px rgb(47, 107, 74)",

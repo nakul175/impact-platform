@@ -8,9 +8,10 @@ submission pins the published revision it was captured on and, when that version
 superseded, is kept unchanged and quarantined rather than mapped or completed (FR-FRM-003)."""
 
 from datetime import datetime, timezone
-from decimal import localcontext
+from decimal import ROUND_HALF_UP, Decimal, localcontext
 
-from .domain import RATIO_TYPES, DomainError, decimal_value, ratio, stored, validate_dimensions
+from .contracts import validate
+from .domain import RATIO_TYPES, DomainError, aware, decimal_value, ratio, stored, validate_dimensions
 from .store import audit, authorize, context, load, write
 
 NAMESPACE = "FORM"
@@ -29,6 +30,70 @@ def fail(reason, status=422, code="VALIDATION_FAILED"):
 
 def fields_of(form):
     return sorted(form.get("fields") or [], key=lambda f: f["position"])
+
+
+# Languages (v0.27, FR-FRM-004) --------------------------------------------------------------------
+def languages_of(form):
+    """The language codes a form version offers: its default language, then each translation. A
+    form without a declared default language offers none and accepts no stated language."""
+    codes = [form["default_language"]] if form.get("default_language") else []
+    return codes + [t["language"] for t in form.get("translation_versions") or []]
+
+
+def translation_gaps(form, translation):
+    """Every field label and active choice label the translation still lacks, in field order.
+    Help text is optional in every language; a missing translated help falls back to nothing."""
+    gaps = []
+    texts = translation.get("fields") or {}
+    for field in fields_of(form):
+        text = texts.get(field["stable_code"]) or {}
+        if not text.get("label"):
+            gaps.append({"field_code": field["stable_code"], "choice_code": None})
+        labels = text.get("choices") or {}
+        for choice in field.get("choices") or []:
+            if choice.get("active", True) and not labels.get(choice["code"]):
+                gaps.append({"field_code": field["stable_code"], "choice_code": choice["code"]})
+    return gaps
+
+
+def language_completeness(form):
+    languages = [
+        {
+            "language": t["language"],
+            "name": t.get("name"),
+            "complete": not translation_gaps(form, t),
+            "gaps": translation_gaps(form, t),
+        }
+        for t in form.get("translation_versions") or []
+    ]
+    return {
+        "default_language": form.get("default_language"),
+        "languages": languages,
+        "complete": all(entry["complete"] for entry in languages),
+    }
+
+
+def validate_translations(form, complete):
+    """Translations only add text under stable codes: no unknown field or choice code, one entry
+    per language, never the default language twice, and never a translation without a declared
+    default language (there would be nothing to fall back to). A complete version has no gaps."""
+    translations = form.get("translation_versions") or []
+    if translations and not form.get("default_language"):
+        raise fail("FORM_LANGUAGE_INVALID")
+    codes = [t["language"] for t in translations]
+    if len(set(codes)) != len(codes) or form.get("default_language") in codes:
+        raise fail("FORM_LANGUAGE_INVALID")
+    by_code = {f["stable_code"]: f for f in form.get("fields") or []}
+    for translation in translations:
+        for code, text in (translation.get("fields") or {}).items():
+            field = by_code.get(code)
+            if not field:
+                raise fail("FORM_TRANSLATION_INVALID")
+            allowed = {ch["code"] for ch in field.get("choices") or []}
+            if set(text.get("choices") or {}) - allowed:
+                raise fail("FORM_TRANSLATION_INVALID")
+        if complete and translation_gaps(form, translation):
+            raise fail("FORM_TRANSLATION_INCOMPLETE")
 
 
 def answer_value(field, answer):
@@ -194,6 +259,7 @@ class Forms:
                     raise fail("FORM_BINDING_INVALID")
         if set(dimensions) - declared and (complete or indicators):
             raise fail("FORM_BINDING_INVALID")
+        validate_translations(data, complete)
         if complete:
             # A field that supplies an exhaustive dimension must be answered wherever the bound
             # value is: required, and either always relevant or relevant under exactly the bound
@@ -260,21 +326,123 @@ class Forms:
         )
         return receipt
 
+    # Collection rounds and assignments (v0.27, FR-FRM-005) --------------------------------------
+    def validate_round(self, c, ctx, data, previous=None):
+        """A round names a published version of its form, a period and the units expected to
+        report. Form, version and period are pinned at creation; title, due time and the expected
+        units may change while no assignment covers a removed unit."""
+        if previous and any(
+            previous["payload"].get(k) != data.get(k) for k in ["form_id", "form_version", "period_id"]
+        ):
+            raise fail("ROUND_IMMUTABLE")
+        if any(not data.get(k) for k in ["form_id", "form_version", "period_id", "title", "due_at"]):
+            raise fail("ROUND_INCOMPLETE")
+        aware(data["due_at"])
+        load(c, ctx, data["form_id"], "Form", "forms.read")
+        version = self.version_of(c, ctx, data["form_version"])
+        if str(version["form_id"]) != data["form_id"]:
+            raise fail("FORM_VERSION_NOT_PUBLISHED", 409, "INVALID_STATE")
+        load(c, ctx, data["period_id"], "Period", "periods.read")
+        if previous:
+            removed = set(previous["payload"].get("expected_units") or []) - set(
+                data.get("expected_units") or []
+            )
+            if (
+                removed
+                and c.execute(
+                    "SELECT 1 FROM impact.assignment_current WHERE tenant_id=%s AND round_id=%s AND unit_key=ANY(%s)",
+                    (ctx.tenant_id, str(previous["object_id"]), sorted(removed)),
+                ).fetchone()
+            ):
+                raise fail("ROUND_UNIT_ASSIGNED", 409, "INVALID_STATE")
+
+    def validate_assignment(self, c, ctx, data, previous=None):
+        """One stable task per round and unit. The round, version, unit and assignee are pinned at
+        creation; only the due time is patched, and the assignee changes only through reassign."""
+        if previous and any(
+            previous["payload"].get(k) != data.get(k)
+            for k in ["round_id", "form_version", "unit_key", "assignee_id", "previous_assignee_id", "reason"]
+        ):
+            raise fail("ASSIGNMENT_IMMUTABLE")
+        if data.get("scope_id"):
+            # The design's subject scope is not implemented: this build assigns units of a round.
+            raise fail("ASSIGNMENT_SCOPE_NOT_IMPLEMENTED")
+        if any(not data.get(k) for k in ["round_id", "form_version", "assignee_id", "unit_key", "due_at"]):
+            raise fail("ASSIGNMENT_INCOMPLETE")
+        aware(data["due_at"])
+        round_row = load(c, ctx, data["round_id"], "CollectionRound", "collection-rounds.read")
+        if round_row["payload"]["form_version"] != data["form_version"]:
+            raise fail("ASSIGNMENT_FORM_VERSION_MISMATCH")
+        if data["unit_key"] not in (round_row["payload"].get("expected_units") or []):
+            raise fail("ASSIGNMENT_UNIT_NOT_EXPECTED")
+        if not previous:
+            if c.execute(
+                "SELECT 1 FROM impact.assignment_current WHERE tenant_id=%s AND round_id=%s AND unit_key=%s",
+                (ctx.tenant_id, data["round_id"], data["unit_key"]),
+            ).fetchone():
+                raise fail("ASSIGNMENT_UNIT_TAKEN", 409, "INVALID_STATE")
+            self.assert_assignee(c, ctx, data["assignee_id"])
+
+    def assert_assignee(self, c, ctx, principal):
+        # The assignee must be a current member able to submit responses; an assignment is work,
+        # never authority: it grants nothing, and approval stays with an independent reviewer.
+        if not self.service.measurement.eligible(c, ctx, principal, "submission.submit"):
+            raise fail("ASSIGNEE_INELIGIBLE", 409, "INVALID_STATE")
+
+    def reassign(self, c, ctx, row, data):
+        """A new revision of the same assignment with the new assignee, the previous one and the
+        reason; the task identity and every earlier revision stay. A completed assignment is never
+        reassigned, so the old holder can never produce a second completed visit."""
+        if row["lifecycle_state"] != "Draft":
+            raise fail("ASSIGNMENT_COMPLETED", 409, "INVALID_STATE")
+        if data["assignee_id"] == row["payload"]["assignee_id"]:
+            raise fail("ASSIGNEE_UNCHANGED")
+        self.assert_assignee(c, ctx, data["assignee_id"])
+        payload = {
+            **row["payload"],
+            "assignee_id": data["assignee_id"],
+            "previous_assignee_id": row["payload"]["assignee_id"],
+            "reason": data["reason"],
+        }
+        return write(c, ctx, "Assignment", payload, "Draft", row, track_author=False)
+
+    def held_assignment(self, c, ctx, data, lock=False):
+        """The open assignment a response fulfils, which the caller must currently hold."""
+        assignment = load(c, ctx, data["assignment_id"], "Assignment", "assignments.read", lock=lock)
+        if assignment["payload"].get("form_version") != data.get("form_version"):
+            raise fail("ASSIGNMENT_FORM_VERSION_MISMATCH")
+        if assignment["lifecycle_state"] != "Draft":
+            raise fail("ASSIGNMENT_COMPLETED", 409, "INVALID_STATE")
+        if assignment["payload"].get("assignee_id") != ctx.principal_id:
+            raise DomainError("POLICY_DENIED", 403, reason="ASSIGNMENT_NOT_HELD")
+        return assignment
+
     # Submissions --------------------------------------------------------------------------------
     def validate_submission(self, c, ctx, data, previous=None):
-        if previous and any(previous["payload"].get(k) != data.get(k) for k in ["form_version", "unit_key"]):
+        if previous and any(
+            previous["payload"].get(k) != data.get(k) for k in ["form_version", "unit_key", "assignment_id"]
+        ):
             raise fail("FORM_VERSION_IMMUTABLE")
         if not data.get("form_version"):
             # The version is pinned at creation and immutable afterwards, so a draft without one
             # could never be submitted.
             raise fail("FORM_VERSION_REQUIRED")
         version = self.version_of(c, ctx, data["form_version"])
+        if data.get("language") and data["language"] not in languages_of(version["payload"]):
+            # The language shown to the respondent must be one the published version carries.
+            raise fail("FORM_LANGUAGE_NOT_AVAILABLE")
+        if data.get("assignment_id") and not previous:
+            assignment = self.held_assignment(c, ctx, data)
+            unit = assignment["payload"]["unit_key"]
+            if data.get("unit_key") not in (None, unit):
+                raise fail("ASSIGNMENT_UNIT_MISMATCH")
+            # The response reports for the assigned unit, so its observations carry the unit's
+            # planned source key.
+            data["unit_key"] = unit
         evaluate(version["payload"], data.get("answers") or {}, complete=False)
         return version
 
     def submit(self, c, ctx, row, data, correlation=None):
-        from .service import revision
-
         if row["lifecycle_state"] != "Draft":
             raise DomainError("INVALID_STATE", 409)
         payload = dict(row["payload"])
@@ -282,6 +450,9 @@ class Forms:
             raise fail("SUBMISSION_INCOMPLETE")
         version = self.version_of(c, ctx, payload["form_version"])
         current = self.publication(c, ctx, version["form_id"])
+        assignment = (
+            self.held_assignment(c, ctx, payload, lock=True) if payload.get("assignment_id") else None
+        )
         stamped = {
             **payload,
             "server_received_at": datetime.now(timezone.utc).isoformat(),
@@ -291,10 +462,30 @@ class Forms:
         }
         if current["version_number"] != version["version_number"]:
             # Captured on a superseded version: kept exactly as received, never completed or mapped
-            # to the new version, and contributes nothing (FR-FRM-003, FSD ST06 Quarantined).
+            # to the new version, and contributes nothing (FR-FRM-003, FSD ST06 Quarantined). Its
+            # assignment stays open: nothing eligible was received.
             stamped.update(review_state="QUARANTINED", quarantine_reason="FORM_VERSION_SUPERSEDED")
             return write(c, ctx, "Submission", stamped, "Quarantined", row, track_author=False)
         form = version["payload"]
+        self.produce(c, ctx, row, payload, form, data["workflow_version"], correlation, stamped)
+        stamped["review_state"] = "SUBMITTED"
+        stamped["quarantine_reason"] = None
+        receipt = write(c, ctx, "Submission", stamped, "Submitted", row, track_author=False)
+        if assignment:
+            # The visit is complete: the assignment closes in the same transaction, so neither its
+            # holder nor a later holder can produce another eligible completed visit from it.
+            done = write(
+                c, ctx, "Assignment", assignment["payload"], "Completed", assignment, track_author=False
+            )
+            audit(c, ctx, "action_submissions_submit", done, correlation)
+        return receipt
+
+    def produce(self, c, ctx, row, payload, form, workflow_version, correlation, stamped, corrections=None):
+        """Validate the answers against the version and turn them into one observation per bound
+        indicator, submitted into the observation review. With `corrections` (observation id per
+        indicator) the observations are new revisions of those returned observations."""
+        from .service import revision
+
         state = evaluate(form, payload.get("answers") or {}, complete=True)
         dimension_answers = {
             f["dimension_code"]: state[f["stable_code"]][1]
@@ -313,6 +504,7 @@ class Forms:
             # the submitter must hold what a manual observation submit needs (declared in the
             # policy row of action_submissions_submit), not only submission.submit.
             raise DomainError("POLICY_DENIED", 403, reason="OBSERVATION_SUBMIT_REQUIRED")
+        op = "action_submissions_correct" if corrections is not None else "action_submissions_submit"
         for indicator_id, roles in bound.items():
             instance = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
             definition = revision(
@@ -324,12 +516,67 @@ class Forms:
             )["payload"]
             observation = self.observation(c, ctx, row, payload, definition, roles, state, dimension_answers)
             observation["indicator_id"] = indicator_id
-            stamped["observation_ids"].append(
-                self.record(c, ctx, observation, data["workflow_version"], correlation, row["object_id"])
-            )
-        stamped["review_state"] = "SUBMITTED"
-        stamped["quarantine_reason"] = None
-        return write(c, ctx, "Submission", stamped, "Submitted", row, track_author=False)
+            if corrections is not None:
+                if indicator_id not in corrections:
+                    # The version's bindings changed under the response: nothing to correct.
+                    raise fail("CORRECTION_TARGET_MISSING", 409, "INVALID_STATE")
+                stamped["observation_ids"].append(
+                    self.record(
+                        c,
+                        ctx,
+                        observation,
+                        workflow_version,
+                        correlation,
+                        row["object_id"],
+                        op,
+                        returned=corrections[indicator_id],
+                    )
+                )
+            else:
+                stamped["observation_ids"].append(
+                    self.record(c, ctx, observation, workflow_version, correlation, row["object_id"], op)
+                )
+
+    def correct(self, c, ctx, row, data, correlation=None):
+        """Correction of returned work (FR-FRM-006): a Submitted response whose observations were
+        all returned by their reviewer receives a new Submitted revision with the corrected answers
+        and the reason; each returned observation gets a new Draft revision authored by the
+        corrector and is submitted into the same independent review. Nothing reviewed is edited."""
+        if row["lifecycle_state"] != "Submitted" or row["payload"].get("review_state") != "SUBMITTED":
+            raise DomainError("INVALID_STATE", 409, reason="CORRECTION_REQUIRES_SUBMITTED_RESPONSE")
+        payload = dict(row["payload"])
+        version = self.version_of(c, ctx, payload["form_version"])
+        if self.publication(c, ctx, version["form_id"])["version_number"] != version["version_number"]:
+            raise fail("FORM_VERSION_SUPERSEDED", 409, "INVALID_STATE")
+        returned = {}
+        for observation_id in payload.get("observation_ids") or []:
+            observation = load(c, ctx, observation_id, "Observation", "observations.read", lock=True)
+            if observation["lifecycle_state"] != "Returned":
+                raise DomainError("INVALID_STATE", 409, reason="CORRECTION_REQUIRES_RETURNED_WORK")
+            returned[observation["payload"]["indicator_id"]] = observation
+        if not returned:
+            raise DomainError("INVALID_STATE", 409, reason="CORRECTION_REQUIRES_RETURNED_WORK")
+        corrected = {**payload, "answers": data["answers"]}
+        stamped = {
+            **corrected,
+            "server_received_at": datetime.now(timezone.utc).isoformat(),
+            "authenticated_uploader_id": ctx.principal_id,
+            "observation_ids": [],
+            "correction_of_revision": str(row["head_revision"]),
+            "correction_reason": data["reason"],
+        }
+        self.produce(
+            c,
+            ctx,
+            row,
+            corrected,
+            version["payload"],
+            data["workflow_version"],
+            correlation,
+            stamped,
+            returned,
+        )
+        return write(c, ctx, "Submission", stamped, "Submitted", row)
 
     def observation(self, c, ctx, row, payload, definition, roles, state, dimension_answers):
         """The observation one indicator receives from one response. A blank is never zero: an
@@ -397,24 +644,33 @@ class Forms:
         correlation=None,
         submission_id=None,
         op="action_submissions_submit",
+        returned=None,
     ):
         """Write one draft observation under the response's source identity and submit it into the
         existing independent review, exactly as a manual observation is submitted. The observation
         and its review workflow each get their own audit and outbox event in this transaction, as a
-        manual create and submit would; the command's receipt is the submission's."""
+        manual create and submit would; the command's receipt is the submission's. A correction
+        (`returned`) writes the corrected content as a new Draft revision of the returned
+        observation — same object, same source key, the returned revision kept — and the corrector
+        joins its authors, so the corrector can never approve it."""
         tenant = ctx.tenant_id
-        if c.execute(
-            "SELECT 1 FROM impact.source_key_registry WHERE tenant_id=%s AND namespace=%s AND source_key=%s",
-            (tenant, data["source_namespace"], data["source_key"]),
-        ).fetchone():
-            raise DomainError("SOURCE_KEY_CONFLICT", 409)
         data = {**data, "approval_state": "DRAFT"}
         self.service.validate_data(c, ctx, "Observation", data, ctx.principal_id)
-        receipt = write(c, ctx, "Observation", data)
-        c.execute(
-            "INSERT INTO impact.source_key_registry VALUES(%s,%s,%s,%s)",
-            (tenant, data["source_namespace"], data["source_key"], receipt["object_id"]),
-        )
+        if returned is not None:
+            if returned["payload"]["source_key"] != data["source_key"]:
+                raise fail("CORRECTION_TARGET_MISSING", 409, "INVALID_STATE")
+            receipt = write(c, ctx, "Observation", data, "Draft", returned)
+        else:
+            if c.execute(
+                "SELECT 1 FROM impact.source_key_registry WHERE tenant_id=%s AND namespace=%s AND source_key=%s",
+                (tenant, data["source_namespace"], data["source_key"]),
+            ).fetchone():
+                raise DomainError("SOURCE_KEY_CONFLICT", 409)
+            receipt = write(c, ctx, "Observation", data)
+            c.execute(
+                "INSERT INTO impact.source_key_registry VALUES(%s,%s,%s,%s)",
+                (tenant, data["source_namespace"], data["source_key"], receipt["object_id"]),
+            )
         if submission_id:
             # Everyone who authored the response is an author of the observations it produces, so
             # a person who drafted the answers cannot approve them after someone else submits.
@@ -444,6 +700,16 @@ class Forms:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, op, obj, hidden=True)
+            if op == "get_form_completeness":
+                row = load(c, ctx, obj, "Form", "forms.read")
+                return {
+                    "form_id": str(obj),
+                    "revision_id": str(row["head_revision"]),
+                    "lifecycle_state": row["lifecycle_state"],
+                    **language_completeness(row["payload"]),
+                }
+            if op == "get_round_coverage":
+                return self.coverage(c, ctx, load(c, ctx, obj, "CollectionRound", "collection-rounds.read"))
             load(c, ctx, obj, "Form", "forms.read")
             versions = c.execute(
                 "SELECT p.*,v.payload FROM impact.form_publication p JOIN impact.object_revision v ON v.tenant_id=p.tenant_id AND v.revision_id=p.form_revision WHERE p.tenant_id=%s AND p.form_id=%s ORDER BY p.version_number",
@@ -467,3 +733,52 @@ class Forms:
                     for v in versions
                 ],
             }
+
+    def coverage(self, c, ctx, round_row):
+        """Expected units of a round against their assignments and the responses submitted on
+        them. A unit is received when a Submitted (not quarantined) response names its
+        assignment; coverage is Σreceived/Σexpected rounded half-up to two places, and a round
+        that expects no unit is not applicable rather than 100 %."""
+        payload = round_row["payload"]
+        expected = list(payload.get("expected_units") or [])
+        rows = c.execute(
+            "SELECT a.object_id,a.unit_key,a.assignee_id,r.lifecycle_state,s.object_id AS submission_id FROM impact.assignment_current a JOIN impact.object_registry r ON r.tenant_id=a.tenant_id AND r.object_id=a.object_id LEFT JOIN LATERAL (SELECT s.object_id FROM impact.submission_current s WHERE s.tenant_id=a.tenant_id AND s.assignment_id=a.object_id AND s.review_state='SUBMITTED' ORDER BY s.object_id LIMIT 1) s ON true WHERE a.tenant_id=%s AND a.round_id=%s ORDER BY a.unit_key,a.object_id",
+            (ctx.tenant_id, str(round_row["object_id"])),
+        ).fetchall()
+        by_unit = {row["unit_key"]: row for row in rows}
+        units = []
+        for unit in expected:
+            row = by_unit.get(unit)
+            units.append(
+                {
+                    "unit_key": unit,
+                    "assignment_id": str(row["object_id"]) if row else None,
+                    "assignee_id": str(row["assignee_id"]) if row and row["assignee_id"] else None,
+                    "assignment_state": row["lifecycle_state"] if row else None,
+                    "received": bool(row and row["submission_id"]),
+                    "submission_id": str(row["submission_id"]) if row and row["submission_id"] else None,
+                }
+            )
+        received = sum(1 for u in units if u["received"])
+        assigned = sum(1 for u in units if u["assignment_id"])
+        percent = None
+        if expected:
+            percent = str(
+                (Decimal(received) * 100 / Decimal(len(expected))).quantize(
+                    Decimal("0.01"), rounding=ROUND_HALF_UP
+                )
+            )
+        result = {
+            "round_id": str(round_row["object_id"]),
+            "form_version": payload["form_version"],
+            "period_id": payload["period_id"],
+            "expected_count": len(expected),
+            "assigned_count": assigned,
+            "received_count": received,
+            "missing_count": len(expected) - received,
+            "unassigned_count": len(expected) - assigned,
+            "coverage_percent": percent,
+            "coverage_state": "MEASURED" if expected else "NOT_APPLICABLE",
+            "units": units,
+        }
+        return validate("RoundCoverage", result)

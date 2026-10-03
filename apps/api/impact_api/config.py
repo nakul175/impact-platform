@@ -82,6 +82,9 @@ class Settings:
     # The server's operations summary (deploy/ops-check.sh: backup age, restore drill, disk, alerts),
     # an absolute path read by GET /v1/platform/metrics; empty reports no operations section.
     ops_status_file: str = ""
+    # The published on-call rota (deploy/on-call.example.json), read by GET /v1/status for platform
+    # operators; empty means `on-call.json` beside ops_status_file, or none at all.
+    on_call_file: str = ""
     # Sign-in accounts created through the control plane (v0.26a, impact_api/provider_accounts.py):
     # "keycloak" (the realm's admin API through a service-account client limited to user management,
     # reached on the deployment's internal network), "development" (the development users file;
@@ -140,6 +143,8 @@ class Settings:
             raise ValueError("object_store_dir must be an absolute path")
         if s.ops_status_file and not Path(s.ops_status_file).is_absolute():
             raise ValueError("ops_status_file must be an absolute path")
+        if s.on_call_file and not Path(s.on_call_file).is_absolute():
+            raise ValueError("on_call_file must be an absolute path")
         if s.object_store_backend != "filesystem":
             raise ValueError("object_store_backend: only 'filesystem' is implemented")
         if s.evidence_scanner not in {"", "eicar-signature", "none"}:

@@ -2,6 +2,7 @@
 
 | Method | Path | Capability |
 |---|---|---|
+| GET | `/v1/tenants/{tenant_id}/access-denials` | `access-denials.read` |
 | GET | `/v1/tenants/{tenant_id}/access-groups` | `groups.read` |
 | POST | `/v1/tenants/{tenant_id}/access-groups` | `groups.manage` |
 | POST | `/v1/tenants/{tenant_id}/access-groups/{object_id}/actions/remove-member` | `groups.manage` |
@@ -12,6 +13,11 @@
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/reject` | `grant.approve` |
 | GET | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.read` |
 | POST | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.create` |
+| GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
+| POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |
+| PATCH | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/assignments/{object_id}/actions/reassign` | `assignment.reassign` |
 | GET | `/v1/tenants/{tenant_id}/audit-events` | `audit-events.read` |
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | `audit-events.read` |
 | POST | `/v1/tenants/{tenant_id}/audit-exports` | `audit.export` |
@@ -23,6 +29,11 @@
 | GET | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | `collection-plans.read` |
 | PATCH | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | `collection-plans.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/collection-plans/{object_id}/actions/submit` | `collection-plan.submit` |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds` | `collection-rounds.read` |
+| POST | `/v1/tenants/{tenant_id}/collection-rounds` | `collection-rounds.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | `collection-rounds.read` |
+| PATCH | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | `collection-rounds.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage` | `collection-rounds.read` |
 | GET | `/v1/tenants/{tenant_id}/connections` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions` | `decisions.read` |
@@ -42,6 +53,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish` | `form.publish` |
 | POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit` | `form.submit` |
+| GET | `/v1/tenants/{tenant_id}/forms/{object_id}/completeness` | `forms.read` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}/published` | `forms.read` |
 | GET | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.read` |
 | POST | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.draft.create` |
@@ -71,6 +83,7 @@
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | `indicator-definitions.read` |
 | PATCH | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | `indicator-definitions.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/actions/submit` | `indicator.submit` |
+| GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/portfolio` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances` | `indicator-instances.read` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances` | `indicator-instances.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}` | `indicator-instances.read` |
@@ -78,6 +91,7 @@
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/activate` | `indicator.activate` |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/calculate` | `indicator.calculate` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | `dashboards.read` |
+| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/invitation-acceptances` | `invitation.accept` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | `lineage-manifests.read` |
@@ -175,6 +189,14 @@
 | GET | `/v1/tenants/{tenant_id}/reports/{object_id}/exports/{job_id}/download` | `report.export` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests` | `restatement-requests.read` |
 | GET | `/v1/tenants/{tenant_id}/restatement-requests/{object_id}` | `restatement-requests.read` |
+| GET | `/v1/tenants/{tenant_id}/retention-holds` | `retention-holds.read` |
+| POST | `/v1/tenants/{tenant_id}/retention-holds` | `retention.hold` |
+| POST | `/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release` | `retention.release` |
+| GET | `/v1/tenants/{tenant_id}/retention-policies` | `retention-policies.read` |
+| POST | `/v1/tenants/{tenant_id}/retention-policies` | `retention-policies.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | `retention-policies.read` |
+| PATCH | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | `retention-policies.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve` | `retention-policy.approve` |
 | GET | `/v1/tenants/{tenant_id}/retention-proofs` | `retention.read` |
 | GET | `/v1/tenants/{tenant_id}/retention-schedule` | `retention.read` |
 | GET | `/v1/tenants/{tenant_id}/role-templates` | `role-templates.read` |
@@ -187,6 +209,7 @@
 | POST | `/v1/tenants/{tenant_id}/submissions` | `submissions.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.read` |
 | PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct` | `submission.correct` |
 | POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | `submission.submit` |
 | GET | `/v1/tenants/{tenant_id}/targets` | `targets.read` |
 | POST | `/v1/tenants/{tenant_id}/targets` | `targets.draft.create` |

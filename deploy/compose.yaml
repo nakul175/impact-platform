@@ -189,7 +189,9 @@ services:
       start_period: 30s
 
   # Loopback mail capture: the worker shares this container's network namespace, so its SMTP
-  # adapter reaches 127.0.0.1:2525. Replaced by a real provider via SMTP_* in config.env.
+  # adapter reaches 127.0.0.1:2525. Replaced by a real provider via SMTP_* in config.env (the
+  # password in secrets.env); the namespace is on `edge`, which has a route out, so no change
+  # of wiring is needed for a provider (deploy/mail-check.sh proves the path).
   mailsink:
     <<: [*app, *hardened]
     restart: unless-stopped
@@ -218,6 +220,12 @@ services:
       IMPACT_SMTP_USERNAME: ${SMTP_USERNAME:-}
       IMPACT_SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       IMPACT_SMTP_FROM: ${SMTP_FROM:?}
+      # v0.27 email readiness: STARTTLS policy, optional extra trust anchor, send rate limits.
+      IMPACT_SMTP_STARTTLS: ${SMTP_STARTTLS:-auto}
+      IMPACT_SMTP_CA_FILE: ${SMTP_CA_FILE:-}
+      IMPACT_EMAIL_RATE_LIMIT: ${EMAIL_RATE_LIMIT:-0}
+      IMPACT_EMAIL_TENANT_RATE_LIMIT: ${EMAIL_TENANT_RATE_LIMIT:-0}
+      IMPACT_EMAIL_RATE_WINDOW_SECONDS: ${EMAIL_RATE_WINDOW_SECONDS:-60}
     depends_on:
       mailsink: {condition: service_started}
       postgres: {condition: service_healthy}

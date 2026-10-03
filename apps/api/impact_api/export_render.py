@@ -18,9 +18,11 @@ import zipfile
 from datetime import datetime, timezone
 from xml.sax.saxutils import escape
 
+from .report_charts import CHART_NOTE, chart_description, chart_drawing, chart_models, chart_rows
 from .reporting import BINDING_TOKEN
 
 RENDERER_VERSION = "exports-1"
+CHART_COLUMNS = ["bar", "official_value", "unit", "target", "value_state"]
 MEDIA_TYPES = {
     "PDF": "application/pdf",
     "XLSX": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -57,8 +59,11 @@ def display(result):
     return str(result.get("displayed_value", "—")), str(result.get("unit", ""))
 
 
-def build_model(report_id, report_revision, report, template, snapshot_id, snapshot, digest_hex, values):
-    """`values` maps (section_code, binding_code) to the bound OFFICIAL result payload."""
+def build_model(
+    report_id, report_revision, report, template, snapshot_id, snapshot, digest_hex, values, targets=None
+):
+    """`values` maps (section_code, binding_code) to the bound OFFICIAL result payload; `targets`
+    maps a pinned target revision to its payload (charts, v0.27)."""
     sections, rows = [], []
     for section in report["sections"]:
         paragraphs = []
@@ -89,7 +94,14 @@ def build_model(report_id, report_revision, report, template, snapshot_id, snaps
                     str(snapshot_id),
                 ]
             )
-        sections.append({"heading": section["heading"], "paragraphs": paragraphs, "table": table})
+        sections.append(
+            {
+                "heading": section["heading"],
+                "paragraphs": paragraphs,
+                "table": table,
+                "charts": chart_models(section, values, targets),
+            }
+        )
     locked_at = snapshot["locked_at"]
     return {
         "title": template.get("title", "Impact report"),
@@ -137,6 +149,9 @@ def all_text(model):
             yield paragraph_text(runs)
         for row in section["table"]:
             yield " ".join(row)
+        for chart in section.get("charts", []):
+            yield chart["title"]
+            yield chart_description(chart)
     yield from footer_lines(model)
 
 
@@ -210,6 +225,24 @@ def render_pdf(model):
                 )
             )
             story += [Spacer(1, 6), Paragraph("Bound official results", styles["Italic"]), table]
+        for chart in section.get("charts", []):
+            data = [["Bar", "Official value", "Unit", "Target", "Value state"]] + chart_rows(chart)
+            table = Table(data, repeatRows=1, hAlign="LEFT")
+            table.setStyle(
+                TableStyle(
+                    [
+                        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f1f5ed")),
+                        ("LINEBELOW", (0, 0), (-1, -1), 0.5, colors.HexColor("#ccd6cf")),
+                    ]
+                )
+            )
+            story += [
+                Spacer(1, 12),
+                chart_drawing(chart),
+                Paragraph(escape(chart["title"]) + ". " + escape(CHART_NOTE), styles["Italic"]),
+                table,
+            ]
     story.append(Spacer(1, 18))
     story += [Paragraph(escape(line), styles["Code"]) for line in footer_lines(model)]
     document.build(story)
@@ -239,6 +272,22 @@ def render_xlsx(model):
         for column, value in enumerate(row, 1):
             text_cell(values, index, column, value)
     values.freeze_panes = "A2"
+    charts = [chart for section in model["sections"] for chart in section.get("charts", [])]
+    if charts:
+        sheet = workbook.create_sheet("Charts")
+        text_cell(sheet, 1, 1, CHART_NOTE)
+        line = 3
+        for chart in charts:
+            text_cell(sheet, line, 1, chart["title"]).font = Font(bold=True)
+            line += 1
+            for column, name in enumerate(CHART_COLUMNS, 1):
+                text_cell(sheet, line, column, name).font = Font(bold=True)
+            line += 1
+            for row in chart_rows(chart):
+                for column, value in enumerate(row, 1):
+                    text_cell(sheet, line, column, value)
+                line += 1
+            line += 1
     package = workbook.create_sheet("Package")
     lines = [("title", model["title"]), ("classification", BANNER), ("language", model["language"])]
     for section in model["sections"]:
@@ -290,6 +339,17 @@ def render_docx(model):
                 cells = table.add_row().cells
                 cells[0].text = code
                 cells[1].paragraphs[0].add_run(value + " " + unit).bold = True
+        for chart in section.get("charts", []):
+            document.add_paragraph(chart["title"] + ". " + CHART_NOTE).italic = True
+            table = document.add_table(rows=1, cols=5)
+            table.style = "Table Grid"
+            for cell, name in zip(
+                table.rows[0].cells, ["Bar", "Official value", "Unit", "Target", "Value state"]
+            ):
+                cell.text = name
+            for row in chart_rows(chart):
+                for cell, value in zip(table.add_row().cells, row):
+                    cell.text = value
     for line in footer_lines(model):
         document.add_paragraph(line)
     instant = model_instant(model)

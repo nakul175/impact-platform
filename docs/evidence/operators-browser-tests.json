@@ -10,6 +10,10 @@
       "status": "passed"
     },
     {
+      "name": "Another operator renews the colleague's role, then deactivates it",
+      "status": "passed"
+    },
+    {
       "name": "A workspace administrator sets up the standard reference data",
       "status": "passed"
     }

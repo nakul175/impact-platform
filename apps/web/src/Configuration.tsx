@@ -907,6 +907,9 @@ function ConfigurationEditor({
                 Use these exact namespace and source keys when recording
                 observations. Include the period in each key. Every source
                 remains expected until an approved plan amendment is supported.
+                For values that will arrive by file import, use the namespace
+                IMPORT and the key unit key/indicator id/period id; the import
+                preview shows each value&apos;s key.
               </p>
               {obligations.map((o, i) => (
                 <fieldset className="obligation" key={i}>

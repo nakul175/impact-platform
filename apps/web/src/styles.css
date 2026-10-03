@@ -13,6 +13,13 @@
   /* Focus ring: at least 3:1 against every light background (WCAG 2.4.7, 1.4.11). */
   --focus-ring: #2f6b4a;
   --focus-ring-on-dark: #c9e59d;
+  /* Service-notice banner (release 0.27): text meets 4.5:1 on its tinted background. */
+  --status-warning-text: #6b4e12;
+  --status-warning-bg: #fff7e6;
+  --status-warning-border: #ecd9a8;
+  --status-critical-text: #944d3f;
+  --status-critical-bg: #fff0ed;
+  --status-critical-border: #eed5cd;
   font-family:
     Inter,
     ui-sans-serif,
@@ -399,6 +406,51 @@ small,
   height: 5px;
   background: #709e70;
   border-radius: 100%;
+}
+.status-banner {
+  border-radius: 7px;
+  padding: 12px 16px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  line-height: 1.6;
+  border: 1px solid;
+}
+.status-banner-warning {
+  background: var(--status-warning-bg);
+  border-color: var(--status-warning-border);
+  color: var(--status-warning-text);
+}
+.status-banner-critical {
+  background: var(--status-critical-bg);
+  border-color: var(--status-critical-border);
+  color: var(--status-critical-text);
+}
+.status-banner ul {
+  margin: 4px 0 0 18px;
+  padding: 0;
+}
+.status-banner button.text {
+  color: inherit;
+  text-decoration: underline;
+  padding: 0;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.status-detail {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+.status-detail p {
+  margin: 0 0 6px;
+}
+.status-alerts {
+  margin: 0 0 8px 18px;
+}
+.on-call {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 16px;
 }
 .page-heading {
   display: flex;
@@ -1474,6 +1526,36 @@ html[data-reduced-motion="true"] *::after {
 .badge.superseded {
   opacity: 0.7;
 }
+/* Theory of change, assumption status, amendments and bands (v0.27 planning): the badges reuse
+   the existing positive / pending / attention colours, so every state keeps its contrast. */
+.planning-theory ul {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.planning-theory li {
+  padding: 4px 0;
+  overflow-wrap: anywhere;
+}
+.badge.band-on_track,
+.badge.assumption-holds {
+  background: #edf6e9;
+  border-color: #deebd4;
+  color: var(--badge-positive-text);
+}
+.badge.band-at_risk,
+.badge.assumption-at_risk,
+.badge.amended {
+  background: #fbf5e7;
+  border-color: #f3e5bc;
+  color: var(--badge-pending-text);
+}
+.badge.band-off_track,
+.badge.assumption-invalid {
+  background: #fcf0e9;
+  border-color: #eddbd1;
+  color: var(--badge-attention-text);
+}
 
 /* Import batches (v0.21) */
 .import-new {
@@ -1638,4 +1720,37 @@ button.link {
 .dashboard-chart text.chart-value {
   font-weight: 600;
   fill: #203c34;
+}
+/* v0.27: waiting page before any area is usable, and readable review stages. */
+.access-gate {
+  max-width: 720px;
+  padding: 32px;
+}
+.access-gate h1 {
+  font-size: 26px;
+  margin: 8px 0 16px;
+}
+.access-gate p,
+.access-gate li {
+  line-height: 1.6;
+}
+.next-steps {
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+}
+.review-stages {
+  margin-bottom: 22px;
+}
+.review-stages h3 {
+  margin: 0 0 10px;
+}
+.review-stages ol {
+  padding-left: 20px;
+  display: grid;
+  gap: 12px;
+}
+.review-stages li > strong {
+  display: block;
+  margin-bottom: 6px;
 }

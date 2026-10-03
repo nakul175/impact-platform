@@ -5,7 +5,11 @@ commit of the staged outcome.
 
 The design's upload sessions, reusable mapping versions, keyed update, controlled replacement and
 asynchronous jobs are not implemented: an import batch here carries its own file and mapping, and
-preview and commit run synchronously within the bounds below."""
+preview and commit run synchronously within the bounds below.
+
+Since v0.27 an imported value's source key is `<unit key>/<indicator id>/<period id>`, so a
+collection plan can name it in advance; the preview reports each staged value's key and, when the
+caller can read the approved plan, whether the plan names it."""
 
 from copy import deepcopy
 
@@ -98,6 +102,12 @@ def augment(spec, policy):
     observation = closed(
         {
             "indicator_id": UUID,
+            # The plannable source identity of the value: `<unit key>/<indicator id>/<period id>`
+            # (v0.27). A collection plan obligation with namespace IMPORT and this key makes the
+            # value a planned one; `planned` says whether the approved plan names it and is absent
+            # when the plan could not be evaluated (no approved plan, or not readable by the caller).
+            "source_key": {"type": "string", "maxLength": 200},
+            "planned": {"type": "boolean"},
             "value_state": {"enum": VALUE_STATES},
             "value": {"type": ["string", "null"]},
             "numerator": {"type": ["string", "null"]},
@@ -135,9 +145,23 @@ def augment(spec, policy):
             "counts": closed(
                 {
                     k: {"type": "integer", "minimum": 0}
-                    for k in ["rows", "accepted", "quarantined", "duplicate", "warnings", "observations"]
+                    for k in [
+                        "rows",
+                        "accepted",
+                        "quarantined",
+                        "duplicate",
+                        "warnings",
+                        "observations",
+                        # Accepted values no approved plan names (v0.27); they block period close.
+                        "unplanned",
+                    ]
                 },
                 ["rows", "accepted", "quarantined", "duplicate", "warnings", "observations"],
+            ),
+            # The indicators whose approved collection plan was compared with the staged keys.
+            "plan_check": closed(
+                {"evaluated_indicators": {"type": "array", "maxItems": 20, "items": UUID}},
+                ["evaluated_indicators"],
             ),
             "rows": {"type": "array", "maxItems": MAX_ROWS, "items": row},
         },
@@ -235,12 +259,15 @@ def augment(spec, policy):
     guards = {
         "action_imports_preview": "Draft or Previewed only. Parses the bounded source, validates every row "
         "against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, "
-        "QUARANTINED or DUPLICATE and records the quality checks and the preview hash; writes no observation.",
+        "QUARANTINED or DUPLICATE, records the quality checks, each value's plannable source key "
+        "(<unit>/<indicator>/<period>) and whether the approved collection plan names it, and the preview "
+        "hash; writes no observation.",
         "action_imports_commit": "Previewed only; expected_revision is the staged preview and preview_hash "
         "must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need "
-        "accept_warnings. Writes one IMPORT observation per accepted row and bound indicator and submits "
-        "each into the independent observation review in the same transaction; the caller must also hold "
-        "observation.submit (TENANT scope, no purpose).",
+        "accept_warnings. Writes one IMPORT observation per accepted row and bound indicator under the "
+        "staged source key and submits each into the independent observation review in the same "
+        "transaction; the caller must also hold observation.submit (TENANT scope, no purpose). Values an "
+        "approved plan names count as planned at period close; others block it (UNPLANNED_VALUES).",
         "action_imports_cancel": "Draft or Previewed only; nothing was committed, so nothing is rolled back.",
     }
     for row in policy["operations"]:

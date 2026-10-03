@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+import { PortfolioPanel } from "./Portfolio";
+import { tabListKeys } from "./a11y";
+
 type Props = {
   base: string;
   capabilities: string[];
@@ -284,6 +287,9 @@ export function DashboardsPanel({
     [view, setView] = useState<any>(null),
     [indicator, setIndicator] = useState(""),
     [series, setSeries] = useState<any>(null),
+    [mode, setMode] = useState<"programme" | "portfolio">("programme"),
+    [sourcesFor, setSourcesFor] = useState(""),
+    [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(false),
     [tick, setTick] = useState(0);
@@ -347,6 +353,27 @@ export function DashboardsPanel({
       live = false;
     };
   }, [indicator, tick, base]);
+  // Drill-down (v0.27): the source observations behind the value a card shows, as this reader
+  // may see them; a PARTIAL set says rows are withheld, never how many.
+  useEffect(() => {
+    if (!sourcesFor || !period) {
+      setSources(null);
+      return;
+    }
+    let live = true;
+    request(
+      base +
+        "indicator-instances/" +
+        sourcesFor +
+        "/dashboard-sources?limit=100&period_id=" +
+        period,
+    )
+      .then((s) => live && setSources(s))
+      .catch((e) => live && setError(explain(e)));
+    return () => {
+      live = false;
+    };
+  }, [sourcesFor, period, tick, base]);
   async function more() {
     try {
       const next = await request(
@@ -375,9 +402,44 @@ export function DashboardsPanel({
         </p>
       </section>
     );
+  const portfolioAllowed = allowed("indicator-definitions.read");
   return (
     <section className="dashboards" aria-label="Dashboards">
-      <div className="planning-toolbar">
+      {portfolioAllowed ? (
+        <div
+          className="setup-tabs"
+          role="tablist"
+          aria-label="Dashboard view"
+          onKeyDown={tabListKeys}
+        >
+          {(["programme", "portfolio"] as const).map((m) => (
+            <button
+              key={m}
+              role="tab"
+              type="button"
+              aria-selected={mode === m}
+              className={mode === m ? "primary" : "secondary"}
+              onClick={() => setMode(m)}
+            >
+              {m === "programme" ? "Programme dashboard" : "Portfolio"}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {mode === "portfolio" ? (
+        <PortfolioPanel
+          base={base}
+          request={request}
+          explain={explain}
+          periods={periods}
+          period={period}
+          setPeriod={setPeriod}
+        />
+      ) : null}
+      <div
+        className="planning-toolbar"
+        style={mode === "portfolio" ? { display: "none" } : undefined}
+      >
         <label>
           Programme
           <select
@@ -417,8 +479,10 @@ export function DashboardsPanel({
           {error}
         </div>
       )}
-      {loading && !view ? <p className="muted">Loading dashboard…</p> : null}
-      {view && (
+      {loading && !view && mode === "programme" ? (
+        <p className="muted">Loading dashboard…</p>
+      ) : null}
+      {view && mode === "programme" && (
         <>
           <p className="dashboard-context" role="status">
             {view.snapshot ? (
@@ -503,6 +567,19 @@ export function DashboardsPanel({
                       <Freshness f={c.freshness} />
                     </dd>
                   </dl>
+                  <button
+                    className="secondary"
+                    aria-expanded={sourcesFor === c.indicator_id}
+                    onClick={() =>
+                      setSourcesFor((s) =>
+                        s === c.indicator_id ? "" : c.indicator_id,
+                      )
+                    }
+                  >
+                    {sourcesFor === c.indicator_id
+                      ? "Hide sources"
+                      : "Show sources"}
+                  </button>
                 </article>
               ))}
             </div>
@@ -512,6 +589,88 @@ export function DashboardsPanel({
               Load more indicators
             </button>
           )}
+          {sourcesFor && sources ? (
+            <section
+              className="panel dashboard-sources"
+              aria-label="Source observations"
+            >
+              <h2>Sources behind {sources.indicator_label}</h2>
+              <p className="muted" role="status">
+                {sources.value.mode
+                  ? "Dispositions refer to the " +
+                    sources.value.mode.toLowerCase() +
+                    " value shown on the card"
+                  : "No calculated value yet: rows carry no disposition"}
+                {" · "}
+                {sources.source_check === "COMPLETE"
+                  ? "every source row of the period is listed"
+                  : "some rows are withheld by your access (the set is partial)"}
+              </p>
+              <div className="table-scroll">
+                <table aria-label="Source observations">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Event time</th>
+                      <th>Value</th>
+                      <th>Value state</th>
+                      <th>Approval</th>
+                      <th>In shown value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {!sources.items.length ? (
+                      <tr>
+                        <td colSpan={6} className="muted">
+                          No source observations you can read in this period.
+                        </td>
+                      </tr>
+                    ) : null}
+                    {sources.items.map((o: any) => (
+                      <tr key={o.observation_id}>
+                        <td>
+                          {o.source_namespace}/{o.source_key}
+                        </td>
+                        <td>{when(o.event_at)}</td>
+                        <td>
+                          {o.displayed_value ?? "—"}
+                          {o.numerator !== null && o.denominator !== null ? (
+                            <small className="muted">
+                              {" "}
+                              ({o.numerator}/{o.denominator})
+                            </small>
+                          ) : null}
+                        </td>
+                        <td>{words(o.value_state)}</td>
+                        <td>
+                          {words(o.approval_state) || "—"}
+                          <small className="muted">
+                            {" "}
+                            · {o.lifecycle_state}
+                          </small>
+                        </td>
+                        <td>
+                          {o.contribution ? words(o.contribution) : "—"}
+                          {o.contribution_reason ? (
+                            <small className="muted">
+                              {" "}
+                              · {words(o.contribution_reason)}
+                            </small>
+                          ) : null}
+                          {o.changed_since_calculation ? (
+                            <small className="muted"> · changed since</small>
+                          ) : null}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {sources.next_cursor ? (
+                <p className="muted">Only the first 100 rows are shown here.</p>
+              ) : null}
+            </section>
+          ) : null}
           {view.indicators.length ? (
             <section className="panel dashboard-series">
               <label>

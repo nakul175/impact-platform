@@ -53,6 +53,7 @@ from fixture_support import FIXTURE_EXPIRES_AT, fixture_days_remaining
 from provision_logins import LOGINS, login_dsn, passwords_from_env, provision
 import migrate
 import idp as identity_provider
+import pooler
 
 ROOT = Path(__file__).resolve().parents[1]
 # The documented development port; the test and browser runners let the operating system choose.
@@ -62,7 +63,7 @@ PGLITE_DEFAULT_PORT = "55432"
 # runner refuses to start once the fixture's own expiry is closer than this.
 FIXTURE_PREFLIGHT_DAYS = 90
 # Never handed to the API process: fixture, migration and administrator connections and passwords.
-PRIVILEGED_ENV = {"IMPACT_FIXTURE_DSN", "IMPACT_MIGRATION_DSN", "IMPACT_ADMIN_DSN"}
+PRIVILEGED_ENV = {"IMPACT_FIXTURE_DSN", "IMPACT_MIGRATION_DSN", "IMPACT_ADMIN_DSN", "IMPACT_POOLER_ADMIN_DSN"}
 BROWSER_MODES = {
     "browser": "check.mjs",
     "admin-browser": "admin-check.mjs",
@@ -82,6 +83,7 @@ BROWSER_MODES = {
     "requeue-browser": "requeue-check.mjs",
     "a11y-browser": "a11y-check.mjs",
     "operators-browser": "operators-check.mjs",
+    "status-browser": "status-check.mjs",
     "idp-browser": "idp-check.mjs",
 }
 # Browser modes that sign in through the live provider rather than the development login.
@@ -436,6 +438,12 @@ def main():
         "--no-worker", action="store_true", help="Dev mode: do not start the outbox worker process"
     )
     parser.add_argument(
+        "--pooler",
+        choices=["pgbouncer"],
+        help="Native test mode: start a PgBouncer in transaction pooling mode and connect the API and "
+        "the worker through it (scripts/pooler.py); migrations and the fixture connection stay direct",
+    )
+    parser.add_argument(
         "--idp",
         choices=["keycloak"],
         help="Test or idp-browser mode: qualify against a live Keycloak instead of the development login",
@@ -445,6 +453,8 @@ def main():
         parser.error("--idp keycloak is available in test mode (PGlite or --native) and idp-browser mode")
     if args.mode in IDP_ONLY_MODES and not args.idp:
         parser.error(args.mode + " needs --idp keycloak")
+    if args.pooler and not (args.native and args.mode == "test"):
+        parser.error("--pooler pgbouncer is available in native test mode only")
     preflight_fixture()
     local = ROOT / ".local" / ("dev" if args.mode == "dev" else "test-" + str(uuid.uuid4())[:8])
     local.mkdir(parents=True, exist_ok=True)
@@ -489,19 +499,42 @@ def main():
                 env["IMPACT_LOGIN_PASSWORD_" + suffix] = passwords[login]
             topology = provision(admin_dsn, passwords, conninfo_to_dict(fixture_dsn).get("dbname"))
             dsns = {login: login_dsn(fixture_dsn, login, passwords[login]) for login in LOGINS}
+            # Runtime connection strings: direct, or through the transaction-mode pooler. The
+            # migrator and the fixture connection never go through the pooler.
+            runtime = dict(dsns)
+            if args.pooler:
+                pool_process, pool_port, pool_admin_dsn = pooler.start(
+                    local, fixture_dsn, passwords, secrets.token_urlsafe(24)
+                )
+                services.append(pool_process)
+                runtime.update(
+                    {login: pooler.through(dsns[login], pool_port) for login in pooler.POOLED_LOGINS}
+                )
+                env.update(
+                    IMPACT_DB_POOLER="pgbouncer-transaction",
+                    IMPACT_POOLER_ADMIN_DSN=pool_admin_dsn,
+                    IMPACT_POOLER_POOL_SIZE=str(pooler.POOL_SIZE),
+                )
+                evidence["pooler"] = {
+                    "kind": "pgbouncer",
+                    "pool_mode": "transaction",
+                    "default_pool_size": pooler.POOL_SIZE,
+                    "version": pooler.version(),
+                    "pooled_logins": pooler.POOLED_LOGINS,
+                }
             env.update(
                 IMPACT_NATIVE_TEST="1",
                 IMPACT_REQUIRE_UNPRIVILEGED_DB="1",
                 IMPACT_ADMIN_DSN=admin_dsn,
                 IMPACT_MIGRATION_DSN=dsns["impact_migrator"],
-                IMPACT_APP_DSN=dsns["impact_app_login"],
-                IMPACT_IDENTITY_DSN=dsns["impact_identity_login"],
-                IMPACT_PLATFORM_DSN=dsns["impact_platform_login"],
-                IMPACT_LOGIN_DSN_APP=dsns["impact_app_login"],
-                IMPACT_LOGIN_DSN_IDENTITY=dsns["impact_identity_login"],
-                IMPACT_LOGIN_DSN_PLATFORM=dsns["impact_platform_login"],
+                IMPACT_APP_DSN=runtime["impact_app_login"],
+                IMPACT_IDENTITY_DSN=runtime["impact_identity_login"],
+                IMPACT_PLATFORM_DSN=runtime["impact_platform_login"],
+                IMPACT_LOGIN_DSN_APP=runtime["impact_app_login"],
+                IMPACT_LOGIN_DSN_IDENTITY=runtime["impact_identity_login"],
+                IMPACT_LOGIN_DSN_PLATFORM=runtime["impact_platform_login"],
                 IMPACT_LOGIN_DSN_MIGRATOR=dsns["impact_migrator"],
-                IMPACT_LOGIN_DSN_WORKER=dsns["impact_worker_login"],
+                IMPACT_LOGIN_DSN_WORKER=runtime["impact_worker_login"],
             )
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migration = migrate.run(env["IMPACT_MIGRATION_DSN"], fixture_dsn, fixture=True)

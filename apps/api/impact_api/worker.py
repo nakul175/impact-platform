@@ -76,6 +76,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from . import keyring
+from .mail_rate import EmailRateLimiter
 from .delivery import (
     channel_code,
     code_secret,
@@ -108,8 +109,14 @@ INTEGER = {
     "max_attempts",
     "scan_seconds",
     "retention_seconds",
+    "email_rate_limit",
+    "email_tenant_rate_limit",
+    "email_rate_window_seconds",
 }
 FLOAT = {"smtp_timeout", "synthetic_delay", "poll_seconds"}
+# STARTTLS policy of the SMTP adapter: `auto` upgrades (and verifies) every non-loopback host and
+# speaks plain SMTP to loopback; `required` upgrades every host, loopback included.
+STARTTLS_MODES = {"auto", "required"}
 WORKER_QUERY = (
     "SELECT current_user AS login,rolsuper,rolbypassrls,"
     "pg_has_role(current_user,'impact_owner','MEMBER') AS owns_schema,"
@@ -152,6 +159,13 @@ class WorkerSettings:
     smtp_password: str = field(default="", repr=False)
     smtp_from: str = "impact-platform@localhost.localdomain"
     smtp_timeout: float = 20.0
+    # v0.27 email readiness: STARTTLS policy, an extra trust anchor for a private relay (PEM; the
+    # system store is used when empty) and send rate limits (claims per window; 0 = no limit).
+    smtp_starttls: str = "auto"
+    smtp_ca_file: str = ""
+    email_rate_limit: int = 0
+    email_tenant_rate_limit: int = 0
+    email_rate_window_seconds: int = 60
     synthetic_sink: str = ""
     synthetic_failures: int = 0
     synthetic_delay: float = 0.0
@@ -225,6 +239,20 @@ class WorkerSettings:
             raise ConfigurationError("LEASE_SHORTER_THAN_SMTP_TIMEOUT")
         if not 60 <= self.retention_seconds <= 31 * 86400:
             raise ConfigurationError("INVALID_LIMITS")
+        if self.smtp_starttls not in STARTTLS_MODES:
+            raise ConfigurationError("INVALID_SMTP_STARTTLS")
+        if self.smtp_ca_file and not os.access(self.smtp_ca_file, os.R_OK):
+            raise ConfigurationError("SMTP_CA_FILE_UNREADABLE")
+        if self.email_adapter == "smtp" and self.smtp_username and not self.smtp_password:
+            # A username with no password would authenticate with an empty secret on every attempt.
+            # (A password with no username is inert: AUTH is only attempted with a username.)
+            raise ConfigurationError("SMTP_CREDENTIALS_INCOMPLETE")
+        if not (
+            0 <= self.email_rate_limit <= 1_000_000
+            and 0 <= self.email_tenant_rate_limit <= 1_000_000
+            and 1 <= self.email_rate_window_seconds <= 86400
+        ):
+            raise ConfigurationError("INVALID_EMAIL_RATE_LIMIT")
 
 
 def is_loopback(host):
@@ -238,12 +266,22 @@ def is_loopback(host):
 
 class SmtpAdapter:
     """stdlib smtplib. STARTTLS with certificate verification is mandatory for any non-loopback
-    host, and a non-loopback host is refused outside staging/production."""
+    host (and for every host under `smtp_starttls=required`); a failed upgrade ends the
+    conversation, it never falls back to clear text, and credentials are only ever sent after the
+    upgrade on such a host. A non-loopback host is refused outside staging/production."""
 
     name = "smtp"
 
     def __init__(self, s):
         self.s = s
+
+    def tls_context(self):
+        """Certificate and host-name verification against the system store, plus `smtp_ca_file`
+        when a private relay's certificate is not publicly trusted."""
+        return ssl.create_default_context(cafile=self.s.smtp_ca_file or None)
+
+    def starttls_required(self):
+        return not is_loopback(self.s.smtp_host) or self.s.smtp_starttls == "required"
 
     def send(self, message):
         s = self.s
@@ -253,10 +291,10 @@ class SmtpAdapter:
         try:
             with smtplib.SMTP(s.smtp_host, s.smtp_port, timeout=s.smtp_timeout) as smtp:
                 smtp.ehlo()
-                if not loopback:
+                if self.starttls_required():
                     if not smtp.has_extn("starttls"):
                         raise DeliveryError("STARTTLS_UNAVAILABLE")
-                    smtp.starttls(context=ssl.create_default_context())
+                    smtp.starttls(context=self.tls_context())
                     smtp.ehlo()
                 if s.smtp_username:
                     smtp.login(s.smtp_username, s.smtp_password)
@@ -382,6 +420,9 @@ class Worker:
         )
         # Called just before every external call; tests use it to prove no transaction is open.
         self.probe = probe
+        # Email send rate limits (v0.27): applied at claim time, so a deferred intent keeps its
+        # attempts and can never become DEAD because of them (mail_rate.py).
+        self.email_limiter = EmailRateLimiter.from_settings(s)
         self.stop_event = threading.Event()
         self.connection = None
         self.last_scan = None
@@ -551,24 +592,56 @@ class Worker:
                 "AND lease_expires_at<=%(at)s AND attempts>=%(max)s",
                 {"at": at, "tenant": tenant, "max": self.s.max_attempts},
             ).rowcount
-            rows = c.execute(
-                "WITH due AS (SELECT event_id FROM impact.outbox_delivery WHERE tenant_id=%(tenant)s "
-                "AND channel IS NOT NULL AND held_at IS NULL AND ((state='PENDING' AND next_attempt_at<=%(at)s) "
-                "OR (state='LEASED' AND lease_expires_at<=%(at)s)) ORDER BY next_attempt_at,event_id "
-                "LIMIT %(limit)s FOR UPDATE SKIP LOCKED) "
-                "UPDATE impact.outbox_delivery d SET state='LEASED',lease_owner=%(owner)s,"
-                "lease_generation=d.lease_generation+1,lease_expires_at=%(expires)s,attempts=d.attempts+1,"
-                "last_attempt_at=%(at)s FROM due WHERE d.tenant_id=%(tenant)s AND d.event_id=due.event_id "
-                "RETURNING d.event_id,d.channel,d.template,d.reference_id,d.reference_generation,"
-                "d.recipient_sealed,d.lease_generation,d.attempts",
-                {
-                    "tenant": tenant,
-                    "at": at,
-                    "limit": self.s.batch_size,
-                    "owner": self.worker_id,
-                    "expires": at + timedelta(seconds=self.s.lease_seconds),
-                },
-            ).fetchall()
+            due_condition = (
+                "tenant_id=%(tenant)s AND channel IS NOT NULL AND held_at IS NULL "
+                "AND ((state='PENDING' AND next_attempt_at<=%(at)s) OR (state='LEASED' AND lease_expires_at<=%(at)s))"
+            )
+
+            def claim_rows(channel_condition, limit):
+                return c.execute(
+                    "WITH due AS (SELECT event_id FROM impact.outbox_delivery WHERE "
+                    + due_condition
+                    + channel_condition
+                    + " ORDER BY next_attempt_at,event_id LIMIT %(limit)s FOR UPDATE SKIP LOCKED) "
+                    "UPDATE impact.outbox_delivery d SET state='LEASED',lease_owner=%(owner)s,"
+                    "lease_generation=d.lease_generation+1,lease_expires_at=%(expires)s,attempts=d.attempts+1,"
+                    "last_attempt_at=%(at)s FROM due WHERE d.tenant_id=%(tenant)s AND d.event_id=due.event_id "
+                    "RETURNING d.event_id,d.channel,d.template,d.reference_id,d.reference_generation,"
+                    "d.recipient_sealed,d.lease_generation,d.attempts",
+                    {
+                        "tenant": tenant,
+                        "at": at,
+                        "limit": limit,
+                        "owner": self.worker_id,
+                        "expires": at + timedelta(seconds=self.s.lease_seconds),
+                    },
+                ).fetchall()
+
+            allowance = self.email_limiter.allowance(tenant, at)
+            deferred = 0
+            if allowance is None or allowance >= self.s.batch_size:
+                rows = claim_rows("", self.s.batch_size)
+            else:
+                # An email rate limit is in force (v0.27): in-app rows are never limited; EMAIL rows
+                # are claimed only up to the window's allowance. The rest stay PENDING and due with
+                # their attempts untouched, so a deferral can never make a delivery DEAD.
+                rows = claim_rows(" AND channel<>'EMAIL'", self.s.batch_size)
+                room = min(allowance, self.s.batch_size - len(rows))
+                if room > 0:
+                    rows += claim_rows(" AND channel='EMAIL'", room)
+                deferred = c.execute(
+                    "SELECT count(*) AS n FROM impact.outbox_delivery WHERE "
+                    + due_condition
+                    + " AND channel='EMAIL'",
+                    {"tenant": tenant, "at": at},
+                ).fetchone()["n"]
+            emails = sum(1 for row in rows if row["channel"] == "EMAIL")
+        self.email_limiter.record(tenant, at, emails)
+        if deferred:
+            self.email_limiter.defer(deferred)
+            LOG.info(
+                "delivery claims deferred by the email rate limit tenant=%s deferred=%s", tenant, deferred
+            )
         summary["dead"] += expired
         summary["claimed"] += len(rows)
         return sorted(rows, key=lambda r: str(r["event_id"]))
@@ -933,13 +1006,22 @@ class Worker:
         template = revision(binding["template_revision"], "ReportTemplate")
         snapshot = revision(binding["snapshot_revision"], "Snapshot")
         official = set(snapshot.get("result_versions", []))
-        values = {}
+        pinned_targets = set(snapshot.get("target_versions", []))
+        values, targets = {}, {}
         for section in report["sections"]:
             for numeric in section["bindings"]:
                 result = revision(numeric["result_revision"], "CalculatedResult")
                 if result.get("mode") != "OFFICIAL" or numeric["result_revision"] not in official:
                     raise RenderError("RESULT_NOT_OFFICIAL")
                 values[(section["section_code"], numeric["binding_code"])] = result
+            # Chart targets (v0.27): only Target revisions the snapshot locked, read as revisions.
+            for chart in section.get("charts") or []:
+                for series in chart["series"]:
+                    target_revision = series.get("target_revision")
+                    if target_revision and target_revision not in targets:
+                        if target_revision not in pinned_targets:
+                            raise RenderError("RESULT_NOT_OFFICIAL")
+                        targets[target_revision] = revision(target_revision, "Target")
         return build_model(
             row["report_id"],
             row["report_revision"],
@@ -949,6 +1031,7 @@ class Worker:
             snapshot,
             bytes(binding["reconciliation_digest"]).hex(),
             values,
+            targets,
         )
 
     def process_export(self, tenant, row, summary):
@@ -1189,8 +1272,8 @@ class Worker:
                 ):
                     raise StaleLease()
                 results = retention_schedule.apply(c, tenant)
-                for data_class, (cutoff, items) in sorted(results.items()):
-                    policy = retention_schedule.CLASSES[data_class]
+                # v0.27: the effective policy per class (an approved tenant binding or the default).
+                for data_class, (cutoff, items, policy) in sorted(results.items()):
                     digest = retention_schedule.digest(items)
                     c.execute(
                         "INSERT INTO impact.retention_proof(tenant_id,proof_id,job_id,lease_generation,data_class,"

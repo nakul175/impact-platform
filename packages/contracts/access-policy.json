@@ -1,5 +1,5 @@
 {
-  "version": "1.16.0",
+  "version": "1.17.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -2201,70 +2201,6 @@
       "audit": true
     },
     {
-      "operation_id": "list_retention_policies",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/retention-policies",
-      "capability": "retention-policies.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_retention_policies",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/retention-policies",
-      "capability": "retention-policies.draft.create",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
-    },
-    {
-      "operation_id": "get_retention_policies",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
-      "capability": "retention-policies.read",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "patch_retention_policies",
-      "method": "PATCH",
-      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
-      "capability": "retention-policies.draft.edit",
-      "role_templates": [
-        "PRIVACY"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
-      "audit": true
-    },
-    {
       "operation_id": "list_subscriptions",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/subscriptions",
@@ -3208,7 +3144,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+      "state_guard": "Open (Draft) assignments only; a completed assignment is never reassigned. The new assignee must be an active principal other than the current one; the previous assignee and the reason are recorded in the new revision.",
       "audit": true
     },
     {
@@ -3268,7 +3204,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE and records the quality checks and the preview hash; writes no observation.",
+      "state_guard": "Draft or Previewed only. Parses the bounded source, validates every row against the mapping and the pinned indicator definitions, classifies each row ACCEPTED, QUARANTINED or DUPLICATE, records the quality checks, each value's plannable source key (<unit>/<indicator>/<period>) and whether the approved collection plan names it, and the preview hash; writes no observation.",
       "audit": true
     },
     {
@@ -3287,7 +3223,7 @@
       "independence_required": false,
       "purpose_required": false,
       "field_filter_required": false,
-      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose).",
+      "state_guard": "Previewed only; expected_revision is the staged preview and preview_hash must equal the outcome recomputed now. Atomic batches refuse any non-accepted row; warnings need accept_warnings. Writes one IMPORT observation per accepted row and bound indicator under the staged source key and submits each into the independent observation review in the same transaction; the caller must also hold observation.submit (TENANT scope, no purpose). Values an approved plan names count as planned at period close; others block it (UNPLANNED_VALUES).",
       "audit": true,
       "additional_capabilities": [
         "observation.submit",
@@ -5238,6 +5174,85 @@
       "audit": false
     },
     {
+      "operation_id": "action_submissions_correct",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct",
+      "capability": "submission.correct",
+      "role_templates": [
+        "AUTHOR",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "additional_capabilities_when_bound": [
+        "observation.submit",
+        "indicator-instances.read",
+        "indicator-definitions.read",
+        "programmes.read",
+        "workflow-templates.read"
+      ],
+      "state_guard": "Submitted only, with every produced observation Returned by its reviewer. The corrected answers are validated against the pinned version; each returned observation gets a new revision submitted into the same review, and the corrector joins its authors."
+    },
+    {
+      "operation_id": "list_collection_rounds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds",
+      "capability": "collection-rounds.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_collection_rounds",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds",
+      "capability": "collection-rounds.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_collection_rounds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}",
+      "capability": "collection-rounds.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "patch_collection_rounds",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}",
+      "capability": "collection-rounds.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "action_forms_submit",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit",
@@ -5256,6 +5271,38 @@
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/forms/{object_id}/published",
       "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_form_completeness",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/forms/{object_id}/completeness",
+      "capability": "forms.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ENUMERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_round_coverage",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage",
+      "capability": "collection-rounds.read",
       "role_templates": [
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",
@@ -5513,6 +5560,42 @@
       "audit": false
     },
     {
+      "operation_id": "indicator_dashboard_sources",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "indicator_definition_portfolio",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/portfolio",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",
@@ -5694,6 +5777,163 @@
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "get_retention_policies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_retention_policies",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-policies",
+      "capability": "retention-policies.draft.create",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Draft only; data class within the policy-able set, duration inside the class bounds (the 365-day audit floor among them), action fixed per class.",
+      "audit": true
+    },
+    {
+      "operation_id": "patch_retention_policies",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}",
+      "capability": "retention-policies.draft.edit",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_retention_policies_approve",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve",
+      "capability": "retention-policy.approve",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PRIVACY"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Independent natural person (never an author of the draft); Draft \u2192 Approved; one insert-only binding row per approval; the sweep applies the latest binding.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_retention_holds",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/retention-holds",
+      "capability": "retention-holds.read",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Authorise current tenant and capability.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_retention_holds",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-holds",
+      "capability": "retention.hold",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "The object must be readable by the caller; review date in the future; effective immediately.",
+      "audit": true
+    },
+    {
+      "operation_id": "action_retention_holds_release",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release",
+      "capability": "retention.release",
+      "role_templates": [
+        "PRIVACY",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": 300,
+      "independence_required": true,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Never the natural person who placed the hold; a released hold is final.",
+      "audit": true
+    },
+    {
+      "operation_id": "list_access_denials",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/access-denials",
+      "capability": "access-denials.read",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "scope": "tenant; explicit TENANT-scope grant required",
+      "fresh_assurance_seconds": null,
+      "independence_required": false,
+      "purpose_required": false,
+      "field_filter_required": false,
+      "state_guard": "Identifiers, codes and correlation ids only; never a payload or secret.",
       "audit": false
     },
     {

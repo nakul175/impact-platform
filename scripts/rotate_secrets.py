@@ -16,7 +16,10 @@ Commands:
 
 Families: cookie (CSRF tokens, signed cursors, sealed provider logout hints), invitation (invitation
 links), delivery (sealed recipients, recovery-channel codes), signing (development RS256 bearer
-tokens; --config-dir only) and all (every family the target holds).
+tokens; --config-dir only), provisioner (the `impact-provisioner` client secret the API uses at the
+identity provider; --env-file only, no grace: the provider holds one secret, which
+deploy/rotate-secrets.sh re-aligns through deploy/keycloak_admin.py right after the file is written,
+as every deploy/update.sh run does) and all (every family the target holds).
 
 Every write is atomic (temporary file in the same directory, mode 0600, fsync, rename) and
 --dry-run writes nothing. A register of kids, never values, is kept beside the target
@@ -48,7 +51,10 @@ from impact_api.keyring import (  # noqa: E402
 # Grace windows by default: a cookie secret protects CSRF tokens, 15-minute cursors and logout hints
 # of sessions that last at most 8 hours; invitation links and receipts live at most 7 days, and a
 # resend reuses the recipient sealed for the first intent; development tokens live at most 1 hour.
-DEFAULT_GRACE_DAYS = {"cookie": 1, "invitation": 8, "delivery": 8, "signing": 1}
+DEFAULT_GRACE_DAYS = {"cookie": 1, "invitation": 8, "delivery": 8, "signing": 1, "provisioner": 0}
+# A shared secret with the identity provider: one value on each side, no grace list, API only.
+PROVISIONER = "provisioner"
+PROVISIONER_KEY = "IMPACT_PROVISIONER_SECRET"
 # The worker holds only these two families; the cookie secret never leaves the API.
 WORKER_FAMILIES = ("invitation", "delivery")
 ENV_LINE = re.compile(r"^([A-Z0-9_]+)=(.*)$")
@@ -106,7 +112,10 @@ class EnvTarget:
         self.register_path = self.path.with_name(self.path.name + ".keys.json")
 
     def families(self):
-        return [f for f in FAMILIES if self.get("IMPACT_" + f.upper() + "_SECRET")]
+        found = [f for f in FAMILIES if self.get("IMPACT_" + f.upper() + "_SECRET")]
+        if self.get(PROVISIONER_KEY):
+            found.append(PROVISIONER)
+        return found
 
     def get(self, key):
         value = ""
@@ -239,6 +248,8 @@ def status(target, register):
         if family == "signing":
             current = target.signing_current()
             previous = [k["kid"] for k in target.keyset()["keys"] if k.get("status") != "retired"]
+        elif family == PROVISIONER:
+            current, previous = key_id(PROVISIONER, target.get(PROVISIONER_KEY)), []
         else:
             secret, grace = target.secrets(family)
             current = key_id(family, secret)
@@ -254,6 +265,8 @@ def rotate(target, register, family, grace_days, at, reason):
     grace_until = iso(at + timedelta(days=grace_days))
     if family == "signing":
         return rotate_signing(target, register, grace_until, at, reason)
+    if family == PROVISIONER:
+        return rotate_provisioner(target, register, at, reason)
     current, previous = target.secrets(family)
     if not current:
         raise RotationError("no current " + family + " secret to rotate")
@@ -318,7 +331,38 @@ def rotate_signing(target, register, grace_until, at, reason):
     return {"family": "signing", "new_kid": new_kid, "grace_kid": old_kid, "grace_until": grace_until}
 
 
+def rotate_provisioner(target, register, at, reason):
+    """A new client secret for the identity provider's `impact-provisioner` client. The file is the
+    source of truth: deploy/rotate-secrets.sh re-aligns the provider to it at once and every
+    deploy/update.sh run does the same, so a crash between the two leaves nothing to repair by hand.
+    No grace: the provider holds one secret, and the API reads it at start."""
+    if not isinstance(target, EnvTarget):
+        raise RotationError("the provisioner family exists only in an env file (--env-file)")
+    current = target.get(PROVISIONER_KEY)
+    if not current:
+        raise RotationError("no current provisioner secret to rotate")
+    fresh = new_secret()
+    old_kid, new_kid = key_id(PROVISIONER, current), key_id(PROVISIONER, fresh)
+    target.set(PROVISIONER_KEY, fresh)
+    register["keys"].setdefault(PROVISIONER + ":" + old_kid, {})["retired_at"] = iso(at)
+    register["keys"][PROVISIONER + ":" + new_kid] = {"since": iso(at)}
+    note(
+        register,
+        "rotate",
+        PROVISIONER,
+        new_kid,
+        at,
+        replaced=old_kid,
+        grace_until=None,
+        by=actor(),
+        reason=reason,
+    )
+    return {"family": PROVISIONER, "new_kid": new_kid, "grace_kid": None, "grace_until": None}
+
+
 def retire(target, register, family, kid, all_previous, expired, at, reason):
+    if family == PROVISIONER:
+        raise RotationError("the provisioner family keeps no grace secret: rotate it instead")
     if family == "signing":
         keyset = target.keyset()
         chosen = [
@@ -367,11 +411,11 @@ def main(argv=None):
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("status")
     rot = commands.add_parser("rotate")
-    rot.add_argument("--family", required=True, choices=list(FAMILIES) + ["signing", "all"])
+    rot.add_argument("--family", required=True, choices=list(FAMILIES) + ["signing", PROVISIONER, "all"])
     rot.add_argument("--grace-days", type=float)
     rot.add_argument("--reason", default="")
     ret = commands.add_parser("retire")
-    ret.add_argument("--family", required=True, choices=list(FAMILIES) + ["signing", "all"])
+    ret.add_argument("--family", required=True, choices=list(FAMILIES) + ["signing", PROVISIONER, "all"])
     choice = ret.add_mutually_exclusive_group(required=True)
     choice.add_argument("--kid")
     choice.add_argument("--all-previous", action="store_true")
@@ -416,6 +460,7 @@ def main(argv=None):
             results = [
                 retire(target, register, family, args.kid, args.all_previous, args.expired, at, args.reason)
                 for family in families
+                if not (family == PROVISIONER and args.family == "all")
             ]
         if not args.dry_run:
             pair = getattr(target, "pending_pair", None)
@@ -435,6 +480,10 @@ def main(argv=None):
                     "results": results,
                     "files": [] if args.dry_run else target.touched(),
                     "restart_required": [] if args.dry_run else restart_for(families),
+                    # The shell wrapper re-aligns the identity provider for these families.
+                    "provider_realign": [PROVISIONER]
+                    if PROVISIONER in families and args.command == "rotate"
+                    else [],
                 },
                 indent=2,
             )

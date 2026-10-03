@@ -97,6 +97,11 @@ def bootstrap(local, idp=None):
                 "disclosures.read",
                 "publication.download",
                 "form.submit",
+                # v0.27: collection rounds, the correction of returned responses.
+                "collection-rounds.read",
+                "collection-rounds.draft.create",
+                "collection-rounds.draft.edit",
+                "submission.correct",
                 "imports.read",
                 "imports.draft.create",
                 "imports.draft.edit",
@@ -108,6 +113,15 @@ def bootstrap(local, idp=None):
                 # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
                 "audit.export",
                 "retention.read",
+                # v0.27: denial auditing read, retention policies with approval, retention holds.
+                "access-denials.read",
+                "retention-policies.read",
+                "retention-policies.draft.create",
+                "retention-policies.draft.edit",
+                "retention-policy.approve",
+                "retention-holds.read",
+                "retention.hold",
+                "retention.release",
             }
             scope = c.execute(
                 "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT' LIMIT 1",

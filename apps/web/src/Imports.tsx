@@ -460,6 +460,17 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
                   "."
                 : ""}
             </p>
+            {counts.unplanned > 0 && (
+              <p role="note" className="import-unplanned">
+                {counts.unplanned} accepted{" "}
+                {counts.unplanned === 1 ? "value is" : "values are"} not named
+                by the approved collection plan. They commit and are reviewed
+                like any other value, but the period cannot close until a
+                reviewed plan names each value's source key (namespace IMPORT,
+                key unit/indicator id/period id; each value's key is in the
+                interpretation cell's tooltip) or the value is resolved.
+              </p>
+            )}
             <div className="table-scroll">
               <table aria-label="Row outcomes">
                 <thead>
@@ -484,12 +495,17 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
                           .join("; ")}
                       </td>
                       <td>
-                        {(r.observations || [])
-                          .map(
-                            (o: any) =>
-                              o.value_state + (o.value ? " " + o.value : ""),
-                          )
-                          .join("; ")}
+                        {(r.observations || []).map((o: any, i: number) => (
+                          <span key={i} title={o.source_key || undefined}>
+                            {i > 0 ? "; " : ""}
+                            {o.value_state + (o.value ? " " + o.value : "")}
+                            {o.planned === false
+                              ? " (unplanned)"
+                              : o.planned === true
+                                ? " (planned)"
+                                : ""}
+                          </span>
+                        ))}
                       </td>
                       <td>{[...r.reasons, ...r.warnings].join(", ")}</td>
                     </tr>

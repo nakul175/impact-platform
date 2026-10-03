@@ -24,7 +24,9 @@ Commands (each prints one JSON object without secrets):
     list                 every account of the realm (at most 500): e-mail, name, enabled, whether a
                          temporary password is pending, whether an authenticator is configured,
                          whether sign-in is temporarily locked after failed attempts
-    provisioner          (v0.26a) ensure the confidential client `impact-provisioner` with a service
+    rotate-provisioner   (v0.27) set the `impact-provisioner` client secret to IMPACT_PROVISIONER_SECRET
+                       after scripts/rotate_secrets.py rotated it (deploy/rotate-secrets.sh runs it)
+  provisioner          (v0.26a) ensure the confidential client `impact-provisioner` with a service
                          account holding only the realm-management roles manage-users, view-users
                          and query-users, and the client secret from IMPACT_PROVISIONER_SECRET; the
                          API uses it to create sign-in accounts from the control plane
@@ -232,6 +234,28 @@ def ensure_provisioner(admin, realm, secret, client_id=PROVISIONER_ID):
     }
 
 
+def rotate_provisioner(admin, realm, secret, client_id=PROVISIONER_ID):
+    """Set the provisioner client's secret to `secret` (v0.27: deploy/rotate-secrets.sh after
+    scripts/rotate_secrets.py wrote the new value to secrets.env). The client must already exist
+    (deploy/update.sh creates it; its flags and roles stay as ensure_provisioner left them). Idempotent:
+    a secret the provider already holds changes nothing. The value is never printed or returned."""
+    if len(secret) < 32:
+        raise AdminError("IMPACT_PROVISIONER_SECRET must be at least 32 characters")
+    _, clients, _ = admin.call("GET", "/" + realm + "/clients?clientId=" + urllib.parse.quote(client_id))
+    if not clients:
+        raise AdminError("The provisioner client does not exist yet; run deploy/update.sh first")
+    current = clients[0]
+    path = "/" + realm + "/clients/" + current["id"]
+    _, stored, _ = admin.call("GET", path + "/client-secret")
+    changed = (stored or {}).get("value") != secret
+    if changed:
+        admin.call("PUT", path, dict(current, secret=secret))
+        _, applied, _ = admin.call("GET", path + "/client-secret")
+        if (applied or {}).get("value") != secret:
+            raise AdminError("The provisioner secret was not applied by the identity provider")
+    return {"client_id": client_id, "changed": changed}
+
+
 def list_users(admin, realm, limit=500):
     _, users, _ = admin.call(
         "GET",
@@ -281,6 +305,7 @@ def main(argv=None, env=os.environ):
     sub.add_parser("realm").add_argument("--file", required=True)
     sub.add_parser("list")
     sub.add_parser("provisioner")
+    sub.add_parser("rotate-provisioner")
     for name in ("user", "status", "reset"):
         s = sub.add_parser(name)
         s.add_argument("--email", required=True)
@@ -303,6 +328,8 @@ def main(argv=None, env=os.environ):
             result = list_users(admin, realm)
         elif args.command == "provisioner":
             result = ensure_provisioner(admin, realm, env.get("IMPACT_PROVISIONER_SECRET", ""))
+        elif args.command == "rotate-provisioner":
+            result = rotate_provisioner(admin, realm, env.get("IMPACT_PROVISIONER_SECRET", ""))
         elif args.command == "status":
             result = user_status(admin, realm, args.email)
         else:

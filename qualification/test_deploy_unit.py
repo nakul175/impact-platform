@@ -127,6 +127,8 @@ class FakeKeycloak:
         if method == "PUT" and path == "/impact/clients/c1":
             self.realm["clients"] = [data]
             return 204, None, {}
+        if method == "GET" and path == "/impact/clients/c1/client-secret":
+            return 200, {"type": "secret", "value": self.realm["clients"][0].get("secret")}, {}
         if path.startswith("/impact/users?"):
             email = re.search(r"email=([^&]+)", path).group(1).replace("%40", "@")
             return 200, [u for u in self.users.values() if u["email"] == email.lower()], {}
@@ -598,3 +600,26 @@ def test_mail_sink_captures_messages_and_refuses_oversized_ones(tmp_path):
         server.server_close()
     with pytest.raises(SystemExit):
         mail_sink.main(["--host", "0.0.0.0", "--sink", str(sink)])
+
+
+def test_provisioner_secret_rotation_sets_the_client_secret_once_and_prints_no_value():
+    """v0.27: deploy/rotate-secrets.sh re-aligns the identity provider's `impact-provisioner` client to
+    the secret scripts/rotate_secrets.py wrote; idempotent, refused for a short secret or a missing
+    client, and the value appears in no call path or result."""
+    old, new = "o" * 48, "n" * 48
+    fake = FakeKeycloak(realm={"clients": [{"clientId": "impact-provisioner", "secret": old}]})
+    result = keycloak_admin.rotate_provisioner(fake, "impact", new)
+    assert result == {"client_id": "impact-provisioner", "changed": True}
+    assert fake.realm["clients"][0]["secret"] == new and fake.realm["clients"][0]["clientId"] == (
+        "impact-provisioner"
+    )
+    assert keycloak_admin.rotate_provisioner(fake, "impact", new) == {
+        "client_id": "impact-provisioner",
+        "changed": False,
+    }
+    assert [c for c in fake.calls if c[0] == "PUT"] == [("PUT", "/impact/clients/c1")]
+    assert new not in json.dumps(fake.calls) and old not in json.dumps(fake.calls)
+    with pytest.raises(keycloak_admin.AdminError, match="at least 32"):
+        keycloak_admin.rotate_provisioner(fake, "impact", "short")
+    with pytest.raises(keycloak_admin.AdminError, match="does not exist"):
+        keycloak_admin.rotate_provisioner(FakeKeycloak(realm={"clients": []}), "impact", new)

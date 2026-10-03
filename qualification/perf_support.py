@@ -45,6 +45,71 @@ def workload(scale="sandbox", seed=20261001, concurrency=4):
     return Workload(scale=scale, seed=seed, concurrency=concurrency, **SCALES[scale])
 
 
+# Load profiles (QA 2026-10 non-functional). `base` is the original one-pass workload; the other
+# three run a closed-loop interactive mix (reads, dashboards and governed write cycles) after the
+# seed: `peak` at multiplier x the base concurrency for a short burst, `soak` at the base
+# concurrency for long enough to see drift (per-window percentiles), `cohorts` with tenant A noisy
+# at the base concurrency while two quiet tenants (fixture tenant B and a freshly onboarded tenant
+# C) read at concurrency 1 — their latency against their own idle baseline is the per-tenant
+# fairness probe (TH31). The FSD names peak and soak without quantifying them; these durations are
+# the harness defaults and `--duration` shortens them for a smoke-sized run.
+PROFILES = {
+    "base": dict(multiplier=1, duration=0, window=0),
+    "peak": dict(multiplier=4, duration=120, window=30),
+    "soak": dict(multiplier=1, duration=600, window=60),
+    "cohorts": dict(multiplier=1, duration=120, window=30),
+}
+# Weights of the closed-loop mix, per virtual user iteration.
+MIX = {"read.list100": 4, "read.record": 2, "dashboard.warm": 1, "write.cycle": 3}
+
+
+@dataclass(frozen=True)
+class Profile:
+    name: str
+    multiplier: int
+    duration: int
+    window: int
+
+    def concurrency(self, base):
+        return base * self.multiplier
+
+    def describe(self):
+        return asdict(self)
+
+
+def profile(name="base", duration=None):
+    if name not in PROFILES:
+        raise ValueError("Unknown profile " + name)
+    settings = dict(PROFILES[name])
+    if duration is not None:
+        if duration < 1:
+            raise ValueError("Duration must be at least one second")
+        settings["duration"] = duration
+        settings["window"] = max(5, min(settings["window"] or duration, duration))
+    return Profile(name=name, **settings)
+
+
+def windows(stamped_ms, seconds):
+    """Per-window summaries of (elapsed_seconds, latency_ms) samples: one entry per `seconds`
+    window from the first sample, in order, each with its count and p50/p95 (drift over a soak)."""
+    if not stamped_ms or seconds <= 0:
+        return []
+    start = min(t for t, _ in stamped_ms)
+    buckets = {}
+    for t, ms in stamped_ms:
+        buckets.setdefault(int((t - start) // seconds), []).append(ms)
+    return [
+        {
+            "window": index,
+            "from_seconds": index * seconds,
+            "count": len(samples),
+            "p50_ms": round(percentile(samples, 50), 1),
+            "p95_ms": round(percentile(samples, 95), 1),
+        }
+        for index, samples in sorted(buckets.items())
+    ]
+
+
 def ratio_values(seed, count):
     """Deterministic synthetic numerator/denominator pairs (strings, as the API transports them):
     denominators 10..200, numerators 0..denominator. The same seed always gives the same list."""
@@ -111,6 +176,8 @@ TARGETS = {
     "freshness.propagation": ("VF-PER-006", 60000, None),
     "export.acknowledge": ("VF-PER-005", None, 2000),
     "export.render": ("VF-PER-005", 300000, None),
+    # The cohort probes carry no numeric bound: VF-CAP-002 and TH31 ask for isolation, judged as the
+    # quiet tenants' p95 under noise against their own idle p95 (recorded, never enforced).
 }
 
 # Fewer samples than this cannot support a p95/p99 verdict.
@@ -146,7 +213,13 @@ def markdown(report):
         f"before {report['loadavg_before']}. Database: {report['database']['server_version'].split(',')[0]}, "
         f"{report['database']['topology']}. Scale `{w['scale']}` (seed {w['seed']}, concurrency "
         f"{w['concurrency']}): {w['programmes']} programmes x {w['indicators']} indicators x "
-        f"{w['obligations']} approved observations, one {w['import_rows']}-row import.",
+        f"{w['obligations']} approved observations, one {w['import_rows']}-row import."
+        + (
+            f" Profile `{report['profile']['name']}`: multiplier {report['profile']['multiplier']}, "
+            f"{report['profile']['duration']} s closed loop."
+            if report.get("profile") and report["profile"]["name"] != "base"
+            else ""
+        ),
         "",
         "Shared, contended 2-CPU sandbox: these numbers are not representative of production hardware.",
         "",

@@ -28,8 +28,11 @@ from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
 from .operators import Operators
 from .ops_metrics import OpsMetrics, RequestMetrics
+from .status import Status
 from .version import BUILD, DOMAIN_API, SCHEMA
 from .audit_export import AuditExports
+from .retention_policies import RetentionPolicies
+from . import security_events
 from .dashboards import Dashboards
 
 LOG = logging.getLogger("impact")
@@ -101,10 +104,12 @@ def create_app():
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
     audit_exports = AuditExports(service)
+    retention_policies = RetentionPolicies(service)
     delivery_operations = DeliveryOperations(lifecycle)
     operators = Operators(lifecycle)
     request_metrics = RequestMetrics()
     ops_metrics = OpsMetrics(lifecycle, request_metrics)
+    status = Status(lifecycle)
     app = FastAPI(title="Impact Platform", version=BUILD, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.services = (s, db, auth, service)
 
@@ -124,6 +129,12 @@ def create_app():
 
     @app.exception_handler(DomainError)
     async def domain_error(request, exc):
+        # Denial auditing (v0.27): a refused authorisation is recorded in its own transaction after
+        # the refused one rolled back; recording never changes the response.
+        if getattr(exc, "denial", None):
+            await run_in_threadpool(
+                security_events.record, db, exc.denial, request.state.correlation, request.url.path
+            )
         return error(request, exc)
 
     @app.exception_handler(RequestValidationError)
@@ -311,6 +322,13 @@ def create_app():
     def operator_directory(request: Request):
         return operators.directory(auth.resolve(request))
 
+    @app.post("/v1/platform/operators/{identity_id}/actions/{action}")
+    async def operator_lifecycle_action(request: Request, identity_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            operators.lifecycle_change, auth.resolve(request), action, body, uuid(identity_id)
+        )
+
     @app.post("/v1/platform/operator-nominations")
     async def nominate_operator(request: Request):
         body = await strict_body(request)
@@ -416,6 +434,11 @@ def create_app():
     def revoke_session(request: Request, session_id: str):
         return account.revoke(auth.resolve(request), uuid(session_id))
 
+    @app.get("/v1/status")
+    def service_status(request: Request):
+        # Every signed-in identity; the closed notice catalogue, plus detail for platform operators.
+        return status.read(auth.resolve(request))
+
     @app.get("/v1/runtime-manifest")
     def manifest(request: Request):
         auth.resolve(request)
@@ -455,6 +478,14 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/forms/{obj}/published")
     def form_published(request: Request, tenant: str, obj: str):
         return service.forms.read(auth.resolve(request), uuid(tenant), "get_form_published", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/forms/{obj}/completeness")
+    def form_completeness(request: Request, tenant: str, obj: str):
+        return service.forms.read(auth.resolve(request), uuid(tenant), "get_form_completeness", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/collection-rounds/{obj}/coverage")
+    def round_coverage(request: Request, tenant: str, obj: str):
+        return service.forms.read(auth.resolve(request), uuid(tenant), "get_round_coverage", uuid(obj))
 
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
     def framework_completeness(request: Request, tenant: str, obj: str):
@@ -509,6 +540,44 @@ def create_app():
             uuid(obj),
             limit=limit,
             cursor=cursor,
+        )
+
+    @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-sources")
+    def indicator_dashboard_sources(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_dashboard_sources",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/indicator-definitions/{obj}/portfolio")
+    def indicator_definition_portfolio(
+        request: Request,
+        tenant: str,
+        obj: str,
+        period_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return dashboards.read(
+            auth.resolve(request),
+            uuid(tenant),
+            "indicator_definition_portfolio",
+            uuid(obj),
+            limit=limit,
+            cursor=cursor,
+            period_id=uuid(period_id) if period_id else None,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")
@@ -759,6 +828,74 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/retention-schedule")
     def retention_schedule(request: Request, tenant: str):
         return service.privacy.retention_schedule(auth.resolve(request), uuid(tenant))
+
+    # Denial auditing, tenant retention policies and retention holds (v0.27): explicit routes before
+    # the generic handlers.
+    @app.get("/v1/tenants/{tenant}/access-denials")
+    def access_denials(request: Request, tenant: str, limit: int = 50, since: str | None = None):
+        return security_events.listing(db, auth.resolve(request), uuid(tenant), limit, since)
+
+    @app.get("/v1/tenants/{tenant}/retention-policies")
+    def retention_policy_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return retention_policies.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/retention-policies", status_code=201)
+    async def create_retention_policy(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            retention_policies.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/retention-policies/{obj}")
+    def retention_policy(request: Request, tenant: str, obj: str):
+        return retention_policies.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.patch("/v1/tenants/{tenant}/retention-policies/{obj}")
+    async def patch_retention_policy(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            retention_policies.patch,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/retention-policies/{obj}/actions/approve")
+    async def approve_retention_policy(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            retention_policies.approve,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/retention-holds")
+    def retention_holds(request: Request, tenant: str, limit: int = 50):
+        return retention_policies.holds(auth.resolve(request), uuid(tenant), limit)
+
+    @app.post("/v1/tenants/{tenant}/retention-holds", status_code=201)
+    async def place_retention_hold(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            retention_policies.place, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/retention-holds/{obj}/actions/release")
+    async def release_retention_hold(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            retention_policies.release,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/retention-proofs")
     def retention_proofs(request: Request, tenant: str):

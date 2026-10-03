@@ -100,6 +100,37 @@ export function Operators({ request, explain, changed }: Props) {
       }[action] || "Saved.",
     );
   }
+  // Operator lifecycle (v0.27): another active operator renews before expiry or deactivates, with a
+  // reason and a sign-in from the last five minutes; never oneself.
+  async function renew(event: FormEvent<HTMLFormElement>, operator: any) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    await post(
+      "/v1/platform/operators/" + operator.identity_id + "/actions/renew",
+      {
+        expected_revision: operator.revision_id,
+        data: {
+          expires_at: new Date(
+            String(form.get("expires")) + "T23:59:59Z",
+          ).toISOString(),
+          reason: String(form.get("reason") || ""),
+        },
+      },
+      "Operator role renewed.",
+    );
+  }
+  async function deactivate(event: FormEvent<HTMLFormElement>, operator: any) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    await post(
+      "/v1/platform/operators/" + operator.identity_id + "/actions/deactivate",
+      {
+        expected_revision: operator.revision_id,
+        data: { reason: String(form.get("reason") || "") },
+      },
+      "Operator deactivated. Their control-plane authority ended at once.",
+    );
+  }
   async function reissue(event: FormEvent<HTMLFormElement>, account: any) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -291,15 +322,140 @@ export function Operators({ request, explain, changed }: Props) {
             </section>
           )}
           <h3>Operators</h3>
+          <p>
+            An operator role expires. Another operator renews it before then or
+            deactivates it; nobody renews or deactivates themselves, and the
+            last active operator cannot be deactivated.
+          </p>
           <ul>
             {directory.operators.map((o: any) => (
               <li key={o.identity_id}>
                 <strong>{o.display_name}</strong> {o.email_mask || ""} ·{" "}
-                {o.active ? "active" : "inactive"} until{" "}
-                {new Date(o.expires_at).toLocaleDateString()}
+                {o.state.toLowerCase()}
+                {o.identity_id === directory.identity_id ? " (you)" : ""}{" "}
+                {o.state === "Deactivated" ? "since" : "until"}{" "}
+                {new Date(
+                  o.state === "Deactivated" ? o.updated_at : o.expires_at,
+                ).toLocaleDateString()}
+                {o.active && o.identity_id !== directory.identity_id && (
+                  <span className="toolbar">
+                    <button
+                      className="secondary"
+                      disabled={busy}
+                      onClick={() => setMode({ kind: "renew", operator: o })}
+                    >
+                      Renew operator role
+                    </button>
+                    <button
+                      className="secondary"
+                      disabled={busy}
+                      onClick={() =>
+                        setMode({ kind: "deactivate", operator: o })
+                      }
+                    >
+                      Deactivate
+                    </button>
+                  </span>
+                )}
+                {mode?.kind === "renew" &&
+                  mode.operator.identity_id === o.identity_id && (
+                    <form
+                      onSubmit={(e) => renew(e, o)}
+                      aria-label="Renew operator role"
+                      className="panel"
+                    >
+                      <label>
+                        Operator role until
+                        <input
+                          name="expires"
+                          type="date"
+                          required
+                          min={inDays(1)}
+                          max={inDays(365)}
+                          defaultValue={inDays(180)}
+                        />
+                      </label>
+                      <label>
+                        Reason
+                        <textarea name="reason" required maxLength={1000} />
+                      </label>
+                      <div className="toolbar">
+                        <button
+                          type="submit"
+                          className="primary"
+                          disabled={busy}
+                        >
+                          {busy ? "Saving…" : "Renew"}
+                        </button>
+                        <button
+                          type="button"
+                          className="secondary"
+                          onClick={() => setMode(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                {mode?.kind === "deactivate" &&
+                  mode.operator.identity_id === o.identity_id && (
+                    <form
+                      onSubmit={(e) => deactivate(e, o)}
+                      aria-label="Deactivate operator"
+                      className="panel"
+                    >
+                      <p>
+                        Their authority to review, activate and administer
+                        organisations ends at once. Pending nominations they
+                        made can no longer be accepted.
+                      </p>
+                      <label>
+                        Reason
+                        <textarea name="reason" required maxLength={1000} />
+                      </label>
+                      <div className="toolbar">
+                        <button
+                          type="submit"
+                          className="primary"
+                          disabled={busy}
+                        >
+                          {busy ? "Saving…" : "Deactivate operator"}
+                        </button>
+                        <button
+                          type="button"
+                          className="secondary"
+                          onClick={() => setMode(null)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
               </li>
             ))}
           </ul>
+          {directory.changes.length > 0 && (
+            <>
+              <h3>Operator changes</h3>
+              <ul>
+                {directory.changes.map((g: any) => (
+                  <li key={g.change_id}>
+                    {new Date(g.created_at).toLocaleDateString()} ·{" "}
+                    {g.action === "renew" ? "renewed" : "deactivated"}{" "}
+                    <strong>
+                      {directory.operators.find(
+                        (o: any) => o.identity_id === g.operator_identity_id,
+                      )?.display_name || "an operator"}
+                    </strong>{" "}
+                    by {g.actor_name}
+                    {g.action === "renew" &&
+                      " until " + new Date(g.expires_at).toLocaleDateString()}
+                    . Reason: {g.reason}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           <h3>Nominations</h3>
           {!directory.nominations.length && <p>No nominations yet.</p>}
           <ul>

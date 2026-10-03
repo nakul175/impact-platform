@@ -390,6 +390,7 @@ try {
     await button("Collection rounds").click();
     await page
       .getByRole("heading", { name: "Collection rounds", exact: true })
+      .first()
       .waitFor();
     await button("New round").click();
     await label("Published form").selectOption({ label: formTitle });

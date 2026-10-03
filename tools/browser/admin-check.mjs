@@ -70,7 +70,7 @@ async function member(p, name) {
 }
 async function confirm(p, button) {
   await p
-    .getByLabel("Reason", { exact: true })
+    .getByLabel("Reason for access change", { exact: true })
     .fill("Browser qualification: " + button);
   await p
     .getByRole("dialog")
@@ -206,7 +206,7 @@ try {
       .getByRole("button", { name: "Approve request", exact: true })
       .click();
     await page
-      .getByLabel("Reason", { exact: true })
+      .getByLabel("Reason for access change", { exact: true })
       .fill("Negative independence test");
     await page
       .getByRole("button", { name: "Confirm approval", exact: true })

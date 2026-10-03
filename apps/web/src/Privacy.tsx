@@ -754,7 +754,7 @@ function RetentionPolicies({
             />
           </label>
           <label>
-            Reason
+            Reason for retention policy
             <input name="reason" required maxLength={2000} />
           </label>
           <button className="secondary" disabled={busy}>
@@ -921,7 +921,7 @@ function RetentionHolds({
             <input name="authority_reference" required maxLength={200} />
           </label>
           <label>
-            Reason
+            Reason for retention hold
             <input name="reason" required maxLength={2000} />
           </label>
           <label>

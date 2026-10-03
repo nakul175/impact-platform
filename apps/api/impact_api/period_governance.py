@@ -69,7 +69,11 @@ class PeriodGovernance:
         one: since v0.26a a tenant may hold several reporting calendars, and an event inside a
         programme's locked quarter is also inside another calendar's month, which is Open for that
         programme by default, so checking that month alone admitted a late value into a locked
-        period (found by the v0.27 imports slice; fixed at the build 0.27.0 integration)."""
+        period (found by the v0.27 imports slice; fixed at the build 0.27.0 integration). Resolving
+        the period on the programme's own calendar (#79) refuses a subset of these cases: period
+        close does not require calendar membership, so a period this programme locked outside its
+        current calendar must stay protected too. A period the programme never closed is Open for
+        it and never blocks."""
         indicator = load(c, ctx, indicator_id, "IndicatorInstance", "indicator-instances.read")
         programme_id = indicator["payload"]["programme_id"]
         periods = c.execute(

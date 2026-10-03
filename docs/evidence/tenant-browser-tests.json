@@ -18,6 +18,10 @@
       "status": "passed"
     },
     {
+      "name": "Owner awaiting initial access sees what happens next, not a permission error",
+      "status": "passed"
+    },
+    {
       "name": "Operator suspends and independently reactivates without replay",
       "status": "passed"
     },
@@ -35,6 +39,10 @@
     },
     {
       "name": "Tenant console fits a mobile viewport",
+      "status": "passed"
+    },
+    {
+      "name": "Signing out of the console starts the next person in their own workspace",
       "status": "passed"
     }
   ],

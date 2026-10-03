@@ -1,16 +1,16 @@
 {
-  "started_at": "2026-10-02T02:42:15+00:00",
-  "source_database": "impact_test_a26",
-  "restored_database": "impact_test_a26_restored",
+  "started_at": "2026-10-03T00:10:28+00:00",
+  "source_database": "impact_test_i27",
+  "restored_database": "impact_test_i27_restored",
   "server_version": "16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
   "client": {
     "pg_dump": {
-      "path": "/usr/lib/postgresql/16/bin/pg_dump",
+      "path": "/usr/bin/pg_dump",
       "version": "pg_dump (PostgreSQL) 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
       "major": 16
     },
     "pg_restore": {
-      "path": "/usr/lib/postgresql/16/bin/pg_restore",
+      "path": "/usr/bin/pg_restore",
       "version": "pg_restore (PostgreSQL) 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",
       "major": 16
     }
@@ -40,20 +40,20 @@
   },
   "dump": {
     "format": "custom",
-    "seconds": 0.76,
-    "bytes": 7129931,
+    "seconds": 0.89,
+    "bytes": 8359037,
     "warnings": null
   },
   "restore": {
-    "seconds": 2.14,
+    "seconds": 2.51,
     "warnings": null
   },
   "migration": {
     "session_user": "impact_migrator",
     "migration_role": "impact_owner",
     "applied": [],
-    "schema_version": 28,
-    "checksums_verified": 28,
+    "schema_version": 32,
+    "checksums_verified": 32,
     "checksum_mismatches": []
   },
   "restored": {
@@ -80,19 +80,19 @@
     }
   },
   "row_counts": {
-    "tables_compared": 173,
-    "rows_compared": 68418,
+    "tables_compared": 177,
+    "rows_compared": 80547,
     "named": {
-      "object_revision": 16415,
-      "operation_receipt": 2989,
-      "outbox_event": 3261,
-      "outbox_delivery": 3261,
-      "platform_event": 913
+      "object_revision": 19448,
+      "operation_receipt": 3600,
+      "outbox_event": 3977,
+      "outbox_delivery": 3977,
+      "platform_event": 928
     },
     "differing": {}
   },
   "security": {
-    "tables": 173,
+    "tables": 177,
     "owners": [
       "impact_owner"
     ],
@@ -101,7 +101,7 @@
     "grants_identical": true,
     "fenced_reads": {
       "rows_without_tenant": 0,
-      "rows_with_tenant_a": 8747,
+      "rows_with_tenant_a": 10236,
       "tenants_visible_with_tenant_a": [
         "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
       ],
@@ -122,8 +122,8 @@
     "rls_survived": true
   },
   "restored_database_dropped": true,
-  "duration_seconds": 3.22,
-  "finished_at": "2026-10-02T02:42:18+00:00",
+  "duration_seconds": 3.89,
+  "finished_at": "2026-10-03T00:10:32+00:00",
   "outcome": "PASS",
   "credentials_altered": false
 }

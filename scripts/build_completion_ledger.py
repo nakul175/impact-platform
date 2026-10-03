@@ -788,23 +788,275 @@ groups = [
             "docs/QA-PERFORMANCE-2026-10.md",
         ],
     ),
+    (
+        "FR-PLN-002",
+        "Build 0.27.0 (v0.27 planning slice, PR #70): a framework revision carries typed, directed relationships between two of its own nodes (CONTRIBUTES_TO, DEPENDS_ON) with a required rationale, evidence strength, the assumptions they rest on and optional external context; every save refuses a duplicate identity or link, a self-link, an endpoint outside the framework, a contribution from a higher to a lower level and a causal cycle within one level, while alternative pathways are allowed; relationships are reviewed and frozen with the revision in framework_baseline and never create a numeric sum (two outcomes contributing to one impact leave the parent uncalculated). Executed: qualification/test_planning.py::test_theory_of_change_relationships_and_assumptions, qualification/test_planning_unit.py::test_relationship_rules. Open: cross-programme links and a separately shared summary endpoint, a graph editor, the design's ASSUMES type.",
+        [
+            "apps/api/impact_api/planning.py",
+            "apps/api/impact_api/planning_contracts.py",
+            "apps/web/src/Planning.tsx",
+            "infrastructure/migrations/0031_theory_of_change.sql",
+            "qualification/test_planning.py",
+            "qualification/test_planning_unit.py",
+            "docs/RELEASE-0.27-planning.md",
+            "docs/RELEASE-0.27.md",
+        ],
+    ),
+    (
+        "FR-PLN-007",
+        "Build 0.27.0 (PR #70): assumption, risk and context records linked to framework nodes with expected condition, evidence, owner, review date and status; who assessed the status and when are server-stamped on change and kept otherwise; an INVALID assumption raises an exceptable completeness warning on each conditioned node, blocking submission until a reviewed exception, while the approved baseline keeps its earlier assessment and recorded actuals are unchanged; after approval the targets-versus-actuals rows of affected indicators carry assumption_flags. Executed: qualification/test_planning.py::test_theory_of_change_relationships_and_assumptions, qualification/test_planning_unit.py::test_assumption_rules. Open: review task generation, a per-assumption history read and status-change notices.",
+        [
+            "apps/api/impact_api/planning.py",
+            "apps/web/src/Planning.tsx",
+            "infrastructure/migrations/0031_theory_of_change.sql",
+            "qualification/test_planning.py",
+            "qualification/test_planning_unit.py",
+            "docs/RELEASE-0.27-planning.md",
+        ],
+    ),
+    (
+        "FR-IND-004",
+        "Build 0.27.0 (PR #70): a REVISED target that supersedes the approved target of a locked or restatement-open period is reviewed independently and recorded as the next target_binding version; it applies prospectively only: the snapshot's target_versions are untouched, the official comparison stays against the target pinned at close and the amendment is shown beside it (amended_target, amended_progress, amended_after_close); the review candidate compares original, currently effective and proposed values. Executed: qualification/test_planning.py::test_target_amended_after_close_never_changes_the_official_comparison (60 to 45 after lock; the original comparison stays against 60). Open: effective date and affected periods on an amendment, an explicit restatement-request object, baseline and milestone amendments after lock, the dashboard marker.",
+        [
+            "apps/api/impact_api/planning.py",
+            "apps/web/src/Planning.tsx",
+            "qualification/test_planning.py",
+            "docs/RELEASE-0.27-planning.md",
+        ],
+    ),
+    (
+        "FR-FRM-004",
+        "Build 0.27.0 (v0.27 forms slice, PR #73): a form version declares its default language and language versions with labels keyed by the stable field and choice codes; unknown codes are refused and completeness is checked at review, approval and publication, with a completeness read listing the gaps per language before review; a submission records the presented language and answers keep the stable codes, so the same choice in English and Hindi maps to one response code; the fill-in dialog switches language with the form's own text as the explicit fallback. Executed: qualification/test_forms_rounds.py::test_language_versions_are_reviewed_published_and_collected_under_one_stable_code, ::test_an_incomplete_or_invalid_translation_cannot_be_reviewed_or_published, tools/browser/forms-check.mjs (Hindi version). Open: separate approval per language version, machine-proposed translations, consent-text blocking.",
+        [
+            "apps/api/impact_api/forms.py",
+            "apps/api/impact_api/forms_contracts.py",
+            "apps/web/src/Forms.tsx",
+            "infrastructure/migrations/0032_forms_languages_rounds.sql",
+            "qualification/test_forms_rounds.py",
+            "tools/browser/forms-check.mjs",
+            "docs/evidence/forms-browser-tests.json",
+            "docs/RELEASE-0.27-forms.md",
+        ],
+    ),
+    (
+        "FR-FRM-005",
+        "Build 0.27.0 (PR #73): a collection round pins a published form version, a period, a due date and the expected units; one stable assignment per round and unit is held by an eligible member, reassigned only through assignment.reassign with the previous holder and reason in its revision history, and completed by its holder's submission, after which no second completed visit can be produced (the old holder of a reassigned task cannot respond); round coverage counts expected, assigned, received, missing and unassigned units with a fixed denominator (zero expected is NOT_APPLICABLE). Executed: qualification/test_forms_rounds.py::test_rounds_assignments_my_work_and_coverage. Open: sampling frames, visits, sample replacement with reason, a screen for rounds and assignments.",
+        [
+            "apps/api/impact_api/forms.py",
+            "apps/api/impact_api/work.py",
+            "infrastructure/migrations/0032_forms_languages_rounds.sql",
+            "qualification/test_forms_rounds.py",
+            "docs/RELEASE-0.27-forms.md",
+        ],
+    ),
+    (
+        "FR-PRV-004",
+        "Build 0.27.0 (v0.27 security and privacy slice, PR #74): tenant retention policies name one policy-able data class and a duration inside the class's bounds (OPERATION_RECEIPT 7-90 days, PRIVACY_EXPORT_PACKAGE 1-30, OUTBOX_RECIPIENT 7-365, SECURITY_EVENT 365-3,650; the action stays fixed per class, so one generic value cannot cover every class), are approved by a natural person other than every author into the insert-only retention_policy_binding, and the sweep applies the latest binding per class (the fixed schedule otherwise) and records the applied duration in its proof. Executed: qualification/test_security_privacy.py::test_retention_policies_need_independent_approval_and_the_sweep_honours_them, ::test_policy_bounds_keep_the_audit_floor_and_the_fixed_actions. Open: purpose and owner fields, a preview of affected objects and holds, the collection-activation gate, trigger and action policies, review dates, the 90-day diagnostic-log class of the acceptance text.",
+        [
+            "apps/api/impact_api/retention_policies.py",
+            "apps/api/impact_api/retention_contracts.py",
+            "apps/api/impact_api/retention.py",
+            "apps/web/src/Privacy.tsx",
+            "infrastructure/migrations/0030_security_privacy.sql",
+            "qualification/test_security_privacy.py",
+            "qualification/test_retention.py",
+            "docs/RELEASE-0.27-security-privacy.md",
+        ],
+    ),
+    (
+        "FR-ANA-002",
+        "Build 0.27.0 (v0.27 reports and dashboards slice, PR #71): a dashboard card drills down to the period's source observations of its indicator as the reader may see them, each with its disposition in the shown calculation (INCLUDED or EXCLUDED with the reason from lineage, NOT_IN_RESULT, changed since calculation), signed cursors, no total; when the reader cannot see every source row the set is PARTIAL and withheld rows are neither listed nor counted, so drilling cannot reveal hidden source counts. Executed: qualification/test_dashboards.py::test_drilldown_lists_the_sources_behind_the_shown_value_with_their_disposition, ::test_drilldown_withholds_hidden_rows_and_says_so, tools/browser/dashboard-check.mjs. Open: filters with visible applicability, hierarchy levels and approved disclosure slices, saved views with pinned definitions, the partner-slice acceptance case.",
+        [
+            "apps/api/impact_api/dashboards.py",
+            "apps/api/impact_api/dashboard_contracts.py",
+            "apps/web/src/Dashboards.tsx",
+            "qualification/test_dashboards.py",
+            "tools/browser/dashboard-check.mjs",
+            "docs/evidence/dashboard-browser-tests.json",
+            "docs/RELEASE-0.27-reports-dashboards.md",
+        ],
+    ),
 ]
 # Requirements that stay PENDING, with what the latest increments do and do not show for them.
 pending_notes = {
-    "FR-OPS-001": "PENDING. Related v0.26a evidence, recorded so that it is not mistaken for coverage: platform operators manage operator onboarding from the tenant-lifecycle console without a database or console step (nomination, account creation through the provider's user-management service account, acceptance by a different natural person with fresh MFA through the definer accept_operator_nomination; qualification/test_operator_onboarding.py, tools/browser/operators-check.mjs, CI container-stack). The validation text (operational metadata search that cannot reveal participant names; one tenant's suspension leaving others unchanged) is not exercised by this evidence, and qualification renewal, operator deactivation and a support console are not offered. Retain the original acceptance criteria; this requirement remains open.",
+    "FR-OPS-001": "PENDING. Related evidence, recorded so that it is not mistaken for coverage: since v0.26a platform operators manage operator onboarding from the tenant-lifecycle console without a database or console step (nomination, account creation through the provider's user-management service account, acceptance by a different natural person with fresh MFA through the definer accept_operator_nomination; qualification/test_operator_onboarding.py, tools/browser/operators-check.mjs, CI container-stack), and since build 0.27.0 another active operator of another natural person renews or deactivates an operator through the definer apply_operator_change into the insert-only platform_operator_change (qualification/test_operator_lifecycle.py, qualification/test_native_roles.py::test_platform_role_changes_operators_only_through_the_definer; docs/RELEASE-0.27-operators.md). The validation text (operational metadata search that cannot reveal participant names; one tenant's suspension leaving others unchanged) is not exercised by this evidence, and qualification renewal and a support console are not offered. Retain the original acceptance criteria; this requirement remains open.",
     "FR-PRV-002": "PENDING. Related v0.26a evidence: purpose-required capabilities (audit export, privacy cases) are issued only as purpose-bound grants of one capability for one stated purpose at TENANT scope, requested and independently approved within both administrators' reviewed ceilings, never through a role bundle (qualification/test_usable_staging.py::test_purpose_bound_grant_needs_an_independent_second_person, test_purpose_grant_requests_are_bounded). That is access purpose binding, not dataset reuse control: no dataset purposes, rejected-purpose registry or relabelling check exists. Retain the original acceptance criteria; this requirement remains open.",
-    "FR-PRV-004": "PENDING. Related v0.25 part B evidence, recorded so that it is not mistaken for coverage: the worker runs one fixed retention schedule for every tenant (job class RETENTION_SWEEP; operation receipts past their 7-day window deleted, OPEN uploads past 24 hours expired, privacy export packages deleted after 7 days, sealed delivery addresses redacted 30 days after a final state), each class with its own trigger, duration and action, and writes one insert-only retention_proof row per class (qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class). There are no tenant retention policies with purpose and owner, no preview of affected objects and holds, no approval gate before collection and no record or evidence class, so the validation and acceptance text (a 90-day diagnostic-log class and a separate approved evidence term) is not exercised. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-PRV-002": "PENDING. Related v0.25 part B evidence: scheduled action receipts exist for four fixed data classes (retention_proof with cutoff on the database clock, affected count and the SHA-256 of the sorted affected keys, written by a lease-fenced sweep that a stale holder cannot complete; qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class, test_a_stale_lease_holder_neither_deletes_nor_proves, test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class, test_worker_holds_exactly_the_retention_privileges). Approved record and evidence policies before collection, diagnostic-log, AI-content and security-metadata classes and orphan-copy detection do not exist, so the target is not met. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PRV-002": "PENDING. Related evidence: scheduled action receipts exist for four data classes (retention_proof with cutoff on the database clock, affected count, the SHA-256 of the sorted affected keys and, since build 0.27.0, the applied duration, written by a lease-fenced sweep that a stale holder cannot complete; qualification/test_retention.py::test_sweep_removes_only_expired_items_and_proves_each_class, test_a_stale_lease_holder_neither_deletes_nor_proves, test_a_sweep_that_keeps_failing_backs_off_then_fails_with_an_error_class, test_worker_holds_exactly_the_retention_privileges); since build 0.27.0 tenant-approved durations replace the defaults per class and the security-event class keeps a 365-day floor enforced in its definer (qualification/test_security_privacy.py::test_retention_policies_need_independent_approval_and_the_sweep_honours_them, ::test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept). Approval before collection is not gated, and diagnostic-log, AI-content and record/evidence classes and orphan-copy detection do not exist, so the target is not met. Retain the original acceptance criteria; this requirement remains open.",
     "FR-IAM-007": "PENDING. Related v0.16 evidence, recorded so that it is not mistaken for coverage: the nominee of a recovery contact can confirm the registered email address with a single-use eight-digit code (channel-request/channel-confirm; 15-minute expiry, 5 attempts, at most 3 requests per contact per hour; the code is derived, never stored, and only its keyed hash is kept; qualification/test_worker.py). That verifies a channel for contact evidence only; it is not an identity change, a lost-factor recovery or a support path, and no test exercises the validation text (no support reset refusal, no restricted recovery case, no withheld privileges pending verification). Retain the original acceptance criteria; this requirement remains open.",
     "FR-ACC-008": "PENDING. Not touched by v0.16 although the delivery plan listed it for that increment: no support case, elevation grant, support session or tenant-ended access exists. The v0.16 worker runs on its own login and writes reminder notices as a per-tenant SERVICE principal without identity, membership or grant; that is not support access. Retain the original acceptance criteria; this requirement remains open.",
     "VF-IAM-001": "PENDING. v0.15 revokes browser sessions immediately on logout and on a verified back-channel logout token (qualification/test_live_idp.py, test_backchannel_logout.py), but the 60-second bound is not met or measured: bearer access tokens remain valid until exp (120 s in the qualification realm) after a provider logout, no revocation latency is measured from platform receipt, and suspension, grant removal, service credentials, generated downloads, search, AI and queued jobs are not polled (most of them do not exist). v0.16's worker re-reads each delivery intent immediately before sending and supersedes it when the invitation generation, the recovery-channel challenge or the notice recipient is no longer current (qualification/test_worker.py); that is a recheck of the intent, not a measured revocation bound, and no sensitive job class exists for the worker to reauthorise. Retain the original acceptance criteria; this requirement remains open.",
     "VF-PER-005": "PENDING. v0.23 renders PDF, XLSX and DOCX exports of a frozen package through the worker with acknowledgement as one synchronous transaction, job state as progress and cancellation before start (qualification/test_report_exports.py::test_export_request_is_one_queued_job_with_receipt_audit_and_exact_retry, test_cancellation_before_start_is_honoured_and_nothing_is_rendered). QA 2026-10 performance (docs/evidence/performance-2026-10-01.json, docs/QA-PERFORMANCE-2026-10.md) timed acknowledgement (9 samples, p95 81.9 ms) and in-process render of the small fixture packages (9 samples, p95 142.8 ms, no queue wait): too few samples and not the target workload. No 100,000-row export, 50-page report or twenty-chart report exists to measure. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-PER-002": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json classes dashboard.warm and dashboard.cold; docs/QA-PERFORMANCE-2026-10.md): a 10-card programme dashboard read p95 242.0 ms over 50 reads at concurrency 4 in one sandbox run; cold reads have 3 samples only and no cache exists. No browser-rendered usability timing, filter change, drill-down or concurrent imports and report jobs were measured. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-PER-002": "PENDING. Related performance evidence: QA 2026-10 (docs/evidence/performance-2026-10-01.json classes dashboard.warm and dashboard.cold; docs/QA-PERFORMANCE-2026-10.md): a 10-card programme dashboard read p95 242.0 ms over 50 reads at concurrency 4 in one sandbox run; cold reads have 3 samples only and no cache exists. QA 2026-10 non-functional (docs/evidence/performance-2026-10-02-soak.json, -peak.json class dashboard.warm; docs/QA-NONFUNCTIONAL-2026-10.md): warm p95 249 ms under a 90-second soak at concurrency 4 and 1,967 ms under the 16-user single-tenant peak. No cold-cache population, browser-rendered timing, filter change or drill-down timing was measured. Retain the original acceptance criteria; this requirement remains open.",
     "VF-PER-004": "PENDING. Not measurable in this build: imports are bounded at 500 rows per batch and commit synchronously. QA 2026-10 performance (docs/evidence/performance-2026-10-01.json scenario import_max_batch) recorded one 500-row commit in 14.4 s, about 29 ms per produced observation under the tenant advisory lock; linear extrapolation to 100,000 rows would be far outside the 10-minute bound. No recalculation of 1,000 indicators was run. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-CAP-002": "PENDING. Related QA 2026-10 performance evidence (docs/evidence/performance-2026-10-01.json isolation.tenant_b.*): one probe of tenant B list reads during tenant A's 500-row import (p95 53.2 ms against 37.1 ms idle) and during 500 concurrent approvals (p95 103.0 ms, CPU sharing on 2 cores). No admission control, queue limits, burst recovery or per-tenant cohort report exists. Retain the original acceptance criteria; this requirement remains open.",
-    "VF-SUP-001": "PENDING. Related QA 2026-10 documentation: docs/current/SUPPORT-RUNBOOK.md (support roles, health checks, the 13 closed alert codes of deploy/ops_alerts.py with first steps, incident first steps, escalation, ticket hygiene), with the owner console scripts deploy/reset-user.sh, list-users.sh, restore-drill.sh, rotate-secrets.sh and ops-check.sh exercised in the CI container-stack job. Open: named on-call and operational owners, support hours and response targets, alert delivery to a person, and rehearsed readiness exercises (critical incident, identity recovery, failed import, privacy deletion, report correction). Retain the original acceptance criteria; this requirement remains open.",
+    "VF-CAP-002": "PENDING. Related performance evidence: QA 2026-10 (docs/evidence/performance-2026-10-01.json isolation.tenant_b.*): one probe of tenant B list reads during tenant A's 500-row import (p95 53.2 ms against 37.1 ms idle) and during 500 concurrent approvals (p95 103.0 ms). QA 2026-10 non-functional (docs/evidence/performance-2026-10-02-cohorts.json, docs/QA-NONFUNCTIONAL-2026-10.md): two quiet tenants at 2.4-2.5 times their idle p95 while one tenant runs four users; no admission control, queue limits, burst recovery or fairness mechanism exists. Retain the original acceptance criteria; this requirement remains open.",
+    "VF-SUP-001": "PENDING. Related evidence: docs/current/SUPPORT-RUNBOOK.md (support roles, health checks, the closed alert codes of deploy/ops_alerts.py with first steps, incident first steps, escalation, ticket hygiene), with the owner console scripts exercised in the CI container-stack job; since build 0.27.0 an on-call rota format shown to operators (deploy/on-call.example.json, GET /v1/status operator detail, the Workers panel line; qualification/test_status.py, test_status_alerts_unit.py) and a scripted, recorded readiness exercise (deploy/readiness-exercise.sh: worker stop, alert delivered to a signed webhook, restart, cleared; CI container-stack). Open: named on-call people and operational owners, support hours and response targets, a rehearsal on the real server and the other readiness exercises (identity recovery, failed import, privacy deletion, report correction). Retain the original acceptance criteria; this requirement remains open.",
+    "VF-AVL-001": "PENDING. Related QA 2026-10 non-functional evidence, not an availability figure: the API and the worker recover from a clean database stop and start without being restarted, refusing with 503 DATABASE_UNAVAILABLE meanwhile, and receipts written before the stop hold (qualification/test_native_nonfunctional.py::test_native_database_restart_api_and_worker_recover_without_restart_and_receipts_hold; run locally with IMPACT_DB_STOP_COMMAND/IMPACT_DB_START_COMMAND, directly and through PgBouncer; docs/QA-NONFUNCTIONAL-2026-10.md). No availability target, measurement window, crash restart, failover or replica exists. Retain the original acceptance criteria; this requirement remains open.",
+    "FR-ANA-007": "PENDING. Related build 0.27.0 evidence (PR #71): a portfolio read of one indicator definition across the tenant's visible programmes for one period, OFFICIAL values from each programme's own snapshot, grouped by definition revision, pooled totals only for SUM, COUNT and POOLED_RATIO from stored components (51/110 + 8/10 = 59/120, never a mean of percentages; zero denominator UNDEFINED), withheld for partial scope, incomplete official values or non-poolable methods (qualification/test_dashboards.py::test_portfolio_pools_official_values_per_definition_version_from_stored_components, ::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators). No comparability review, ranking, coverage thresholds or mixed-version flags exist. Retain the original acceptance criteria; this requirement remains open.",
+    "FR-CAL-014": "PENDING. Related build 0.27.0 evidence: the portfolio read counts each indicator instance once per programme and never pools across definition revisions (qualification/test_dashboards.py::test_portfolio_pools_official_values_per_definition_version_from_stored_components); no portfolio membership relation or organisation-wide deduplication exists. Retain the original acceptance criteria; this requirement remains open.",
 }
 partial = {key: (description, evidence) for ids, description, evidence in groups for key in ids.split()}
+# Build 0.27.0 (integration of PRs #67-#77): evidence added to requirements already PARTIAL, with the
+# sentence that says what it adds. These entries never change a status.
+ADDED_027 = {
+    "FR-SEC-007": (
+        "Build 0.27.0 (PR #74): refused authorisations are recorded after rollback through the definer record_access_denial, collapsed per principal, operation and reason in 300-second windows with a 50-row cap per principal, readable as Access denied, exported as DENIED lines of the audit export (format v2) and every exported page is kept in the insert-only audit_export_register (qualification/test_security_privacy.py::test_denials_are_recorded_collapsed_listed_and_exported, ::test_a_scan_cannot_flood_the_denial_table, ::test_native_security_privacy_tables_are_fenced_for_the_application_login).",
+        [
+            "apps/api/impact_api/security_events.py",
+            "apps/api/impact_api/audit_export.py",
+            "qualification/test_security_privacy.py",
+            "infrastructure/migrations/0030_security_privacy.sql",
+            "docs/RELEASE-0.27-security-privacy.md",
+        ],
+    ),
+    "VF-AUD-001": (
+        "Build 0.27.0 (PR #74): denied operations in the export, the durable export register and an audit window for denial rows with a 365-day floor; AuditEvent records are never deleted (qualification/test_security_privacy.py::test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept). Still open: every FSD section 35 event class beyond denials, metadata minimisation, a reconciliation report.",
+        [
+            "apps/api/impact_api/security_events.py",
+            "qualification/test_security_privacy.py",
+            "docs/RELEASE-0.27-security-privacy.md",
+        ],
+    ),
+    "FR-PRV-005": (
+        "Build 0.27.0 (PR #74): a retention-hold API — place a hold on one object (authority reference, reason, review date), effective at once; release only by a different natural person, final (qualification/test_security_privacy.py::test_holds_are_placed_through_the_api_block_erasure_and_release_independently).",
+        [
+            "apps/api/impact_api/retention_policies.py",
+            "qualification/test_security_privacy.py",
+            "docs/RELEASE-0.27-security-privacy.md",
+        ],
+    ),
+    "FR-SEC-002": (
+        "Build 0.27.0 (PR #72): the impact-provisioner client secret joins the rotation as family provisioner (no grace; Keycloak re-aligned by keycloak_admin.py rotate-provisioner; qualification/test_key_rotation.py, qualification/test_deploy_unit.py, CI container-stack).",
+        [
+            "scripts/rotate_secrets.py",
+            "deploy/rotate-secrets.sh",
+            "qualification/test_key_rotation.py",
+            "qualification/test_deploy_unit.py",
+            "docs/RELEASE-0.27-operators.md",
+        ],
+    ),
+    "FR-TEN-001": (
+        "Build 0.27.0 adds renewal before expiry and deactivation of a platform operator by a different active operator (another natural person; the last active operator is never deactivated), recorded in the insert-only register platform_operator_change (qualification/test_operator_lifecycle.py, PR #72), and email claims rate-limited per window without spending attempts with a qualified STARTTLS/AUTH path (qualification/test_email_readiness.py, PR #69).",
+        [
+            "apps/api/impact_api/operators.py",
+            "qualification/test_operator_lifecycle.py",
+            "infrastructure/migrations/0029_operator_lifecycle.sql",
+            "docs/RELEASE-0.27-operators.md",
+            "qualification/test_email_readiness.py",
+            "docs/RELEASE-0.27-email.md",
+        ],
+    ),
+    "FR-WFL-006": (
+        "Build 0.27.0 (PR #69): STARTTLS with certificate verification and AUTH PLAIN/LOGIN qualified against an in-process TLS server, credentials only after the upgrade, no clear-text fallback, and email claims deferred by per-window rate limits without spending attempts (qualification/test_email_readiness_unit.py, qualification/test_email_readiness.py). No real provider was contacted.",
+        [
+            "apps/api/impact_api/mail_rate.py",
+            "qualification/test_email_readiness_unit.py",
+            "qualification/test_email_readiness.py",
+            "deploy/mail_check.py",
+            "docs/RELEASE-0.27-email.md",
+        ],
+    ),
+    "VF-AVL-002": (
+        "Build 0.27.0: users see the affected function from a closed catalogue of service notices (GET /v1/status and the banner; qualification/test_status.py, test_status_alerts_unit.py, tools/browser/status-check.mjs; PR #76), and the API and worker recover from a clean database restart without being restarted, with the pooled-outage timing limit recorded (qualification/test_native_nonfunctional.py; PR #75). Not met: stale-data labels on records, per-user queued-action counts, a real PostgreSQL or Keycloak outage in a deployment.",
+        [
+            "apps/api/impact_api/status.py",
+            "apps/web/src/StatusBanner.tsx",
+            "qualification/test_status.py",
+            "qualification/test_status_alerts_unit.py",
+            "tools/browser/status-check.mjs",
+            "docs/evidence/status-browser-tests.json",
+            "qualification/test_native_nonfunctional.py",
+            "docs/QA-NONFUNCTIONAL-2026-10.md",
+            "docs/RELEASE-0.27-status-alerts.md",
+        ],
+    ),
+    "VF-OBS-001": (
+        "Build 0.27.0 (PR #76): alert transitions (NEW, CLEARED, REMINDER) deduplicated by code and target are delivered to a signed generic webhook and to e-mail, and a readiness exercise stops the worker and checks the delivered NEW and CLEARED (qualification/test_status_alerts_unit.py, deploy/readiness-exercise.sh, CI container-stack). Open: paging, acknowledgement, correlation across jobs and integrations, tenant-scoped diagnosis, in-app operator notices.",
+        [
+            "deploy/ops_alerts.py",
+            "deploy/readiness-exercise.sh",
+            "scripts/webhook_receiver.py",
+            "qualification/test_status_alerts_unit.py",
+            "docs/RELEASE-0.27-status-alerts.md",
+        ],
+    ),
+    "FR-OPS-006": (
+        "Build 0.27.0 (PR #76): alert delivery channels and a scripted readiness exercise (deploy/readiness-exercise.sh).",
+        ["deploy/ops_alerts.py", "deploy/readiness-exercise.sh", "docs/RELEASE-0.27-status-alerts.md"],
+    ),
+    "FR-DAT-004": (
+        "Build 0.27.0 (PR #68): imported values carry the plannable source key <unit>/<indicator>/<period>, so an approved plan names them in advance and planned imports close the period while unplanned ones still block it until a reviewed amendment names their key (qualification/test_import.py::test_planned_import_units_close_the_period, ::test_unplanned_import_units_still_block_close).",
+        ["apps/api/impact_api/imports.py", "qualification/test_import.py", "docs/RELEASE-0.27-imports.md"],
+    ),
+    "FR-DQ-003": (
+        "Build 0.27.0 (PR #68): duplicate rules unchanged under the new key; a unit imported again in a later period is a new identity (qualification/test_import.py::test_a_unit_imports_again_in_a_later_period_without_colliding).",
+        ["qualification/test_import.py", "docs/RELEASE-0.27-imports.md"],
+    ),
+    "FR-CAL-008": (
+        "Build 0.27.0 (PR #68): coverage from the obligation snapshot counts planned imported values as APPROVED coverage (qualification/test_import.py::test_planned_import_units_close_the_period).",
+        ["qualification/test_import.py", "docs/RELEASE-0.27-imports.md"],
+    ),
+    "FR-IND-003": (
+        "Build 0.27.0 (PR #70): reviewed status thresholds (ATTAINMENT_PERCENT or DEVIATION) pinned with the target give on-track, at-risk and off-track bands from stored decimals, never concealing a missing, undefined or stale state (qualification/test_planning_unit.py::test_threshold_rules, ::test_bands_follow_the_declared_thresholds_and_direction, ::test_bands_never_conceal_a_separately_visible_state).",
+        ["qualification/test_planning_unit.py", "docs/RELEASE-0.27-planning.md"],
+    ),
+    "FR-ANA-003": (
+        "Build 0.27.0: bands beside the status in targets versus actuals (PR #70; qualification/test_planning.py::test_period_close_pins_targets_and_uses_official_result) and a portfolio view in which official values stay programme-bound (PR #71; tools/browser/dashboard-check.mjs).",
+        [
+            "qualification/test_planning.py",
+            "apps/web/src/Portfolio.tsx",
+            "tools/browser/dashboard-check.mjs",
+            "docs/RELEASE-0.27-reports-dashboards.md",
+        ],
+    ),
+    "FR-ANA-004": (
+        "Build 0.27.0 (PR #71): the portfolio pools the official value across programmes from stored components only (tools/browser/dashboard-check.mjs; qualification/test_dashboards.py).",
+        [
+            "apps/web/src/Portfolio.tsx",
+            "qualification/test_dashboards.py",
+            "docs/RELEASE-0.27-reports-dashboards.md",
+        ],
+    ),
+    "FR-FRM-006": (
+        "Build 0.27.0 (PR #73): returned work is corrected as a new revision of the submission and of each returned observation under the same identity and source key, submitted into a new independent review with the corrector as an author (qualification/test_forms_rounds.py::test_returned_work_is_corrected_as_a_new_revision_under_the_same_review).",
+        ["qualification/test_forms_rounds.py", "docs/RELEASE-0.27-forms.md"],
+    ),
+    "FR-RPT-003": (
+        "Build 0.27.0 (PR #71): charts are reconciled into the frozen package digest and cannot change after approval (qualification/test_report_charts.py::test_chart_references_are_validated_against_the_section_and_the_snapshot).",
+        [
+            "apps/api/impact_api/report_charts.py",
+            "qualification/test_report_charts.py",
+            "docs/RELEASE-0.27-reports-dashboards.md",
+        ],
+    ),
+    "FR-RPT-005": (
+        "Build 0.27.0 (PR #71): bar charts of the section's own official bindings are part of the exported package in every format, drawn from stored displayed values only and byte-deterministic (qualification/test_report_charts.py::test_chart_renders_are_byte_deterministic_and_draw_only_stored_values, ::test_report_with_chart_is_frozen_rendered_and_exported_from_the_snapshot). Still open: page-break and caveat validation, PDF accessibility, non-Latin fonts.",
+        [
+            "apps/api/impact_api/report_charts.py",
+            "qualification/test_report_charts.py",
+            "docs/RELEASE-0.27-reports-dashboards.md",
+        ],
+    ),
+    "FR-UX-004": (
+        "Build 0.27.0 (PR #77): console change forms as dialogs with focus kept inside and returned to the opener, a waiting page instead of a permission error, capability-filtered navigation (tools/browser/tenant-check.mjs, tools/browser/check.mjs).",
+        ["apps/web/src/AccessGate.tsx", "tools/browser/tenant-check.mjs", "docs/RELEASE-0.27-ux.md"],
+    ),
+    "VF-UX-001": (
+        "Build 0.27.0 (PR #77, #76): dialog focus and the access gate in tenant-browser; the service-notice banner as a role=status region with a disclosure button in status-browser.",
+        ["tools/browser/tenant-check.mjs", "tools/browser/status-check.mjs", "docs/RELEASE-0.27-ux.md"],
+    ),
+    "VF-PER-001": (
+        "Build 0.27.0 (PR #75): the failure rule is met under the soak and cohort loads but not under the 16-user single-tenant peak (approval p95 2,119.6 ms; docs/evidence/performance-2026-10-02-peak.json, -soak.json, -cohorts.json; docs/QA-NONFUNCTIONAL-2026-10.md).",
+        [
+            "docs/evidence/performance-2026-10-02-peak.json",
+            "docs/evidence/performance-2026-10-02-soak.json",
+            "docs/evidence/performance-2026-10-02-cohorts.json",
+            "docs/QA-NONFUNCTIONAL-2026-10.md",
+        ],
+    ),
+}
+for _key, (_sentence, _paths) in ADDED_027.items():
+    _description, _evidence = partial[_key]
+    partial[_key] = (_description + " " + _sentence, _evidence + [p for p in _paths if p not in _evidence])
 requirements = []
 for group in ["functional", "nonfunctional"]:
     for req in catalogue[group]:
@@ -837,7 +1089,7 @@ for requirement in requirements:
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
     "build": json.loads((ROOT / "VERSION.json").read_text())["build"],
-    "assessment_date": "2026-10-01",
+    "assessment_date": "2026-10-03",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
     "summary": summary,

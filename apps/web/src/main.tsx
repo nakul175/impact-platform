@@ -6,6 +6,7 @@ import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
+import { RoundsPanel } from "./Rounds";
 import { ImportsPanel } from "./Imports";
 import { EvidencePanel } from "./Evidence";
 import { ReportExports } from "./ReportExports";
@@ -49,6 +50,7 @@ type Page = {
   scope_label: string;
 };
 type Access = {
+  principal_id?: string;
   capabilities: string[];
   purpose_capabilities?: [string, string][];
   // True for the workspace owner's custody membership (v0.27). Custody never implies data
@@ -92,6 +94,7 @@ const nav = [
   ["planning", "Results framework", "◇"],
   ["dashboards", "Dashboards", "◔"],
   ["forms", "Forms", "☰"],
+  ["rounds", "Collection rounds", "▦"],
   ["imports", "Imports", "⇪"],
   ["changes", "Change requests", "⇄"],
   ["period-governance", "Period close", "▣"],
@@ -119,6 +122,7 @@ const areaCapabilities: Record<string, string[]> = {
   planning: ["frameworks.", "framework.", "targets.", "target."],
   dashboards: ["dashboards."],
   forms: ["forms.", "form.", "submissions.", "submission."],
+  rounds: ["collection-rounds.", "assignments.", "assignment."],
   imports: ["imports.", "import."],
   changes: ["measurement-changes."],
   "period-governance": [
@@ -196,6 +200,10 @@ const titles: Record<string, [string, string]> = {
   forms: [
     "Forms",
     "Design, review and publish forms, then collect responses as observations.",
+  ],
+  rounds: [
+    "Collection rounds",
+    "Assign expected units and inspect collection coverage.",
   ],
   dashboards: [
     "Dashboards",
@@ -990,6 +998,16 @@ function Workspace({
             <FormsPanel
               key={tenant}
               base={base}
+              capabilities={access.capabilities}
+              request={api}
+              explain={explain}
+              Dialog={Dialog}
+            />
+          ) : route === "rounds" ? (
+            <RoundsPanel
+              key={tenant}
+              base={base}
+              principalId={access.principal_id || ""}
               capabilities={access.capabilities}
               request={api}
               explain={explain}

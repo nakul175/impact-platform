@@ -856,7 +856,7 @@ function relevant(
   return out;
 }
 
-function Fill({
+export function Fill({
   base,
   request,
   explain,
@@ -864,6 +864,7 @@ function Fill({
   template,
   canSubmit,
   done,
+  assignment,
 }: {
   base: string;
   request: Props["request"];
@@ -872,11 +873,12 @@ function Fill({
   template: string;
   canSubmit: boolean;
   done: (text: string) => void;
+  assignment?: Row;
 }) {
   const [version, setVersion] = useState<any>(null);
   const [values, setValues] = useState<Record<string, string>>({});
   const [reasons, setReasons] = useState<Record<string, string>>({});
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState(assignment?.data.unit_key || "");
   const [eventDate, setEventDate] = useState(
     new Date().toISOString().slice(0, 10),
   );
@@ -904,6 +906,14 @@ function Fill({
       </div>
     ) : (
       <p role="status">Loading the published version…</p>
+    );
+  if (assignment && version.form_version !== assignment.data.form_version)
+    return (
+      <div role="alert" className="error">
+        This task is pinned to an earlier form version. The current form cannot
+        be used for it; ask the round manager to arrange collection on the
+        pinned version.
+      </div>
     );
   const fields: Field[] = [...version.data.fields].sort(
     (a: Field, b: Field) => a.position - b.position,
@@ -954,6 +964,7 @@ function Fill({
         captured_at: capturedAt.current,
         capture_zone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
         ...(unit ? { unit_key: unit } : {}),
+        ...(assignment ? { assignment_id: assignment.object_id } : {}),
         ...(language ? { language } : {}),
       });
     }
@@ -1029,7 +1040,7 @@ function Fill({
           Reporting unit
           <input
             value={unit}
-            disabled={!!draft}
+            disabled={!!draft || !!assignment}
             pattern="[A-Za-z0-9][A-Za-z0-9_.:\-]{0,99}"
             onChange={(e) => setUnit(e.target.value)}
           />

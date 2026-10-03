@@ -385,6 +385,47 @@ try {
     assert.equal(observation.data.source_key, unit + "/" + instance.object_id);
     assert.equal(observation.lifecycle_state, "Submitted");
   });
+  await test("Round, assignment and coverage are usable through the screen", async () => {
+    const assignedUnit = "assigned-" + unique;
+    await button("Collection rounds").click();
+    await page
+      .getByRole("heading", { name: "Collection rounds", exact: true })
+      .waitFor();
+    await button("New round").click();
+    await label("Published form").selectOption({ label: formTitle });
+    await label("Period").selectOption(period);
+    await label("Title").fill("Round " + unique);
+    await label("Due date and time").fill("2026-09-01T12:00");
+    await label("Expected unit keys, one per line").fill(assignedUnit);
+    await button("Save round").click();
+    await dialog().waitFor({ state: "hidden" });
+    await button("Coverage").click();
+    await page.getByText("1 unassigned", { exact: false }).waitFor();
+    await button("Assign").click();
+    if (
+      await label("Member").evaluate((element) => element.tagName === "SELECT")
+    )
+      await label("Member").selectOption(fixture.actors.author.principal_id);
+    else await label("Member").fill(fixture.actors.author.principal_id);
+    await button("Assign unit").click();
+    await dialog().waitFor({ state: "hidden" });
+    await button("Coverage").click();
+    await page.getByText("0 unassigned", { exact: false }).waitFor();
+    await button("Collect").click();
+    await dialog().getByText("Version 1", { exact: false }).waitFor();
+    assert.equal(await label("Reporting unit").inputValue(), assignedUnit);
+    assert.equal(await label("Reporting unit").isDisabled(), true);
+    await label("Consent given").selectOption("false");
+    await button("Submit response").click();
+    await dialog().waitFor({ state: "hidden" });
+    const rounds = await read("collection-rounds?limit=100");
+    const round = rounds.items.find((r) => r.data.title === "Round " + unique);
+    const report = await read(
+      "collection-rounds/" + round.object_id + "/coverage",
+    );
+    assert.equal(report.received_count, 1);
+    assert.equal(report.units[0].assignment_state, "Completed");
+  });
   await test("Forms stay within a 390 px mobile width", async () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await openForms(programme);

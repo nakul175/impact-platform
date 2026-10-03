@@ -1,8 +1,12 @@
 # Documentation change record
 
-## Proposed build 0.28.0 — application executor (PR 1, not merged)
+## Proposed UI increment — collection rounds and assignments (not merged)
 
-Imports above 50 staged rows queue a governed commit on a separate application-role executor. The batch and Workers screens expose progress. Migration 0033, the executor login and a backend-only compose service are proposed; current staging remains build 0.27.0. See [RELEASE-0.28-import-executor.md](../RELEASE-0.28-import-executor.md).
+`Rounds.tsx` adds round setup, coverage by expected unit, assignment and reassignment, and collection with a pinned assignment. The API and schema do not change. Browser qualification is pending. See [RELEASE-0.28-rounds-screen.md](../RELEASE-0.28-rounds-screen.md).
+
+## Build 0.28.0 — application executor (PR #81 merged, staging unverified)
+
+Imports above 50 staged rows queue a governed commit on a separate application-role executor. The batch and Workers screens expose progress. Migration 0033, the executor login and a backend-only compose service merged as `e6c23b4` with all four CI jobs green on the PR and on `main`. Staging health could not be verified from this workspace; its last observed build was 0.27.0. See [RELEASE-0.28-import-executor.md](../RELEASE-0.28-import-executor.md).
 
 ## Build 0.27.0 — eleven parallel slices integrated, GPT handover — 3 October 2026
 

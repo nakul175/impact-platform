@@ -224,7 +224,7 @@ try {
       .getByLabel("Access scope", { exact: true })
       .selectOption({ label: "All workspace records" });
     await second
-      .getByLabel("Reason", { exact: true })
+      .getByLabel("Reason for access change", { exact: true })
       .fill("Create first programme");
     await second
       .getByRole("button", { name: "Submit access request", exact: true })
@@ -241,7 +241,7 @@ try {
       .getByRole("button", { name: "Approve request", exact: true })
       .click();
     await owner
-      .getByLabel("Reason", { exact: true })
+      .getByLabel("Reason for access change", { exact: true })
       .fill("Independent business review");
     await owner
       .getByRole("button", { name: "Confirm approval", exact: true })

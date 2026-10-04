@@ -1,6 +1,6 @@
 # Handover — Impact Platform at build 0.27.0
 
-**After handover:** PR #81 merged as `e6c23b4` with four green jobs on its PR head and again on `main`. Build 0.28.0 and migration 0033 add a separate application executor and queue import commits above 50 rows. Staging health has not been independently verified: the last observed live facts below still describe build 0.27.0 at #80. Kobo PR 2 must wait for a live status of `ok`, commit `e6c23b4`, schema 33 and a running executor. A collection-round screen is in preparation separately; see [RELEASE-0.28-rounds-screen.md](RELEASE-0.28-rounds-screen.md).
+**After handover (4 October):** PR #81 merged as `e6c23b4` with four green jobs on its PR head and on `main`. Build 0.28.0 and migration 0033 add a separate application executor and queue import commits above 50 rows. PR #82 added collection-round and assignment screens and merged as `6712970` with four green PR jobs. Its `main` run found a Sunday-dependent backup test expectation; see [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md). Staging health has not been independently verified: the last observed live facts below still describe build 0.27.0 at #80. Kobo must wait for a live status of `ok`, current deployed commit, schema 33 and a running executor.
 
 **Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
 
@@ -42,7 +42,7 @@ What 0.27.0 adds, in one line each (details: [RELEASE-0.27.md](RELEASE-0.27.md))
 
 ## 5. Open pull requests
 
-Pull requests #67–#81 are merged. #81 merged as `e6c23b4` after four green CI jobs; staging deployment health remains unverified from this workspace.
+Pull requests #67–#82 are merged. #82 merged as `6712970` after four green PR jobs. The subsequent `main` run exposed a date-dependent backup unit test on Sunday; the separate fix is described in [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md). Staging deployment health remains unverified from this workspace.
 
 ## 6. Owner decisions still open
 
@@ -95,7 +95,7 @@ Not run locally: the live identity-provider suite (17 tests) and the container s
 
 ## 10. Prioritised next steps
 
-1. **Build the application-job executor and asynchronous import commit** in one pull request, then the KoboToolbox connector in a second pull request after the first is green, merged with the owner's approval, and healthy on staging. `main` auto-deploys after merge; never merge without four green CI jobs and the owner's explicit confirmation. The weekly restore-drill timer should clear `RESTORE_DRILL_STALE` after its Sunday run; verify the result then.
+1. **Confirm the live executor and fix the Sunday backup test.** The executor and collection-round screen have merged; the Sunday-dependent test fix is in [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md). Kobo follows only after staging reports `ok`, the current commit, schema 33 and a healthy executor. `main` auto-deploys after merge; never merge another PR without four green CI jobs and the owner's explicit confirmation. The weekly restore-drill timer should clear `RESTORE_DRILL_STALE` after its Sunday run; verify the result then.
 2. **Hosted user acceptance on staging** with [UAT-PACK.md](current/UAT-PACK.md) (22 scenarios), after the first organisation is set up (§8). Record results in the sign-off sheet.
 3. **Owner decisions** in §6, starting with the e-mail provider and off-server backup storage.
 4. **Release 1 remainder without an owner decision** ([NEXT-DELIVERY.md](NEXT-DELIVERY.md)): the reviewed ceiling widening for applied tenants; screens for collection rounds and assignments; browser checks for the Access denied, Retention policies and Retention holds panels; Keycloak signing-key rotation in the live-provider suite; the asynchronous import executor; the quantified standard workload on the staging droplet; a crash restart and per-tenant fairness; penetration testing.

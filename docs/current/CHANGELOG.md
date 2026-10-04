@@ -1,8 +1,12 @@
 # Documentation change record
 
-## Proposed UI increment — collection rounds and assignments (not merged)
+## 4 October 2026 — Sunday backup test correction (proposed)
 
-`Rounds.tsx` adds round setup, coverage by expected unit, assignment and reassignment, and collection with a pinned assignment. The API and schema do not change. Browser qualification is pending. See [RELEASE-0.28-rounds-screen.md](../RELEASE-0.28-rounds-screen.md).
+The `main` run after PR #82 failed because a backup unit test expected no weekly set on Sunday. The ordinary daily test now pins Monday; the separate Sunday test still verifies the weekly hard link. No backup logic, version, schema or API change. See [RELEASE-0.28-ci-sunday.md](../RELEASE-0.28-ci-sunday.md).
+
+## Collection rounds and assignments — PR #82 merged
+
+`Rounds.tsx` adds round setup, coverage by expected unit, assignment and reassignment, and collection with a pinned assignment. The API and schema do not change. Four PR checks passed, including the browser flow; merged as `6712970`. The subsequent `main` run exposed the unrelated Sunday test failure above. See [RELEASE-0.28-rounds-screen.md](../RELEASE-0.28-rounds-screen.md).
 
 ## Build 0.28.0 — application executor (PR #81 merged, staging unverified)
 

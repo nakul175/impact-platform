@@ -1,6 +1,6 @@
 # v0.28 — Collection round and assignment screens
 
-Proposed UI increment on build 0.28.0; schema 33 and both API versions unchanged. The requirement ledger remains 113 PARTIAL, 194 PENDING, 0 accepted of 307. This change has not passed CI or deployed.
+UI increment merged as PR #82 (`6712970`) on build 0.28.0; schema 33 and both API versions unchanged. The requirement ledger remains 113 PARTIAL, 194 PENDING, 0 accepted of 307. All four PR jobs passed on its final head, including the browser flow. The subsequent `main` run found an unrelated Sunday backup-test expectation (see [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md)); live deployment has not been independently verified from this workspace.
 
 ## Delivered
 
@@ -12,7 +12,7 @@ No route, capability, database table, migration or version changes. This screen 
 
 ## Limits
 
-The screen lists the first 100 visible rounds, assignments, forms and periods. When the manager cannot read the member directory, assignment requires a principal ID; the server checks eligibility. A task pinned to a superseded form version cannot be filled from this screen, because the existing published-form read exposes only the latest form body. There is no offline collection, visit replacement or sampling frame. The browser check still has to run in CI; this sandbox has no Chromium or network sockets. The staging health gate for the Kobo PR remains unresolved.
+The screen lists the first 100 visible rounds, assignments, forms and periods. When the manager cannot read the member directory, assignment requires a principal ID; the server checks eligibility. A task pinned to a superseded form version cannot be filled from this screen, because the existing published-form read exposes only the latest form body. There is no offline collection, visit replacement or sampling frame. This sandbox has no Chromium or network sockets; the PR browser check passed in CI. The staging health gate for the Kobo PR remains unresolved.
 
 ## Reproduction
 

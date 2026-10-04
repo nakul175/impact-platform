@@ -92,7 +92,9 @@ def store_object(objects, data, tenant=TENANT):
 
 def test_backup_set_holds_databases_roles_objects_and_a_verified_manifest(tmp_path):
     key = store_object(tmp_path / "objects", b"evidence bytes")
-    result, root, status = backup(tmp_path)
+    # The ordinary daily-set case must have the same expectation on Sundays.
+    # The separate weekly-set case pins WEEKDAY=7 and checks its hard links.
+    result, root, status = backup(tmp_path, WEEKDAY="1")
     assert result.returncode == 0, result.stderr + result.stdout
     [day] = [p for p in (root / "daily").iterdir()]
     assert re.fullmatch(r"\d{8}", day.name) and not list((root / "daily").glob(".partial-*"))

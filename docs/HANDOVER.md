@@ -1,6 +1,6 @@
 # Handover — Impact Platform at build 0.27.0
 
-**PR 1 candidate (not merged):** Proposed build 0.28.0, migration 0033 adds the separate application executor and queues import commits above 50 rows. The live staging facts below still describe deployed build 0.27.0 at #80. See [RELEASE-0.28-import-executor.md](RELEASE-0.28-import-executor.md); CI and staging verification remain pending.
+**After handover:** PR #81 merged as `e6c23b4` with four green jobs on its PR head and again on `main`. Build 0.28.0 and migration 0033 add a separate application executor and queue import commits above 50 rows. Staging health has not been independently verified: the last observed live facts below still describe build 0.27.0 at #80. Kobo PR 2 must wait for a live status of `ok`, commit `e6c23b4`, schema 33 and a running executor. A collection-round screen is in preparation separately; see [RELEASE-0.28-rounds-screen.md](RELEASE-0.28-rounds-screen.md).
 
 **Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
 
@@ -42,7 +42,7 @@ What 0.27.0 adds, in one line each (details: [RELEASE-0.27.md](RELEASE-0.27.md))
 
 ## 5. Open pull requests
 
-Pull requests #67–#80 are merged. None was open at the owner's 03:55 UTC check on 3 October 2026.
+Pull requests #67–#81 are merged. #81 merged as `e6c23b4` after four green CI jobs; staging deployment health remains unverified from this workspace.
 
 ## 6. Owner decisions still open
 

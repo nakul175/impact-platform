@@ -1,6 +1,6 @@
 # v0.28 — Application executor and asynchronous import commits
 
-Proposed build 0.28.0; schema 33; domain API 1.18.0 (230 operations); platform API 1.9.0 (44 operations). Ledger: no requirement promoted or accepted. This PR is not merged or deployed.
+Build 0.28.0; schema 33; domain API 1.18.0 (230 operations); platform API 1.9.0 (44 operations). Ledger: no requirement promoted or accepted. PR #81 merged as `e6c23b4` with four green CI jobs on the PR and on `main`; staging deployment health is still unverified from this workspace.
 
 ## Delivered
 

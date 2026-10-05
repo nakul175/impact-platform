@@ -1,5 +1,13 @@
 # Qualification record · v0.27.0
 
+## Local Tola + AI checkpoint 0.32 — 5 October 2026
+
+Build 0.32/schema 37/domain 1.23/platform 1.10: focused actual PostgreSQL17.11 runtime-login qualification **193 passed, zero failed/skipped** after four test connections were corrected to activate their intended NOINHERIT role. The first 189-pass/four-failure report is retained separately; no permissions or security assertions were relaxed. Final integrated browser qualification **13 groups passed**, seven axe scans with zero violations/incomplete, zero uncaught or unexpected console errors and no provider/external requests. Synthetic historical setup and two deliberately dropped/aborted browser responses are explicitly labelled. Final full native regression passes **1,689 checks, 26 explicit skips and one deselection**; actual API restart, backup/restore and populated 33→37 upgrade all pass. Full PGlite regression passes **1,633 checks, 82 explicit skips and one deselection**, with zero errors or failures. Focused and full counts overlap. Final source-bound evidence is in [release record](RELEASE-0.32-tola-ai-sprint.md).
+
+Final unit targets pass 942 checks (62 explicit skips); the first socket-restricted invocation is retained as an environment failure summary. The design reference passes 143 assertions and explicitly does not validate the product. The supporting tracker has 42 offline checks and 15 passing browser groups. Exact source and evidence fingerprints are in `evidence/sprint-0.32-local-summary.json`.
+
+Named evidence: `evidence/sprint-0.32-focused-native-qualification.json`, `evidence/sprint-0.32-focused-native-tests.xml`, `evidence/sprint-0.32-first-native-tests.xml`, `evidence/sprint-0.32-browser-tests.json`. Local Mac native/browser checks do not replace hosted CI, the container stack, live identity-provider qualification, manual accessibility review or nonprofit UAT. Specified edition 1.0 cases retain their unrun statuses.
+
 **Nonprofit AI product in review (5 October 2026):** build 0.30.0 includes saved adoption plans, a source-backed directory of eight real tools with comparison/shortlists, twelve practical learning lessons and progress, editable procurement briefs and pilot checklists, alongside readiness assessment and separately permitted advisory drafts. Schema 35/domain API 1.21.0 (240 operations). Not merged or deployed; purchases and supplier bookings are not connected. Live AI generation is blocked by project credits. See [product release note](RELEASE-0.30-ai-adoption-tool.md). Original acceptance ledger unchanged.
 
 ## Proposed local build 0.29.0 — logframe reuse, 5 October 2026

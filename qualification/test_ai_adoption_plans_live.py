@@ -243,6 +243,7 @@ def test_native_adoption_revisions_are_fenced_immutable_and_hidden_from_platform
     assert platform_dsn, "Native qualification must provision the platform login"
     with psycopg.connect(platform_dsn, autocommit=True) as c:
         with c.transaction():
+            c.execute("SET LOCAL ROLE impact_platform")
             c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
             assert (
                 c.execute(

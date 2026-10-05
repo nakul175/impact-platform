@@ -1,5 +1,7 @@
 # Impact Platform user guide
 
+**Build 0.32 review update:** saved AI plans now offer **View saved guidance**. Select an actual saved revision to inspect the guide wording retained for that revision. This leaves your editable draft and learning progress unchanged. Older revisions may have partial or unavailable guidance; missing wording is not reconstructed. Confirm current supplier terms directly before acting on historical tool information. [Release and limits](../RELEASE-0.32-tola-ai-sprint.md). Not merged/deployed or accepted.
+
 **Build 0.31.0 review update:** supplied cost comparisons, self-reported pilot measurements including review time, four manual task-practice worksheets and saved source inputs now extend the nonprofit adoption plan. Stable learning progress and guide-version warnings preserve earlier saves. Domain API 1.22.0, schema 35. Local tests and new workflow checks are recorded; seven unchanged Mac operations failures and remaining release gates prevent approval. Not merged, deployed or accepted. See [release record](../RELEASE-0.31-nonprofit-ai-planning.md). Historical build notes below retain their original context.
 
 Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.

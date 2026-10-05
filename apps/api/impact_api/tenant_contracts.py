@@ -118,6 +118,7 @@ DIRECTORY = obj(
 
 
 def openapi():
+    from .access_upgrade_contracts import add_paths as add_access_upgrade_paths
     from .bootstrap_contracts import add_paths
     from .metrics_contracts import add_paths as add_metrics_paths
     from .operator_contracts import add_paths as add_operator_paths
@@ -159,6 +160,7 @@ def openapi():
     add_paths(paths, operation)
     add_recovery_paths(paths, operation)
     add_renewal_paths(paths, operation)
+    add_access_upgrade_paths(paths, operation)
     add_worker_paths(paths, operation)
     add_requeue_paths(paths, operation)
     add_metrics_paths(paths, operation)

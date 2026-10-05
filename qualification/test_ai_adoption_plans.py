@@ -92,6 +92,7 @@ class Rows:
 class Database:
     def __init__(self):
         self.receipts, self.objects, self.revisions, self.events = {}, {}, [], []
+        self.content_snapshots, self.content_bindings = {}, {}
         self.principal = "synthetic-principal"
         self.allow_read = self.allow_write = True
         self.locked = False
@@ -99,7 +100,14 @@ class Database:
     @contextmanager
     def transaction(self, tenant):
         self.locked = False
-        yield self
+        collections = ("receipts", "objects", "revisions", "events", "content_snapshots", "content_bindings")
+        original = {name: deepcopy(getattr(self, name)) for name in collections}
+        try:
+            yield self
+        except Exception:
+            for name, value in original.items():
+                setattr(self, name, value)
+            raise
 
     def execute(self, sql, values):
         if "pg_advisory_xact_lock" in sql:
@@ -119,7 +127,98 @@ class Database:
                 ],
                 key=lambda row: row["object_id"],
             )
-            return Rows(rows[:limit])
+            return Rows(
+                [
+                    {
+                        **row,
+                        **self.joined_archive(tenant, row["object_id"], row["head_revision"]),
+                    }
+                    for row in rows[:limit]
+                ]
+            )
+        if sql.startswith("SELECT v.revision_id,v.revision_number"):
+            tenant, obj, kind = values[:3]
+            after = values[3] if len(values) == 5 else None
+            limit = values[-1]
+            return Rows(
+                [
+                    {
+                        "revision_id": row["head_revision"],
+                        "revision_number": row["revision_number"],
+                        "created_at": row["created_at"],
+                        "title": row["payload"]["title"],
+                        **self.joined_archive(tenant, obj, row["head_revision"]),
+                    }
+                    for row in sorted(self.revisions, key=lambda row: row["revision_number"], reverse=True)
+                    if row["tenant_id"] == tenant
+                    and row["object_id"] == obj
+                    and row["object_type"] == kind
+                    and (after is None or row["revision_number"] < after)
+                ][:limit]
+            )
+        if sql.startswith("SELECT s.* FROM impact.ai_plan_content_binding"):
+            tenant, obj, rev = values
+            binding = self.content_bindings.get((tenant, str(obj), str(rev)))
+            return Rows(self.content_snapshots.get((tenant, binding)))
+        if sql.startswith("SELECT * FROM impact.ai_content_snapshot"):
+            if "content_version'=" in sql:
+                tenant, version = values
+                component = next(
+                    name for name in ("catalog", "solutions", "practice") if "payload->'" + name + "'" in sql
+                )
+                return Rows(
+                    next(
+                        (
+                            row
+                            for (scope, _), row in self.content_snapshots.items()
+                            if scope == tenant
+                            and row["payload"][component]
+                            and row["payload"][component]["content_version"] == version
+                        ),
+                        None,
+                    )
+                )
+            tenant, digest = values
+            return Rows(
+                next(
+                    (
+                        row
+                        for (scope, _), row in self.content_snapshots.items()
+                        if scope == tenant and row["payload_sha256"] == digest
+                    ),
+                    None,
+                )
+            )
+        if sql.startswith("INSERT INTO impact.ai_content_snapshot"):
+            tenant, snapshot, version, payload, digest = values
+            assert self.locked
+            self.content_snapshots[tenant, snapshot] = {
+                "snapshot_id": snapshot,
+                "schema_version": version,
+                "payload": deepcopy(payload.obj),
+                "payload_sha256": digest,
+                "captured_at": datetime.now(timezone.utc),
+            }
+            return Rows(None)
+        if sql.startswith("INSERT INTO impact.ai_plan_content_binding"):
+            tenant, obj, rev, snapshot = values
+            assert self.locked and (tenant, obj, rev) not in self.content_bindings
+            self.content_bindings[tenant, obj, rev] = snapshot
+            return Rows(None)
+        if sql.startswith("SELECT payload FROM impact.object_revision"):
+            tenant, obj, rev, kind = values
+            row = next(
+                (
+                    row
+                    for row in self.revisions
+                    if row["tenant_id"] == tenant
+                    and row["object_id"] == obj
+                    and row["head_revision"] == rev
+                    and row["object_type"] == kind
+                ),
+                None,
+            )
+            return Rows({"payload": row["payload"]} if row else None)
         if sql.startswith("INSERT INTO impact.operation_receipt"):
             tenant, actor, command, operation, fingerprint, receipt, expiry = values
             key = (tenant, actor, command, operation)
@@ -131,6 +230,16 @@ class Database:
             }
             return Rows(None)
         raise AssertionError(sql)
+
+    def joined_archive(self, tenant, obj, rev):
+        binding = self.content_bindings.get((tenant, obj, rev))
+        row = self.content_snapshots.get((tenant, binding))
+        return {
+            "archive_id": binding,
+            "archive_schema_version": row["schema_version"] if row else None,
+            "archived_guidance": row["payload"] if row else None,
+            "archive_sha256": row["payload_sha256"] if row else None,
+        }
 
 
 @pytest.fixture
@@ -159,11 +268,14 @@ def engine(monkeypatch):
     def save(c, context, kind, payload, state, previous=None):
         obj, revision = str(previous["object_id"]) if previous else str(uuid4()), str(uuid4())
         db.objects[context.tenant_id, obj] = {
+            "tenant_id": context.tenant_id,
             "object_id": obj,
             "head_revision": revision,
             "object_type": kind,
             "payload": deepcopy(payload),
             "lifecycle_state": state,
+            "revision_number": previous["revision_number"] + 1 if previous else 1,
+            "created_at": datetime.now(timezone.utc),
         }
         db.revisions.append(deepcopy(db.objects[context.tenant_id, obj]))
         return {
@@ -312,7 +424,7 @@ def test_new_save_canonicalizes_known_aliases_without_changing_the_submitted_com
         "learning_completed": saved["data"]["learning_completed"],
         "legacy_learning_keys": [],
         "unavailable_learning_keys": [],
-        "historical_snapshots_available": False,
+        "historical_snapshots_available": True,
     }
     assert len(db.revisions) == 1
 
@@ -333,6 +445,7 @@ def test_legacy_revision_reads_and_lists_interpret_progress_without_rewriting_hi
     receipt = api.save(None, "synthetic-tenant", request(), str(uuid4()))
     row = db.objects["synthetic-tenant", receipt["object_id"]]
     # A synthetic pre-upgrade saved revision, including an identifier no longer available.
+    db.content_bindings.pop(("synthetic-tenant", receipt["object_id"], receipt["revision_id"]))
     row["payload"]["learning_completed"] = ["foundations:0", "retired:unavailable-lesson"]
     row["payload"]["content_versions"] = {"catalog": "previous-catalog", "solutions": "previous-solutions"}
     before = deepcopy(row)
@@ -358,6 +471,7 @@ def test_unknown_saved_versions_are_explicit_without_claiming_a_historical_snaps
     api, db = engine
     receipt = api.save(None, "synthetic-tenant", request(), str(uuid4()))
     row = db.objects["synthetic-tenant", receipt["object_id"]]
+    db.content_bindings.pop(("synthetic-tenant", receipt["object_id"], receipt["revision_id"]))
     row["payload"]["content_versions"] = saved_versions
     compatibility = api.get(None, "synthetic-tenant", receipt["object_id"])["content_compatibility"]
     assert compatibility["catalog_version_status"] == compatibility["solutions_version_status"] == "UNKNOWN"

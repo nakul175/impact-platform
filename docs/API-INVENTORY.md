@@ -22,6 +22,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |

@@ -6,6 +6,8 @@ Start with the BRD. This package defines the nonprofit AI enablement extension a
 
 **Development appendage:** [DEVELOPMENT-0.31.md](DEVELOPMENT-0.31.md), the [0.31 release record](../../RELEASE-0.31-nonprofit-ai-planning.md) and [local evidence summary](../../evidence/nonprofit-ai-planning-local-summary.json) describe the first implementation increment: stable learning progress, supplied cost planning, self-reported pilot comparisons, manual task practice, saved source inputs and bounded advisory transfer. Local evidence is recorded with seven unchanged Mac operations failures; hosted/native gates remain outstanding. The core edition-1.0 documents and CSV/JSON baseline retain their original reference; related automated support does not mark the 108 specified cases executed or accepted.
 
+**Development appendage 0.32:** [DEVELOPMENT-0.32.md](DEVELOPMENT-0.32.md) and the [release record](../../RELEASE-0.32-tola-ai-sprint.md) extend the actual product with reviewed access upgrades and exact saved guidance/history, alongside a live ETA tracker and Mac operations portability. Focused native 193 checks and13 real browser groups pass; full regression/recovery is being recorded. This appendage preserves the original proposed documentation and specified-case baseline.
+
 ## Core documents in review order
 
 | Document | Purpose | Editable Word copy |

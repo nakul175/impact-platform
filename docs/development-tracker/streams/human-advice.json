@@ -1,0 +1,66 @@
+{
+  "id": "human-advice",
+  "title": "Consent-based internal human advice",
+  "domain": "AI capability and advisory support",
+  "owner": "/root/sprint_access",
+  "status": "BUILDING",
+  "summary": "Isolated advice backend and 13 closed route contracts are implemented; 80 unit checks pass. The colleague selector has separate current directory permission gates, and the private brief stays separate until assignment.",
+  "next_step": "Finish prepared API/native privacy and permission cases, independently review the SQL draft, then hand off isolated files for the next release checkpoint.",
+  "eta": {
+    "earliest": "2026-10-05T10:15:00Z",
+    "latest": "2026-10-05T11:15:00Z",
+    "confidence": "MEDIUM",
+    "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+  },
+  "delivered": [
+    "Closed create/action/read/history contracts and exact saved-plan anchored state transitions with participant consent, no-conflict declaration, explicit assignment and complete action acknowledgement.",
+    "Private immutable brief with private nonce integrity; terminal adviser access ends; current participant, plan scope, natural-person proof and receipt replay checks.",
+    "Eligible-colleague selector separately requires current administrative directory authority and current plan AI read/manage; returns only permitted labels and membership selectors."
+  ],
+  "evidence": [
+    {
+      "title": "Human advice isolated unit qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-unit.xml",
+      "result": "80 passed",
+      "scope": "Pure contracts, immutable state transitions, consent/authority helper logic and cursor key validation only; SQL, API routes and browser remain unintegrated and unqualified.",
+      "recorded_at": "2026-10-05T09:46:00Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:46:34.855992Z",
+  "history": [
+    {
+      "at": "2026-10-05T09:15:31.017457Z",
+      "status": "BUILDING",
+      "summary": "Approved internal peer-advice design is being implemented in isolated files: named current members, exact saved-plan scope, private brief and accountable closure.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:46:28.706013Z",
+      "status": "BUILDING",
+      "summary": "Isolated advice backend and 13 closed route contracts are implemented; 80 unit checks pass. The colleague selector has separate current directory permission gates, and the private brief stays separate until assignment.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:46:34.855992Z",
+      "status": "BUILDING",
+      "summary": "Isolated advice backend and 13 closed route contracts are implemented; 80 unit checks pass. The colleague selector has separate current directory permission gates, and the private brief stays separate until assignment.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+      }
+    }
+  ]
+}

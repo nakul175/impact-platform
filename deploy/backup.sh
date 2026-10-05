@@ -39,16 +39,51 @@ SET_NAME_PATTERN='[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
 log() { printf '%s backup: %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
 now_iso() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 # Only characters that need no JSON escaping (codes, names, numbers, timestamps).
-plain() { printf '%s' "$*" | tr -cd 'A-Za-z0-9 ._:/+-' | cut -c1-200; }
+plain() { printf '%s\n' "$(printf '%s' "$*" | tr -cd 'A-Za-z0-9 ._:/+-')" | cut -c1-200; }
 
 # Free space (MiB) of the file system holding $1.
 free_mb() { df -Pk "$1" | awk 'NR==2 {print int($4/1024)}'; }
 
 # Complete sets of one tier, newest first (names only).
 sets_in() {
-  local dir=$1
+  local dir=$1 entry
   [ -d "$dir" ] || return 0
-  find "$dir" -mindepth 1 -maxdepth 1 -type d -name "$SET_NAME_PATTERN" -printf '%f\n' | sort -r
+  # The fixed eight-digit glob has no whitespace and matches complete names
+  # only. Ignore symlinks, exactly as find's default -type d did.
+  for entry in "$dir"/$SET_NAME_PATTERN; do
+    [ -d "$entry" ] && [ ! -L "$entry" ] || continue
+    printf '%s\n' "${entry##*/}"
+  done | sort -r
+}
+
+file_bytes() {
+  local bytes
+  if ! bytes="$(stat -c %s "$1" 2>/dev/null)"; then
+    bytes="$(stat -f %z "$1")" || return 1
+  fi
+  case "$bytes" in '' | *[!0-9]*) return 1;; esac
+  printf '%s\n' "$bytes"
+}
+
+set_bytes() {
+  local dir=$1 bytes
+  # Preserve GNU du's existing byte accounting in the production image.
+  if bytes="$(du -sb "$dir" 2>/dev/null)"; then
+    bytes="$(printf '%s\n' "$bytes" | awk '{print $1}')"
+    case "$bytes" in '' | *[!0-9]*) return 1;; esac
+    printf '%s\n' "$bytes"
+    return 0
+  fi
+  # BSD du lacks apparent-byte mode. A generated set has six distinct flat
+  # files; sum the same logical stat sizes, including its directory metadata.
+  find "$dir" -print0 | {
+    local total=0 entry size
+    while IFS= read -r -d '' entry; do
+      size="$(file_bytes "$entry")" || return 1
+      total=$((total + size))
+    done
+    printf '%s\n' "$total"
+  }
 }
 
 # Size (MiB, rounded up) of the newest complete daily set, 0 when there is none.
@@ -114,9 +149,10 @@ prune_legacy() {
 }
 
 file_entry() {
-  local dir=$1 name=$2
-  printf '{"name":"%s","bytes":%d,"sha256":"%s"}' "$name" "$(stat -c %s "$dir/$name")" \
-    "$(sha256sum "$dir/$name" | awk '{print $1}')"
+  local dir=$1 name=$2 bytes digest
+  bytes="$(file_bytes "$dir/$name")" || return 1
+  digest="$(sha256sum "$dir/$name" | awk '{print $1}')" || return 1
+  printf '{"name":"%s","bytes":%d,"sha256":"%s"}' "$name" "$bytes" "$digest"
 }
 
 # verify_set <dir>: every dump lists, the tar reads to the end, every checksum matches.
@@ -157,7 +193,7 @@ take_set() {
       step=roles && pg_dumpall --roles-only --no-role-passwords --no-password -f "$work/globals.sql" &&
       step=schema_version && schema="$(psql -Atq --no-password -d impact -c 'SELECT max(version) FROM impact.schema_migration')" &&
       step=objects && mkdir -p "$OBJECTS_DIR" &&
-      tar --create --file "$work/objects.tar" --directory "$OBJECTS_DIR" --exclude='.incoming-*' . &&
+      COPYFILE_DISABLE=1 tar --create --file "$work/objects.tar" --directory "$OBJECTS_DIR" --exclude='.incoming-*' . &&
       step=checksums && (cd "$work" && sha256sum impact.dump keycloak.dump globals.sql objects.tar >SHA256SUMS) &&
       step=verify && verify_set "$work"
   }; then
@@ -168,15 +204,31 @@ take_set() {
   fi
   objects="$(tar --list --verbose --file "$work/objects.tar" | grep -c '^-' || true)"
   postgres="$(psql -Atq --no-password -d impact -c 'SHOW server_version' | awk '{print $1}')"
-  {
+  local entries=() name entry
+  for name in impact.dump keycloak.dump globals.sql objects.tar; do
+    if ! entry="$(file_entry "$work" "$name")"; then
+      rm -rf -- "$work"
+      write_status failed STEP_FAILED_manifest "$day" 0 "$free" "$required"
+      return 1
+    fi
+    entries+=("$entry")
+  done
+  if ! {
     printf '{"format":1,"set":"%s","created_at":"%s","finished_at":"%s",' "$day" "$started" "$(now_iso)"
     printf '"commit":"%s","schema_version":%d,"postgres":"%s",' "$(plain "$COMMIT")" "${schema:-0}" "$(plain "$postgres")"
-    printf '"files":[%s,%s,%s,%s],' "$(file_entry "$work" impact.dump)" "$(file_entry "$work" keycloak.dump)" \
-      "$(file_entry "$work" globals.sql)" "$(file_entry "$work" objects.tar)"
+    printf '"files":[%s,%s,%s,%s],' "${entries[0]}" "${entries[1]}" "${entries[2]}" "${entries[3]}"
     printf '"objects":{"files":%d},' "$objects"
     printf '"verified":{"pg_restore_list":true,"tar_read":true,"sha256":true}}\n'
-  } >"$work/manifest.json"
-  bytes="$(du -sb "$work" | awk '{print $1}')"
+  } >"$work/manifest.json"; then
+    rm -rf -- "$work"
+    write_status failed STEP_FAILED_manifest "$day" 0 "$free" "$required"
+    return 1
+  fi
+  if ! bytes="$(set_bytes "$work")"; then
+    rm -rf -- "$work"
+    write_status failed STEP_FAILED_set_size "$day" 0 "$free" "$required"
+    return 1
+  fi
   target="$ROOT/daily/$day"
   if [ -e "$target" ]; then
     # A second set the same day (--now) replaces the first only once it is complete.
@@ -205,11 +257,15 @@ take_set() {
 }
 
 seconds_until_next_run() {
-  local now target
+  local now target hour
+  [[ "$BACKUP_HOUR_UTC" =~ ^[0-9]{1,2}$ ]] && [ "$BACKUP_HOUR_UTC" -le 23 ] || return 1
+  hour=$((10#$BACKUP_HOUR_UTC))
   now=$(date -u +%s)
-  target=$(date -u -d "today ${BACKUP_HOUR_UTC}:00" +%s)
+  # POSIX epoch days are UTC: retain the same next scheduled hour without
+  # GNU date -d, local-time parsing or an additional runtime dependency.
+  target=$((now - now % 86400 + hour * 3600))
   if [ "$target" -le "$now" ]; then
-    target=$(date -u -d "tomorrow ${BACKUP_HOUR_UTC}:00" +%s)
+    target=$((target + 86400))
   fi
   echo $((target - now))
 }

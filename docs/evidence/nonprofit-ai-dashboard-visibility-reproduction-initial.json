@@ -1,0 +1,49 @@
+{
+  "scope": "Isolated diagnostic using real local API/database and reviewed synthetic facts; not passing security or hosted qualification",
+  "setup": "Current registry classification changed for one synthetic object and restored; old revisions remain AVAILABLE, RLS and immutable triggers remain enabled",
+  "policy_basis": "Current store.load rejects RESTRICTED registry classification and non-AVAILABLE current revision; approved snapshots freeze arithmetic/revision selection, not current read authority",
+  "source_sha256": {
+    "apps/api/impact_api/store.py": "9e40727904bffcb927fcd742dea2c630b5badbe07cff62982a17df8e46f50158",
+    "apps/api/impact_api/dashboards.py": "7cb4646c2a25ffc603e66c905a885fa8d79743f17ab157b553f2a4c7a8c5c45f",
+    "apps/api/impact_api/planning.py": "6b576e7474691d1e0f63151d838618c6bca9fee0af628002d832dec97b254142",
+    "apps/api/impact_api/dashboard_contracts.py": "ef43731b78a59877178fae68827b187392ef1aeef1944e6edc303aac7f0e192f"
+  },
+  "observations": [
+    {
+      "kind": "Target",
+      "object_id": "518d706a-0c85-42b5-9fe0-8b2eb975904a",
+      "snapshot_id": "ad2c060a-74bd-4187-83fb-8ed2f3763300",
+      "recorded_at": "2026-10-05T09:38:21.208795+00:00",
+      "scope_control": {
+        "direct_route_status": 404,
+        "dashboard_value": null
+      },
+      "classification_case": {
+        "direct_route_status": 404,
+        "registry_classification": "RESTRICTED",
+        "old_head_revision_still_available": true,
+        "dashboard_value": "50",
+        "official_value_unchanged": "46.363636363636"
+      },
+      "outcome": "CURRENT_CLASSIFICATION_BYPASS_REPRODUCED"
+    },
+    {
+      "kind": "CollectionPlan",
+      "object_id": "78b44521-7831-4e74-aa23-e480405ad154",
+      "snapshot_id": "ad2c060a-74bd-4187-83fb-8ed2f3763300",
+      "recorded_at": "2026-10-05T09:38:21.301007+00:00",
+      "scope_control": {
+        "direct_route_status": 404,
+        "dashboard_value": null
+      },
+      "classification_case": {
+        "direct_route_status": 404,
+        "registry_classification": "RESTRICTED",
+        "old_head_revision_still_available": true,
+        "dashboard_value": 2,
+        "official_value_unchanged": "46.363636363636"
+      },
+      "outcome": "CURRENT_CLASSIFICATION_BYPASS_REPRODUCED"
+    }
+  ]
+}

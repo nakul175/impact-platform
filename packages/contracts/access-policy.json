@@ -1,5 +1,5 @@
 {
-  "version": "1.22.0",
+  "version": "1.23.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6149,6 +6149,42 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "get_ai_adoption_guidance",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_ai_adoption_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "create_reporting_calendar",

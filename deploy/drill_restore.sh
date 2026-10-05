@@ -14,17 +14,19 @@ set -euo pipefail
 ROOT="${BACKUP_ROOT:-/backups}"
 export PGUSER="${PGUSER:-postgres}"
 
-plain() { printf '%s' "$*" | tr -cd 'A-Za-z0-9 ._:/+-' | cut -c1-200; }
+plain() { printf '%s\n' "$(printf '%s' "$*" | tr -cd 'A-Za-z0-9 ._:/+-')" | cut -c1-200; }
 
 # Newest complete set: the greatest YYYYMMDD among daily/ and weekly/ that has a manifest.
 latest_set() {
-  local best="" name tier
+  local best="" name tier entry
   for tier in daily weekly; do
     [ -d "$ROOT/$tier" ] || continue
-    while read -r name; do
+    for entry in "$ROOT/$tier"/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]; do
+      [ -d "$entry" ] && [ ! -L "$entry" ] || continue
+      name="${entry##*/}"
       [ -n "$name" ] && [ -s "$ROOT/$tier/$name/manifest.json" ] || continue
       if [ -z "$best" ] || [ "$name" \> "${best#*/}" ]; then best="$tier/$name"; fi
-    done < <(find "$ROOT/$tier" -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' -printf '%f\n')
+    done
   done
   printf '%s' "$best"
 }
@@ -33,9 +35,10 @@ timings=""
 result="failed"
 failed_step=""
 set_name=""
+selected_dir=""
 finish() {
   local manifest="null"
-  if [ -n "$set_name" ] && [ -s "$ROOT/$set_name/manifest.json" ]; then manifest="$(tr -d '\n' <"$ROOT/$set_name/manifest.json")"; fi
+  if [ -n "$selected_dir" ] && [ -s "$selected_dir/manifest.json" ]; then manifest="$(tr -d '\n' <"$selected_dir/manifest.json")"; fi
   printf '{"set":"%s","result":"%s","failed_step":"%s","seconds":{%s},"manifest":%s}\n' \
     "$(plain "$set_name")" "$result" "$(plain "$failed_step")" "${timings#,}" "$manifest"
 }
@@ -45,10 +48,23 @@ timed() {
   local name=$1 started ended
   shift
   failed_step="$name"
-  started="$(date +%s.%N)"
+  started="$(clock_seconds)"
   "$@"
-  ended="$(date +%s.%N)"
+  ended="$(clock_seconds)"
   timings="$timings,\"$name\":$(awk -v a="$started" -v b="$ended" 'BEGIN {printf "%.2f", b - a}')"
+}
+
+clock_seconds() {
+  local value
+  value="$(date +%s.%N)"
+  case "$value" in
+    *[!0-9.]* | *.*.*) date +%s;;
+    *) printf '%s\n' "$value";;
+  esac
+}
+
+verify_checksums() {
+  (cd "$1" && sha256sum --check --quiet --strict SHA256SUMS)
 }
 
 roles() {
@@ -66,18 +82,19 @@ restore() {
 until pg_isready -q -h 127.0.0.1; do sleep 1; done
 set_name="${1:-$(latest_set)}"
 case "$set_name" in
-daily/[0-9]* | weekly/[0-9]*) ;;
+daily/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] | weekly/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;;
 *)
   failed_step="no_backup_set"
   exit 1
   ;;
 esac
 dir="$ROOT/$set_name"
-[ -s "$dir/manifest.json" ] || {
+[ -d "$dir" ] && [ ! -L "$dir" ] && [ -s "$dir/manifest.json" ] || {
   failed_step="manifest_missing"
   exit 1
 }
-timed verify_checksums bash -c "cd '$dir' && sha256sum --check --quiet --strict SHA256SUMS"
+selected_dir="$dir"
+timed verify_checksums verify_checksums "$dir"
 timed roles roles "$dir/globals.sql"
 timed restore_impact restore impact "$dir/impact.dump"
 timed restore_identity_provider restore keycloak "$dir/keycloak.dump"

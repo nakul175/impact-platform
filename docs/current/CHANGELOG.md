@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 5 October 2026 — local Tola + AI checkpoint 0.32
+
+Build 0.32/schema 37/domain 1.23/platform 1.10: reviewed capability extension for existing organisations, exact archived learning/tool/practice guidance on newly saved AI-plan revisions, read-only revision history, checked GNU/BSD operations portability and a loopback live ETA dashboard. Final native regression passes 1,689 checks with restart, backup/restore and populated 33→37 upgrade; PGlite passes 1,633 and integrated browser qualification passes 13 groups. The original 307 core and 40 nonprofit feature registers keep their stated acceptance baseline. [Release](../RELEASE-0.32-tola-ai-sprint.md), [development/support map](../nonprofit-ai/v1.0/DEVELOPMENT-0.32.md). No merge, deployment, spending or external communication.
+
 Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.
 
 **Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.

@@ -1,5 +1,7 @@
 # Current implemented API inventory
 
+**Current local review candidate 0.32 (5 October 2026):** domain API 1.23.0 has 245 implemented operations; platform API 1.10.0 has 52; schema 37. Added domain reads: `list_ai_adoption_revisions` and `get_ai_adoption_guidance`, both under current scoped `ai.enablement.read`. Eight control-plane access-upgrade operations cover the global inbox, tenant directory/preview/proposal and accept/approve/reject/cancel decisions. The existing generated onboarding profile hash is unchanged. Current generated tables are in [API inventory](../API-INVENTORY.md); exact contracts and evidence are in [release record](../RELEASE-0.32-tola-ai-sprint.md). No deployment or acceptance.
+
 **Current review candidate, 5 October 2026:** build 0.31.0, domain API 1.22.0 (**243 operations**), platform API 1.9.0 (**44 operations**), schema 35 unchanged. Three deterministic planning reads use the existing `ai.enablement.read` capability; no new role bundle, ceiling or migration. Local implementation and evidence are recorded; seven unchanged Mac failures keep the overall application gate failed, and hosted/native qualification remains outstanding. No deployment or requirement acceptance is recorded. [Release record](../RELEASE-0.31-nonprofit-ai-planning.md) and [development/support map](../nonprofit-ai/v1.0/DEVELOPMENT-0.31.md). The tables below are generated from the current implemented contracts; earlier version notes are historical, and their deployment statements are not fresh checks.
 
 ## Nonprofit planning contract changes in 0.31
@@ -30,10 +32,8 @@ Error reason codes added by the QA 2026-10 degradation slice merged onto build 0
 
 ## Domain API
 
-Contract version 1.22.0 (243 operations). Source: `packages/contracts/openapi-implemented.json`.
-
 | Method | Path | Operation |
-|---|---|---|
+| --- | --- | --- |
 | GET | `/v1/tenants/{tenant_id}/memberships` | list_memberships |
 | GET | `/v1/tenants/{tenant_id}/memberships/{object_id}` | get_memberships |
 | GET | `/v1/tenants/{tenant_id}/grants` | list_grants |
@@ -275,15 +275,16 @@ Contract version 1.22.0 (243 operations). Source: `packages/contracts/openapi-im
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | create_ai_adoption_plan |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | get_ai_adoption_plan |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | update_ai_adoption_plan |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance` | get_ai_adoption_guidance |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | list_ai_adoption_revisions |
 | POST | `/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend` | extend_reporting_calendar |
 | POST | `/v1/tenants/{tenant_id}/reference-defaults` | apply_reference_defaults |
 
+
 ## Privileged control plane
 
-Contract version 1.9.0 (44 operations). Source: `packages/contracts/openapi-platform.json`.
-
 | Method | Path | Operation |
-|---|---|---|
+| --- | --- | --- |
 | GET | `/v1/platform/tenants` | list_tenant_lifecycle |
 | POST | `/v1/platform/tenants` | request_tenant |
 | POST | `/v1/platform/tenants/{tenant_id}/actions/accept-owner` | tenant_accept_owner |
@@ -314,6 +315,14 @@ Contract version 1.9.0 (44 operations). Source: `packages/contracts/openapi-plat
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/approve` | authority_renewal_approve |
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/cancel` | authority_renewal_cancel |
 | POST | `/v1/platform/authority-renewals/{request_id}/actions/reject` | authority_renewal_reject |
+| GET | `/v1/platform/access-upgrades` | list_access_upgrade_inbox |
+| GET | `/v1/platform/tenants/{tenant_id}/access-upgrades` | list_access_upgrades |
+| GET | `/v1/platform/tenants/{tenant_id}/access-upgrade-preview` | get_access_upgrade_preview |
+| POST | `/v1/platform/tenants/{tenant_id}/access-upgrade` | request_access_upgrade |
+| POST | `/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/accept` | access_upgrade_accept |
+| POST | `/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/approve` | access_upgrade_approve |
+| POST | `/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/cancel` | access_upgrade_cancel |
+| POST | `/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/reject` | access_upgrade_reject |
 | GET | `/v1/platform/workers` | list_workers |
 | GET | `/v1/platform/deliveries` | list_delivery_attention |
 | POST | `/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/release` | delivery_release |

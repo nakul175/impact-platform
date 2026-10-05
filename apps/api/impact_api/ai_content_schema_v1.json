@@ -1,0 +1,602 @@
+{
+  "catalog": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "content_version": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "provenance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "validated_demand": {
+            "type": "boolean"
+          },
+          "source_concept": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 12000
+          }
+        },
+        "required": [
+          "status",
+          "validated_demand",
+          "source_concept",
+          "note"
+        ]
+      },
+      "journey": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "purpose": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "human_owner": {
+              "type": "string",
+              "maxLength": 12000
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "purpose",
+            "human_owner"
+          ]
+        }
+      },
+      "use_cases": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "sectors": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "kind": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "data_requirement": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "sensitivity": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "goal_keywords": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "prerequisites": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "acceptance_checks": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "human_approval_needs": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "content_status": {
+              "type": "string",
+              "maxLength": 12000
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "sectors",
+            "description",
+            "kind",
+            "data_requirement",
+            "sensitivity",
+            "goal_keywords",
+            "prerequisites",
+            "acceptance_checks",
+            "human_approval_needs",
+            "content_status"
+          ]
+        }
+      },
+      "learning_paths": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "steps": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "lessons": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "lesson": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "exercise": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "check": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "question": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "options": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": {
+                          "type": "string",
+                          "maxLength": 12000
+                        }
+                      },
+                      "answer": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000000
+                      },
+                      "explanation": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "required": [
+                      "question",
+                      "options",
+                      "answer",
+                      "explanation"
+                    ]
+                  }
+                },
+                "required": [
+                  "key",
+                  "title",
+                  "lesson",
+                  "exercise",
+                  "check"
+                ]
+              }
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "steps",
+            "lessons"
+          ]
+        }
+      },
+      "procurement_criteria": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "questions": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "questions"
+          ]
+        }
+      },
+      "marketplace_status": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "vendors": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 12000
+            }
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 12000
+          }
+        },
+        "required": [
+          "status",
+          "vendors",
+          "explanation"
+        ]
+      }
+    },
+    "required": [
+      "schema_version",
+      "content_version",
+      "provenance",
+      "journey",
+      "use_cases",
+      "learning_paths",
+      "procurement_criteria",
+      "marketplace_status"
+    ]
+  },
+  "solutions": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "content_version": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "checked_on": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "explanation": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "solutions": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "provider": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "category": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "use_case_ids": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "deployment": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "commercial_model": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "nonprofit_offer": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "api_available": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "source_urls": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "url": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "required": [
+                  "label",
+                  "url"
+                ]
+              }
+            },
+            "verification_notes": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "data_review_questions": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "provider",
+            "category",
+            "use_case_ids",
+            "description",
+            "deployment",
+            "commercial_model",
+            "nonprofit_offer",
+            "api_available",
+            "source_urls",
+            "verification_notes",
+            "data_review_questions"
+          ]
+        }
+      },
+      "comparison_criteria": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "label": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "prompt": {
+              "type": "string",
+              "maxLength": 12000
+            }
+          },
+          "required": [
+            "id",
+            "label",
+            "prompt"
+          ]
+        }
+      }
+    },
+    "required": [
+      "content_version",
+      "checked_on",
+      "explanation",
+      "solutions",
+      "comparison_criteria"
+    ]
+  },
+  "practice": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "content_version": {
+        "type": "string",
+        "maxLength": 12000
+      },
+      "templates": {
+        "type": "array",
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "purpose": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "input_guidance": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "example_brief": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "allowed_inputs": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "prompt_framework": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "prohibited_inputs": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "review_steps": {
+              "type": "array",
+              "maxItems": 100,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 12000
+                  },
+                  "label": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "required": [
+                  "id",
+                  "label"
+                ]
+              }
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "purpose",
+            "input_guidance",
+            "example_brief",
+            "allowed_inputs",
+            "prompt_framework",
+            "prohibited_inputs",
+            "review_steps"
+          ]
+        }
+      },
+      "disclaimer": {
+        "type": "string",
+        "maxLength": 12000
+      }
+    },
+    "required": [
+      "content_version",
+      "templates",
+      "disclaimer"
+    ]
+  }
+}

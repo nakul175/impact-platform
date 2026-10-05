@@ -1,0 +1,75 @@
+{
+  "id": "impact-references",
+  "title": "AI plans linked to governed Tola results",
+  "domain": "Impact evidence and AI adoption",
+  "owner": "/root/sprint_content",
+  "status": "REVIEWING",
+  "summary": "Isolated impact-reference backend and closed DTOs built; 47 pure checks pass and 25 governed-flow live cases prepared. Current core visibility gates and uniform opaque unavailable responses protect private pins.",
+  "next_step": "Integrate generic plan privacy/retention and routes after root authorizes the 0.32 commit checkpoint; qualify governed links and close reproduced current-classification gaps without changing historical figures.",
+  "eta": {
+    "earliest": "2026-10-05T10:15:00Z",
+    "latest": "2026-10-05T11:15:00Z",
+    "confidence": "MEDIUM",
+    "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+  },
+  "delivered": [
+    "One deliberate pinned Programme/Indicator/Definition/Period/Calendar/Snapshot reference per plan",
+    "Closed link/refresh/clear command creates an immutable plan revision and inherits only verified real guidance",
+    "Read model reuses governed official/provisional arithmetic and preserves absence until explicit refresh",
+    "47 pure regressions and 25 prepared live governed-flow cases",
+    "Real API diagnostic reproduced current Target and CollectionPlan classification bypasses while preserving frozen official values"
+  ],
+  "evidence": [
+    {
+      "title": "Impact-reference pure checks",
+      "path": "docs/evidence/nonprofit-ai-impact-reference-unit-tests.xml",
+      "result": "47 passed, 0 failed",
+      "scope": "Isolated synthetic backend; not wired into 0.32 routes/UI and not runtime/native/hosted qualification",
+      "recorded_at": "2026-10-05T09:41:24.875529Z"
+    },
+    {
+      "title": "Core current-classification diagnostic",
+      "path": "docs/evidence/nonprofit-ai-dashboard-visibility-reproduction.json",
+      "result": "Both Target and CollectionPlan current-classification bypasses reproduced",
+      "scope": "Two real local API diagnostic cases; confirms gaps, not passing security qualification or a fix",
+      "recorded_at": "2026-10-05T09:41:24.875529Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:41:24.906571Z",
+  "history": [
+    {
+      "at": "2026-10-05T09:15:38.984264Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 43 pure checks pass and 23 governed-flow live cases prepared. Dedicated result protects private core pins from generic AI-plan reads.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T09:20:06.200220Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 44 pure checks pass and 24 governed-flow live cases prepared. Uniform dedicated lookup authority prevents AI-only readers probing linked versus unlinked plans.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T09:41:24.906571Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 47 pure checks pass and 25 governed-flow live cases prepared. Current core visibility gates and uniform opaque unavailable responses protect private pins.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    }
+  ]
+}

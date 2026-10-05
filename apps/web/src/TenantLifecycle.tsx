@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, type FormEvent } from "react";
 import { InitialAccess } from "./InitialAccess";
 import { RecoveryContacts } from "./RecoveryContacts";
 import { AuthorityRenewal } from "./AuthorityRenewal";
+import { AccessUpgrade } from "./AccessUpgrade";
 import { Workers } from "./Workers";
 import { StatusBanner } from "./StatusBanner";
 import { Operators } from "./Operators";
@@ -39,6 +40,7 @@ export function TenantLifecycle({
   const [initialAccess, setInitialAccess] = useState(false);
   const [recoveryContacts, setRecoveryContacts] = useState(false);
   const [authorityRenewal, setAuthorityRenewal] = useState(false);
+  const [accessUpgrade, setAccessUpgrade] = useState(false);
   const [people, setPeople] = useState<any[]>([]);
   const retry = useRef({ key: "", operation: "" });
   useEffect(() => {
@@ -153,6 +155,18 @@ export function TenantLifecycle({
         close={() => setInitialAccess(false)}
       />
     );
+  if (accessUpgrade)
+    return (
+      <AccessUpgrade
+        request={request}
+        explain={explain}
+        identity={identity}
+        close={() => {
+          setAccessUpgrade(false);
+          refresh().catch((e) => setError(explain(e)));
+        }}
+      />
+    );
   if (authorityRenewal)
     return (
       <AuthorityRenewal
@@ -185,6 +199,9 @@ export function TenantLifecycle({
       </button>
       <button className="secondary" onClick={() => setAuthorityRenewal(true)}>
         Authority renewal
+      </button>
+      <button className="secondary" onClick={() => setAccessUpgrade(true)}>
+        Extend organisation access
       </button>
       <p>
         Review ownership and deployment policy before activation. Ownership does

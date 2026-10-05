@@ -252,3 +252,31 @@
     align-items: stretch;
   }
 }
+.ai-guidance-archive {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border, #d1d9d4);
+  border-radius: 0.75rem;
+}
+.ai-guidance-archive details {
+  margin: 0.75rem 0;
+}
+.ai-guidance-archive summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.ai-guidance-archive article {
+  padding: 0.5rem 0;
+}
+.ai-guidance-archive label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+}
+.ai-guidance-archive select {
+  width: 100%;
+  min-width: 0;
+}
+.ai-archive-hash {
+  overflow-wrap: anywhere;
+}

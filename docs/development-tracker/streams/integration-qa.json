@@ -1,0 +1,134 @@
+{
+  "id": "integration-qa",
+  "title": "Integration, review and qualification",
+  "domain": "One combined platform",
+  "owner": "/root",
+  "status": "REVIEWING",
+  "summary": "Full native regression: 1,689 passed; actual API restart, backup/restore and populated 33→37 upgrade passed. Full PGlite regression: 1,633 passed. Integrated browser: 13 groups passed. Final source-bound checkpoint documentation is under review.",
+  "next_step": "Record source/evidence manifest, finish tracker refresh and save the 0.32 review checkpoint before wiring the next increment.",
+  "eta": {
+    "earliest": "2026-10-05T10:00:00Z",
+    "latest": "2026-10-05T10:30:00Z",
+    "confidence": "HIGH",
+    "basis": "All bounded product gates pass locally; documentation, final integrity review and commit remain."
+  },
+  "delivered": [
+    "Platform and domain route/contract registration",
+    "Access extension review UI and lifecycle entry",
+    "Saved guidance history viewer with independent draft state"
+  ],
+  "evidence": [
+    {
+      "title": "Prepared native PostgreSQL test environment",
+      "path": "docs/evidence/sprint-0.32-native-environment.json",
+      "result": "PREPARED_NOT_QUALIFIED",
+      "scope": "Verified official17.11 source, isolated local server, no product qualification assertion",
+      "recorded_at": "2026-10-05T08:54:22.266378Z"
+    },
+    {
+      "title": "Focused actual native runtime-login qualification",
+      "path": "docs/evidence/sprint-0.32-focused-native-qualification.json",
+      "result": "PASS_193_NO_SKIPS",
+      "scope": "Actual PostgreSQL17.11 and NOINHERIT runtime logins; focused only, no hosted/container/live IdP acceptance",
+      "recorded_at": "2026-10-05T09:14:46.452128Z"
+    },
+    {
+      "title": "Final integrated browser journeys",
+      "path": "docs/evidence/sprint-0.32-browser-tests.json",
+      "result": "PASS_13_GROUPS_SEVEN_CLEAN_SCANS",
+      "scope": "Real local API/database and Chrome; synthetic historical setup and dropped/aborted responses labelled; no hosted/manual accessibility/UAT acceptance",
+      "recorded_at": "2026-10-05T09:32:23.373602Z"
+    },
+    {
+      "title": "Actual Mac process-environment check",
+      "path": "docs/evidence/sprint-0.32-process-environment-unit.xml",
+      "result": "PASS_12",
+      "scope": "Parser and actual synthetic-child kernel inspection; final actual API restart phases also pass.",
+      "recorded_at": "2026-10-05T09:32:23.373602Z"
+    },
+    {
+      "title": "Final full native PostgreSQL qualification",
+      "path": "docs/evidence/sprint-0.32-full-native-qualification.json",
+      "result": "PASS_1689_RESTART_RESTORE_UPGRADE",
+      "scope": "PostgreSQL 17.11 actual NOINHERIT runtime logins; 26 explicit skips and one deselection; restart, restored database and populated schema upgrade pass. Local Mac only.",
+      "recorded_at": "2026-10-05T09:45:06.984556Z"
+    },
+    {
+      "title": "Final full PGlite regression",
+      "path": "docs/evidence/sprint-0.32-full-local-tests.xml",
+      "result": "PASS_1633_NO_FAILURES",
+      "scope": "82 explicit skips and one deselection; all seven old Mac operations failures resolved. Does not establish native-login security.",
+      "recorded_at": "2026-10-05T09:45:06.984638Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:45:06.985119Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:37:23Z",
+      "status": "INSPECTING",
+      "summary": "Coordinating isolated ownership and the first wave of development.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Estimate will follow stable interfaces and evidence from the first backend streams."
+      }
+    },
+    {
+      "at": "2026-10-05T08:42:17.425678Z",
+      "status": "BUILDING",
+      "summary": "Access review screens and exact-revision guidance viewer are connected to the shared platform; generated contracts now describe both increments.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:00:00Z",
+        "confidence": "LOW",
+        "basis": "First integrated local review checkpoint, depending on both backend focused qualification and security review; native, hosted and nonprofit acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:54:22.266935Z",
+      "status": "REVIEWING",
+      "summary": "Web build and type checks pass. Review is correcting role revocation preservation, signed access cursors and registered-profile SQL checks. Native PostgreSQL17.11 is prepared for final permission qualification.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:00:00Z",
+        "confidence": "LOW",
+        "basis": "First integrated local review checkpoint, depending on both backend focused qualification and security review; native, hosted and nonprofit acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:14:46.452575Z",
+      "status": "REVIEWING",
+      "summary": "All 193 focused native database checks pass with actual runtime logins. Both additive migrations are frozen and ledgered. Full native regression, restart/restore/upgrade and real browser journeys are running.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First local review checkpoint; focused native193 pass and web build pass; full native suite, browser and final documentation remain."
+      }
+    },
+    {
+      "at": "2026-10-05T09:32:23.374142Z",
+      "status": "REVIEWING",
+      "summary": "Full native regression passed1,677 checks with no failures; restore and populated33→37 upgrade passed. The Linux-only restart inspector was corrected to use actual Mac kernel data;12 qualification checks pass and full native rerun is underway. Final browser13 groups passed.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First local review checkpoint; focused native193 pass and web build pass; full native suite, browser and final documentation remain."
+      }
+    },
+    {
+      "at": "2026-10-05T09:45:06.985119Z",
+      "status": "REVIEWING",
+      "summary": "Full native regression: 1,689 passed; actual API restart, backup/restore and populated 33→37 upgrade passed. Full PGlite regression: 1,633 passed. Integrated browser: 13 groups passed. Final source-bound checkpoint documentation is under review.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "HIGH",
+        "basis": "All bounded product gates pass locally; documentation, final integrity review and commit remain."
+      }
+    }
+  ]
+}

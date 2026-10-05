@@ -1063,6 +1063,70 @@ ADDED_027 = {
 for _key, (_sentence, _paths) in ADDED_027.items():
     _description, _evidence = partial[_key]
     partial[_key] = (_description + " " + _sentence, _evidence + [p for p in _paths if p not in _evidence])
+
+# Build 0.32 records support for existing PARTIAL requirements without changing their status.
+ADDED_032 = {
+    "FR-TEN-001": (
+        "Local review build 0.32 adds owner-proposed, named-second-consented, independent-operator-reviewed "
+        "capability extension to an immutable registered monotonic profile. Current authority pins, "
+        "revoked capabilities, role omissions and expiries remain preserved; nothing applies automatically. "
+        "Focused actual native checks and real browser decisions are recorded, without hosted or owner acceptance.",
+        [
+            "apps/api/impact_api/access_upgrade.py",
+            "apps/web/src/AccessUpgrade.tsx",
+            "infrastructure/migrations/0036_reviewed_ceiling_widening.sql",
+            "qualification/test_access_upgrade.py",
+            "docs/evidence/sprint-0.32-focused-native-qualification.json",
+            "docs/evidence/sprint-0.32-browser-tests.json",
+            "docs/RELEASE-0.32-tola-ai-sprint.md",
+        ],
+    ),
+    "FR-IAM-009": (
+        "Local review build 0.32 adds reviewed capability widening from the last applied registered profile. "
+        "Only newly introduced deltas enter current managed roles and ceilings; removed capabilities, "
+        "retired roles and expiry dates are not restored. Current scoped authority precedes receipt replay. "
+        "Full identity lifecycle and the original acceptance criteria remain open.",
+        [
+            "apps/api/impact_api/access_upgrade.py",
+            "qualification/test_access_upgrade.py",
+            "qualification/test_access_upgrade_unit.py",
+            "infrastructure/migrations/0036_reviewed_ceiling_widening.sql",
+            "docs/evidence/sprint-0.32-focused-native-tests.xml",
+            "docs/RELEASE-0.32-tola-ai-sprint.md",
+        ],
+    ),
+    "FR-SEC-003": (
+        "Local review build 0.32 records actual PostgreSQL17.11 runtime-login checks for insert-only, "
+        "forced-RLS guidance bundles and exact plan bindings, and platform-only registered-profile "
+        "application. Direct negative tests activate the intended NOINHERIT role instead of failing "
+        "before their predicate. This is bounded local evidence, not complete isolation or production acceptance.",
+        [
+            "apps/api/impact_api/ai_content_archives.py",
+            "infrastructure/migrations/0037_ai_content_snapshots.sql",
+            "qualification/test_ai_content_archives_live.py",
+            "qualification/test_access_upgrade.py",
+            "docs/evidence/sprint-0.32-focused-native-qualification.json",
+            "docs/RELEASE-0.32-tola-ai-sprint.md",
+        ],
+    ),
+}
+for _key, (_sentence, _paths) in ADDED_032.items():
+    _description, _evidence = partial[_key]
+    partial[_key] = (_description + " " + _sentence, _evidence + [p for p in _paths if p not in _evidence])
+
+pending_notes["FR-OPS-001"] += (
+    " Local review build 0.32 records GNU/BSD backup/restore portability through 61 synthetic unit checks. "
+    "These do not execute this requirement's operational-search/suspension acceptance scenario; status stays PENDING."
+)
+pending_evidence_032 = {
+    "FR-OPS-001": [
+        "deploy/backup.sh",
+        "deploy/drill_restore.sh",
+        "qualification/test_ops_unit.py",
+        "docs/evidence/sprint-0.32-ops-unit.xml",
+        "docs/RELEASE-0.32-tola-ai-sprint.md",
+    ]
+}
 requirements = []
 for group in ["functional", "nonfunctional"]:
     for req in catalogue[group]:
@@ -1073,7 +1137,7 @@ for group in ["functional", "nonfunctional"]:
                     req["id"],
                     "No complete implementation and acceptance evidence mapped. Retain the original acceptance criteria; this requirement remains open.",
                 ),
-                [],
+                pending_evidence_032.get(req["id"], []),
             ),
         )
         requirements.append(
@@ -1095,7 +1159,7 @@ for requirement in requirements:
 summary = dict(Counter(r["status"] for r in requirements))
 result = {
     "build": json.loads((ROOT / "VERSION.json").read_text())["build"],
-    "assessment_date": "2026-10-03",
+    "assessment_date": "2026-10-05",
     "enterprise_complete": False,
     "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",
     "summary": summary,

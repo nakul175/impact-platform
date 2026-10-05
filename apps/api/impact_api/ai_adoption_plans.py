@@ -6,6 +6,7 @@ from uuid import UUID
 
 from psycopg.types.json import Jsonb
 
+from . import ai_content_archives
 from .ai_enablement_catalog import CONTENT_VERSION as CATALOG_VERSION
 from .ai_enablement_catalog import validate_profile
 from .ai_learning_content import LEGACY_LESSON_ALIASES, canonical_lesson_key, lesson_keys
@@ -115,7 +116,7 @@ def _request(body, update):
         _uuid(body["expected_revision"])
 
 
-def _content_compatibility(payload):
+def _content_compatibility(payload, historical_snapshots_available=False):
     """Interpret progress for readers; never rewrite stored revisions or archive claims."""
     current = {"catalog": CATALOG_VERSION, "solutions": SOLUTIONS_VERSION}
     saved = payload.get("content_versions", {})
@@ -142,7 +143,7 @@ def _content_compatibility(payload):
         "learning_completed": completed,
         "legacy_learning_keys": legacy,
         "unavailable_learning_keys": unavailable,
-        "historical_snapshots_available": False,
+        "historical_snapshots_available": historical_snapshots_available,
     }
 
 
@@ -152,7 +153,9 @@ def _result(row):
         "revision_id": str(row["head_revision"]),
         "business_state": row["lifecycle_state"],
         "data": deepcopy(row["payload"]),
-        "content_compatibility": _content_compatibility(row["payload"]),
+        "content_compatibility": _content_compatibility(
+            row["payload"], bool(row.get("historical_snapshots_available"))
+        ),
     }
 
 
@@ -165,7 +168,77 @@ class AIAdoptionPlans:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "get_ai_adoption_plan", object_id, hidden=True)
-            return _result(load(c, ctx, object_id, KIND, READ_CAP))
+            row = dict(load(c, ctx, object_id, KIND, READ_CAP))
+            row["historical_snapshots_available"] = ai_content_archives.availability(
+                c, tenant, object_id, row["head_revision"]
+            )
+            return _result(row)
+
+    def guidance(self, identity, tenant, object_id, revision_id):
+        _uuid(object_id)
+        _uuid(revision_id)
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, "get_ai_adoption_guidance", object_id, hidden=True)
+            load(c, ctx, object_id, KIND, READ_CAP)
+            row = c.execute(
+                "SELECT payload FROM impact.object_revision WHERE tenant_id=%s "
+                "AND object_id=%s AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
+                (tenant, object_id, revision_id, KIND),
+            ).fetchone()
+            if not row:
+                raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            return ai_content_archives.result(c, tenant, object_id, revision_id, row["payload"])
+
+    def history(self, identity, tenant, object_id, limit=50, cursor=None):
+        _uuid(object_id)
+        if type(limit) is not int or not 1 <= limit <= 100:
+            _invalid()
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, "list_ai_adoption_revisions", object_id, hidden=True)
+            load(c, ctx, object_id, KIND, READ_CAP)
+            bound = self.service.cursor_binding(ctx, ROUTE + "/" + object_id + "/revisions")
+            key = self.service.cursor_key(bound, cursor)
+            if key is not None and (
+                not isinstance(key, list) or len(key) != 1 or type(key[0]) is not int or key[0] < 1
+            ):
+                raise DomainError("INVALID_CURSOR", 400)
+            query = (
+                "SELECT v.revision_id,v.revision_number,v.created_at,v.payload->>'title' AS title,"
+                "s.snapshot_id AS archive_id,s.payload AS archived_guidance,"
+                "s.payload_sha256 AS archive_sha256,s.schema_version AS archive_schema_version "
+                "FROM impact.object_revision v "
+                "LEFT JOIN impact.ai_plan_content_binding b ON b.tenant_id=v.tenant_id "
+                "AND b.object_id=v.object_id AND b.revision_id=v.revision_id "
+                "LEFT JOIN impact.ai_content_snapshot s ON s.tenant_id=b.tenant_id AND s.snapshot_id=b.snapshot_id "
+                "WHERE v.tenant_id=%s AND v.object_id=%s AND v.object_type=%s "
+                "AND v.restriction_state='AVAILABLE'"
+            )
+            params = [tenant, object_id, KIND]
+            if key is not None:
+                query += " AND v.revision_number<%s"
+                params.append(key[0])
+            query += " ORDER BY v.revision_number DESC LIMIT %s"
+            params.append(limit + 1)
+            rows = c.execute(query, params).fetchall()
+            page = rows[:limit]
+            return {
+                "object_id": object_id,
+                "items": [
+                    {
+                        "revision_id": str(row["revision_id"]),
+                        "revision_number": row["revision_number"],
+                        "saved_at": row["created_at"].isoformat(),
+                        "title": row["title"],
+                        "historical_snapshots_available": ai_content_archives.joined_availability(row),
+                    }
+                    for row in page
+                ],
+                "next_cursor": self.service.next_cursor(bound, [page[-1]["revision_number"]])
+                if len(rows) > limit
+                else None,
+            }
 
     def listing(self, identity, tenant, limit=50, cursor=None):
         if type(limit) is not int or not 1 <= limit <= 100:
@@ -186,9 +259,15 @@ class AIAdoptionPlans:
                     raise DomainError("INVALID_CURSOR", 400) from None
             predicate, args = visible_sql(ctx, READ_CAP)
             query = (
-                "SELECT r.*,v.payload FROM impact.object_registry r "
+                "SELECT r.*,v.payload,s.snapshot_id AS archive_id,s.payload AS archived_guidance,"
+                "s.payload_sha256 AS archive_sha256,s.schema_version AS archive_schema_version "
+                "FROM impact.object_registry r "
                 "JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.object_id=r.object_id "
-                "AND v.revision_id=r.head_revision WHERE r.tenant_id=%s AND r.object_type=%s "
+                "AND v.revision_id=r.head_revision "
+                "LEFT JOIN impact.ai_plan_content_binding b ON b.tenant_id=r.tenant_id "
+                "AND b.object_id=r.object_id AND b.revision_id=r.head_revision "
+                "LEFT JOIN impact.ai_content_snapshot s ON s.tenant_id=b.tenant_id AND s.snapshot_id=b.snapshot_id "
+                "WHERE r.tenant_id=%s AND r.object_type=%s "
                 "AND r.classification<>'RESTRICTED' AND v.restriction_state='AVAILABLE' AND " + predicate
             )
             params = [tenant, KIND, *args]
@@ -199,6 +278,8 @@ class AIAdoptionPlans:
             params.append(limit + 1)
             rows = c.execute(query, params).fetchall()
             page = rows[:limit]
+            for row in page:
+                row["historical_snapshots_available"] = ai_content_archives.joined_availability(row)
             return {
                 "items": [_result(row) for row in page],
                 "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])])
@@ -273,6 +354,7 @@ class AIAdoptionPlans:
             ]
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
+            ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning)
             audit(c, ctx, operation, receipt, correlation)
             c.execute(
                 "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",

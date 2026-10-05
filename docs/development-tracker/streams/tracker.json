@@ -1,0 +1,96 @@
+{
+  "id": "tracker",
+  "title": "Live ETA and evidence tracker",
+  "domain": "Shared platform operations",
+  "owner": "/root/sprint_tracker",
+  "status": "COMPLETE",
+  "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
+  "next_step": "The integrator maintains live rollups; this agent has delivered Mac portability and 0.32 browser checks, and is handing off the isolated 0.33 programme-evidence UI while independently reviewing host-kernel environment qualification.",
+  "eta": {
+    "earliest": "2026-10-05T08:52:49.552668Z",
+    "latest": "2026-10-05T08:52:49.552668Z",
+    "confidence": "HIGH",
+    "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+  },
+  "delivered": [
+    "Loopback-only live dashboard with five-second polling, IST/UTC deadline and stale/overdue source indicators.",
+    "Atomic, closed-schema one-writer status updates with bounded history and named evidence.",
+    "Consolidated index of 307 Tola and 40 AI source requirements across 14 shared domains, with no global completion percentage.",
+    "Desktop and mobile dashboard checks, keyboard/focus preservation and explicit unavailable-source behavior."
+  ],
+  "evidence": [
+    {
+      "title": "Offline tracker qualification",
+      "path": "docs/development-tracker/tracker-unit-tests.xml",
+      "result": "42 PASSED",
+      "scope": "Supporting tracker only: atomic preservation, source reload, closed fields, bounded counts, strict Host refusal, source scope deduplication, and zero/nonzero increment counts preserved as elapsed time changes.",
+      "recorded_at": "2026-10-05T09:36:37.630073Z"
+    },
+    {
+      "title": "Local Chrome dashboard qualification",
+      "path": "docs/development-tracker/browser-evidence.json",
+      "result": "15 GROUPS PASSED",
+      "scope": "Final hardened loopback server: 15 groups, real wrong-Host refusal, actual desktop/mobile and explicitly synthetic source cases; two axe scans with zero violations/incomplete, no uncaught JS errors.",
+      "recorded_at": "2026-10-05T08:50:43.663Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:36:37.734633Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:37:23Z",
+      "status": "BUILDING",
+      "summary": "Creating a file-backed dashboard, atomic status updates and a consolidated scope index.",
+      "eta": {
+        "earliest": "2026-10-05T08:42:00Z",
+        "latest": "2026-10-05T08:57:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Initial 15–30 minute bounded tracker forecast."
+      }
+    },
+    {
+      "at": "2026-10-05T08:46:08.833688Z",
+      "status": "COMPLETE",
+      "summary": "The live tracker is built and verified locally: 30 offline checks and 15 browser groups passed. Actual file-backed polling, named evidence and deadline forecasts are visible.",
+      "eta": {
+        "earliest": "2026-10-05T08:46:08.833404Z",
+        "latest": "2026-10-05T08:46:08.833404Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker completed after actual local qualification; no product acceptance is inferred."
+      }
+    },
+    {
+      "at": "2026-10-05T08:49:27.777910Z",
+      "status": "TESTING",
+      "summary": "The live tracker passed 41 offline checks after adding strict loopback Host validation. Final browser checks will run on the restarted server.",
+      "eta": {
+        "earliest": "2026-10-05T08:55:00Z",
+        "latest": "2026-10-05T09:00:00Z",
+        "confidence": "HIGH",
+        "basis": "The bounded tracker is implemented; final local browser recheck awaits its server restart."
+      }
+    },
+    {
+      "at": "2026-10-05T08:52:49.555288Z",
+      "status": "COMPLETE",
+      "summary": "The hardened live tracker is locally complete: 41 offline checks and 15 browser groups passed, including real wrong-Host refusal. Source/evidence hashes and readable desktop/mobile captures are recorded.",
+      "eta": {
+        "earliest": "2026-10-05T08:52:49.552668Z",
+        "latest": "2026-10-05T08:52:49.552668Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+      }
+    },
+    {
+      "at": "2026-10-05T09:36:37.734633Z",
+      "status": "COMPLETE",
+      "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
+      "eta": {
+        "earliest": "2026-10-05T08:52:49.552668Z",
+        "latest": "2026-10-05T08:52:49.552668Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+      }
+    }
+  ]
+}

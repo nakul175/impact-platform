@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "title": "Tola + AI · eight-hour development sprint",
+  "branch": "integration/0.32-tola-ai-sprint",
+  "started_at": "2026-10-05T08:27:26Z",
+  "deadline": "2026-10-05T16:27:26Z",
+  "updated_at": "2026-10-05T09:45:58.241701Z",
+  "status": "ACTIVE",
+  "active_agent_limit": 4,
+  "stream_ids": [
+    "tracker",
+    "access-ceilings",
+    "content-archive",
+    "integration-qa",
+    "ops-portability",
+    "impact-references",
+    "human-advice"
+  ],
+  "rollup": {
+    "summary": "Checkpoint 0.32 local gates pass: native 1,689, PGlite 1,633, product browser 13 groups. Source manifest and review commit are being recorded. Next increment prepares governed programme evidence links and consent-based internal human advice.",
+    "planned_increments": 5,
+    "integrated_increments": 3,
+    "verified_increments": 0,
+    "active_agents": 4,
+    "next_checkpoint": "2026-10-05T10:00:00Z"
+  },
+  "limits": [
+    "The eight-hour deadline is a work window, not a promise that the complete platform will be finished.",
+    "There are four active-agent slots including integration; additional workstreams will run in waves.",
+    "ETA ranges are forecasts from agents and can change after inspection, review and testing.",
+    "Local implementation and passing tests do not establish production acceptance. Native, hosted, container and nonprofit UAT gates remain separate.",
+    "Paid provider calls, paid CI, merging and deployment need the owner’s separate approval.",
+    "The original requirement registers and their acceptance statuses remain unchanged; no overall completion percentage is inferred."
+  ]
+}

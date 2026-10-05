@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT / "apps/api"))
 from impact_api.contracts import SPEC  # noqa: E402
 from impact_api.ai_enablement_contracts import IMPLEMENTED as AI_ENABLEMENT_ROUTES  # noqa: E402
 from impact_api.ai_adoption_contracts import IMPLEMENTED as AI_ADOPTION_ROUTES  # noqa: E402
+from impact_api.ai_content_contracts import IMPLEMENTED as AI_CONTENT_ROUTES  # noqa: E402
 from impact_api.ai_planning_contracts import IMPLEMENTED as AI_PLANNING_ROUTES  # noqa: E402
 from impact_api.service import READ_ROUTES, WRITE_ROUTES, ACTIONS  # noqa: E402
 from impact_api.administration_contracts import COMMANDS, ADMIN_READS  # noqa: E402
@@ -73,6 +74,7 @@ for route, action in COMMANDS:
 spec = json.loads(json.dumps(SPEC))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ENABLEMENT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ADOPTION_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_CONTENT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_PLANNING_ROUTES)
 spec["info"]["title"] = "Impact Platform — implemented domain API"
 spec["info"]["description"] = (

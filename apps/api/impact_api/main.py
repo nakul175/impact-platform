@@ -23,6 +23,7 @@ from .store import Database
 from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
+from .access_upgrade import AccessUpgrade
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
@@ -107,6 +108,7 @@ def create_app():
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
+    access_upgrade = AccessUpgrade(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
@@ -300,6 +302,32 @@ def create_app():
         body = await strict_body(request)
         return await run_in_threadpool(
             bootstrap_access.command, auth.resolve(request), action, body, None, uuid(request_id)
+        )
+
+    @app.get("/v1/platform/access-upgrades")
+    def access_upgrade_directory(request: Request, cursor: str | None = None):
+        return access_upgrade.directory(auth.resolve(request), after=cursor)
+
+    @app.get("/v1/platform/tenants/{tenant_id}/access-upgrades")
+    def tenant_access_upgrades(request: Request, tenant_id: str, cursor: str | None = None):
+        return access_upgrade.directory(auth.resolve(request), uuid(tenant_id), cursor)
+
+    @app.get("/v1/platform/tenants/{tenant_id}/access-upgrade-preview")
+    def access_upgrade_preview(request: Request, tenant_id: str):
+        return access_upgrade.preview(auth.resolve(request), uuid(tenant_id))
+
+    @app.post("/v1/platform/tenants/{tenant_id}/access-upgrade")
+    async def request_access_upgrade(request: Request, tenant_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            access_upgrade.command, auth.resolve(request), "request", body, uuid(tenant_id)
+        )
+
+    @app.post("/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/{action}")
+    async def access_upgrade_action(request: Request, tenant_id: str, request_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            access_upgrade.command, auth.resolve(request), action, body, uuid(tenant_id), uuid(request_id)
         )
 
     @app.get("/v1/platform/authority-renewals")
@@ -513,6 +541,14 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}")
     def ai_plan_get(request: Request, tenant: str, obj: str):
         return ai_plans.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions/{revision_id}/guidance")
+    def ai_plan_guidance(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_plans.guidance(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions")
+    def ai_plan_history(request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None):
+        return ai_plans.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/plans", status_code=201)
     async def ai_plan_create(request: Request, tenant: str):

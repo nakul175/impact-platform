@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.22.0",
+    "version": "1.23.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -42607,6 +42607,212 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance": {
+      "get": {
+        "operationId": "get_ai_adoption_guidance",
+        "summary": "Read editorial guidance captured for an exact saved adoption-plan revision",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.23.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Actual archived guidance or explicit historical unavailability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanGuidance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions": {
+      "get": {
+        "operationId": "list_ai_adoption_revisions",
+        "summary": "List available saved revisions of a currently readable adoption plan",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.23.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Actual archived guidance or explicit historical unavailability",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionRevisionList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing revisions are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend": {
       "parameters": [
         {
@@ -70378,7 +70584,7 @@
             "maxItems": 100
           },
           "historical_snapshots_available": {
-            "const": false
+            "type": "boolean"
           }
         },
         "required": [
@@ -70449,6 +70655,873 @@
           "saved_at",
           "operation_id",
           "correlation_id"
+        ]
+      },
+      "AIArchivedCatalogV1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "content_version": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "type": "string",
+                "maxLength": 12000
+              },
+              "validated_demand": {
+                "type": "boolean"
+              },
+              "source_concept": {
+                "type": "string",
+                "maxLength": 12000
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "required": [
+              "status",
+              "validated_demand",
+              "source_concept",
+              "note"
+            ]
+          },
+          "journey": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "purpose": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "human_owner": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "purpose",
+                "human_owner"
+              ]
+            }
+          },
+          "use_cases": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "sectors": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "kind": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "data_requirement": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "sensitivity": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "goal_keywords": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "prerequisites": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "acceptance_checks": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "human_approval_needs": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "content_status": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "sectors",
+                "description",
+                "kind",
+                "data_requirement",
+                "sensitivity",
+                "goal_keywords",
+                "prerequisites",
+                "acceptance_checks",
+                "human_approval_needs",
+                "content_status"
+              ]
+            }
+          },
+          "learning_paths": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "steps": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "lessons": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "title": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "lesson": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "exercise": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "check": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "question": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "options": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "string",
+                              "maxLength": 12000
+                            }
+                          },
+                          "answer": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 1000000
+                          },
+                          "explanation": {
+                            "type": "string",
+                            "maxLength": 12000
+                          }
+                        },
+                        "required": [
+                          "question",
+                          "options",
+                          "answer",
+                          "explanation"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "title",
+                      "lesson",
+                      "exercise",
+                      "check"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "steps",
+                "lessons"
+              ]
+            }
+          },
+          "procurement_criteria": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "questions": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "questions"
+              ]
+            }
+          },
+          "marketplace_status": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "type": "string",
+                "maxLength": 12000
+              },
+              "vendors": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "explanation": {
+                "type": "string",
+                "maxLength": 12000
+              }
+            },
+            "required": [
+              "status",
+              "vendors",
+              "explanation"
+            ]
+          }
+        },
+        "required": [
+          "schema_version",
+          "content_version",
+          "provenance",
+          "journey",
+          "use_cases",
+          "learning_paths",
+          "procurement_criteria",
+          "marketplace_status"
+        ]
+      },
+      "AIArchivedSolutionsV1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "checked_on": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "solutions": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "provider": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "category": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "use_case_ids": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "deployment": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "commercial_model": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "nonprofit_offer": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "api_available": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "source_urls": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "url": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "url"
+                    ]
+                  }
+                },
+                "verification_notes": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "data_review_questions": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "provider",
+                "category",
+                "use_case_ids",
+                "description",
+                "deployment",
+                "commercial_model",
+                "nonprofit_offer",
+                "api_available",
+                "source_urls",
+                "verification_notes",
+                "data_review_questions"
+              ]
+            }
+          },
+          "comparison_criteria": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "prompt": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "prompt"
+              ]
+            }
+          }
+        },
+        "required": [
+          "content_version",
+          "checked_on",
+          "explanation",
+          "solutions",
+          "comparison_criteria"
+        ]
+      },
+      "AIArchivedPracticeV1": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "templates": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "purpose": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "input_guidance": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "example_brief": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "allowed_inputs": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "prompt_framework": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "prohibited_inputs": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "review_steps": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "label": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "purpose",
+                "input_guidance",
+                "example_brief",
+                "allowed_inputs",
+                "prompt_framework",
+                "prohibited_inputs",
+                "review_steps"
+              ]
+            }
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 12000
+          }
+        },
+        "required": [
+          "content_version",
+          "templates",
+          "disclaimer"
+        ]
+      },
+      "AIAdoptionPlanGuidance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "COMPLETE",
+              "PARTIAL",
+              "UNAVAILABLE"
+            ]
+          },
+          "snapshot_schema_version": {
+            "enum": [
+              "nonprofit-ai-guidance-v1",
+              null
+            ]
+          },
+          "captured_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "snapshot_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "catalog": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "AVAILABLE"
+                  },
+                  "content_version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "$ref": "#/components/schemas/AIArchivedCatalogV1"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              }
+            ]
+          },
+          "solutions": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "AVAILABLE"
+                  },
+                  "content_version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "$ref": "#/components/schemas/AIArchivedSolutionsV1"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              }
+            ]
+          },
+          "practice": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "AVAILABLE"
+                  },
+                  "content_version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "$ref": "#/components/schemas/AIArchivedPracticeV1"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              }
+            ]
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "status",
+          "snapshot_schema_version",
+          "captured_at",
+          "snapshot_sha256",
+          "catalog",
+          "solutions",
+          "practice",
+          "disclaimer"
+        ]
+      },
+      "AIAdoptionRevision": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "historical_snapshots_available": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "revision_id",
+          "revision_number",
+          "saved_at",
+          "title",
+          "historical_snapshots_available"
+        ]
+      },
+      "AIAdoptionRevisionList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIAdoptionRevision"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "items",
+          "next_cursor"
         ]
       },
       "CreateReportingCalendarData": {

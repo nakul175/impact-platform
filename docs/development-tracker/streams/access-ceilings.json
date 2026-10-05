@@ -1,0 +1,107 @@
+{
+  "id": "access-ceilings",
+  "title": "Reviewed tenant access upgrades",
+  "domain": "Tola core · shared access",
+  "owner": "/root/sprint_access",
+  "status": "COMPLETE",
+  "summary": "Scoped access upgrade slice handed off: local, provisioned-login PostgreSQL and real browser checks passed. Full platform deployment/acceptance remains separate.",
+  "next_step": "Integrator records final source manifest and wider release regression; access slice remains frozen.",
+  "eta": {
+    "earliest": "2026-10-05T09:00:00Z",
+    "latest": "2026-10-05T09:15:00Z",
+    "confidence": "HIGH",
+    "basis": "Backend, frozen migration and focused local evidence delivered at 09:03 UTC. Integrator native/browser/full deployment qualification excluded."
+  },
+  "delivered": [
+    "Closed owner proposal, exact second administrator consent and independent current platform approval flow.",
+    "Frozen additive 0036 migration, immutable deployment profile registry, monotonic per-role and purpose-bound validation.",
+    "Existing expiry dates, revoked capabilities and managed role omissions preserved; approval transaction is atomic.",
+    "Bounded review inbox with signed identity, route, tenant and current-visibility cursors; renewal and upgrade pending guards.",
+    "Isolated release note, source-hash evidence manifest and focused local reports."
+  ],
+  "evidence": [
+    {
+      "title": "Pure access upgrade contract and profile checks",
+      "path": "docs/evidence/sprint-0.32-access-upgrade-unit.xml",
+      "result": "20 passed; 0 failed",
+      "scope": "Pure closed DTOs, compatibility and exact registry seed equality; no database or provider.",
+      "recorded_at": "2026-10-05T09:00:00Z"
+    },
+    {
+      "title": "Focused local access upgrade and renewal qualification",
+      "path": "docs/evidence/sprint-0.32-access-upgrade-local-tests.xml",
+      "result": "62 passed; 4 native-only skips; 0 failed",
+      "scope": "PGlite and actual local HTTP API. Upgrade: 33 passed/4 skips; renewal: 29 passed. Not native concurrency or deployment evidence.",
+      "recorded_at": "2026-10-05T09:01:00Z"
+    },
+    {
+      "title": "Frozen access slice evidence and source hashes",
+      "path": "docs/evidence/sprint-0.32-access-upgrade-evidence.json",
+      "result": "Migration and owned source hashes recorded",
+      "scope": "0036 frozen hash and focused evidence provenance; native tests pending; no live tenant access changed.",
+      "recorded_at": "2026-10-05T09:03:00Z"
+    },
+    {
+      "title": "Focused native PostgreSQL qualification",
+      "path": "docs/evidence/sprint-0.32-focused-native-qualification.json",
+      "result": "193 passed; zero failures/errors/skips across the combined focused native run",
+      "scope": "Actual PostgreSQL 17.11 provisioned NOINHERIT runtime logins, including all 37 access upgrade cases; not hosted identity/container/deployment acceptance.",
+      "recorded_at": "2026-10-05T09:12:48Z"
+    },
+    {
+      "title": "Real local access and archive browser qualification",
+      "path": "docs/evidence/sprint-0.32-browser-tests.json",
+      "result": "13 checks passed; no accessibility violations or unexpected browser errors",
+      "scope": "Real FastAPI/UI on disposable PGlite, including three-person access upgrade, lost-response retry, unchanged expiry and unrelated-person hiding. Native-login security is separate.",
+      "recorded_at": "2026-10-05T09:19:21.935Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:28:44.534091Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:37:23Z",
+      "status": "INSPECTING",
+      "summary": "Inspecting the existing tenant-ceiling design and immutable approval boundaries.",
+      "eta": {
+        "earliest": "2026-10-05T10:30:00Z",
+        "latest": "2026-10-05T11:30:00Z",
+        "confidence": "LOW",
+        "basis": "Backend estimate: 2–3 hours from 08:30 UTC; integration and hosted qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:39:28.514151Z",
+      "status": "BUILDING",
+      "summary": "Closed contracts and reviewed-widening backend drafted; the additive database change preserves existing expiries and blocks restoration of old revoked capabilities.",
+      "eta": {
+        "earliest": "2026-10-05T10:30:00Z",
+        "latest": "2026-10-05T11:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend, migration and focused local evidence only; independent integration and native/hosted qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:03:08.438991Z",
+      "status": "REVIEWING",
+      "summary": "Reviewed access upgrades implemented and locally qualified: 20 unit checks plus 62 integration checks passed; 4 provisioned-login native checks await integration.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:15:00Z",
+        "confidence": "HIGH",
+        "basis": "Backend, frozen migration and focused local evidence delivered at 09:03 UTC. Integrator native/browser/full deployment qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:28:44.534091Z",
+      "status": "COMPLETE",
+      "summary": "Scoped access upgrade slice handed off: local, provisioned-login PostgreSQL and real browser checks passed. Full platform deployment/acceptance remains separate.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:15:00Z",
+        "confidence": "HIGH",
+        "basis": "Backend, frozen migration and focused local evidence delivered at 09:03 UTC. Integrator native/browser/full deployment qualification excluded."
+      }
+    }
+  ]
+}

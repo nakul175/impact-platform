@@ -1,0 +1,130 @@
+{
+  "id": "content-archive",
+  "title": "Historical AI content snapshots",
+  "domain": "AI extension · maintained content",
+  "owner": "/root/sprint_content",
+  "status": "COMPLETE",
+  "summary": "Historical guidance archive completed for bounded local backend/browser scope. 93 pure and 79 focused PGlite checks pass; combined native focused suite passes 193 and local browser suite passes 13.",
+  "next_step": "Parent final source manifest and overall integration checkpoint; full restart/restore qualification remains in integration-qa. Continue impact-reference stream separately.",
+  "eta": {
+    "earliest": "2026-10-05T09:00:00Z",
+    "latest": "2026-10-05T09:25:00Z",
+    "confidence": "MEDIUM",
+    "basis": "Backend is ready for final focused runner after migration freeze; includes review and handoff, excludes shared release/native/hosted qualification."
+  },
+  "delivered": [
+    "Forced-RLS immutable archive and exact plan-revision binding in additive migration 0037",
+    "Frozen closed guidance format with exact learning text, solution sources and manual practice wording",
+    "Atomic archival save and no-write exact receipt replay",
+    "Authorized, signed-cursor revision history plus exact-revision guidance read",
+    "Complete, partial and unavailable history distinctions without invented prior wording",
+    "Hash/schema verification before availability claims; silent wording change under an existing edition rejected"
+  ],
+  "evidence": [
+    {
+      "title": "Focused pure archive/save regressions",
+      "path": "docs/evidence/nonprofit-ai-content-unit-tests.xml",
+      "result": "93 passed; zero failed",
+      "scope": "20 new archive cases plus 73 existing plan/planning cases; synthetic model only",
+      "recorded_at": "2026-10-05T09:02:44.145619Z"
+    },
+    {
+      "title": "Final focused API/database regressions",
+      "path": "docs/evidence/nonprofit-ai-content-api-tests.xml",
+      "result": "79 passed, 3 native-only skipped; zero failed",
+      "scope": "Focused PGlite against frozen 0036/0037; excludes native, browser, hosted and acceptance",
+      "recorded_at": "2026-10-05T09:02:44.145619Z"
+    },
+    {
+      "title": "Actual applied migration ledger",
+      "path": "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+      "result": "37 actual applied migration hashes; 0036/0037 match current source",
+      "scope": "This focused PGlite database ledger only",
+      "recorded_at": "2026-10-05T09:02:44.145619Z"
+    },
+    {
+      "title": "Combined focused native PostgreSQL checks",
+      "path": "docs/evidence/sprint-0.32-focused-native-tests.xml",
+      "result": "193 passed; zero skips, errors or failures",
+      "scope": "Combined selected access/content/adoption/planning/version suites on native PostgreSQL; all content live cases pass. Excludes full native restart qualification, hosted operation and acceptance.",
+      "recorded_at": "2026-10-05T09:27:00.372786Z"
+    },
+    {
+      "title": "Real local browser access and guidance checks",
+      "path": "docs/evidence/sprint-0.32-browser-tests.json",
+      "result": "13 bounded checks passed; guidance includes revision switching, read-only, retry, unavailable and partial archives",
+      "scope": "Real browser and FastAPI over disposable PGlite; 7 accessibility scans have zero reported violations. Excludes native login, hosted operation, UAT and requirement acceptance.",
+      "recorded_at": "2026-10-05T09:27:00.372786Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:27:00.405871Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:37:23Z",
+      "status": "INSPECTING",
+      "summary": "Inspecting saved-plan content editions and historical snapshot requirements.",
+      "eta": {
+        "earliest": "2026-10-05T09:50:00Z",
+        "latest": "2026-10-05T10:50:00Z",
+        "confidence": "LOW",
+        "basis": "Backend estimate: 80–140 minutes from 08:30 UTC; integration and hosted qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:39:09Z",
+      "status": "BUILDING",
+      "summary": "Immutable historical guidance archive and exact-revision read contracts are built; existing save/retry regressions pass.",
+      "eta": {
+        "earliest": "2026-10-05T09:50:00Z",
+        "latest": "2026-10-05T10:50:00Z",
+        "confidence": "LOW",
+        "basis": "Backend estimate: 80–140 minutes from 08:30 UTC; integration and hosted qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:49:10.133295Z",
+      "status": "TESTING",
+      "summary": "Backend archive, exact revision history and current scoped reads are implemented. Initial API/database checks pass; final same-edition drift safeguards are under regression test.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:25:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Most backend work and first runtime checks are complete. Remaining window covers added version-drift regressions, exact migration-ledger capture and root review; final platform/hosted qualification excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:52:32.577068Z",
+      "status": "TESTING",
+      "summary": "Archive and actual revision history are built. 93 pure checks and the first 76 API/database checks pass; final migration-ledger/native security additions await final rerun.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:25:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend is ready for final focused runner after migration freeze; includes review and handoff, excludes shared release/native/hosted qualification."
+      }
+    },
+    {
+      "at": "2026-10-05T09:02:44.172624Z",
+      "status": "REVIEWING",
+      "summary": "Archive and authorized revision history completed. Final focused PGlite run: 79 passed, 3 native-only skips against frozen 0036/0037.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:25:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend is ready for final focused runner after migration freeze; includes review and handoff, excludes shared release/native/hosted qualification."
+      }
+    },
+    {
+      "at": "2026-10-05T09:27:00.405871Z",
+      "status": "COMPLETE",
+      "summary": "Historical guidance archive completed for bounded local backend/browser scope. 93 pure and 79 focused PGlite checks pass; combined native focused suite passes 193 and local browser suite passes 13.",
+      "eta": {
+        "earliest": "2026-10-05T09:00:00Z",
+        "latest": "2026-10-05T09:25:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend is ready for final focused runner after migration freeze; includes review and handoff, excludes shared release/native/hosted qualification."
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import {
   type PilotInput,
 } from "./AIPlanningTools";
 import { AITaskPractice, type TaskPractice } from "./AITaskPractice";
+import { AIGuidanceArchive } from "./AIGuidanceArchive";
 
 type Planning = {
   cost_comparison: CostInput | null;
@@ -22,7 +23,7 @@ type ContentCompatibility = {
   learning_completed: string[];
   legacy_learning_keys: string[];
   unavailable_learning_keys: string[];
-  historical_snapshots_available: false;
+  historical_snapshots_available: boolean;
 };
 const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
@@ -719,9 +720,10 @@ export function AIAdoptionWorkspace({
             .
           </p>
           <p className="muted">
-            You are viewing current guidance. Older guide text and product terms
-            are not archived here. Reopen a saved plan after saving to refresh
-            its edition status.
+            The editable plan uses current guidance. Use the saved guidance view
+            to read the text captured with a specific revision. Earlier
+            revisions may have no archive. Reopen a saved plan after saving to
+            refresh its edition status.
           </p>
           {savedContent.compatibility?.legacy_learning_keys.length ? (
             <p>
@@ -739,6 +741,16 @@ export function AIAdoptionWorkspace({
             </p>
           ) : null}
         </section>
+      )}
+      {head && (
+        <AIGuidanceArchive
+          key={base + ":" + head.object_id}
+          base={base}
+          objectId={head.object_id}
+          currentRevision={head.revision_id}
+          request={request}
+          explain={explain}
+        />
       )}
       {!canManage && (
         <p className="ai-notice">

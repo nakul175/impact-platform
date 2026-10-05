@@ -3,19 +3,21 @@
   "title": "Integration, review and qualification",
   "domain": "One combined platform",
   "owner": "/root",
-  "status": "BLOCKED",
-  "summary": "Window ended. Programme evidence and internal advice pass native 1,929/PGlite 1,865/unit 1,102/browser 28 local checks. Known cleanup privacy issue blocks deployment. Downloads remain preserved drafts.",
-  "next_step": "Next authorised work: fix cleanup privacy and ordinary-audit SQL compatibility, seal projections, then integrate and qualify exact-byte plan copies.",
+  "status": "TESTING",
+  "summary": "Final native regression passes2045 with26 explicit skips and1 deselection; both restarts, restore and populated33→40 upgrade pass. Latest export browser15 passes. Full PGlite runs; unit/local snapshot follow.",
+  "next_step": "Finish PGlite/unit and save exact0.34 checkpoint; integrate privately reviewed guided practice, cost coverage and canonical saved-review as0.35.",
   "eta": {
-    "earliest": null,
-    "latest": null,
-    "confidence": "UNESTIMATED",
-    "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+    "earliest": "2026-10-05T20:45:00Z",
+    "latest": "2026-10-05T22:00:00Z",
+    "confidence": "LOW",
+    "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
   },
   "delivered": [
     "Platform and domain route/contract registration",
     "Access extension review UI and lifecycle entry",
-    "Saved guidance history viewer with independent draft state"
+    "Saved guidance history viewer with independent draft state",
+    "Registered additive0040;21 actual native SQL groups pass; prior1–39 bytes unchanged",
+    "Integrated strict web typing/production bundle and dedicated261st domain operation"
   ],
   "evidence": [
     {
@@ -171,12 +173,31 @@
       "result": "PASS_1102_62_SKIPS",
       "scope": "Exact Makefile recipe,source unchanged;62 database-dependent skips. Original specified cases remain unrun.",
       "recorded_at": "2026-10-05T11:26:32.095479Z"
+    },
+    {
+      "title": "Registered40 privacy and immutable copy SQL",
+      "path": "docs/evidence/sprint-0.34-portability-sql-native-qualification.json",
+      "result": "PASS_21_NATIVE_GROUPS",
+      "scope": "Actual six runtime login topology/all40ledger; labelled synthetic grants, SQL/storage only; no actualAPI/reviewedtenantupgrade claim",
+      "recorded_at": "2026-10-05T19:29:52.644998Z"
+    },
+    {
+      "title": "Current-source actual plan downloads",
+      "path": "docs/evidence/sprint-0.34-export-browser-tests.json",
+      "result": "PASS_15_GROUPS_FOUR_BYTE_VERIFIED_DOWNLOADS",
+      "scope": "Synthetic local actual API/database and Chrome;303 sources and served bytes unchanged;3 clean axe scans. No hosted UAT or formal acceptance.",
+      "recorded_at": "2026-10-05T19:54:37.437Z"
+    },
+    {
+      "title": "Final registered0.34 full native gate",
+      "path": "docs/evidence/sprint-0.34-full-native-source-proof.json",
+      "result": "PASS_2045_RESTART_RESTORE_UPGRADE",
+      "scope": "Actual PostgreSQL17.11 runtime logins;26 skips and1 deselection retained; both restarts, restored190tables/108188rows and populated33→40 upgrade pass. All source fingerprints unchanged. Local Mac only.",
+      "recorded_at": "2026-10-05T19:59:28.093266Z"
     }
   ],
-  "blockers": [
-    "Both worker receipt cleanup definers disclose private advice operation keys on actual registered schema39; additive remedy unregistered, deployment blocked."
-  ],
-  "updated_at": "2026-10-05T19:14:17.839131Z",
+  "blockers": [],
+  "updated_at": "2026-10-05T20:00:35.661088Z",
   "history": [
     {
       "at": "2026-10-05T08:37:23Z",
@@ -385,6 +406,50 @@
         "latest": null,
         "confidence": "UNESTIMATED",
         "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+      }
+    },
+    {
+      "at": "2026-10-05T19:23:27.168358Z",
+      "status": "BUILDING",
+      "summary": "New eight-hour window active.0.33 is saved861c2a8; privacy/ordinary-audit SQL correction, exporter and UI are developing in parallel. Main merge and demo are owner-authorised after the required gates.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "Corrected SQL controls and peer review underway; actual export API/browser and full combined regression follow."
+      }
+    },
+    {
+      "at": "2026-10-05T19:33:09.356002Z",
+      "status": "TESTING",
+      "summary": "Registered40 privacy/immutable-copy SQL passes21 actual native groups. First focused40 API passes139 with4native-only skips. Actual historical HTTP upgrade/browser and full combined gates follow.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T19:58:12.608060Z",
+      "status": "TESTING",
+      "summary": "Current export API passes148 native checks; actual reviewed39→40 upgrade and15 browser groups pass. Full regression reruns after strengthening obsolete current-profile assertions; one prior failed run is preserved.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T20:00:35.661088Z",
+      "status": "TESTING",
+      "summary": "Final native regression passes2045 with26 explicit skips and1 deselection; both restarts, restore and populated33→40 upgrade pass. Latest export browser15 passes. Full PGlite runs; unit/local snapshot follow.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
       }
     }
   ]

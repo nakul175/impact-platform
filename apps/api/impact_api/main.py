@@ -38,6 +38,7 @@ from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_adoption_plans import AIAdoptionPlans
+from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -107,6 +108,7 @@ def create_app():
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_plans = AIAdoptionPlans(service)
+    ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -610,6 +612,20 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions/{revision_id}/guidance")
     def ai_plan_guidance(request: Request, tenant: str, obj: str, revision_id: str):
         return ai_plans.guidance(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions/{revision_id}/exports")
+    async def ai_plan_export(request: Request, tenant: str, obj: str, revision_id: str):
+        body = await strict_body(request)
+        validate("AIPlanExportRequest", body)
+        return await run_in_threadpool(
+            ai_plan_exports.create,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision_id),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions")
     def ai_plan_history(request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None):

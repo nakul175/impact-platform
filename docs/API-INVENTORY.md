@@ -38,6 +38,7 @@
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference/result` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/exports` | `ai.enablement.export` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |

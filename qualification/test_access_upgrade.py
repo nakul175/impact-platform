@@ -14,7 +14,8 @@ from jsonschema import Draft202012Validator, FormatChecker
 from psycopg.types.json import Jsonb
 
 from impact_api.access_upgrade_contracts import DIRECTORY, PREVIEW, RECEIPT
-from impact_api.access_bootstrap import PROFILE
+from impact_api.access_bootstrap import PROFILE, PROFILE_HASH
+from test_access_upgrade_unit import migration_profile_seeds
 from impact_api.auth import Identity
 from impact_api.store import Context, load, write, hash_data
 from impact_api.tenant_lifecycle import now
@@ -253,11 +254,19 @@ def test_explicit_synthetic_pre_ai_profile_fixture_receives_new_ai_access_after_
 
 
 def test_registered_profile_is_exact_and_platform_role_cannot_write_registry(live):
+    seeds = migration_profile_seeds()
     with live.db() as c:
-        row = c.execute(
-            "SELECT manifest FROM impact.platform_access_profile WHERE manifest=%s", (Jsonb(PROFILE),)
-        ).fetchone()
-        assert row and row["manifest"] == PROFILE
+        rows = c.execute(
+            "SELECT profile_hash,manifest,source_migration FROM impact.platform_access_profile "
+            "WHERE profile_hash=ANY(%s::varchar[]) ORDER BY source_migration",
+            ([seed["profile_hash"] for seed in seeds],),
+        ).fetchall()
+        assert len(rows) == len(seeds)
+        actual = {row["profile_hash"]: row for row in rows}
+        assert all(actual[seed["profile_hash"]] == seed for seed in seeds)
+        row = actual[PROFILE_HASH]
+        assert row["manifest"] == PROFILE
+
     for action_sql in [
         "INSERT INTO impact.platform_access_profile DEFAULT VALUES",
         "UPDATE impact.platform_access_profile SET manifest='{}'",

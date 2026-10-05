@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-10-05T19:26:36.721656+00:00",
+  "previous_local_commit": "861c2a807e774ec6bb53ef05c1ee25f853591085",
+  "previous_profile_sha256": "48e75c64f1ea2ddceeadce089d1c3f2b056254f236060f1c7d4a18ff439183b0",
+  "target_profile_sha256": "422b86a900e54a661f6c4a4a35ee8146a504ff7d026478e18e9fafe19e510d3f",
+  "changes": {
+    "TENANT_ADMIN": {
+      "added": [
+        "ai.enablement.export"
+      ],
+      "removed": []
+    },
+    "MEL_ADMIN": {
+      "added": [
+        "ai.enablement.export"
+      ],
+      "removed": []
+    },
+    "PROGRAMME_MANAGER": {
+      "added": [
+        "ai.enablement.export"
+      ],
+      "removed": []
+    }
+  },
+  "purpose_bound_unchanged": true,
+  "scope": "Generated design/profile comparison only. No existing tenant/grant widened; actual reviewed previous-profile upgrade qualification remains pending."
+}

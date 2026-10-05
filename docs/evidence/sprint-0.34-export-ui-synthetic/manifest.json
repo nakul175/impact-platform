@@ -1,0 +1,39 @@
+{
+  "scope": "Integrated product component, actual adapter and stylesheet in isolated in-memory request-function fixture. No API, database, current server authority, audit, hosted demo, release or acceptance claim.",
+  "actual_api_qualification": "NOT_RUN",
+  "passed_groups": 17,
+  "accessibility_scans": 3,
+  "sources_unchanged": true,
+  "qualified_sources": {
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "ui-fixture-server.mjs": "42e497bcde055802674f6a2cea46b619ca043a3504ee029d6fef2c842c3e8010",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "ui-fixture.tsx": "12aa947b7b239e8f30a6b4dd7b87d0e0f2975b481f99ffb091a03c1b24016c64",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "0809f9aa14c4f0c50745a485e85707fa30319a78fa18b6a8cee81edc02e723f6"
+  },
+  "files": {
+    "ui-fixture-tests.json": "273a0f46629716c1a0c0c4d2d006249e4339d37bc1a0c2e43729a86cf03fa8ed",
+    "ui-fixture-check.mjs": "0809f9aa14c4f0c50745a485e85707fa30319a78fa18b6a8cee81edc02e723f6",
+    "ui-fixture.tsx": "12aa947b7b239e8f30a6b4dd7b87d0e0f2975b481f99ffb091a03c1b24016c64",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-server.mjs": "42e497bcde055802674f6a2cea46b619ca043a3504ee029d6fef2c842c3e8010",
+    "index.html": "58de2cee4b7b05836c79c87fa50b18443e008102c0e39eb7bd0909ed6f8750d8",
+    "ui-fixture-before-assurance-fix.json": "a379ea467cfd99d8f5a15160a0d2de76b08fce638440ca9bf41cd6ac3641df3e",
+    "ui-fixture-1440.png": "fb889d51965ba9bc746b171c862150d0ec2209b682111fa0527f1670e89f09b1",
+    "ui-fixture-390.png": "5ab0ee0e3088e69543a20c5ab1e82d21cdb2f638d1bfeaa4655c93af78204c27",
+    "ui-fixture-320.png": "f84b310f44df6622ac9139ee21d406b509fa4fc368b574e2a7dde01ba9314ba3"
+  },
+  "visual_review": {
+    "widths": [
+      1440,
+      390,
+      320
+    ],
+    "finding": "All three final viewport captures manually reviewed. Copy metadata and deliberate controls fit without horizontal clipping or overlap in the captured viewport; page scroll continues above.",
+    "qualification_scope": "Separate synthetic harness; actual application shell/backend browser run still pending"
+  },
+  "assurance_regression": "Actual ASSURANCE_REQUIRED code clears loaded history, acknowledgement, issued metadata, pending intent and parent lock; deliberate new acknowledgement creates a different operation, with no automatic download.",
+  "replay_expiry_regression": "Definitive IDEMPOTENCY_EXPIRED clears prior exact intent and releases parent; fresh acknowledgement required. Backend expiry behavior is not qualified by this fixture."
+}

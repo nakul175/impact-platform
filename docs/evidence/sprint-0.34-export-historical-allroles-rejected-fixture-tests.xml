@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.627" timestamp="2026-10-06T01:09:18.579751+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_plan_export_prior_http_overlay" name="test_prepare_real_prior_profile_tenant_and_reviewed_manager_assignment" time="0.509"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;cf9afda5-4361-4062-bf68-1ced30343bd5&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10444de50&gt;
+
+    def test_prepare_real_prior_profile_tenant_and_reviewed_manager_assignment(live):
+&gt;       requested, tenant, _, _ = bootstrap_propose(live, role_names=sorted(PROFILE['roles']))
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_plan_export_prior_http_overlay.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_bootstrap.py:35: in propose
+    row = expect(live.request(path, method="POST", body=body), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"cf9afda5-4361-4062-bf68-1ced30343bd5","permitted_actions":[],"field_errors":[]}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_administration.py:26: AssertionError</failure></testcase></testsuite></testsuites>

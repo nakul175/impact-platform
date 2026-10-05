@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: exact command and saved-revision path contain only the closed internal-self intent
+ok 1 - exact command and saved-revision path contain only the closed internal-self intent
+  ---
+  duration_ms: 0.87525
+  type: 'test'
+  ...
+# Subtest: Unicode UTF-8 bytes and original formatting are preserved exactly
+ok 2 - Unicode UTF-8 bytes and original formatting are preserved exactly
+  ---
+  duration_ms: 2.3
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses response extras
+ok 3 - closed decoder refuses response extras
+  ---
+  duration_ms: 0.104417
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses manifest extras
+ok 4 - closed decoder refuses manifest extras
+  ---
+  duration_ms: 0.058583
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses receipt extras
+ok 5 - closed decoder refuses receipt extras
+  ---
+  duration_ms: 0.097792
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses missing guidance status
+ok 6 - closed decoder refuses missing guidance status
+  ---
+  duration_ms: 0.043542
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses unknown guidance status
+ok 7 - closed decoder refuses unknown guidance status
+  ---
+  duration_ms: 0.060708
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses unknown renderer
+ok 8 - closed decoder refuses unknown renderer
+  ---
+  duration_ms: 0.04525
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses path filename
+ok 9 - closed decoder refuses path filename
+  ---
+  duration_ms: 0.106083
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses receipt digest mismatch
+ok 10 - closed decoder refuses receipt digest mismatch
+  ---
+  duration_ms: 0.100459
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses receipt byte mismatch
+ok 11 - closed decoder refuses receipt byte mismatch
+  ---
+  duration_ms: 0.061583
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses issuance timestamp mismatch
+ok 12 - closed decoder refuses issuance timestamp mismatch
+  ---
+  duration_ms: 0.057666
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses expiry timestamp mismatch
+ok 13 - closed decoder refuses expiry timestamp mismatch
+  ---
+  duration_ms: 0.043291
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses expired-before-generation manifest
+ok 14 - closed decoder refuses expired-before-generation manifest
+  ---
+  duration_ms: 0.030083
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses invalid receipt selector
+ok 15 - closed decoder refuses invalid receipt selector
+  ---
+  duration_ms: 0.032875
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses string byte count
+ok 16 - closed decoder refuses string byte count
+  ---
+  duration_ms: 0.053334
+  type: 'test'
+  ...
+# Subtest: closed decoder refuses oversized manifest
+ok 17 - closed decoder refuses oversized manifest
+  ---
+  duration_ms: 0.045167
+  type: 'test'
+  ...
+# Subtest: content corruption fails byte/digest verification without reserialization
+ok 18 - content corruption fails byte/digest verification without reserialization
+  ---
+  duration_ms: 0.106458
+  type: 'test'
+  ...
+# Subtest: wrong plan, revision and operation are refused
+ok 19 - wrong plan, revision and operation are refused
+  ---
+  duration_ms: 0.072292
+  type: 'test'
+  ...
+# Subtest: replay pins exact manifest and issuance receipt after lost-response retry
+ok 20 - replay pins exact manifest and issuance receipt after lost-response retry
+  ---
+  duration_ms: 1.869584
+  type: 'test'
+  ...
+# Subtest: even valid reissued bytes with the same operation cannot replace a pinned copy
+ok 21 - even valid reissued bytes with the same operation cannot replace a pinned copy
+  ---
+  duration_ms: 0.231167
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.845709

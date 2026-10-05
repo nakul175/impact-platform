@@ -1,6 +1,7 @@
 """Pure closed-contract and additive-profile checks; no database or live identity."""
 
 from copy import deepcopy
+import hashlib
 import json
 import re
 from uuid import uuid4
@@ -12,6 +13,7 @@ from impact_api.access_upgrade_contracts import validate_body
 from impact_api.domain import DomainError
 from impact_api.config import ROOT
 from impact_api.access_bootstrap import PROFILE, PROFILE_HASH
+from impact_api.store import hash_data
 
 
 def body():
@@ -122,9 +124,45 @@ def test_target_manifest_remains_closed_and_contains_no_fabricated_authority():
     assert all("*" not in caps for caps in target["roles"].values())
 
 
+def migration_profile_seeds():
+    pattern = re.compile(
+        r"INSERT INTO impact\.platform_access_profile\s*"
+        r"\(profile_hash,manifest,source_migration\)\s*VALUES\s*"
+        r"\('([a-f0-9]{64})',(\$profile_[0-9]{4}\$)(.*?)\2::jsonb,'([^']+)'\);",
+        re.DOTALL,
+    )
+    seeds = []
+    for source in sorted((ROOT / "infrastructure/migrations").glob("*.sql")):
+        sql = source.read_text()
+        entries = list(pattern.finditer(sql))
+        # An unrecognised insertion shape must fail rather than silently escape
+        # this artifact check when a future additive profile is introduced.
+        assert len(entries) == len(re.findall(r"INSERT INTO impact\.platform_access_profile", sql))
+        for match in entries:
+            fingerprint, tag, manifest, origin = match.groups()
+            assert origin == source.name
+            assert tag == "$profile_" + source.name[:4] + "$"
+            payload = json.loads(manifest)
+            assert hash_data(payload).hex() == fingerprint
+            seeds.append({"profile_hash": fingerprint, "manifest": payload, "source_migration": origin})
+    assert seeds
+    assert len({seed["profile_hash"] for seed in seeds}) == len(seeds)
+    return seeds
+
+
 def test_additive_migration_registers_the_exact_current_generated_profile():
-    sql = (ROOT / "infrastructure/migrations/0036_reviewed_ceiling_widening.sql").read_text()
-    seed = re.search(r"VALUES\('([a-f0-9]{64})',\$profile_0036\$(.*?)\$profile_0036\$::jsonb", sql)
-    assert seed is not None
-    assert seed.group(1) == PROFILE_HASH
-    assert json.loads(seed.group(2)) == PROFILE
+    current = [seed for seed in migration_profile_seeds() if seed["profile_hash"] == PROFILE_HASH]
+    assert len(current) == 1
+    assert current[0]["manifest"] == PROFILE
+    assert hash_data(PROFILE).hex() == PROFILE_HASH
+
+
+def test_original_profile_seed_and_frozen_migration_remain_immutable():
+    source = ROOT / "infrastructure/migrations/0036_reviewed_ceiling_widening.sql"
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == (
+        "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+    )
+    original = [seed for seed in migration_profile_seeds() if seed["source_migration"] == source.name]
+    assert len(original) == 1
+    assert original[0]["profile_hash"] == "48e75c64f1ea2ddceeadce089d1c3f2b056254f236060f1c7d4a18ff439183b0"
+    assert compatible(original[0]["manifest"], PROFILE)

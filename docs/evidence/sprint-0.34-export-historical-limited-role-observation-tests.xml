@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.461" timestamp="2026-10-06T01:07:45.763051+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_plan_exports_upgrade" name="test_actual_old_http_ceiling_requires_three_party_review_and_keeps_revocations" time="0.305"><failure message="AssertionError: assert ['ai.enableme...ownload', ...] == ['ai.enablement.export']&#10;  &#10;  Left contains 38 more items, first extra item: 'audit-events.read'&#10;  Use -v to get more diff">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x1055b9fa0&gt;
+
+    @pytest.mark.skipif(
+        not os.environ.get("IMPACT_EXPORT_HISTORICAL_UPGRADE"),
+        reason="Separate actual historical HTTP/native database gate",
+    )
+    def test_actual_old_http_ceiling_requires_three_party_review_and_keeps_revocations(live):
+        state = json.loads(Path(os.environ["IMPACT_EXPORT_UPGRADE_STATE"]).read_text())
+        revoked = json.loads(Path(os.environ["IMPACT_EXPORT_PREUPGRADE_REVOCATION"]).read_text())
+        tenant, row = state["tenant"], state["saved_plan"]
+        tenant_id = tenant["tenant_id"]
+    
+        def path(route):
+            return live.path(route, tenant=tenant_id)
+    
+        def access():
+            return expect(live.request(path("me/access"), actor="reviewer"), 200)
+    
+        def private_state():
+            with live.db() as c:
+                authorities = c.execute(
+                    "SELECT authority_id,principal_id,capability,scope_id,expires_at FROM impact.grant_authority "
+                    "WHERE tenant_id=%s ORDER BY authority_id",
+                    (tenant_id,),
+                ).fetchall()
+                original_ids = [grant["object_id"] for grant in state["original_grants"]]
+                grants = c.execute(
+                    "SELECT g.*,r.lifecycle_state FROM impact.grant_current g JOIN impact.object_registry r "
+                    "ON r.tenant_id=g.tenant_id AND r.object_id=g.object_id "
+                    "WHERE g.tenant_id=%s AND g.object_id=ANY(%s::uuid[]) ORDER BY g.object_id",
+                    (tenant_id, original_ids),
+                ).fetchall()
+                revoked_rows = c.execute(
+                    "SELECT r.object_id,r.head_revision,r.lifecycle_state,v.payload,v.payload_sha256 "
+                    "FROM impact.object_registry r JOIN impact.object_revision v "
+                    "ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+                    "WHERE r.tenant_id=%s AND r.object_id=ANY(%s::uuid[]) ORDER BY r.object_id",
+                    (tenant_id, [g["object_id"] for g in revoked["revoked_grants"]]),
+                ).fetchall()
+                ledger = c.execute(
+                    "SELECT version,sha256 FROM impact.schema_migration ORDER BY version"
+                ).fetchall()
+            return json.loads(
+                json.dumps(
+                    dict(authorities=authorities, grants=grants, revoked=revoked_rows, ledger=ledger), default=str
+                )
+            )
+    
+        before = private_state()
+        assert len(before["ledger"]) == 40
+        assert before["authorities"] == state["original_authorities"]
+        assert before["revoked"] == revoked["exact_revoked_current_rows"]
+        assert "ai.enablement.read" in access()["capabilities"]
+        assert "ai.enablement.manage" not in access()["capabilities"]
+        assert "ai.enablement.export" not in access()["capabilities"]
+        old_roles = expect(live.request(path("role-templates"), actor="reviewer"), 200)["items"]
+        manager = next(r for r in old_roles if r["object_id"] == state["manager_role_id"])
+        assert "ai.enablement.export" not in manager["capabilities"]
+        issue(live, tenant, row, status=404)
+        described = preview(live, tenant)
+&gt;       assert described["new_capabilities"] == ["ai.enablement.export"]
+E       AssertionError: assert ['ai.enableme...ownload', ...] == ['ai.enablement.export']
+E         
+E         Left contains 38 more items, first extra item: 'audit-events.read'
+E         Use -v to get more diff
+
+qualification/test_ai_plan_exports_upgrade.py:78: AssertionError</failure></testcase></testsuite></testsuites>

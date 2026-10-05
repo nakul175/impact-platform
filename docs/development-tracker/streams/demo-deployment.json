@@ -1,0 +1,34 @@
+{
+  "id": "demo-deployment",
+  "title": "Main merge and verified demo",
+  "domain": "User-visible demo",
+  "owner": "/root",
+  "status": "INSPECTING",
+  "summary": "Owner explicitly requested main merge by the end of the new eight-hour window. The existing main branch auto-deploys; no new release has been merged.",
+  "next_step": "After four required jobs pass on the exact PR head, use the authorised main merge and verify deployed commit/schema/health and demo URL.",
+  "eta": {
+    "earliest": "2026-10-06T01:45:00Z",
+    "latest": "2026-10-06T03:17:34Z",
+    "confidence": "LOW",
+    "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
+  },
+  "delivered": [],
+  "evidence": [],
+  "blockers": [
+    "Final current-head local qualification and four green hosted CI jobs pending."
+  ],
+  "updated_at": "2026-10-05T19:33:09.367952Z",
+  "history": [
+    {
+      "at": "2026-10-05T19:33:09.367952Z",
+      "status": "INSPECTING",
+      "summary": "Owner explicitly requested main merge by the end of the new eight-hour window. The existing main branch auto-deploys; no new release has been merged.",
+      "eta": {
+        "earliest": "2026-10-06T01:45:00Z",
+        "latest": "2026-10-06T03:17:34Z",
+        "confidence": "LOW",
+        "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
+      }
+    }
+  ]
+}

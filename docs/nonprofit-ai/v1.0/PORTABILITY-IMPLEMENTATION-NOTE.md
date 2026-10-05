@@ -1,6 +1,6 @@
 # Next bounded slice: internal saved-plan portability
 
-5 October 2026 · Implementation proposal after the current 0.33 qualification · no export product is registered by this note.
+5 October 2026 · Retained implementation design, now registered in local candidate0.34. Final API/browser/full/hosted qualification remains pending; see [current release](../../RELEASE-0.34-plan-portability.md).
 
 The proposed first slice supports part of FR-NPA-030. A separately permitted current member deliberately downloads one exact saved AI adoption-plan revision for their own internal use. It is a draft planning record, not an approved procurement decision or official programme report. It does not deliver to an external recipient, import a package or establish provider exit acceptance. The original BRD/FSD/HLD/LLD and TC-NPA-059/060 remain unchanged and unrun.
 
@@ -38,4 +38,4 @@ Separate insert-only issuance and byte tables retain the exact bytes. The issuan
 
 Current privacy planning covers membership and named Evidence/ImportJob records; it does not inventory AI plans or exported copies. The first slice therefore requires a narrow guard refusing removal of a parent AI-plan payload while retained issued bytes exist. It does not add an unreviewed privacy selector, retention duration, child-erasure operation or backup-deletion claim. Those remain an explicit operated-policy and implementation boundary.
 
-Product registration has not occurred at this proposal edition. Draft SQL, interface work and a frozen eleven-definition public-data schema are being reviewed separately from the current 0.33 qualification. Unknown stored metadata and private programme/advice/proof fields remain excluded from the export allowlist at every nesting level.
+The design was initially preserved as an unregistered draft at checkpoint0.33. Local candidate0.34 now registers the dedicated endpoint, interface, frozen eleven-definition public-data schema and additive0040. Its21 focused registered native SQL groups pass. The immutable draft archive retains earlier attempts and their narrower observations. Unknown stored metadata and private programme/advice/proof fields remain excluded from the export allowlist at every nesting level. Current qualification, permanent100-slot storage, fixed168-hour replay and operated-policy limitations are recorded in the current release; this design note does not establish formal portability acceptance.

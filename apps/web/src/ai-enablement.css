@@ -277,6 +277,16 @@
   width: 100%;
   min-width: 0;
 }
+.ai-plan-portability .ai-copy-verified {
+  min-width: 0;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--ai-notice);
+  border-radius: 0.5rem;
+}
+.ai-plan-portability .ai-copy-integrity p {
+  overflow-wrap: anywhere;
+}
 .ai-archive-hash {
   overflow-wrap: anywhere;
 }

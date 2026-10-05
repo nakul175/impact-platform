@@ -1,0 +1,16 @@
+{
+  "scope": "Preserved fully executed actual local qualification before capture-only checker improvement.15 checks (2HTTP/database setup,13Chrome groups),4 deliberate exact downloads,3axe scans with0 violations/incomplete,303source fingerprints and served bytes unchanged. Mobile viewport captures show upper workspace and do not support export-control visual review; final capture-qualified repeat remains separate. No release/acceptance/hosted demo claim.",
+  "passed_checks": 15,
+  "actual_downloads": 4,
+  "files": {
+    "report.json": "792b70dc0b2cb6225050f8b73b7dfdb5449fcdd904f6f0158515dc93a6a5611a",
+    "checker.mjs": "cdbff65bcdc60c48aeeb2e24fcf3ddaf772808fc2360b6279bb0df3e2930c0a3",
+    "viewport-1440.png": "b2fd8c940dc2e71f6809ac8cae0faff0c19d082817917fe3efe2d50eda984470",
+    "viewport-390.png": "289205e14a812ae0842c18551d2066e431a8bc21852f31a02009d2b9bc3bffb8",
+    "viewport-320.png": "ad5c416047109ec660448426fdcb77782a22bfbe391c2aa89f5c8b9bd588d233",
+    "download-1.json": "1c6f32e2fc54d9e6660b1f173f64dee17e024e38ee7a92d54f0b7fc6d4517f00",
+    "download-2.json": "ac5ec25f77bcd7edb2a6acd9bb2f184f0224e5e67adb5fe3fa60ff251c767d5c",
+    "download-3.json": "5ec07cbe985b54c4efbbb98780fc7217b7c3cdd966b859f7fad1efdfeface99b",
+    "download-4.json": "edf378f566ce374b330ff913eab96d6aff7413b00db978d60233782e75500698"
+  }
+}

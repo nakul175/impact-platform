@@ -1,0 +1,293 @@
+{
+  "scope": "Actual local Chrome/API/PGlite qualification using synthetic facts and independently reviewed fresh manager export authority. Fifteen executed checks: two authenticated HTTP/database pre-browser checks and thirteen actual Chrome groups. Explicit negative fixture session/grant narrowing and actual-response abortion are labelled, never mocked API outcomes. No native-role/concurrency, hosted demo, production readiness or nonprofit acceptance claim.",
+  "finished_at": "2026-10-05T19:54:37.437Z",
+  "passed_checks": 15,
+  "http_database_setup_checks": 2,
+  "actual_browser_checks": 13,
+  "actual_byte_verified_downloads": 4,
+  "source_fingerprints": 303,
+  "sources_unchanged": true,
+  "served_assets_unchanged": true,
+  "actual_runtime": {
+    "environment": "test",
+    "build_id": "impact-0.34.0",
+    "schema_version": "40",
+    "api_version": "1.25.0",
+    "fixture_id": "impact-acceptance-20260925-v1",
+    "mutation_tests_allowed": true,
+    "applied_migrations": [
+      {
+        "version": 1,
+        "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7"
+      },
+      {
+        "version": 2,
+        "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0"
+      },
+      {
+        "version": 3,
+        "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148"
+      },
+      {
+        "version": 4,
+        "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4"
+      },
+      {
+        "version": 5,
+        "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c"
+      },
+      {
+        "version": 6,
+        "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce"
+      },
+      {
+        "version": 7,
+        "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0"
+      },
+      {
+        "version": 8,
+        "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950"
+      },
+      {
+        "version": 9,
+        "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f"
+      },
+      {
+        "version": 10,
+        "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7"
+      },
+      {
+        "version": 11,
+        "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683"
+      },
+      {
+        "version": 12,
+        "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596"
+      },
+      {
+        "version": 13,
+        "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+      },
+      {
+        "version": 14,
+        "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+      },
+      {
+        "version": 15,
+        "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42"
+      },
+      {
+        "version": 16,
+        "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc"
+      },
+      {
+        "version": 17,
+        "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b"
+      },
+      {
+        "version": 18,
+        "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7"
+      },
+      {
+        "version": 19,
+        "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161"
+      },
+      {
+        "version": 20,
+        "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31"
+      },
+      {
+        "version": 21,
+        "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2"
+      },
+      {
+        "version": 22,
+        "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac"
+      },
+      {
+        "version": 23,
+        "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc"
+      },
+      {
+        "version": 24,
+        "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f"
+      },
+      {
+        "version": 25,
+        "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047"
+      },
+      {
+        "version": 26,
+        "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310"
+      },
+      {
+        "version": 27,
+        "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d"
+      },
+      {
+        "version": 28,
+        "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c"
+      },
+      {
+        "version": 29,
+        "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41"
+      },
+      {
+        "version": 30,
+        "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12"
+      },
+      {
+        "version": 31,
+        "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac"
+      },
+      {
+        "version": 32,
+        "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b"
+      },
+      {
+        "version": 33,
+        "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33"
+      },
+      {
+        "version": 34,
+        "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415"
+      },
+      {
+        "version": 35,
+        "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5"
+      },
+      {
+        "version": 36,
+        "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+      },
+      {
+        "version": 37,
+        "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+      },
+      {
+        "version": 38,
+        "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+      },
+      {
+        "version": 39,
+        "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+      },
+      {
+        "version": 40,
+        "sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89"
+      }
+    ]
+  },
+  "browser_version": "154.0.8037.97",
+  "uncaught_errors": 0,
+  "blocked_external_requests": 0,
+  "provider_requests": 0,
+  "accessibility": {
+    "scans": 3,
+    "violations": 0,
+    "incomplete": 0,
+    "scope": "Actual saved-copy component at1440/390/320; separate manual capture review is not complete accessibility conformance"
+  },
+  "visual_review": {
+    "captures": [
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-1440-viewport.png",
+        "width": 1440,
+        "view": "viewport at the deliberate download control",
+        "sha256": "7409ce676081ebddff60f5476a1827051114675c12caa0047022f200e16a200a",
+        "visually_reviewed": true
+      },
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-1440-component.png",
+        "width": 1440,
+        "view": "whole saved-copy component",
+        "sha256": "9a00cef5c9034fa2da4b7d25318bd953824e6065bbd9b114169698d6a9553a3c",
+        "visually_reviewed": true
+      },
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-390-viewport.png",
+        "width": 390,
+        "view": "viewport at the deliberate download control",
+        "sha256": "6c41c74d1e20e193aefc21ea302940fac821e3e6c36dffc68ee2e2e562ec9bfe",
+        "visually_reviewed": true
+      },
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-390-component.png",
+        "width": 390,
+        "view": "whole saved-copy component",
+        "sha256": "50780a54aa0987ce0bca56d1173fb0d909a01871befa3081fedd0f688d756358",
+        "visually_reviewed": true
+      },
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-320-viewport.png",
+        "width": 320,
+        "view": "viewport at the deliberate download control",
+        "sha256": "99dc57108b37976c0b1db6b838501cdf147181701710cfa451ff2ce5cd043dfe",
+        "visually_reviewed": true
+      },
+      {
+        "path": "docs/evidence/sprint-0.34-export-browser-proof/export-320-component.png",
+        "width": 320,
+        "view": "whole saved-copy component",
+        "sha256": "b11cfb8dc990b1c7829705ac8bae730cabdab30d12f44216e42a026697505eb6",
+        "visually_reviewed": true
+      }
+    ],
+    "finding": "All six exact final captures manually reviewed. Saved revision selectors, explicit acknowledgement, long Unicode titles, original byte/time/guidance metadata and download controls wrap within desktop/390/320 component widths, without overlapping controls or horizontal clipping. Page scroll continues."
+  },
+  "downloads": [
+    {
+      "path": "docs/evidence/sprint-0.34-export-browser-proof/download-1.json",
+      "filename": "impact-ai-plan-7d88dac5-c7ac-4351-963f-2150320f0294-ac24a9c2-fd24-4f63-90a9-1450fa814a8e.json",
+      "content_sha256": "a786fa235570cd68e1b074b23b9eb47942318c8446fb8b55aa78b6aea109cdd9",
+      "byte_count": 46490,
+      "operation_id": "ec6af893-db26-40fc-87dc-94971b8321a3",
+      "revision_id": "ac24a9c2-fd24-4f63-90a9-1450fa814a8e"
+    },
+    {
+      "path": "docs/evidence/sprint-0.34-export-browser-proof/download-2.json",
+      "filename": "impact-ai-plan-7d88dac5-c7ac-4351-963f-2150320f0294-55327df2-7d3c-4ad3-be17-2f7859a904dc.json",
+      "content_sha256": "adf80c079ea23795a9d2c994a946b3bd0a766a0534417d5889c8ab5ac64ae590",
+      "byte_count": 46077,
+      "operation_id": "8812c7de-06a3-4f9c-9703-49f51ad27199",
+      "revision_id": "55327df2-7d3c-4ad3-be17-2f7859a904dc"
+    },
+    {
+      "path": "docs/evidence/sprint-0.34-export-browser-proof/download-3.json",
+      "filename": "impact-ai-plan-7d88dac5-c7ac-4351-963f-2150320f0294-ac24a9c2-fd24-4f63-90a9-1450fa814a8e.json",
+      "content_sha256": "953f682a83ebe33141f805af6a03f00052d12ee56149b08a8df27431811aacbf",
+      "byte_count": 46497,
+      "operation_id": "f1399444-b437-4c7a-a75a-aeb549987018",
+      "revision_id": "ac24a9c2-fd24-4f63-90a9-1450fa814a8e"
+    },
+    {
+      "path": "docs/evidence/sprint-0.34-export-browser-proof/download-4.json",
+      "filename": "impact-ai-plan-7d88dac5-c7ac-4351-963f-2150320f0294-ac24a9c2-fd24-4f63-90a9-1450fa814a8e.json",
+      "content_sha256": "ae354f701a4b95e2469744f72d3fa3967dff46e86f9234faf1c680f0afcfb590",
+      "byte_count": 46497,
+      "operation_id": "e7ece8a2-8ec0-4765-991d-5d868eb8ec67",
+      "revision_id": "ac24a9c2-fd24-4f63-90a9-1450fa814a8e"
+    }
+  ],
+  "limitations": [
+    "No hosted deployment, provider execution or nonprofit acceptance claim",
+    "Read-only database observations use the explicitly privileged disposable fixture connection; API authority is the real application path, not a direct-login RLS claim",
+    "Exposed principal/human identity reset is not a unique same-identity reauthentication generation",
+    "COMPLETE guidance is exercised against actual current and older exact archives; PARTIAL/UNAVAILABLE legacy variants, expired storage-valid artifacts and broader native role/retention coverage remain separate backend or labelled fixture checks"
+  ],
+  "files": {
+    "checker.mjs": "f4ed7a1edfd767da948dce365552c7f940b828811aeb4e1b7b1062ef032689d1",
+    "download-1.json": "a786fa235570cd68e1b074b23b9eb47942318c8446fb8b55aa78b6aea109cdd9",
+    "download-2.json": "adf80c079ea23795a9d2c994a946b3bd0a766a0534417d5889c8ab5ac64ae590",
+    "download-3.json": "953f682a83ebe33141f805af6a03f00052d12ee56149b08a8df27431811aacbf",
+    "download-4.json": "ae354f701a4b95e2469744f72d3fa3967dff46e86f9234faf1c680f0afcfb590",
+    "export-1440-component.png": "9a00cef5c9034fa2da4b7d25318bd953824e6065bbd9b114169698d6a9553a3c",
+    "export-1440-viewport.png": "7409ce676081ebddff60f5476a1827051114675c12caa0047022f200e16a200a",
+    "export-320-component.png": "b11cfb8dc990b1c7829705ac8bae730cabdab30d12f44216e42a026697505eb6",
+    "export-320-viewport.png": "99dc57108b37976c0b1db6b838501cdf147181701710cfa451ff2ce5cd043dfe",
+    "export-390-component.png": "50780a54aa0987ce0bca56d1173fb0d909a01871befa3081fedd0f688d756358",
+    "export-390-viewport.png": "6c41c74d1e20e193aefc21ea302940fac821e3e6c36dffc68ee2e2e562ec9bfe",
+    "report.json": "f6b19f8a27c9bea206625b0b21b443eaf14c0be17260d552176064be816012e8"
+  },
+  "source_repeat_context": "Current qualification hashes after reviewed profile-test-only hardening; previous qualified bundle retained at sprint-0.34-export-browser-before-profile-test-hardening. No aggregation."
+}

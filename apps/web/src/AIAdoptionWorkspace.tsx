@@ -12,6 +12,7 @@ import { AITaskPractice, type TaskPractice } from "./AITaskPractice";
 import { AIGuidanceArchive } from "./AIGuidanceArchive";
 import { AIImpactEvidence } from "./AIImpactEvidence";
 import { AIHumanAdvice } from "./AIHumanAdvice";
+import { AIPlanPortability } from "./AIPlanPortability";
 
 type Planning = {
   cost_comparison: CostInput | null;
@@ -216,6 +217,7 @@ export function AIAdoptionWorkspace({
   Dialog,
 }: Props) {
   const canManage = capabilities.includes("ai.enablement.manage");
+  const canExport = capabilities.includes("ai.enablement.export");
   const [solutions, setSolutions] = useState<Solutions | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
@@ -240,6 +242,7 @@ export function AIAdoptionWorkspace({
   const [hasPendingSave, setHasPendingSave] = useState(false);
   const [evidenceMutation, setEvidenceMutation] = useState(false);
   const [adviceMutation, setAdviceMutation] = useState(false);
+  const [exportMutation, setExportMutation] = useState(false);
   const [canonicalUnavailable, setCanonicalUnavailable] = useState(false);
   const [unavailablePracticeId, setUnavailablePracticeId] = useState<
     string | null
@@ -283,6 +286,7 @@ export function AIAdoptionWorkspace({
     setHasPendingSave(false);
     setEvidenceMutation(false);
     setAdviceMutation(false);
+    setExportMutation(false);
     setCanonicalUnavailable(false);
     setUnavailablePracticeId(null);
     setDiscard(null);
@@ -352,7 +356,8 @@ export function AIAdoptionWorkspace({
       busyRef.current ||
       pending.current ||
       evidenceMutation ||
-      adviceMutation
+      adviceMutation ||
+      exportMutation
     )
       return;
     if (dirty && !confirmed) {
@@ -406,7 +411,8 @@ export function AIAdoptionWorkspace({
       busyRef.current ||
       pending.current ||
       evidenceMutation ||
-      adviceMutation
+      adviceMutation ||
+      exportMutation
     )
       return;
     if (dirty && !confirmed) {
@@ -494,6 +500,7 @@ export function AIAdoptionWorkspace({
       busyRef.current ||
       evidenceMutation ||
       adviceMutation ||
+      exportMutation ||
       canonicalUnavailable
     )
       return;
@@ -752,7 +759,11 @@ export function AIAdoptionWorkspace({
             value={planChoice}
             onChange={(event) => setPlanChoice(event.target.value)}
             disabled={
-              busy || hasPendingSave || evidenceMutation || adviceMutation
+              busy ||
+              hasPendingSave ||
+              evidenceMutation ||
+              adviceMutation ||
+              exportMutation
             }
           >
             <option value="">Choose a saved plan</option>
@@ -773,7 +784,8 @@ export function AIAdoptionWorkspace({
               busy ||
               hasPendingSave ||
               evidenceMutation ||
-              adviceMutation
+              adviceMutation ||
+              exportMutation
             }
           >
             Open saved plan
@@ -784,7 +796,11 @@ export function AIAdoptionWorkspace({
               className="secondary"
               onClick={() => newPlan()}
               disabled={
-                busy || hasPendingSave || evidenceMutation || adviceMutation
+                busy ||
+                hasPendingSave ||
+                evidenceMutation ||
+                adviceMutation ||
+                exportMutation
               }
             >
               New adoption plan
@@ -796,7 +812,11 @@ export function AIAdoptionWorkspace({
               className="secondary"
               onClick={() => void morePlans()}
               disabled={
-                busy || hasPendingSave || evidenceMutation || adviceMutation
+                busy ||
+                hasPendingSave ||
+                evidenceMutation ||
+                adviceMutation ||
+                exportMutation
               }
             >
               Load more plans
@@ -887,7 +907,9 @@ export function AIAdoptionWorkspace({
           objectId={head.object_id}
           currentRevision={head.revision_id}
           canManage={canManage}
-          hasUnsavedChanges={dirty || busy || hasPendingSave || adviceMutation}
+          hasUnsavedChanges={
+            dirty || busy || hasPendingSave || adviceMutation || exportMutation
+          }
           request={request}
           explain={explain}
           onSaved={evidenceSaved}
@@ -916,10 +938,42 @@ export function AIAdoptionWorkspace({
           canManage={canManage}
           canReadMemberDirectory={capabilities.includes("memberships.read")}
           hasUnsavedChanges={dirty}
-          hasConflictingMutation={busy || hasPendingSave || evidenceMutation}
+          hasConflictingMutation={
+            busy || hasPendingSave || evidenceMutation || exportMutation
+          }
           request={request}
           explain={explain}
           onMutationStateChange={setAdviceMutation}
+        />
+      )}
+      {head && !canonicalUnavailable && (
+        <AIPlanPortability
+          key={
+            base +
+            ":" +
+            sessionIdentity +
+            ":" +
+            principalId +
+            ":copy:" +
+            head.object_id
+          }
+          base={base}
+          objectId={head.object_id}
+          currentRevision={head.revision_id}
+          planTitle={
+            plans.find((plan) => plan.object_id === head.object_id)?.data
+              .title || "Saved adoption plan"
+          }
+          principalId={principalId}
+          sessionIdentity={sessionIdentity}
+          canExport={canExport}
+          hasUnsavedChanges={dirty}
+          hasConflictingMutation={
+            busy || hasPendingSave || evidenceMutation || adviceMutation
+          }
+          request={request}
+          explain={explain}
+          onMutationStateChange={setExportMutation}
         />
       )}
       {!canManage && (
@@ -970,6 +1024,7 @@ export function AIAdoptionWorkspace({
                 loading ||
                 evidenceMutation ||
                 adviceMutation ||
+                exportMutation ||
                 canonicalUnavailable
               }
             >

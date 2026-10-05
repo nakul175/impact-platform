@@ -168,8 +168,9 @@ jobs:
       - name: Upgrade a populated database at the deployed schema to the latest
         if: always()
         env:
-          # The schema staging runs (build 0.26.0); move it when a build with new migrations is deployed.
-          IMPACT_UPGRADE_BASELINE: '32'
+          # Verified staging build 0.29.0 runs schema 33 (deploy-status.json, 2026-10-05).
+          # Keep the populated upgrade fixture at the actual deployed schema.
+          IMPACT_UPGRADE_BASELINE: '33'
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
       - uses: actions/setup-java@v5
         if: always()

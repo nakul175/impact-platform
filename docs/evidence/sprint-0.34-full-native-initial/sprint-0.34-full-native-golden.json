@@ -1,0 +1,344 @@
+{
+  "corpus": "impact-golden-calculation",
+  "corpus_version": "1.1.0",
+  "vector_count": 40,
+  "live_vector_count": 37,
+  "generated_at": "2026-10-05T19:43:54.065729+00:00",
+  "duration_seconds": 31.7,
+  "summary": {
+    "reference": {
+      "passed": 40,
+      "failed": 0,
+      "not_run": 0
+    },
+    "domain": {
+      "passed": 40,
+      "failed": 0,
+      "not_run": 0
+    },
+    "live": {
+      "passed": 37,
+      "failed": 0,
+      "not_run": 3
+    }
+  },
+  "vectors": [
+    {
+      "id": "CAL01-pooled-ratio",
+      "fsd": "CAL01",
+      "category": "pooled_ratio",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL01-pooled-ratio-added",
+      "fsd": "CAL01",
+      "category": "pooled_ratio",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL01-pending-excluded",
+      "fsd": "CAL01",
+      "category": "pooled_ratio",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL02-unweighted-mean",
+      "fsd": "CAL02",
+      "category": "mean",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL05-cumulative-end",
+      "fsd": "CAL05",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL05-cumulative-pending-latest",
+      "fsd": "CAL05",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL05-cumulative-decline",
+      "fsd": "CAL05",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL06-zero-denominator",
+      "fsd": "CAL06",
+      "category": "zero_denominator",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL06-mean-zero-denominator",
+      "fsd": "CAL06",
+      "category": "zero_denominator",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL07-five-contributors",
+      "fsd": "CAL07",
+      "category": "missingness",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL09-display-precision",
+      "fsd": "CAL09",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "CAL16-pooled-median",
+      "fsd": "CAL16",
+      "category": "median",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "median-even",
+      "fsd": "FR-CAL-012",
+      "category": "median",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "min",
+      "fsd": "FR-CAL-012",
+      "category": "min_max",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "max",
+      "fsd": "FR-CAL-012",
+      "category": "min_max",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "event-count",
+      "fsd": "FR-CAL-012",
+      "category": "count",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "stock-latest-tie-equal",
+      "fsd": "FR-CAL-005",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "stock-latest-tie-conflict",
+      "fsd": "FR-CAL-005",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "stock-latest-ratio",
+      "fsd": "FR-CAL-005",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "value-states-never-zero",
+      "fsd": "FR-IND-007",
+      "category": "missingness",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "value-states-all-absent",
+      "fsd": "FR-IND-007",
+      "category": "missingness",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "large-magnitude",
+      "fsd": "FR-CAL-009",
+      "category": "magnitude",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "overflow-limit",
+      "fsd": "FR-CAL-009",
+      "category": "magnitude",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "many-decimals-mean",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-0.125",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-2.675",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-negative",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-integer-even",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-integer-odd",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "half-up-stored-12th-place",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "negative-rounds-to-zero",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "percentage-above-bound",
+      "fsd": "FR-CAL-010",
+      "category": "invalid_input",
+      "reference": "PASS",
+      "domain": "PASS"
+    },
+    {
+      "id": "event-count-not-one",
+      "fsd": "FR-CAL-010",
+      "category": "invalid_input",
+      "reference": "PASS",
+      "domain": "PASS"
+    },
+    {
+      "id": "CAL20-time-boundary",
+      "fsd": "CAL20",
+      "category": "period_semantics",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "display-from-stored-value",
+      "fsd": "FR-CAL-009",
+      "category": "rounding",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "naive-timestamp-refused",
+      "fsd": "FR-CAL-010",
+      "category": "invalid_input",
+      "reference": "PASS",
+      "domain": "PASS"
+    },
+    {
+      "id": "disaggregation-sum",
+      "fsd": "FR-IND-006",
+      "category": "dimensions",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "FT-IND-006-multiselect",
+      "fsd": "FR-IND-006",
+      "category": "dimensions",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "disaggregation-pooled-ratio",
+      "fsd": "FR-IND-006",
+      "category": "dimensions",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    },
+    {
+      "id": "disaggregation-total-from-source",
+      "fsd": "FR-CAL-009",
+      "category": "dimensions",
+      "reference": "PASS",
+      "domain": "PASS",
+      "live": "PASS"
+    }
+  ]
+}

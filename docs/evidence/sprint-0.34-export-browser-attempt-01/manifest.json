@@ -1,0 +1,13 @@
+{
+  "scope": "Preserved actual local qualification attempt, incomplete; current0.34 saved archive is COMPLETE and checker incorrectly expected PARTIAL. No product or served-source drift. Five checks passed, including one actual byte-exact download; history group incomplete. Do not aggregate with later qualification.",
+  "checks_passed": 5,
+  "qualified_checker_sha256": "ebc84d271b9d63e78ffbc4d320d54ed97c3622c5872c98a91957c632cdac536a",
+  "sources_unchanged": true,
+  "served_assets_unchanged": true,
+  "files": {
+    "report.json": "34d7b3e92b31ef07c715ef5319d1bfabc66720a18040404a6f92f0b72ab75d9f",
+    "checker.mjs": "ebc84d271b9d63e78ffbc4d320d54ed97c3622c5872c98a91957c632cdac536a",
+    "failure.png": "21c8619429b0d6489d328a645c9c4097a1ac6f74df4bf4bbba84fb074f0acdfc",
+    "download-1.json": "82b67dfd74ee37a328159fe80ca40d6372fcea9f52f0c9234de8fcb61722ada0"
+  }
+}

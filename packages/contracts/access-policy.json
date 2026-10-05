@@ -1,5 +1,5 @@
 {
-  "version": "1.24.0",
+  "version": "1.25.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6414,6 +6414,23 @@
       "purpose_required": false,
       "fresh_assurance_seconds": 300,
       "audit": true
+    },
+    {
+      "operation_id": "issue_ai_plan_export",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/exports",
+      "capability": "ai.enablement.export",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "independence_required": false,
+      "field_filter_required": true,
+      "audit": true,
+      "state_guard": "Current self member with scoped export and read authority on an exact AVAILABLE saved revision; retained original JSON bytes, separate unapproved draft record and actual archived guidance only."
     },
     {
       "operation_id": "create_reporting_calendar",

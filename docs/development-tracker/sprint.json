@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "title": "Tola + AI · eight-hour development sprint",
+  "title": "Tola + AI · eight-hour release and demo window",
   "branch": "integration/0.32-tola-ai-sprint",
-  "started_at": "2026-10-05T08:27:26Z",
-  "deadline": "2026-10-05T16:27:26Z",
-  "updated_at": "2026-10-05T19:14:17.855470Z",
-  "status": "WINDOW_ENDED",
+  "started_at": "2026-10-05T19:17:34Z",
+  "deadline": "2026-10-06T03:17:34Z",
+  "updated_at": "2026-10-05T19:58:12.618629Z",
+  "status": "ACTIVE",
   "active_agent_limit": 4,
   "stream_ids": [
     "tracker",
@@ -15,24 +15,24 @@
     "ops-portability",
     "impact-references",
     "human-advice",
-    "plan-portability"
+    "plan-portability",
+    "release-ci",
+    "demo-deployment"
   ],
   "rollup": {
-    "summary": "Window closed: five increments integrated, four bounded increments locally verified. Internal advice has a known cleanup privacy deployment blocker; sixth increment is draft only.",
-    "planned_increments": 6,
+    "summary": "JSON downloads and independent historical access upgrade pass focused/native/browser checks; final combined regression runs while capacity, cost coverage and saved-review improvements are reviewed privately.",
+    "planned_increments": 10,
     "integrated_increments": 5,
     "verified_increments": 4,
-    "active_agents": 0,
-    "next_checkpoint": null
+    "active_agents": 4,
+    "next_checkpoint": "2026-10-05T20:15:00Z"
   },
   "limits": [
-    "The eight-hour deadline is a work window, not a promise that the complete platform will be finished.",
-    "There are four active-agent slots including integration; additional workstreams will run in waves.",
-    "ETA ranges are forecasts from agents and can change after inspection, review and testing.",
-    "Local implementation and passing tests do not establish production acceptance. Native, hosted, container and nonprofit UAT gates remain separate.",
-    "Paid provider calls, paid CI, merging and deployment need the owner’s separate approval.",
-    "The original requirement registers and their acceptance statuses remain unchanged; no overall completion percentage is inferred.",
-    "Observed session clock advanced from11:28UTC to19:10UTC beyond the deadline; this record does not claim eight uninterrupted processing hours.",
-    "At close,0.33 local automated scopes pass but worker cleanup privacy blocks deployment;0.34 remains unregistered."
+    "Maximum four concurrent agents including integration; ten workstreams run in waves.",
+    "ETA ranges are evidence-based forecasts; the eight-hour deadline does not override failed checks.",
+    "User has authorised main merge and a final demo; main auto-deploys. All four required CI jobs must pass on the exact candidate head.",
+    "Paid CI/provider/cloud resources still require separate financial permission; no paid provider calls are planned.",
+    "Original307 core and40 nonprofit requirements retain their acceptance baseline; no whole-platform completion percentage is inferred.",
+    "Previous window ended with an observed clock gap; its exact snapshot and handover are preserved. Keep the app and computer running for local work."
   ]
 }

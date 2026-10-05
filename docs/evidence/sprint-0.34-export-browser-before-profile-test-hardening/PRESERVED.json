@@ -1,0 +1,19 @@
+{
+  "scope": "Prior15-check actual browser proof, preserved before source-hash qualification repeat following profile-test-only hardening; do not aggregate",
+  "files": {
+    "checker.mjs": "f4ed7a1edfd767da948dce365552c7f940b828811aeb4e1b7b1062ef032689d1",
+    "download-1.json": "5ead3ecd461735c4c466ccf582ee64470fc51f7ec5a851ad3077bd23dbda2526",
+    "download-2.json": "a4805331bca0151c9facb70ed2577a6be64bbf37794753a4bfa721a8b950a89e",
+    "download-3.json": "f45b6b573a26c8278c3a42b1fcf302d938c9863bf742e11faa131327b4aed5a3",
+    "download-4.json": "bb691259a6ee46fe508254966848bf5518c3af2075c560b9095206e5cd2a9de4",
+    "export-1440-component.png": "13798e940b602cceef453cb2e8ada9ff11e22123f3ee9d52e2d9438ce61599eb",
+    "export-1440-viewport.png": "591717756cb9a01d3a314682908cb46806b68478fe54175e49eb7926dbef5f19",
+    "export-320-component.png": "e71927ab954694117589b59ddb8494642e9963546a87c3565cd76963eb08d7ae",
+    "export-320-viewport.png": "b86b24f05d36babafb8c9d1c9558731f745c7040072286f8568d8e0bdfb92677",
+    "export-390-component.png": "259a59d5dfd46fe820c4a7f9e1fa21418f1e0b765613fb8963e453050e0b94f4",
+    "export-390-viewport.png": "7825fef74975a0bc3042c9201024f26338e19c6a46a65dd577c92febc7a3eb62",
+    "manifest.json": "3db696bd72a6501f25f9958ba24f6c5cd99d1f23c3079a6ce1ae7304cc0fbfc4",
+    "original-root-report.json": "8279f7d13c27b356b0dcac4872cabc0855edd4bdc1e956753688d1c518fe44cb",
+    "report.json": "8279f7d13c27b356b0dcac4872cabc0855edd4bdc1e956753688d1c518fe44cb"
+  }
+}

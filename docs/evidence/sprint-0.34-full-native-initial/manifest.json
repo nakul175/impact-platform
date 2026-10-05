@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-05T19:49:23.369076+00:00",
+  "status": "INITIAL_FULL_NATIVE_ONE_OBSOLETE_PROFILE_ASSERTION_FAILED",
+  "outcome": {
+    "passed": 2043,
+    "failed": 1,
+    "skipped": 26,
+    "deselected": 1,
+    "restart_both": "PASS",
+    "restore": "PASS",
+    "populated33_to40": "PASS"
+  },
+  "files_sha256": {
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-applied-migrations.json": "7e17293e165dea988fe1f8de2fe36df710c589adf2dcdc8e8d75431e1c5a28ed",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-golden.json": "2c7ffe87a8145ee747be956ae02e78770c77968535f6585c05a8c3c3e8de3d29",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-qualification.json": "722303cc28903e798b7d4d2ab4e2555d3a3a3142fa73fb97281bee6852c66782",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-restart-phase_1-tests.xml": "ddf96635a750c17eb740ba0e17391131db6ac215065c10614380e0cf180c192f",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-restart-phase_2-tests.xml": "9284059b6268f50cc8def9f7417cbcc9c70788b7522d3b7477f1ba8082ff88f4",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-restore-drill.json": "036a49cc371b311f5caae2207854a614225034b25672d4ddd6888a76129757bf",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-sandbox-attempt.json": "bbf735df05b0cd3cab459172d30ab532f3d7546f617843d5e1988fddf911f790",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-source-proof.json": "ec4723b7a905cb866fe7811ec6bfc98f231a687276699f1c37fcf37ba37999a9",
+    "docs/evidence/sprint-0.34-full-native-initial/sprint-0.34-full-native-tests.xml": "f099aa67bde16f4a8381647dc69db2f53cd7a9580ab629fae2518a9cc09cda8e",
+    "docs/evidence/sprint-0.34-full-native-initial/runner.py": "52db6e7f09165691826c0580c041a0a47e00135efa1ab8f7b145d6158a149782"
+  },
+  "reused_case_reports_sha256": {
+    "docs/evidence/sprint-0.34-full-native-initial/reused/nonprofit-ai-content-applied-migrations.json": "e370dbbaf9c7330200f4c6dd5362b736bc31dcdf9d723d9a169d9cc5f2e3fd78",
+    "docs/evidence/sprint-0.34-full-native-initial/reused/nonprofit-ai-framework-old-pin-visibility-observation.json": "7259e56a4b52cdb46fe9983ca5b6810800f4a4204a23af89162ad04598e3c8c5",
+    "docs/evidence/sprint-0.34-full-native-initial/reused/sprint-0.33-listing-visibility-native-applied-migrations.json": "4e803b522729981ee066bc956579bab8453210b2beffefbe863f59c1f9a43a52",
+    "docs/evidence/sprint-0.34-full-native-initial/reused/sprint-0.33-retained-visibility-native-applied-migrations.json": "147b49c4dc194688b341faf9ef38bbe4bb49826b013af15c18d608e0756c3899"
+  },
+  "restored_historical_tracked_reports": [
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.33-listing-visibility-native-applied-migrations.json",
+    "docs/evidence/sprint-0.33-retained-visibility-native-applied-migrations.json"
+  ],
+  "note": "Raw failed attempt and original older-profile assertion preserved; frozen0036 remains unchanged. No test weakened or skipped."
+}

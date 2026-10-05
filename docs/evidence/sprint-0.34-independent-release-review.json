@@ -1,0 +1,378 @@
+{
+  "recorded_at": "2026-10-05T20:05:11.177544+00:00",
+  "scope": "Independent read-only bounded release-blocker review of registered0.34 advice/plan-copy current-authority, exact revision, receipt/pointer and generic-cleanup boundaries. Existing source/evidence inspected; no new runtime test, comprehensive security certification, nonprofit UAT or hosted acceptance.",
+  "reviewed_build": "0.34.0",
+  "schema_version": 40,
+  "checkpoint033": "861c2a807e774ec6bb53ef05c1ee25f853591085",
+  "result": "NO_ADDITIONAL_IMPLEMENTED_FLOW_RELEASE_BLOCKER_IDENTIFIED_IN_REVIEWED_SCOPE",
+  "runtime_sources_changed_by_review": false,
+  "current_full_native_proof": {
+    "qualification": "docs/evidence/sprint-0.34-full-native-qualification.json",
+    "source_proof": "docs/evidence/sprint-0.34-full-native-source-proof.json",
+    "ledger": "docs/evidence/sprint-0.34-full-native-applied-migrations.json",
+    "tests": {
+      "junit": "docs/evidence/native-application-tests.xml",
+      "targets": [
+        "qualification",
+        "specification/reference-v1/tests/test_smoke.py",
+        "specification/reference-v1/tests/test_integration.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 516.8,
+      "tests": 2071,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 26,
+      "reported_seconds": 516.325,
+      "renewal_race_winners": {
+        "0": {
+          "mode": "race",
+          "winner": "approval"
+        },
+        "1": {
+          "mode": "race",
+          "winner": "approval"
+        },
+        "2": {
+          "mode": "race",
+          "winner": "approval"
+        },
+        "3": {
+          "mode": "revocation_first",
+          "winner": "revocation"
+        },
+        "4": {
+          "mode": "approval_first",
+          "winner": "approval"
+        }
+      }
+    },
+    "restart": "PASS",
+    "restore": "PASS",
+    "upgrade": "PASS",
+    "source_fingerprint_count": 356,
+    "source_changed_during_run": [],
+    "current_fingerprint_mismatches": []
+  },
+  "immutable_migration_proof": {
+    "0040_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "actual_ledger_versions": 40,
+    "all_actual_ledger_hashes_match_current_registered_files": true,
+    "0001_through0039_unchanged": [
+      {
+        "path": "infrastructure/migrations/0001_roles.sql",
+        "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0002_domain.sql",
+        "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0003_security.sql",
+        "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0004_application.sql",
+        "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0005_access_administration.sql",
+        "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0006_measurement_configuration.sql",
+        "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0007_measurement_changes.sql",
+        "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0008_period_governance.sql",
+        "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0009_reporting_packages.sql",
+        "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0010_work_and_recalculation.sql",
+        "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0011_controlled_publication.sql",
+        "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0012_workspace_administration.sql",
+        "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0013_tenant_lifecycle.sql",
+        "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0014_initial_access.sql",
+        "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0015_recovery_contacts.sql",
+        "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0016_authority_renewal.sql",
+        "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0017_provider_logout.sql",
+        "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0018_worker_delivery.sql",
+        "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0019_results_framework.sql",
+        "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0020_calculation_methods.sql",
+        "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0021_web_forms.sql",
+        "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0022_import_quality.sql",
+        "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0023_evidence_objects.sql",
+        "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0024_report_exports.sql",
+        "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0025_worker_grants.sql",
+        "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0026_worker_job_grants.sql",
+        "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0027_privacy_execution.sql",
+        "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0028_usable_staging.sql",
+        "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0029_operator_lifecycle.sql",
+        "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0030_security_privacy.sql",
+        "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0031_theory_of_change.sql",
+        "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0032_forms_languages_rounds.sql",
+        "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0033_application_executor.sql",
+        "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0034_ai_advisory.sql",
+        "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0035_ai_adoption_plans.sql",
+        "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0036_reviewed_ceiling_widening.sql",
+        "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0037_ai_content_snapshots.sql",
+        "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0038_human_advice_cases.sql",
+        "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+        "unchanged_against_checkpoint033": true
+      },
+      {
+        "path": "infrastructure/migrations/0039_human_advice_anchor_availability.sql",
+        "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+        "unchanged_against_checkpoint033": true
+      }
+    ]
+  },
+  "closed_concrete033_residual": {
+    "historical_diagnosis": "docs/evidence/sprint-0.33-human-advice-retention-definer-residual.json",
+    "historical_report_status_preserved": "UNRESOLVED_REGISTERED_0.33_RESIDUAL",
+    "historical_report_unchanged_sha256": "e2c05c2fd5dd8032cf6245004cadf1c5e4d73037ac6e1d717fb11a8dee5a4628",
+    "current_remedy": "Both frozen0040 SECURITY DEFINER overloads exclude command_type issue_ai_plan_export and ^(human_advice_|create_human_advice_case$), preserving tenant/bounded expiry and ordinary cleanup ACL/behavior.",
+    "source": "infrastructure/migrations/0040_ai_plan_portability.sql:539",
+    "registered_actual_worker_proof": {
+      "name": "private_retention_exclusions_ordinary_positive_purge_and_permanent_dedup",
+      "result": "PASS",
+      "observations": {
+        "overloads": [
+          {
+            "overload_arguments": 1,
+            "ordinary_expired_purged": 1,
+            "private_export_advice_keys_or_count_returned": 0,
+            "actual_login": "impact_worker_login"
+          },
+          {
+            "overload_arguments": 2,
+            "ordinary_expired_purged": 1,
+            "private_export_advice_keys_or_count_returned": 0,
+            "actual_login": "impact_worker_login"
+          }
+        ],
+        "expired_private_pointers_retained": 3,
+        "owner_only_receipt_deletion_fixture_permanent_dedup": {
+          "exception": "UniqueViolation",
+          "sqlstate": "23505",
+          "message": "redacted_sql_diagnostic"
+        },
+        "no_retention_acceptance_or_duration_claim": true
+      }
+    },
+    "interpretation": "Concrete cleanup actor/operation-key disclosure reproduced on registered39 is closed on registered40 in the qualified fixture. Original39 diagnosis remains a valid historical failure, not overwritten."
+  },
+  "review_observations": [
+    {
+      "boundary": "Current authority before issuance/replay",
+      "source": "apps/api/impact_api/ai_plan_exports.py:278",
+      "observation": "Current member/scoped export+read/current-readable head and exact tenant/object/type-qualified AVAILABLE pinned revision precede issuance/receipt lookup. Original bytes are replayed rather than rendered against current guidance; fixed DB-time deadline remains checked."
+    },
+    {
+      "boundary": "Participant and old-anchor privacy",
+      "source": "apps/api/impact_api/human_advice.py:240",
+      "observation": "Current participant/member/natural identity and scoped plan gates plus exact AVAILABLE anchor apply to resolve and before create receipt lookup; central0039 policies retain pointer fencing. Terminal adviser read/replay remains unavailable."
+    },
+    {
+      "boundary": "Local download acknowledgement and authority failure",
+      "source": "apps/web/src/AIPlanPortability.tsx",
+      "observation": "Exact request/context is retained for retry; every download replays through server then checks original UTF-8 byte count/hash/issuance binding. Current server ASSURANCE_REQUIRED joins authority-failure clearing. No client capability hint establishes object-specific write authority."
+    },
+    {
+      "boundary": "Original ceiling registry preserved",
+      "source": "qualification/test_access_upgrade_unit.py",
+      "observation": "Assertion correction accommodates additive approved profiles while checking immutable0036 bytes, original canonical seed, exact current seed and monotonicity; live test retains runtime registry-write denials. No runtime authority widening introduced by the test change."
+    }
+  ],
+  "unmet_target_work_distinct_from_new_defects": [
+    {
+      "target": "Operated private advice/export retention and erasure",
+      "source": "apps/api/impact_api/privacy.py:185",
+      "meaning": "Current privacy planning inventories membership and named Evidence/ImportJob records, not AI plans/advice/export artifacts.0040 retained-child trigger refuses parent plan/audit payload removal while original bytes remain. This is a refusal boundary, not removal/backup deletion acceptance."
+    },
+    {
+      "target": "Storage limits",
+      "source": "infrastructure/migrations/0040_ai_plan_portability.sql",
+      "meaning": "Export100 slots are permanent per tenant principal across hidden/expired issuances. Advice100 cases are requester-currently-visible, not a permanent storage quota; advice operated storage/retention remains unresolved."
+    },
+    {
+      "target": "Deadline and downloaded files",
+      "source": "docs/RELEASE-0.34-plan-portability.md",
+      "meaning": "Seven-day replay deadline closes server byte replay; it cannot recall or prevent opening a prior local file and does not erase storage/free issuer slots."
+    },
+    {
+      "target": "Broad business/security/hosted acceptance",
+      "source": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+      "meaning": "Specified nonprofit cases and307 core baseline are not silently marked accepted by overlapping implementation checks. Full security assessment/UAT/assistive-technology/hosted identity and paid CI scopes remain separate."
+    }
+  ],
+  "documentation_handoff": [
+    {
+      "source": "docs/RELEASE-0.34-plan-portability.md",
+      "note": "At review time final native running/pending wording needs final checkpoint reconciliation with the now finished named native proof. This is a documentation update, not a new runtime defect."
+    },
+    {
+      "source": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+      "note": "Reconcile final native/PGlite/restart/restore state using exact final source-bound proofs; preserve explicit operated-retention and acceptance limits."
+    }
+  ],
+  "source_sha256": {
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "infrastructure/migrations/0039_human_advice_anchor_availability.sql": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+    "infrastructure/migrations/0040_ai_plan_portability.sql": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "apps/api/impact_api/ai_plan_exports.py": "e81364635cdd7943da4f837c0bffc3037dfa6e90fe77b4f35b76f18b1735eec1",
+    "apps/api/impact_api/human_advice.py": "9d544565c7e91fe54ec644d4d1a6047005a2516e06148873486eb473c279352d",
+    "apps/api/impact_api/privacy.py": "f066d5ccbfe550acbade6d400c11ff727a07232698b3ef56c38982ba329ec5e2",
+    "apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "qualification/test_access_upgrade_unit.py": "10121732fc1ac5b64ecd45f73df06277acb023a349c687c3e9cc4326e7ad96d4",
+    "qualification/test_access_upgrade.py": "78f23c8ae251a8e7622f13812f96234c24f10bbaa3d32895b35afc4b56a6d6fc"
+  },
+  "evidence_sha256": {
+    "docs/evidence/sprint-0.34-portability-sql-native-qualification.json": "0149ed1b7b7b0d19e664822552dcc89c66a7757df87774331e07497bf6f8132e",
+    "docs/evidence/sprint-0.34-portability-sql-native-applied-migrations.json": "983082a009da5e67510d8f3f4757b5ab0ccd82741ef9b8d7d9f67391a9687a2e",
+    "docs/evidence/sprint-0.34-full-native-qualification.json": "774e7c7493907a09d69556ce366aaca54376762d41a70473f2afadc2a799550b",
+    "docs/evidence/sprint-0.34-full-native-source-proof.json": "d073904a64d2332c13c740599a9822d2c0465e08b3d766c179632bd67b75ed5b",
+    "docs/evidence/sprint-0.34-full-native-applied-migrations.json": "7f69def5616b5eb445e3f4e7043009a04c6b097a77ff991a1491004110a76946",
+    "docs/evidence/sprint-0.34-full-native-tests.xml": "27cfff0355a501c92c95b1140ee7db3c67081a9b3beb5ceb55b38a77ff5f298e",
+    "docs/evidence/sprint-0.34-ai-plan-export-focused-handoff.json": "db5445a1b2ee52112004d52c526e954b22a24cb26d5cc52e4d74a7d69fe3d0e8",
+    "docs/evidence/sprint-0.34-export-historical-redacted-summary.json": "c480991134727463932e5c852195ba3d4187a936e4f794fa696a6563194133a7",
+    "docs/evidence/sprint-0.34-export-browser-tests.json": "f6b19f8a27c9bea206625b0b21b443eaf14c0be17260d552176064be816012e8",
+    "docs/evidence/sprint-0.33-human-advice-retention-definer-residual.json": "e2c05c2fd5dd8032cf6245004cadf1c5e4d73037ac6e1d717fb11a8dee5a4628"
+  },
+  "limitations": [
+    "Custom transaction-local principal GUCs guard missing/mis-scoped application context; they do not authenticate a human against a compromised runtime database login.",
+    "Actual native focused SQL proof uses explicitly labelled synthetic storage/direct-grant fixtures; real independently reviewed HTTP upgrade evidence is separate.",
+    "No new external/provider/account/message/deployment operation performed by this review."
+  ]
+}

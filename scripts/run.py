@@ -73,6 +73,7 @@ BROWSER_MODES = {
     "ai-planning-browser": "ai-planning-check.mjs",
     "tola-ai-sprint-browser": "tola-ai-sprint-check.mjs",
     "tola-ai-extension-browser": "tola-ai-extension-check.mjs",
+    "ai-plan-export-browser": "ai-plan-export-check.mjs",
     "dashboard-browser": "dashboard-check.mjs",
     "forms-browser": "forms-check.mjs",
     "reporting-browser": "reporting-check.mjs",

@@ -3,14 +3,14 @@
   "title": "Consent-based internal human advice",
   "domain": "AI capability and advisory support",
   "owner": "/root/sprint_access",
-  "status": "BLOCKED",
-  "summary": "Internal advice is integrated and locally tested, including142 focused actual native checks and28 combined browser groups. A later actual worker probe confirms old cleanup helpers expose private operation keys.",
-  "next_step": "Close the recorded cleanup-definer privacy boundary with an independently reviewed additive migration and regression.",
+  "status": "TESTING",
+  "summary": "The old schema39 cleanup disclosure is preserved as a failed baseline. Registered0040 now excludes private advice/export receipts in21 focused actual native SQL groups; final full/currentAPI regression pending.",
+  "next_step": "Requalify private advice and ordinary worker/audit paths in complete current40 native/PGlite suite.",
   "eta": {
-    "earliest": null,
-    "latest": null,
-    "confidence": "UNESTIMATED",
-    "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+    "earliest": "2026-10-05T20:45:00Z",
+    "latest": "2026-10-05T22:00:00Z",
+    "confidence": "MEDIUM",
+    "basis": "Registered40 focused correction passes; final source-bound full regression still pending."
   },
   "delivered": [
     "Closed create/action/read/history contracts and exact saved-plan anchored state transitions with participant consent, no-conflict declaration, explicit assignment and complete action acknowledgement.",
@@ -91,12 +91,17 @@
       "result": "Exit0;171 source hashes unchanged; owned synthetic credential rotation recorded",
       "scope": "Persisted private0600 map explicitly applied once to six owned synthetic cluster logins; reuse required later. No deployed account changes. Named ledger/qualification/tests produced in this run; source and report scope bound.",
       "recorded_at": "2026-10-05T10:50:50.886582Z"
+    },
+    {
+      "title": "Registered40 privacy and immutable copy SQL",
+      "path": "docs/evidence/sprint-0.34-portability-sql-native-qualification.json",
+      "result": "PASS_21_NATIVE_GROUPS",
+      "scope": "Actual six runtime login topology/all40ledger; labelled synthetic grants, SQL/storage only; no actualAPI/reviewedtenantupgrade claim",
+      "recorded_at": "2026-10-05T19:29:52.644998Z"
     }
   ],
-  "blockers": [
-    "Deployment and complete privacy qualification blocked by old worker cleanup helpers; schema39-only reproduction preserved."
-  ],
-  "updated_at": "2026-10-05T19:14:17.848462Z",
+  "blockers": [],
+  "updated_at": "2026-10-05T19:33:09.364507Z",
   "history": [
     {
       "at": "2026-10-05T09:15:31.017457Z",
@@ -250,6 +255,17 @@
         "latest": null,
         "confidence": "UNESTIMATED",
         "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+      }
+    },
+    {
+      "at": "2026-10-05T19:33:09.364507Z",
+      "status": "TESTING",
+      "summary": "The old schema39 cleanup disclosure is preserved as a failed baseline. Registered0040 now excludes private advice/export receipts in21 focused actual native SQL groups; final full/currentAPI regression pending.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Registered40 focused correction passes; final source-bound full regression still pending."
       }
     }
   ]

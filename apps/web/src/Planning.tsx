@@ -461,6 +461,21 @@ export function PlanningPanel({
                   {approvedBaseline.version_label} · effective{" "}
                   {approvedBaseline.effective_from.slice(0, 10)}
                 </h3>
+                {allowed("framework.export") && (
+                  <p>
+                    <a
+                      href={`${base}frameworks/${approvedBaseline.framework_id}/logframe.csv?revision_id=${approvedBaseline.revision_id}`}
+                    >
+                      Download logframe CSV
+                    </a>
+                    {" · "}
+                    <a
+                      href={`${base}frameworks/${approvedBaseline.framework_id}/logframe.xlsx?revision_id=${approvedBaseline.revision_id}`}
+                    >
+                      Download logframe Excel
+                    </a>
+                  </p>
+                )}
                 <Tree
                   nodes={approvedBaseline.nodes}
                   indicators={indicators}

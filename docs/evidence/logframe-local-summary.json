@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-05",
+  "build": "0.29.0",
+  "schema": 33,
+  "domain_api": "1.19.0",
+  "baseline_commit": "5676e02ef48a1f3f98db5a851dcdcc37ba9c6b55",
+  "full_local_suite": {
+    "passed": 964,
+    "failed": 7,
+    "skipped": 74,
+    "deselected": 1,
+    "seconds": 155.99
+  },
+  "logframe_tests": {
+    "passed": 17,
+    "failed": 0
+  },
+  "baseline_ops": {
+    "passed": 34,
+    "failed": 7
+  },
+  "same_failures_on_unchanged_baseline": true,
+  "reason": "GNU/Linux find -printf, stat -c, du -b and cut behavior differ on this macOS host",
+  "pending": [
+    "Linux browser checks",
+    "native PostgreSQL CI",
+    "live identity provider CI",
+    "container stack CI",
+    "owner merge approval"
+  ],
+  "requirement_status_changes": 0
+}

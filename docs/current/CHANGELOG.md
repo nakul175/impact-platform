@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 5 October 2026 — proposed build 0.29.0: Mercy Corps reuse
+
+Approved-version logframe CSV/XLSX export, separate permission, per-download audit, deterministic Unicode workbook, CSV formula protection, source attribution and license. Planning screen links and automated download assertions added. No accepted requirement or deployment; see [release note](../RELEASE-0.29-logframe-reuse.md).
+
 ## 4 October 2026 — Sunday backup test correction (proposed)
 
 The `main` run after PR #82 failed because a backup unit test expected no weekly set on Sunday. The ordinary daily test now pins Monday; the separate Sunday test still verifies the weekly hard link. No backup logic, version, schema or API change. See [RELEASE-0.28-ci-sunday.md](../RELEASE-0.28-ci-sunday.md).

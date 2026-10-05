@@ -110,6 +110,7 @@ def bootstrap(local, idp=None):
                 "import.cancel",
                 "evidence.attach",
                 "report.export",
+                "framework.export",
                 # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
                 "audit.export",
                 "retention.read",

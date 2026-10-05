@@ -1,5 +1,7 @@
 # Impact Platform · v0.28.0 (PR 1 candidate)
 
+Proposed local build **0.29.0** adds approved logframe CSV/XLSX exports using reviewed Mercy Corps TolaData reuse. Branch only, not deployed; see [release note](docs/RELEASE-0.29-logframe-reuse.md).
+
 ## Start here
 
 - **Continuing the engineering (a person or an AI agent)?** Read [AGENTS.md](AGENTS.md) first, then [docs/HANDOVER.md](docs/HANDOVER.md) — the state at handover: versions, `main` versus the staging server, CI, open owner decisions, known issues and next steps — then [CLAUDE.md](CLAUDE.md), the full engineering brief (model-agnostic despite its name), and [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).

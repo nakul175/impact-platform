@@ -61,6 +61,8 @@
 | PATCH | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | `frameworks.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/frameworks/{object_id}/actions/submit` | `framework.submit` |
 | GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness` | `frameworks.read` |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.csv` | `framework.export` |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.xlsx` | `framework.export` |
 | GET | `/v1/tenants/{tenant_id}/geographies` | `geographies.read` |
 | POST | `/v1/tenants/{tenant_id}/geographies` | `reference-data.manage` |
 | GET | `/v1/tenants/{tenant_id}/geographies/{object_id}` | `geographies.read` |

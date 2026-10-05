@@ -1,0 +1,12 @@
+Mercy Corps TolaData / Tola Activity
+Source: https://github.com/mercycorps/toladata
+Revision: 7ca89ab1e5f55cbe4577d16d7281c6cf0936fc3d
+License: Apache License, Version 2.0 (LICENSE alongside this notice).
+
+apps/api/impact_api/logframe.py adapts the apply_label_styling function from
+indicators/xls_export_utils.py. Changes: platform colors instead of Mercy Corps
+colors; applied inline to workbook headers; no merged-cell workaround.
+No upstream logo, name, theme, dependency or application permission model is used.
+
+The hierarchy/export tests are newly authored with scenario inspiration from
+indicators/tests/test_rf_export.py and js/models/__tests__/program.rfLevelOrdering.test.js.

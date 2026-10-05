@@ -34,6 +34,7 @@ from .audit_export import AuditExports
 from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
+from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -490,6 +491,37 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
     def framework_completeness(request: Request, tenant: str, obj: str):
         return service.planning.read(auth.resolve(request), uuid(tenant), "framework_completeness", uuid(obj))
+
+    def logframe_response(request, tenant, obj, revision_id, format):
+        framework_id = uuid(obj)
+        body, digest = LogframeExports(service).download(
+            auth.resolve(request),
+            uuid(tenant),
+            framework_id,
+            uuid(revision_id),
+            format,
+            request.state.correlation,
+        )
+        return Response(
+            body,
+            media_type=LOGFRAME_MEDIA[format],
+            headers={
+                "ETag": '"' + digest + '"',
+                "Content-Disposition": 'attachment; filename="impact-logframe-'
+                + framework_id[:8]
+                + "."
+                + format.lower()
+                + '"',
+            },
+        )
+
+    @app.get("/v1/tenants/{tenant}/frameworks/{obj}/logframe.csv")
+    def logframe_csv(request: Request, tenant: str, obj: str, revision_id: str):
+        return logframe_response(request, tenant, obj, revision_id, "CSV")
+
+    @app.get("/v1/tenants/{tenant}/frameworks/{obj}/logframe.xlsx")
+    def logframe_xlsx(request: Request, tenant: str, obj: str, revision_id: str):
+        return logframe_response(request, tenant, obj, revision_id, "XLSX")
 
     @app.get("/v1/tenants/{tenant}/programmes/{obj}/targets-vs-actuals")
     def targets_vs_actuals(

@@ -1,5 +1,9 @@
 # Impact Platform user guide
 
+## Proposed logframe export (build 0.29.0, local branch)
+
+In Results framework, select a programme with an approved baseline. If you have export permission, choose **Download logframe CSV** or **Download logframe Excel**. The file names its exact approved framework version and includes its hierarchy, assumptions, relationships and exceptions. It contains indicator identifiers, not current measurement figures. This feature is not yet deployed.
+
 This guide describes build 0.26.0 of the development and staging application, refreshed for the v0.27 usability work (`docs/RELEASE-0.27-ux.md`). It is written by task. Each section names the release note that describes the feature in full and its exact limits; where this guide and a release note disagree, the release note is right. Nothing here describes a production-approved service: Release 1 is in progress and no requirement is accepted (`docs/COMPLETION-LEDGER.md`).
 
 Two rules explain most of what you will see. First, the screen shows only the actions your current permissions allow, and the server checks every request again: seeing a record never means you may approve, export or publish it. Second, nothing is overwritten. A change is a new revision, an approval is tied to the exact revision that was submitted, and official numbers come only from a closed period.

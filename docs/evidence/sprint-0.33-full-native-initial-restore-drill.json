@@ -1,0 +1,4 @@
+{
+  "outcome": "FAIL",
+  "error": "RuntimeError: pg_dump is not available on PATH"
+}

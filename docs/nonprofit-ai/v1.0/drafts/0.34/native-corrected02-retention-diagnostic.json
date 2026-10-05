@@ -1,0 +1,8 @@
+{
+  "scope": "Actual impact_worker_login SET LOCAL ROLE impact_worker; unregistered corrected draft661a0a18; existing owner-definer returns private export operation keys despite worker pointer RLS",
+  "private_export_keys_returned": [
+    "1ddc84bc-b994-566b-8e69-bd78fba85d13:issue_ai_plan_export:a0336cb0-379a-49bc-af53-6e705bf4e572"
+  ],
+  "returned_count": 1,
+  "privacy_residual_confirmed": true
+}

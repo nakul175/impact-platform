@@ -1,0 +1,33 @@
+{
+  "scope": "Temporary synthetic component and request-function fixture only; not actual API, PostgreSQL, capability enforcement, audit, release or acceptance evidence",
+  "actual_api_qualification": "NOT_RUN",
+  "finished_at": "2026-10-05T11:20:46.282Z",
+  "results": [
+    {
+      "name": "Lazy options and separate export hint do not call the request fixture",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    }
+  ],
+  "errors": [
+    "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('option', { name: /Revision 1/ }) to be visible\u001b[22m\n\u001b[2m    65 × locator resolved to hidden <option value=\"77777777-7777-4777-8777-777777777777\">Revision 1 · 05/10/2026, 12:30:00</option>\u001b[22m\n\n    at /private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:26:268\n    at async check (/private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:23:33)\n    at async file:///private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:26:2"
+  ],
+  "blocked_external_requests": [],
+  "accessibility_scans": [],
+  "screenshots": [],
+  "source_hashes": {
+    "AIPlanPortability.tsx": "75422bdeceb97e4ef902b69c2e0c080fe35efa0bf5db3740f7c58aba5a04da92",
+    "export-adapter.ts": "9a42353a9269b06ec7e3b10057ae046d8bc8561c80c04375f09a869e9afe5b5d",
+    "ui-fixture.tsx": "bb7db6178b755b133b660c8b22795f68d8a153f0234552b4c7e556f64e9fe77f",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "74b97959d9ffdc7f463a5ef89765b0fdc466c6e84868df99f41c92fba28ff7e6"
+  },
+  "current_source_hashes": {
+    "AIPlanPortability.tsx": "75422bdeceb97e4ef902b69c2e0c080fe35efa0bf5db3740f7c58aba5a04da92",
+    "export-adapter.ts": "9a42353a9269b06ec7e3b10057ae046d8bc8561c80c04375f09a869e9afe5b5d",
+    "ui-fixture.tsx": "bb7db6178b755b133b660c8b22795f68d8a153f0234552b4c7e556f64e9fe77f",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "74b97959d9ffdc7f463a5ef89765b0fdc466c6e84868df99f41c92fba28ff7e6"
+  },
+  "sources_unchanged": true
+}

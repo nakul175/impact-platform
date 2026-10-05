@@ -38,6 +38,9 @@ from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_adoption_plans import AIAdoptionPlans
+from .ai_impact_references import AIImpactReferences
+from .human_advice import HumanAdviceCases
+from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
 
@@ -104,6 +107,7 @@ def create_app():
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_plans = AIAdoptionPlans(service)
+    human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
@@ -112,6 +116,7 @@ def create_app():
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
+    ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
     delivery_operations = DeliveryOperations(lifecycle)
@@ -522,6 +527,66 @@ def create_app():
     def round_coverage(request: Request, tenant: str, obj: str):
         return service.forms.read(auth.resolve(request), uuid(tenant), "get_round_coverage", uuid(obj))
 
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice")
+    def human_advice_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return human_advice.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/eligible-peers")
+    def human_advice_peers(
+        request: Request, tenant: str, context_plan_id: str, limit: int = 50, cursor: str | None = None
+    ):
+        return human_advice.eligible_peers(
+            auth.resolve(request), uuid(tenant), uuid(context_plan_id), limit, cursor
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}")
+    def human_advice_get(request: Request, tenant: str, obj: str):
+        return human_advice.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/revisions")
+    def human_advice_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return human_advice.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/revisions/{revision_id}")
+    def human_advice_revision(request: Request, tenant: str, obj: str, revision_id: str):
+        return human_advice.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/human-advice", status_code=201)
+    async def human_advice_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("HumanAdviceCreate", body)
+        return await run_in_threadpool(
+            human_advice.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    def advice_action(action):
+        async def handler(request: Request, tenant: str, obj: str):
+            body = await strict_body(request)
+            # Only the closed, generated action routes below reach this handler.
+            schema = "HumanAdvice" + "".join(piece.title() for piece in action.split("-"))
+            validate(schema, body)
+            return await run_in_threadpool(
+                human_advice.save,
+                auth.resolve(request),
+                uuid(tenant),
+                body,
+                request.state.correlation,
+                uuid(obj),
+                action,
+            )
+
+        handler.__name__ = "human_advice_" + action.replace("-", "_")
+        return handler
+
+    for action in HUMAN_ADVICE_ACTIONS:
+        app.add_api_route(
+            "/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/actions/" + action,
+            advice_action(action),
+            methods=["POST"],
+        )
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/catalog")
     def ai_catalog(request: Request, tenant: str):
         return ai_enablement.catalog(auth.resolve(request), uuid(tenant))
@@ -565,6 +630,23 @@ def create_app():
         return await run_in_threadpool(
             ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation, uuid(obj)
         )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")
+    async def ai_impact_reference_save(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIImpactReferenceCommand", body)
+        return await run_in_threadpool(
+            ai_impact.save,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference/result")
+    def ai_impact_reference_result(request: Request, tenant: str, obj: str):
+        return ai_impact.result(auth.resolve(request), uuid(tenant), uuid(obj))
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/assessment")
     async def ai_assessment(request: Request, tenant: str):

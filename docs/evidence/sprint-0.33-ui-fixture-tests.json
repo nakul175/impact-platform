@@ -1,0 +1,226 @@
+{
+  "scope": "Integrated React UI using explicit synthetic request-function fixtures; not actual backend/API/SQL/native/provider qualification",
+  "started_at": "2026-10-05T10:17:53.006Z",
+  "finished_at": "2026-10-05T10:17:56.854Z",
+  "browser_version": "154.0.8037.97",
+  "qualified_sources": {
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "38b55d56dc8bf9ef1fe95b9843a4625c36261a4c73c8331f306aba0ddb37d4bb",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/ai-enablement.css": "d358ac4a4a2cdda0467f60636684ea3f0872127a62e46f36bd24f8fba51f3b5f"
+  },
+  "current_sources": {
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "38b55d56dc8bf9ef1fe95b9843a4625c36261a4c73c8331f306aba0ddb37d4bb",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/ai-enablement.css": "d358ac4a4a2cdda0467f60636684ea3f0872127a62e46f36bd24f8fba51f3b5f"
+  },
+  "sources_unchanged": true,
+  "results": [
+    {
+      "name": "Evidence panel appears only for an opened saved plan and remains lazy",
+      "status": "passed"
+    },
+    {
+      "name": "Authorised saved evidence and parent draft fields render independently",
+      "status": "passed"
+    },
+    {
+      "name": "Unsaved parent plan edits disable new evidence changes",
+      "status": "passed"
+    },
+    {
+      "name": "Opaque source access loss clears evidence without linked/absent inference",
+      "status": "passed"
+    },
+    {
+      "name": "Exact retry reopens the canonical latest plan while preserving local edits",
+      "status": "passed"
+    },
+    {
+      "name": "Confirmed evidence change with unavailable canonical head blocks ordinary save and preserves recovery",
+      "status": "passed"
+    },
+    {
+      "name": "Same-tenant session replacement resets unresolved operations and private panels",
+      "status": "passed",
+      "scope": "Synthetic change of the forwarded sessionIdentity prop. The real caller forwards exposed session.identity_id; this is an identity-remount check and does not qualify same-identity session-generation changes."
+    },
+    {
+      "name": "Same-tenant actor replacement rejects a late prior-actor evidence response",
+      "status": "passed"
+    },
+    {
+      "name": "Read-only AI role sees authorized evidence with no relationship commands",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated keyboard/mobile/accessibility 1440px",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated keyboard/mobile/accessibility 390px",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated keyboard/mobile/accessibility 320px",
+      "status": "passed"
+    },
+    {
+      "name": "Saved-plan internal advice remains lazy and separate directory permission is enforced",
+      "status": "passed"
+    },
+    {
+      "name": "Positive directory hints cannot override an unavailable eligible-peer response",
+      "status": "passed"
+    },
+    {
+      "name": "Advice invitation is anchored only to the opened saved revision and never saved by selection",
+      "status": "passed"
+    },
+    {
+      "name": "Uncertain advice write blocks parent and evidence commands while exact retry preserves local edits",
+      "status": "passed"
+    },
+    {
+      "name": "Saving a changed anchor makes existing advice read-only except requester cancellation",
+      "status": "passed"
+    },
+    {
+      "name": "Ordinary invited member discovers an invitation without member-directory authority or private brief",
+      "status": "passed"
+    },
+    {
+      "name": "Assignment consent pins the current declaration before private sharing",
+      "status": "passed"
+    },
+    {
+      "name": "Human member advice records accountable actions and history leaves the parent draft unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Requester closes with exact advice/action acknowledgements and terminal adviser sees no case",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated member advice keyboard/mobile/accessibility 1440px",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated member advice keyboard/mobile/accessibility 390px",
+      "status": "passed"
+    },
+    {
+      "name": "Integrated member advice keyboard/mobile/accessibility 320px",
+      "status": "passed"
+    }
+  ],
+  "scans": [
+    {
+      "width": 1440,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 320,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 1440,
+      "panel": "human-advice",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "panel": "human-advice",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 320,
+      "panel": "human-advice",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "errors": [],
+  "external": [],
+  "screenshots": [
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-evidence-1440.png",
+      "panel": "evidence",
+      "width": 1440,
+      "sha256": "663c99822d275052e78b698ae1e2e5856f02448f62251abf0bfe800aac7452ef",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-evidence-390.png",
+      "panel": "evidence",
+      "width": 390,
+      "sha256": "2643de262e1d5b752f1a0fac6465e49e821121baa386873924293feb1127b8eb",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-evidence-320.png",
+      "panel": "evidence",
+      "width": 320,
+      "sha256": "bcdf589d6fd3f636150258e962f7b110c8b82924c2ef61e40b202e14fa551121",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-advice-1440.png",
+      "panel": "advice",
+      "width": 1440,
+      "sha256": "5dd4d3a3d00ded3e410b12d2a7059c867370a15ff213f451b8b75550cfe52dbf",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-advice-390.png",
+      "panel": "advice",
+      "width": 390,
+      "sha256": "a95282934016df0d483c88b3952f5976c6f706d3326cd76bb41a01cc265990d7",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-ui-fixture-advice-320.png",
+      "panel": "advice",
+      "width": 320,
+      "sha256": "90b82a192cc83ce37a7f5b4bd022abfb17e6b74d575ce215cd942a6b18d4a7e6",
+      "synthetic_request_function_fixture": true,
+      "actual_backend_qualified": false,
+      "visually_reviewed": true
+    }
+  ],
+  "harness_sources": {
+    "docs/evidence/sprint-0.33-ui-fixture-harness.tsx": "f15d853c846a790dc13e3ebf0708be26a1f7ad8fb20388e027718d461f1dc359",
+    "docs/evidence/sprint-0.33-ui-fixture-check.mjs": "6d4f5c3f9e7b64fe8bd0bf449c47cadb1d0c84ec525eebc82077bfa804e71bf4"
+  },
+  "actual_api_qualification": "NOT_RUN",
+  "limitations": [
+    "All application requests are explicit in-memory synthetic request-function fixtures; no API server or database is exercised.",
+    "This artifact qualifies React integration, private-state reset, form commands and layouts only. Native SQL/login, backend API, provider and hosted operation remain separate gates.",
+    "Harness files are preserved as exact run sources; imports and loopback dev server paths refer to the local qualification workspace.",
+    "The caller forwards session.identity_id, not a unique session identifier. The synthetic sessionIdentity-prop replacement result qualifies identity remounting; same-identity reauthentication/session-generation replacement is not claimed."
+  ]
+}

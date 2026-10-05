@@ -1114,6 +1114,46 @@ for _key, (_sentence, _paths) in ADDED_032.items():
     _description, _evidence = partial[_key]
     partial[_key] = (_description + " " + _sentence, _evidence + [p for p in _paths if p not in _evidence])
 
+# Build 0.33 adds bounded support only; the original acceptance states are unchanged.
+ADDED_033 = {
+    "FR-ACC-005": (
+        "Local candidate 0.33 checks current access before retained dashboard/planning blocks and exact "
+        "historical Framework wording. Unreadable dependent records are omitted from bounded lists; "
+        "signed cursors name returned visible rows only. Eleven strict visibility cases and adjacent "
+        "application checks pass in the named focused scope; broader acceptance remains open.",
+        [
+            "apps/api/impact_api/store.py",
+            "apps/api/impact_api/service.py",
+            "apps/api/impact_api/dashboards.py",
+            "apps/api/impact_api/planning.py",
+            "qualification/test_listing_visibility_unit.py",
+            "qualification/test_listing_visibility_live.py",
+            "qualification/test_framework_old_pin_visibility.py",
+            "docs/evidence/sprint-0.33-listing-visibility-focused-source-proof.json",
+            "docs/RELEASE-0.33-tola-ai-extension.md",
+        ],
+    ),
+    "FR-ACC-011": (
+        "Local candidate 0.33 preserves official snapshot payloads and arithmetic while current "
+        "classification/head/source scope withholds retained details. An unavailable exact AI-plan "
+        "anchor also withholds internal-advice cases/history/replay and eleven pointer classes. "
+        "Actual PostgreSQL17.11 runtime-login checks pass in the bounded142-check scope. "
+        "Distributed artifacts, complete removal and the original acceptance scenario remain open.",
+        [
+            "qualification/test_dashboard_current_visibility.py",
+            "qualification/test_retained_label_current_visibility.py",
+            "qualification/test_human_advice_anchor_availability.py",
+            "infrastructure/migrations/0039_human_advice_anchor_availability.sql",
+            "docs/evidence/sprint-0.33-human-advice-native-source-proof.json",
+            "docs/evidence/sprint-0.33-listing-visibility-focused-source-proof.json",
+            "docs/RELEASE-0.33-tola-ai-extension.md",
+        ],
+    ),
+}
+for _key, (_sentence, _paths) in ADDED_033.items():
+    _description, _evidence = partial[_key]
+    partial[_key] = (_description + " " + _sentence, _evidence + [p for p in _paths if p not in _evidence])
+
 pending_notes["FR-OPS-001"] += (
     " Local review build 0.32 records GNU/BSD backup/restore portability through 61 synthetic unit checks. "
     "These do not execute this requirement's operational-search/suspension acceptance scenario; status stays PENDING."

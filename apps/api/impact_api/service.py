@@ -49,6 +49,9 @@ from .store import (
     canonical,
 )
 
+LIST_SCAN_BATCH = 100
+LIST_SCAN_BUDGET = 5000
+
 READ_ROUTES = {
     "programmes",
     "indicator-definitions",
@@ -390,24 +393,54 @@ class Service:
                 + personal
             )
             params = [tenant, READ_KINDS[route]] + args + personal_args
-            if key:
-                q += " AND (r.created_at,r.object_id)>(%s::timestamptz,%s::uuid)"
-                params += key
-            q += " ORDER BY r.created_at,r.object_id LIMIT %s"
-            params += [limit + 1]
-            rows = c.execute(q, params).fetchall()
-            page = rows[:limit]
+            # Dependent source authority is checked by result(), just as on direct GET.
+            # An unavailable dependency omits that candidate, without failing an otherwise
+            # readable page or revealing its identity through the returned cursor.
+            visible, scanned, position = [], 0, key
+            while len(visible) <= limit:
+                query, query_params = q, list(params)
+                if position:
+                    query += " AND (r.created_at,r.object_id)>(%s::timestamptz,%s::uuid)"
+                    query_params += list(position)
+                if scanned == LIST_SCAN_BUDGET:
+                    # Only existence is inspected beyond the decoration budget. No hidden
+                    # scan key/count is returned, and a partial page is never represented
+                    # as complete when more candidates remain.
+                    probe = "SELECT 1 " + query[query.index("FROM impact.object_registry") :]
+                    if c.execute(probe + " LIMIT 1", query_params).fetchone():
+                        raise DomainError("LIMIT_EXCEEDED", 422, reason="LISTING_SCAN_LIMIT")
+                    break
+                batch = min(LIST_SCAN_BATCH, LIST_SCAN_BUDGET - scanned)
+                candidates = c.execute(
+                    query + " ORDER BY r.created_at,r.object_id LIMIT %s", query_params + [batch]
+                ).fetchall()
+                for row in candidates:
+                    scanned += 1
+                    position = [row["created_at"], str(row["object_id"])]
+                    try:
+                        item = self.result(c, ctx, row)
+                    except DomainError as error:
+                        if error.status != 404:
+                            raise
+                        continue
+                    visible.append((row, item))
+                    if len(visible) > limit:
+                        break
+                if len(visible) > limit or len(candidates) < batch:
+                    break
+            page = visible[:limit]
             next_cursor = None
-            if len(rows) > limit:
+            if len(visible) > limit:
+                last = page[-1][0]
                 next_cursor = self.cursor(
                     {
                         "binding": bound,
                         "expires": int(time.time()) + 900,
-                        "key": [page[-1]["created_at"].isoformat(), str(page[-1]["object_id"])],
+                        "key": [last["created_at"].isoformat(), str(last["object_id"])],
                     }
                 )
             return {
-                "items": [self.result(c, ctx, r) for r in page],
+                "items": [item for _, item in page],
                 "next_cursor": next_cursor,
                 "scope_label": "Records permitted by your current access",
             }

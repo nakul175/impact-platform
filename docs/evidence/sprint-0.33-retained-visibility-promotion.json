@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-10-05T10:29:46.628548+00:00",
+  "qualified_path": "qualification/prepared_retained_label_current_visibility.py",
+  "collected_path": "qualification/test_retained_label_current_visibility.py",
+  "qualified_sha256": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+  "collected_sha256": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+  "identical_bytes": true,
+  "qualification": "docs/evidence/sprint-0.33-retained-visibility-pglite-source-proof.json",
+  "scope": "Identical-byte promotion after four strict security cases and adjacent97-case focused run passed95 checks with2 native-only skips; full/native qualification remain separate"
+}

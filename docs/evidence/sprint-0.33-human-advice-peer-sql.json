@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-10-05T10:00:15.850930+00:00",
+  "result": "PASSED",
+  "database": "impact_test_tola_ai_human_draft",
+  "scope": "Eligible-peer correlated scope query executes on the previously seeded private PostgreSQL 17.11 scratch database under impact_app; candidate filtering/internal fields only, not API authority or actual runtime-login qualification. No credentials recorded.",
+  "checks_passed": 2,
+  "checks": [
+    "Current distinct natural-person scoped candidate set matches seeded memberships",
+    "Query returns the expected private metadata used for cursor binding"
+  ]
+}

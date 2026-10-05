@@ -1,0 +1,125 @@
+{
+  "scope": "Temporary synthetic component and request-function fixture only; not actual API, PostgreSQL, capability enforcement, audit, release or acceptance evidence",
+  "actual_api_qualification": "NOT_RUN",
+  "finished_at": "2026-10-05T11:23:15.838Z",
+  "results": [
+    {
+      "name": "Lazy options and separate export hint do not call the request fixture",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Bounded authorised history selection is deliberate and never saves the parent draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Explicit download freshly replays the exact operation and preserves UTF-8 content byte-for-byte",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost prepare response keeps one exact issuance command and parent mutual-write lock",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost download response retains the verified manifest and exact original command",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A tampered issuance receipt after response loss cannot replace the pinned copy",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A fresh server authority refusal clears issued metadata and uncertain intent",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Same-tenant exposed actor change discards a late response and cannot download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Local draft changes while a download reply is pending prevent latent download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Exact uncertain prepare retry remains possible after local draft edits",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Current saved-head change clears private copy and history without touching any draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 1440px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 390px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 320px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    }
+  ],
+  "errors": [],
+  "blocked_external_requests": [],
+  "accessibility_scans": [
+    {
+      "width": 1440,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 320,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-1440.png",
+      "width": 1440
+    },
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-390.png",
+      "width": 390
+    },
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-320.png",
+      "width": 320
+    }
+  ],
+  "source_hashes": {
+    "AIPlanPortability.tsx": "3605efcf1dbb1625d3cad4133daf0cc1911b489c6f824a65c6e489d68d2e1c5d",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "450cce2514bad57a837e5f3651d24df0302af4722e96557e7029a8ce96cfaff6",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "8983f436ee13d1b612ae6e9170979d77c2426f45ee89e49f0016001f69ea532f"
+  },
+  "current_source_hashes": {
+    "AIPlanPortability.tsx": "3605efcf1dbb1625d3cad4133daf0cc1911b489c6f824a65c6e489d68d2e1c5d",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "450cce2514bad57a837e5f3651d24df0302af4722e96557e7029a8ce96cfaff6",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "8983f436ee13d1b612ae6e9170979d77c2426f45ee89e49f0016001f69ea532f"
+  },
+  "sources_unchanged": true
+}

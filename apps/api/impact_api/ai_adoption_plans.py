@@ -148,11 +148,15 @@ def _content_compatibility(payload, historical_snapshots_available=False):
 
 
 def _result(row):
+    data = deepcopy(row["payload"])
+    # Core selectors are private server metadata. Dedicated evidence reads recheck current
+    # access to all linked objects; ordinary AI-plan readers cannot infer the private link.
+    data.pop("impact_reference", None)
     return {
         "object_id": str(row["object_id"]),
         "revision_id": str(row["head_revision"]),
         "business_state": row["lifecycle_state"],
-        "data": deepcopy(row["payload"]),
+        "data": data,
         "content_compatibility": _content_compatibility(
             row["payload"], bool(row.get("historical_snapshots_available"))
         ),
@@ -331,6 +335,10 @@ class AIAdoptionPlans:
                 **deepcopy(body["data"]),
                 "content_versions": {"catalog": CATALOG_VERSION, "solutions": SOLUTIONS_VERSION},
             }
+            if previous and "impact_reference" in previous["payload"]:
+                # The closed client DTO cannot supply/clear/refresh this relationship. Keep
+                # existing private pins exactly until the dedicated command changes them.
+                payload["impact_reference"] = deepcopy(previous["payload"]["impact_reference"])
             retained_planning = bool(
                 previous and "planning" not in body["data"] and "planning" in previous["payload"]
             )

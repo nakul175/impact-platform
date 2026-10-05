@@ -80,8 +80,8 @@ GROUPS = [
         "Nonprofit AI adoption and pilot planning",
         "",
         [1, 2, 3, 6, 21, 24, 34, 37],
-        "Readiness assessment, shared adoption drafts and self-reported pilot comparisons exist locally.",
-        "Verified quality/evidence, independent pilot acceptance, official impact links and feedback workflows.",
+        "Readiness, saved adoption drafts and pilot comparisons exist; deliberate governed programme links are integrated in0.33 with passing bounded local database/browser checks; no formal acceptance.",
+        "Complete impact-link qualification, verified quality/evidence, independent pilot acceptance and feedback workflows.",
     ),
     (
         "learning",
@@ -104,8 +104,8 @@ GROUPS = [
         "AI and human advisory",
         "AI AIQ",
         [10, 11, 23],
-        "Consented advisory orchestration has mocked provider qualification and bounded I/O.",
-        "Funded live evaluation, money/token controls, human advisory cases and hard process-wide recovery policy.",
+        "Consented provider advisory has mocked qualification and bounded I/O; existing-member consent/declaration/advice cases are locally tested in0.33; known worker-cleanup privacy disclosure blocks deployment.",
+        "Complete internal-advice qualification, operated adviser service, funded live evaluation, money/token controls and hard process-wide recovery policy.",
     ),
     (
         "privacy",
@@ -154,6 +154,7 @@ def build() -> dict:
                     "docs/handover/BACKLOG.md",
                     "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
                     "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+                    "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
                 ],
             }
         )
@@ -166,14 +167,18 @@ def build() -> dict:
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "VERSION.json",
     ]
     return {
         "schema_version": 1,
         "generated_at": utc_now(),
         "method": "Each source requirement belongs to exactly one editorial domain. Shared domains are shown once. Counts do not measure effort, accepted scope, overall percentage or remaining person-hours. Source registers are not rewritten.",
         "baseline": {
-            "current_build": "0.31.0",
-            "tentative_sprint_build": "0.32.0",
+            "current_build": "0.32.0",
+            "last_saved_local_commit": "91de7cbc3bde3d76b080d9a235167744df6a39e2",
+            "tentative_sprint_build": json.loads((ROOT / "VERSION.json").read_text())["build"],
             "impact_ledger_build": ledger["build"],
             "impact_ledger_assessment_date": ledger["assessment_date"],
             "impact_requirements": len(core_rows),

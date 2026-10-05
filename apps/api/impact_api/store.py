@@ -299,6 +299,21 @@ def load(c, ctx, obj, kind=None, capability=None, lock=False):
     return row
 
 
+def currently_readable(c, ctx, obj, kind, capability):
+    """Filter retained payloads through the same current authority as direct object reads.
+
+    This only gates visibility. Callers keep the exact historical revision/value and never
+    replace it with a current payload or reinterpret a withheld value as zero.
+    """
+    try:
+        load(c, ctx, obj, kind, capability)
+    except DomainError as error:
+        if error.status != 404:
+            raise
+        return False
+    return True
+
+
 def envelope(row):
     result = {
         "object_id": str(row["object_id"]),

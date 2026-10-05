@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-05T10:48:08.287369+00:00",
+  "scope": "Preserve final96pass2native-onlyskip schema39 focused evidence before full/native autouse ledger writes",
+  "artifacts": [
+    {
+      "path": "sprint-0.33-retained-visibility-schema39-focused-tests.xml",
+      "sha256": "a053569f62d7d39e7d800ea04d28cba359b9e76eb92c64f5a96687d957a4a247"
+    },
+    {
+      "path": "sprint-0.33-retained-visibility-schema39-focused-source-proof.json",
+      "sha256": "6f53e65b87e4398f224c67b9a872a3a5bb819a05dc068b6a2fec470f684045f8"
+    },
+    {
+      "path": "sprint-0.33-retained-visibility-schema39-focused-applied-migrations.json",
+      "sha256": "6477cdc124fb2c44f1b2d557e09479675e6b3cc3129e1c718ebe605e0215c24f"
+    }
+  ]
+}

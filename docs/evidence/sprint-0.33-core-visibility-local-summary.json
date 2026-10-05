@@ -1,0 +1,24 @@
+{
+  "scope": "Bounded real local API/database visibility fix; PGlite does not establish native role security.",
+  "tests": 85,
+  "passed": 84,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 1,
+  "evidence": "docs/evidence/sprint-0.33-core-visibility-green.xml",
+  "security_cases": 6,
+  "source_sha256": {
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/dashboards.py": "f1aae2dabad239eeefd9510bbcfcc5d873d09d176001879d7e24c5e8c5c1e5f1",
+    "apps/api/impact_api/planning.py": "963ff00b9311ab4045beaa740acda8cef62b59cd2e25a6b3c1e3734d56a63806",
+    "qualification/test_dashboard_current_visibility.py": "3d4ee4fbf62fc9a160e675437f94c2ed35255b61bb2622c29a4ed879ee62034c"
+  },
+  "fixture_notes": [
+    "Closing creates a distinct official result; tests pin exact returned/bound snapshot result, not earlier provisional receipt.",
+    "Independent function-scoped governed setups isolate synthetic immutable head changes; an appended collection-plan head must not be rewritten into the old approved binding.",
+    "Frozen result/target/close/snapshot revision payloads/hashes remain unchanged; restored visibility returns the exact original stored decimal values.",
+    "Overlapping intermediate execution attempts are explicitly unqualified and do not contribute any pass count."
+  ],
+  "remaining": "Focused native, full combined regression, browser, hosted and nonprofit acceptance are separate.",
+  "test_registration": "Executed as qualification/prepared_dashboard_current_visibility.py; renamed with identical contents to test_dashboard_current_visibility.py for ordinary discovery after the passing run."
+}

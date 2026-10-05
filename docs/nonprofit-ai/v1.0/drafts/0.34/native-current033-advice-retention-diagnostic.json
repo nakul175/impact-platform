@@ -1,0 +1,22 @@
+{
+  "scope": "Current0038/39 private case policies and unchanged0027/0030 purge functions, within unregistered export scratch. Storage-valid synthetic Open case and expired receipt fixture; not API creation/expiry workflow",
+  "current_private_advice_definer_leak_confirmed": true,
+  "observations": [
+    {
+      "overload_arguments": 1,
+      "private_case_operation_keys_returned": [
+        "1ddc84bc-b994-566b-8e69-bd78fba85d13:human_advice_cancel:56bb36f8-4118-408e-81de-98009defa471",
+        "1ddc84bc-b994-566b-8e69-bd78fba85d13:create_human_advice_case:94504faa-ea91-4395-9f38-10bc338f3219"
+      ],
+      "direct_role_method": "actual impact_worker_login SET LOCAL ROLE impact_worker"
+    },
+    {
+      "overload_arguments": 2,
+      "private_case_operation_keys_returned": [
+        "1ddc84bc-b994-566b-8e69-bd78fba85d13:create_human_advice_case:94504faa-ea91-4395-9f38-10bc338f3219",
+        "1ddc84bc-b994-566b-8e69-bd78fba85d13:human_advice_cancel:56bb36f8-4118-408e-81de-98009defa471"
+      ],
+      "direct_role_method": "actual impact_worker_login SET LOCAL ROLE impact_worker"
+    }
+  ]
+}

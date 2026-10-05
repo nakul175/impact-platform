@@ -1,0 +1,606 @@
+{
+  "scope": "Isolated real local API diagnostic; observations are not passing security, native, hosted or requirement acceptance evidence",
+  "policy_basis": "Existing current object reads conceal restricted classification/head; revoked source capability already withholds historical wording. Frozen snapshots preserve arithmetic and revision selection, not current source authority.",
+  "source_sha256": {
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/dashboards.py": "f1aae2dabad239eeefd9510bbcfcc5d873d09d176001879d7e24c5e8c5c1e5f1",
+    "apps/api/impact_api/planning.py": "963ff00b9311ab4045beaa740acda8cef62b59cd2e25a6b3c1e3734d56a63806",
+    "qualification/prepared_retained_label_visibility_repro.py": "b38882798d4019acdf5fee794688807046315f7f77e6933100dcd72446e066d8"
+  },
+  "applied_migrations": [
+    {
+      "version": 1,
+      "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7"
+    },
+    {
+      "version": 2,
+      "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0"
+    },
+    {
+      "version": 3,
+      "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148"
+    },
+    {
+      "version": 4,
+      "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4"
+    },
+    {
+      "version": 5,
+      "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c"
+    },
+    {
+      "version": 6,
+      "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce"
+    },
+    {
+      "version": 7,
+      "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0"
+    },
+    {
+      "version": 8,
+      "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950"
+    },
+    {
+      "version": 9,
+      "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f"
+    },
+    {
+      "version": 10,
+      "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7"
+    },
+    {
+      "version": 11,
+      "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683"
+    },
+    {
+      "version": 12,
+      "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596"
+    },
+    {
+      "version": 13,
+      "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+    },
+    {
+      "version": 14,
+      "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+    },
+    {
+      "version": 15,
+      "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42"
+    },
+    {
+      "version": 16,
+      "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc"
+    },
+    {
+      "version": 17,
+      "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b"
+    },
+    {
+      "version": 18,
+      "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7"
+    },
+    {
+      "version": 19,
+      "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161"
+    },
+    {
+      "version": 20,
+      "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31"
+    },
+    {
+      "version": 21,
+      "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2"
+    },
+    {
+      "version": 22,
+      "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac"
+    },
+    {
+      "version": 23,
+      "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc"
+    },
+    {
+      "version": 24,
+      "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f"
+    },
+    {
+      "version": 25,
+      "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047"
+    },
+    {
+      "version": 26,
+      "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310"
+    },
+    {
+      "version": 27,
+      "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d"
+    },
+    {
+      "version": 28,
+      "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c"
+    },
+    {
+      "version": 29,
+      "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41"
+    },
+    {
+      "version": 30,
+      "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12"
+    },
+    {
+      "version": 31,
+      "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac"
+    },
+    {
+      "version": 32,
+      "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b"
+    },
+    {
+      "version": 33,
+      "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33"
+    },
+    {
+      "version": 34,
+      "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415"
+    },
+    {
+      "version": 35,
+      "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5"
+    },
+    {
+      "version": 36,
+      "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+    },
+    {
+      "version": 37,
+      "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+    },
+    {
+      "version": 38,
+      "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+    }
+  ],
+  "observations": [
+    {
+      "recorded_at": "2026-10-05T10:25:49.919034+00:00",
+      "kind": "IndicatorDefinition",
+      "visibility": "CLASSIFICATION",
+      "direct_route_status": 404,
+      "scope_control": {
+        "dashboard_label": "Indicator \u00b7 Dashboard households",
+        "dashboard_unit": null,
+        "series_label": "Indicator \u00b7 Dashboard households",
+        "series_unit": null,
+        "planning_label": "Indicator \u00b7 Dashboard households",
+        "planning_unit": null,
+        "planning_framework": {
+          "framework_id": "25566df7-4815-4bb3-ad50-df517eb821b0",
+          "revision_id": "a71ea2c0-cc06-41b8-b996-e2b2522a7789",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "c04f8e73-3acf-4a2c-ab12-f9cb29e939a9",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "b0a98ff6-0881-45ed-b3ec-f57d0b487cdc",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "c04f8e73-3acf-4a2c-ab12-f9cb29e939a9"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "9cde88ae-5d2b-4ebe-89dc-f9b5e4f28f25"
+              ],
+              "parent_node_id": "b0a98ff6-0881-45ed-b3ec-f57d0b487cdc"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "eb59992b-f9b2-4837-94b1-5ade5d642275",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "a71ea2c0-cc06-41b8-b996-e2b2522a7789",
+        "planning_node_ids": [
+          "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466"
+        ],
+        "snapshot_id": "48d41467-8d32-4b76-83c7-7bb820c9ccf3",
+        "official_value": "46.363636363636"
+      },
+      "current_restriction_view": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": {
+          "framework_id": "25566df7-4815-4bb3-ad50-df517eb821b0",
+          "revision_id": "a71ea2c0-cc06-41b8-b996-e2b2522a7789",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "c04f8e73-3acf-4a2c-ab12-f9cb29e939a9",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "b0a98ff6-0881-45ed-b3ec-f57d0b487cdc",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "c04f8e73-3acf-4a2c-ab12-f9cb29e939a9"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "9cde88ae-5d2b-4ebe-89dc-f9b5e4f28f25"
+              ],
+              "parent_node_id": "b0a98ff6-0881-45ed-b3ec-f57d0b487cdc"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "eb59992b-f9b2-4837-94b1-5ade5d642275",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "a71ea2c0-cc06-41b8-b996-e2b2522a7789",
+        "planning_node_ids": [
+          "0fd95d43-0f8f-4553-92ee-9e8e4c2fc466"
+        ],
+        "snapshot_id": "48d41467-8d32-4b76-83c7-7bb820c9ccf3",
+        "official_value": "46.363636363636"
+      },
+      "immutable_old_payloads_unchanged": true,
+      "official_value_unchanged": "46.363636363636",
+      "outcome": "RETAINED_WORDING_BYPASS_REPRODUCED"
+    },
+    {
+      "recorded_at": "2026-10-05T10:25:50.909660+00:00",
+      "kind": "IndicatorDefinition",
+      "visibility": "HEAD_REVISION",
+      "direct_route_status": 404,
+      "scope_control": {
+        "dashboard_label": "Indicator \u00b7 Dashboard households",
+        "dashboard_unit": null,
+        "series_label": "Indicator \u00b7 Dashboard households",
+        "series_unit": null,
+        "planning_label": "Indicator \u00b7 Dashboard households",
+        "planning_unit": null,
+        "planning_framework": {
+          "framework_id": "d90e7d1c-d9ab-4178-85d8-8f8515e52971",
+          "revision_id": "b4be81b2-5e6a-4bc5-b022-8b51049521c6",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "a2f79020-a5a2-4cba-a99e-71033d1e4d04",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "56b6988c-0c28-4b80-9e61-3ee1883baaf1",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "a2f79020-a5a2-4cba-a99e-71033d1e4d04"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "d6a736d3-9f6f-45d0-bfb9-478ac5af5699",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "2e03bb2d-b68d-4d45-82d2-801c04746999"
+              ],
+              "parent_node_id": "56b6988c-0c28-4b80-9e61-3ee1883baaf1"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "70972e10-f96f-437e-9794-42ec10ef5698",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "d6a736d3-9f6f-45d0-bfb9-478ac5af5699"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "b4be81b2-5e6a-4bc5-b022-8b51049521c6",
+        "planning_node_ids": [
+          "d6a736d3-9f6f-45d0-bfb9-478ac5af5699"
+        ],
+        "snapshot_id": "02f973f8-2439-41ad-9c33-9be69aff7807",
+        "official_value": "46.363636363636"
+      },
+      "current_restriction_view": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": {
+          "framework_id": "d90e7d1c-d9ab-4178-85d8-8f8515e52971",
+          "revision_id": "b4be81b2-5e6a-4bc5-b022-8b51049521c6",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "a2f79020-a5a2-4cba-a99e-71033d1e4d04",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "56b6988c-0c28-4b80-9e61-3ee1883baaf1",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "a2f79020-a5a2-4cba-a99e-71033d1e4d04"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "d6a736d3-9f6f-45d0-bfb9-478ac5af5699",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "2e03bb2d-b68d-4d45-82d2-801c04746999"
+              ],
+              "parent_node_id": "56b6988c-0c28-4b80-9e61-3ee1883baaf1"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "70972e10-f96f-437e-9794-42ec10ef5698",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "d6a736d3-9f6f-45d0-bfb9-478ac5af5699"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "b4be81b2-5e6a-4bc5-b022-8b51049521c6",
+        "planning_node_ids": [
+          "d6a736d3-9f6f-45d0-bfb9-478ac5af5699"
+        ],
+        "snapshot_id": "02f973f8-2439-41ad-9c33-9be69aff7807",
+        "official_value": "46.363636363636"
+      },
+      "immutable_old_payloads_unchanged": true,
+      "official_value_unchanged": "46.363636363636",
+      "outcome": "RETAINED_WORDING_BYPASS_REPRODUCED"
+    },
+    {
+      "recorded_at": "2026-10-05T10:25:51.948843+00:00",
+      "kind": "Framework",
+      "visibility": "CLASSIFICATION",
+      "direct_route_status": 404,
+      "scope_control": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": null,
+        "planning_framework_revision": null,
+        "planning_node_ids": [],
+        "snapshot_id": "bf029b70-a29f-4f67-bc79-a58c995fc284",
+        "official_value": "46.363636363636"
+      },
+      "current_restriction_view": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": {
+          "framework_id": "20ca6f00-e9c8-4b87-8266-109bf7bde266",
+          "revision_id": "32dd083e-e432-4e94-ad32-f5a4918685af",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "93df59e9-bcaa-4696-b330-a25e8fec31a0",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "ff8713c0-7a46-4df7-92e7-b6601f3486d4",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "93df59e9-bcaa-4696-b330-a25e8fec31a0"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "1cc7346d-53ed-4d18-a1f2-8e271a299604",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "7605b8a4-f5b3-4aca-bbe7-dac4140e75d2"
+              ],
+              "parent_node_id": "ff8713c0-7a46-4df7-92e7-b6601f3486d4"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "430398c6-3d41-473d-80a5-ffdda5a12ad0",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "1cc7346d-53ed-4d18-a1f2-8e271a299604"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "32dd083e-e432-4e94-ad32-f5a4918685af",
+        "planning_node_ids": [
+          "1cc7346d-53ed-4d18-a1f2-8e271a299604"
+        ],
+        "snapshot_id": "bf029b70-a29f-4f67-bc79-a58c995fc284",
+        "official_value": "46.363636363636"
+      },
+      "immutable_old_payloads_unchanged": true,
+      "official_value_unchanged": "46.363636363636",
+      "outcome": "RETAINED_WORDING_BYPASS_REPRODUCED"
+    },
+    {
+      "recorded_at": "2026-10-05T10:25:52.934411+00:00",
+      "kind": "Framework",
+      "visibility": "HEAD_REVISION",
+      "direct_route_status": 404,
+      "scope_control": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": null,
+        "planning_framework_revision": null,
+        "planning_node_ids": [],
+        "snapshot_id": "8715d630-c032-4cbb-81f2-723a0ceddcef",
+        "official_value": "46.363636363636"
+      },
+      "current_restriction_view": {
+        "dashboard_label": "Households \u00b7 Dashboard households",
+        "dashboard_unit": "percent",
+        "series_label": "Households \u00b7 Dashboard households",
+        "series_unit": "percent",
+        "planning_label": "Households \u00b7 Dashboard households",
+        "planning_unit": "percent",
+        "planning_framework": {
+          "framework_id": "32476607-27f8-4cc1-a772-35de7c2ab84e",
+          "revision_id": "99f87bde-d5d4-458f-a242-f7cf4c03954f",
+          "baseline_version": 1,
+          "effective_from": "2026-01-01T00:00:00+00:00",
+          "version_label": "Baseline 2026",
+          "nodes": [
+            {
+              "title": "Impact statement",
+              "node_id": "a8d1d75a-dde2-4e0b-bf06-12e9a9ca1e9f",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "IMPACT",
+              "definition": "The intended impact of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": null
+            },
+            {
+              "title": "Outcome statement",
+              "node_id": "f265d44b-ae3e-4ae3-9fa8-f3d11929ec15",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTCOME",
+              "definition": "The intended outcome of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "a8d1d75a-dde2-4e0b-bf06-12e9a9ca1e9f"
+            },
+            {
+              "title": "Output statement",
+              "node_id": "35d764a3-f607-497e-922a-60389763695c",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "OUTPUT",
+              "definition": "The intended output of the programme.",
+              "indicator_ids": [
+                "df5f174f-27ef-4dee-8f32-c83186030ae8"
+              ],
+              "parent_node_id": "f265d44b-ae3e-4ae3-9fa8-f3d11929ec15"
+            },
+            {
+              "title": "Activity statement",
+              "node_id": "8f84f258-8586-498f-bb1b-fea0fd4a7c29",
+              "owner_id": "ed661ad8-b93f-5f9f-acb8-4d8a56774a9c",
+              "node_type": "ACTIVITY",
+              "definition": "The intended activity of the programme.",
+              "indicator_ids": [],
+              "parent_node_id": "35d764a3-f607-497e-922a-60389763695c"
+            }
+          ],
+          "relationships": [],
+          "assumptions": []
+        },
+        "planning_framework_revision": "99f87bde-d5d4-458f-a242-f7cf4c03954f",
+        "planning_node_ids": [
+          "35d764a3-f607-497e-922a-60389763695c"
+        ],
+        "snapshot_id": "8715d630-c032-4cbb-81f2-723a0ceddcef",
+        "official_value": "46.363636363636"
+      },
+      "immutable_old_payloads_unchanged": true,
+      "official_value_unchanged": "46.363636363636",
+      "outcome": "RETAINED_WORDING_BYPASS_REPRODUCED"
+    }
+  ]
+}

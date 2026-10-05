@@ -1,0 +1,54 @@
+{
+  "attempt": 3,
+  "recorded_at": "2026-10-05T10:57:38.617364+00:00",
+  "status": "CHECKER_INTERCEPTION_FAILED",
+  "actual_ui_qualification": "PARTIAL_FAILED",
+  "executed_passed_groups": 7,
+  "final_source_proof": "UNKNOWN",
+  "scope": "Seven actual groups were observed passing in checker stdout. An unhandled route-cleanup error stopped the checker before its final structured reporter; no complete UI qualification or final source-proof claim. Product sources were not edited by this agent.",
+  "fixture_directory": ".local/test-0ed7fe15",
+  "checker_sha256": "8665a894d2529f66c7b3f96c17a1d777797b2b423b6e7f05f674cda06f8d5764",
+  "results": [
+    {
+      "name": "Actual runtime and applied migration checks match frozen schema 39",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "Unopened plan panels stay lazy and saved-plan reads expose no private core reference",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "Actual absent reference returns the neutral evidence view without saving",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "Authorized bounded measurement selection never saves before deliberate confirmation",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "A deliberate relationship creates a plan revision without changing governed source heads",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "A later reviewed period close cannot silently add official evidence to an absent snapshot pin",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "Only an explicit saved-pin refresh displays the governed official snapshot",
+      "status": "passed",
+      "evidence": "Observed actual checker stdout"
+    },
+    {
+      "name": "Actual response-loss interception",
+      "status": "failed",
+      "message": "route.abort: Route is already handled!"
+    }
+  ],
+  "runner_exit_code": 1
+}

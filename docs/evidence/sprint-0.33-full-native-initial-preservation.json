@@ -1,0 +1,41 @@
+{
+  "scope": "Preserved first fullnative attempt:1908pass2fail25skip; both restart phasesPASS; upgrade33\u219239PASS; restoremissinglocalpg_dumpPATHFAIL. Original sources unchanged. No green checkpoint claim.",
+  "files": [
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-applied-migrations.json",
+      "sha256": "dd716c129c87c60d3540197381fce720141ca86cf8022aa29c41922dae77a9de"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-golden.json",
+      "sha256": "ffa7d9943229f029d0ffd3b0e6f9afe86f3237c0ca7a95a6cb3eb7821a1c0a8b"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-qualification.json",
+      "sha256": "f46728c78f9c47ecfebc3dfe01f311205bed495db1cc068a3542f7976df1085f"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-restore-drill.json",
+      "sha256": "12ccc9c9738d3bb13ca8d7ddccb8836fc88bc7d2c9b72438515728d19ea5e99d"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-source-proof.json",
+      "sha256": "2172e8205a683409e3a958d53cc5e4ebbb704c2085e47c22bdb2e1e529464282"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-tests.xml",
+      "sha256": "e3ef2a2f4de4c7346c77beb1bf3bd4296756307e4a525524247f666fbcc90bb1"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-runner.py",
+      "sha256": "ff132fa8ae46552a8d09cc3177c1601c9cfd0c02fd5b1b6c804bfd3ef6fd597e"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-restart-phase_1-tests.xml",
+      "sha256": "19044a7f58454550583c355dc939571e3d8c1be61c3930924232b3a8df64cd33"
+    },
+    {
+      "path": "docs/evidence/sprint-0.33-full-native-initial-restart-phase_2-tests.xml",
+      "sha256": "29aeb413a2acc02f58f124328840097b73cffb079f6bcd4377b44bb11d3f59ff"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-10-05T11:17:18.858443+00:00",
+  "database": "impact_test_tola_ai_portability_base01",
+  "scope": "Unregistered private0040 native SQL scratch only; synthetic direct grants, no API/profile-upgrade/erasure/deployment acceptance",
+  "draft_sha256": "693bac6e612b56aaf30d345be6424e0447001b84bc3646da46381cb9f9a87fb0",
+  "checks": [
+    {
+      "name": "apply039_plus_unregistered0040_and_actual_login_topology",
+      "result": "FAIL",
+      "exception": "OperationalError",
+      "sqlstate": null
+    }
+  ],
+  "credentials_rotated": false,
+  "terminated": {
+    "exception": "OperationalError",
+    "sqlstate": null,
+    "trace_lines": [
+      {
+        "function": "<module>",
+        "line": 140,
+        "file": "native_scratch.py"
+      },
+      {
+        "function": "main",
+        "line": 135,
+        "file": "native_scratch.py"
+      },
+      {
+        "function": "record",
+        "line": 34,
+        "file": "native_scratch.py"
+      },
+      {
+        "function": "setup",
+        "line": 64,
+        "file": "native_scratch.py"
+      },
+      {
+        "function": "connect",
+        "line": 126,
+        "file": "connection.py"
+      }
+    ]
+  }
+}

@@ -10,6 +10,8 @@ import {
 } from "./AIPlanningTools";
 import { AITaskPractice, type TaskPractice } from "./AITaskPractice";
 import { AIGuidanceArchive } from "./AIGuidanceArchive";
+import { AIImpactEvidence } from "./AIImpactEvidence";
+import { AIHumanAdvice } from "./AIHumanAdvice";
 
 type Planning = {
   cost_comparison: CostInput | null;
@@ -79,6 +81,8 @@ type Plan = {
 };
 type Props = {
   base: string;
+  principalId: string;
+  sessionIdentity: string;
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (e: unknown) => string;
   capabilities: string[];
@@ -201,6 +205,8 @@ function Lesson({
 
 export function AIAdoptionWorkspace({
   base,
+  principalId,
+  sessionIdentity,
   request,
   explain,
   capabilities,
@@ -232,6 +238,9 @@ export function AIAdoptionWorkspace({
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [hasPendingSave, setHasPendingSave] = useState(false);
+  const [evidenceMutation, setEvidenceMutation] = useState(false);
+  const [adviceMutation, setAdviceMutation] = useState(false);
+  const [canonicalUnavailable, setCanonicalUnavailable] = useState(false);
   const [unavailablePracticeId, setUnavailablePracticeId] = useState<
     string | null
   >(null);
@@ -246,6 +255,8 @@ export function AIAdoptionWorkspace({
   } | null>(null);
   const abort = useRef<AbortController | null>(null);
   const latestData = useRef("");
+  const latestHead = useRef(head);
+  latestHead.current = head;
   const data: PlanData = { ...draft, profile };
   const serializedData = JSON.stringify(data);
   latestData.current = serializedData;
@@ -270,6 +281,9 @@ export function AIAdoptionWorkspace({
     pending.current = null;
     busyRef.current = false;
     setHasPendingSave(false);
+    setEvidenceMutation(false);
+    setAdviceMutation(false);
+    setCanonicalUnavailable(false);
     setUnavailablePracticeId(null);
     setDiscard(null);
     setBusy(false);
@@ -304,7 +318,7 @@ export function AIAdoptionWorkspace({
       ++epoch.current;
       controller.abort();
     };
-  }, [base]);
+  }, [base, principalId, sessionIdentity]);
 
   function edit(fn: (previous: PlanDraft) => PlanDraft) {
     setDraft(fn);
@@ -333,7 +347,14 @@ export function AIAdoptionWorkspace({
     }));
   }
   async function loadPlan(confirmed = false) {
-    if (!planChoice || busyRef.current || pending.current) return;
+    if (
+      !planChoice ||
+      busyRef.current ||
+      pending.current ||
+      evidenceMutation ||
+      adviceMutation
+    )
+      return;
     if (dirty && !confirmed) {
       setDiscard("open");
       return;
@@ -366,6 +387,7 @@ export function AIAdoptionWorkspace({
           : undefined,
       });
       setHead({ object_id: plan.object_id, revision_id: plan.revision_id });
+      setCanonicalUnavailable(false);
       setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
       setNotice(
         "Saved plan opened. These are shared draft records for your organisation.",
@@ -380,13 +402,20 @@ export function AIAdoptionWorkspace({
     }
   }
   function newPlan(confirmed = false) {
-    if (busyRef.current || pending.current) return;
+    if (
+      busyRef.current ||
+      pending.current ||
+      evidenceMutation ||
+      adviceMutation
+    )
+      return;
     if (dirty && !confirmed) {
       setDiscard("new");
       return;
     }
     setDraft(blankDraft());
     setHead(null);
+    setCanonicalUnavailable(false);
     setSavedSnapshot("");
     setSavedContent(null);
     setPlanChoice("");
@@ -395,9 +424,79 @@ export function AIAdoptionWorkspace({
       "New draft. Complete the organisation brief above before saving.",
     );
   }
+  async function evidenceSaved(receipt: { object_id: string }) {
+    const current = epoch.current;
+    if (latestHead.current?.object_id !== receipt.object_id) return;
+    const beforeRead = latestData.current;
+    const cleanBeforeRead = beforeRead === savedSnapshot;
+    busyRef.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      // An exact receipt may precede another person's later edit. Re-read the
+      // canonical head rather than applying the receipt's revision as current.
+      const plan: Plan = await request(
+        base + "ai-enablement/plans/" + receipt.object_id,
+        { signal: abort.current?.signal },
+      );
+      if (
+        current !== epoch.current ||
+        latestHead.current?.object_id !== receipt.object_id
+      )
+        return;
+      const nextDraft = extractDraft(plan);
+      const nextProfile = clone(plan.data.profile);
+      const replaceDraft = cleanBeforeRead && latestData.current === beforeRead;
+      if (replaceDraft) {
+        setDraft(nextDraft);
+        onLoadProfile(nextProfile);
+      }
+      setHead({ object_id: plan.object_id, revision_id: plan.revision_id });
+      setCanonicalUnavailable(false);
+      setPlanChoice(plan.object_id);
+      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
+      setSavedContent({
+        versions: clone(plan.data.content_versions ?? null) ?? undefined,
+        compatibility: plan.content_compatibility
+          ? clone(plan.content_compatibility)
+          : undefined,
+      });
+      setPlans((previous) => [
+        plan,
+        ...previous.filter((item) => item.object_id !== plan.object_id),
+      ]);
+      setNotice(
+        replaceDraft
+          ? "Evidence relationship saved. The current plan revision has been reopened."
+          : "Evidence relationship saved. The current plan revision was checked; your local draft edits remain unsaved.",
+      );
+    } catch (cause) {
+      if (current === epoch.current) {
+        setCanonicalUnavailable(true);
+        setSavedContent(null);
+        setError(explain(cause));
+        setNotice(
+          "The evidence change was saved, but the current plan could not be reopened. Your local draft remains here. Open the saved plan again before saving further changes.",
+        );
+      }
+      throw cause;
+    } finally {
+      if (current === epoch.current) {
+        busyRef.current = false;
+        setBusy(false);
+      }
+    }
+  }
   async function savePlan(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!canManage || busyRef.current) return;
+    if (
+      !canManage ||
+      busyRef.current ||
+      evidenceMutation ||
+      adviceMutation ||
+      canonicalUnavailable
+    )
+      return;
     if (!pending.current) {
       if (
         !profile.goal.trim() ||
@@ -652,7 +751,9 @@ export function AIAdoptionWorkspace({
             aria-label="Saved adoption plans"
             value={planChoice}
             onChange={(event) => setPlanChoice(event.target.value)}
-            disabled={busy || hasPendingSave}
+            disabled={
+              busy || hasPendingSave || evidenceMutation || adviceMutation
+            }
           >
             <option value="">Choose a saved plan</option>
             {plans.map((plan) => (
@@ -667,7 +768,13 @@ export function AIAdoptionWorkspace({
             type="button"
             className="secondary"
             onClick={() => void loadPlan()}
-            disabled={!planChoice || busy || hasPendingSave}
+            disabled={
+              !planChoice ||
+              busy ||
+              hasPendingSave ||
+              evidenceMutation ||
+              adviceMutation
+            }
           >
             Open saved plan
           </button>
@@ -676,7 +783,9 @@ export function AIAdoptionWorkspace({
               type="button"
               className="secondary"
               onClick={() => newPlan()}
-              disabled={busy || hasPendingSave}
+              disabled={
+                busy || hasPendingSave || evidenceMutation || adviceMutation
+              }
             >
               New adoption plan
             </button>
@@ -686,7 +795,9 @@ export function AIAdoptionWorkspace({
               type="button"
               className="secondary"
               onClick={() => void morePlans()}
-              disabled={busy || hasPendingSave}
+              disabled={
+                busy || hasPendingSave || evidenceMutation || adviceMutation
+              }
             >
               Load more plans
             </button>
@@ -698,7 +809,7 @@ export function AIAdoptionWorkspace({
         every field at organisation level; do not include beneficiary or
         personal data.
       </p>
-      {head && savedContent && (
+      {head && savedContent && !canonicalUnavailable && (
         <section
           className="ai-content-status"
           aria-labelledby="ai-content-status"
@@ -742,14 +853,73 @@ export function AIAdoptionWorkspace({
           ) : null}
         </section>
       )}
-      {head && (
+      {head && !canonicalUnavailable && (
         <AIGuidanceArchive
-          key={base + ":" + head.object_id}
+          key={
+            base +
+            ":" +
+            sessionIdentity +
+            ":" +
+            principalId +
+            ":" +
+            head.object_id
+          }
           base={base}
           objectId={head.object_id}
           currentRevision={head.revision_id}
           request={request}
           explain={explain}
+        />
+      )}
+      {head && !canonicalUnavailable && (
+        <AIImpactEvidence
+          key={
+            base +
+            ":" +
+            sessionIdentity +
+            ":" +
+            principalId +
+            ":impact:" +
+            head.object_id
+          }
+          base={base}
+          path={base + "ai-enablement/plans/" + head.object_id}
+          objectId={head.object_id}
+          currentRevision={head.revision_id}
+          canManage={canManage}
+          hasUnsavedChanges={dirty || busy || hasPendingSave || adviceMutation}
+          request={request}
+          explain={explain}
+          onSaved={evidenceSaved}
+          onMutationStateChange={setEvidenceMutation}
+        />
+      )}
+      {head && !canonicalUnavailable && (
+        <AIHumanAdvice
+          key={
+            base +
+            ":" +
+            sessionIdentity +
+            ":" +
+            principalId +
+            ":advice:" +
+            head.object_id
+          }
+          base={base}
+          planId={head.object_id}
+          planRevision={head.revision_id}
+          planTitle={
+            plans.find((plan) => plan.object_id === head.object_id)?.data
+              .title || "Saved adoption plan"
+          }
+          principalId={principalId}
+          canManage={canManage}
+          canReadMemberDirectory={capabilities.includes("memberships.read")}
+          hasUnsavedChanges={dirty}
+          hasConflictingMutation={busy || hasPendingSave || evidenceMutation}
+          request={request}
+          explain={explain}
+          onMutationStateChange={setAdviceMutation}
         />
       )}
       {!canManage && (
@@ -795,7 +965,13 @@ export function AIAdoptionWorkspace({
             <button
               className="primary"
               type="submit"
-              disabled={busy || loading}
+              disabled={
+                busy ||
+                loading ||
+                evidenceMutation ||
+                adviceMutation ||
+                canonicalUnavailable
+              }
             >
               {busy
                 ? "Saving or opening…"

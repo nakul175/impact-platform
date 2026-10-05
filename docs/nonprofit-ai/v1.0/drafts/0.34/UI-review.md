@@ -1,0 +1,22 @@
+This is an isolated draft for a JSON-only internal copy of one saved AI plan revision. Nothing here is registered, imported by the product, or qualified against the actual export API yet. The temporary UI checker uses an in-memory request function and a synthetic minimal package; it cannot prove database authority, immutable storage, audit issuance, private-field omission or native role separation.
+
+The adapter matches the proposed POST route and closed operation/data command. It expects exact content:string, a thirteen-field manifest including truthful saved guidance coverage, and the exact nine-field issuance receipt. The selected plan's saved_at is separate from the issuance generated_at. Receipt.saved_at must equal generated_at; operation, SHA, UTF-8 byte count and replay expiry must agree. Receipt selectors identify the issuance audit object/revision, while manifest selectors identify the selected plan/revision.
+
+The UI shows saved revisions from a bounded authorised history read, with explicit load-more. Selection submits no write and does not change the current plan draft. Preparing a copy requires a separate export capability hint and deliberate internal-self acknowledgement; the server remains authoritative. Parent unsaved draft and other mutation gates prevent a new issuance/download. An uncertain earlier operation can still be retried exactly while the local draft is dirty.
+
+Every download replays the same command through current server authority before verifying its original immutable manifest and receipt, exact TextEncoder byte count and WebCrypto SHA-256. The Blob uses the original content string. The component retains no content or Blob between clicks. The pending retry retains its prior manifest/receipt even when a download response is lost, preventing a different issuance from replacing the verified copy. URLs are revoked after browser handoff and immediately on authority/context failure or unmount. A late actor/plan/permission response is discarded, and a newly dirty draft prevents a latent download after a response arrives.
+
+Integration prerequisites after checkpoint:
+
+- Use the existing request helper for same-origin credentials, CSRF and reauthentication; do not add a second raw transport.
+- Pass the actual exposed principal and human identity already forwarded to the workspace. These identify the current actor; they are not a unique generation for same-identity reauthentication. Logout already unmounts the workspace.
+- Render only for an opened SAVED plan/head and its authorised loaded history. New local drafts cannot anchor an export.
+- Keep export pending state separate from other workspace mutation flags. The hasConflictingMutation prop must exclude this component's own pending flag; include it in the parent Save/Open/New and other-panel gates so the component can replay its own operation.
+- Pass canExport from the distinct ai.enablement.export hint. Read/manage is never a substitute. A positive hint does not bypass server denial.
+- Freeze final DTO/schema/renderer/filename rules before moving the component. The draft's constants match the content worker's current proposed contract; the exported document remains validated by the backend's frozen public package schema.
+- Integrate existing shared styles deliberately and rerun keyboard/mobile/axe checks against the actual product. Draft captures use temporary fixture styling and are not a product visual acceptance claim.
+- Add explicit saved-draft and non-approval wording alongside the server document disclaimer; internal-self copies have no external recipient, sharing or booking workflow.
+
+Security limits: browser verification proves that the handed-off bytes match the received issuance metadata. It does not authenticate a compromised application server, guarantee operating-system filesystem persistence, recall a downloaded file, or make a local file expire. Server tests must independently prove exact-revision current authority on issue/replay, scoped distinct export grants, original-byte retention, atomic audit/receipt/register/outbox binding, expired-replay behavior and absence of private impact pins, human advice, provider secrets and presence counters.
+
+Synthetic fixture invocation uses the installed Node/TypeScript/Vite/Chrome dependencies only. It does not install anything or access a provider. All output, downloaded synthetic JSON and captures stay inside this temporary directory.

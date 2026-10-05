@@ -1,0 +1,19 @@
+{
+  "scope": "Future actual browser/API qualification proposal after source checkpoint and export registration; not executed by the current in-memory UI fixture",
+  "actual_api_status": "NOT_RUN",
+  "prerequisites": ["Frozen public DTO/package renderer/migration checksum", "Separate disposable database and named-only evidence outputs", "Existing distinct-authority synthetic members with current saved-plan read and explicitly scoped export grant", "Final product build and source/served-byte gate", "No provider/external requests"],
+  "groups": [
+    {"name":"Separate export authority", "oracle":"Plan read/manage alone cannot issue or replay; scoped export without current exact-revision read also fails. UI positive hint never overrides a current server denial."},
+    {"name":"Saved revision selection", "oracle":"Only opened current head or bounded authorised loaded history can be selected. Selection performs no POST and preserves the current draft. Unavailable old revisions are opaque."},
+    {"name":"Deliberate internal self issuance", "oracle":"Explicit acknowledgement produces one closed command. UI never saves the parent draft or chooses an external recipient. Response is labelled a saved draft planning record."},
+    {"name":"Audited exact download", "oracle":"Download freshly replays the exact operation/body. Actual saved UTF-8 file equals server retained bytes and SHA/count; exact issuance audit/receipt/register match. Audit is issuance proof, not filesystem persistence proof."},
+    {"name":"Ambiguous issue/replay", "oracle":"Abort only the response after actual server commit, then retry the same operation/body. One issuance audit/receipt/register remains; immutable metadata/bytes do not change. No automatic second issuance."},
+    {"name":"Current permission and actor changes", "oracle":"Narrow existing synthetic grants between preparation and download; actual replay refuses and UI clears metadata/history/retry. Forwarded principal/human-identity change and logout discard late results; no unique-session-generation claim."},
+    {"name":"Local draft and concurrent writes", "oracle":"Dirty/pending parent gates block new issuance/download. Exact uncertain replay remains possible without altering draft. A local edit while reply/hash is pending suppresses latent browser download."},
+    {"name":"Truthful archived guidance", "oracle":"COMPLETE/PARTIAL/UNAVAILABLE saved archives remain truthful; missing content is not reconstructed from current guidance. Private pins/advice/provider configuration/proof fields and omission/presence counters are absent by the frozen public schema."},
+    {"name":"Replay expiry", "oracle":"Actual server expiry prevents replay with neutral bounded error; UI creates no new operation silently. Local downloaded bytes remain readable and UI does not imply they expire."},
+    {"name":"Integrity and refusal recovery", "oracle":"Meaningfully inject invalid digest/count/manifest/receipt in a separate labelled response fixture and ensure no download. Actual backend unavailable/retry behavior is qualified separately."},
+    {"name":"Mobile and keyboard", "oracle":"Actual product 1440/390/320 captures, focus-visible keyboard controls, bounded history pagination and axe checks have no clipping, violations or incomplete findings."},
+    {"name":"Source and external-request gate", "oracle":"Actual runtime/migrations/product and checker fingerprints/served assets remain unchanged through the run; no unexpected JavaScript console errors or external/provider requests."}
+  ]
+}

@@ -3,31 +3,100 @@
   "title": "Consent-based internal human advice",
   "domain": "AI capability and advisory support",
   "owner": "/root/sprint_access",
-  "status": "BUILDING",
-  "summary": "Isolated advice backend and 13 closed route contracts are implemented; 80 unit checks pass. The colleague selector has separate current directory permission gates, and the private brief stays separate until assignment.",
-  "next_step": "Finish prepared API/native privacy and permission cases, independently review the SQL draft, then hand off isolated files for the next release checkpoint.",
+  "status": "BLOCKED",
+  "summary": "Internal advice is integrated and locally tested, including142 focused actual native checks and28 combined browser groups. A later actual worker probe confirms old cleanup helpers expose private operation keys.",
+  "next_step": "Close the recorded cleanup-definer privacy boundary with an independently reviewed additive migration and regression.",
   "eta": {
-    "earliest": "2026-10-05T10:15:00Z",
-    "latest": "2026-10-05T11:15:00Z",
-    "confidence": "MEDIUM",
-    "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+    "earliest": null,
+    "latest": null,
+    "confidence": "UNESTIMATED",
+    "basis": "Timed work window ended; no further work or deployment ETA scheduled."
   },
   "delivered": [
     "Closed create/action/read/history contracts and exact saved-plan anchored state transitions with participant consent, no-conflict declaration, explicit assignment and complete action acknowledgement.",
     "Private immutable brief with private nonce integrity; terminal adviser access ends; current participant, plan scope, natural-person proof and receipt replay checks.",
-    "Eligible-colleague selector separately requires current administrative directory authority and current plan AI read/manage; returns only permitted labels and membership selectors."
+    "Eligible-colleague selector separately requires current administrative directory authority and current plan AI read/manage; returns only permitted labels and membership selectors.",
+    "Reviewed isolated SQL draft with forced tenant RLS, participant-only generic registry/revision/audit/author/receipt/event/delivery/consumer pointer guards and deferred atomic creation consistency.",
+    "Isolated release and dictionary integration notes; SQL SHA-256 handed to the integrator without applying a migration or editing shared release sources.",
+    "Separate closed public response allowlist omits global natural-person IDs and authentication/integrity proof metadata while preserving stored consent and UI revision/selectors.",
+    "Additive0039 exact pinned plan AVAILABLE policy inherited by all case/pointer reads; API checks before resolve and receipt replay, with unchanged public DTOs and stored consent."
   ],
   "evidence": [
     {
       "title": "Human advice isolated unit qualification",
       "path": "docs/evidence/sprint-0.33-human-advice-unit.xml",
-      "result": "80 passed",
-      "scope": "Pure contracts, immutable state transitions, consent/authority helper logic and cursor key validation only; SQL, API routes and browser remain unintegrated and unqualified.",
-      "recorded_at": "2026-10-05T09:46:00Z"
+      "result": "90 passed",
+      "scope": "Pure contracts/state/authority/cursors, public projection/private integrity, internal UUID conversion and exact tenant/object/revision/type AVAILABLE anchor guard.",
+      "recorded_at": "2026-10-05T10:43:17.686008Z"
+    },
+    {
+      "title": "Promoted member advice API and native scenarios",
+      "path": "qualification/test_human_advice_live.py",
+      "result": "36 integrated scenarios; corrected PGlite focus green",
+      "scope": "30 API/PGlite workflow cases executed successfully; six actual native-login/context cases are explicit PGlite skips. The separate2 exact older-anchor regressions also pass.",
+      "recorded_at": "2026-10-05T10:48:53.446470Z"
+    },
+    {
+      "title": "Disposable PostgreSQL advice SQL and RLS qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-scratch-native.json",
+      "result": "68 direct SQL/helper/RLS checks passed on PostgreSQL 17.11",
+      "scope": "Existing checksum-ledgered schema37 plus exact explicitly unledgered draft; fixture-superuser SET LOCAL ROLE impact_app/impact_worker. Participant creation/sharing/terminal/context/pointer policies only; no actual runtime login, API, concurrency, browser or release acceptance claim.",
+      "recorded_at": "2026-10-05T09:57:49Z"
+    },
+    {
+      "title": "Eligible-member correlated scope SQL check",
+      "path": "docs/evidence/sprint-0.33-human-advice-peer-sql.json",
+      "result": "2 query checks passed",
+      "scope": "Read-only query execution and candidate filter result on owned PostgreSQL scratch metadata under impact_app; no API or directory-authority claim.",
+      "recorded_at": "2026-10-05T10:00:00Z"
+    },
+    {
+      "title": "Preserved first advice PGlite qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-pglite-initial-tests.xml",
+      "result": "104 passed,13 failed,6 native-only skips",
+      "scope": "Preserved initial source-bound pure/PGlite API run found internal UUID conversion and two cursor fixture authority distinctions; corrected candidate now passes. Actual migration38 ledger and source proof preserved separately.",
+      "recorded_at": "2026-10-05T10:23:44.592331Z"
+    },
+    {
+      "title": "Corrected schema39 advice PGlite API qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-pglite-tests.xml",
+      "result": "122 passed,0 failures,6 native-only skips",
+      "scope": "90 pure +30 real API/PGlite +2 exact unavailable old-anchor cases. Actual schema39 ledger verifies frozen0038/0039; all171 captured source fingerprints unchanged. Subsequent actual-login pointer-helper refinement awaits native and final full PGlite. No native-login/concurrency/browser/hosted/acceptance claim.",
+      "recorded_at": "2026-10-05T10:48:53.446470Z"
+    },
+    {
+      "title": "Before-fix exact older-anchor privacy diagnostic",
+      "path": "docs/evidence/sprint-0.33-human-advice-anchor-before-observations.json",
+      "result": "2 strict privacy failures reproduced for RESTRICTED/REMOVED older pins",
+      "scope": "Storage-valid append-only synthetic negative fixtures; readable new plan and withheld old guidance, yet cases/history/replay/list/11 pointer classes still visible before0039. All FK/deferred/immutable guards enabled; no API creation/retention/erasure workflow or native evidence claim.",
+      "recorded_at": "2026-10-05T10:43:17.686008Z"
+    },
+    {
+      "title": "Actual PostgreSQL17.11 advice/native login qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-native-tests.xml",
+      "result": "142passed,0 failures/errors/skips",
+      "scope": "All advice pure/API cases, six actual-login/context cases, native login topology including executor and two exact-old-anchor cases. Actual39 checksum ledger and171 unchanged source fingerprints. Focused run skips restart/restore/upgrade; browser/hosted/acceptance excluded.",
+      "recorded_at": "2026-10-05T10:50:50.886582Z"
+    },
+    {
+      "title": "Actual application-login unavailable old-anchor pointer observations",
+      "path": "docs/evidence/sprint-0.33-human-advice-native-anchor-observations.json",
+      "result": "2 cases hidden across current/history/revision/replay/list and11pointer classes",
+      "scope": "RESTRICTED/REMOVED-at-insertion storage-valid synthetic fixtures with readable currentplan. Actual impact_app_login plus SET LOCAL ROLE impact_app explicitly recorded. Preserves FK/immutable/deferred guards; no supported API creation/retention/erasure workflow claim.",
+      "recorded_at": "2026-10-05T10:50:50.886582Z"
+    },
+    {
+      "title": "Native focused source and credential-boundary proof",
+      "path": "docs/evidence/sprint-0.33-human-advice-native-source-proof.json",
+      "result": "Exit0;171 source hashes unchanged; owned synthetic credential rotation recorded",
+      "scope": "Persisted private0600 map explicitly applied once to six owned synthetic cluster logins; reuse required later. No deployed account changes. Named ledger/qualification/tests produced in this run; source and report scope bound.",
+      "recorded_at": "2026-10-05T10:50:50.886582Z"
     }
   ],
-  "blockers": [],
-  "updated_at": "2026-10-05T09:46:34.855992Z",
+  "blockers": [
+    "Deployment and complete privacy qualification blocked by old worker cleanup helpers; schema39-only reproduction preserved."
+  ],
+  "updated_at": "2026-10-05T19:14:17.848462Z",
   "history": [
     {
       "at": "2026-10-05T09:15:31.017457Z",
@@ -60,6 +129,127 @@
         "latest": "2026-10-05T11:15:00Z",
         "confidence": "MEDIUM",
         "basis": "Isolated backend/contracts/SQL draft and pure tests only. Route integration and local/native/browser qualification need the next release go-ahead and are excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:54:05.474498Z",
+      "status": "REVIEWING",
+      "summary": "Isolated internal member-advice backend, 13 closed contracts, SQL draft and UI handoff are ready. 80 unit checks pass; 34 API/native scenarios are prepared but unrun.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:58:34.379229Z",
+      "status": "REVIEWING",
+      "summary": "Advice draft passes 80 unit checks and 68 disposable PostgreSQL 17.11 SQL/helper/RLS checks. 34 integrated API/native scenarios are prepared, with route and registered migration integration still pending.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:03:56.870027Z",
+      "status": "REVIEWING",
+      "summary": "Advice routes/contracts and frozen migration0038 are integrated into the local candidate. 80 unit checks and 68 PostgreSQL scratch checks pass; 34 promoted API/native scenarios await the shared runner.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:14:18.928608Z",
+      "status": "REVIEWING",
+      "summary": "Integrated advice candidate now returns an explicit public case projection; private identity/authentication and brief-integrity proofs remain server-only. 87 unit checks and 68 native SQL scratch checks pass; 35 API/native scenarios await coordinated execution.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:19:30.069166Z",
+      "status": "REVIEWING",
+      "summary": "Integrated advice candidate now returns an explicit public case projection; private identity/authentication and brief-integrity proofs remain server-only. 87 unit checks and 68 native SQL scratch checks pass; 36 API/native scenarios await coordinated execution.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:23:44.620393Z",
+      "status": "REVIEWING",
+      "summary": "Initial advice API run found a server UUID conversion defect; fixed candidate passes88 pure checks with closed transport strings unchanged. First104pass/13fail/6native-skip report preserved; source-bound API rerun follows content runner release.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Isolated backend/contracts/SQL draft completed ahead of forecast; this is the forecast window for integration review and first focused qualification, subject to the shared runner becoming available. Native/browser final-tree acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:30:08.722050Z",
+      "status": "REVIEWING",
+      "summary": "Corrected internal advice candidate passes118 focused pure/API/PGlite checks with six explicit native-only skips. Source unchanged during run and actual migration38 checksum verified; actual-login native and browser qualification follow core source freeze.",
+      "eta": {
+        "earliest": "2026-10-05T10:45:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First focused API handoff is delivered. Remaining local native/browser qualification depends on the shared core source freeze and runner release; hosted/owner acceptance is excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:43:17.735511Z",
+      "status": "REVIEWING",
+      "summary": "Exact older-anchor review reproduced two privacy gaps; additive0039 central policy and API defense now implemented, independently reviewed, with90 pure checks passing. Corrected schema39 API/native/browser qualification awaits shared metadata/source freeze.",
+      "eta": {
+        "earliest": "2026-10-05T10:55:00Z",
+        "latest": "2026-10-05T11:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First workflow focus delivered. Stronger old-anchor privacy boundary adds reviewed0039 and two strict regressions; remaining local source-bound API/native/browser handoff depends on coordinated metadata/source freeze. Hosted and owner acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:48:53.491003Z",
+      "status": "REVIEWING",
+      "summary": "Internal advice and exact unavailable older-anchor protections pass122 focused schema39 PGlite checks, with6 explicit native-only skips. Actual39 ledger and source fingerprints verified. Actual-login native/executor and browser gates are next.",
+      "eta": {
+        "earliest": "2026-10-05T10:55:00Z",
+        "latest": "2026-10-05T11:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Focused122-check API/PGlite handoff delivered; native/login and browser timing depends on coordinated content source-bound gate and runner release. Final full-source regression and hosted/owner acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T10:50:50.917096Z",
+      "status": "REVIEWING",
+      "summary": "Bounded internal advice is integrated and passes122 schema39 PGlite checks plus142 actual PostgreSQL17.11 checks with zero native skips/failures. Exact old-anchor privacy, executor/login topology and171-source checksum gates passed. Full release/browser qualification remains with integrator.",
+      "eta": {
+        "earliest": "2026-10-05T10:55:00Z",
+        "latest": "2026-10-05T11:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Scoped focused API/native handoff complete; remaining full release/browser evidence depends on integrator runner windows. Hosted/owner acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T19:14:17.848462Z",
+      "status": "BLOCKED",
+      "summary": "Internal advice is integrated and locally tested, including142 focused actual native checks and28 combined browser groups. A later actual worker probe confirms old cleanup helpers expose private operation keys.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Timed work window ended; no further work or deployment ETA scheduled."
       }
     }
   ]

@@ -47,10 +47,13 @@ def darwin_environment(raw):
 
 
 def process_environment(pid):
-    if type(pid) is not int or pid < 1:
+    if type(pid) is not int or not 1 <= pid <= (1 << (ctypes.sizeof(ctypes.c_int) * 8 - 1)) - 1:
         raise ValueError("Positive process identifier required")
     if sys.platform == "linux":
-        raw = Path(f"/proc/{pid}/environ").read_bytes()
+        with Path(f"/proc/{pid}/environ").open("rb") as handle:
+            raw = handle.read(MAX_PROCESS_BYTES + 1)
+        if len(raw) > MAX_PROCESS_BYTES:
+            raise RuntimeError("Kernel process-environment size is invalid")
         return [entry.decode(errors="replace") for entry in raw.split(b"\0") if entry]
     if sys.platform != "darwin":
         raise RuntimeError("Kernel process-environment inspection is unsupported on this host")
@@ -73,8 +76,11 @@ def process_environment(pid):
         raise OSError(error, os.strerror(error))
     if not ctypes.sizeof(ctypes.c_int) < length.value <= MAX_PROCESS_BYTES:
         raise RuntimeError("Kernel process-environment size is invalid")
-    buffer = ctypes.create_string_buffer(length.value)
+    capacity = length.value
+    buffer = ctypes.create_string_buffer(capacity)
     if query(mib, 3, buffer, ctypes.byref(length), None, 0) != 0:
         error = ctypes.get_errno()
         raise OSError(error, os.strerror(error))
+    if not ctypes.sizeof(ctypes.c_int) < length.value <= capacity:
+        raise RuntimeError("Kernel process-environment returned size is invalid")
     return darwin_environment(buffer.raw[: length.value])

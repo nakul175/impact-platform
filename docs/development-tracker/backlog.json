@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-05T09:48:20.605909Z",
+  "generated_at": "2026-10-05T19:15:57.441095Z",
   "method": "Each source requirement belongs to exactly one editorial domain. Shared domains are shown once. Counts do not measure effort, accepted scope, overall percentage or remaining person-hours. Source registers are not rewritten.",
   "baseline": {
-    "current_build": "0.31.0",
-    "tentative_sprint_build": "0.32.0",
-    "impact_ledger_build": "0.32.0",
+    "current_build": "0.32.0",
+    "last_saved_local_commit": "91de7cbc3bde3d76b080d9a235167744df6a39e2",
+    "tentative_sprint_build": "0.33.0",
+    "impact_ledger_build": "0.33.0",
     "impact_ledger_assessment_date": "2026-10-05",
     "impact_requirements": 307,
     "impact_partial": 113,
@@ -18,7 +19,7 @@
   "source_fingerprints": [
     {
       "path": "docs/COMPLETION-LEDGER.json",
-      "sha256": "2ebadb158e170df314a6e71bb7112dfb1fc2b7d8524db139c30766651e1993c1"
+      "sha256": "49beef38fa043f809f86514a39b4fea24bb4c18bef41af9e8ef5217e4482c69d"
     },
     {
       "path": "docs/nonprofit-ai/v1.0/requirements.json",
@@ -26,7 +27,7 @@
     },
     {
       "path": "docs/IMPLEMENTATION.md",
-      "sha256": "5e41f11a4dfcad9a56c3524a63c5dee54c2b6904cc2a7e7664983d0295d9c51f"
+      "sha256": "33f8b078b26b9e5df93318c36f1281ed209013a3c84f64ba85fec1f70af18eff"
     },
     {
       "path": "docs/handover/BACKLOG.md",
@@ -35,6 +36,18 @@
     {
       "path": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
       "sha256": "4f45c54a9187b20bdd7e86d0e9c17a82c3d8bb88bb661e7155a9438fcf39bb32"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+      "sha256": "259919ad3bf8e8456f7dea9743373bd5a0696125428e46a752ef06cf4e548fe3"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+      "sha256": "07c7d828f33b5a87dd0c8f75a6518db62c32482328fe7b752857a19a0d64a36c"
+    },
+    {
+      "path": "VERSION.json",
+      "sha256": "1e6fa553524926cbbb4e733dc52b694bc303cf0b23fecae16f94718b3d1e37f7"
     }
   ],
   "domains": [
@@ -90,7 +103,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -140,7 +154,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -202,7 +217,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -243,7 +259,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -280,7 +297,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -306,7 +324,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -333,7 +352,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -363,7 +383,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -380,13 +401,14 @@
         "FR-NPA-034",
         "FR-NPA-037"
       ],
-      "current": "Readiness assessment, shared adoption drafts and self-reported pilot comparisons exist locally.",
-      "remaining": "Verified quality/evidence, independent pilot acceptance, official impact links and feedback workflows.",
+      "current": "Readiness, saved adoption drafts and pilot comparisons exist; deliberate governed programme links are integrated in0.33 with passing bounded local database/browser checks; no formal acceptance.",
+      "remaining": "Complete impact-link qualification, verified quality/evidence, independent pilot acceptance and feedback workflows.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -407,7 +429,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -442,7 +465,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -478,13 +502,14 @@
         "FR-NPA-011",
         "FR-NPA-023"
       ],
-      "current": "Consented advisory orchestration has mocked provider qualification and bounded I/O.",
-      "remaining": "Funded live evaluation, money/token controls, human advisory cases and hard process-wide recovery policy.",
+      "current": "Consented provider advisory has mocked qualification and bounded I/O; existing-member consent/declaration/advice cases are locally tested in0.33; known worker-cleanup privacy disclosure blocks deployment.",
+      "remaining": "Complete internal-advice qualification, operated adviser service, funded live evaluation, money/token controls and hard process-wide recovery policy.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -538,7 +563,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     },
     {
@@ -600,7 +626,8 @@
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
       ]
     }
   ]

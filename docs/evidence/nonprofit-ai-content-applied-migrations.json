@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-05T09:01:58.985004+00:00",
+  "recorded_at": "2026-10-05T11:22:00.413911+00:00",
   "environment": "PGLITE",
   "scope": "Applied migration ledger observed by this qualification process; other qualification outcomes are separate",
   "migrations": [
@@ -224,6 +224,18 @@
       "file": "0037_ai_content_snapshots.sql",
       "applied_sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
       "current_source_sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+    },
+    {
+      "version": 38,
+      "file": "0038_human_advice_cases.sql",
+      "applied_sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+      "current_source_sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+    },
+    {
+      "version": 39,
+      "file": "0039_human_advice_anchor_availability.sql",
+      "applied_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+      "current_source_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
     }
   ]
 }

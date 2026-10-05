@@ -280,3 +280,11 @@
 .ai-archive-hash {
   overflow-wrap: anywhere;
 }
+.ai-enablement .ai-impact-evidence .ai-cards article,
+.ai-enablement .ai-human-advice .ai-cards article {
+  padding: 1rem;
+}
+.ai-impact-evidence fieldset,
+.ai-human-advice fieldset {
+  min-width: 0;
+}

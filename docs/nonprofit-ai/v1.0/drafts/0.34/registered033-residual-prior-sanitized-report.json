@@ -1,0 +1,130 @@
+{
+  "recorded_at": "2026-10-05T11:25:39.764399+00:00",
+  "status": "UNRESOLVED_REGISTERED_0.33_RESIDUAL",
+  "scope": "Actual PostgreSQL17.11 SQL visibility diagnostic, not an API or actual privacy expiry workflow. Synthetic storage-valid Open case and expired create/action receipts; immutable/deferred/RLS guards enabled. Both worker calls used savepoint rollback, preserving rows. Unregistered additive0040 exclusion pending registration and integrated requalification. No private identifiers, DSNs, passwords or case text retained in this sanitized report.",
+  "database": "Owned disposable portability scratch, schema39 plus unrelated unregistered export draft661a0a18",
+  "original_migrations": {
+    "27": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "30": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "38": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "39": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+  },
+  "actual_six_login_topology": {
+    "impact_app_login": {
+      "current_user": "impact_app_login",
+      "assumes": "impact_app",
+      "denied": [
+        "impact_owner",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_identity_login": {
+      "current_user": "impact_identity_login",
+      "assumes": "impact_identity",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_worker",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_platform_login": {
+      "current_user": "impact_platform_login",
+      "assumes": "impact_platform",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer"
+      ]
+    },
+    "impact_worker_login": {
+      "current_user": "impact_worker_login",
+      "assumes": "impact_worker",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_executor_login": {
+      "current_user": "impact_executor_login",
+      "assumes": "impact_app",
+      "denied": [
+        "impact_owner",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_migrator": {
+      "current_user": "impact_migrator",
+      "assumes": "impact_owner",
+      "denied": [
+        "impact_app",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    }
+  },
+  "connection_method": "Actual impact_worker_login, SET LOCAL ROLE impact_worker, transaction-local current fixture tenant, no advice participant context",
+  "observations": [
+    {
+      "overload_arguments": 1,
+      "private_operation_keys_returned": 2,
+      "commands": [
+        "create_human_advice_case",
+        "human_advice_cancel"
+      ],
+      "literal_private_keys_omitted": true,
+      "rollback_after_probe": true
+    },
+    {
+      "overload_arguments": 2,
+      "private_operation_keys_returned": 2,
+      "commands": [
+        "create_human_advice_case",
+        "human_advice_cancel"
+      ],
+      "literal_private_keys_omitted": true,
+      "rollback_after_probe": true
+    }
+  ],
+  "remedy_candidate": "Exclude current ^(human_advice_|create_human_advice_case$) predicate and new issue_ai_plan_export from both existing key-returning purge definers in additive0040; retain these pointers until a reviewed private retention path. Preserve ordinary expired receipt purge.",
+  "actual_server_version": "17.11",
+  "actual_existing_definers": [
+    {
+      "signature": "impact.retention_purge_receipts(integer)",
+      "definition": "CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer)\n RETURNS TABLE(item text)\n LANGUAGE sql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'impact'\nAS $function$\nDELETE FROM impact.operation_receipt o USING (\n  SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt\n   WHERE tenant_id=impact.current_tenant() AND expires_at<=statement_timestamp()\n   ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d\n WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type\n   AND o.operation_id=d.operation_id\n RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text\n$function$\n",
+      "definition_sha256": "670ef604a8af5cd67086f3ec944e439ef1cc37331030f7c1b618d6e64f9784b1"
+    },
+    {
+      "signature": "impact.retention_purge_receipts(integer,integer)",
+      "definition": "CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer, keep_days integer)\n RETURNS TABLE(item text)\n LANGUAGE sql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'impact'\nAS $function$\nDELETE FROM impact.operation_receipt o USING (\n  SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt\n   WHERE tenant_id=impact.current_tenant()\n     AND expires_at<=statement_timestamp()-make_interval(days=>greatest(keep_days,7)-7)\n   ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d\n WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type\n   AND o.operation_id=d.operation_id\n RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text\n$function$\n",
+      "definition_sha256": "89b2c72b9485a1d671714d33b86ed736f77d942e9cd7157580ce94edc5b9b767"
+    }
+  ],
+  "all_immutable_rls_deferred_guards_enabled": true
+}

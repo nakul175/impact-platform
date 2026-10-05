@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from .domain import DomainError, decimal_value, display
 from .measurement import coverage
 from .planning import safe_progress
-from .store import authorize, context, load, scopes, visible_sql
+from .store import authorize, context, currently_readable, load, scopes, visible_sql
 
 STALE_RULE = (
     "Stale when the source observations or the approved collection plan changed since the shown "
@@ -191,7 +191,7 @@ class Dashboards:
         if (
             not row
             or row["payload"].get("indicator_version") != pin
-            or not scopes(c, ctx, "calculated-results.read", row["result_id"])
+            or not currently_readable(c, ctx, row["result_id"], "CalculatedResult", "calculated-results.read")
         ):
             return None
         return row
@@ -317,7 +317,7 @@ class Dashboards:
             )
             if not entry:
                 return summarize(None, "CLOSE_SNAPSHOT")
-            if not scopes(c, ctx, "collection-plans.read", entry["plan_id"]):
+            if not currently_readable(c, ctx, entry["plan_id"], "CollectionPlan", "collection-plans.read"):
                 return summarize(None, "CLOSE_SNAPSHOT", "COVERAGE_ACCESS_REQUIRED")
             return summarize(entry["coverage"], "CLOSE_SNAPSHOT")
         binding, plan = self.plan(c, ctx, indicator_id, period_row["object_id"])
@@ -385,7 +385,9 @@ class Dashboards:
             "SELECT object_id,payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s AND object_type='IndicatorDefinition' AND restriction_state='AVAILABLE'",
             (ctx.tenant_id, pin),
         ).fetchone()
-        if not row or not scopes(c, ctx, "indicator-definitions.read", row["object_id"]):
+        if not row or not currently_readable(
+            c, ctx, row["object_id"], "IndicatorDefinition", "indicator-definitions.read"
+        ):
             return {}
         return row["payload"]
 

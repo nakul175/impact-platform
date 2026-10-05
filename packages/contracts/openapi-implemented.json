@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.23.0",
+    "version": "1.24.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -28809,6 +28809,1916 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference": {
+      "put": {
+        "operationId": "set_ai_impact_reference",
+        "summary": "Deliberately link, refresh or clear pinned programme evidence",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Saved relationship revision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIImpactReferenceCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference/result": {
+      "get": {
+        "operationId": "get_ai_impact_reference_result",
+        "summary": "Read currently authorized evidence for an AI-plan impact reference",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governed evidence; official and provisional values remain separate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIImpactReferenceResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused without exposing hidden core records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice": {
+      "get": {
+        "operationId": "list_human_advice_cases",
+        "summary": "list human advice cases",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_human_advice_case",
+        "summary": "create human advice case",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/eligible-peers": {
+      "get": {
+        "operationId": "list_human_advice_eligible_peers",
+        "summary": "list human advice eligible peers",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          {
+            "name": "context_plan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceEligiblePeers"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}": {
+      "get": {
+        "operationId": "get_human_advice_case",
+        "summary": "get human advice case",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions": {
+      "get": {
+        "operationId": "list_human_advice_revisions",
+        "summary": "list human advice revisions",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceHistory"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions/{revision_id}": {
+      "get": {
+        "operationId": "get_human_advice_revision",
+        "summary": "get human advice revision",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/declare-scope": {
+      "post": {
+        "operationId": "human_advice_declare_scope",
+        "summary": "human advice declare scope",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceDeclareScope"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/assign": {
+      "post": {
+        "operationId": "human_advice_assign",
+        "summary": "human advice assign",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceAssign"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/request-input": {
+      "post": {
+        "operationId": "human_advice_request_input",
+        "summary": "human advice request input",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceRequestInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/respond": {
+      "post": {
+        "operationId": "human_advice_respond",
+        "summary": "human advice respond",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceRespond"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/advise": {
+      "post": {
+        "operationId": "human_advice_advise",
+        "summary": "human advice advise",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceAdvise"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/close": {
+      "post": {
+        "operationId": "human_advice_close",
+        "summary": "human advice close",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceClose"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/cancel": {
+      "post": {
+        "operationId": "human_advice_cancel",
+        "summary": "human advice cancel",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.24.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restricted internal peer advice; never an official approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HumanAdviceReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused; hidden and missing cases are indistinguishable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HumanAdviceCancel"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend": {
       "parameters": [
         {
@@ -57518,6 +59428,1770 @@
           "object_id",
           "items",
           "next_cursor"
+        ]
+      },
+      "AIImpactReferenceInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "programme_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "interpretation_note": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "programme_id",
+          "indicator_id",
+          "period_id",
+          "interpretation_note"
+        ]
+      },
+      "AIImpactReferenceCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/AIImpactReferenceInput"
+              }
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "data"
+        ]
+      },
+      "AIImpactReference": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "programme_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "interpretation_note": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "schema_version": {
+            "const": "nonprofit-ai-impact-reference-v1"
+          },
+          "programme_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "definition_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "calendar_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "calendar_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "snapshot_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "snapshot_revision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "snapshot_version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "required": [
+          "programme_id",
+          "indicator_id",
+          "period_id",
+          "interpretation_note",
+          "schema_version",
+          "programme_revision",
+          "indicator_revision",
+          "definition_id",
+          "definition_revision",
+          "period_revision",
+          "calendar_id",
+          "calendar_revision",
+          "snapshot_id",
+          "snapshot_revision",
+          "snapshot_version"
+        ]
+      },
+      "AIImpactReferenceResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "const": "LINKED"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/AIImpactReference"
+          },
+          "reference_status": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "programme": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED"
+                ]
+              },
+              "indicator": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED"
+                ]
+              },
+              "definition": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED"
+                ]
+              },
+              "period": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED"
+                ]
+              },
+              "calendar": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED"
+                ]
+              },
+              "snapshot": {
+                "enum": [
+                  "CURRENT",
+                  "CHANGED",
+                  "ABSENT"
+                ]
+              }
+            },
+            "required": [
+              "programme",
+              "indicator",
+              "definition",
+              "period",
+              "calendar",
+              "snapshot"
+            ]
+          },
+          "programme_title": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "period": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "period_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "starts_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "ends_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "period_state": {
+                "enum": [
+                  "Open",
+                  "Locked",
+                  "RestatementOpen"
+                ]
+              }
+            },
+            "required": [
+              "period_id",
+              "period_state"
+            ]
+          },
+          "indicator": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "indicator_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "indicator_label": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "definition_revision": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "measurement_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "combination_rule": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "display_decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "lifecycle_state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "official": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DashboardValue"
+                  }
+                ]
+              },
+              "provisional": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DashboardValue"
+                  }
+                ]
+              },
+              "target": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DashboardTarget"
+                  }
+                ]
+              },
+              "baseline": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DashboardTarget"
+                  }
+                ]
+              },
+              "status": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "attainment_percent": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "deviation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      },
+                      "displayed_deviation": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 2000
+                      },
+                      "reason_code": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 2000
+                      },
+                      "compared_with": {
+                        "enum": [
+                          "OFFICIAL",
+                          "PROVISIONAL",
+                          null
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "attainment_percent",
+                      "deviation",
+                      "reason_code",
+                      "compared_with"
+                    ]
+                  }
+                ]
+              },
+              "coverage": {
+                "$ref": "#/components/schemas/DashboardCoverage"
+              },
+              "freshness": {
+                "$ref": "#/components/schemas/DashboardFreshness"
+              }
+            },
+            "required": [
+              "indicator_id",
+              "official",
+              "provisional",
+              "target",
+              "baseline",
+              "status",
+              "coverage",
+              "freshness"
+            ]
+          },
+          "stale_rule": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "status",
+          "reference",
+          "reference_status",
+          "programme_title",
+          "period",
+          "indicator",
+          "stale_rule",
+          "disclaimer"
+        ]
+      },
+      "HumanAdviceCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 150,
+                "pattern": "\\S"
+              },
+              "context_plan_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "context_plan_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "adviser_membership_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "problem": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000,
+                "pattern": "\\S"
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "data_boundary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "desired_outcome": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "material_policy": {
+                "const": "SYNTHETIC_OR_PUBLIC_TEXT"
+              },
+              "invitation_consent": {
+                "const": true
+              }
+            },
+            "required": [
+              "title",
+              "context_plan_id",
+              "context_plan_revision",
+              "adviser_membership_id",
+              "problem",
+              "scope",
+              "data_boundary",
+              "desired_outcome",
+              "material_policy",
+              "invitation_consent"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "HumanAdviceStoredData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150,
+            "pattern": "\\S"
+          },
+          "context_plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "context_plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "data_boundary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "desired_outcome": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "material_policy": {
+            "const": "SYNTHETIC_OR_PUBLIC_TEXT"
+          },
+          "invitation_consent": {
+            "const": true
+          },
+          "requester_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requester_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requester_natural_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adviser_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adviser_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adviser_natural_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "enum": [
+              "Open",
+              "Assigned",
+              "AwaitingInput",
+              "AdviceDraft",
+              "Closed",
+              "Cancelled"
+            ]
+          },
+          "case_schema_version": {
+            "const": "internal-peer-advice-v1"
+          },
+          "requester_auth_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "problem_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "declaration": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "conflict": {
+                    "enum": [
+                      "NONE",
+                      "DECLARED"
+                    ]
+                  },
+                  "details": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "scope_accepted": {
+                    "type": "boolean"
+                  },
+                  "declared_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "declared_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "authenticated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "conflict",
+                  "details",
+                  "scope_accepted",
+                  "declared_by",
+                  "declared_at",
+                  "authenticated_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assignment": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "declaration_revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "sharing_confirmed": {
+                    "const": true
+                  },
+                  "assigned_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "assigned_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "authenticated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "declaration_revision_id",
+                  "sharing_confirmed",
+                  "assigned_by",
+                  "assigned_at",
+                  "authenticated_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "note_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "kind": {
+                  "enum": [
+                    "QUESTION",
+                    "RESPONSE"
+                  ]
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "pattern": "\\S"
+                },
+                "author_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "recorded_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "note_id",
+                "kind",
+                "text",
+                "author_id",
+                "recorded_at"
+              ]
+            }
+          },
+          "advice": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 6000,
+                    "pattern": "\\S"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "responsibility": {
+                          "enum": [
+                            "REQUESTER",
+                            "ADVISER"
+                          ]
+                        },
+                        "action_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      },
+                      "required": [
+                        "description",
+                        "responsibility",
+                        "action_id"
+                      ]
+                    }
+                  },
+                  "advised_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "advised_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "text",
+                  "actions",
+                  "advised_by",
+                  "advised_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "closure": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "advice_revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "acknowledged_action_ids": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "closure_reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "closed_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "closed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "advice_revision_id",
+                  "acknowledged_action_ids",
+                  "closure_reason",
+                  "closed_by",
+                  "closed_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancellation": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "cancelled_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "cancelled_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "reason",
+                  "cancelled_by",
+                  "cancelled_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "context_plan_id",
+          "context_plan_revision",
+          "scope",
+          "data_boundary",
+          "desired_outcome",
+          "material_policy",
+          "invitation_consent",
+          "requester_principal_id",
+          "requester_membership_id",
+          "requester_natural_id",
+          "adviser_principal_id",
+          "adviser_membership_id",
+          "adviser_natural_id",
+          "state",
+          "case_schema_version",
+          "requester_auth_time",
+          "problem_sha256",
+          "declaration",
+          "assignment",
+          "notes",
+          "advice",
+          "closure",
+          "cancellation"
+        ]
+      },
+      "HumanAdvicePublicData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150,
+            "pattern": "\\S"
+          },
+          "context_plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "context_plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adviser_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "data_boundary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "desired_outcome": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "material_policy": {
+            "const": "SYNTHETIC_OR_PUBLIC_TEXT"
+          },
+          "invitation_consent": {
+            "const": true
+          },
+          "requester_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requester_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "adviser_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "enum": [
+              "Open",
+              "Assigned",
+              "AwaitingInput",
+              "AdviceDraft",
+              "Closed",
+              "Cancelled"
+            ]
+          },
+          "declaration": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "conflict": {
+                    "enum": [
+                      "NONE",
+                      "DECLARED"
+                    ]
+                  },
+                  "details": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "scope_accepted": {
+                    "type": "boolean"
+                  },
+                  "declared_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "declared_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "conflict",
+                  "details",
+                  "scope_accepted",
+                  "declared_by",
+                  "declared_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assignment": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "declaration_revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "sharing_confirmed": {
+                    "const": true
+                  },
+                  "assigned_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "assigned_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "declaration_revision_id",
+                  "sharing_confirmed",
+                  "assigned_by",
+                  "assigned_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "note_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "kind": {
+                  "enum": [
+                    "QUESTION",
+                    "RESPONSE"
+                  ]
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000,
+                  "pattern": "\\S"
+                },
+                "author_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "recorded_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "note_id",
+                "kind",
+                "text",
+                "author_id",
+                "recorded_at"
+              ]
+            }
+          },
+          "advice": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 6000,
+                    "pattern": "\\S"
+                  },
+                  "actions": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "responsibility": {
+                          "enum": [
+                            "REQUESTER",
+                            "ADVISER"
+                          ]
+                        },
+                        "action_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      },
+                      "required": [
+                        "description",
+                        "responsibility",
+                        "action_id"
+                      ]
+                    }
+                  },
+                  "advised_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "advised_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "text",
+                  "actions",
+                  "advised_by",
+                  "advised_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "closure": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "advice_revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "acknowledged_action_ids": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "closure_reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "closed_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "closed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "advice_revision_id",
+                  "acknowledged_action_ids",
+                  "closure_reason",
+                  "closed_by",
+                  "closed_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancellation": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "cancelled_by": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "cancelled_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "reason",
+                  "cancelled_by",
+                  "cancelled_at"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "context_plan_id",
+          "context_plan_revision",
+          "adviser_membership_id",
+          "scope",
+          "data_boundary",
+          "desired_outcome",
+          "material_policy",
+          "invitation_consent",
+          "requester_principal_id",
+          "requester_membership_id",
+          "adviser_principal_id",
+          "state",
+          "declaration",
+          "assignment",
+          "notes",
+          "advice",
+          "closure",
+          "cancellation"
+        ]
+      },
+      "HumanAdviceCase": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "Open",
+              "Assigned",
+              "AwaitingInput",
+              "AdviceDraft",
+              "Closed",
+              "Cancelled"
+            ]
+          },
+          "context_current": {
+            "type": "boolean"
+          },
+          "problem": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4000
+          },
+          "data": {
+            "$ref": "#/components/schemas/HumanAdvicePublicData"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "context_current",
+          "problem",
+          "data"
+        ]
+      },
+      "HumanAdviceList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/HumanAdviceCase"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "HumanAdviceEligiblePeers": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "membership_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "display_name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 120,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "membership_id",
+                "display_name"
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "HumanAdviceHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "saved_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "revision_id",
+                "revision_number",
+                "saved_at"
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "object_id",
+          "items",
+          "next_cursor"
+        ]
+      },
+      "HumanAdviceReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "Open",
+              "Assigned",
+              "AwaitingInput",
+              "AdviceDraft",
+              "Closed",
+              "Cancelled"
+            ]
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "operation_id",
+          "correlation_id",
+          "saved_at"
+        ]
+      },
+      "HumanAdviceDeclareScope": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "conflict": {
+                "enum": [
+                  "NONE",
+                  "DECLARED"
+                ]
+              },
+              "details": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              },
+              "scope_accepted": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "conflict",
+              "details",
+              "scope_accepted"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceAssign": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "declaration_revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "sharing_confirmed": {
+                "const": true
+              }
+            },
+            "required": [
+              "declaration_revision_id",
+              "sharing_confirmed"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceRequestInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "question"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceRespond": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "response": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "response"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceAdvise": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "advice": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 6000,
+                "pattern": "\\S"
+              },
+              "actions": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "\\S"
+                    },
+                    "responsibility": {
+                      "enum": [
+                        "REQUESTER",
+                        "ADVISER"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "description",
+                    "responsibility"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "advice",
+              "actions"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceClose": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "advice_revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "acknowledged_action_ids": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "closure_reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "advice_revision_id",
+              "acknowledged_action_ids",
+              "closure_reason"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "HumanAdviceCancel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "reason"
+            ]
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
         ]
       },
       "CreateReportingCalendarData": {

@@ -1,0 +1,443 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/AIAdoptionPlanStoredData",
+  "$defs": {
+    "AIAdoptionPlanPilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "success_measure": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "completed_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 5,
+          "items": {
+            "enum": [
+              "DEFINE_GOAL",
+              "SYNTHETIC_TRIAL",
+              "HUMAN_REVIEW",
+              "TRAIN_STAFF",
+              "REVIEW_OUTCOME"
+            ]
+          }
+        }
+      },
+      "required": [
+        "success_measure",
+        "completed_actions"
+      ]
+    },
+    "AIAdoptionPlanProcurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requirements": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "data_boundary": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "budget_notes": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "vendor_questions": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "requirements",
+        "data_boundary",
+        "budget_notes",
+        "vendor_questions"
+      ]
+    },
+    "AIAdoptionPlanStoredData": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "profile": {
+          "$ref": "#/$defs/AIEnablementProfile"
+        },
+        "solution_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "maxItems": 4
+        },
+        "learning_completed": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "maxItems": 100
+        },
+        "procurement": {
+          "$ref": "#/$defs/AIAdoptionPlanProcurement"
+        },
+        "pilot": {
+          "$ref": "#/$defs/AIAdoptionPlanPilot"
+        },
+        "planning": {
+          "$ref": "#/$defs/AIAdoptionPlanningInputs"
+        },
+        "content_versions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "catalog": {
+              "type": "string"
+            },
+            "solutions": {
+              "type": "string"
+            },
+            "practice": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "catalog",
+            "solutions"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "profile",
+        "solution_ids",
+        "learning_completed",
+        "procurement",
+        "pilot",
+        "content_versions"
+      ]
+    },
+    "AIAdoptionPlanningInputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cost_comparison": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AICostComparisonRequest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pilot_evaluation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AIPilotEvaluationRequest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "task_practice": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AITaskPracticeData"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cost_comparison",
+        "pilot_evaluation",
+        "task_practice"
+      ]
+    },
+    "AICostComparisonRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "minLength": 3,
+          "maxLength": 3
+        },
+        "period_months": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "offers": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/AICostOffer"
+          }
+        }
+      },
+      "required": [
+        "currency",
+        "period_months",
+        "offers"
+      ]
+    },
+    "AICostLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "maxLength": 64
+        },
+        "category": {
+          "enum": [
+            "SETUP",
+            "SUBSCRIPTION",
+            "USAGE",
+            "INTEGRATION",
+            "TRAINING",
+            "REVIEW",
+            "SUPPORT",
+            "EXIT",
+            "OTHER"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "quantity": {
+          "type": "string",
+          "maxLength": 39,
+          "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+        },
+        "unit_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 39,
+              "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cadence": {
+          "enum": [
+            "ONE_OFF",
+            "MONTHLY"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "label",
+        "quantity",
+        "unit_amount",
+        "cadence"
+      ]
+    },
+    "AICostOffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "maxLength": 64
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/AICostLine"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "lines"
+      ]
+    },
+    "AIEnablementProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sector": {
+          "enum": [
+            "GENERAL",
+            "EDUCATION",
+            "HEALTH",
+            "LIVELIHOODS",
+            "ENVIRONMENT"
+          ]
+        },
+        "team_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "data_readiness": {
+          "enum": [
+            "NONE",
+            "BASIC",
+            "STRUCTURED"
+          ]
+        },
+        "ai_experience": {
+          "enum": [
+            "NONE",
+            "EXPERIMENTING",
+            "REGULAR"
+          ]
+        },
+        "sensitive_data": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "sector",
+        "team_size",
+        "goal",
+        "data_readiness",
+        "ai_experience",
+        "sensitive_data"
+      ]
+    },
+    "AIPilotEvaluationRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "task_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "baseline": {
+          "$ref": "#/$defs/AIPilotSample"
+        },
+        "pilot": {
+          "$ref": "#/$defs/AIPilotSample"
+        },
+        "comparable": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "task_label",
+        "baseline",
+        "pilot",
+        "comparable",
+        "notes"
+      ]
+    },
+    "AIPilotSample": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "total_drafting_minutes": {
+          "type": "string",
+          "maxLength": 39,
+          "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+        },
+        "total_review_minutes": {
+          "type": "string",
+          "maxLength": 39,
+          "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+        },
+        "factual_corrections": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "sample_size",
+        "total_drafting_minutes",
+        "total_review_minutes",
+        "factual_corrections"
+      ]
+    },
+    "AITaskPracticeData": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "template_id": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "brief": {
+          "type": "string",
+          "maxLength": 2500
+        },
+        "draft": {
+          "type": "string",
+          "maxLength": 2500
+        },
+        "review_notes": {
+          "type": "string",
+          "maxLength": 2500
+        },
+        "checked_steps": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 64
+          }
+        }
+      },
+      "required": [
+        "template_id",
+        "brief",
+        "draft",
+        "review_notes",
+        "checked_steps"
+      ]
+    }
+  }
+}

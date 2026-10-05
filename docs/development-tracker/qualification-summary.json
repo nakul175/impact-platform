@@ -1,11 +1,12 @@
 {
-  "recorded_at": "2026-10-05T09:45:58.242453Z",
+  "recorded_at": "2026-10-05T19:16:34.963329+00:00",
   "candidate": "Working tree on integration/0.32-tola-ai-sprint; explicit scoped hashes, not a claim of hosted qualification for a later commit.",
   "scope": "Local development-support tracker only, separate from product requirements and application gate counts.",
   "unit": {
     "passed": 42,
     "failed": 0,
-    "errors": 0
+    "errors": 0,
+    "recorded_at": "2026-10-06T00:45:10.054972+05:30"
   },
   "browser": {
     "passed_groups": 15,
@@ -13,7 +14,8 @@
     "axe_scans": 2,
     "violations": 0,
     "incomplete": 0,
-    "uncaught_javascript_errors": 0
+    "uncaught_javascript_errors": 0,
+    "source_scope": "Retained actual0.32 tracker browser proof; reader/updater/UI/browser-checker bytes unchanged. New closing data/backlog wording has42 fresh unit checks and a verified localHTTP200, not a new browser run."
   },
   "source_fingerprints": [
     {
@@ -26,7 +28,7 @@
     },
     {
       "path": "tools/development-tracker/build_backlog.py",
-      "sha256": "0d42dd768e953ffdd6dee4470025eb32d92ac10d211e488a4b41e86bc1b251a6"
+      "sha256": "f76f5619146c192fc7f49c397f82eb7a07da8e84acd23e5f795ca3ea4983db3b"
     },
     {
       "path": "tools/development-tracker/test_tracker.py",
@@ -52,7 +54,7 @@
   "evidence_fingerprints": [
     {
       "path": "docs/development-tracker/tracker-unit-tests.xml",
-      "sha256": "f93dd1e7bb1f20cdfbfa8c41f80e75090d84105221dd1845f7f9f65b6eadaca5"
+      "sha256": "39706e17c777c3639d0578660e27524a33d51e67c6b2cb950bb6761f65338690"
     },
     {
       "path": "docs/development-tracker/browser-evidence.json",
@@ -76,6 +78,7 @@
     "Synthetic source-interception scenarios are marked explicitly in browser evidence.",
     "The server was restarted with strict Host validation before the final real browser run.",
     "Live state files change during the session; qualified behavior is the bounded reader/updater/dashboard rather than a frozen claim that later state is true.",
-    "A refreshed browser fixture now marks its synthetic unknown-ETA workstream as active; the first refresh failure is retained separately. The final fresh browser run passed all 15 groups."
+    "A refreshed browser fixture now marks its synthetic unknown-ETA workstream as active; the first refresh failure is retained separately. The final fresh browser run passed all 15 groups.",
+    "0.33 backlog wording records candidate implementation explicitly and retains source acceptance statuses; current_build names the saved0.32 checkpoint, tentative_sprint_build is derived from actual VERSION.json."
   ]
 }

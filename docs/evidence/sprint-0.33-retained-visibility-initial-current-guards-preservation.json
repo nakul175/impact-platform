@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-05T10:36:56.689722+00:00",
+  "scope": "Preserved95pass2native-onlyskip schema38 focused evidence before later39 qualification; overlap is not additional coverage",
+  "artifacts": [
+    {
+      "source": "sprint-0.33-retained-visibility-pglite-tests.xml",
+      "preserved": "sprint-0.33-retained-visibility-initial-current-guards-tests.xml",
+      "sha256": "ec0adead039519817fe87e4a20ebfab9f724a3a1241b11352e068032f99fdc78",
+      "identical_bytes": true
+    },
+    {
+      "source": "sprint-0.33-retained-visibility-pglite-applied-migrations.json",
+      "preserved": "sprint-0.33-retained-visibility-initial-current-guards-applied-migrations.json",
+      "sha256": "7b0405d03073976d99d5a762e810d8e81744a0d4d3528ef8be274824cc84899d",
+      "identical_bytes": true
+    },
+    {
+      "source": "sprint-0.33-retained-visibility-pglite-source-proof.json",
+      "preserved": "sprint-0.33-retained-visibility-initial-current-guards-source-proof.json",
+      "sha256": "d13011f4c84a5991e6d47ed0358b9c6e898069a7143d1d8d2f7a08e49f3eb0eb",
+      "identical_bytes": true
+    }
+  ]
+}

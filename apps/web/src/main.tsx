@@ -1050,8 +1050,16 @@ function Workspace({
           ) : route === "ai-enablement" ? (
             <AIEnablementPanel
               Dialog={Dialog}
-              key={tenant}
+              key={
+                tenant +
+                ":" +
+                session.identity_id +
+                ":" +
+                (access.principal_id || "")
+              }
               base={base}
+              principalId={access.principal_id || ""}
+              sessionIdentity={session.identity_id}
               request={api}
               explain={explain}
               capabilities={access.capabilities}

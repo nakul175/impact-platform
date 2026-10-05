@@ -1,0 +1,167 @@
+{
+  "scope": "Temporary synthetic component and request-function fixture only; not actual API, PostgreSQL, capability enforcement, audit, release or acceptance evidence",
+  "actual_api_qualification": "NOT_RUN",
+  "finished_at": "2026-10-05T11:22:04.938Z",
+  "results": [
+    {
+      "name": "Lazy options and separate export hint do not call the request fixture",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Bounded authorised history selection is deliberate and never saves the parent draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Explicit download freshly replays the exact operation and preserves UTF-8 content byte-for-byte",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost prepare response keeps one exact issuance command and parent mutual-write lock",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost download response retains the verified manifest and exact original command",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A tampered issuance receipt after response loss cannot replace the pinned copy",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A fresh server authority refusal clears issued metadata and uncertain intent",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Same-tenant exposed actor change discards a late response and cannot download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Local draft changes while a download reply is pending prevent latent download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Exact uncertain prepare retry remains possible after local draft edits",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Current saved-head change clears private copy and history without touching any draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    }
+  ],
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n\n    at file:///private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:36:784\n    at async check (file:///private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:23:33)\n    at async file:///private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:36:36"
+  ],
+  "blocked_external_requests": [],
+  "accessibility_scans": [
+    {
+      "width": 1440,
+      "violations": [
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ],
+          "description": "Ensure the order of headings is semantically correct",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "heading-order",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "moderate",
+                  "message": "Heading order invalid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "moderate",
+              "html": "<h3>Internal copy of your saved plan</h3>",
+              "target": [
+                "h3"
+              ],
+              "failureSummary": "Fix any of the following:\n  Heading order invalid"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "tags": [
+            "cat.aria",
+            "wcag2a",
+            "wcag412",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "RGAAv4",
+            "RGAA-7.1.1"
+          ],
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": {
+                    "role": null,
+                    "nodeName": "div",
+                    "messageKey": "noRoleSingular",
+                    "prohibited": [
+                      "aria-label"
+                    ]
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+                }
+              ],
+              "impact": "serious",
+              "html": "<div aria-label=\"Verified issued copy\">",
+              "target": [
+                "div[aria-label=\"Verified issued copy\"]"
+              ],
+              "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "source_hashes": {
+    "AIPlanPortability.tsx": "75422bdeceb97e4ef902b69c2e0c080fe35efa0bf5db3740f7c58aba5a04da92",
+    "export-adapter.ts": "9a42353a9269b06ec7e3b10057ae046d8bc8561c80c04375f09a869e9afe5b5d",
+    "ui-fixture.tsx": "bb7db6178b755b133b660c8b22795f68d8a153f0234552b4c7e556f64e9fe77f",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "4e92e66ae4ce88060b4adb1520f4a0be24e52387e7f76faa145f026098dca94e"
+  },
+  "current_source_hashes": {
+    "AIPlanPortability.tsx": "75422bdeceb97e4ef902b69c2e0c080fe35efa0bf5db3740f7c58aba5a04da92",
+    "export-adapter.ts": "9a42353a9269b06ec7e3b10057ae046d8bc8561c80c04375f09a869e9afe5b5d",
+    "ui-fixture.tsx": "bb7db6178b755b133b660c8b22795f68d8a153f0234552b4c7e556f64e9fe77f",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "4e92e66ae4ce88060b4adb1520f4a0be24e52387e7f76faa145f026098dca94e"
+  },
+  "sources_unchanged": true
+}

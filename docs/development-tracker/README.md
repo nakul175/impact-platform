@@ -64,7 +64,7 @@ States are `QUEUED`, `INSPECTING`, `BUILDING`, `REVIEWING`, `TESTING`, `BLOCKED`
 
 `backlog.json` groups every one of the 307 impact requirements and 40 nonprofit AI requirements exactly once into 14 editorial domains. Shared identity, governance, evidence, privacy, interoperability and operations appear once. Domain groups have different sizes and complexity; their counts are not effort weights, remaining person-hours or a completion percentage.
 
-The derived `docs/COMPLETION-LEDGER.json` now records build 0.32 and bounded supporting evidence; all 307 original requirement acceptance statuses remain unchanged. The proposed `docs/nonprofit-ai/v1.0/requirements.json` remains unchanged. Their build, assessment date, proposed status and source SHA-256 fingerprints are retained so the scope index cannot present development support as acceptance. Current summaries point to the 0.32 implementation appendage and the separate next-increment workstreams.
+The derived `docs/COMPLETION-LEDGER.json` now records build 0.32 and bounded supporting evidence; all 307 original requirement acceptance statuses remain unchanged. The proposed `docs/nonprofit-ai/v1.0/requirements.json` remains unchanged. Their build, assessment date, proposed status and source SHA-256 fingerprints are retained so the scope index cannot present development support as acceptance. Current summaries point to the 0.32 saved checkpoint and the 0.33 candidate appendage/workstreams. The saved commit is recorded; the tentative candidate build comes from VERSION.json. Integrated programme links and internal advice are labelled pending their application/native/browser gates, not accepted.
 
 Regenerate only this scope index after reviewing changed source records:
 

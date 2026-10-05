@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 5 October 2026 — active local candidate 0.33
+
+Build0.33/schema39/domain1.24/platform1.10 adds deliberate governed programme-result pins, existing-member consent/declaration/advice/closure with private brief, exact older-plan availability and current retained-label/list visibility. Frozen0038/39 and the unchanged registered capability profile are checksum recorded. Native1,929/PGlite1,865/unit1,102 and28 actual browser groups pass within their local scopes. An actual-worker diagnostic subsequently reproduced a private-advice receipt-key disclosure through both older SECURITY DEFINER cleanup overloads; this known residual blocks deployment and complete privacy qualification. Additive correction is being prepared with plan portability in0.34. Existing ordinary advice/API participant checks still pass; they did not cover this definer. [Record](../RELEASE-0.33-tola-ai-extension.md), [support appendage](../nonprofit-ai/v1.0/DEVELOPMENT-0.33.md). No merge/deployment or acceptance.
+
 ## 5 October 2026 — local Tola + AI checkpoint 0.32
 
 Build 0.32/schema 37/domain 1.23/platform 1.10: reviewed capability extension for existing organisations, exact archived learning/tool/practice guidance on newly saved AI-plan revisions, read-only revision history, checked GNU/BSD operations portability and a loopback live ETA dashboard. Final native regression passes 1,689 checks with restart, backup/restore and populated 33→37 upgrade; PGlite passes 1,633 and integrated browser qualification passes 13 groups. The original 307 core and 40 nonprofit feature registers keep their stated acceptance baseline. [Release](../RELEASE-0.32-tola-ai-sprint.md), [development/support map](../nonprofit-ai/v1.0/DEVELOPMENT-0.32.md). No merge, deployment, spending or external communication.

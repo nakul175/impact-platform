@@ -66,6 +66,8 @@ type Assessment = {
 };
 type Props = {
   base: string;
+  principalId: string;
+  sessionIdentity: string;
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (e: unknown) => string;
   capabilities: string[];
@@ -98,6 +100,8 @@ function Items({ items }: { items: string[] }) {
 
 export function AIEnablementPanel({
   base,
+  principalId,
+  sessionIdentity,
   request,
   explain,
   capabilities,
@@ -157,7 +161,7 @@ export function AIEnablementPanel({
       controller.abort();
       sendingAbort.current?.abort();
     };
-  }, [base, canRead]);
+  }, [base, canRead, principalId, sessionIdentity]);
   const update = <K extends keyof Profile>(key: K, value: Profile[K]) => {
     generation.current += 1;
     sendingAbort.current?.abort();
@@ -496,8 +500,10 @@ export function AIEnablementPanel({
               </section>
             )}
             <AIAdoptionWorkspace
-              key={base}
+              key={base + ":" + sessionIdentity + ":" + principalId}
               base={base}
+              principalId={principalId}
+              sessionIdentity={sessionIdentity}
               request={request}
               explain={explain}
               capabilities={capabilities}

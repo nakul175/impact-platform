@@ -1,0 +1,415 @@
+{
+  "recorded_at": "2026-10-05T11:25:39.764399+00:00",
+  "status": "UNRESOLVED_REGISTERED_0.33_RESIDUAL",
+  "scope": "Actual PostgreSQL17.11 SQL visibility diagnostic, not an API or actual privacy expiry workflow. Synthetic storage-valid Open case and expired create/action receipts; immutable/deferred/RLS guards enabled. Both worker calls used savepoint rollback, preserving rows. Unregistered additive0040 exclusion pending registration and integrated requalification. No private identifiers, DSNs, passwords or case text retained in this sanitized report.",
+  "database": "Owned disposable portability scratch, schema39 plus unrelated unregistered export draft661a0a18",
+  "original_migrations": {
+    "27": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "30": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "38": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "39": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+  },
+  "actual_six_login_topology": {
+    "impact_app_login": {
+      "current_user": "impact_app_login",
+      "assumes": "impact_app",
+      "denied": [
+        "impact_owner",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_identity_login": {
+      "current_user": "impact_identity_login",
+      "assumes": "impact_identity",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_worker",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_platform_login": {
+      "current_user": "impact_platform_login",
+      "assumes": "impact_platform",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer"
+      ]
+    },
+    "impact_worker_login": {
+      "current_user": "impact_worker_login",
+      "assumes": "impact_worker",
+      "denied": [
+        "impact_owner",
+        "impact_app",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_executor_login": {
+      "current_user": "impact_executor_login",
+      "assumes": "impact_app",
+      "denied": [
+        "impact_owner",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    },
+    "impact_migrator": {
+      "current_user": "impact_migrator",
+      "assumes": "impact_owner",
+      "denied": [
+        "impact_app",
+        "impact_worker",
+        "impact_identity",
+        "impact_sensitive",
+        "impact_privacy",
+        "impact_observer",
+        "impact_platform"
+      ]
+    }
+  },
+  "connection_method": "Actual impact_worker_login, SET LOCAL ROLE impact_worker, transaction-local current fixture tenant, no advice participant context",
+  "observations": [
+    {
+      "overload_arguments": 1,
+      "private_operation_keys_returned": 2,
+      "commands": [
+        "create_human_advice_case",
+        "human_advice_cancel"
+      ],
+      "literal_private_keys_omitted": true,
+      "rollback_after_probe": true
+    },
+    {
+      "overload_arguments": 2,
+      "private_operation_keys_returned": 2,
+      "commands": [
+        "create_human_advice_case",
+        "human_advice_cancel"
+      ],
+      "literal_private_keys_omitted": true,
+      "rollback_after_probe": true
+    }
+  ],
+  "remedy_candidate": "Exclude current ^(human_advice_|create_human_advice_case$) predicate and new issue_ai_plan_export from both existing key-returning purge definers in additive0040; retain these pointers until a reviewed private retention path. Preserve ordinary expired receipt purge.",
+  "actual_server_version": "17.11",
+  "actual_existing_definers": [
+    {
+      "signature": "impact.retention_purge_receipts(integer)",
+      "definition": "CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer)\n RETURNS TABLE(item text)\n LANGUAGE sql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'impact'\nAS $function$\nDELETE FROM impact.operation_receipt o USING (\n  SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt\n   WHERE tenant_id=impact.current_tenant() AND expires_at<=statement_timestamp()\n   ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d\n WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type\n   AND o.operation_id=d.operation_id\n RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text\n$function$\n",
+      "definition_sha256": "670ef604a8af5cd67086f3ec944e439ef1cc37331030f7c1b618d6e64f9784b1"
+    },
+    {
+      "signature": "impact.retention_purge_receipts(integer,integer)",
+      "definition": "CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer, keep_days integer)\n RETURNS TABLE(item text)\n LANGUAGE sql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'impact'\nAS $function$\nDELETE FROM impact.operation_receipt o USING (\n  SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt\n   WHERE tenant_id=impact.current_tenant()\n     AND expires_at<=statement_timestamp()-make_interval(days=>greatest(keep_days,7)-7)\n   ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d\n WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type\n   AND o.operation_id=d.operation_id\n RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text\n$function$\n",
+      "definition_sha256": "89b2c72b9485a1d671714d33b86ed736f77d942e9cd7157580ce94edc5b9b767"
+    }
+  ],
+  "all_immutable_rls_deferred_guards_enabled": true,
+  "prior_unregistered_scratch_diagnostic_preserved": true,
+  "registered_schema39_only_reproduction": {
+    "recorded_at": "2026-10-05T19:11:29.953632+00:00",
+    "schema_version": 39,
+    "unregistered_export_draft_applied": false,
+    "source_qualified_database_untouched": true,
+    "database": "New owned scratch applied fresh frozen1\u219239 plus approved disposable acceptance fixture",
+    "all_six_actual_login_topology": {
+      "impact_app_login": {
+        "current_user": "impact_app_login",
+        "assumes": "impact_app",
+        "denied": [
+          "impact_owner",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_identity_login": {
+        "current_user": "impact_identity_login",
+        "assumes": "impact_identity",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_worker",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_platform_login": {
+        "current_user": "impact_platform_login",
+        "assumes": "impact_platform",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer"
+        ]
+      },
+      "impact_worker_login": {
+        "current_user": "impact_worker_login",
+        "assumes": "impact_worker",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_executor_login": {
+        "current_user": "impact_executor_login",
+        "assumes": "impact_app",
+        "denied": [
+          "impact_owner",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_migrator": {
+        "current_user": "impact_migrator",
+        "assumes": "impact_owner",
+        "denied": [
+          "impact_app",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      }
+    },
+    "fixture": "Storage-valid synthetic Open case anchored to a readable plan and two expired create/action pointers, current independent fixture members. Receipt expiry/action pointer is a negative storage fixture, not a supported API retention/transition workflow.",
+    "guards_disabled_or_old_immutable_rows_changed": false,
+    "connection_method": "Actual impact_worker_login, SET LOCAL ROLE impact_worker; transaction-local current tenant; no participant context; both probes roll back to savepoint",
+    "observations": [
+      {
+        "overload_arguments": 1,
+        "private_keys_returned": 2,
+        "commands": [
+          "create_human_advice_case",
+          "human_advice_cancel"
+        ],
+        "literal_private_identifiers_omitted": true,
+        "rollback_after_probe": true
+      },
+      {
+        "overload_arguments": 2,
+        "private_keys_returned": 2,
+        "commands": [
+          "create_human_advice_case",
+          "human_advice_cancel"
+        ],
+        "literal_private_identifiers_omitted": true,
+        "rollback_after_probe": true
+      }
+    ],
+    "actual_server_version": "17.11",
+    "actual_applied_migrations": [
+      {
+        "version": 1,
+        "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7"
+      },
+      {
+        "version": 2,
+        "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0"
+      },
+      {
+        "version": 3,
+        "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148"
+      },
+      {
+        "version": 4,
+        "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4"
+      },
+      {
+        "version": 5,
+        "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c"
+      },
+      {
+        "version": 6,
+        "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce"
+      },
+      {
+        "version": 7,
+        "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0"
+      },
+      {
+        "version": 8,
+        "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950"
+      },
+      {
+        "version": 9,
+        "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f"
+      },
+      {
+        "version": 10,
+        "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7"
+      },
+      {
+        "version": 11,
+        "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683"
+      },
+      {
+        "version": 12,
+        "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596"
+      },
+      {
+        "version": 13,
+        "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+      },
+      {
+        "version": 14,
+        "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+      },
+      {
+        "version": 15,
+        "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42"
+      },
+      {
+        "version": 16,
+        "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc"
+      },
+      {
+        "version": 17,
+        "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b"
+      },
+      {
+        "version": 18,
+        "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7"
+      },
+      {
+        "version": 19,
+        "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161"
+      },
+      {
+        "version": 20,
+        "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31"
+      },
+      {
+        "version": 21,
+        "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2"
+      },
+      {
+        "version": 22,
+        "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac"
+      },
+      {
+        "version": 23,
+        "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc"
+      },
+      {
+        "version": 24,
+        "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f"
+      },
+      {
+        "version": 25,
+        "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047"
+      },
+      {
+        "version": 26,
+        "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310"
+      },
+      {
+        "version": 27,
+        "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d"
+      },
+      {
+        "version": 28,
+        "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c"
+      },
+      {
+        "version": 29,
+        "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41"
+      },
+      {
+        "version": 30,
+        "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12"
+      },
+      {
+        "version": 31,
+        "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac"
+      },
+      {
+        "version": 32,
+        "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b"
+      },
+      {
+        "version": 33,
+        "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33"
+      },
+      {
+        "version": 34,
+        "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415"
+      },
+      {
+        "version": 35,
+        "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5"
+      },
+      {
+        "version": 36,
+        "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+      },
+      {
+        "version": 37,
+        "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+      },
+      {
+        "version": 38,
+        "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+      },
+      {
+        "version": 39,
+        "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+      }
+    ],
+    "actual_existing_definer_source_hashes": [
+      {
+        "signature": "impact.retention_purge_receipts(integer)",
+        "definition_sha256": "670ef604a8af5cd67086f3ec944e439ef1cc37331030f7c1b618d6e64f9784b1"
+      },
+      {
+        "signature": "impact.retention_purge_receipts(integer,integer)",
+        "definition_sha256": "89b2c72b9485a1d671714d33b86ed736f77d942e9cd7157580ce94edc5b9b767"
+      }
+    ],
+    "existing_definer_hashes_equal_prior": true
+  },
+  "unresolved_registered033_residual_confirmed_without_export_draft": true,
+  "report_update_runner_sha256": "537f270049234cffb9d5b8dfbf12504d01faf1e101ff1af564abf238bc00f0c0"
+}

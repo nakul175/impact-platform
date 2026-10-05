@@ -1,5 +1,5 @@
 {
-  "version": "1.23.0",
+  "version": "1.24.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6185,6 +6185,235 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "set_ai_impact_reference",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_impact_reference_result",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference/result",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_human_advice_cases",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_human_advice_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_human_advice_eligible_peers",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/eligible-peers",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "OWNER",
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_human_advice_case",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_human_advice_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_human_advice_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions/{revision_id}",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "human_advice_declare_scope",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/declare-scope",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_assign",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/assign",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_request_input",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/request-input",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_respond",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/respond",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_advise",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/advise",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_close",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/close",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "human_advice_cancel",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/cancel",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
     },
     {
       "operation_id": "create_reporting_calendar",

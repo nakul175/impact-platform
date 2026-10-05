@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="23" skipped="4" tests="107" time="7.729" timestamp="2026-10-05T15:34:36.949397+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_impact_references_live" name="test_reference_pins_actual_official_snapshot_and_cannot_change_core_results" time="0.889"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;46e08eae-82bc-4c80-82f5-725c386557bb&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_reference_pins_actual_official_snapshot_and_cannot_change_core_results(live, governed):
+        programme, indicator, period, data = governed
+        first = save(live)
+        before = core_state(live)
+&gt;       linked = link(live, first, data)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"46e08eae-82bc-4c80-82f5-725c386557bb","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_retries_write_one_relationship_revision_receipt_audit_outbox_and_archive_binding" time="0.057"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;5fd9ebc8-fb9a-4aee-8e51-a82657073798&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_retries_write_one_relationship_revision_receipt_audit_outbox_and_archive_binding(live, governed):
+        first = save(live)
+        original = expect(live.request(guidance_path(live, first), actor="admin"), 200)
+        command = cmd(governed[3], first["revision_id"])
+&gt;       linked = expect(live.request(path(live, first), actor="admin", method="PUT", body=command), 200)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"5fd9ebc8-fb9a-4aee-8e51-a82657073798","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[programmes.read]" time="0.058"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;63290f0a-a772-4005-92ce-ac4d733c2e84&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'programmes.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"63290f0a-a772-4005-92ce-ac4d733c2e84","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[indicator-instances.read]" time="0.044"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;9e5c11a1-d27e-4408-93b7-61065d5e2167&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'indicator-instances.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"9e5c11a1-d27e-4408-93b7-61065d5e2167","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[indicator-definitions.read]" time="0.038"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;891b95c6-03e7-4bab-a2da-8bde4885e0a3&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'indicator-definitions.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"891b95c6-03e7-4bab-a2da-8bde4885e0a3","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[periods.read]" time="0.038"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;15d1e8cd-db30-4b07-abbb-c91d2dcf2da2&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'periods.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"15d1e8cd-db30-4b07-abbb-c91d2dcf2da2","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[reporting-calendars.read]" time="0.035"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;355cbfc6-683e-49fb-a08d-94469580872d&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'reporting-calendars.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"355cbfc6-683e-49fb-a08d-94469580872d","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[snapshots.read]" time="0.043"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;479eb47b-9a44-47d9-a353-5c08ef53ed1c&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'snapshots.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"479eb47b-9a44-47d9-a353-5c08ef53ed1c","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins[dashboards.read]" time="0.069"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;0da186a7-e400-4ea3-ad73-791e621221c7&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'dashboards.read'
+
+    @pytest.mark.parametrize(
+        "capability", [cap for _, _, cap in module.CORE_PINS] + ["snapshots.read", "dashboards.read"]
+    )
+    def test_current_core_read_revocation_hides_dedicated_evidence_and_generic_drafts_leak_no_pins(
+        live, governed, capability
+    ):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"0da186a7-e400-4ea3-ad73-791e621221c7","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_read_only_plan_actor_can_read_evidence_but_cannot_refresh_it" time="0.055"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;1d4beffa-4f0f-4af4-ac04-beb39ee7c4cb&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_read_only_plan_actor_can_read_evidence_but_cannot_refresh_it(live, governed):
+        first = save(live)
+&gt;       linked = link(live, first, governed[3])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:254: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"1d4beffa-4f0f-4af4-ac04-beb39ee7c4cb","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_ai_only_actor_cannot_probe_reference_presence_on_linked_or_unlinked_plan" time="0.080"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;de5ffd04-7525-4054-ac75-1bd8410c9ccd&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_ai_only_actor_cannot_probe_reference_presence_on_linked_or_unlinked_plan(live, governed):
+        unlinked, linked = save(live), save(live)
+&gt;       link(live, linked, governed[3])
+
+qualification/test_ai_impact_references_live.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"de5ffd04-7525-4054-ac75-1bd8410c9ccd","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_same_tenant_core_object_scope_does_not_follow_ai_plan_scope[programmes.read]" time="0.048"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;25348dee-2539-49f2-9720-de03ffacc218&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'programmes.read'
+
+    @pytest.mark.parametrize("capability", ["programmes.read", "dashboards.read"])
+    def test_same_tenant_core_object_scope_does_not_follow_ai_plan_scope(live, governed, capability):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"25348dee-2539-49f2-9720-de03ffacc218","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_same_tenant_core_object_scope_does_not_follow_ai_plan_scope[dashboards.read]" time="0.055"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;5209cc19-f886-42f4-a77a-68190bad0c0f&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+capability = 'dashboards.read'
+
+    @pytest.mark.parametrize("capability", ["programmes.read", "dashboards.read"])
+    def test_same_tenant_core_object_scope_does_not_follow_ai_plan_scope(live, governed, capability):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"5209cc19-f886-42f4-a77a-68190bad0c0f","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_unrelated_dashboard_scope_sees_identical_absent_hidden_and_corrupt_reference_errors" time="0.090"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;1cb8a8fb-ad3d-4aee-8265-7dfb18a4b685&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_unrelated_dashboard_scope_sees_identical_absent_hidden_and_corrupt_reference_errors(live, governed):
+        unlinked, linked = save(live), save(live)
+&gt;       link(live, linked, governed[3])
+
+qualification/test_ai_impact_references_live.py:294: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"1cb8a8fb-ad3d-4aee-8265-7dfb18a4b685","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_official_value_visibility_and_source_freshness_follow_current_core_permissions" time="0.047"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;fd9b9de1-c81c-4baf-ac99-c6ebd231e632&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_official_value_visibility_and_source_freshness_follow_current_core_permissions(live, governed):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:323: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"fd9b9de1-c81c-4baf-ac99-c6ebd231e632","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_generic_plan_edit_retains_private_reference_without_repointing_and_canonicalizes_lesson_alias" time="0.046"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;5b248e0b-f3e3-4671-8918-08ecbfd9090a&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_generic_plan_edit_retains_private_reference_without_repointing_and_canonicalizes_lesson_alias(
+        live, governed
+    ):
+        first = save(live)
+&gt;       linked = link(live, first, governed[3])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:338: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"5b248e0b-f3e3-4671-8918-08ecbfd9090a","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_clear_is_deliberate_revision_after_core_access_revocation_and_receipt_replay_stays_label_free" time="0.040"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;29dd9225-c716-4c1f-8ecc-e39b0bedd65d&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_clear_is_deliberate_revision_after_core_access_revocation_and_receipt_replay_stays_label_free(
+        live, governed
+    ):
+        first = save(live)
+        command = cmd(governed[3], first["revision_id"])
+&gt;       linked = expect(live.request(path(live, first), actor="admin", method="PUT", body=command), 200)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:372: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"29dd9225-c716-4c1f-8ecc-e39b0bedd65d","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_legacy_plan_relationship_edit_does_not_invent_guidance_archive" time="0.018"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;6ab6cc69-930d-45ab-bc5a-bf7731e26858&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_legacy_plan_relationship_edit_does_not_invent_guidance_archive(live, governed):
+        legacy, saved = legacy_revision(live)
+&gt;       linked = link(live, legacy, governed[3])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:384: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"6ab6cc69-930d-45ab-bc5a-bf7731e26858","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_atomic_failure_after_inherited_binding_restores_plan_head_events_receipt_and_binding" time="0.043"><failure message="AssertionError: assert None == 'SYNTHETIC_AFTER_BINDING_FAILURE'&#10; +  where None = DomainError('The resource is unavailable.').reason&#10; +    where DomainError('The resource is unavailable.') = &lt;ExceptionInfo DomainError('The resource is unavailable.') tblen=5&gt;.value">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107579eb0&gt;
+
+    def test_atomic_failure_after_inherited_binding_restores_plan_head_events_receipt_and_binding(
+        live, governed, monkeypatch
+    ):
+        first = save(live)
+        plans, db, identity = local_engine(live)
+        api = AIImpactReferences(plans.service)
+        command = cmd(governed[3], first["revision_id"])
+        before = counts(live)
+        original = module._inherit_guidance
+    
+        def fail(*args):
+            original(*args)
+            raise DomainError("RESOURCE_UNAVAILABLE", 503, reason="SYNTHETIC_AFTER_BINDING_FAILURE")
+    
+        monkeypatch.setattr(module, "_inherit_guidance", fail)
+        with pytest.raises(DomainError) as denied:
+            api.save(identity, live.fixture["tenant_a"], first["object_id"], command, str(uuid4()))
+&gt;       assert denied.value.reason == "SYNTHETIC_AFTER_BINDING_FAILURE"
+E       AssertionError: assert None == 'SYNTHETIC_AFTER_BINDING_FAILURE'
+E        +  where None = DomainError('The resource is unavailable.').reason
+E        +    where DomainError('The resource is unavailable.') = &lt;ExceptionInfo DomainError('The resource is unavailable.') tblen=5&gt;.value
+
+qualification/test_ai_impact_references_live.py:408: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_mismatched_programme_and_alien_tenant_are_refused_without_mutation" time="0.061"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;744947dd-877f-4751-99e0-50a5ae28e4e8&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_mismatched_programme_and_alien_tenant_are_refused_without_mutation(live, governed):
+        first = save(live)
+        data = {**governed[3], "programme_id": live.fixture["programme_a"]}
+        before = counts(live)
+&gt;       error = expect(
+            live.request(path(live, first), actor="admin", method="PUT", body=cmd(data, first["revision_id"])),
+            422,
+        )
+
+qualification/test_ai_impact_references_live.py:418: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 422
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"744947dd-877f-4751-99e0-50a5ae28e4e8","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_closed_link_command_cannot_submit_snapshot_pins_or_official_numbers" time="0.034" /><testcase classname="qualification.test_ai_impact_references_live" name="test_dedicated_reads_are_domain_read_only_and_foreign_revoked_wrong_kind_ids_are_opaque" time="0.041"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;403413a5-d726-4d97-8eda-94b71b53559e&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_dedicated_reads_are_domain_read_only_and_foreign_revoked_wrong_kind_ids_are_opaque(live, governed):
+        first = save(live)
+&gt;       link(live, first, governed[3])
+
+qualification/test_ai_impact_references_live.py:448: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"403413a5-d726-4d97-8eda-94b71b53559e","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_stale_and_changed_operation_ids_cannot_refresh_a_pinned_snapshot" time="0.038"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;09d7bcde-2ca1-4203-9d6b-9e648a788cff&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+governed = ({'object_id': 'cfcbf1b1-f1de-4f85-9653-e220bebbbeea', 'tenant_id': 'ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'revision_...d3-b904-ed90e67406f5', 'interpretation_note': 'Synthetic programme evidence for review; no causal attribution to AI.'})
+
+    def test_stale_and_changed_operation_ids_cannot_refresh_a_pinned_snapshot(live, governed):
+        first = save(live)
+        command = cmd(governed[3], first["revision_id"])
+&gt;       linked = expect(live.request(path(live, first), actor="admin", method="PUT", body=command), 200)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:463: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"09d7bcde-2ca1-4203-9d6b-9e648a788cff","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_pinned_official_survives_restatement_and_provisional_changes_until_explicit_refresh" time="0.505"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;53b24adb-2964-4519-a30b-08645babe5ae&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108e616a0&gt;
+
+    def test_pinned_official_survives_restatement_and_provisional_changes_until_explicit_refresh(live):
+        programme, indicator, period, keys = measure(live, keys=2)
+        sources = [
+            ratio_source(live, indicator, keys[0], "50", "100"),
+            ratio_source(live, indicator, keys[1], "1", "10"),
+        ]
+        calculate(live, indicator, period)
+        first = save(live)
+&gt;       open_link = link(live, first, inputs(programme, indicator, period))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_impact_references_live.py:486: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_impact_references_live.py:43: in link
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"53b24adb-2964-4519-a30b-08645babe5ae","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_ai_impact_references_live" name="test_native_competing_exact_links_create_one_plan_revision_and_guidance_binding" time="0.000"><skipped type="pytest.skip" message="Real competing transaction qualification requires native PostgreSQL">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_ai_impact_references_live.py:538: Real competing transaction qualification requires native PostgreSQL</skipped></testcase><testcase classname="qualification.test_ai_adoption_plans_live" name="test_durable_adoption_plan_save_replay_revision_and_atomic_audit" time="0.158" /><testcase classname="qualification.test_ai_adoption_plans_live" name="test_adoption_plan_readonly_tenant_revoked_wrong_kind_and_closed_data" time="0.463" /><testcase classname="qualification.test_ai_adoption_plans_live" name="test_adoption_list_pagination_and_cursor_tenant_principal_binding" time="0.561" /><testcase classname="qualification.test_ai_adoption_plans_live" name="test_scoped_adoption_reads_filter_list_and_cursors_follow_current_visibility" time="0.118" /><testcase classname="qualification.test_ai_adoption_plans_live" name="test_adoption_exact_replay_requires_current_management_authority" time="0.066" /><testcase classname="qualification.test_ai_adoption_plans_live" name="test_native_adoption_revisions_are_fenced_immutable_and_hidden_from_platform" time="0.000"><skipped type="pytest.skip" message="Real login-role boundaries require native PostgreSQL">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_ai_adoption_plans_live.py:211: Real login-role boundaries require native PostgreSQL</skipped></testcase><testcase classname="qualification.test_ai_planning_live" name="test_cost_api_preserves_unknown_exit_cost_even_with_zero_quantity_and_does_not_pick_a_winner" time="0.017" /><testcase classname="qualification.test_ai_planning_live" name="test_cost_api_uses_exact_decimal_products_and_preserves_equal_total_ties" time="0.016" /><testcase classname="qualification.test_ai_planning_live" name="test_pilot_api_retains_source_counts_and_marks_comparability_without_official_outcomes[normalized-review-time]" time="0.018" /><testcase classname="qualification.test_ai_planning_live" name="test_pilot_api_retains_source_counts_and_marks_comparability_without_official_outcomes[zero-baseline]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_pilot_api_retains_source_counts_and_marks_comparability_without_official_outcomes[incomparable]" time="0.016" /><testcase classname="qualification.test_ai_planning_live" name="test_pilot_api_retains_source_counts_and_marks_comparability_without_official_outcomes[review-effort-worsens-time]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_task_templates_api_returns_four_versioned_manual_exercises_without_execution_or_approval" time="0.018" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[other-tenant-cost-comparison]" time="0.013" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[other-tenant-pilot-evaluation]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[other-tenant-task-templates]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[revoked-member-cost-comparison]" time="0.020" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[revoked-member-pilot-evaluation]" time="0.014" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[revoked-member-task-templates]" time="0.011" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[unsigned-cost-comparison]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[unsigned-pilot-evaluation]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[unsigned-task-templates]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[no-read-capability-cost-comparison]" time="0.088" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[no-read-capability-pilot-evaluation]" time="0.017" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_routes_deny_tenant_selector_revoked_missing_identity_and_missing_capability[no-read-capability-task-templates]" time="0.016" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_tools_recheck_current_read_authority_for_every_request[cost-comparison]" time="0.043" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_tools_recheck_current_read_authority_for_every_request[pilot-evaluation]" time="0.052" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_tools_recheck_current_read_authority_for_every_request[task-templates]" time="0.047" /><testcase classname="qualification.test_ai_planning_live" name="test_read_only_actor_can_compute_and_practise_but_cannot_save_or_update_inputs" time="0.115" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[cost-unknown-root]" time="0.009" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[unlike-offer-currency]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[float-money]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[bool-months]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[exponent-money]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[empty-offer-name]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[pilot-result-forgery]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[sample-unknown-key]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[bool-sample-size]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[negative-numeric-time]" time="0.005" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[string-comparability]" time="0.009" /><testcase classname="qualification.test_ai_planning_live" name="test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work[empty-task-label]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_duplicate_json_keys_are_refused_before_planning_or_persistence[duplicate-currency]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_duplicate_json_keys_are_refused_before_planning_or_persistence[duplicate-nested-amount]" time="0.005" /><testcase classname="qualification.test_ai_planning_live" name="test_duplicate_json_keys_are_refused_before_planning_or_persistence[duplicate-nested-review]" time="0.005" /><testcase classname="qualification.test_ai_planning_live" name="test_authorized_planning_never_inspects_or_calls_an_enabled_provider" time="0.021" /><testcase classname="qualification.test_ai_planning_live" name="test_planning_snapshot_save_reload_exact_retry_changed_input_and_stale_edit_are_atomic" time="0.207" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[planning-version-forgery]" time="0.007" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[line-decision-forgery]" time="0.008" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[sample-result-forgery]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[task-approver-forgery]" time="0.006" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[unknown-practice-id]" time="0.015" /><testcase classname="qualification.test_ai_planning_live" name="test_invalid_saved_planning_inputs_leave_no_head_revision_audit_outbox_or_receipt[another-template-check]" time="0.019" /><testcase classname="qualification.test_ai_planning_live" name="test_duplicate_nested_json_key_in_a_saved_planning_input_is_not_silently_overwritten" time="0.011" /><testcase classname="qualification.test_ai_planning_live" name="test_original_six_field_plan_stays_readable_without_backfilled_planning_input" time="0.063" /><testcase classname="qualification.test_ai_planning_live" name="test_older_six_field_update_preserves_planning_and_explicit_nulls_clear_only_the_new_revision" time="0.269" /><testcase classname="qualification.test_ai_content_archives_live" name="test_new_archive_is_exact_versioned_closed_and_contains_learning_without_private_plan_text" time="0.143" /><testcase classname="qualification.test_ai_content_archives_live" name="test_save_retry_and_update_bind_exact_revisions_with_atomic_audit_outbox_receipts" time="0.176" /><testcase classname="qualification.test_ai_content_archives_live" name="test_real_prior_words_remain_immutable_when_current_content_changes_in_a_new_save" time="0.147" /><testcase classname="qualification.test_ai_content_archives_live" name="test_changed_words_without_a_new_edition_are_refused_with_atomic_rollback" time="0.115" /><testcase classname="qualification.test_ai_content_archives_live" name="test_applied_migration_ledger_is_recorded_as_actual_database_evidence" time="0.009" /><testcase classname="qualification.test_ai_content_archives_live" name="test_history_lists_actual_available_revisions_in_order_with_plan_principal_bound_cursors" time="0.263" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[guidance-other_tenant]" time="0.054" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[guidance-revoked]" time="0.050" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[guidance-partner]" time="0.048" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[guidance-None]" time="0.042" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[history-other_tenant]" time="0.054" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[history-revoked]" time="0.039" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[history-partner]" time="0.100" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_authority_hides_guidance_and_history_from_unauthorized_callers[history-None]" time="0.041" /><testcase classname="qualification.test_ai_content_archives_live" name="test_read_only_can_read_both_routes_but_revocation_is_rechecked_and_history_does_not_export" time="0.109" /><testcase classname="qualification.test_ai_content_archives_live" name="test_current_object_scope_fences_guidance_and_history_even_for_a_valid_tenant_reader" time="0.158" /><testcase classname="qualification.test_ai_content_archives_live" name="test_unrelated_revision_wrong_kind_and_missing_revision_are_the_same_opaque_refusal" time="0.093" /><testcase classname="qualification.test_ai_content_archives_live" name="test_pre_archive_revision_is_unavailable_without_inventing_wording_or_backfilling" time="0.032" /><testcase classname="qualification.test_ai_content_archives_live" name="test_legacy_omission_keeps_unavailable_practice_edition_and_new_archive_is_explicitly_partial" time="0.107" /><testcase classname="qualification.test_ai_content_archives_live" name="test_failure_after_archive_and_binding_rolls_back_head_revision_events_and_receipt[False]" time="0.034" /><testcase classname="qualification.test_ai_content_archives_live" name="test_failure_after_archive_and_binding_rolls_back_head_revision_events_and_receipt[True]" time="0.081" /><testcase classname="qualification.test_ai_content_archives_live" name="test_history_query_bound_refuses_without_new_domain_work[0]" time="0.044" /><testcase classname="qualification.test_ai_content_archives_live" name="test_history_query_bound_refuses_without_new_domain_work[101]" time="0.043" /><testcase classname="qualification.test_ai_content_archives_live" name="test_history_query_bound_refuses_without_new_domain_work[invalid]" time="0.044" /><testcase classname="qualification.test_ai_content_archives_live" name="test_archive_sql_guards_are_insert_only_and_tenant_foreign_keys_are_enforced" time="0.064" /><testcase classname="qualification.test_ai_content_archives_live" name="test_native_archive_fences_and_role_grants_do_not_broaden_private_plan_access" time="0.000"><skipped type="pytest.skip" message="Provisioned login-role boundaries require native PostgreSQL">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_ai_content_archives_live.py:519: Provisioned login-role boundaries require native PostgreSQL</skipped></testcase><testcase classname="qualification.test_ai_content_archives_live" name="test_native_competing_exact_saves_create_one_revision_binding_and_receipt" time="0.000"><skipped type="pytest.skip" message="Parallel transaction contention requires native PostgreSQL, not serialized PGlite">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_ai_content_archives_live.py:602: Parallel transaction contention requires native PostgreSQL, not serialized PGlite</skipped></testcase></testsuite></testsuites>

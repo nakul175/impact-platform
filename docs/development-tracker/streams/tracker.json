@@ -5,7 +5,7 @@
   "owner": "/root/sprint_tracker",
   "status": "COMPLETE",
   "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
-  "next_step": "The integrator maintains live rollups; this agent has delivered Mac portability and 0.32 browser checks, and is handing off the isolated 0.33 programme-evidence UI while independently reviewing host-kernel environment qualification.",
+  "next_step": "This agent delivered Mac portability, final 0.32 browser checks and the integrated 0.33 UI with 24 synthetic fixture groups plus a fresh 28-group actual Chrome/API/PGlite run on the latest source. UI source is held during full native qualification; preparing a JSON-only saved-revision internal-download component and tests outside the repository until the next checkpoint.",
   "eta": {
     "earliest": "2026-10-05T08:52:49.552668Z",
     "latest": "2026-10-05T08:52:49.552668Z",
@@ -32,10 +32,17 @@
       "result": "15 GROUPS PASSED",
       "scope": "Final hardened loopback server: 15 groups, real wrong-Host refusal, actual desktop/mobile and explicitly synthetic source cases; two axe scans with zero violations/incomplete, no uncaught JS errors.",
       "recorded_at": "2026-10-05T08:50:43.663Z"
+    },
+    {
+      "title": "0.33 combined actual browser handoff",
+      "path": "docs/evidence/sprint-0.33-browser-tests.json",
+      "result": "28 GROUPS PASSED",
+      "scope": "Actual local Chrome/API/PGlite with existing distinct-authority synthetic members: deliberate pinned evidence, exact lost-response retries/current head recovery, internal advice consent/history/closure/privacy; nine component axe scans zero findings, all nine captures visually reviewed, 50 source fingerprints including the latest generic-list fix and served build unchanged. Earlier successful exact-source bundle retained; native/hosted/acceptance claims remain separate.",
+      "recorded_at": "2026-10-05T11:13:06.501Z"
     }
   ],
   "blockers": [],
-  "updated_at": "2026-10-05T09:36:37.734633Z",
+  "updated_at": "2026-10-05T11:16:09.615075Z",
   "history": [
     {
       "at": "2026-10-05T08:37:23Z",
@@ -83,6 +90,39 @@
     },
     {
       "at": "2026-10-05T09:36:37.734633Z",
+      "status": "COMPLETE",
+      "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
+      "eta": {
+        "earliest": "2026-10-05T08:52:49.552668Z",
+        "latest": "2026-10-05T08:52:49.552668Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+      }
+    },
+    {
+      "at": "2026-10-05T10:12:32.501996Z",
+      "status": "COMPLETE",
+      "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
+      "eta": {
+        "earliest": "2026-10-05T08:52:49.552668Z",
+        "latest": "2026-10-05T08:52:49.552668Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+      }
+    },
+    {
+      "at": "2026-10-05T11:00:35.484173Z",
+      "status": "COMPLETE",
+      "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
+      "eta": {
+        "earliest": "2026-10-05T08:52:49.552668Z",
+        "latest": "2026-10-05T08:52:49.552668Z",
+        "confidence": "HIGH",
+        "basis": "Bounded tracker complete after final actual qualification on the restarted server."
+      }
+    },
+    {
+      "at": "2026-10-05T11:16:09.615075Z",
       "status": "COMPLETE",
       "summary": "The hardened live tracker is locally complete: 42 offline checks and 15 browser groups passed. Elapsed time preserves both zero and nonzero evidenced increment counts; no time-based progress is inferred.",
       "eta": {

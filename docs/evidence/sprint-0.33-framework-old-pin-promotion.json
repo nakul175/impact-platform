@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-10-05T10:48:08.285912+00:00",
+  "qualified_path": "qualification/prepared_framework_old_pin_visibility.py",
+  "collected_path": "qualification/test_framework_old_pin_visibility.py",
+  "qualified_sha256": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+  "collected_sha256": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+  "identical_bytes": true,
+  "qualification": "docs/evidence/sprint-0.33-retained-visibility-pglite-source-proof.json",
+  "scope": "Byte-identical promotion after final schema39 strict98-case run passed96 with2 native-only skips; no acceptance claim"
+}

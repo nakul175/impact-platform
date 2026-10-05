@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="6" tests="123" time="4.278" timestamp="2026-10-05T15:50:57.142586+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_human_advice_unit" name="test_problem_is_not_in_any_shared_immutable_case_payload" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_public_payload_allowlist_omits_private_proofs_without_mutating_stored_consent" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_case_result_protects_server_proofs_and_preserves_private_brief_visibility[requester-Open]" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_case_result_protects_server_proofs_and_preserves_private_brief_visibility[adviser-Open]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_case_result_protects_server_proofs_and_preserves_private_brief_visibility[requester-Assigned]" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_case_result_protects_server_proofs_and_preserves_private_brief_visibility[adviser-Assigned]" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_case_result_protects_server_proofs_and_preserves_private_brief_visibility[requester-Closed]" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_public_projection_keeps_private_brief_integrity_validation_before_disclosure" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-recipient_ids]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-programme_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-participant_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-attachment_revision]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-provider]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-fee]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-booking]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-approval]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-requester_principal_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-authenticated_at]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[False-waive_conflict]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-recipient_ids]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-programme_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-participant_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-attachment_revision]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-provider]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-fee]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-booking]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-approval]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-requester_principal_id]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-authenticated_at]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_external_references_server_fields_and_commitments_are_rejected[True-waive_conflict]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;0]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;1]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;2]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;3]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;4]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;5]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_invitation_consent_material_limit_and_scope_selectors_fail_closed[&lt;lambda&gt;6]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_same_natural_person_under_another_principal_cannot_be_the_adviser" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_full_accountable_case_closes_only_with_exact_advice_and_all_actions_acknowledged" time="0.001" /><testcase classname="qualification.test_human_advice_unit" name="test_declared_conflict_or_unaccepted_scope_is_recorded_but_cannot_be_assigned[DECLARED-False]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_declared_conflict_or_unaccepted_scope_is_recorded_but_cannot_be_assigned[NONE-False]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_conflict_cannot_be_recorded_as_accepted_scope" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_old_declaration_revision_cannot_authorise_a_new_assignment" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_closure_cannot_invent_or_omit_action_acknowledgement[missing]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_closure_cannot_invent_or_omit_action_acknowledgement[unknown]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_closure_cannot_invent_or_omit_action_acknowledgement[duplicate]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_new_advice_or_request_for_input_invalidates_the_old_closure_target" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_requester_and_adviser_responsibilities_do_not_overlap[declare-scope-requester-data0]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_requester_and_adviser_responsibilities_do_not_overlap[request-input-requester-data1]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_requester_and_adviser_responsibilities_do_not_overlap[advise-requester-data2]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_requester_and_adviser_responsibilities_do_not_overlap[cancel-adviser-data3]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_requester_and_adviser_responsibilities_do_not_overlap[respond-adviser-data4]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[declare-scope-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[declare-scope-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[assign-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[assign-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[request-input-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[request-input-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[respond-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[respond-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[advise-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[advise-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[close-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[close-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[cancel-Closed]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_terminal_states_never_accept_another_material_transition[cancel-Cancelled]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_notes_are_bounded_without_losing_cancellation_recovery" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_nonparticipant_and_database_metadata_canonicalisation_fail_closed" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_generated_routes_reuse_scoped_ai_read_and_manage_without_provider_permission" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[read_revoked-requester]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[read_revoked-adviser]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[manage_revoked-requester]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[manage_revoked-adviser]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[natural_person_changed-requester]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[natural_person_changed-adviser]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[consent_cutoff_changed-requester]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_material_decisions_recheck_both_participants_current_authority_and_consent[consent_cutoff_changed-adviser]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_peer_lookup_rechecks_every_directory_and_plan_gate_without_roster_disclosure[directory]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_peer_lookup_rechecks_every_directory_and_plan_gate_without_roster_disclosure[tenant_scope]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_peer_lookup_rechecks_every_directory_and_plan_gate_without_roster_disclosure[ai_manage]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_peer_lookup_rechecks_every_directory_and_plan_gate_without_roster_disclosure[ai_read]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_peer_lookup_rechecks_every_directory_and_plan_gate_without_roster_disclosure[current_role]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_bounded_cursor_keys_refuse_wrong_shapes_and_nonpositive_revision_numbers[cursor_key0]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_bounded_cursor_keys_refuse_wrong_shapes_and_nonpositive_revision_numbers[uuid]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_bounded_cursor_keys_refuse_wrong_shapes_and_nonpositive_revision_numbers[cursor_key2]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_bounded_cursor_keys_refuse_wrong_shapes_and_nonpositive_revision_numbers[cursor_key3]" time="0.000" /><testcase classname="qualification.test_human_advice_unit" name="test_bounded_cursor_keys_refuse_wrong_shapes_and_nonpositive_revision_numbers[cursor_key4]" time="0.000" /><testcase classname="qualification.test_human_advice_live" name="test_real_case_requires_exact_assignment_and_requester_closure_then_ends_adviser_access" time="0.183"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;543afd03-b25f-413d-86c7-a01198aa0f30&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 201&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_real_case_requires_exact_assignment_and_requester_closure_then_ends_adviser_access(live):
+        opened, request, _ = open_case(live)
+        path = live.path(ROUTE, opened["object_id"])
+&gt;       assert opened == expect(live.request(live.path(ROUTE), actor="admin", method="POST", body=request), 201)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 201
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"543afd03-b25f-413d-86c7-a01198aa0f30","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 201
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_current_historical_and_list_responses_omit_identity_proofs_but_store_exact_consent" time="0.169"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;40aa8307-89ce-4159-9f1d-c3caebf62565&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_current_historical_and_list_responses_omit_identity_proofs_but_store_exact_consent(live):
+        opened, request, _ = open_case(live)
+&gt;       active = assign(live, opened)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:207: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:91: in assign
+    declared, _ = declare(live, case)
+                  ^^^^^^^^^^^^^^^^^^^
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"40aa8307-89ce-4159-9f1d-c3caebf62565","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_nonparticipants_cannot_read_cases_history_receipts_or_list_entries[author]" time="0.224" /><testcase classname="qualification.test_human_advice_live" name="test_nonparticipants_cannot_read_cases_history_receipts_or_list_entries[partner]" time="0.206" /><testcase classname="qualification.test_human_advice_live" name="test_an_adviser_declared_conflict_is_preserved_without_sharing_the_private_brief" time="0.095"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;811185a1-1d02-451a-8a21-5f8c439eaac0&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_an_adviser_declared_conflict_is_preserved_without_sharing_the_private_brief(live):
+        case, request, _ = open_case(live)
+&gt;       declared, _ = declare(live, case, "DECLARED", False)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:264: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"811185a1-1d02-451a-8a21-5f8c439eaac0","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_closed_bodies_never_disclose_records_or_create_financial_external_actions[unknown_recipient]" time="0.083" /><testcase classname="qualification.test_human_advice_live" name="test_closed_bodies_never_disclose_records_or_create_financial_external_actions[record_reference]" time="0.082" /><testcase classname="qualification.test_human_advice_live" name="test_closed_bodies_never_disclose_records_or_create_financial_external_actions[server_actor]" time="0.085" /><testcase classname="qualification.test_human_advice_live" name="test_closed_bodies_never_disclose_records_or_create_financial_external_actions[false_consent]" time="0.085" /><testcase classname="qualification.test_human_advice_live" name="test_closed_bodies_never_disclose_records_or_create_financial_external_actions[duplicate_json]" time="0.089" /><testcase classname="qualification.test_human_advice_live" name="test_same_natural_person_or_missing_named_member_cannot_be_the_adviser" time="0.111" /><testcase classname="qualification.test_human_advice_live" name="test_distinct_accounts_for_the_same_natural_person_still_fail_independence" time="0.042" /><testcase classname="qualification.test_human_advice_live" name="test_renewed_adviser_authority_invalidates_an_old_scope_consent" time="0.100"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;73b5e475-83c9-44f9-9e0f-748a9516edc0&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_renewed_adviser_authority_invalidates_an_old_scope_consent(live):
+        opened, _, _ = open_case(live)
+&gt;       declared, _ = declare(live, opened)
+                      ^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:339: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"73b5e475-83c9-44f9-9e0f-748a9516edc0","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_tenant_selectors_never_make_a_case_or_anchor_visible_elsewhere" time="0.198"><failure message="AssertionError: {&quot;code&quot;:&quot;INVALID_CURSOR&quot;,&quot;message&quot;:&quot;The request could not be completed.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;def9e7cf-3db2-411a-88e7-2d4739c36fe9&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 400 == 404&#10; +  where 400 = &lt;Response [400 Bad Request]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_tenant_selectors_never_make_a_case_or_anchor_visible_elsewhere(live):
+        case, _, anchor = open_case(live)
+        other = live.fixture["tenant_b"]
+        for suffix in ("", "/revisions", "/revisions/" + case["revision_id"]):
+            expect(live.request(live.path(ROUTE, case["object_id"], other) + suffix, actor="other_tenant"), 404)
+&gt;       expect(
+            live.request(live.path(ROUTE, tenant=other), actor="other_tenant", params={"cursor": str(uuid4())}),
+            404,
+        )
+
+qualification/test_human_advice_live.py:375: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [400 Bad Request]&gt;, status = 404
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"INVALID_CURSOR","message":"The request could not be completed.","retryable":false,"correlation_id":"def9e7cf-3db2-411a-88e7-2d4739c36fe9","permitted_actions":[],"field_errors":[]}
+E       assert 400 == 404
+E        +  where 400 = &lt;Response [400 Bad Request]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_lost_current_authority_prevents_receipt_replay_and_assignment[ai.enablement.read]" time="0.115"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;02059c45-6df4-4f84-8e36-622477e131ba&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+capability = 'ai.enablement.read'
+
+    @pytest.mark.parametrize("capability", ["ai.enablement.read", "ai.enablement.manage"])
+    def test_lost_current_authority_prevents_receipt_replay_and_assignment(live, capability):
+        case, _, _ = open_case(live)
+&gt;       declared, body = declare(live, case)
+                         ^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:392: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"02059c45-6df4-4f84-8e36-622477e131ba","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_lost_current_authority_prevents_receipt_replay_and_assignment[ai.enablement.manage]" time="0.106"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;5dd1e080-909b-405d-9d6e-2081e234331e&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+capability = 'ai.enablement.manage'
+
+    @pytest.mark.parametrize("capability", ["ai.enablement.read", "ai.enablement.manage"])
+    def test_lost_current_authority_prevents_receipt_replay_and_assignment(live, capability):
+        case, _, _ = open_case(live)
+&gt;       declared, body = declare(live, case)
+                         ^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:392: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"5dd1e080-909b-405d-9d6e-2081e234331e","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_expired_adviser_is_hidden_and_cannot_authorise_assignment_but_requester_can_cancel" time="0.118"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;6692133d-aae7-4032-b651-5c59517b1b8a&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_expired_adviser_is_hidden_and_cannot_authorise_assignment_but_requester_can_cancel(live):
+        case, _, _ = open_case(live)
+&gt;       declared, body = declare(live, case)
+                         ^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:409: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"6692133d-aae7-4032-b651-5c59517b1b8a","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_plan_edit_makes_the_old_case_read_only_until_requester_cancels" time="0.117"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;35217b7d-41f5-40bd-b716-bb1c8ab1c5bb&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_plan_edit_makes_the_old_case_read_only_until_requester_cancels(live):
+        opened, _, anchor = open_case(live)
+&gt;       active = assign(live, opened)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:426: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:91: in assign
+    declared, _ = declare(live, case)
+                  ^^^^^^^^^^^^^^^^^^^
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"35217b7d-41f5-40bd-b716-bb1c8ab1c5bb","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_exact_declaration_advice_and_complete_action_ids_are_required" time="0.135"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;6cac1d3b-9f14-472f-ab63-74253210c8f4&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_exact_declaration_advice_and_complete_action_ids_are_required(live):
+        opened, _, _ = open_case(live)
+&gt;       declared, _ = declare(live, opened)
+                      ^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:454: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_human_advice_live.py:77: in declare
+    return act(
+qualification/test_human_advice_live.py:65: in act
+    receipt = expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"6cac1d3b-9f14-472f-ab63-74253210c8f4","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_participant_context_clears_on_transaction_end_and_missing_reused_context_hides_rows[False]" time="0.131" /><testcase classname="qualification.test_human_advice_live" name="test_participant_context_clears_on_transaction_end_and_missing_reused_context_hides_rows[True]" time="0.000"><skipped type="pytest.skip" message="Provisioned native app login required; PGlite evidence is separately scoped">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:499: Provisioned native app login required; PGlite evidence is separately scoped</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_direct_runtime_rows_and_private_brief_follow_the_case_participant_boundary[admin]" time="0.226" /><testcase classname="qualification.test_human_advice_live" name="test_direct_runtime_rows_and_private_brief_follow_the_case_participant_boundary[reviewer]" time="0.233" /><testcase classname="qualification.test_human_advice_live" name="test_direct_runtime_rows_and_private_brief_follow_the_case_participant_boundary[author]" time="0.157" /><testcase classname="qualification.test_human_advice_live" name="test_case_cursor_cannot_be_forged_or_reused_by_another_actor_or_route" time="0.289"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;f872f8ad-3899-4ab9-be03-6bd882862b6f&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_case_cursor_cannot_be_forged_or_reused_by_another_actor_or_route(live):
+        first, _, _ = open_case(live)
+        open_case(live)
+&gt;       page = expect(live.request(live.path(ROUTE), actor="admin", params={"limit": 1}), 200)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:597: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"f872f8ad-3899-4ab9-be03-6bd882862b6f","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_eligible_peers_are_minimal_current_colleagues_with_separate_directory_authority" time="0.087" /><testcase classname="qualification.test_human_advice_live" name="test_colleague_selector_rechecks_candidate_scope_and_current_membership_each_page[read]" time="0.041" /><testcase classname="qualification.test_human_advice_live" name="test_colleague_selector_rechecks_candidate_scope_and_current_membership_each_page[manage]" time="0.041" /><testcase classname="qualification.test_human_advice_live" name="test_colleague_selector_rechecks_candidate_scope_and_current_membership_each_page[expired]" time="0.043" /><testcase classname="qualification.test_human_advice_live" name="test_peer_cursors_are_signed_principal_route_anchor_expiry_and_visibility_bound" time="0.166"><failure message="AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;22555d13-968b-42d6-9642-1b0ca7a57375&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 400&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_peer_cursors_are_signed_principal_route_anchor_expiry_and_visibility_bound(live):
+        anchor = save_plan(live)
+        other = save_plan(live)
+        path = live.path(ROUTE) + "/eligible-peers"
+        query = {"context_plan_id": anchor["object_id"], "limit": 1}
+        page = expect(live.request(path, actor="admin", params=query), 200)
+        cursor = page["next_cursor"]
+        assert cursor
+        for actor, params in [
+            ("owner", {**query, "cursor": cursor}),
+            ("admin", {**query, "cursor": cursor[:-1] + ("1" if cursor[-1] != "1" else "2")}),
+            ("admin", {**query, "context_plan_id": other["object_id"], "cursor": cursor}),
+        ]:
+&gt;           expect(live.request(path, actor=actor, params=params), 400)
+
+qualification/test_human_advice_live.py:667: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 400
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"22555d13-968b-42d6-9642-1b0ca7a57375","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 400
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase><testcase classname="qualification.test_human_advice_live" name="test_native_runtime_logins_cannot_read_private_cases_or_audit_receipt_event_pointers_without_context[APP]" time="0.000"><skipped type="pytest.skip" message="Actual provisioned native login is required for runtime role evidence">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:684: Actual provisioned native login is required for runtime role evidence</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_native_runtime_logins_cannot_read_private_cases_or_audit_receipt_event_pointers_without_context[WORKER]" time="0.000"><skipped type="pytest.skip" message="Actual provisioned native login is required for runtime role evidence">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:684: Actual provisioned native login is required for runtime role evidence</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_native_runtime_logins_cannot_read_private_cases_or_audit_receipt_event_pointers_without_context[IDENTITY]" time="0.000"><skipped type="pytest.skip" message="Actual provisioned native login is required for runtime role evidence">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:684: Actual provisioned native login is required for runtime role evidence</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_native_runtime_logins_cannot_read_private_cases_or_audit_receipt_event_pointers_without_context[PLATFORM]" time="0.000"><skipped type="pytest.skip" message="Actual provisioned native login is required for runtime role evidence">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:684: Actual provisioned native login is required for runtime role evidence</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_native_runtime_logins_cannot_read_private_cases_or_audit_receipt_event_pointers_without_context[EXECUTOR]" time="0.000"><skipped type="pytest.skip" message="Actual provisioned native login is required for runtime role evidence">/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/qualification/test_human_advice_live.py:684: Actual provisioned native login is required for runtime role evidence</skipped></testcase><testcase classname="qualification.test_human_advice_live" name="test_event_failure_rolls_back_head_projection_private_brief_and_receipt" time="0.250"><failure message="AssertionError: {&quot;code&quot;:&quot;VALIDATION_FAILED&quot;,&quot;message&quot;:&quot;Check the supplied values.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;5c6d25d9-e10a-4656-b9cd-f9c934696ef5&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[],&quot;reason_code&quot;:&quot;HUMAN_ADVICE_INVALID&quot;}&#10;assert 422 == 201&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x109dd3e00&gt;
+
+    def test_event_failure_rolls_back_head_projection_private_brief_and_receipt(live):
+        anchor = save_plan(live)
+        body = creation()
+        body["data"].update(
+            context_plan_id=anchor["object_id"],
+            context_plan_revision=anchor["revision_id"],
+            adviser_membership_id=live.fixture["actors"]["reviewer"]["membership_id"],
+        )
+        with live.db() as c:
+            c.execute(
+                "CREATE FUNCTION impact.synthetic_advice_event_failure() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.payload-&gt;&gt;'aggregate_type'='HumanAdviceCase' THEN RAISE EXCEPTION 'synthetic advice event failure'; END IF; RETURN NEW; END $$"
+            )
+            c.execute(
+                "CREATE TRIGGER synthetic_advice_event_failure BEFORE INSERT ON impact.outbox_event FOR EACH ROW EXECUTE FUNCTION impact.synthetic_advice_event_failure()"
+            )
+        try:
+            response = live.request(live.path(ROUTE), actor="admin", method="POST", body=body)
+            assert response.status_code &gt;= 500
+            with live.db() as c:
+                c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+                assert (
+                    c.execute(
+                        "SELECT object_id FROM impact.human_advice_case_current WHERE context_plan_id=%s",
+                        (anchor["object_id"],),
+                    ).fetchone()
+                    is None
+                )
+                assert (
+                    c.execute(
+                        "SELECT operation_id FROM impact.operation_receipt WHERE operation_id=%s",
+                        (body["operation_id"],),
+                    ).fetchone()
+                    is None
+                )
+                assert (
+                    c.execute(
+                        "SELECT object_id FROM impact.object_revision WHERE object_type='HumanAdviceCase' AND payload-&gt;&gt;'context_plan_id'=%s",
+                        (anchor["object_id"],),
+                    ).fetchone()
+                    is None
+                )
+        finally:
+            with live.db() as c:
+                c.execute("DROP TRIGGER synthetic_advice_event_failure ON impact.outbox_event")
+                c.execute("DROP FUNCTION impact.synthetic_advice_event_failure()")
+        first = expect(live.request(live.path(ROUTE), actor="admin", method="POST", body=body), 201)
+&gt;       assert first == expect(live.request(live.path(ROUTE), actor="admin", method="POST", body=body), 201)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_human_advice_live.py:778: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [422 Unprocessable Entity]&gt;, status = 201
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"VALIDATION_FAILED","message":"Check the supplied values.","retryable":false,"correlation_id":"5c6d25d9-e10a-4656-b9cd-f9c934696ef5","permitted_actions":[],"field_errors":[],"reason_code":"HUMAN_ADVICE_INVALID"}
+E       assert 422 == 201
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase></testsuite></testsuites>

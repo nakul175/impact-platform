@@ -1,0 +1,16 @@
+{
+  "attempt": 1,
+  "recorded_at": "2026-10-05T10:52:49.008074+00:00",
+  "status": "SOURCE_PREFLIGHT_FAILED",
+  "actual_ui_qualification": "NOT_RUN",
+  "executed_groups": 0,
+  "scope": "Disposable PGlite runtime reached loopback readiness after applying schema39; source hashing stopped before product-fact setup and all browser groups. No UI or backend acceptance result is inferred.",
+  "fixture_directory": ".local/test-160d64cf",
+  "checker_sha256": "27df8b3bffd5c7fff652c7ac2ef4ed6aaaa2e13cd54feedb2a59cc3cfbddd84d",
+  "source_fingerprint_count": 47,
+  "missing_sources": [
+    "qualification/prepared_framework_old_pin_visibility.py"
+  ],
+  "error": "ENOENT while hashing qualification/prepared_framework_old_pin_visibility.py; focused qualification had promoted it to the registered module.",
+  "runner_exit_code": 1
+}

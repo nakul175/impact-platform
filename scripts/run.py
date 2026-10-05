@@ -72,6 +72,7 @@ BROWSER_MODES = {
     "ai-enablement-browser": "ai-enablement-check.mjs",
     "ai-planning-browser": "ai-planning-check.mjs",
     "tola-ai-sprint-browser": "tola-ai-sprint-check.mjs",
+    "tola-ai-extension-browser": "tola-ai-extension-check.mjs",
     "dashboard-browser": "dashboard-check.mjs",
     "forms-browser": "forms-check.mjs",
     "reporting-browser": "reporting-check.mjs",
@@ -538,6 +539,7 @@ def main():
                 IMPACT_LOGIN_DSN_PLATFORM=runtime["impact_platform_login"],
                 IMPACT_LOGIN_DSN_MIGRATOR=dsns["impact_migrator"],
                 IMPACT_LOGIN_DSN_WORKER=runtime["impact_worker_login"],
+                IMPACT_LOGIN_DSN_EXECUTOR=runtime["impact_executor_login"],
             )
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migration = migrate.run(env["IMPACT_MIGRATION_DSN"], fixture_dsn, fixture=True)

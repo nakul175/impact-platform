@@ -285,6 +285,22 @@ try {
       path: path.join(root, "docs/evidence/planning-framework.png"),
     });
   });
+  await test("Download the approved logframe as CSV and Excel", async () => {
+    for (const [label, extension] of [
+      ["Download logframe CSV", "csv"],
+      ["Download logframe Excel", "xlsx"],
+    ]) {
+      const waiting = page.waitForEvent("download");
+      await page.getByRole("link", { name: label, exact: true }).click();
+      const download = await waiting;
+      assert.equal(await download.failure(), null);
+      assert(download.suggestedFilename().endsWith("." + extension));
+      const bytes = await fs.readFile(await download.path());
+      if (extension === "csv")
+        assert(bytes.toString("utf8").includes("framework_revision"));
+      else assert.equal(bytes.subarray(0, 2).toString(), "PK");
+    }
+  });
   await test("Create and approve a period target", async () => {
     await page.getByRole("tab", { name: "Targets", exact: true }).click();
     await button("New target").click();

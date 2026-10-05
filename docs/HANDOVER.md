@@ -1,5 +1,7 @@
 # Handover — Impact Platform at build 0.27.0
 
+**Local proposal (5 October):** `release/0.29-logframe-reuse` adds governed approved-revision CSV/XLSX logframe exports, two domain operations (1.19.0), no migration, and explicit upstream attribution. Build 0.29.0 is local only; current main/staging claims below remain historical. See [RELEASE-0.29-logframe-reuse.md](RELEASE-0.29-logframe-reuse.md). Full CI and owner approval remain required before merge.
+
 **After handover (4 October):** PR #81 merged as `e6c23b4` with four green jobs on its PR head and on `main`. Build 0.28.0 and migration 0033 add a separate application executor and queue import commits above 50 rows. PR #82 added collection-round and assignment screens and merged as `6712970` with four green PR jobs. Its `main` run found a Sunday-dependent backup test expectation; see [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md). Staging health has not been independently verified: the last observed live facts below still describe build 0.27.0 at #80. Kobo must wait for a live status of `ok`, current deployed commit, schema 33 and a running executor.
 
 **Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.

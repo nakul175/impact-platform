@@ -1,5 +1,5 @@
 {
-  "version": "1.18.0",
+  "version": "1.19.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5140,6 +5140,34 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "export_framework_csv",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.csv",
+      "capability": "framework.export",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "export_framework_xlsx",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.xlsx",
+      "capability": "framework.export",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "framework_completeness",

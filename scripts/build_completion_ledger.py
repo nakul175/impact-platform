@@ -322,6 +322,9 @@ groups = [
         "FR-PLN-001",
         "v0.18 implements typed framework nodes (IMPACT, OUTCOME, OUTPUT, ACTIVITY) with stable node identities, title, description, owner and indicator placement in one governed framework per programme, edited in a table with a hierarchy tree (apps/web/src/Planning.tsx). Validation exercised by executed tests (qualification/test_planning.py::test_hierarchy_structure_is_refused, test_unmeasured_output_blocks_submission_until_documented_exception, test_planning_unit.py::test_structure_rules): containment cycles, including a node containing itself, orphaned parent references and deletion of a node that places indicators in the approved baseline (NODE_REFERENCED) are rejected on every save, as are level inversions and indicators placed twice or from another programme; renaming an output in a draft keeps its node identity and indicator placement (test_framework_draft_review_baseline_and_child_version). Not covered: a relationship (graph) view editing the same identities, relationship links and numeric aggregation links as distinct objects (theory-of-change relationships are accepted only empty and assumption or input nodes are refused), activity-to-output links beyond containment, and the graph half of the acceptance scenario.",
         [
+            "apps/api/impact_api/logframe.py",
+            "qualification/test_logframe.py",
+            "docs/RELEASE-0.29-logframe-reuse.md",
             "apps/api/impact_api/planning.py",
             "apps/api/impact_api/planning_contracts.py",
             "qualification/test_planning.py",

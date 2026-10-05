@@ -45,6 +45,11 @@ SPECIAL_READS = {
     ),
 }
 VERSION = "1.11.0"
+LOGFRAME_READS = {
+    "frameworks/{object_id}/logframe.csv": "export_framework_csv",
+    "frameworks/{object_id}/logframe.xlsx": "export_framework_xlsx",
+}
+LOGFRAME_VERSION = "1.19.0"
 
 
 def augment(spec, policy):
@@ -376,6 +381,36 @@ def augment(spec, policy):
         },
         ["programme_id", "framework", "rows", "next_cursor"],
     )
+
+    for route, op in LOGFRAME_READS.items():
+        template = deepcopy(paths[prefix + "frameworks/{object_id}"])
+        entry = template["get"]
+        entry.update(
+            operationId=op,
+            summary="Export an approved framework revision",
+            **{"x-capability": "framework.export", "x-contract-version": LOGFRAME_VERSION},
+        )
+        entry["parameters"] = [{"name": "revision_id", "in": "query", "required": True, "schema": UUID}]
+        media = (
+            "text/csv"
+            if route.endswith(".csv")
+            else ("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        )
+        entry["responses"]["200"]["content"] = {media: {"schema": {"type": "string", "format": "binary"}}}
+        paths[prefix + route] = {"parameters": template["parameters"], "get": entry}
+        policy["operations"] = [p for p in policy["operations"] if p["operation_id"] != op]
+        policy["operations"].append(
+            {
+                "operation_id": op,
+                "method": "GET",
+                "path": prefix + route,
+                "capability": "framework.export",
+                "role_templates": ["MEL_ADMIN", "PROGRAMME_MANAGER", "ANALYST"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": True,
+            }
+        )
 
     for route, (op, cap, schema) in SPECIAL_READS.items():
         base = "frameworks" if route.startswith("frameworks") else "programmes"

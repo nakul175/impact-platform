@@ -1,5 +1,12 @@
 # Mercy Corps TolaData reuse trial
 
+**Implementation after the trial (5 October):** local branch `release/0.29-logframe-reuse`
+now adds the governed approved-logframe CSV/XLSX export described in
+[RELEASE-0.29-logframe-reuse.md](../RELEASE-0.29-logframe-reuse.md), with direct header-style
+adaptation, license/notice and 17 passing export tests. The full local run has seven baseline
+Linux-tool failures on macOS; qualification details are in [QUALIFICATION.md](../QUALIFICATION.md).
+No merge, deployment or requirement acceptance. The trial findings below retain their original scope.
+
 5 October 2026. Impact Platform baseline: `5676e02ef48a1f3f98db5a851dcdcc37ba9c6b55`
 (main, including PRs #81–#83). Upstream baseline:
 [`7ca89ab1e5f55cbe4577d16d7281c6cf0936fc3d`](https://github.com/mercycorps/toladata/tree/7ca89ab1e5f55cbe4577d16d7281c6cf0936fc3d)

@@ -464,13 +464,13 @@ export function PlanningPanel({
                 {allowed("framework.export") && (
                   <p>
                     <a
-                      href={`${base}/frameworks/${approvedBaseline.framework_id}/logframe.csv?revision_id=${approvedBaseline.revision_id}`}
+                      href={`${base}frameworks/${approvedBaseline.framework_id}/logframe.csv?revision_id=${approvedBaseline.revision_id}`}
                     >
                       Download logframe CSV
                     </a>
                     {" · "}
                     <a
-                      href={`${base}/frameworks/${approvedBaseline.framework_id}/logframe.xlsx?revision_id=${approvedBaseline.revision_id}`}
+                      href={`${base}frameworks/${approvedBaseline.framework_id}/logframe.xlsx?revision_id=${approvedBaseline.revision_id}`}
                     >
                       Download logframe Excel
                     </a>

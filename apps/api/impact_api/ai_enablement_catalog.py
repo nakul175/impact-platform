@@ -2,9 +2,10 @@
 
 from copy import deepcopy
 import re
+from .ai_learning_content import enrich_learning_paths
 
 SCHEMA_VERSION = "1.0"
-CONTENT_VERSION = "nonprofit-2026-10-05.1"
+CONTENT_VERSION = "nonprofit-2026-10-05.2"
 SECTORS = {"GENERAL", "EDUCATION", "HEALTH", "LIVELIHOODS", "ENVIRONMENT"}
 PROFILE_FIELDS = {"sector", "team_size", "goal", "data_readiness", "ai_experience", "sensitive_data"}
 
@@ -241,14 +242,14 @@ def catalog():
             ]
         ],
         "use_cases": deepcopy(_USE_CASES),
-        "learning_paths": deepcopy(_LEARNING_PATHS),
+        "learning_paths": enrich_learning_paths(_LEARNING_PATHS),
         "procurement_criteria": [
             {"id": id, "title": title, "questions": list(questions)} for id, title, questions in _CRITERIA
         ],
         "marketplace_status": {
             "status": "NOT_CONNECTED",
             "vendors": [],
-            "explanation": "No verified provider listings, live quotes, purchasing or endorsements are available.",
+            "explanation": "Explore the source-backed tool directory and prepare a shortlist. Supplier registration, live quotes and purchasing are not available.",
         },
     }
 

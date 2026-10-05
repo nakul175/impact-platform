@@ -1049,6 +1049,7 @@ function Workspace({
             />
           ) : route === "ai-enablement" ? (
             <AIEnablementPanel
+              Dialog={Dialog}
               key={tenant}
               base={base}
               request={api}

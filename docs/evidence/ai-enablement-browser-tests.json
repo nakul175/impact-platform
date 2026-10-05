@@ -1,0 +1,101 @@
+{
+  "engine": "Configured Chromium browser",
+  "results": [
+    {
+      "name": "Open the working tool directory with published sources and honest transaction limits",
+      "status": "passed"
+    },
+    {
+      "name": "Assess readiness without a model call and clear stale results when the brief changes",
+      "status": "passed"
+    },
+    {
+      "name": "Search and filter published tools, and cap a side-by-side comparison at four",
+      "status": "passed"
+    },
+    {
+      "name": "Use a practical lesson, self-check, procurement draft and pilot tracker",
+      "status": "passed"
+    },
+    {
+      "name": "A lost save response retries the same operation and keeps newer edits unsaved",
+      "status": "passed"
+    },
+    {
+      "name": "Reopening a saved plan restores shortlist, readiness, learning, procurement and pilot progress",
+      "status": "passed"
+    },
+    {
+      "name": "A stale shared-plan save preserves local edits and leaves the current server revision intact",
+      "status": "passed"
+    },
+    {
+      "name": "Disabled advisory sends no requests, and the product fits desktop and 390 px mobile views",
+      "status": "passed"
+    },
+    {
+      "name": "New product sections and discard confirmation have no serious or critical automated WCAG findings",
+      "status": "passed"
+    },
+    {
+      "name": "An existing read-only actor can browse tools but cannot save plans or record completion",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": [],
+  "accessibilityScans": [
+    {
+      "name": "Find and compare tools",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "nodes": [
+            {
+              "target": [
+                ".ai-comparison-scroll"
+              ],
+              "summary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Build team capacity",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Discard confirmation",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": [
+            {
+              "target": [
+                "dialog > p"
+              ],
+              "summary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

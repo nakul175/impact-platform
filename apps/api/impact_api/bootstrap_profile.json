@@ -7,6 +7,7 @@
       "access-scopes.create",
       "access-scopes.read",
       "ai.advisory.request",
+      "ai.enablement.manage",
       "ai.enablement.read",
       "connections.read",
       "grant.approve",
@@ -44,6 +45,7 @@
     ],
     "MEL_ADMIN": [
       "ai.advisory.request",
+      "ai.enablement.manage",
       "ai.enablement.read",
       "assignments.draft.create",
       "assignments.draft.edit",
@@ -246,6 +248,7 @@
     ],
     "PROGRAMME_MANAGER": [
       "ai.advisory.request",
+      "ai.enablement.manage",
       "ai.enablement.read",
       "assignment.reassign",
       "assignments.draft.create",

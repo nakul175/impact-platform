@@ -1,3 +1,11 @@
+:root {
+  --ai-border: #dce2d8;
+  --ai-panel-border: #bccbb0;
+  --ai-surface: #fff;
+  --ai-panel: #f7f9f3;
+  --ai-notice: #edf2e7;
+  --ai-accent: #506b37;
+}
 .ai-enablement .ai-content {
   padding: 1.25rem;
 }
@@ -9,11 +17,16 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 1rem;
 }
+.ai-enablement .ai-cards button {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .ai-enablement article {
-  border: 1px solid #dce2d8;
+  border: 1px solid var(--ai-border);
   border-radius: 8px;
   padding: 1rem;
-  background: #fff;
+  background: var(--ai-surface);
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -28,8 +41,8 @@
   margin-bottom: 0.5rem;
 }
 .ai-enablement .ai-notice {
-  background: #edf2e7;
-  border-left: 3px solid #506b37;
+  background: var(--ai-notice);
+  border-left: 3px solid var(--ai-accent);
   padding: 0.85rem 1rem;
 }
 .ai-enablement .ai-actions {
@@ -52,12 +65,114 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   line-height: 1.6;
-  border: 1px solid #dce2d8;
+  border: 1px solid var(--ai-border);
   padding: 1rem;
   border-radius: 8px;
 }
 .ai-enablement summary {
   cursor: pointer;
+}
+.ai-enablement .ai-adoption {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  background: var(--ai-panel);
+}
+.ai-enablement .ai-section-title,
+.ai-enablement .ai-plan-name {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.ai-enablement .ai-plan-name {
+  align-items: flex-end;
+}
+.ai-enablement .ai-plan-name label {
+  flex: 1;
+}
+.ai-enablement .ai-plan-name button {
+  margin-bottom: 1rem;
+}
+.ai-enablement .ai-plan-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem;
+}
+.ai-enablement .ai-plan-bar .ai-actions {
+  margin: 0 0 1rem;
+}
+.ai-enablement .ai-tabs {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.ai-enablement .ai-tabs button {
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-adoption > section {
+  padding-top: 1rem;
+  border-top: 1px solid var(--ai-border);
+}
+.ai-enablement .ai-sources {
+  padding-left: 1rem;
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-sources a {
+  display: inline-block;
+  min-height: 24px;
+  padding: 0.25rem 0;
+  line-height: 1.5;
+}
+.ai-enablement .ai-comparison-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--ai-border);
+  border-radius: 8px;
+  background: var(--ai-surface);
+}
+.ai-enablement .ai-comparison {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.ai-enablement .ai-comparison th,
+.ai-enablement .ai-comparison td {
+  padding: 0.8rem;
+  vertical-align: top;
+  text-align: left;
+  border-right: 1px solid var(--ai-border);
+  border-bottom: 1px solid var(--ai-border);
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-comparison th {
+  background: var(--ai-notice);
+}
+.ai-enablement .ai-comparison th:first-child {
+  width: 150px;
+}
+.ai-enablement .ai-comparison thead th:not(:first-child) {
+  width: auto;
+}
+.ai-enablement .ai-comparison th button {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+.ai-enablement .ai-learning-step {
+  margin-bottom: 1rem;
+}
+.ai-enablement .ai-lesson {
+  margin: 0.75rem 0 0 1.5rem;
+}
+.ai-enablement .ai-lesson p {
+  white-space: pre-line;
+}
+.ai-enablement .ai-lesson fieldset {
+  margin: 0.75rem 0;
+  background: var(--ai-panel);
 }
 @media (max-width: 600px) {
   .ai-enablement .ai-content {
@@ -65,5 +180,27 @@
   }
   .ai-enablement .ai-actions button {
     width: 100%;
+  }
+  .ai-enablement .ai-adoption {
+    padding: 0.85rem;
+  }
+  .ai-enablement .ai-plan-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .ai-enablement .ai-section-title,
+  .ai-enablement .ai-plan-name {
+    flex-direction: column;
+  }
+  .ai-enablement .ai-plan-name label,
+  .ai-enablement .ai-plan-name button {
+    width: 100%;
+  }
+  .ai-enablement .ai-tabs button {
+    flex: 1 1 45%;
+    min-width: 0;
+  }
+  .ai-enablement .ai-plan-name button {
+    margin-bottom: 0;
   }
 }

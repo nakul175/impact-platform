@@ -1,5 +1,7 @@
 # Documentation change record
 
+Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.
+
 **Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
 
 ## 5 October 2026 — proposed build 0.29.0: Mercy Corps reuse

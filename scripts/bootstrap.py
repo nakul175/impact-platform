@@ -112,6 +112,7 @@ def bootstrap(local, idp=None):
                 "report.export",
                 "framework.export",
                 "ai.enablement.read",
+                "ai.enablement.manage",
                 "ai.advisory.request",
                 # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
                 "audit.export",

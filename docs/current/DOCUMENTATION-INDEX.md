@@ -86,3 +86,8 @@ See [change record](CHANGELOG.md), [documentation verification](DOCUMENTATION-QA
 
 - [0.30 integrated release note](../RELEASE-0.30-nonprofit-ai-enablement.md): current implemented foundation, exact limits and future product slices.
 - [Catalogue](../RELEASE-0.30-ai-catalog.md), [workspace](../RELEASE-0.30-ai-workspace.md), and [Mercy Corps scenarios](../RELEASE-0.30-reuse-scenarios.md): component provenance and validation.
+
+- [Nonprofit AI adoption tool](../RELEASE-0.30-ai-adoption-tool.md): delivered product workflow and verification.
+- [Source-backed solutions](../RELEASE-0.30-ai-solutions.md): official product evidence and comparison limits.
+- [Durable adoption plans](../RELEASE-0.30-ai-adoption-plans.md): draft persistence and permission boundaries.
+- [Product screens](../RELEASE-0.30-ai-product-ui.md): browse, compare, learning, procurement and pilot flow.

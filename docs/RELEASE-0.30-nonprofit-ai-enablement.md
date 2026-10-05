@@ -1,6 +1,6 @@
 # Nonprofit AI enablement foundation
 
-Local proposed build 0.30.0; schema 34; domain API 1.20.0 (+3 operations); platform API 1.9.0 unchanged. Not merged or deployed. Original 307-requirement acceptance ledger unchanged.
+Local proposed build 0.30.0; schema 35; domain API 1.21.0 (+8 operations); platform API 1.9.0 unchanged. Not merged or deployed. Original 307-requirement acceptance ledger unchanged.
 
 ## Delivered
 
@@ -32,7 +32,11 @@ Local qualification uses synthetic provider responses and a disposable database.
 
 Responses uses `store:false` to disable response application-state storage; this does not itself establish zero data retention. See the [official Responses guide](https://developers.openai.com/api/docs/guides/migrate-to-responses) and [data controls](https://developers.openai.com/api/docs/guides/your-data). Do not include personal or beneficiary data in a brief. Retiring a delivery key can make cached drafts sealed under it unreadable; preserve applicable grace keys when replay is required.
 
-## Limits and next slices
+## Original foundation limits, superseded where stated
+
+The subsequent [working adoption-tool increment](RELEASE-0.30-ai-adoption-tool.md) delivers saved drafts, source-backed tool comparison, practical lessons/progress, procurement briefs and pilot checklists. The paragraph below records the initial foundation only; purchase/booking/payment integrations remain absent.
+
+### Initial slice limits
 
 There is no real supplier registry, live vendor comparison, quote collection, pooled purchase, payment, course enrolment, human advisory booking or deployment tracking yet. No real prices, certifications, ROI or supplier rankings are claimed. Readiness profiles are not saved as organisation records. The marketplace panel states these limits.
 

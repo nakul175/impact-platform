@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Local proposed build 0.30.0, schema 34: migration 0034 adds insert-only, forced-RLS AI advisory request/result registers. Only `impact_app` receives SELECT/INSERT; drafts are sealed, server-generated record IDs are independent from operation IDs. Not merged or deployed.
+Local proposed build 0.30.0, schema 35: migration 0034 adds insert-only, forced-RLS AI advisory request/result registers. Only `impact_app` receives SELECT/INSERT; drafts are sealed, server-generated record IDs are independent from operation IDs. Migration 0035 adds the AIAdoptionPlan registry kind, using existing immutable tenant-fenced revisions and receipts without widening database-role grants. Not merged or deployed.
 
 Proposed build 0.28.0, schema 33 (PR 1, not merged): 0033 adds the application executor's
 tenant-fenced `import_commit` register, its due-tenant directory and an operational heartbeat.
@@ -54,6 +54,7 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0033_application_executor.sql | a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33 |
 
 | 0034_ai_advisory.sql | 5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415 |
+| 0035_ai_adoption_plans.sql | 543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5 |
 
 ## Executable schema definitions
 
@@ -4699,5 +4700,22 @@ ALTER TABLE impact.ai_advisory_result FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_fence ON impact.ai_advisory_result
  USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
 GRANT SELECT,INSERT ON impact.ai_advisory_request,impact.ai_advisory_result TO impact_app;
+COMMIT;
+```
+
+## 0035_ai_adoption_plans.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Use existing forced-RLS registry/revisions/receipts; preserve every earlier kind.
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIAdoptionPlan'')');
+END $$;
 COMMIT;
 ```

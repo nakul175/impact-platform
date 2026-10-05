@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.20.0",
+    "version": "1.21.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -41627,6 +41627,107 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/solutions": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_solutions",
+        "summary": "get ai solutions",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.20.0",
+        "responses": {
+          "200": {
+            "description": "Editorial content or unapproved draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISolutionsCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/advisory": {
       "parameters": [
         {
@@ -41732,6 +41833,501 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AIAdvisoryRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans": {
+      "get": {
+        "operationId": "list_ai_adoption_plans",
+        "summary": "list ai adoption plans",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.21.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unapproved adoption draft or durable save receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_ai_adoption_plan",
+        "summary": "create ai adoption plan",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.21.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Unapproved adoption draft or durable save receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIAdoptionPlanCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}": {
+      "get": {
+        "operationId": "get_ai_adoption_plan",
+        "summary": "get ai adoption plan",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.21.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unapproved adoption draft or durable save receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update_ai_adoption_plan",
+        "summary": "update ai adoption plan",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.21.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unapproved adoption draft or durable save receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIAdoptionPlanUpdate"
               }
             }
           }
@@ -68565,6 +69161,16 @@
           "assessment"
         ]
       },
+      "AISolutionsCatalog": {
+        "type": "object",
+        "required": [
+          "content_version",
+          "checked_on",
+          "explanation",
+          "solutions",
+          "comparison_criteria"
+        ]
+      },
       "AIAdvisoryDraft": {
         "type": "object",
         "additionalProperties": false,
@@ -68592,6 +69198,296 @@
           "assessment",
           "model",
           "disclaimer"
+        ]
+      },
+      "AIAdoptionPlanProcurement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "requirements": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "data_boundary": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "budget_notes": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "vendor_questions": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "requirements",
+          "data_boundary",
+          "budget_notes",
+          "vendor_questions"
+        ]
+      },
+      "AIAdoptionPlanPilot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "success_measure": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "completed_actions": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 5,
+            "items": {
+              "enum": [
+                "DEFINE_GOAL",
+                "SYNTHETIC_TRIAL",
+                "HUMAN_REVIEW",
+                "TRAIN_STAFF",
+                "REVIEW_OUTCOME"
+              ]
+            }
+          }
+        },
+        "required": [
+          "success_measure",
+          "completed_actions"
+        ]
+      },
+      "AIAdoptionPlanData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          },
+          "solution_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 4
+          },
+          "learning_completed": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "procurement": {
+            "$ref": "#/components/schemas/AIAdoptionPlanProcurement"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/AIAdoptionPlanPilot"
+          }
+        },
+        "required": [
+          "title",
+          "profile",
+          "solution_ids",
+          "learning_completed",
+          "procurement",
+          "pilot"
+        ]
+      },
+      "AIAdoptionPlanCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AIAdoptionPlanData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "AIAdoptionPlanUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AIAdoptionPlanData"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data",
+          "expected_revision"
+        ]
+      },
+      "AIAdoptionPlanStoredData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          },
+          "solution_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 4
+          },
+          "learning_completed": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "procurement": {
+            "$ref": "#/components/schemas/AIAdoptionPlanProcurement"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/AIAdoptionPlanPilot"
+          },
+          "content_versions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "catalog": {
+                "type": "string"
+              },
+              "solutions": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "catalog",
+              "solutions"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "profile",
+          "solution_ids",
+          "learning_completed",
+          "procurement",
+          "pilot",
+          "content_versions"
+        ]
+      },
+      "AIAdoptionPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Draft"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AIAdoptionPlanStoredData"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "data"
+        ]
+      },
+      "AIAdoptionPlanList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIAdoptionPlan"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "AIAdoptionPlanReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Draft"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "saved_at",
+          "operation_id",
+          "correlation_id"
         ]
       },
       "CreateReportingCalendarData": {

@@ -1,6 +1,6 @@
 # Handover — Impact Platform and nonprofit AI enablement
 
-**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+**Nonprofit AI product in review (5 October 2026):** build 0.30.0 includes saved adoption plans, a source-backed directory of eight real tools with comparison/shortlists, twelve practical learning lessons and progress, editable procurement briefs and pilot checklists, alongside readiness assessment and separately permitted advisory drafts. Schema 35/domain API 1.21.0 (240 operations). Not merged or deployed; purchases and supplier bookings are not connected. Live AI generation is blocked by project credits. See [product release note](RELEASE-0.30-ai-adoption-tool.md). Original acceptance ledger unchanged.
 
 **Merged and deployed (5 October):** PR #84 added governed CSV/XLSX approved-logframe exports as build 0.29.0, domain API 1.19.0, schema 33. All four CI jobs passed on `71a7d1b`; owner-approved merge `69c2cca618ae8dcde8f981c48ece8a1e60f0ff70` deployed successfully at 04:16 UTC (09:46 IST), with healthy services and no alerts. The earlier 0.27/0.28 observations below are historical. See [RELEASE-0.29-logframe-reuse.md](RELEASE-0.29-logframe-reuse.md).
 

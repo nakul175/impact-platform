@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
 import "./ai-enablement.css";
 
-type Profile = {
+export type Profile = {
   sector: string;
   team_size: number;
   goal: string;
@@ -17,7 +18,7 @@ type UseCase = {
   acceptance_checks: string[];
   human_approval_needs: string[];
 };
-type Catalog = {
+export type Catalog = {
   content_version: string;
   advisory_available: boolean;
   journey: {
@@ -27,7 +28,23 @@ type Catalog = {
     human_owner: string;
   }[];
   use_cases: UseCase[];
-  learning_paths: { id: string; title: string; steps: string[] }[];
+  learning_paths: {
+    id: string;
+    title: string;
+    steps: string[];
+    lessons?: {
+      key: string;
+      title: string;
+      lesson: string;
+      exercise: string;
+      check: {
+        question: string;
+        options: string[];
+        answer: number;
+        explanation: string;
+      };
+    }[];
+  }[];
   procurement_criteria: { id: string; title: string; questions: string[] }[];
   marketplace_status: { status: string; explanation: string };
 };
@@ -52,6 +69,11 @@ type Props = {
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (e: unknown) => string;
   capabilities: string[];
+  Dialog: React.ComponentType<{
+    title: string;
+    close: () => void;
+    children: React.ReactNode;
+  }>;
 };
 const initialProfile: Profile = {
   sector: "GENERAL",
@@ -79,6 +101,7 @@ export function AIEnablementPanel({
   request,
   explain,
   capabilities,
+  Dialog,
 }: Props) {
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [profile, setProfile] = useState<Profile>(initialProfile);
@@ -133,6 +156,16 @@ export function AIEnablementPanel({
     setAdvisory(null);
     setError("");
   };
+  function loadProfile(value: Profile) {
+    generation.current += 1;
+    setProfile(value);
+    pendingAdvisory.current = null;
+    setConsent(false);
+    setAssessment(null);
+    setAdvisory(null);
+    setError("");
+    setBusy(null);
+  }
   async function send(kind: "assessment" | "advisory") {
     if (
       kind === "advisory" &&
@@ -224,9 +257,9 @@ export function AIEnablementPanel({
             <section aria-labelledby="ai-brief">
               <h3 id="ai-brief">Your organisation brief</h3>
               <p className="muted">
-                Your brief stays in this view. Generated advisory drafts are
-                stored encrypted for safe retries; they are not approved or
-                official organisation records.
+                Assess your brief here, then save it in a named adoption plan
+                for authorised colleagues in your organisation. Generated
+                advisory drafts are stored encrypted for safe retries.
               </p>
               <form
                 onSubmit={(event) => {
@@ -434,6 +467,16 @@ export function AIEnablementPanel({
                 </p>
               </section>
             )}
+            <AIAdoptionWorkspace
+              base={base}
+              request={request}
+              explain={explain}
+              capabilities={capabilities}
+              profile={profile}
+              catalog={catalog}
+              onLoadProfile={loadProfile}
+              Dialog={Dialog}
+            />
             <section aria-labelledby="ai-use-cases">
               <h3 id="ai-use-cases">Explore potential pilots</h3>
               <p className="muted">
@@ -459,44 +502,6 @@ export function AIEnablementPanel({
                   </article>
                 ))}
               </div>
-            </section>
-            <section aria-labelledby="ai-learning">
-              <h3 id="ai-learning">Build team capacity</h3>
-              <div className="ai-cards">
-                {catalog.learning_paths.map((path) => (
-                  <article key={path.id}>
-                    <h4>{path.title}</h4>
-                    {assessment?.learning_path_ids.includes(path.id) && (
-                      <span className="badge">Suggested for this brief</span>
-                    )}
-                    <Items items={path.steps} />
-                  </article>
-                ))}
-              </div>
-            </section>
-            <section aria-labelledby="ai-procurement">
-              <h3 id="ai-procurement">Procurement and comparison</h3>
-              <p>
-                Use the same questions for every supplier. Ask for evidence and
-                compare the total cost of a pilot before committing.
-              </p>
-              <div className="ai-cards">
-                {catalog.procurement_criteria.map((criterion) => (
-                  <article key={criterion.id}>
-                    <h4>{criterion.title}</h4>
-                    <Items items={criterion.questions} />
-                  </article>
-                ))}
-              </div>
-            </section>
-            <section aria-labelledby="ai-marketplace">
-              <h3 id="ai-marketplace">Marketplace preparation</h3>
-              <p>{catalog.marketplace_status.explanation}</p>
-              <p className="muted">
-                Supplier registration and transactions are not yet available.
-                There are no verified supplier listings, live prices or vendor
-                rankings in this workspace.
-              </p>
             </section>
             <p className="muted">Guide edition {catalog.content_version}.</p>
           </>

@@ -1,5 +1,5 @@
 {
-  "version": "1.20.0",
+  "version": "1.21.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6001,10 +6001,92 @@
       "audit": false
     },
     {
+      "operation_id": "get_ai_solutions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solutions",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "create_ai_advisory",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory",
       "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_adoption_plans",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_adoption_plan",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_adoption_plan",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_adoption_plan",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}",
+      "capability": "ai.enablement.manage",
       "role_templates": [
         "TENANT_ADMIN",
         "MEL_ADMIN",

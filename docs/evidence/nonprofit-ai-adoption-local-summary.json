@@ -1,0 +1,13 @@
+{
+  "passed": 1101,
+  "failed": 7,
+  "skipped": 76,
+  "new_adoption_tests_passed": 65,
+  "baseline_failure_names_match": true,
+  "lint": "passed",
+  "web_build": "passed",
+  "hosted_ci": "pending owner approval",
+  "live_generation": "blocked: credit_balance_exhausted",
+  "browser_scenarios_passed": 10,
+  "automated_accessibility": "No serious/critical WCAG-tagged findings in four sections and discard dialog; no exceptions"
+}

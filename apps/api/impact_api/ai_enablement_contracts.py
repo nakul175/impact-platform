@@ -9,6 +9,7 @@ IMPLEMENTED = [
     ("get", "ai-enablement/catalog"),
     ("post", "ai-enablement/assessment"),
     ("post", "ai-enablement/advisory"),
+    ("get", "ai-enablement/solutions"),
 ]
 ROLES = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD"]
 
@@ -53,6 +54,10 @@ def augment(spec, policy):
         ],
     }
     schemas["AIEnablementAssessment"] = closed({"assessment": {"type": "object"}}, ["assessment"])
+    schemas["AISolutionsCatalog"] = {
+        "type": "object",
+        "required": ["content_version", "checked_on", "explanation", "solutions", "comparison_criteria"],
+    }
     schemas["AIAdvisoryDraft"] = closed(
         {
             "status": {"const": "DRAFT"},
@@ -80,6 +85,15 @@ def augment(spec, policy):
             "ai.enablement.read",
             "AIAssessmentRequest",
             "AIEnablementAssessment",
+            ROLES,
+        ),
+        (
+            "get",
+            "ai-enablement/solutions",
+            "get_ai_solutions",
+            "ai.enablement.read",
+            None,
+            "AISolutionsCatalog",
             ROLES,
         ),
         (

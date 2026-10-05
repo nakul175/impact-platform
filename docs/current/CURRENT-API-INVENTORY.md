@@ -1,5 +1,7 @@
 # Current implemented API inventory
 
+Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.
+
 **Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
 
 Proposed local build 0.29.0: domain API 1.19.0, 232 operations. Added `GET frameworks/{object_id}/logframe.csv` and `.xlsx`, with required `revision_id` query UUID and separate `framework.export` capability. Both recheck approved-register membership, current programme/framework/indicator visibility and audit successful generation. No platform API/schema change or staging deployment. See [release note](../RELEASE-0.29-logframe-reuse.md).

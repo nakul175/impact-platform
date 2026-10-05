@@ -36,6 +36,7 @@ from . import security_events
 from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
+from .ai_adoption_plans import AIAdoptionPlans
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
 
@@ -101,6 +102,7 @@ def create_app():
     account = Account(auth)
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
+    ai_plans = AIAdoptionPlans(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
@@ -495,6 +497,34 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/ai-enablement/catalog")
     def ai_catalog(request: Request, tenant: str):
         return ai_enablement.catalog(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solutions")
+    def ai_solutions(request: Request, tenant: str):
+        return ai_enablement.solutions(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans")
+    def ai_plan_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return ai_plans.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}")
+    def ai_plan_get(request: Request, tenant: str, obj: str):
+        return ai_plans.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans", status_code=201)
+    async def ai_plan_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdoptionPlanCreate", body)
+        return await run_in_threadpool(
+            ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}")
+    async def ai_plan_update(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIAdoptionPlanUpdate", body)
+        return await run_in_threadpool(
+            ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation, uuid(obj)
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/assessment")
     async def ai_assessment(request: Request, tenant: str):

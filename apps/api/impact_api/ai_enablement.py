@@ -9,6 +9,7 @@ from uuid import UUID
 from cryptography.exceptions import InvalidTag
 
 from .ai_enablement_catalog import assess, catalog, validate_profile
+from .ai_solutions_catalog import solutions_catalog
 from .domain import DomainError
 from .keyring import ring
 from .store import audit, authorize, context, write
@@ -61,6 +62,11 @@ class AIEnablement:
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "assess_ai_enablement")
             return {"assessment": assess(profile)}
+
+    def solutions(self, identity, tenant):
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "get_ai_solutions")
+            return solutions_catalog()
 
     @staticmethod
     def _validate(profile):

@@ -1,5 +1,7 @@
 # Impact Platform user guide
 
+Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.
+
 **Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
 
 ## Proposed logframe export (build 0.29.0, local branch)
@@ -172,3 +174,11 @@ There is no public or anonymous link and no email of a report. The PDF uses a La
 ## What this build does not do
 
 Offline and Android collection, participant records, evaluation, finance, AI assistance, integrations, public publication, charts in reports, dashboard authoring, keyed import updates, quality issues and exceptions, a real malware scanner, SMS or push notices, and email through a real provider are not implemented. A visible placeholder is not a feature. The exact boundary is in `docs/IMPLEMENTATION.md` and `docs/COMPLETION-LEDGER.md`.
+
+## Nonprofit AI adoption workspace (build 0.30 in review)
+
+Open **AI enablement**, enter your organisation goal and team readiness, and select **Assess readiness**. In **Find and compare tools**, search or filter products and select up to four for comparison. Inspect source links and the checks needed for your actual subscription.
+
+Use **Build team capacity** to read the lessons, try synthetic exercises and answer self-checks. Completion is self-recorded. In **Prepare procurement**, edit the requirements, data boundary, budget notes and supplier questions. Use the pilot section to define a success measure and record practical actions.
+
+With management permission, name and save the adoption plan. Choose it from the saved-plan list to reopen it, including after a page reload. Plans are drafts shared with authorised organisation staff. If someone else changed the plan, review the latest saved version before saving again. Keep beneficiary information and credentials out of these working notes. Buying tools and booking advisers are not connected. AI-generated advisory drafts require explicit consent and a funded provider project.

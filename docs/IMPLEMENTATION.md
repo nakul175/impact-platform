@@ -1,6 +1,6 @@
 # Implementation boundary · v0.27.0
 
-**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+**Nonprofit AI product in review (5 October 2026):** build 0.30.0 includes saved adoption plans, a source-backed directory of eight real tools with comparison/shortlists, twelve practical learning lessons and progress, editable procurement briefs and pilot checklists, alongside readiness assessment and separately permitted advisory drafts. Schema 35/domain API 1.21.0 (240 operations). Not merged or deployed; purchases and supplier bookings are not connected. Live AI generation is blocked by project credits. See [product release note](RELEASE-0.30-ai-adoption-tool.md). Original acceptance ledger unchanged.
 
 **Proposed local build 0.29.0:** approved logframe structure exported as CSV/XLSX under separate `framework.export` authority, with exact approved revision context and visibility checks on the programme and every placed indicator. No current measurement values are joined. Each download is audited. Two new domain routes, no schema change. Not merged/deployed; see [release note](RELEASE-0.29-logframe-reuse.md).
 

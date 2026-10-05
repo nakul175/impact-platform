@@ -1,6 +1,6 @@
 # Impact Platform · v0.28.0 (PR 1 candidate)
 
-**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](docs/RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 35/domain API 1.21.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](docs/RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
 
 Proposed local build **0.29.0** adds approved logframe CSV/XLSX exports using reviewed Mercy Corps TolaData reuse. Branch only, not deployed; see [release note](docs/RELEASE-0.29-logframe-reuse.md).
 

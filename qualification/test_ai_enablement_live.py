@@ -30,6 +30,11 @@ def test_readiness_api_and_separate_advisory_authority(live):
     data = expect(live.request(path + "/catalog"), 200)
     assert data["marketplace_status"]["vendors"] == []
     assert data["advisory_available"] is False
+    solutions = expect(live.request(path + "/solutions"), 200)
+    assert len(solutions["solutions"]) == 8
+    assert all(tool["source_urls"] for tool in solutions["solutions"])
+    expect(live.request(path + "/solutions", actor="other_tenant"), 404)
+    expect(live.request(path + "/solutions", actor="revoked"), 404)
     result = expect(live.request(path + "/assessment", method="POST", body={"profile": profile()}), 200)
     assert result["assessment"]["recommendations"]
     expect(live.request(path + "/catalog", actor="other_tenant"), 404)

@@ -8,6 +8,47 @@
 }
 .ai-enablement .ai-content {
   padding: 1.25rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-enablement button,
+.ai-enablement summary,
+.ai-enablement input:not([type="checkbox"]):not([type="radio"]),
+.ai-enablement select {
+  min-height: 44px;
+}
+.ai-enablement summary {
+  display: list-item;
+  padding: 0.6rem 0;
+}
+.ai-enablement fieldset,
+.ai-enablement section,
+.ai-enablement label {
+  min-width: 0;
+}
+.ai-enablement textarea,
+.ai-enablement input,
+.ai-enablement select {
+  max-width: 100%;
+}
+.ai-enablement button {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-content-status {
+  background: var(--ai-notice);
+  padding: 1rem;
+  border-radius: 8px;
+}
+.ai-enablement .ai-discard-copy {
+  background: var(--ai-surface);
+  color: #294638;
+  padding: 0.2rem 0;
+  line-height: 1.6;
+}
+.ai-enablement .ai-discard-actions button {
+  min-height: 44px;
+  white-space: normal;
 }
 .ai-enablement .ai-content > section {
   margin-bottom: 2rem;
@@ -52,6 +93,7 @@
   margin-top: 1rem;
 }
 .ai-enablement .ai-checkbox {
+  min-height: 44px;
   display: flex;
   gap: 0.6rem;
   align-items: flex-start;
@@ -128,6 +170,8 @@
 }
 .ai-enablement .ai-comparison-scroll {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
   border: 1px solid var(--ai-border);
   border-radius: 8px;
@@ -202,5 +246,9 @@
   }
   .ai-enablement .ai-plan-name button {
     margin-bottom: 0;
+  }
+  .ai-enablement .ai-discard-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

@@ -7,7 +7,8 @@ from uuid import UUID
 from psycopg.types.json import Jsonb
 
 from .ai_enablement_catalog import CONTENT_VERSION as CATALOG_VERSION
-from .ai_enablement_catalog import catalog, validate_profile
+from .ai_enablement_catalog import validate_profile
+from .ai_learning_content import LEGACY_LESSON_ALIASES, canonical_lesson_key, lesson_keys
 from .ai_solutions_catalog import CONTENT_VERSION as SOLUTIONS_VERSION
 from .ai_solutions_catalog import SOLUTION_IDS
 from .domain import DomainError
@@ -55,14 +56,12 @@ def _ids(value, allowed, maximum):
 
 
 def learning_keys():
-    return frozenset(
-        f"{path['id']}:{index}" for path in catalog()["learning_paths"] for index in range(len(path["steps"]))
-    )
+    return lesson_keys()
 
 
 def validate_plan(data):
     """Closed, bounded drafts; every selected solution and learning action is known."""
-    if not isinstance(data, dict) or set(data) != PLAN_FIELDS:
+    if not isinstance(data, dict) or not PLAN_FIELDS <= set(data) or set(data) - PLAN_FIELDS - {"planning"}:
         _invalid()
     _text(data["title"], 150, required=True)
     try:
@@ -71,7 +70,11 @@ def validate_plan(data):
         _invalid("AI_PROFILE_INVALID")
     _ids(data["solution_ids"], SOLUTION_IDS, 4)
     keys = learning_keys()
-    _ids(data["learning_completed"], keys, len(keys))
+    aliases = {alias for alias, key in LEGACY_LESSON_ALIASES.items() if key in keys}
+    _ids(data["learning_completed"], keys | aliases, len(keys))
+    canonical_completed = [canonical_lesson_key(key) for key in data["learning_completed"]]
+    if len(canonical_completed) != len(set(canonical_completed)):
+        _invalid()
     procurement = data["procurement"]
     if not isinstance(procurement, dict) or set(procurement) != set(PROCUREMENT_LIMITS):
         _invalid()
@@ -82,6 +85,25 @@ def validate_plan(data):
         _invalid()
     _text(pilot["success_measure"], 1000)
     _ids(pilot["completed_actions"], PILOT_ACTIONS, len(PILOT_ACTIONS))
+    if "planning" in data:
+        from .ai_procurement_costs import validate_comparison
+        from .ai_pilot_outcomes import validate_pilot_outcomes
+        from .ai_task_practice import validate_task_practice
+
+        planning = data["planning"]
+        if not isinstance(planning, dict) or set(planning) != {
+            "cost_comparison",
+            "pilot_evaluation",
+            "task_practice",
+        }:
+            _invalid()
+        for field, validator in (
+            ("cost_comparison", validate_comparison),
+            ("pilot_evaluation", validate_pilot_outcomes),
+            ("task_practice", validate_task_practice),
+        ):
+            if planning[field] is not None:
+                validator(planning[field])
 
 
 def _request(body, update):
@@ -93,12 +115,44 @@ def _request(body, update):
         _uuid(body["expected_revision"])
 
 
+def _content_compatibility(payload):
+    """Interpret progress for readers; never rewrite stored revisions or archive claims."""
+    current = {"catalog": CATALOG_VERSION, "solutions": SOLUTIONS_VERSION}
+    saved = payload.get("content_versions", {})
+
+    def version_status(name):
+        version = saved.get(name) if isinstance(saved, dict) else None
+        if not isinstance(version, str) or not version:
+            return "UNKNOWN"
+        return "CURRENT" if version == current[name] else "STALE"
+
+    completed, legacy, unavailable = [], [], []
+    for key in payload["learning_completed"]:
+        if key in LEGACY_LESSON_ALIASES:
+            legacy.append(key)
+        canonical = canonical_lesson_key(key)
+        if canonical is None:
+            unavailable.append(key)
+        elif canonical not in completed:
+            completed.append(canonical)
+    return {
+        "current_versions": current,
+        "catalog_version_status": version_status("catalog"),
+        "solutions_version_status": version_status("solutions"),
+        "learning_completed": completed,
+        "legacy_learning_keys": legacy,
+        "unavailable_learning_keys": unavailable,
+        "historical_snapshots_available": False,
+    }
+
+
 def _result(row):
     return {
         "object_id": str(row["object_id"]),
         "revision_id": str(row["head_revision"]),
         "business_state": row["lifecycle_state"],
         "data": deepcopy(row["payload"]),
+        "content_compatibility": _content_compatibility(row["payload"]),
     }
 
 
@@ -196,6 +250,27 @@ class AIAdoptionPlans:
                 **deepcopy(body["data"]),
                 "content_versions": {"catalog": CATALOG_VERSION, "solutions": SOLUTIONS_VERSION},
             }
+            retained_planning = bool(
+                previous and "planning" not in body["data"] and "planning" in previous["payload"]
+            )
+            if retained_planning:
+                # Older clients cannot erase optional snapshots they do not understand.
+                # Explicitly supplied null members remain the supported clearing command.
+                payload["planning"] = deepcopy(previous["payload"]["planning"])
+            if payload.get("planning", {}).get("task_practice") is not None:
+                from .ai_task_practice import CONTENT_VERSION as PRACTICE_VERSION
+
+                if retained_planning:
+                    retained_version = previous["payload"].get("content_versions", {}).get("practice")
+                    if retained_version is not None:
+                        payload["content_versions"]["practice"] = retained_version
+                else:
+                    payload["content_versions"]["practice"] = PRACTICE_VERSION
+            # The receipt fingerprint binds the original request, including aliases.
+            # Only a genuinely new save stores canonical progress identifiers.
+            payload["learning_completed"] = [
+                canonical_lesson_key(key) for key in body["data"]["learning_completed"]
+            ]
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             audit(c, ctx, operation, receipt, correlation)

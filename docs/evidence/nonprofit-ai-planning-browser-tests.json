@@ -1,0 +1,293 @@
+{
+  "build": {
+    "build": "0.31.0",
+    "domain_api": "1.22.0",
+    "platform_api": "1.9.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "started_at": "2026-10-05T07:31:37.995Z",
+  "completed_at": "2026-10-05T07:31:43.483Z",
+  "engine": "Configured Chromium browser",
+  "browser_version": "154.0.8037.97",
+  "database": "Disposable in-memory PGlite through the real FastAPI service",
+  "fixture": "Synthetic fixture only",
+  "results": [
+    {
+      "name": "An unfinished cost draft cannot calculate or save, and unknown amounts remain explicit",
+      "status": "passed"
+    },
+    {
+      "name": "Complete monthly totals retain exact amounts and equally lowest supplied offers remain a tie",
+      "status": "passed"
+    },
+    {
+      "name": "Editing clears calculated output and invalid decimal notation makes no calculation request",
+      "status": "passed"
+    },
+    {
+      "name": "A delayed real cost response cannot revive results after a new edit",
+      "status": "passed"
+    },
+    {
+      "name": "Pilot calculations include human review and normalize different sample sizes",
+      "status": "passed"
+    },
+    {
+      "name": "Zero baseline and incomparable samples produce undefined change rather than a false zero",
+      "status": "passed"
+    },
+    {
+      "name": "A slower pilot shows negative improvement and preserves source values",
+      "status": "passed"
+    },
+    {
+      "name": "Manual task practice exposes five review checks, resets checks after editing and makes no model request",
+      "status": "passed"
+    },
+    {
+      "name": "Saving and reopening persists actual cost, pilot and practice inputs but no transient calculation result",
+      "status": "passed"
+    },
+    {
+      "name": "Saved guide compatibility names current editions and reading leaves the revision unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated retired-guide projection preserves unavailable progress until explicit removal",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated unavailable practice keeps entered text and requires deliberate replacement before saving",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated stale practice edition is labelled without claiming historical guide wording",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated unavailable practice is cleared only by the explicit clear action and save",
+      "status": "passed"
+    },
+    {
+      "name": "Ambiguous save recovery replays exact planning inputs while newer changes remain unsaved",
+      "status": "passed"
+    },
+    {
+      "name": "Navigating away during a real calculation cannot revive the previous section's result on return",
+      "status": "passed"
+    },
+    {
+      "name": "New product controls fit desktop and 390 px views with all automated accessibility findings retained",
+      "status": "passed"
+    },
+    {
+      "name": "A delayed calculation from a previous signed-in tenant cannot appear after changing user and workspace",
+      "status": "passed"
+    },
+    {
+      "name": "Read-only staff can study guides and calculate supplied drafts but cannot save or read another tenant's plan",
+      "status": "passed"
+    },
+    {
+      "name": "No advisory/provider request or uncaught browser error occurs across these synthetic workflows",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": [],
+  "consoleErrors": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8164/favicon.ico",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: net::ERR_CONNECTION_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8164/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/7e862c18-c8e7-4e60-be18-ad4e27868841",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8164/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/7e862c18-c8e7-4e60-be18-ad4e27868841",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    }
+  ],
+  "accessibilityScans": [
+    {
+      "name": "Simulated unavailable practice preservation",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Practise a useful task: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Practise a useful task: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Read-only practice worksheet",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "cost-desktop",
+      "file": "docs/evidence/nonprofit-ai-planning/cost-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "pilot-desktop",
+      "file": "docs/evidence/nonprofit-ai-planning/pilot-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "practice-desktop",
+      "file": "docs/evidence/nonprofit-ai-planning/practice-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "cost-mobile",
+      "file": "docs/evidence/nonprofit-ai-planning/cost-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "pilot-mobile",
+      "file": "docs/evidence/nonprofit-ai-planning/pilot-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "practice-mobile",
+      "file": "docs/evidence/nonprofit-ai-planning/practice-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    }
+  ],
+  "expectedConsoleNetworkEvents": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8164/favicon.ico",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Existing missing favicon resource"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_CONNECTION_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8164/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/7e862c18-c8e7-4e60-be18-ad4e27868841",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Deliberate lost save response after real server commit"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8164/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8164/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/7e862c18-c8e7-4e60-be18-ad4e27868841",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Deliberate cross-tenant plan refusal"
+    }
+  ],
+  "advisoryRequests": 0,
+  "planWrites": 7,
+  "costRequests": 8,
+  "limits": [
+    "Local browser evidence only; no native concurrency, hosted deployment, manual screen-reader review or user acceptance.",
+    "No live provider, supplier message, purchase, competence certification or official impact record was exercised.",
+    "Accessibility incomplete findings are retained separately and require manual review.",
+    "Four historical content-compatibility projections are explicitly simulated; their surrounding authority, calculations and persisted writes use the real API."
+  ]
+}

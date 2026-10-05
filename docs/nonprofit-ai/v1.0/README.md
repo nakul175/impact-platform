@@ -4,6 +4,8 @@ Edition 1.0 · 5 October 2026 · Proposed baseline for owner review
 
 Start with the BRD. This package defines the nonprofit AI enablement extension around practical AI use, capacity building, discovery/comparison, procurement, human advice, governed delivery and outcomes. It preserves the existing impact-platform specifications. Current implementation facts use commit 36073f1, build 0.30.0 and schema 35; proposed marketplace and service work is explicitly labelled. This edition records no acceptance, deployment or financial commitment.
 
+**Development appendage:** [DEVELOPMENT-0.31.md](DEVELOPMENT-0.31.md), the [0.31 release record](../../RELEASE-0.31-nonprofit-ai-planning.md) and [local evidence summary](../../evidence/nonprofit-ai-planning-local-summary.json) describe the first implementation increment: stable learning progress, supplied cost planning, self-reported pilot comparisons, manual task practice, saved source inputs and bounded advisory transfer. Local evidence is recorded with seven unchanged Mac operations failures; hosted/native gates remain outstanding. The core edition-1.0 documents and CSV/JSON baseline retain their original reference; related automated support does not mark the 108 specified cases executed or accepted.
+
 ## Core documents in review order
 
 | Document | Purpose | Editable Word copy |

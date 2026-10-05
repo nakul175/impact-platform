@@ -11,6 +11,9 @@ const axeSource = await fs.readFile(
 const root = process.cwd();
 const local = process.env.IMPACT_TEST_LOCAL;
 const base = process.env.IMPACT_BASE_URL;
+const evidenceFile =
+  process.env.IMPACT_BROWSER_EVIDENCE_FILE ||
+  path.join(root, "docs/evidence/ai-enablement-browser-tests.json");
 if (!local || !base) throw Error("Use scripts/run.py ai-enablement-browser");
 const passwords = JSON.parse(
   await fs.readFile(path.join(local, "passwords.json"), "utf8"),
@@ -258,7 +261,7 @@ try {
     await label("Plan name").fill("Synthetic nonprofit adoption pilot");
     await button("Build team capacity").click();
     const firstPath = catalogue.learning_paths[0];
-    await label("Complete learning step " + firstPath.id + ":0").check();
+    await label("Complete learning step " + firstPath.lessons[0].key).check();
     if (firstPath.lessons?.length) {
       const lesson = firstPath.lessons[0];
       await page.getByText("Lesson: " + lesson.title, { exact: true }).click();
@@ -353,7 +356,7 @@ try {
     await button("Build team capacity").click();
     assert(
       await label(
-        "Complete learning step " + catalogue.learning_paths[0].id + ":0",
+        "Complete learning step " + catalogue.learning_paths[0].lessons[0].key,
       ).isChecked(),
     );
     await button("Procurement brief").click();
@@ -526,7 +529,7 @@ try {
     await button("Build team capacity").click();
     assert(
       await label(
-        "Complete learning step " + catalogue.learning_paths[0].id + ":0",
+        "Complete learning step " + catalogue.learning_paths[0].lessons[0].key,
       ).isDisabled(),
     );
     await button("Procurement brief").click();
@@ -547,7 +550,7 @@ try {
   process.exitCode = 1;
 } finally {
   await fs.writeFile(
-    path.join(root, "docs/evidence/ai-enablement-browser-tests.json"),
+    evidenceFile,
     JSON.stringify(
       {
         engine: process.env.IMPACT_BROWSER_EXECUTABLE

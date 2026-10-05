@@ -16,11 +16,14 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/cost-comparison` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

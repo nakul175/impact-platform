@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_enablement_contracts import ROLES
 from .measurement_contracts import closed
 
-VERSION = "1.21.0"
+VERSION = "1.22.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/plans"),
     ("post", "ai-enablement/plans"),
@@ -55,7 +55,19 @@ def augment(spec, policy):
         "procurement": {"$ref": "#/components/schemas/AIAdoptionPlanProcurement"},
         "pilot": {"$ref": "#/components/schemas/AIAdoptionPlanPilot"},
     }
-    schemas["AIAdoptionPlanData"] = closed(data, list(data))
+    required_data = list(data)
+    planning = {
+        "cost_comparison": {
+            "oneOf": [{"$ref": "#/components/schemas/AICostComparisonRequest"}, {"type": "null"}]
+        },
+        "pilot_evaluation": {
+            "oneOf": [{"$ref": "#/components/schemas/AIPilotEvaluationRequest"}, {"type": "null"}]
+        },
+        "task_practice": {"oneOf": [{"$ref": "#/components/schemas/AITaskPracticeData"}, {"type": "null"}]},
+    }
+    schemas["AIAdoptionPlanningInputs"] = closed(planning, list(planning))
+    data["planning"] = {"$ref": "#/components/schemas/AIAdoptionPlanningInputs"}
+    schemas["AIAdoptionPlanData"] = closed(data, required_data)
     command = {
         "operation_id": {"type": "string", "format": "uuid"},
         "data": {"$ref": "#/components/schemas/AIAdoptionPlanData"},
@@ -69,13 +81,27 @@ def augment(spec, policy):
             {"catalog": {"type": "string"}, "solutions": {"type": "string"}}, ["catalog", "solutions"]
         ),
     }
-    schemas["AIAdoptionPlanStoredData"] = closed(persisted, list(persisted))
+    persisted["content_versions"]["properties"]["practice"] = {"type": "string", "maxLength": 100}
+    schemas["AIAdoptionPlanStoredData"] = closed(persisted, [*required_data, "content_versions"])
     result = {
         "object_id": {"type": "string", "format": "uuid"},
         "revision_id": {"type": "string", "format": "uuid"},
         "business_state": {"const": "Draft"},
         "data": {"$ref": "#/components/schemas/AIAdoptionPlanStoredData"},
     }
+    schemas["AIAdoptionPlan"] = closed(result, list(result))
+    version_status = {"enum": ["CURRENT", "STALE", "UNKNOWN"]}
+    compatibility = {
+        "current_versions": deepcopy(persisted["content_versions"]),
+        "catalog_version_status": deepcopy(version_status),
+        "solutions_version_status": deepcopy(version_status),
+        "learning_completed": {**deepcopy(unique_ids), "maxItems": 100},
+        "legacy_learning_keys": {**deepcopy(unique_ids), "maxItems": 100},
+        "unavailable_learning_keys": {**deepcopy(unique_ids), "maxItems": 100},
+        "historical_snapshots_available": {"const": False},
+    }
+    schemas["AIAdoptionPlanCompatibility"] = closed(compatibility, list(compatibility))
+    result["content_compatibility"] = {"$ref": "#/components/schemas/AIAdoptionPlanCompatibility"}
     schemas["AIAdoptionPlan"] = closed(result, list(result))
     schemas["AIAdoptionPlanList"] = closed(
         {

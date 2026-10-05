@@ -502,6 +502,10 @@ def create_app():
     def ai_solutions(request: Request, tenant: str):
         return ai_enablement.solutions(auth.resolve(request), uuid(tenant))
 
+    @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
+    def ai_task_templates(request: Request, tenant: str):
+        return ai_enablement.task_templates(auth.resolve(request), uuid(tenant))
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans")
     def ai_plan_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
         return ai_plans.listing(auth.resolve(request), uuid(tenant), limit, cursor)
@@ -540,6 +544,22 @@ def create_app():
         validate("AIAdvisoryRequest", body)
         return await run_in_threadpool(
             ai_enablement.advisory, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
+    async def ai_cost_comparison(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AICostComparisonRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.cost_comparison, auth.resolve(request), uuid(tenant), body
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
+    async def ai_pilot_evaluation(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIPilotEvaluationRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.pilot_evaluation, auth.resolve(request), uuid(tenant), body
         )
 
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")

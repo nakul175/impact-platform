@@ -1,5 +1,19 @@
 # Current implemented API inventory
 
+**Current review candidate, 5 October 2026:** build 0.31.0, domain API 1.22.0 (**243 operations**), platform API 1.9.0 (**44 operations**), schema 35 unchanged. Three deterministic planning reads use the existing `ai.enablement.read` capability; no new role bundle, ceiling or migration. Local implementation and evidence are recorded; seven unchanged Mac failures keep the overall application gate failed, and hosted/native qualification remains outstanding. No deployment or requirement acceptance is recorded. [Release record](../RELEASE-0.31-nonprofit-ai-planning.md) and [development/support map](../nonprofit-ai/v1.0/DEVELOPMENT-0.31.md). The tables below are generated from the current implemented contracts; earlier version notes are historical, and their deployment statements are not fresh checks.
+
+## Nonprofit planning contract changes in 0.31
+
+| Method | Tenant-relative path | Operation | Behavior |
+|---|---|---|---|
+| POST | `ai-enablement/cost-comparison` | `compare_ai_procurement_costs` | Supplied decimal source amounts only; incomplete costs remain unknown; no record or procurement approval |
+| POST | `ai-enablement/pilot-evaluation` | `evaluate_ai_pilot` | Self-reported baseline/pilot time including review and sample normalization; no official impact |
+| GET | `ai-enablement/task-templates` | `get_ai_task_templates` | Four versioned manual practice worksheets; no model execution or certification |
+
+All three return 200 and recheck current tenant/read authority. Closed request DTOs reject unknown nested fields and duplicate JSON keys. The two computations have no operation ID because they do not persist, issue a receipt or queue an external effect. Saving their optional original source inputs uses the existing POST/PUT plan routes, `ai.enablement.manage` plus current read authority, expected revision and exact-operation receipt rules. The original six required plan fields remain valid; an older client update omitting `planning` preserves any existing snapshots and their practice edition. Explicit null members clear the optional source inputs. Read responses add `content_compatibility`, including CURRENT/STALE/UNKNOWN guide status, stable/legacy/unavailable learning IDs and `historical_snapshots_available:false`. None of this response metadata is client-owned approval or archived guidance.
+
+## Historical version notes
+
 Build 0.30.0 review update: save named AI adoption drafts, search and compare eight source-backed tools, record practical learning progress, draft procurement questions and track a pilot checklist. Schema 35/domain API 1.21.0, 240 implemented operations. Not merged or deployed; live advisory needs funded API credits. See `RELEASE-0.30-ai-adoption-tool.md`.
 
 **Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
@@ -16,10 +30,10 @@ Error reason codes added by the QA 2026-10 degradation slice merged onto build 0
 
 ## Domain API
 
-Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-implemented.json.
+Contract version 1.22.0 (243 operations). Source: `packages/contracts/openapi-implemented.json`.
 
 | Method | Path | Operation |
-| --- | --- | --- |
+|---|---|---|
 | GET | `/v1/tenants/{tenant_id}/memberships` | list_memberships |
 | GET | `/v1/tenants/{tenant_id}/memberships/{object_id}` | get_memberships |
 | GET | `/v1/tenants/{tenant_id}/grants` | list_grants |
@@ -30,6 +44,10 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | POST | `/v1/tenants/{tenant_id}/programmes` | create_programmes |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}` | get_programmes |
 | PATCH | `/v1/tenants/{tenant_id}/programmes/{object_id}` | patch_programmes |
+| GET | `/v1/tenants/{tenant_id}/frameworks` | list_frameworks |
+| POST | `/v1/tenants/{tenant_id}/frameworks` | create_frameworks |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | get_frameworks |
+| PATCH | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | patch_frameworks |
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions` | list_indicator_definitions |
 | POST | `/v1/tenants/{tenant_id}/indicator-definitions` | create_indicator_definitions |
 | GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}` | get_indicator_definitions |
@@ -38,6 +56,10 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | POST | `/v1/tenants/{tenant_id}/indicator-instances` | create_indicator_instances |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}` | get_indicator_instances |
 | PATCH | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}` | patch_indicator_instances |
+| GET | `/v1/tenants/{tenant_id}/targets` | list_targets |
+| POST | `/v1/tenants/{tenant_id}/targets` | create_targets |
+| GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | get_targets |
+| PATCH | `/v1/tenants/{tenant_id}/targets/{object_id}` | patch_targets |
 | GET | `/v1/tenants/{tenant_id}/periods` | list_periods |
 | GET | `/v1/tenants/{tenant_id}/periods/{object_id}` | get_periods |
 | GET | `/v1/tenants/{tenant_id}/observations` | list_observations |
@@ -47,9 +69,25 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | list_calculated_results |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | get_calculated_results |
 | GET | `/v1/tenants/{tenant_id}/forms` | list_forms |
+| POST | `/v1/tenants/{tenant_id}/forms` | create_forms |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | get_forms |
+| PATCH | `/v1/tenants/{tenant_id}/forms/{object_id}` | patch_forms |
+| GET | `/v1/tenants/{tenant_id}/assignments` | list_assignments |
+| POST | `/v1/tenants/{tenant_id}/assignments` | create_assignments |
+| GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | get_assignments |
+| PATCH | `/v1/tenants/{tenant_id}/assignments/{object_id}` | patch_assignments |
+| GET | `/v1/tenants/{tenant_id}/submissions` | list_submissions |
+| POST | `/v1/tenants/{tenant_id}/submissions` | create_submissions |
+| GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | get_submissions |
+| PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | patch_submissions |
+| GET | `/v1/tenants/{tenant_id}/imports` | list_imports |
+| POST | `/v1/tenants/{tenant_id}/imports` | create_imports |
+| GET | `/v1/tenants/{tenant_id}/imports/{object_id}` | get_imports |
+| PATCH | `/v1/tenants/{tenant_id}/imports/{object_id}` | patch_imports |
 | GET | `/v1/tenants/{tenant_id}/evidence` | list_evidence |
+| POST | `/v1/tenants/{tenant_id}/evidence` | create_evidence |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | get_evidence |
+| PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | patch_evidence |
 | GET | `/v1/tenants/{tenant_id}/workflows` | list_workflows |
 | GET | `/v1/tenants/{tenant_id}/workflows/{object_id}` | get_workflows |
 | GET | `/v1/tenants/{tenant_id}/decisions` | list_decisions |
@@ -64,16 +102,33 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | get_disclosures |
 | GET | `/v1/tenants/{tenant_id}/connections` | list_connections |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | get_connections |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases` | list_privacy_cases |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases` | create_privacy_cases |
+| GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | get_privacy_cases |
+| PATCH | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | patch_privacy_cases |
 | GET | `/v1/tenants/{tenant_id}/audit-events` | list_audit_events |
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | get_audit_events |
+| GET | `/v1/tenants/{tenant_id}/retention-policies` | list_retention_policies |
+| POST | `/v1/tenants/{tenant_id}/retention-policies` | create_retention_policies |
+| GET | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | get_retention_policies |
+| PATCH | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | patch_retention_policies |
 | GET | `/v1/tenants/{tenant_id}/work-items` | list_work_items |
 | GET | `/v1/tenants/{tenant_id}/work-items/{object_id}` | get_work_items |
 | GET | `/v1/tenants/{tenant_id}/report-templates` | list_report_templates |
+| POST | `/v1/tenants/{tenant_id}/report-templates` | create_report_template |
 | GET | `/v1/tenants/{tenant_id}/report-templates/{object_id}` | get_report_templates |
 | GET | `/v1/tenants/{tenant_id}/notifications` | list_notifications |
 | GET | `/v1/tenants/{tenant_id}/notifications/{object_id}` | get_notifications |
 | POST | `/v1/tenants/{tenant_id}/programmes/{object_id}/actions/activate` | action_programmes_activate |
+| POST | `/v1/tenants/{tenant_id}/frameworks/{object_id}/actions/submit` | action_frameworks_submit |
 | POST | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/actions/submit` | action_indicator_definitions_submit |
+| POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | action_targets_submit |
+| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish` | action_forms_publish |
+| POST | `/v1/tenants/{tenant_id}/assignments/{object_id}/actions/reassign` | action_assignments_reassign |
+| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | action_submissions_submit |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview` | action_imports_preview |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit` | action_imports_commit |
+| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel` | action_imports_cancel |
 | POST | `/v1/tenants/{tenant_id}/workflows/{object_id}/actions/approve` | action_workflows_approve |
 | POST | `/v1/tenants/{tenant_id}/workflows/{object_id}/actions/return` | action_workflows_return |
 | POST | `/v1/tenants/{tenant_id}/workflows/{object_id}/actions/reject` | action_workflows_reject |
@@ -82,6 +137,8 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/submit` | action_reports_submit |
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/publish` | action_reports_publish |
 | POST | `/v1/tenants/{tenant_id}/reports/{object_id}/actions/withdraw` | action_reports_withdraw |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve` | action_privacy_cases_approve |
+| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute` | action_privacy_cases_execute |
 | POST | `/v1/tenants/{tenant_id}/memberships/{object_id}/actions/suspend` | action_memberships_suspend |
 | POST | `/v1/tenants/{tenant_id}/memberships/{object_id}/actions/revoke` | action_memberships_revoke |
 | POST | `/v1/tenants/{tenant_id}/grants/{object_id}/actions/revoke` | action_grants_revoke |
@@ -89,9 +146,15 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/member-invitations` | list_member_invitations |
 | POST | `/v1/tenants/{tenant_id}/invitation-acceptances` | accept_invitation |
 | POST | `/v1/tenants/{tenant_id}/disclosure-requests` | request_disclosure |
+| GET | `/v1/tenants/{tenant_id}/uploads/{object_id}` | get_uploads |
+| POST | `/v1/tenants/{tenant_id}/uploads` | create_upload |
+| PUT | `/v1/tenants/{tenant_id}/uploads/{object_id}/content` | put_upload_content |
+| POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | complete_upload |
+| GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | read_evidence_content |
 | POST | `/v1/tenants/{tenant_id}/observations/{object_id}/actions/submit` | action_observations_submit |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/calculate` | action_indicator_instances_calculate |
 | GET | `/v1/tenants/{tenant_id}/workflow-templates` | list_workflow_templates |
+| POST | `/v1/tenants/{tenant_id}/workflow-templates` | create_workflow_template |
 | GET | `/v1/tenants/{tenant_id}/workflow-templates/{object_id}` | get_workflow_templates |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | list_lineage_manifests |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | get_lineage_manifests |
@@ -104,6 +167,10 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/access-requests` | list_access_requests |
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/approve` | approve_access_change |
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/reject` | reject_access_change |
+| POST | `/v1/tenants/{tenant_id}/purpose-grants` | request_purpose_grant |
+| GET | `/v1/tenants/{tenant_id}/purpose-grants` | list_purpose_grants |
+| POST | `/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/approve` | approve_purpose_grant |
+| POST | `/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/reject` | reject_purpose_grant |
 | POST | `/v1/tenants/{tenant_id}/role-templates` | create_role_template |
 | GET | `/v1/tenants/{tenant_id}/role-templates` | list_role_templates |
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/revise` | revise_role_template |
@@ -132,8 +199,10 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | get_collection_plans |
 | PATCH | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | patch_collection_plans |
 | GET | `/v1/tenants/{tenant_id}/reporting-calendars` | list_reporting_calendars |
+| POST | `/v1/tenants/{tenant_id}/reporting-calendars` | create_reporting_calendar |
 | GET | `/v1/tenants/{tenant_id}/reporting-calendars/{object_id}` | get_reporting_calendars |
 | GET | `/v1/tenants/{tenant_id}/geographies` | list_geographies |
+| POST | `/v1/tenants/{tenant_id}/geographies` | create_geography |
 | GET | `/v1/tenants/{tenant_id}/geographies/{object_id}` | get_geographies |
 | POST | `/v1/tenants/{tenant_id}/collection-plans/{object_id}/actions/submit` | action_collection_plans_submit |
 | POST | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/actions/activate` | action_indicator_instances_activate |
@@ -158,42 +227,19 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/view` | view_controlled_publication |
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.csv` | download_controlled_publication_csv |
 | GET | `/v1/tenants/{tenant_id}/publication-recipients` | list_publication_recipients |
-| GET | `/v1/tenants/{tenant_id}/frameworks` | list_frameworks |
-| POST | `/v1/tenants/{tenant_id}/frameworks` | create_frameworks |
-| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | get_frameworks |
-| PATCH | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | patch_frameworks |
-| GET | `/v1/tenants/{tenant_id}/targets` | list_targets |
-| POST | `/v1/tenants/{tenant_id}/targets` | create_targets |
-| GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | get_targets |
-| PATCH | `/v1/tenants/{tenant_id}/targets/{object_id}` | patch_targets |
-| POST | `/v1/tenants/{tenant_id}/frameworks/{object_id}/actions/submit` | action_frameworks_submit |
-| POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | action_targets_submit |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.csv` | export_framework_csv |
+| GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/logframe.xlsx` | export_framework_xlsx |
 | GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}/completeness` | framework_completeness |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/targets-vs-actuals` | programme_targets_vs_actuals |
-| POST | `/v1/tenants/{tenant_id}/forms` | create_forms |
-| PATCH | `/v1/tenants/{tenant_id}/forms/{object_id}` | patch_forms |
+| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct` | action_submissions_correct |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds` | list_collection_rounds |
+| POST | `/v1/tenants/{tenant_id}/collection-rounds` | create_collection_rounds |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | get_collection_rounds |
+| PATCH | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | patch_collection_rounds |
 | POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit` | action_forms_submit |
-| POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/publish` | action_forms_publish |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}/published` | get_form_published |
-| GET | `/v1/tenants/{tenant_id}/submissions` | list_submissions |
-| POST | `/v1/tenants/{tenant_id}/submissions` | create_submissions |
-| GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | get_submissions |
-| PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | patch_submissions |
-| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | action_submissions_submit |
-| GET | `/v1/tenants/{tenant_id}/imports` | list_imports |
-| POST | `/v1/tenants/{tenant_id}/imports` | create_imports |
-| GET | `/v1/tenants/{tenant_id}/imports/{object_id}` | get_imports |
-| PATCH | `/v1/tenants/{tenant_id}/imports/{object_id}` | patch_imports |
-| POST | `/v1/tenants/{tenant_id}/evidence` | create_evidence |
-| PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | patch_evidence |
-| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/preview` | action_imports_preview |
-| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/commit` | action_imports_commit |
-| POST | `/v1/tenants/{tenant_id}/imports/{object_id}/actions/cancel` | action_imports_cancel |
-| GET | `/v1/tenants/{tenant_id}/uploads/{object_id}` | get_uploads |
-| POST | `/v1/tenants/{tenant_id}/uploads` | create_upload |
-| PUT | `/v1/tenants/{tenant_id}/uploads/{object_id}/content` | put_upload_content |
-| POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | complete_upload |
-| GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | read_evidence_content |
+| GET | `/v1/tenants/{tenant_id}/forms/{object_id}/completeness` | get_form_completeness |
+| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage` | get_round_coverage |
 | POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | action_evidence_attach |
 | GET | `/v1/tenants/{tenant_id}/observations/{object_id}/evidence` | list_observation_evidence |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | list_calculated_result_evidence |
@@ -206,57 +252,38 @@ Contract version 1.17.0 (230 operations). Source: packages/contracts/openapi-imp
 | GET | `/v1/tenants/{tenant_id}/publications/{object_id}/download.docx` | download_controlled_publication_docx |
 | GET | `/v1/tenants/{tenant_id}/programmes/{object_id}/dashboard` | programme_dashboard |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | indicator_dashboard_series |
+| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources` | indicator_dashboard_sources |
+| GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/portfolio` | indicator_definition_portfolio |
 | POST | `/v1/tenants/{tenant_id}/audit-exports` | create_audit_export |
-| GET | `/v1/tenants/{tenant_id}/privacy-cases` | list_privacy_cases |
-| POST | `/v1/tenants/{tenant_id}/privacy-cases` | create_privacy_cases |
-| GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | get_privacy_cases |
-| PATCH | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | patch_privacy_cases |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/plan` | get_privacy_case_plan |
-| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/approve` | action_privacy_cases_approve |
-| POST | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/actions/execute` | action_privacy_cases_execute |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}/export` | read_privacy_case_export |
 | GET | `/v1/tenants/{tenant_id}/retention-schedule` | list_retention_schedule |
 | GET | `/v1/tenants/{tenant_id}/retention-proofs` | list_retention_proofs |
-| GET | `/v1/tenants/{tenant_id}/purpose-grants` | list_purpose_grants |
-| POST | `/v1/tenants/{tenant_id}/purpose-grants` | request_purpose_grant |
-| POST | `/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/approve` | approve_purpose_grant |
-| POST | `/v1/tenants/{tenant_id}/purpose-grants/{object_id}/actions/reject` | reject_purpose_grant |
-| POST | `/v1/tenants/{tenant_id}/reporting-calendars` | create_reporting_calendar |
-| POST | `/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend` | extend_reporting_calendar |
-| POST | `/v1/tenants/{tenant_id}/workflow-templates` | create_workflow_template |
-| POST | `/v1/tenants/{tenant_id}/report-templates` | create_report_template |
-| POST | `/v1/tenants/{tenant_id}/geographies` | create_geography |
-| POST | `/v1/tenants/{tenant_id}/reference-defaults` | apply_reference_defaults |
-| GET | `/v1/tenants/{tenant_id}/assignments` | list_assignments |
-| POST | `/v1/tenants/{tenant_id}/assignments` | create_assignments |
-| GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | get_assignments |
-| PATCH | `/v1/tenants/{tenant_id}/assignments/{object_id}` | patch_assignments |
-| GET | `/v1/tenants/{tenant_id}/retention-policies` | list_retention_policies |
-| POST | `/v1/tenants/{tenant_id}/retention-policies` | create_retention_policies |
-| GET | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | get_retention_policies |
-| PATCH | `/v1/tenants/{tenant_id}/retention-policies/{object_id}` | patch_retention_policies |
-| POST | `/v1/tenants/{tenant_id}/assignments/{object_id}/actions/reassign` | action_assignments_reassign |
-| POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct` | action_submissions_correct |
-| GET | `/v1/tenants/{tenant_id}/collection-rounds` | list_collection_rounds |
-| POST | `/v1/tenants/{tenant_id}/collection-rounds` | create_collection_rounds |
-| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | get_collection_rounds |
-| PATCH | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | patch_collection_rounds |
-| GET | `/v1/tenants/{tenant_id}/forms/{object_id}/completeness` | get_form_completeness |
-| GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage` | get_round_coverage |
-| GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources` | indicator_dashboard_sources |
-| GET | `/v1/tenants/{tenant_id}/indicator-definitions/{object_id}/portfolio` | indicator_definition_portfolio |
 | POST | `/v1/tenants/{tenant_id}/retention-policies/{object_id}/actions/approve` | action_retention_policies_approve |
 | GET | `/v1/tenants/{tenant_id}/retention-holds` | list_retention_holds |
 | POST | `/v1/tenants/{tenant_id}/retention-holds` | create_retention_holds |
 | POST | `/v1/tenants/{tenant_id}/retention-holds/{object_id}/actions/release` | action_retention_holds_release |
 | GET | `/v1/tenants/{tenant_id}/access-denials` | list_access_denials |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | get_ai_enablement_catalog |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | assess_ai_enablement |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | get_ai_solutions |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | create_ai_advisory |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/cost-comparison` | compare_ai_procurement_costs |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation` | evaluate_ai_pilot |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | get_ai_task_templates |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans` | list_ai_adoption_plans |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | create_ai_adoption_plan |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | get_ai_adoption_plan |
+| PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | update_ai_adoption_plan |
+| POST | `/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend` | extend_reporting_calendar |
+| POST | `/v1/tenants/{tenant_id}/reference-defaults` | apply_reference_defaults |
 
 ## Privileged control plane
 
-Contract version 1.8.0 (44 operations). Source: packages/contracts/openapi-platform.json.
+Contract version 1.9.0 (44 operations). Source: `packages/contracts/openapi-platform.json`.
 
 | Method | Path | Operation |
-| --- | --- | --- |
+|---|---|---|
 | GET | `/v1/platform/tenants` | list_tenant_lifecycle |
 | POST | `/v1/platform/tenants` | request_tenant |
 | POST | `/v1/platform/tenants/{tenant_id}/actions/accept-owner` | tenant_accept_owner |
@@ -293,11 +320,11 @@ Contract version 1.8.0 (44 operations). Source: packages/contracts/openapi-platf
 | POST | `/v1/platform/tenants/{tenant_id}/deliveries/{event_id}/actions/requeue` | delivery_requeue |
 | GET | `/v1/platform/metrics` | platform_metrics |
 | GET | `/v1/platform/operators` | list_platform_operators |
+| POST | `/v1/platform/operators/{identity_id}/actions/deactivate` | deactivate_platform_operator |
+| POST | `/v1/platform/operators/{identity_id}/actions/renew` | renew_platform_operator |
 | POST | `/v1/platform/operator-nominations` | nominate_platform_operator |
 | POST | `/v1/platform/operator-nominations/{nomination_id}/actions/accept` | operator_nomination_accept |
 | POST | `/v1/platform/operator-nominations/{nomination_id}/actions/cancel` | operator_nomination_cancel |
 | POST | `/v1/platform/operator-nominations/{nomination_id}/actions/decline` | operator_nomination_decline |
 | POST | `/v1/platform/accounts` | create_provider_account |
 | POST | `/v1/platform/accounts/{account_id}/actions/reissue` | reissue_provider_account |
-| POST | `/v1/platform/operators/{identity_id}/actions/deactivate` | deactivate_platform_operator |
-| POST | `/v1/platform/operators/{identity_id}/actions/renew` | renew_platform_operator |

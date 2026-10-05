@@ -1,5 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import type { Catalog, Profile } from "./AIEnablement";
+import {
+  AICostComparison,
+  AIPilotEvaluation,
+  validateCostInput,
+  validatePilotInput,
+  type CostInput,
+  type PilotInput,
+} from "./AIPlanningTools";
+import { AITaskPractice, type TaskPractice } from "./AITaskPractice";
+
+type Planning = {
+  cost_comparison: CostInput | null;
+  pilot_evaluation: PilotInput | null;
+  task_practice: TaskPractice | null;
+};
+type ContentCompatibility = {
+  current_versions: { catalog: string; solutions: string };
+  catalog_version_status: "CURRENT" | "STALE" | "UNKNOWN";
+  solutions_version_status: "CURRENT" | "STALE" | "UNKNOWN";
+  learning_completed: string[];
+  legacy_learning_keys: string[];
+  unavailable_learning_keys: string[];
+  historical_snapshots_available: false;
+};
+const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
 type Solution = {
   id: string;
@@ -34,15 +59,22 @@ type PlanDraft = {
     vendor_questions: string;
   };
   pilot: { success_measure: string; completed_actions: string[] };
+  planning: Planning;
 };
 type PlanData = PlanDraft & { profile: Profile };
 type Plan = {
   object_id: string;
   revision_id: string;
   business_state: string;
-  data: PlanData & {
-    content_versions?: { catalog: string; solutions: string };
+  data: Omit<PlanData, "planning"> & {
+    planning?: Planning;
+    content_versions?: {
+      catalog: string;
+      solutions: string;
+      practice?: string;
+    };
   };
+  content_compatibility?: ContentCompatibility;
 };
 type Props = {
   base: string;
@@ -69,6 +101,11 @@ const blankDraft = (): PlanDraft => ({
     vendor_questions: "",
   },
   pilot: { success_measure: "", completed_actions: [] },
+  planning: {
+    cost_comparison: null,
+    pilot_evaluation: null,
+    task_practice: null,
+  },
 });
 const pilotActions = [
   ["DEFINE_GOAL", "Define the goal and a measurable success criterion"],
@@ -80,6 +117,7 @@ const pilotActions = [
 const tabs = [
   ["tools", "Find and compare tools"],
   ["learning", "Build team capacity"],
+  ["practice", "Practise a useful task"],
   ["procurement", "Procurement brief"],
   ["pilot", "Pilot tracker"],
 ] as const;
@@ -88,16 +126,24 @@ const categoryLabel = (value: string) =>
     .replaceAll("_", " ")
     .toLowerCase()
     .replace(/^./, (character) => character.toUpperCase());
-function extractDraft(data: PlanData): PlanDraft {
+function extractDraft(plan: Plan): PlanDraft {
+  const { data } = plan;
   return {
     title: data.title,
     solution_ids: [...data.solution_ids],
-    learning_completed: [...data.learning_completed],
+    learning_completed: [
+      ...new Set([
+        ...(plan.content_compatibility?.learning_completed ??
+          data.learning_completed),
+        ...(plan.content_compatibility?.unavailable_learning_keys ?? []),
+      ]),
+    ],
     procurement: { ...data.procurement },
     pilot: {
       ...data.pilot,
       completed_actions: [...data.pilot.completed_actions],
     },
+    planning: data.planning ? clone(data.planning) : blankDraft().planning,
   };
 }
 function Sources({ solution }: { solution: Solution }) {
@@ -172,6 +218,10 @@ export function AIAdoptionWorkspace({
     revision_id: string;
   } | null>(null);
   const [savedSnapshot, setSavedSnapshot] = useState("");
+  const [savedContent, setSavedContent] = useState<{
+    versions: Plan["data"]["content_versions"];
+    compatibility?: ContentCompatibility;
+  } | null>(null);
   const [planChoice, setPlanChoice] = useState("");
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number][0]>("tools");
   const [search, setSearch] = useState("");
@@ -181,6 +231,9 @@ export function AIAdoptionWorkspace({
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [hasPendingSave, setHasPendingSave] = useState(false);
+  const [unavailablePracticeId, setUnavailablePracticeId] = useState<
+    string | null
+  >(null);
   const [discard, setDiscard] = useState<"open" | "new" | null>(null);
   const epoch = useRef(0);
   const busyRef = useRef(false);
@@ -202,7 +255,8 @@ export function AIAdoptionWorkspace({
       draft.learning_completed.length > 0 ||
       Object.values(draft.procurement).some(Boolean) ||
       !!draft.pilot.success_measure ||
-      draft.pilot.completed_actions.length > 0;
+      draft.pilot.completed_actions.length > 0 ||
+      Object.values(draft.planning).some((value) => value !== null);
   const selected = draft.solution_ids
     .map((id) => solutions?.solutions.find((solution) => solution.id === id))
     .filter((value): value is Solution => !!value);
@@ -215,6 +269,7 @@ export function AIAdoptionWorkspace({
     pending.current = null;
     busyRef.current = false;
     setHasPendingSave(false);
+    setUnavailablePracticeId(null);
     setDiscard(null);
     setBusy(false);
     setSolutions(null);
@@ -223,6 +278,7 @@ export function AIAdoptionWorkspace({
     setDraft(blankDraft());
     setHead(null);
     setSavedSnapshot("");
+    setSavedContent(null);
     setPlanChoice("");
     setError("");
     setNotice("");
@@ -253,6 +309,16 @@ export function AIAdoptionWorkspace({
     setDraft(fn);
     setNotice("");
   }
+  function updatePlanning<K extends keyof Planning>(
+    key: K,
+    value: Planning[K],
+  ) {
+    if (!canManage) return;
+    edit((previous) => ({
+      ...previous,
+      planning: { ...previous.planning, [key]: clone(value) },
+    }));
+  }
   function toggleSolution(id: string) {
     if (!draft.solution_ids.includes(id) && draft.solution_ids.length >= 4) {
       setNotice("Choose up to four tools. Remove one before adding another.");
@@ -282,7 +348,7 @@ export function AIAdoptionWorkspace({
         { signal: abort.current?.signal },
       );
       if (current !== epoch.current) return;
-      const nextDraft = extractDraft(plan.data);
+      const nextDraft = extractDraft(plan);
       if (beforeLoad !== latestData.current) {
         setNotice(
           "Your brief or draft changed while the saved plan was opening. Your edits remain here; open it again when ready.",
@@ -290,11 +356,16 @@ export function AIAdoptionWorkspace({
         return;
       }
       setDraft(nextDraft);
-      onLoadProfile(plan.data.profile);
+      const nextProfile = clone(plan.data.profile);
+      onLoadProfile(nextProfile);
+      setSavedContent({
+        versions: clone(plan.data.content_versions ?? null) ?? undefined,
+        compatibility: plan.content_compatibility
+          ? clone(plan.content_compatibility)
+          : undefined,
+      });
       setHead({ object_id: plan.object_id, revision_id: plan.revision_id });
-      setSavedSnapshot(
-        JSON.stringify({ ...nextDraft, profile: plan.data.profile }),
-      );
+      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
       setNotice(
         "Saved plan opened. These are shared draft records for your organisation.",
       );
@@ -316,6 +387,7 @@ export function AIAdoptionWorkspace({
     setDraft(blankDraft());
     setHead(null);
     setSavedSnapshot("");
+    setSavedContent(null);
     setPlanChoice("");
     setError("");
     setNotice(
@@ -334,6 +406,68 @@ export function AIAdoptionWorkspace({
       ) {
         setError(
           "Complete a valid organisation goal and team size in the brief above before saving.",
+        );
+        return;
+      }
+      if (!draft.title.trim()) {
+        setError("Enter a plan name before saving.");
+        return;
+      }
+      if (draft.planning.cost_comparison) {
+        const invalid = validateCostInput(draft.planning.cost_comparison);
+        if (invalid) {
+          setActiveTab("procurement");
+          setError(
+            "Complete the cost comparison before saving, or clear it: " +
+              invalid,
+          );
+          return;
+        }
+      }
+      if (draft.planning.pilot_evaluation) {
+        const invalid = validatePilotInput(draft.planning.pilot_evaluation);
+        if (invalid) {
+          setActiveTab("pilot");
+          setError(
+            "Complete the pilot evaluation before saving, or clear it: " +
+              invalid,
+          );
+          return;
+        }
+      }
+      if (draft.planning.task_practice) {
+        const practice = draft.planning.task_practice;
+        if (practice.template_id === unavailablePracticeId) {
+          setActiveTab("practice");
+          setError(
+            "The saved practice exercise is unavailable in the current guide. Review the preserved worksheet and deliberately replace or clear it before saving.",
+          );
+          return;
+        }
+        if (
+          !practice.template_id ||
+          [practice.brief, practice.draft, practice.review_notes].some(
+            (text) => text.length > 2500,
+          ) ||
+          practice.checked_steps.length > 10 ||
+          new Set(practice.checked_steps).size !== practice.checked_steps.length
+        ) {
+          setActiveTab("practice");
+          setError(
+            "Keep practice text within 2,500 characters per field and use each self-check once before saving.",
+          );
+          return;
+        }
+      }
+      const knownLearning = new Set(
+        catalog.learning_paths.flatMap(
+          (path) => path.lessons?.map((lesson) => lesson.key) ?? [],
+        ),
+      );
+      if (draft.learning_completed.some((key) => !knownLearning.has(key))) {
+        setActiveTab("learning");
+        setError(
+          "Some saved learning progress is unavailable in the current guide. Review and remove those entries before saving; historical revisions remain unchanged.",
         );
         return;
       }
@@ -369,6 +503,9 @@ export function AIAdoptionWorkspace({
       });
       setPlanChoice(receipt.object_id);
       setSavedSnapshot(JSON.stringify(captured.data));
+      // Receipts identify the revision but do not return its content edition metadata.
+      // Keep compatibility unknown until the saved revision is reopened.
+      setSavedContent({ versions: undefined });
       pending.current = null;
       setHasPendingSave(false);
       setNotice("Plan saved. Any edits made while saving remain unsaved.");
@@ -560,6 +697,49 @@ export function AIAdoptionWorkspace({
         every field at organisation level; do not include beneficiary or
         personal data.
       </p>
+      {head && savedContent && (
+        <section
+          className="ai-content-status"
+          aria-labelledby="ai-content-status"
+        >
+          <h4 id="ai-content-status">Saved guide compatibility</h4>
+          <p>
+            Learning guide:{" "}
+            {categoryLabel(
+              savedContent.compatibility?.catalog_version_status ?? "UNKNOWN",
+            )}
+            {savedContent.versions?.catalog &&
+              " · " + savedContent.versions.catalog}
+            . Tool directory:{" "}
+            {categoryLabel(
+              savedContent.compatibility?.solutions_version_status ?? "UNKNOWN",
+            )}
+            {savedContent.versions?.solutions &&
+              " · " + savedContent.versions.solutions}
+            .
+          </p>
+          <p className="muted">
+            You are viewing current guidance. Older guide text and product terms
+            are not archived here. Reopen a saved plan after saving to refresh
+            its edition status.
+          </p>
+          {savedContent.compatibility?.legacy_learning_keys.length ? (
+            <p>
+              Saved learning progress has been matched to stable lesson
+              identifiers for this view. Reading this plan leaves its stored
+              revision unchanged.
+            </p>
+          ) : null}
+          {savedContent.compatibility?.unavailable_learning_keys.length ? (
+            <p className="ai-notice">
+              Unavailable saved learning entries:{" "}
+              {savedContent.compatibility.unavailable_learning_keys.join(", ")}.
+              They are not counted as completion in the current guide. The
+              original saved revision remains unchanged.
+            </p>
+          ) : null}
+        </section>
+      )}
       {!canManage && (
         <p className="ai-notice">
           You can browse tools and read saved plans. Saving an adoption plan
@@ -757,7 +937,7 @@ export function AIAdoptionWorkspace({
                   </p>
                 ))}
               {selected.length > 0 && (
-                <div
+                <section
                   className="ai-comparison-scroll"
                   tabIndex={0}
                   aria-label="Tool comparison table"
@@ -832,7 +1012,7 @@ export function AIAdoptionWorkspace({
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </section>
               )}
             </section>
           )}
@@ -849,11 +1029,21 @@ export function AIAdoptionWorkspace({
             {catalog.learning_paths.map((path) => (
               <article key={path.id}>
                 <h5>{path.title}</h5>
-                {path.steps.map((step, index) => {
-                  const key = path.id + ":" + index;
-                  const lesson = path.lessons?.find(
-                    (value) => value.key === key,
-                  );
+                {!path.lessons?.length && (
+                  <>
+                    <ul>
+                      {path.steps.map((step) => (
+                        <li key={step}>{step}</li>
+                      ))}
+                    </ul>
+                    <p className="muted">
+                      Completion tracking is unavailable until stable lesson
+                      guidance loads.
+                    </p>
+                  </>
+                )}
+                {path.lessons?.map((lesson) => {
+                  const key = lesson.key;
                   return (
                     <div className="ai-learning-step" key={key}>
                       <label className="ai-checkbox">
@@ -874,19 +1064,85 @@ export function AIAdoptionWorkspace({
                             }))
                           }
                         />
-                        {step}
+                        {lesson.title}
                       </label>
-                      {lesson && <Lesson lesson={lesson} />}
+                      <Lesson lesson={lesson} />
                     </div>
                   );
                 })}
               </article>
             ))}
           </div>
+          {draft.learning_completed
+            .filter(
+              (key) =>
+                !catalog.learning_paths.some((path) =>
+                  path.lessons?.some((lesson) => lesson.key === key),
+                ),
+            )
+            .map((key) => (
+              <p className="ai-notice" key={key}>
+                This saved learning entry ({key}) is unavailable in the current
+                guide.
+                {canManage && (
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() =>
+                      edit((previous) => ({
+                        ...previous,
+                        learning_completed: previous.learning_completed.filter(
+                          (item) => item !== key,
+                        ),
+                      }))
+                    }
+                  >
+                    Remove unavailable progress from this draft
+                  </button>
+                )}
+              </p>
+            ))}
           <p className="muted">
-            {draft.learning_completed.length} learning steps recorded complete.
-            Save your plan to keep this progress.
+            {
+              draft.learning_completed.filter((key) =>
+                catalog.learning_paths.some((path) =>
+                  path.lessons?.some((lesson) => lesson.key === key),
+                ),
+              ).length
+            }{" "}
+            learning steps recorded complete. Save your plan to keep this
+            progress.
           </p>
+        </section>
+      )}
+      {activeTab === "practice" && (
+        <section aria-label="Guided task practice">
+          {canManage && draft.planning.task_practice && (
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => updatePlanning("task_practice", null)}
+            >
+              Clear practice worksheet from this draft
+            </button>
+          )}
+          <AITaskPractice
+            key={base + ":practice:" + (head?.object_id ?? "new")}
+            base={base}
+            request={request}
+            explain={explain}
+            value={draft.planning.task_practice}
+            sourceVersion={savedContent?.versions?.practice}
+            onUnavailableChange={(unavailable) =>
+              setUnavailablePracticeId(
+                unavailable
+                  ? (draft.planning.task_practice?.template_id ?? null)
+                  : null,
+              )
+            }
+            onChange={(value) => updatePlanning("task_practice", value)}
+            canManage={canManage}
+          />
         </section>
       )}
       {activeTab === "procurement" && (
@@ -940,6 +1196,15 @@ export function AIAdoptionWorkspace({
               </label>
             ))}
           </fieldset>
+          <AICostComparison
+            key={base + ":cost:" + (head?.object_id ?? "new")}
+            base={base}
+            request={request}
+            explain={explain}
+            value={draft.planning.cost_comparison}
+            onChange={(value) => updatePlanning("cost_comparison", value)}
+            canManage={canManage}
+          />
           <div className="ai-cards">
             {catalog.procurement_criteria.map((criterion) => (
               <article key={criterion.id}>
@@ -1011,16 +1276,25 @@ export function AIAdoptionWorkspace({
             {draft.pilot.completed_actions.length} of {pilotActions.length}{" "}
             pilot actions recorded. Save your plan to keep the tracker.
           </p>
+          <AIPilotEvaluation
+            key={base + ":pilot:" + (head?.object_id ?? "new")}
+            base={base}
+            request={request}
+            explain={explain}
+            value={draft.planning.pilot_evaluation}
+            onChange={(value) => updatePlanning("pilot_evaluation", value)}
+            canManage={canManage}
+          />
         </section>
       )}
       {discard && (
         <Dialog title="Discard unsaved edits?" close={() => setDiscard(null)}>
-          <p>
+          <p className="ai-discard-copy">
             Your current brief, shortlist and plan edits have not been saved.
             Opening another plan or starting a new one replaces them in this
             view.
           </p>
-          <div className="ai-actions">
+          <div className="ai-discard-actions dialog-actions">
             <button
               type="button"
               className="secondary"

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.21.0",
+    "version": "1.22.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -41839,12 +41839,285 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/cost-comparison": {
+      "post": {
+        "operationId": "compare_ai_procurement_costs",
+        "summary": "compare ai procurement costs",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.22.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AICostComparisonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deterministic unapproved planning result; no record or external action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AICostComparisonResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation": {
+      "post": {
+        "operationId": "evaluate_ai_pilot",
+        "summary": "evaluate ai pilot",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.22.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIPilotEvaluationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deterministic unapproved planning result; no record or external action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIPilotEvaluationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/task-templates": {
+      "get": {
+        "operationId": "get_ai_task_templates",
+        "summary": "Get guided nonprofit task practice",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.22.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned editorial exercises; no generated or approved output",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AITaskPracticeTemplates"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/plans": {
       "get": {
         "operationId": "list_ai_adoption_plans",
         "summary": "list ai adoption plans",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -41970,7 +42243,7 @@
         "operationId": "create_ai_adoption_plan",
         "summary": "create ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -42091,7 +42364,7 @@
         "operationId": "get_ai_adoption_plan",
         "summary": "get ai adoption plan",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -42209,7 +42482,7 @@
         "operationId": "update_ai_adoption_plan",
         "summary": "update ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -69200,6 +69473,560 @@
           "disclaimer"
         ]
       },
+      "AITaskPracticeData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "brief": {
+            "type": "string",
+            "maxLength": 2500
+          },
+          "draft": {
+            "type": "string",
+            "maxLength": 2500
+          },
+          "review_notes": {
+            "type": "string",
+            "maxLength": 2500
+          },
+          "checked_steps": {
+            "type": "array",
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 64
+            }
+          }
+        },
+        "required": [
+          "template_id",
+          "brief",
+          "draft",
+          "review_notes",
+          "checked_steps"
+        ]
+      },
+      "AITaskPracticeTemplate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "input_guidance": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 2500
+            }
+          },
+          "example_brief": {
+            "type": "string",
+            "maxLength": 2500
+          },
+          "allowed_inputs": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 2500
+            }
+          },
+          "prohibited_inputs": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 2500
+            }
+          },
+          "prompt_framework": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "maxLength": 2500
+            }
+          },
+          "review_steps": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "purpose",
+          "input_guidance",
+          "example_brief",
+          "allowed_inputs",
+          "prohibited_inputs",
+          "prompt_framework",
+          "review_steps"
+        ]
+      },
+      "AITaskPracticeTemplates": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "templates": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AITaskPracticeTemplate"
+            }
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "content_version",
+          "templates",
+          "disclaimer"
+        ]
+      },
+      "AICostLine": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+            "maxLength": 64
+          },
+          "category": {
+            "enum": [
+              "SETUP",
+              "SUBSCRIPTION",
+              "USAGE",
+              "INTEGRATION",
+              "TRAINING",
+              "REVIEW",
+              "SUPPORT",
+              "EXIT",
+              "OTHER"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "quantity": {
+            "type": "string",
+            "maxLength": 39,
+            "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "unit_amount": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 39,
+                "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cadence": {
+            "enum": [
+              "ONE_OFF",
+              "MONTHLY"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "category",
+          "label",
+          "quantity",
+          "unit_amount",
+          "cadence"
+        ]
+      },
+      "AICostOffer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+            "maxLength": 64
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "lines": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AICostLine"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "lines"
+        ]
+      },
+      "AICostComparisonRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "period_months": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60
+          },
+          "offers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/AICostOffer"
+            }
+          }
+        },
+        "required": [
+          "currency",
+          "period_months",
+          "offers"
+        ]
+      },
+      "AICostOfferResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+            "maxLength": 64
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "known_subtotal": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "complete_total": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "missing_line_ids": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+              "maxLength": 64
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "known_subtotal",
+          "complete_total",
+          "missing_line_ids"
+        ]
+      },
+      "AICostComparisonResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "period_months": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60
+          },
+          "status": {
+            "enum": [
+              "COMPLETE",
+              "INCOMPLETE"
+            ]
+          },
+          "offers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/AICostOfferResult"
+            }
+          },
+          "cheapest_offer_ids": {
+            "type": "array",
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+              "maxLength": 64
+            }
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "currency",
+          "period_months",
+          "status",
+          "offers",
+          "cheapest_offer_ids",
+          "disclaimer"
+        ]
+      },
+      "AIPilotSample": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sample_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "total_drafting_minutes": {
+            "type": "string",
+            "maxLength": 39,
+            "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "total_review_minutes": {
+            "type": "string",
+            "maxLength": 39,
+            "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "factual_corrections": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "sample_size",
+          "total_drafting_minutes",
+          "total_review_minutes",
+          "factual_corrections"
+        ]
+      },
+      "AIPilotEvaluationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "task_label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/AIPilotSample"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/AIPilotSample"
+          },
+          "comparable": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "task_label",
+          "baseline",
+          "pilot",
+          "comparable",
+          "notes"
+        ]
+      },
+      "AIPilotMeasures": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "total_minutes": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^-?[0-9]+(?:\\.[0-9]{1,6})?$"
+          },
+          "minutes_per_item": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^-?[0-9]+(?:\\.[0-9]{1,6})?$"
+          },
+          "factual_corrections_per_item": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^-?[0-9]+(?:\\.[0-9]{1,6})?$"
+          }
+        },
+        "required": [
+          "total_minutes",
+          "minutes_per_item",
+          "factual_corrections_per_item"
+        ]
+      },
+      "AIPilotEvaluationResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "const": "SELF_REPORTED_DRAFT"
+          },
+          "task_label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "comparable": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "baseline": {
+                "$ref": "#/components/schemas/AIPilotSample"
+              },
+              "pilot": {
+                "$ref": "#/components/schemas/AIPilotSample"
+              }
+            },
+            "required": [
+              "baseline",
+              "pilot"
+            ]
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/AIPilotMeasures"
+          },
+          "pilot": {
+            "$ref": "#/components/schemas/AIPilotMeasures"
+          },
+          "improvement": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "DEFINED",
+                  "UNDEFINED"
+                ]
+              },
+              "percent": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 100,
+                    "pattern": "^-?[0-9]+(?:\\.[0-9]{1,6})?$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reason": {
+                "enum": [
+                  "COMPARABLE_SAMPLES",
+                  "ZERO_BASELINE",
+                  "SAMPLES_NOT_COMPARABLE"
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "percent",
+              "reason"
+            ]
+          },
+          "disclaimer": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "status",
+          "task_label",
+          "comparable",
+          "notes",
+          "source",
+          "baseline",
+          "pilot",
+          "improvement",
+          "disclaimer"
+        ]
+      },
       "AIAdoptionPlanProcurement": {
         "type": "object",
         "additionalProperties": false,
@@ -69256,6 +70083,47 @@
           "completed_actions"
         ]
       },
+      "AIAdoptionPlanningInputs": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cost_comparison": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AICostComparisonRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pilot_evaluation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AIPilotEvaluationRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "task_practice": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AITaskPracticeData"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "cost_comparison",
+          "pilot_evaluation",
+          "task_practice"
+        ]
+      },
       "AIAdoptionPlanData": {
         "type": "object",
         "additionalProperties": false,
@@ -69291,6 +70159,9 @@
           },
           "pilot": {
             "$ref": "#/components/schemas/AIAdoptionPlanPilot"
+          },
+          "planning": {
+            "$ref": "#/components/schemas/AIAdoptionPlanningInputs"
           }
         },
         "required": [
@@ -69377,6 +70248,9 @@
           "pilot": {
             "$ref": "#/components/schemas/AIAdoptionPlanPilot"
           },
+          "planning": {
+            "$ref": "#/components/schemas/AIAdoptionPlanningInputs"
+          },
           "content_versions": {
             "type": "object",
             "additionalProperties": false,
@@ -69386,6 +70260,10 @@
               },
               "solutions": {
                 "type": "string"
+              },
+              "practice": {
+                "type": "string",
+                "maxLength": 100
               }
             },
             "required": [
@@ -69421,13 +70299,96 @@
           },
           "data": {
             "$ref": "#/components/schemas/AIAdoptionPlanStoredData"
+          },
+          "content_compatibility": {
+            "$ref": "#/components/schemas/AIAdoptionPlanCompatibility"
           }
         },
         "required": [
           "object_id",
           "revision_id",
           "business_state",
-          "data"
+          "data",
+          "content_compatibility"
+        ]
+      },
+      "AIAdoptionPlanCompatibility": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "current_versions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "catalog": {
+                "type": "string"
+              },
+              "solutions": {
+                "type": "string"
+              },
+              "practice": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "catalog",
+              "solutions"
+            ]
+          },
+          "catalog_version_status": {
+            "enum": [
+              "CURRENT",
+              "STALE",
+              "UNKNOWN"
+            ]
+          },
+          "solutions_version_status": {
+            "enum": [
+              "CURRENT",
+              "STALE",
+              "UNKNOWN"
+            ]
+          },
+          "learning_completed": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "legacy_learning_keys": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "unavailable_learning_keys": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "maxItems": 100
+          },
+          "historical_snapshots_available": {
+            "const": false
+          }
+        },
+        "required": [
+          "current_versions",
+          "catalog_version_status",
+          "solutions_version_status",
+          "learning_completed",
+          "legacy_learning_keys",
+          "unavailable_learning_keys",
+          "historical_snapshots_available"
         ]
       },
       "AIAdoptionPlanList": {

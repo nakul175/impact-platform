@@ -103,7 +103,11 @@ export function AIEnablementPanel({
   capabilities,
   Dialog,
 }: Props) {
-  const [catalog, setCatalog] = useState<Catalog | null>(null);
+  const [catalogState, setCatalogState] = useState<{
+    base: string;
+    data: Catalog;
+  } | null>(null);
+  const catalog = catalogState?.base === base ? catalogState.data : null;
   const [profile, setProfile] = useState<Profile>(initialProfile);
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [advisory, setAdvisory] = useState<{
@@ -116,13 +120,18 @@ export function AIEnablementPanel({
   const [loading, setLoading] = useState(true);
   const generation = useRef(0);
   const pendingAdvisory = useRef<string | null>(null);
+  const busyRef = useRef(false);
+  const sendingAbort = useRef<AbortController | null>(null);
   const [consent, setConsent] = useState(false);
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     generation.current += 1;
-    setCatalog(null);
+    sendingAbort.current?.abort();
+    busyRef.current = false;
+    setCatalogState(null);
     setAssessment(null);
     setAdvisory(null);
     setError("");
@@ -132,9 +141,9 @@ export function AIEnablementPanel({
     setConsent(false);
     setLoading(canRead);
     if (canRead)
-      request(base + "ai-enablement/catalog")
+      request(base + "ai-enablement/catalog", { signal: controller.signal })
         .then((result) => {
-          if (active) setCatalog(result);
+          if (active) setCatalogState({ base, data: result });
         })
         .catch((e) => {
           if (active) setError(explain(e));
@@ -145,10 +154,15 @@ export function AIEnablementPanel({
     return () => {
       active = false;
       generation.current += 1;
+      controller.abort();
+      sendingAbort.current?.abort();
     };
   }, [base, canRead]);
   const update = <K extends keyof Profile>(key: K, value: Profile[K]) => {
     generation.current += 1;
+    sendingAbort.current?.abort();
+    busyRef.current = false;
+    setBusy(null);
     setProfile((previous) => ({ ...previous, [key]: value }));
     pendingAdvisory.current = null;
     setConsent(false);
@@ -158,7 +172,9 @@ export function AIEnablementPanel({
   };
   function loadProfile(value: Profile) {
     generation.current += 1;
-    setProfile(value);
+    sendingAbort.current?.abort();
+    busyRef.current = false;
+    setProfile({ ...value });
     pendingAdvisory.current = null;
     setConsent(false);
     setAssessment(null);
@@ -167,12 +183,16 @@ export function AIEnablementPanel({
     setBusy(null);
   }
   async function send(kind: "assessment" | "advisory") {
+    if (busyRef.current || !canRead || !catalog) return;
     if (
       kind === "advisory" &&
       (!canAdvise || !catalog?.advisory_available || !consent)
     )
       return;
     const currentGeneration = generation.current;
+    const controller = new AbortController();
+    sendingAbort.current = controller;
+    busyRef.current = true;
     if (kind === "advisory" && !pendingAdvisory.current) {
       pendingAdvisory.current = JSON.stringify({
         operation_id: crypto.randomUUID(),
@@ -186,6 +206,7 @@ export function AIEnablementPanel({
     try {
       const result = await request(base + "ai-enablement/" + kind, {
         method: "POST",
+        signal: controller.signal,
         body:
           kind === "advisory"
             ? pendingAdvisory.current!
@@ -198,9 +219,16 @@ export function AIEnablementPanel({
         setAdvisory(result);
       }
     } catch (e) {
-      if (currentGeneration === generation.current) setError(explain(e));
+      if (
+        currentGeneration === generation.current &&
+        !controller.signal.aborted
+      )
+        setError(explain(e));
     } finally {
-      if (currentGeneration === generation.current) setBusy(null);
+      if (currentGeneration === generation.current) {
+        busyRef.current = false;
+        setBusy(null);
+      }
     }
   }
   if (!canRead)
@@ -468,6 +496,7 @@ export function AIEnablementPanel({
               </section>
             )}
             <AIAdoptionWorkspace
+              key={base}
               base={base}
               request={request}
               explain={explain}

@@ -5,7 +5,7 @@ import re
 from .ai_learning_content import enrich_learning_paths
 
 SCHEMA_VERSION = "1.0"
-CONTENT_VERSION = "nonprofit-2026-10-05.2"
+CONTENT_VERSION = "nonprofit-2026-10-05.3"
 SECTORS = {"GENERAL", "EDUCATION", "HEALTH", "LIVELIHOODS", "ENVIRONMENT"}
 PROFILE_FIELDS = {"sector", "team_size", "goal", "data_readiness", "ai_experience", "sensitive_data"}
 

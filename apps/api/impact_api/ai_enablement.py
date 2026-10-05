@@ -1,4 +1,4 @@
-"""Tenant-authorised AI drafts with durable claims, bounded spending and sealed replay."""
+"""Tenant-authorised planning and AI drafts with bounded attempts and sealed replay."""
 
 from datetime import datetime, timezone
 import hashlib
@@ -67,6 +67,27 @@ class AIEnablement:
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "get_ai_solutions")
             return solutions_catalog()
+
+    def cost_comparison(self, identity, tenant, body):
+        from .ai_procurement_costs import compare_costs
+
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "compare_ai_procurement_costs")
+            return compare_costs(body)
+
+    def pilot_evaluation(self, identity, tenant, body):
+        from .ai_pilot_outcomes import evaluate_pilot_outcomes
+
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "evaluate_ai_pilot")
+            return evaluate_pilot_outcomes(body)
+
+    def task_templates(self, identity, tenant):
+        from .ai_task_practice import task_templates
+
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "get_ai_task_templates")
+            return task_templates()
 
     @staticmethod
     def _validate(profile):

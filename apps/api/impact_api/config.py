@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 from . import keyring
 
 ROOT = Path(__file__).resolve().parents[3]
-BOOLEAN_FIELDS = {"dev_auth", "dev_db_serial", "require_unprivileged_db"}
+BOOLEAN_FIELDS = {"dev_auth", "dev_db_serial", "require_unprivileged_db", "ai_enabled"}
 TRUE_VALUES = {"1", "true", "yes", "on"}
 FALSE_VALUES = {"0", "false", "no", "off", ""}
 
@@ -94,6 +94,9 @@ class Settings:
     provider_admin_realm: str = ""
     provider_admin_client_id: str = ""
     provider_admin_client_secret: str = field(default="", repr=False)
+    ai_enabled: bool = False
+    ai_api_key: str = field(default="", repr=False)
+    ai_model: str = "gpt-5-mini"
 
     @property
     def unprivileged_db_required(self):
@@ -121,6 +124,16 @@ class Settings:
         for name in BOOLEAN_FIELDS:
             if name in data and not isinstance(data[name], bool):
                 raise ValueError("Configuration field " + name + " must be a JSON boolean")
+        if os.environ.get("OPENAI_API_KEY"):
+            data["ai_api_key"] = os.environ["OPENAI_API_KEY"]
+        # The approved ignored local file is only read by development, never by CI or staging.
+        if data.get("environment") == "development" and not data.get("ai_api_key"):
+            local = ROOT / ".env.local"
+            if local.is_file():
+                for line in local.read_text().splitlines():
+                    name, separator, value = line.partition("=")
+                    if separator and name.strip() == "OPENAI_API_KEY":
+                        data["ai_api_key"] = value.strip().strip("\"'")
         s = cls(**data)
         if s.environment not in {"development", "test", "staging", "production"} or len(s.cookie_secret) < 48:
             raise ValueError("Invalid environment or cookie secret")

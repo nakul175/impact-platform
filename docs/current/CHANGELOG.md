@@ -1,5 +1,7 @@
 # Documentation change record
 
+**Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
+
 ## 5 October 2026 — proposed build 0.29.0: Mercy Corps reuse
 
 Approved-version logframe CSV/XLSX export, separate permission, per-download audit, deterministic Unicode workbook, CSV formula protection, source attribution and license. Planning screen links and automated download assertions added. No accepted requirement or deployment; see [release note](../RELEASE-0.29-logframe-reuse.md).

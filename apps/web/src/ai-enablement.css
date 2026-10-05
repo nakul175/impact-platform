@@ -1,0 +1,69 @@
+.ai-enablement .ai-content {
+  padding: 1.25rem;
+}
+.ai-enablement .ai-content > section {
+  margin-bottom: 2rem;
+}
+.ai-enablement .ai-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+}
+.ai-enablement article {
+  border: 1px solid #dce2d8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-enablement h4 {
+  margin-top: 0;
+}
+.ai-enablement h5 {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.ai-enablement li {
+  margin-bottom: 0.5rem;
+}
+.ai-enablement .ai-notice {
+  background: #edf2e7;
+  border-left: 3px solid #506b37;
+  padding: 0.85rem 1rem;
+}
+.ai-enablement .ai-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.ai-enablement .ai-checkbox {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+.ai-enablement .ai-checkbox input {
+  width: auto;
+  margin-top: 0.2rem;
+}
+.ai-enablement .ai-draft {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+  border: 1px solid #dce2d8;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.ai-enablement summary {
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .ai-enablement .ai-content {
+    padding: 0.85rem;
+  }
+  .ai-enablement .ai-actions button {
+    width: 100%;
+  }
+}

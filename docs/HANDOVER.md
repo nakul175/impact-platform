@@ -1,6 +1,8 @@
-# Handover — Impact Platform at build 0.27.0
+# Handover — Impact Platform and nonprofit AI enablement
 
-**Local proposal (5 October):** `release/0.29-logframe-reuse` adds governed approved-revision CSV/XLSX logframe exports, two domain operations (1.19.0), no migration, and explicit upstream attribution. Build 0.29.0 is local only; current main/staging claims below remain historical. See [RELEASE-0.29-logframe-reuse.md](RELEASE-0.29-logframe-reuse.md). Full CI and owner approval remain required before merge.
+**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+
+**Merged and deployed (5 October):** PR #84 added governed CSV/XLSX approved-logframe exports as build 0.29.0, domain API 1.19.0, schema 33. All four CI jobs passed on `71a7d1b`; owner-approved merge `69c2cca618ae8dcde8f981c48ece8a1e60f0ff70` deployed successfully at 04:16 UTC (09:46 IST), with healthy services and no alerts. The earlier 0.27/0.28 observations below are historical. See [RELEASE-0.29-logframe-reuse.md](RELEASE-0.29-logframe-reuse.md).
 
 **After handover (4 October):** PR #81 merged as `e6c23b4` with four green jobs on its PR head and on `main`. Build 0.28.0 and migration 0033 add a separate application executor and queue import commits above 50 rows. PR #82 added collection-round and assignment screens and merged as `6712970` with four green PR jobs. Its `main` run found a Sunday-dependent backup test expectation; see [RELEASE-0.28-ci-sunday.md](RELEASE-0.28-ci-sunday.md). Staging health has not been independently verified: the last observed live facts below still describe build 0.27.0 at #80. Kobo must wait for a live status of `ok`, current deployed commit, schema 33 and a running executor.
 

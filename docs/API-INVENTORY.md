@@ -13,6 +13,9 @@
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/reject` | `grant.approve` |
 | GET | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.read` |
 | POST | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.create` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

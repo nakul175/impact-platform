@@ -133,6 +133,10 @@ services:
     environment:
       IMPACT_ENVIRONMENT: staging
       IMPACT_REQUIRE_UNPRIVILEGED_DB: "1"
+      # API only: advisory is explicitly enabled by an operator, never bundled into the image.
+      IMPACT_AI_ENABLED: ${IMPACT_AI_ENABLED:-0}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      IMPACT_AI_MODEL: ${IMPACT_AI_MODEL:-gpt-5-mini}
       IMPACT_APP_DSN: postgresql://impact_app_login:${IMPACT_LOGIN_PASSWORD_APP}@postgres:5432/impact
       IMPACT_IDENTITY_DSN: postgresql://impact_identity_login:${IMPACT_LOGIN_PASSWORD_IDENTITY}@postgres:5432/impact
       IMPACT_PLATFORM_DSN: postgresql://impact_platform_login:${IMPACT_LOGIN_PASSWORD_PLATFORM}@postgres:5432/impact

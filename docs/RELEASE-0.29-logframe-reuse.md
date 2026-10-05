@@ -1,8 +1,8 @@
 # v0.29 — approved logframe spreadsheet exports from TolaData reuse
 
-Proposed local build 0.29.0 · schema 33 unchanged · domain API 1.19.0 (232 operations) ·
+Merged build 0.29.0 · schema 33 unchanged · domain API 1.19.0 (232 operations) ·
 platform API 1.9.0 unchanged · 113 PARTIAL / 194 PENDING / 0 accepted unchanged.
-Branch `release/0.29-logframe-reuse`, based on main `5676e02`. Not merged or deployed.
+PR #84 merged by owner approval as `69c2cca` on 5 October 2026 after all four CI jobs passed. Staging deployed that commit successfully at 04:16 UTC (09:46 IST), schema 33, with healthy services and no alerts. The original branch was based on main `5676e02`.
 
 ## Delivered
 

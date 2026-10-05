@@ -1,5 +1,5 @@
 {
-  "version": "1.19.0",
+  "version": "1.20.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5963,6 +5963,56 @@
       "field_filter_required": false,
       "state_guard": "Identifiers, codes and correlation ids only; never a payload or secret.",
       "audit": false
+    },
+    {
+      "operation_id": "get_ai_enablement_catalog",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/catalog",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "assess_ai_enablement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/assessment",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_advisory",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "create_reporting_calendar",

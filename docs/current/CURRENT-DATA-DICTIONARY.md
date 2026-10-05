@@ -1,5 +1,7 @@
 # Current data dictionary and schema evolution
 
+Local proposed build 0.30.0, schema 34: migration 0034 adds insert-only, forced-RLS AI advisory request/result registers. Only `impact_app` receives SELECT/INSERT; drafts are sealed, server-generated record IDs are independent from operation IDs. Not merged or deployed.
+
 Proposed build 0.28.0, schema 33 (PR 1, not merged): 0033 adds the application executor's
 tenant-fenced `import_commit` register, its due-tenant directory and an operational heartbeat.
 The executor login is separately provisioned with membership in `impact_app` only. No
@@ -50,6 +52,8 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0031_theory_of_change.sql | 2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac |
 | 0032_forms_languages_rounds.sql | 999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b |
 | 0033_application_executor.sql | a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33 |
+
+| 0034_ai_advisory.sql | 5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415 |
 
 ## Executable schema definitions
 
@@ -4635,5 +4639,65 @@ CREATE TABLE impact.executor_heartbeat(
 );
 GRANT SELECT,INSERT,UPDATE ON impact.executor_heartbeat TO impact_app;
 GRANT SELECT ON impact.executor_heartbeat TO impact_platform;
+COMMIT;
+```
+
+### 0034 AI advisory
+
+Source: infrastructure/migrations/0034_ai_advisory.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Extend the current check, preserving kinds introduced by every prior migration.
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIAdvisoryRequest'')');
+END $$;
+
+CREATE TABLE impact.ai_advisory_request(
+ tenant_id uuid NOT NULL,
+ request_id uuid NOT NULL,
+ object_id uuid NOT NULL,
+ principal_id uuid NOT NULL,
+ fingerprint bytea NOT NULL CHECK(octet_length(fingerprint)=32),
+ reserved_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,request_id),
+ UNIQUE(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,object_id) REFERENCES impact.object_registry(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX ai_advisory_daily ON impact.ai_advisory_request(tenant_id,reserved_at);
+CREATE TABLE impact.ai_advisory_result(
+ tenant_id uuid NOT NULL,
+ request_id uuid NOT NULL,
+ sealed_output bytea,
+ failure_reason text CHECK(failure_reason='AI_PROVIDER_UNAVAILABLE'),
+ completed_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,request_id),
+ FOREIGN KEY(tenant_id,request_id) REFERENCES impact.ai_advisory_request(tenant_id,request_id),
+ CHECK((sealed_output IS NOT NULL) <> (failure_reason IS NOT NULL))
+);
+CREATE FUNCTION impact.guard_ai_advisory_insert_only() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+ BEGIN RAISE EXCEPTION 'AI advisory records are insert-only' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_advisory_insert_only() FROM PUBLIC;
+CREATE TRIGGER ai_advisory_request_immutable BEFORE UPDATE OR DELETE ON impact.ai_advisory_request
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_advisory_insert_only();
+CREATE TRIGGER ai_advisory_result_immutable BEFORE UPDATE OR DELETE ON impact.ai_advisory_result
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_advisory_insert_only();
+ALTER TABLE impact.ai_advisory_request ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_advisory_request FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_advisory_request
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_advisory_result ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_advisory_result FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_advisory_result
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_advisory_request,impact.ai_advisory_result TO impact_app;
 COMMIT;
 ```

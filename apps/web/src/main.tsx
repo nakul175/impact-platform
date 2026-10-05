@@ -4,6 +4,7 @@ import "./styles.css";
 import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
+import { AIEnablementPanel } from "./AIEnablement";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -88,6 +89,7 @@ async function api(path: string, options: RequestInit = {}): Promise<any> {
   return data;
 }
 const nav = [
+  ["ai-enablement", "AI enablement", "✦"],
   ["programmes", "Portfolio", "◫"],
   ["observations", "Measurement", "↗"],
   ["configuration", "Measurement setup", "⚙"],
@@ -110,6 +112,7 @@ const nav = [
 // match on the capability name; an empty list means always). Hidden entries are never
 // security: the server authorises every request. "My account" needs no grant.
 const areaCapabilities: Record<string, string[]> = {
+  "ai-enablement": ["ai.enablement.read"],
   programmes: ["programmes.", "programme."],
   observations: ["observations.", "observation."],
   configuration: [
@@ -173,6 +176,10 @@ function areaVisible(key: string, access: Access) {
   return held.some((cap) => prefixes.some((prefix) => cap.startsWith(prefix)));
 }
 const titles: Record<string, [string, string]> = {
+  "ai-enablement": [
+    "AI enablement",
+    "Build capacity, assess opportunities and plan responsible procurement.",
+  ],
   "workspace-settings": [
     "Workspace settings",
     "Govern roles, groups, organisation structure and workspace custody.",
@@ -770,6 +777,7 @@ function Workspace({
       accessState !== "ready" ||
       waiting ||
       route === "memberships" ||
+      route === "ai-enablement" ||
       route === "workspace-settings" ||
       route === "account" ||
       route === "configuration" ||
@@ -1038,6 +1046,14 @@ function Workspace({
               request={api}
               explain={explain}
               Dialog={Dialog}
+            />
+          ) : route === "ai-enablement" ? (
+            <AIEnablementPanel
+              key={tenant}
+              base={base}
+              request={api}
+              explain={explain}
+              capabilities={access.capabilities}
             />
           ) : route === "memberships" ? (
             <>

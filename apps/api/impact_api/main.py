@@ -35,6 +35,9 @@ from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
+from .ai_enablement import AIEnablement
+from .ai_advisory_provider import OpenAIAdvisory
+from .contracts import validate
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -97,6 +100,7 @@ def create_app():
     auth = Auth(s, db)
     account = Account(auth)
     service = Service(s, db)
+    ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
@@ -487,6 +491,26 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/collection-rounds/{obj}/coverage")
     def round_coverage(request: Request, tenant: str, obj: str):
         return service.forms.read(auth.resolve(request), uuid(tenant), "get_round_coverage", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/catalog")
+    def ai_catalog(request: Request, tenant: str):
+        return ai_enablement.catalog(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/assessment")
+    async def ai_assessment(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAssessmentRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.assessment, auth.resolve(request), uuid(tenant), body["profile"]
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory")
+    async def ai_advisory(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdvisoryRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.advisory, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
 
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
     def framework_completeness(request: Request, tenant: str, obj: str):

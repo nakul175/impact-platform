@@ -1,5 +1,7 @@
 # Impact Platform user guide
 
+**Proposed local 0.30.0 (5 October 2026):** nonprofit AI enablement, with readiness/capacity/procurement guidance and separately authorised advisory drafts. Three domain operations (1.20.0), schema 34. Not merged or deployed. See [release note](../RELEASE-0.30-nonprofit-ai-enablement.md). Marketplace transactions remain unavailable.
+
 ## Proposed logframe export (build 0.29.0, local branch)
 
 In Results framework, select a programme with an approved baseline. If you have export permission, choose **Download logframe CSV** or **Download logframe Excel**. The file names its exact approved framework version and includes its hierarchy, assumptions, relationships and exceptions. It contains indicator identifiers, not current measurement figures. This feature is not yet deployed.

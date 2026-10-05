@@ -81,3 +81,8 @@ For each delivery, update the requirement ledger, implemented OpenAPI contracts,
 Required release records still to be completed include sponsor/UAT approval, named ownership/RACI, environment-specific data/privacy decisions, the remaining native database qualification (a deployed pooler, crash restart, scale) and live identity qualification, performance/accessibility/security assessments, backup and incident drills on a deployed environment (the CI-scale restore drill is recorded but is not one), deployment/rollback evidence and the final release signoff. [Release acceptance](RELEASE-ACCEPTANCE.md) assigns role-level accountability and evidence expectations; it does not invent the missing results.
 
 See [change record](CHANGELOG.md), [documentation verification](DOCUMENTATION-QA.md) and [open next-delivery work](../NEXT-DELIVERY.md).
+
+## Nonprofit AI enablement proposal
+
+- [0.30 integrated release note](../RELEASE-0.30-nonprofit-ai-enablement.md): current implemented foundation, exact limits and future product slices.
+- [Catalogue](../RELEASE-0.30-ai-catalog.md), [workspace](../RELEASE-0.30-ai-workspace.md), and [Mercy Corps scenarios](../RELEASE-0.30-reuse-scenarios.md): component provenance and validation.

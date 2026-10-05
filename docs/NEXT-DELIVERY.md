@@ -1,6 +1,8 @@
 # Current roadmap and next delivery
 
-**Local reuse proposal (5 October):** build 0.29.0 implements the CSV/XLSX approved-logframe export part of backlog slice 5. It does not deliver libraries or standard mappings. The branch awaits full CI/owner approval and does not change the merged backlog score. See [release note](RELEASE-0.29-logframe-reuse.md).
+**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+
+**Reuse delivered (5 October):** PR #84 merged and deployed build 0.29.0 after four green CI jobs and owner approval. The CSV/XLSX approved-logframe export part of backlog slice 5 is implemented; libraries and standard mappings remain open. The owner then directed expansion into nonprofit AI adoption, capacity, procurement, comparisons, marketplace and advisory, following the MSME journey. The local 0.30 foundation above is the first slice; actual procurement and marketplace transactions remain future work.
 
 PR #81 merged as `e6c23b4`: the application executor and asynchronous import commit, migration 0033, passed all four CI jobs on the PR and `main`. Verify staging build 0.28.0, schema 33 and executor heartbeat before PR 2 builds Kobo on this executor (migration 0034). A separate UI increment for collection rounds and assignments is proposed in RELEASE-0.28-rounds-screen.md; it is unmerged and its browser evidence is pending.
 

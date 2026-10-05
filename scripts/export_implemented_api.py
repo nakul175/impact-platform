@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
 from impact_api.contracts import SPEC  # noqa: E402
+from impact_api.ai_enablement_contracts import IMPLEMENTED as AI_ENABLEMENT_ROUTES  # noqa: E402
 from impact_api.service import READ_ROUTES, WRITE_ROUTES, ACTIONS  # noqa: E402
 from impact_api.administration_contracts import COMMANDS, ADMIN_READS  # noqa: E402
 from impact_api.measurement_contracts import SPECIAL_READS  # noqa: E402
@@ -68,6 +69,7 @@ for route, action in COMMANDS:
         ("post", "/v1/tenants/{tenant_id}/" + route + ("/{object_id}/actions/" + action if action else ""))
     )
 spec = json.loads(json.dumps(SPEC))
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ENABLEMENT_ROUTES)
 spec["info"]["title"] = "Impact Platform — implemented domain API"
 spec["info"]["description"] = (
     "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."

@@ -1,5 +1,5 @@
 {
-  "build": "0.29.0",
+  "build": "0.30.0",
   "assessment_date": "2026-10-03",
   "enterprise_complete": false,
   "method": "PARTIAL means tested behavior exists for a bounded subset; PENDING does not imply that a scaffold or design contract is an implementation. No enterprise acceptance is inferred from passing subset tests.",

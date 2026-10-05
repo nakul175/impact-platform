@@ -69,6 +69,7 @@ BROWSER_MODES = {
     "admin-browser": "admin-check.mjs",
     "measurement-browser": "measurement-check.mjs",
     "planning-browser": "planning-check.mjs",
+    "ai-enablement-browser": "ai-enablement-check.mjs",
     "dashboard-browser": "dashboard-check.mjs",
     "forms-browser": "forms-check.mjs",
     "reporting-browser": "reporting-check.mjs",

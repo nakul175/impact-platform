@@ -1,5 +1,7 @@
 # Implementation boundary · v0.27.0
 
+**Local nonprofit AI enablement proposal (5 October 2026):** build 0.30.0 adds a readiness/capacity/procurement workspace and separately permitted OpenAI advisory drafts, schema 34/domain API 1.20.0. It is not merged or deployed; marketplace transactions and real supplier comparisons are not implemented. See [release note](RELEASE-0.30-nonprofit-ai-enablement.md). Original acceptance ledger unchanged.
+
 **Proposed local build 0.29.0:** approved logframe structure exported as CSV/XLSX under separate `framework.export` authority, with exact approved revision context and visibility checks on the programme and every placed indicator. No current measurement values are joined. Each download is audited. Two new domain routes, no schema change. Not merged/deployed; see [release note](RELEASE-0.29-logframe-reuse.md).
 
 Build 0.28.0 (#81 merged, staging unverified): application executor on its own `impact_app` login and backend-only process; imports above 50 rows queue an all-or-nothing commit, with current-authority checks, 60-second generation-fenced leases and independent review. See RELEASE-0.28-import-executor.md. The last verified deployed build was 0.27.0. A separate, unmerged UI increment in RELEASE-0.28-rounds-screen.md adds round setup, coverage, assignments, reassignment and pinned collection; its browser case has not run in CI.

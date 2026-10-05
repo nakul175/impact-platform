@@ -6,6 +6,8 @@
       "access-requests.read",
       "access-scopes.create",
       "access-scopes.read",
+      "ai.advisory.request",
+      "ai.enablement.read",
       "connections.read",
       "grant.approve",
       "grant.request",
@@ -41,6 +43,8 @@
       "uploads.read"
     ],
     "MEL_ADMIN": [
+      "ai.advisory.request",
+      "ai.enablement.read",
       "assignments.draft.create",
       "assignments.draft.edit",
       "assignments.read",
@@ -119,6 +123,7 @@
       "workflows.read"
     ],
     "AUTHOR": [
+      "ai.enablement.read",
       "assignments.read",
       "calculated-results.read",
       "collection-plan.submit",
@@ -198,6 +203,7 @@
       "workflows.read"
     ],
     "REVIEWER": [
+      "ai.enablement.read",
       "assignments.read",
       "calculated-results.read",
       "collection-plans.read",
@@ -239,6 +245,8 @@
       "workflows.read"
     ],
     "PROGRAMME_MANAGER": [
+      "ai.advisory.request",
+      "ai.enablement.read",
       "assignment.reassign",
       "assignments.draft.create",
       "assignments.draft.edit",
@@ -302,6 +310,7 @@
       "workflows.read"
     ],
     "DATA_STEWARD": [
+      "ai.enablement.read",
       "assignments.read",
       "calculated-results.read",
       "dashboards.read",
@@ -354,6 +363,7 @@
       "uploads.read"
     ],
     "ANALYST": [
+      "ai.enablement.read",
       "calculated-results.read",
       "dashboards.read",
       "decisions.read",

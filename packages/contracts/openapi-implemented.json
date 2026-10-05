@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.19.0",
+    "version": "1.20.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -27411,6 +27411,329 @@
         "x-contract-version": "1.17.0"
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/catalog": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_enablement_catalog",
+        "summary": "get ai enablement catalog",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.20.0",
+        "responses": {
+          "200": {
+            "description": "Editorial content or unapproved draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIEnablementCatalog"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/assessment": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "assess_ai_enablement",
+        "summary": "assess ai enablement",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.20.0",
+        "responses": {
+          "200": {
+            "description": "Editorial content or unapproved draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIEnablementAssessment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIAssessmentRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/advisory": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_advisory",
+        "summary": "create ai advisory",
+        "x-capability": "ai.advisory.request",
+        "x-contract-version": "1.20.0",
+        "responses": {
+          "200": {
+            "description": "Editorial content or unapproved draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdvisoryDraft"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIAdvisoryRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/reporting-calendars/{object_id}/actions/extend": {
       "parameters": [
         {
@@ -54127,6 +54450,144 @@
           "items",
           "next_cursor",
           "scope_label"
+        ]
+      },
+      "AIEnablementProfile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sector": {
+            "enum": [
+              "GENERAL",
+              "EDUCATION",
+              "HEALTH",
+              "LIVELIHOODS",
+              "ENVIRONMENT"
+            ]
+          },
+          "team_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "goal": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "data_readiness": {
+            "enum": [
+              "NONE",
+              "BASIC",
+              "STRUCTURED"
+            ]
+          },
+          "ai_experience": {
+            "enum": [
+              "NONE",
+              "EXPERIMENTING",
+              "REGULAR"
+            ]
+          },
+          "sensitive_data": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "sector",
+          "team_size",
+          "goal",
+          "data_readiness",
+          "ai_experience",
+          "sensitive_data"
+        ]
+      },
+      "AIAssessmentRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "AIAdvisoryRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          },
+          "consent": {
+            "const": true
+          }
+        },
+        "required": [
+          "operation_id",
+          "profile",
+          "consent"
+        ]
+      },
+      "AIEnablementCatalog": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "content_version",
+          "provenance",
+          "journey",
+          "use_cases",
+          "learning_paths",
+          "procurement_criteria",
+          "marketplace_status",
+          "advisory_available"
+        ]
+      },
+      "AIEnablementAssessment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "assessment"
+        ]
+      },
+      "AIAdvisoryDraft": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "const": "DRAFT"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "assessment": {
+            "type": "object"
+          },
+          "model": {
+            "type": "string"
+          },
+          "disclaimer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "text",
+          "assessment",
+          "model",
+          "disclaimer"
         ]
       },
       "CreateReportingCalendarData": {

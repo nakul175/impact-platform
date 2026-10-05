@@ -1,0 +1,701 @@
+{
+  "edition": "1.0",
+  "date": "2026-10-05",
+  "status": "PROPOSED_UNAPPROVED",
+  "baseline_commit": "36073f1",
+  "baseline_build": "0.30.0",
+  "baseline_schema": 35,
+  "baseline_domain_api": "1.21.0",
+  "business_requirements": [
+    {
+      "id": "BR-NPA-001",
+      "title": "Organisation goals and readiness profiles",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Teams need a shared account of their goal, people, data and constraints.",
+      "acceptance": "Authorised staff can save a named draft with sector, team size, goal, data readiness, experience and sensitive-data indicator; distinguish self-report from reviewed evidence."
+    },
+    {
+      "id": "BR-NPA-002",
+      "title": "Transparent readiness assessment",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Teams need to choose a realistic first step.",
+      "acceptance": "The same valid profile and rule version produce the same readiness stage, reasons, gaps and next steps; edits invalidate the prior assessment and no provider call is required."
+    },
+    {
+      "id": "BR-NPA-003",
+      "title": "Use cases and pilot selection",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Teams need relevant tasks with explicit prerequisites and human responsibility.",
+      "acceptance": "Each suggested use case names applicability, prerequisites, acceptance checks and human decision needs; an unsuitable or non-AI alternative can be shown without promising savings."
+    },
+    {
+      "id": "BR-NPA-004",
+      "title": "Evidence based tool discovery",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Teams need a reliable starting point for finding AI tools.",
+      "acceptance": "Every published tool names its provider, purpose, sources, review date and uncertainty; browsing does not imply approval, a quote or eligibility."
+    },
+    {
+      "id": "BR-NPA-005",
+      "title": "Comparable tools and offers",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Teams need to understand differences before choosing a solution.",
+      "acceptance": "Compare selected tools across common attributes, distinguish subscriptions from API access, and show missing costs or terms as unknown; do not manufacture a ranking."
+    },
+    {
+      "id": "BR-NPA-006",
+      "title": "Shared adoption plans",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Teams need continuity across assessment, learning, procurement and pilots.",
+      "acceptance": "Saved plans reopen with their brief, shortlist, progress and notes; edits preserve earlier revisions, stale updates conflict, and current access governs every read and retry."
+    },
+    {
+      "id": "BR-NPA-007",
+      "title": "Practical self paced learning",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Staff need to practise safe and useful AI work.",
+      "acceptance": "Lessons provide explanation, synthetic exercises and self-checks; self-recorded progress persists without being presented as competency certification."
+    },
+    {
+      "id": "BR-NPA-008",
+      "title": "Competency evidence",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Organisations need evidence that staff can perform the intended task.",
+      "acceptance": "A proposed assessment records a task rubric, submitted evidence, assessor decision and remediation; a completion checkbox alone cannot establish competence."
+    },
+    {
+      "id": "BR-NPA-009",
+      "title": "Learning programmes and cohorts",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Teams need coordinated capacity building rather than isolated lessons.",
+      "acceptance": "An authorised coordinator can assign a learning programme and review participation within organisation scope; learners see their own work and agreed sharing boundaries."
+    },
+    {
+      "id": "BR-NPA-010",
+      "title": "Consented AI advisory drafts",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Teams need tailored advice while retaining human accountability.",
+      "acceptance": "A separately permitted user explicitly consents to the submitted brief leaving the platform; the bounded draft remains unapproved, protected in storage and replayable without duplicate generation."
+    },
+    {
+      "id": "BR-NPA-011",
+      "title": "Human advisory cases",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Teams need access to accountable human support for difficult adoption decisions.",
+      "acceptance": "A case has a named adviser, agreed scope, disclosed conflict, restricted sharing, actions and recorded closure; advice alone cannot approve spending or disclose protected records."
+    },
+    {
+      "id": "BR-NPA-012",
+      "title": "AI task workbench",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Teams need help applying AI to routine tasks using approved information.",
+      "acceptance": "Approved templates define inputs, purpose, output checks and review ownership; generated work is visibly a draft and cannot execute consequential actions without an authorised human decision."
+    },
+    {
+      "id": "BR-NPA-013",
+      "title": "Procurement briefs",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Buyers need a testable problem statement before approaching suppliers.",
+      "acceptance": "An editable brief records requirements, permitted data, budget assumptions and supplier questions, retaining unknowns and avoiding invented prices or commitments."
+    },
+    {
+      "id": "BR-NPA-014",
+      "title": "Requests for offers and quotes",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Buyers need comparable written offers.",
+      "acceptance": "An authorised buyer can issue a versioned brief to named recipients after disclosure review; responses record currency, validity, inclusions, exclusions and evidence without sending messages automatically from a draft."
+    },
+    {
+      "id": "BR-NPA-015",
+      "title": "Total cost comparison",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Buyers need to compare the full cost of alternatives.",
+      "acceptance": "Comparison separates setup, recurring, usage, training, review, support and exit costs, states assumptions and dates, and excludes missing amounts from any asserted complete total."
+    },
+    {
+      "id": "BR-NPA-016",
+      "title": "Independent procurement decisions",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Purchases need accountable approval and conflict controls.",
+      "acceptance": "The requester cannot approve their own decision by the same natural person; the approver sees exact quote revisions, checks current authority and records the decision under the agreed procurement policy."
+    },
+    {
+      "id": "BR-NPA-017",
+      "title": "Supplier onboarding and publication",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "The marketplace needs attributable listings and evidence.",
+      "acceptance": "Supplier submissions and supporting evidence remain private until independently reviewed; a published snapshot identifies verification scope, expiry and conflicts and does not imply blanket certification."
+    },
+    {
+      "id": "BR-NPA-018",
+      "title": "Marketplace neutrality and conflicts",
+      "phase": "R2",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Buyers need to understand how listings and advice may be influenced.",
+      "acceptance": "Display the basis for placement, comparison and any commercial relationship; separate an editorial mapping from a verified capability or paid placement; revenue policy requires owner approval."
+    },
+    {
+      "id": "BR-NPA-019",
+      "title": "Bookings and service engagements",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Buyers and advisers need a clear record of agreed work.",
+      "acceptance": "A booking or engagement identifies parties, scope, terms, milestones and cancellation policy; external acceptance and delivery are recorded as evidence rather than inferred from an outbox intent."
+    },
+    {
+      "id": "BR-NPA-020",
+      "title": "Purchasing and payments",
+      "phase": "R3",
+      "current_state": "CONDITIONAL_TARGET",
+      "need": "Some organisations may need transactions through the platform.",
+      "acceptance": "Enable purchasing only after the owner chooses operator responsibility, financial controls and payment model; idempotency, reconciliation, refunds and independent approval must be qualified before money moves."
+    },
+    {
+      "id": "BR-NPA-021",
+      "title": "Pilot delivery and acceptance",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Organisations need to move from a shortlist to a reviewed working pilot.",
+      "acceptance": "Record the scope, success measure and actions; target delivery adds versioned milestones and independent acceptance evidence; self-recorded pilot checklists remain visibly different from accepted delivery."
+    },
+    {
+      "id": "BR-NPA-022",
+      "title": "Integration and deployment support",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Teams need controlled connections to the tools they choose.",
+      "acceptance": "Connections use reviewed scopes and server-side secrets, support revocation and failure visibility, and begin with synthetic trials; no integration can broaden data access or deploy from unapproved advice."
+    },
+    {
+      "id": "BR-NPA-023",
+      "title": "Usage budgets and spending controls",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Organisations need to contain AI and service costs.",
+      "acceptance": "Enforce configured tenant budgets before external generation, bound requests and timeouts, expose unavailable-credit conditions, and replay prior outcomes without automatically spending again."
+    },
+    {
+      "id": "BR-NPA-024",
+      "title": "Adoption outcomes",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Teams need to know whether adoption improved their work.",
+      "acceptance": "Record a baseline and outcome with time period, review effort, quality criteria and evidence; link to governed impact measurements where appropriate, retaining deterministic official arithmetic."
+    },
+    {
+      "id": "BR-NPA-025",
+      "title": "Organisation isolation and current access",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Each organisation must control access to its own plans and cases.",
+      "acceptance": "Cross-organisation selectors do not reveal protected content; reads, writes, replay, exports and disclosures recheck current scoped authority, and a platform operator gains no automatic business-data access."
+    },
+    {
+      "id": "BR-NPA-026",
+      "title": "Privacy and data lifecycle",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Teams need explicit rules for information entered into AI or shared with suppliers.",
+      "acceptance": "Show the allowed data boundary, obtain action-specific consent for disclosure, apply an approved retention policy and explain backup limitations; personal beneficiary data is excluded from the first pilot."
+    },
+    {
+      "id": "BR-NPA-027",
+      "title": "Revision history and accountable actions",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "need": "Teams need a reliable history of who did what.",
+      "acceptance": "Writes preserve immutable revisions and atomic audit, outbox and receipt records; identical retries replay an authorised original result and changed payloads conflict."
+    },
+    {
+      "id": "BR-NPA-028",
+      "title": "Accessible and understandable experience",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Small nonprofit teams need a usable interface across devices and abilities.",
+      "acceptance": "Critical journeys work by keyboard and on a narrow screen, with readable comparisons, clear labels and recoverable errors; automated findings and manual accessibility evidence are distinguished."
+    },
+    {
+      "id": "BR-NPA-029",
+      "title": "Reliable operation during dependency failure",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Basic planning must continue when an AI provider is unavailable.",
+      "acceptance": "Readiness, discovery, learning and saved drafts operate without AI generation; provider failure is explicit and bounded, ambiguous outcomes require safe retry or investigation, and no official data is corrupted."
+    },
+    {
+      "id": "BR-NPA-030",
+      "title": "Ownership and portability",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Organisations need to retain their working information and exit a service.",
+      "acceptance": "A separately permitted export includes approved scope, versions and context and is audited; export rights and provider exit obligations are stated before engagement."
+    },
+    {
+      "id": "BR-NPA-031",
+      "title": "Content maintenance and provenance",
+      "phase": "R2",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Tool and learning content can become outdated.",
+      "acceptance": "Published content carries stable identifiers, versions, sources and review dates; material changes require review, retain prior meaning and mark unavailable or stale offers without rewriting saved history."
+    },
+    {
+      "id": "BR-NPA-032",
+      "title": "Support and incidents",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "Users need a clear route for help and harmful-output or access incidents.",
+      "acceptance": "A support case records severity, owner, response expectation and restricted evidence; defined incidents can pause a connector or pilot, and resumption needs an accountable decision."
+    },
+    {
+      "id": "BR-NPA-033",
+      "title": "Governed release and onboarding",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "New features must reach organisations without bypassing their authority or operational checks.",
+      "acceptance": "Release requires the four existing hosted jobs and owner confirmation; grants remain within reviewed ceilings, migrations are additive, and a deployment has an observable health result."
+    },
+    {
+      "id": "BR-NPA-034",
+      "title": "Feedback and improvement",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "need": "The product needs evidence about usefulness and unmet needs.",
+      "acceptance": "Capture optional task-level feedback with consent and minimised data; changes to rules, content or recommendations are reviewed and versioned rather than silently learned from private records."
+    },
+    {
+      "id": "BR-NPA-035",
+      "title": "Human control over consequential decisions",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "AI enablement must preserve responsibility for people, money and official results.",
+      "acceptance": "Generated text, scores and checklists remain proposals; sensitive disclosures, purchases, deployment, eligibility and official impact calculations require the appropriate independent human or deterministic controls."
+    },
+    {
+      "id": "BR-NPA-036",
+      "title": "Reuse and interoperability",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "need": "Delivery should accelerate through compatible existing components.",
+      "acceptance": "Reuse the governed platform and compatible Mercy Corps and MSME patterns with provenance and licence records; preserve tenant isolation, independent approval and official calculation semantics."
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-NPA-001",
+      "br_ids": [
+        "BR-NPA-001"
+      ],
+      "title": "Organisation goals and readiness profiles",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Authorised staff can save a named draft with sector, team size, goal, data readiness, experience and sensitive-data indicator; distinguish self-report from reviewed evidence."
+    },
+    {
+      "id": "FR-NPA-002",
+      "br_ids": [
+        "BR-NPA-002"
+      ],
+      "title": "Transparent readiness assessment",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "The same valid profile and rule version produce the same readiness stage, reasons, gaps and next steps; edits invalidate the prior assessment and no provider call is required."
+    },
+    {
+      "id": "FR-NPA-003",
+      "br_ids": [
+        "BR-NPA-003"
+      ],
+      "title": "Use cases and pilot selection",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Each suggested use case names applicability, prerequisites, acceptance checks and human decision needs; an unsuitable or non-AI alternative can be shown without promising savings."
+    },
+    {
+      "id": "FR-NPA-004",
+      "br_ids": [
+        "BR-NPA-004"
+      ],
+      "title": "Evidence based tool discovery",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Every published tool names its provider, purpose, sources, review date and uncertainty; browsing does not imply approval, a quote or eligibility."
+    },
+    {
+      "id": "FR-NPA-005",
+      "br_ids": [
+        "BR-NPA-005"
+      ],
+      "title": "Comparable tools and offers",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Compare selected tools across common attributes, distinguish subscriptions from API access, and show missing costs or terms as unknown; do not manufacture a ranking."
+    },
+    {
+      "id": "FR-NPA-006",
+      "br_ids": [
+        "BR-NPA-006"
+      ],
+      "title": "Shared adoption plans",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Saved plans reopen with their brief, shortlist, progress and notes; edits preserve earlier revisions, stale updates conflict, and current access governs every read and retry."
+    },
+    {
+      "id": "FR-NPA-007",
+      "br_ids": [
+        "BR-NPA-007"
+      ],
+      "title": "Practical self paced learning",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Lessons provide explanation, synthetic exercises and self-checks; self-recorded progress persists without being presented as competency certification."
+    },
+    {
+      "id": "FR-NPA-008",
+      "br_ids": [
+        "BR-NPA-008"
+      ],
+      "title": "Competency evidence",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "A proposed assessment records a task rubric, submitted evidence, assessor decision and remediation; a completion checkbox alone cannot establish competence."
+    },
+    {
+      "id": "FR-NPA-009",
+      "br_ids": [
+        "BR-NPA-009"
+      ],
+      "title": "Learning programmes and cohorts",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "An authorised coordinator can assign a learning programme and review participation within organisation scope; learners see their own work and agreed sharing boundaries."
+    },
+    {
+      "id": "FR-NPA-010",
+      "br_ids": [
+        "BR-NPA-010"
+      ],
+      "title": "Consented AI advisory drafts",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "A separately permitted user explicitly consents to the submitted brief leaving the platform; the bounded draft remains unapproved, protected in storage and replayable without duplicate generation."
+    },
+    {
+      "id": "FR-NPA-011",
+      "br_ids": [
+        "BR-NPA-011"
+      ],
+      "title": "Human advisory cases",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "A case has a named adviser, agreed scope, disclosed conflict, restricted sharing, actions and recorded closure; advice alone cannot approve spending or disclose protected records."
+    },
+    {
+      "id": "FR-NPA-012",
+      "br_ids": [
+        "BR-NPA-012"
+      ],
+      "title": "AI task workbench",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Approved templates define inputs, purpose, output checks and review ownership; generated work is visibly a draft and cannot execute consequential actions without an authorised human decision."
+    },
+    {
+      "id": "FR-NPA-013",
+      "br_ids": [
+        "BR-NPA-013"
+      ],
+      "title": "Procurement briefs",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "An editable brief records requirements, permitted data, budget assumptions and supplier questions, retaining unknowns and avoiding invented prices or commitments."
+    },
+    {
+      "id": "FR-NPA-014",
+      "br_ids": [
+        "BR-NPA-014"
+      ],
+      "title": "Requests for offers and quotes",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "An authorised buyer can issue a versioned brief to named recipients after disclosure review; responses record currency, validity, inclusions, exclusions and evidence without sending messages automatically from a draft."
+    },
+    {
+      "id": "FR-NPA-015",
+      "br_ids": [
+        "BR-NPA-015"
+      ],
+      "title": "Total cost comparison",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Comparison separates setup, recurring, usage, training, review, support and exit costs, states assumptions and dates, and excludes missing amounts from any asserted complete total."
+    },
+    {
+      "id": "FR-NPA-016",
+      "br_ids": [
+        "BR-NPA-016"
+      ],
+      "title": "Independent procurement decisions",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "The requester cannot approve their own decision by the same natural person; the approver sees exact quote revisions, checks current authority and records the decision under the agreed procurement policy."
+    },
+    {
+      "id": "FR-NPA-017",
+      "br_ids": [
+        "BR-NPA-017"
+      ],
+      "title": "Supplier onboarding and publication",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Supplier submissions and supporting evidence remain private until independently reviewed; a published snapshot identifies verification scope, expiry and conflicts and does not imply blanket certification."
+    },
+    {
+      "id": "FR-NPA-018",
+      "br_ids": [
+        "BR-NPA-018"
+      ],
+      "title": "Marketplace neutrality and conflicts",
+      "phase": "R2",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Display the basis for placement, comparison and any commercial relationship; separate an editorial mapping from a verified capability or paid placement; revenue policy requires owner approval."
+    },
+    {
+      "id": "FR-NPA-019",
+      "br_ids": [
+        "BR-NPA-019"
+      ],
+      "title": "Bookings and service engagements",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "A booking or engagement identifies parties, scope, terms, milestones and cancellation policy; external acceptance and delivery are recorded as evidence rather than inferred from an outbox intent."
+    },
+    {
+      "id": "FR-NPA-020",
+      "br_ids": [
+        "BR-NPA-020"
+      ],
+      "title": "Purchasing and payments",
+      "phase": "R3",
+      "current_state": "CONDITIONAL_TARGET",
+      "acceptance": "Enable purchasing only after the owner chooses operator responsibility, financial controls and payment model; idempotency, reconciliation, refunds and independent approval must be qualified before money moves."
+    },
+    {
+      "id": "FR-NPA-021",
+      "br_ids": [
+        "BR-NPA-021"
+      ],
+      "title": "Pilot delivery and acceptance",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Record the scope, success measure and actions; target delivery adds versioned milestones and independent acceptance evidence; self-recorded pilot checklists remain visibly different from accepted delivery."
+    },
+    {
+      "id": "FR-NPA-022",
+      "br_ids": [
+        "BR-NPA-022"
+      ],
+      "title": "Integration and deployment support",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Connections use reviewed scopes and server-side secrets, support revocation and failure visibility, and begin with synthetic trials; no integration can broaden data access or deploy from unapproved advice."
+    },
+    {
+      "id": "FR-NPA-023",
+      "br_ids": [
+        "BR-NPA-023"
+      ],
+      "title": "Usage budgets and spending controls",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Enforce configured tenant budgets before external generation, bound requests and timeouts, expose unavailable-credit conditions, and replay prior outcomes without automatically spending again."
+    },
+    {
+      "id": "FR-NPA-024",
+      "br_ids": [
+        "BR-NPA-024"
+      ],
+      "title": "Adoption outcomes",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Record a baseline and outcome with time period, review effort, quality criteria and evidence; link to governed impact measurements where appropriate, retaining deterministic official arithmetic."
+    },
+    {
+      "id": "FR-NPA-025",
+      "br_ids": [
+        "BR-NPA-025"
+      ],
+      "title": "Organisation isolation and current access",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Cross-organisation selectors do not reveal protected content; reads, writes, replay, exports and disclosures recheck current scoped authority, and a platform operator gains no automatic business-data access."
+    },
+    {
+      "id": "FR-NPA-026",
+      "br_ids": [
+        "BR-NPA-026"
+      ],
+      "title": "Privacy and data lifecycle",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Show the allowed data boundary, obtain action-specific consent for disclosure, apply an approved retention policy and explain backup limitations; personal beneficiary data is excluded from the first pilot."
+    },
+    {
+      "id": "FR-NPA-027",
+      "br_ids": [
+        "BR-NPA-027"
+      ],
+      "title": "Revision history and accountable actions",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Writes preserve immutable revisions and atomic audit, outbox and receipt records; identical retries replay an authorised original result and changed payloads conflict."
+    },
+    {
+      "id": "FR-NPA-028",
+      "br_ids": [
+        "BR-NPA-028"
+      ],
+      "title": "Accessible and understandable experience",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Critical journeys work by keyboard and on a narrow screen, with readable comparisons, clear labels and recoverable errors; automated findings and manual accessibility evidence are distinguished."
+    },
+    {
+      "id": "FR-NPA-029",
+      "br_ids": [
+        "BR-NPA-029"
+      ],
+      "title": "Reliable operation during dependency failure",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Readiness, discovery, learning and saved drafts operate without AI generation; provider failure is explicit and bounded, ambiguous outcomes require safe retry or investigation, and no official data is corrupted."
+    },
+    {
+      "id": "FR-NPA-030",
+      "br_ids": [
+        "BR-NPA-030"
+      ],
+      "title": "Ownership and portability",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "A separately permitted export includes approved scope, versions and context and is audited; export rights and provider exit obligations are stated before engagement."
+    },
+    {
+      "id": "FR-NPA-031",
+      "br_ids": [
+        "BR-NPA-031"
+      ],
+      "title": "Content maintenance and provenance",
+      "phase": "R2",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Published content carries stable identifiers, versions, sources and review dates; material changes require review, retain prior meaning and mark unavailable or stale offers without rewriting saved history."
+    },
+    {
+      "id": "FR-NPA-032",
+      "br_ids": [
+        "BR-NPA-032"
+      ],
+      "title": "Support and incidents",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "A support case records severity, owner, response expectation and restricted evidence; defined incidents can pause a connector or pilot, and resumption needs an accountable decision."
+    },
+    {
+      "id": "FR-NPA-033",
+      "br_ids": [
+        "BR-NPA-033"
+      ],
+      "title": "Governed release and onboarding",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Release requires the four existing hosted jobs and owner confirmation; grants remain within reviewed ceilings, migrations are additive, and a deployment has an observable health result."
+    },
+    {
+      "id": "FR-NPA-034",
+      "br_ids": [
+        "BR-NPA-034"
+      ],
+      "title": "Feedback and improvement",
+      "phase": "R2",
+      "current_state": "TARGET",
+      "acceptance": "Capture optional task-level feedback with consent and minimised data; changes to rules, content or recommendations are reviewed and versioned rather than silently learned from private records."
+    },
+    {
+      "id": "FR-NPA-035",
+      "br_ids": [
+        "BR-NPA-035"
+      ],
+      "title": "Human control over consequential decisions",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Generated text, scores and checklists remain proposals; sensitive disclosures, purchases, deployment, eligibility and official impact calculations require the appropriate independent human or deterministic controls."
+    },
+    {
+      "id": "FR-NPA-036",
+      "br_ids": [
+        "BR-NPA-036"
+      ],
+      "title": "Reuse and interoperability",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Reuse the governed platform and compatible Mercy Corps and MSME patterns with provenance and licence records; preserve tenant isolation, independent approval and official calculation semantics."
+    },
+    {
+      "id": "FR-NPA-037",
+      "br_ids": [
+        "BR-NPA-001"
+      ],
+      "title": "Closed profile and draft validation",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Reject unknown fields, duplicate JSON keys, invalid identifiers and limits before persistence; client input cannot set author, approval, state or content versions."
+    },
+    {
+      "id": "FR-NPA-038",
+      "br_ids": [
+        "BR-NPA-031"
+      ],
+      "title": "Stable content versions and learning identifiers",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Pin catalogue versions on saves and preserve stable lesson meanings; future content reordering must not reinterpret existing progress."
+    },
+    {
+      "id": "FR-NPA-039",
+      "br_ids": [
+        "BR-NPA-027"
+      ],
+      "title": "Current authority on exact retries",
+      "phase": "R1",
+      "current_state": "LOCAL_IMPLEMENTATION",
+      "acceptance": "Recheck current tenant, membership, read and action capabilities before replay; changed payloads conflict and inaccessible prior outcomes remain hidden."
+    },
+    {
+      "id": "FR-NPA-040",
+      "br_ids": [
+        "BR-NPA-033"
+      ],
+      "title": "Release evidence and operational smoke",
+      "phase": "R1",
+      "current_state": "PARTIAL_LOCAL",
+      "acceptance": "Record exact commit, schema and check results; a documentation edition or local test run does not promote acceptance or establish a successful deployment."
+    }
+  ]
+}

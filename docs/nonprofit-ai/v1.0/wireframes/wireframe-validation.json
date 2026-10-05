@@ -1,0 +1,467 @@
+{
+  "artefact": "Conceptual standalone wireframes only",
+  "edition": "1.0",
+  "date": "2026-10-05",
+  "environment": "Installed Chrome headless on macOS via Playwright 1.58.0; local file; synthetic data",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Prominent proposed synthetic prototype notice",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "readiness at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "readiness navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "discovery at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "discovery navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "plans at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "plans navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "learning at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "learning navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "programmes at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "programmes navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "brief at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "brief navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "procurement at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "procurement navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "advisory at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "advisory navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "workbench at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "workbench navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "pilot at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "pilot navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "suppliers at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "suppliers navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "operations at 1440px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":1440,\"view\":1440}"
+    },
+    {
+      "name": "operations navigation exposes one current page at 1440",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "readiness at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "readiness navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "discovery at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "discovery navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "plans at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "plans navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "learning at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "learning navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "programmes at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "programmes navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "brief at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "brief navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "procurement at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "procurement navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "advisory at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "advisory navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "workbench at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "workbench navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "pilot at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "pilot navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "suppliers at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "suppliers navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "operations at 390px remains contained",
+      "status": "PASS",
+      "detail": "{\"scroll\":390,\"view\":390}"
+    },
+    {
+      "name": "operations navigation exposes one current page at 390",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Missing goal blocks native form submission",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Foundation stage is transparent deterministic local preview",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Sensitive flag requires data review",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Profile edit invalidates assessment",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Search empty state",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Category search filters one fictional design tool",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Shortlist bounded to four",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Fifth selection has readable limit error",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Self-check produces explanation",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Self-recorded completion caveat",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Lesson selection changes content",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Demo save states no server action",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Lost response replay preserves newer edit",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Conflict dialog modal accessible",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Escape closes native dialog",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Stale save opens preservation dialog",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Natural-person self review refused",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Different person remains no purchase",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Input-specific consent preview required",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Consented case still does not send",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "AI unavailable explicitly no request",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Missing facts clarify with fixed demo output",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Read-only save disabled",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Read-only completion disabled",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Read-only brief text disabled",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Service error visible and preserved banner",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Automated accessibility has no serious or critical WCAG findings",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "name": "No script errors",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "No outbound requests",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "accessibility": [
+    {
+      "screen": "readiness",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "discovery",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "plans",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "learning",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "programmes",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "brief",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "procurement",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "advisory",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "workbench",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "pilot",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "suppliers",
+      "serious_critical": [],
+      "other": []
+    },
+    {
+      "screen": "operations",
+      "serious_critical": [],
+      "other": []
+    }
+  ],
+  "no_outbound_requests": true,
+  "script_errors": [],
+  "limitations": [
+    "Layout and prototype interaction evidence only; does not qualify the React product, API, database, real identity, native concurrency or deployment.",
+    "Automated accessibility scan is supplemented by visual review; no complete screen-reader qualification or UAT claim."
+  ]
+}

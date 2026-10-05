@@ -1,0 +1,23 @@
+{
+  "edition": "1.0",
+  "date": "2026-10-05",
+  "baseline_commit": "36073f1",
+  "scope": "OFFLINE_DOCUMENTATION_CONSISTENCY_ONLY",
+  "product_tests_executed": false,
+  "business_requirements": 36,
+  "functional_requirements": 40,
+  "test_scenarios": 50,
+  "test_cases": 108,
+  "dictionary_fields": 362,
+  "wireframe_screens": 12,
+  "checks_passed": 717,
+  "checks_failed": 0,
+  "errors": [],
+  "all_cases_status": "SPECIFIED_NOT_RUN",
+  "human_acceptance_recorded": false,
+  "word_visual_review": {
+    "record": "visual-review.json",
+    "pages_inspected": 48,
+    "scope": "DOCUMENT_LAYOUT_ONLY"
+  }
+}

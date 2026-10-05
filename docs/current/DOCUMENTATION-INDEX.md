@@ -84,6 +84,7 @@ See [change record](CHANGELOG.md), [documentation verification](DOCUMENTATION-QA
 
 ## Nonprofit AI enablement proposal
 
+- [Nonprofit AI documentation edition 1.0](../nonprofit-ai/v1.0/README.md): BRD → FSD → HLD → LLD, editable Word copies, 50 test scenarios and 108 specified cases, twelve clickable wireframes, a 362-field dictionary and supporting design/governance documents. Proposed for review; new cases are unrun and no business acceptance is recorded.
 - [0.30 integrated release note](../RELEASE-0.30-nonprofit-ai-enablement.md): current implemented foundation, exact limits and future product slices.
 - [Catalogue](../RELEASE-0.30-ai-catalog.md), [workspace](../RELEASE-0.30-ai-workspace.md), and [Mercy Corps scenarios](../RELEASE-0.30-reuse-scenarios.md): component provenance and validation.
 

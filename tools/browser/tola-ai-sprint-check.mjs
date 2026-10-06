@@ -238,6 +238,9 @@ async function api(actor, route, body, status = 200, method) {
     headers: {
       Authorization: "Bearer " + process.env[fixture.actors[actor].token_env],
       "Content-Type": "application/json",
+      // Synchronous fixture setup can idle a pooled socket past the API's keep-alive
+      // timeout; the next request would then be written to an already closed socket.
+      Connection: "close",
     },
     ...(body ? { body: JSON.stringify(body) } : {}),
   });

@@ -46,6 +46,7 @@ browser:
 	node --experimental-strip-types tools/browser/ai-plan-review-model-check.mjs
 	node --experimental-strip-types tools/browser/ai-practice-starter-model-check.mjs
 	node --experimental-strip-types tools/browser/ai-walkthrough-adapter-check.mjs
+	node --experimental-strip-types tools/browser/ai-procurement-preview-model-check.mjs
 	$(PY) scripts/run.py browser
 	$(PY) scripts/run.py admin-browser
 	$(PY) scripts/run.py measurement-browser

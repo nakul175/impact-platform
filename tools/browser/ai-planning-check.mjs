@@ -1454,9 +1454,12 @@ try {
       .getByText("Saved practice edition: Unknown", { exact: false })
       .waitFor();
     await page
-      .getByText("Historical guidance wording is not available.", {
-        exact: false,
-      })
+      .getByText(
+        "For a saved revision, choose View saved guidance to check whether its original wording was retained.",
+        {
+          exact: false,
+        },
+      )
       .waitFor();
     assert.equal(
       await practiceField("Your synthetic or public-text brief").inputValue(),
@@ -1528,7 +1531,7 @@ try {
       checked_steps: [],
     });
   });
-  await test("Simulated stale practice edition is labelled without claiming historical guide wording", async () => {
+  await test("Simulated stale practice edition is labelled without assuming historical archive availability", async () => {
     const match = (url) => url.pathname === planRoute;
     const handler = async (route) => {
       if (route.request().method() !== "GET") return route.fallback();
@@ -1546,9 +1549,12 @@ try {
       .getByText("Saved practice edition: Stale", { exact: false })
       .waitFor();
     await page
-      .getByText("Historical guidance wording is not available.", {
-        exact: false,
-      })
+      .getByText(
+        "For a saved revision, choose View saved guidance to check whether its original wording was retained.",
+        {
+          exact: false,
+        },
+      )
       .waitFor();
     assert.equal(
       await practiceField("Your manually written draft").inputValue(),

@@ -181,10 +181,10 @@ export function AITaskPractice({
           </p>
           {edition !== "Current" && (
             <p>
-              Current guidance is edition {currentGuide.content_version}.
-              Historical guidance wording is not available. Review the saved
-              draft and self-checks against the current guidance before
-              continuing.
+              Current guidance is edition {currentGuide.content_version}. For a
+              saved revision, choose View saved guidance to check whether its
+              original wording was retained. This worksheet uses current
+              guidance; review your draft and self-checks before continuing.
             </p>
           )}
         </div>
@@ -218,9 +218,9 @@ export function AITaskPractice({
               <p>No self-checks were recorded.</p>
             )}
             <p className="muted">
-              These identifiers are preserved as recorded. Their historical
-              wording and assessment are unavailable; they do not certify
-              competence.
+              These identifiers are preserved as recorded. For a saved revision,
+              choose View saved guidance to check for any retained original
+              wording. They do not certify competence.
             </p>
           </fieldset>
           {canManage ? (

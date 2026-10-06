@@ -1,0 +1,615 @@
+{
+  "mode": "status-browser",
+  "checker": "status-check.mjs",
+  "started_at": "2026-10-05T21:11:27.919989+00:00",
+  "scope": "Original unmodified Makefile mode on a fresh actual local Chrome/API/PGlite synthetic fixture; not native/UAT/hosted/manual qualification",
+  "exit_code": 0,
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-jj10g2id/status-browser.log",
+    "published_sha256": "e659e84790da69a6e30ae42c8e80f4d107f4e33d69de98255b81541f82acec33"
+  },
+  "archived_outputs": [
+    {
+      "original_evidence_path": "status-browser-tests.json",
+      "archived_path": "sprint-0.35-full-browser/status-browser/outputs/status-browser-tests.json",
+      "sha256": "fb25b2186ff8e32bf4f9a74ce9fffe58e3552a1aee48d24f5006297735397352",
+      "size_bytes": 636,
+      "new_file": false,
+      "content_changed": false,
+      "fresh_write_observed": true
+    },
+    {
+      "original_evidence_path": "status-member.png",
+      "archived_path": "sprint-0.35-full-browser/status-browser/outputs/status-member.png",
+      "sha256": "275e58c05eaab251d401b8bad014af11c6066d0284420a74506fa2fec121b620",
+      "size_bytes": 90776,
+      "new_file": false,
+      "content_changed": true,
+      "fresh_write_observed": true
+    },
+    {
+      "original_evidence_path": "status-operator.png",
+      "archived_path": "sprint-0.35-full-browser/status-browser/outputs/status-operator.png",
+      "sha256": "40c00e0defb51085fe67e73c79501501b4870981eac4f7c5e8ff9bb91601778c",
+      "size_bytes": 111561,
+      "new_file": false,
+      "content_changed": true,
+      "fresh_write_observed": true
+    },
+    {
+      "original_evidence_path": "status-outage.png",
+      "archived_path": "sprint-0.35-full-browser/status-browser/outputs/status-outage.png",
+      "sha256": "eb5c47581428d0d439b68f91d3875855dabe6813ccf870d90d6b1407d8836609",
+      "size_bytes": 72689,
+      "new_file": false,
+      "content_changed": true,
+      "fresh_write_observed": true
+    }
+  ],
+  "fresh_result_reports": [
+    {
+      "path": "sprint-0.35-full-browser/status-browser/outputs/status-browser-tests.json",
+      "executed_result_count": 5,
+      "result_counts": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "unknown": 0
+      },
+      "reported_fields": {
+        "uncaughtErrors": []
+      },
+      "manual_visual_review": "NOT_RUN_BY_WRAPPER"
+    }
+  ],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": [],
+  "fixture_observations": [
+    {
+      "phase": "before_original_browser",
+      "recorded_at": "2026-10-05T21:11:31.700536+00:00",
+      "environment": "PGLITE",
+      "fixture_directory": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-7c49bedd",
+      "base_origin": "http://127.0.0.1:8185",
+      "observer_scope": "Privileged disposable read-only migration ledger; authenticated HTTP runtime and both entrypoint built bytes. Not native-login RLS evidence.",
+      "runtime_manifest": {
+        "environment": "test",
+        "build_id": "impact-0.35.0",
+        "schema_version": "40",
+        "api_version": "1.25.0",
+        "fixture_id": "impact-acceptance-20260925-v1",
+        "mutation_tests_allowed": true
+      },
+      "owning_migrations": [
+        {
+          "version": 1,
+          "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+          "applied_at": "2026-10-05T21:11:28.950000+00:00",
+          "owning_file": "infrastructure/migrations/0001_roles.sql"
+        },
+        {
+          "version": 2,
+          "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+          "applied_at": "2026-10-05T21:11:28.961000+00:00",
+          "owning_file": "infrastructure/migrations/0002_domain.sql"
+        },
+        {
+          "version": 3,
+          "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+          "applied_at": "2026-10-05T21:11:29.151000+00:00",
+          "owning_file": "infrastructure/migrations/0003_security.sql"
+        },
+        {
+          "version": 4,
+          "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+          "applied_at": "2026-10-05T21:11:29.194000+00:00",
+          "owning_file": "infrastructure/migrations/0004_application.sql"
+        },
+        {
+          "version": 5,
+          "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+          "applied_at": "2026-10-05T21:11:29.200000+00:00",
+          "owning_file": "infrastructure/migrations/0005_access_administration.sql"
+        },
+        {
+          "version": 6,
+          "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+          "applied_at": "2026-10-05T21:11:29.210000+00:00",
+          "owning_file": "infrastructure/migrations/0006_measurement_configuration.sql"
+        },
+        {
+          "version": 7,
+          "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+          "applied_at": "2026-10-05T21:11:29.214000+00:00",
+          "owning_file": "infrastructure/migrations/0007_measurement_changes.sql"
+        },
+        {
+          "version": 8,
+          "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+          "applied_at": "2026-10-05T21:11:29.217000+00:00",
+          "owning_file": "infrastructure/migrations/0008_period_governance.sql"
+        },
+        {
+          "version": 9,
+          "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+          "applied_at": "2026-10-05T21:11:29.229000+00:00",
+          "owning_file": "infrastructure/migrations/0009_reporting_packages.sql"
+        },
+        {
+          "version": 10,
+          "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+          "applied_at": "2026-10-05T21:11:29.231000+00:00",
+          "owning_file": "infrastructure/migrations/0010_work_and_recalculation.sql"
+        },
+        {
+          "version": 11,
+          "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+          "applied_at": "2026-10-05T21:11:29.235000+00:00",
+          "owning_file": "infrastructure/migrations/0011_controlled_publication.sql"
+        },
+        {
+          "version": 12,
+          "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+          "applied_at": "2026-10-05T21:11:29.239000+00:00",
+          "owning_file": "infrastructure/migrations/0012_workspace_administration.sql"
+        },
+        {
+          "version": 13,
+          "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+          "applied_at": "2026-10-05T21:11:29.247000+00:00",
+          "owning_file": "infrastructure/migrations/0013_tenant_lifecycle.sql"
+        },
+        {
+          "version": 14,
+          "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+          "applied_at": "2026-10-05T21:11:29.255000+00:00",
+          "owning_file": "infrastructure/migrations/0014_initial_access.sql"
+        },
+        {
+          "version": 15,
+          "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+          "applied_at": "2026-10-05T21:11:29.259000+00:00",
+          "owning_file": "infrastructure/migrations/0015_recovery_contacts.sql"
+        },
+        {
+          "version": 16,
+          "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+          "applied_at": "2026-10-05T21:11:29.261000+00:00",
+          "owning_file": "infrastructure/migrations/0016_authority_renewal.sql"
+        },
+        {
+          "version": 17,
+          "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+          "applied_at": "2026-10-05T21:11:29.264000+00:00",
+          "owning_file": "infrastructure/migrations/0017_provider_logout.sql"
+        },
+        {
+          "version": 18,
+          "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+          "applied_at": "2026-10-05T21:11:29.266000+00:00",
+          "owning_file": "infrastructure/migrations/0018_worker_delivery.sql"
+        },
+        {
+          "version": 19,
+          "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+          "applied_at": "2026-10-05T21:11:29.275000+00:00",
+          "owning_file": "infrastructure/migrations/0019_results_framework.sql"
+        },
+        {
+          "version": 20,
+          "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+          "applied_at": "2026-10-05T21:11:29.285000+00:00",
+          "owning_file": "infrastructure/migrations/0020_calculation_methods.sql"
+        },
+        {
+          "version": 21,
+          "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+          "applied_at": "2026-10-05T21:11:29.286000+00:00",
+          "owning_file": "infrastructure/migrations/0021_web_forms.sql"
+        },
+        {
+          "version": 22,
+          "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+          "applied_at": "2026-10-05T21:11:29.291000+00:00",
+          "owning_file": "infrastructure/migrations/0022_import_quality.sql"
+        },
+        {
+          "version": 23,
+          "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+          "applied_at": "2026-10-05T21:11:29.296000+00:00",
+          "owning_file": "infrastructure/migrations/0023_evidence_objects.sql"
+        },
+        {
+          "version": 24,
+          "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+          "applied_at": "2026-10-05T21:11:29.304000+00:00",
+          "owning_file": "infrastructure/migrations/0024_report_exports.sql"
+        },
+        {
+          "version": 25,
+          "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+          "applied_at": "2026-10-05T21:11:29.314000+00:00",
+          "owning_file": "infrastructure/migrations/0025_worker_grants.sql"
+        },
+        {
+          "version": 26,
+          "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+          "applied_at": "2026-10-05T21:11:29.324000+00:00",
+          "owning_file": "infrastructure/migrations/0026_worker_job_grants.sql"
+        },
+        {
+          "version": 27,
+          "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+          "applied_at": "2026-10-05T21:11:29.325000+00:00",
+          "owning_file": "infrastructure/migrations/0027_privacy_execution.sql"
+        },
+        {
+          "version": 28,
+          "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+          "applied_at": "2026-10-05T21:11:29.338000+00:00",
+          "owning_file": "infrastructure/migrations/0028_usable_staging.sql"
+        },
+        {
+          "version": 29,
+          "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+          "applied_at": "2026-10-05T21:11:29.344000+00:00",
+          "owning_file": "infrastructure/migrations/0029_operator_lifecycle.sql"
+        },
+        {
+          "version": 30,
+          "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+          "applied_at": "2026-10-05T21:11:29.347000+00:00",
+          "owning_file": "infrastructure/migrations/0030_security_privacy.sql"
+        },
+        {
+          "version": 31,
+          "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+          "applied_at": "2026-10-05T21:11:29.358000+00:00",
+          "owning_file": "infrastructure/migrations/0031_theory_of_change.sql"
+        },
+        {
+          "version": 32,
+          "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+          "applied_at": "2026-10-05T21:11:29.358000+00:00",
+          "owning_file": "infrastructure/migrations/0032_forms_languages_rounds.sql"
+        },
+        {
+          "version": 33,
+          "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+          "applied_at": "2026-10-05T21:11:29.361000+00:00",
+          "owning_file": "infrastructure/migrations/0033_application_executor.sql"
+        },
+        {
+          "version": 34,
+          "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+          "applied_at": "2026-10-05T21:11:29.365000+00:00",
+          "owning_file": "infrastructure/migrations/0034_ai_advisory.sql"
+        },
+        {
+          "version": 35,
+          "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+          "applied_at": "2026-10-05T21:11:29.369000+00:00",
+          "owning_file": "infrastructure/migrations/0035_ai_adoption_plans.sql"
+        },
+        {
+          "version": 36,
+          "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+          "applied_at": "2026-10-05T21:11:29.371000+00:00",
+          "owning_file": "infrastructure/migrations/0036_reviewed_ceiling_widening.sql"
+        },
+        {
+          "version": 37,
+          "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+          "applied_at": "2026-10-05T21:11:29.380000+00:00",
+          "owning_file": "infrastructure/migrations/0037_ai_content_snapshots.sql"
+        },
+        {
+          "version": 38,
+          "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+          "applied_at": "2026-10-05T21:11:29.385000+00:00",
+          "owning_file": "infrastructure/migrations/0038_human_advice_cases.sql"
+        },
+        {
+          "version": 39,
+          "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+          "applied_at": "2026-10-05T21:11:29.396000+00:00",
+          "owning_file": "infrastructure/migrations/0039_human_advice_anchor_availability.sql"
+        },
+        {
+          "version": 40,
+          "sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+          "applied_at": "2026-10-05T21:11:29.397000+00:00",
+          "owning_file": "infrastructure/migrations/0040_ai_plan_portability.sql"
+        }
+      ],
+      "served_assets_sha256": {
+        "ai-walkthrough.html": "47c0bbba2911cf18f709ff3c623ca531a9274177bf97774ff5eac6f6f67846e6",
+        "assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+        "assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+        "assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+        "assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856",
+        "assets/walkthrough-CF-PvNq_.js": "049f298bc67fcd6e1d5babdb6985bc4a125de5f2d1402f4bed5657639048e0d2",
+        "assets/walkthrough-c2VAFMAi.css": "98ca73323a0b17741b6acc8990aee7a4e95e728882db46ee35779c631496c787",
+        "index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858"
+      }
+    },
+    {
+      "phase": "after_original_browser",
+      "recorded_at": "2026-10-05T21:11:33.239165+00:00",
+      "environment": "PGLITE",
+      "fixture_directory": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-7c49bedd",
+      "base_origin": "http://127.0.0.1:8185",
+      "observer_scope": "Privileged disposable read-only migration ledger; authenticated HTTP runtime and both entrypoint built bytes. Not native-login RLS evidence.",
+      "runtime_manifest": {
+        "environment": "test",
+        "build_id": "impact-0.35.0",
+        "schema_version": "40",
+        "api_version": "1.25.0",
+        "fixture_id": "impact-acceptance-20260925-v1",
+        "mutation_tests_allowed": true
+      },
+      "owning_migrations": [
+        {
+          "version": 1,
+          "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+          "applied_at": "2026-10-05T21:11:28.950000+00:00",
+          "owning_file": "infrastructure/migrations/0001_roles.sql"
+        },
+        {
+          "version": 2,
+          "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+          "applied_at": "2026-10-05T21:11:28.961000+00:00",
+          "owning_file": "infrastructure/migrations/0002_domain.sql"
+        },
+        {
+          "version": 3,
+          "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+          "applied_at": "2026-10-05T21:11:29.151000+00:00",
+          "owning_file": "infrastructure/migrations/0003_security.sql"
+        },
+        {
+          "version": 4,
+          "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+          "applied_at": "2026-10-05T21:11:29.194000+00:00",
+          "owning_file": "infrastructure/migrations/0004_application.sql"
+        },
+        {
+          "version": 5,
+          "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+          "applied_at": "2026-10-05T21:11:29.200000+00:00",
+          "owning_file": "infrastructure/migrations/0005_access_administration.sql"
+        },
+        {
+          "version": 6,
+          "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+          "applied_at": "2026-10-05T21:11:29.210000+00:00",
+          "owning_file": "infrastructure/migrations/0006_measurement_configuration.sql"
+        },
+        {
+          "version": 7,
+          "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+          "applied_at": "2026-10-05T21:11:29.214000+00:00",
+          "owning_file": "infrastructure/migrations/0007_measurement_changes.sql"
+        },
+        {
+          "version": 8,
+          "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+          "applied_at": "2026-10-05T21:11:29.217000+00:00",
+          "owning_file": "infrastructure/migrations/0008_period_governance.sql"
+        },
+        {
+          "version": 9,
+          "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+          "applied_at": "2026-10-05T21:11:29.229000+00:00",
+          "owning_file": "infrastructure/migrations/0009_reporting_packages.sql"
+        },
+        {
+          "version": 10,
+          "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+          "applied_at": "2026-10-05T21:11:29.231000+00:00",
+          "owning_file": "infrastructure/migrations/0010_work_and_recalculation.sql"
+        },
+        {
+          "version": 11,
+          "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+          "applied_at": "2026-10-05T21:11:29.235000+00:00",
+          "owning_file": "infrastructure/migrations/0011_controlled_publication.sql"
+        },
+        {
+          "version": 12,
+          "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+          "applied_at": "2026-10-05T21:11:29.239000+00:00",
+          "owning_file": "infrastructure/migrations/0012_workspace_administration.sql"
+        },
+        {
+          "version": 13,
+          "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+          "applied_at": "2026-10-05T21:11:29.247000+00:00",
+          "owning_file": "infrastructure/migrations/0013_tenant_lifecycle.sql"
+        },
+        {
+          "version": 14,
+          "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+          "applied_at": "2026-10-05T21:11:29.255000+00:00",
+          "owning_file": "infrastructure/migrations/0014_initial_access.sql"
+        },
+        {
+          "version": 15,
+          "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+          "applied_at": "2026-10-05T21:11:29.259000+00:00",
+          "owning_file": "infrastructure/migrations/0015_recovery_contacts.sql"
+        },
+        {
+          "version": 16,
+          "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+          "applied_at": "2026-10-05T21:11:29.261000+00:00",
+          "owning_file": "infrastructure/migrations/0016_authority_renewal.sql"
+        },
+        {
+          "version": 17,
+          "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+          "applied_at": "2026-10-05T21:11:29.264000+00:00",
+          "owning_file": "infrastructure/migrations/0017_provider_logout.sql"
+        },
+        {
+          "version": 18,
+          "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+          "applied_at": "2026-10-05T21:11:29.266000+00:00",
+          "owning_file": "infrastructure/migrations/0018_worker_delivery.sql"
+        },
+        {
+          "version": 19,
+          "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+          "applied_at": "2026-10-05T21:11:29.275000+00:00",
+          "owning_file": "infrastructure/migrations/0019_results_framework.sql"
+        },
+        {
+          "version": 20,
+          "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+          "applied_at": "2026-10-05T21:11:29.285000+00:00",
+          "owning_file": "infrastructure/migrations/0020_calculation_methods.sql"
+        },
+        {
+          "version": 21,
+          "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+          "applied_at": "2026-10-05T21:11:29.286000+00:00",
+          "owning_file": "infrastructure/migrations/0021_web_forms.sql"
+        },
+        {
+          "version": 22,
+          "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+          "applied_at": "2026-10-05T21:11:29.291000+00:00",
+          "owning_file": "infrastructure/migrations/0022_import_quality.sql"
+        },
+        {
+          "version": 23,
+          "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+          "applied_at": "2026-10-05T21:11:29.296000+00:00",
+          "owning_file": "infrastructure/migrations/0023_evidence_objects.sql"
+        },
+        {
+          "version": 24,
+          "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+          "applied_at": "2026-10-05T21:11:29.304000+00:00",
+          "owning_file": "infrastructure/migrations/0024_report_exports.sql"
+        },
+        {
+          "version": 25,
+          "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+          "applied_at": "2026-10-05T21:11:29.314000+00:00",
+          "owning_file": "infrastructure/migrations/0025_worker_grants.sql"
+        },
+        {
+          "version": 26,
+          "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+          "applied_at": "2026-10-05T21:11:29.324000+00:00",
+          "owning_file": "infrastructure/migrations/0026_worker_job_grants.sql"
+        },
+        {
+          "version": 27,
+          "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+          "applied_at": "2026-10-05T21:11:29.325000+00:00",
+          "owning_file": "infrastructure/migrations/0027_privacy_execution.sql"
+        },
+        {
+          "version": 28,
+          "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+          "applied_at": "2026-10-05T21:11:29.338000+00:00",
+          "owning_file": "infrastructure/migrations/0028_usable_staging.sql"
+        },
+        {
+          "version": 29,
+          "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+          "applied_at": "2026-10-05T21:11:29.344000+00:00",
+          "owning_file": "infrastructure/migrations/0029_operator_lifecycle.sql"
+        },
+        {
+          "version": 30,
+          "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+          "applied_at": "2026-10-05T21:11:29.347000+00:00",
+          "owning_file": "infrastructure/migrations/0030_security_privacy.sql"
+        },
+        {
+          "version": 31,
+          "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+          "applied_at": "2026-10-05T21:11:29.358000+00:00",
+          "owning_file": "infrastructure/migrations/0031_theory_of_change.sql"
+        },
+        {
+          "version": 32,
+          "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+          "applied_at": "2026-10-05T21:11:29.358000+00:00",
+          "owning_file": "infrastructure/migrations/0032_forms_languages_rounds.sql"
+        },
+        {
+          "version": 33,
+          "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+          "applied_at": "2026-10-05T21:11:29.361000+00:00",
+          "owning_file": "infrastructure/migrations/0033_application_executor.sql"
+        },
+        {
+          "version": 34,
+          "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+          "applied_at": "2026-10-05T21:11:29.365000+00:00",
+          "owning_file": "infrastructure/migrations/0034_ai_advisory.sql"
+        },
+        {
+          "version": 35,
+          "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+          "applied_at": "2026-10-05T21:11:29.369000+00:00",
+          "owning_file": "infrastructure/migrations/0035_ai_adoption_plans.sql"
+        },
+        {
+          "version": 36,
+          "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+          "applied_at": "2026-10-05T21:11:29.371000+00:00",
+          "owning_file": "infrastructure/migrations/0036_reviewed_ceiling_widening.sql"
+        },
+        {
+          "version": 37,
+          "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+          "applied_at": "2026-10-05T21:11:29.380000+00:00",
+          "owning_file": "infrastructure/migrations/0037_ai_content_snapshots.sql"
+        },
+        {
+          "version": 38,
+          "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+          "applied_at": "2026-10-05T21:11:29.385000+00:00",
+          "owning_file": "infrastructure/migrations/0038_human_advice_cases.sql"
+        },
+        {
+          "version": 39,
+          "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+          "applied_at": "2026-10-05T21:11:29.396000+00:00",
+          "owning_file": "infrastructure/migrations/0039_human_advice_anchor_availability.sql"
+        },
+        {
+          "version": 40,
+          "sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+          "applied_at": "2026-10-05T21:11:29.397000+00:00",
+          "owning_file": "infrastructure/migrations/0040_ai_plan_portability.sql"
+        }
+      ],
+      "served_assets_sha256": {
+        "ai-walkthrough.html": "47c0bbba2911cf18f709ff3c623ca531a9274177bf97774ff5eac6f6f67846e6",
+        "assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+        "assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+        "assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+        "assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856",
+        "assets/walkthrough-CF-PvNq_.js": "049f298bc67fcd6e1d5babdb6985bc4a125de5f2d1402f4bed5657639048e0d2",
+        "assets/walkthrough-c2VAFMAi.css": "98ca73323a0b17741b6acc8990aee7a4e95e728882db46ee35779c631496c787",
+        "index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858"
+      }
+    }
+  ],
+  "source_changes": [],
+  "build_asset_changes": [],
+  "finished_at": "2026-10-05T21:11:33.575636+00:00",
+  "complete_fixture_observation": true,
+  "honest_local_result": "PASS"
+}

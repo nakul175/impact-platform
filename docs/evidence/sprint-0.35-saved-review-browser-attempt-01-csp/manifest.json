@@ -1,0 +1,23 @@
+{
+  "scope": "Preserved incomplete actual local Chrome/API/PGlite attempt. Twelve runtime/HTTP/browser groups passed; axe helper injection refused by production CSP. No complete qualification claim.",
+  "actual_api_qualification": "FAILED_OR_INCOMPLETE",
+  "started_at": "2026-10-05T20:26:14.784Z",
+  "finished_at": "2026-10-05T20:26:21.261Z",
+  "executed_passed_groups": 12,
+  "sources_unchanged": true,
+  "served_assets_unchanged": true,
+  "files": {
+    "report.json": {
+      "sha256": "5ccd69d399dab27dad53f3c77609639fcf18677cf08f2af73018400642469882",
+      "size_bytes": 100797
+    },
+    "ai-saved-review-check.mjs": {
+      "sha256": "0bb96516baff23be1bd87c199ff4bb43015b63d9a866f26d142cdd4f194bd9f8",
+      "size_bytes": 38747
+    },
+    "failure.png": {
+      "sha256": "394eb4ee4b385a7f6a3c7dfaffb384aa48ea2e7b6b30c6389db29461f36f1ce4",
+      "size_bytes": 982423
+    }
+  }
+}

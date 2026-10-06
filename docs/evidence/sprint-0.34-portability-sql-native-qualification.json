@@ -1,0 +1,1773 @@
+{
+  "registered_mode": true,
+  "runtime_source_sha256_start": {
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/contracts.py": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "apps/api/impact_api/bootstrap_profile.json": "362d98d5e8afea10fca27a5a79befdbe9a9866b4ec7ee3310432405daa1cc06d"
+  },
+  "recorded_at": "2026-10-05T19:29:52.644998+00:00",
+  "database": "impact_test_tola_ai_portability_registered40_01",
+  "scope": "Registered40 SQL/storage native qualification only",
+  "draft_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+  "checks": [
+    {
+      "name": "apply_actual_registered40_and_login_topology",
+      "result": "PASS",
+      "observations": {
+        "schema_ledger": 40,
+        "draft_applied_unledgered": false,
+        "actual_topology": {
+          "impact_app_login": {
+            "current_user": "impact_app_login",
+            "assumes": "impact_app",
+            "denied": [
+              "impact_owner",
+              "impact_worker",
+              "impact_identity",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer",
+              "impact_platform"
+            ]
+          },
+          "impact_identity_login": {
+            "current_user": "impact_identity_login",
+            "assumes": "impact_identity",
+            "denied": [
+              "impact_owner",
+              "impact_app",
+              "impact_worker",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer",
+              "impact_platform"
+            ]
+          },
+          "impact_platform_login": {
+            "current_user": "impact_platform_login",
+            "assumes": "impact_platform",
+            "denied": [
+              "impact_owner",
+              "impact_app",
+              "impact_worker",
+              "impact_identity",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer"
+            ]
+          },
+          "impact_worker_login": {
+            "current_user": "impact_worker_login",
+            "assumes": "impact_worker",
+            "denied": [
+              "impact_owner",
+              "impact_app",
+              "impact_identity",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer",
+              "impact_platform"
+            ]
+          },
+          "impact_executor_login": {
+            "current_user": "impact_executor_login",
+            "assumes": "impact_app",
+            "denied": [
+              "impact_owner",
+              "impact_worker",
+              "impact_identity",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer",
+              "impact_platform"
+            ]
+          },
+          "impact_migrator": {
+            "current_user": "impact_migrator",
+            "assumes": "impact_owner",
+            "denied": [
+              "impact_app",
+              "impact_worker",
+              "impact_identity",
+              "impact_sensitive",
+              "impact_privacy",
+              "impact_observer",
+              "impact_platform"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "labelled_synthetic_authority_fixture",
+      "result": "PASS",
+      "observations": {
+        "authority": "Synthetic direct SQL grants with all existing guards enabled; not reviewed capability upgrade",
+        "plan_id": "dcb3c2de-7ebf-49fc-94a2-4558a44e7212",
+        "plan_revision": "44a51a5a-4212-4c0c-9e3c-b36e9b906f65"
+      }
+    },
+    {
+      "name": "actual_app_creation_order_and_original_bytes",
+      "result": "PASS",
+      "observations": {
+        "creation": "actual impact_app_login + SET LOCAL ROLE impact_app",
+        "one_audit_one_event_one_receipt": true
+      }
+    },
+    {
+      "name": "ordinary_core_audit_and_actual_saved_plan_command_compatibility",
+      "result": "PASS",
+      "observations": {
+        "actual_app_ordinary_core_store_audit": true,
+        "existing_AIAdoptionPlans_save_and_receipt_retry": true,
+        "plan_atomic_control_counts": {
+          "revisions": 1,
+          "audits": 1,
+          "events": 1,
+          "receipts": 1
+        },
+        "fixture_authority": "Explicit synthetic direct existing/manage grants, not reviewed profile business upgrade"
+      }
+    },
+    {
+      "name": "actual_app_executor_database_generation_time_boundary",
+      "result": "PASS",
+      "observations": {
+        "database_generated_current_transaction_controls": true,
+        "future_or_before_transaction_refused": [
+          {
+            "actual_login": "impact_app_login",
+            "role": "impact_app",
+            "generation": "future",
+            "direct_sql_audit_manifest_metadata_time_consistent": true,
+            "exception": "CheckViolation",
+            "sqlstate": "23514",
+            "message": "redacted_sql_diagnostic"
+          },
+          {
+            "actual_login": "impact_app_login",
+            "role": "impact_app",
+            "generation": "before_transaction",
+            "direct_sql_audit_manifest_metadata_time_consistent": true,
+            "exception": "CheckViolation",
+            "sqlstate": "23514",
+            "message": "redacted_sql_diagnostic"
+          },
+          {
+            "actual_login": "impact_executor_login",
+            "role": "impact_app",
+            "generation": "future",
+            "direct_sql_audit_manifest_metadata_time_consistent": true,
+            "exception": "CheckViolation",
+            "sqlstate": "23514",
+            "message": "redacted_sql_diagnostic"
+          },
+          {
+            "actual_login": "impact_executor_login",
+            "role": "impact_app",
+            "generation": "before_transaction",
+            "direct_sql_audit_manifest_metadata_time_consistent": true,
+            "exception": "CheckViolation",
+            "sqlstate": "23514",
+            "message": "redacted_sql_diagnostic"
+          }
+        ],
+        "fixed_replay_deadline168_hours": true,
+        "owner_expired_fixture_not_runtime_creation_authority": true
+      }
+    },
+    {
+      "name": "forced_rls_privileges_exact_profile",
+      "result": "PASS",
+      "observations": {
+        "forced_rls": [
+          {
+            "relname": "ai_plan_export_issuance",
+            "relrowsecurity": true,
+            "relforcerowsecurity": true
+          },
+          {
+            "relname": "ai_plan_export_bytes",
+            "relrowsecurity": true,
+            "relforcerowsecurity": true
+          }
+        ],
+        "acl": [
+          {
+            "role": "impact_app",
+            "table": "ai_plan_export_issuance",
+            "read": true,
+            "insert": true,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_app",
+            "table": "ai_plan_export_bytes",
+            "read": true,
+            "insert": true,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_worker",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_worker",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_identity",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_identity",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_platform",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_platform",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_privacy",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_privacy",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_sensitive",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_sensitive",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_observer",
+            "table": "ai_plan_export_issuance",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          },
+          {
+            "role": "impact_observer",
+            "table": "ai_plan_export_bytes",
+            "read": false,
+            "insert": false,
+            "update": false,
+            "delete": false
+          }
+        ],
+        "registered_manifest_exact": true
+      }
+    },
+    {
+      "name": "labelled_optional_pointer_fixtures",
+      "result": "PASS",
+      "observations": {
+        "natural_author_consumer": "trusted synthetic pointer fixture only, not official issuance side effects"
+      }
+    },
+    {
+      "name": "actual_five_login_all10_pointer_and_helper_privacy",
+      "result": "PASS",
+      "observations": [
+        {
+          "role": "APP current issuer",
+          "pointers": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 1
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 1
+            }
+          }
+        },
+        {
+          "actual_login": "impact_app_login",
+          "context": "missing",
+          "pointers": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          },
+          "public_helpers_unknown_hidden_uniform_false": true
+        },
+        {
+          "actual_login": "impact_app_login",
+          "context": "different authorised issuer / forged app context for other roles",
+          "pointers": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "actual_login": "impact_executor_login",
+          "context": "missing",
+          "pointers": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          },
+          "public_helpers_unknown_hidden_uniform_false": true
+        },
+        {
+          "actual_login": "impact_executor_login",
+          "context": "different authorised issuer / forged app context for other roles",
+          "pointers": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "actual_login": "impact_worker_login",
+          "context": "missing",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          },
+          "public_helpers_unknown_hidden_uniform_false": true
+        },
+        {
+          "actual_login": "impact_worker_login",
+          "context": "different authorised issuer / forged app context for other roles",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "actual_login": "impact_identity_login",
+          "context": "missing",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "revision": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "audit": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "delivery": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "consumer": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            }
+          },
+          "public_helpers_unknown_hidden_uniform_false": true
+        },
+        {
+          "actual_login": "impact_identity_login",
+          "context": "different authorised issuer / forged app context for other roles",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "revision": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "audit": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "delivery": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "consumer": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            }
+          }
+        },
+        {
+          "actual_login": "impact_platform_login",
+          "context": "missing",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "delivery": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "consumer": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            }
+          },
+          "public_helpers_unknown_hidden_uniform_false": true
+        },
+        {
+          "actual_login": "impact_platform_login",
+          "context": "different authorised issuer / forged app context for other roles",
+          "pointers": {
+            "issuance": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "bytes": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "author": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "receipt": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "event": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "delivery": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            },
+            "consumer": {
+              "access": "TABLE_PRIVILEGE_DENIED"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "public_current_receipt_match_private_structural_execute_denied",
+      "result": "PASS",
+      "observations": {
+        "current_matching_receipt": true,
+        "missing_different_revoked_current_principal": false,
+        "structural_helper_runtime_execute": {
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        }
+      }
+    },
+    {
+      "name": "labelled_current_private_advice_storage_fixture",
+      "result": "PASS",
+      "observations": {
+        "case_state": "Open",
+        "fixture": "Current0038/39 storage-valid independent actual fixture members; expired receipt pointers are synthetic, not an API expiry workflow"
+      }
+    },
+    {
+      "name": "new_helpers_compose_existing_human_advice_privacy",
+      "result": "PASS",
+      "observations": {
+        "new_helpers_preserve_existing_case_privacy": true,
+        "authorised_app_requester_remains_readable": true,
+        "other_actual_runtime_flags_cannot_bypass": true
+      }
+    },
+    {
+      "name": "ordinary_actual_worker_audit_and_private_action_rejection",
+      "result": "PASS",
+      "observations": {
+        "actual_worker_notification_and_store_audit": true,
+        "current_private_export_advice_still_refused": [
+          {
+            "private_action": "issue_ai_plan_export",
+            "exception": "InsufficientPrivilege",
+            "sqlstate": "42501",
+            "message": "redacted_sql_diagnostic"
+          },
+          {
+            "private_action": "create_human_advice_case",
+            "exception": "InsufficientPrivilege",
+            "sqlstate": "42501",
+            "message": "redacted_sql_diagnostic"
+          },
+          {
+            "private_action": "human_advice_cancel",
+            "exception": "InsufficientPrivilege",
+            "sqlstate": "42501",
+            "message": "redacted_sql_diagnostic"
+          }
+        ],
+        "no_delivery_or_operated_notification_workflow_claim": true
+      }
+    },
+    {
+      "name": "atomic_null_mismatch_and_missing_parts_rollback",
+      "result": "PASS",
+      "observations": [
+        {
+          "case": "metadata",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": "bytes",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": "event",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": "delivery",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": "receipt",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "audit"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "audit"
+          ],
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "raw_audit",
+            "audit"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "body"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "receipt"
+          ],
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "metadata"
+          ],
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "metadata"
+          ],
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "AI_PLAN_EXPORT_SLOT_SERVER_ASSIGNED",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "projection"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "projection"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "projection"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        },
+        {
+          "case": [
+            "projection"
+          ],
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic",
+          "rollback_all_counts_unchanged": true
+        }
+      ]
+    },
+    {
+      "name": "insert_only_audit_nondelivery_and_retained_parent_refusal",
+      "result": "PASS",
+      "observations": [
+        {
+          "table": "ai_plan_export_issuance",
+          "owner": false,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_issuance",
+          "owner": false,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_issuance",
+          "owner": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_issuance",
+          "owner": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_bytes",
+          "owner": false,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_bytes",
+          "owner": false,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_bytes",
+          "owner": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "table": "ai_plan_export_bytes",
+          "owner": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "retained_parent_removal_refused": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "AI_PLAN_EXPORT_CHILD_RETAINED"
+        },
+        {
+          "retained_parent_removal_refused": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "AI_PLAN_EXPORT_CHILD_RETAINED"
+        },
+        {
+          "audit_header": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "no_delivery": true,
+          "exception": "InsufficientPrivilege",
+          "sqlstate": "42501",
+          "message": "redacted_sql_diagnostic"
+        }
+      ]
+    },
+    {
+      "name": "expired_original_bytes_and_permanent_operation_identity",
+      "result": "PASS",
+      "observations": {
+        "fixture": "Trusted synthetic immutable expired-at-insertion record",
+        "expired_metadata_visible_bytes_hidden": {
+          "issuance": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "bytes": {
+            "access": "ROWS",
+            "count": 0
+          },
+          "registry": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "revision": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "audit": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "author": {
+            "access": "ROWS",
+            "count": 0
+          },
+          "receipt": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "event": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "delivery": {
+            "access": "ROWS",
+            "count": 1
+          },
+          "consumer": {
+            "access": "ROWS",
+            "count": 0
+          }
+        },
+        "operation_never_reused": {
+          "exception": "UniqueViolation",
+          "sqlstate": "23505",
+          "message": "redacted_sql_diagnostic"
+        },
+        "expiry_does_not_remove_copy": true
+      }
+    },
+    {
+      "name": "private_retention_exclusions_ordinary_positive_purge_and_permanent_dedup",
+      "result": "PASS",
+      "observations": {
+        "overloads": [
+          {
+            "overload_arguments": 1,
+            "ordinary_expired_purged": 1,
+            "private_export_advice_keys_or_count_returned": 0,
+            "actual_login": "impact_worker_login"
+          },
+          {
+            "overload_arguments": 2,
+            "ordinary_expired_purged": 1,
+            "private_export_advice_keys_or_count_returned": 0,
+            "actual_login": "impact_worker_login"
+          }
+        ],
+        "expired_private_pointers_retained": 3,
+        "owner_only_receipt_deletion_fixture_permanent_dedup": {
+          "exception": "UniqueViolation",
+          "sqlstate": "23505",
+          "message": "redacted_sql_diagnostic"
+        },
+        "no_retention_acceptance_or_duration_claim": true
+      }
+    },
+    {
+      "name": "current_authority_loss_all10_pointers_hidden",
+      "result": "PASS",
+      "observations": [
+        {
+          "authority_gate": "UPDATE impact.grant_current",
+          "all10_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "authority_gate": "UPDATE impact.tenant_principal",
+          "all10_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "exact_scoped_group_expiry_and_separate_read_export_gates",
+      "result": "PASS",
+      "observations": [
+        {
+          "active_exact_scoped_group_export_read": true,
+          "outside_scope": false,
+          "expired_export_entitlement_all10_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "inactive_group_all10_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        },
+        {
+          "export_without_read_all10_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "typed_tenant_object_revision_foreign_key_storage_attacks",
+      "result": "PASS",
+      "observations": [
+        {
+          "attack": "same_tenant_other_objects_revision",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "wrong_plan_revision_type",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "wrong_audit_revision_type",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "other_tenant_plan",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "other_tenant_member",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "other_tenant_principal",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "unknown_snapshot",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "ForeignKeyViolation",
+          "sqlstate": "23503",
+          "message": "redacted_sql_diagnostic"
+        },
+        {
+          "attack": "unknown_outbox",
+          "proof_method": "Trusted fixture storage attack, all typed FKs/deferred seals enabled",
+          "exception": "CheckViolation",
+          "sqlstate": "23514",
+          "message": "redacted_sql_diagnostic"
+        }
+      ]
+    },
+    {
+      "name": "exact_old_pin_RESTRICTED_REMOVED_and_AVAILABLE_historical_boundary",
+      "result": "PASS",
+      "observations": [
+        {
+          "old_pin": "RESTRICTED",
+          "readable_current_head": true,
+          "all10_old_pin_pointers_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          },
+          "actual_app_create_refused": {
+            "exception": "InsufficientPrivilege",
+            "sqlstate": "42501",
+            "message": "redacted_sql_diagnostic"
+          },
+          "fixture": "Storage-valid unavailable-at-insertion old revision and readable successor; no old-row edit or supported API creation claim"
+        },
+        {
+          "old_pin": "REMOVED",
+          "readable_current_head": true,
+          "all10_old_pin_pointers_hidden": {
+            "issuance": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "bytes": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "registry": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "revision": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "audit": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "author": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "receipt": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "event": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "delivery": {
+              "access": "ROWS",
+              "count": 0
+            },
+            "consumer": {
+              "access": "ROWS",
+              "count": 0
+            }
+          },
+          "actual_app_create_refused": {
+            "exception": "InsufficientPrivilege",
+            "sqlstate": "42501",
+            "message": "redacted_sql_diagnostic"
+          },
+          "fixture": "Storage-valid unavailable-at-insertion old revision and readable successor; no old-row edit or supported API creation claim"
+        },
+        {
+          "historical_AVAILABLE_noncurrent_pin_exportable": true
+        }
+      ]
+    },
+    {
+      "name": "actual100_hidden_expired_retained_storage_101st_refusal",
+      "result": "PASS",
+      "observations": {
+        "actual_retained_storage": {
+          "retained": 100,
+          "slots": 100,
+          "first": 1,
+          "last": 100
+        },
+        "current_visible_before101st": 0,
+        "101st_on_readable_new_plan": {
+          "exception": "ProgramLimitExceeded",
+          "sqlstate": "54000",
+          "message": "AI_PLAN_EXPORT_STORAGE_LIMIT"
+        },
+        "another_tenant_principal_has_independent_slots": true,
+        "no_perhuman_or_tenantquota_claim": true
+      }
+    }
+  ],
+  "credentials_rotated": false,
+  "applied_migrations": [
+    {
+      "version": 1,
+      "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7"
+    },
+    {
+      "version": 2,
+      "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0"
+    },
+    {
+      "version": 3,
+      "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148"
+    },
+    {
+      "version": 4,
+      "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4"
+    },
+    {
+      "version": 5,
+      "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c"
+    },
+    {
+      "version": 6,
+      "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce"
+    },
+    {
+      "version": 7,
+      "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0"
+    },
+    {
+      "version": 8,
+      "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950"
+    },
+    {
+      "version": 9,
+      "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f"
+    },
+    {
+      "version": 10,
+      "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7"
+    },
+    {
+      "version": 11,
+      "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683"
+    },
+    {
+      "version": 12,
+      "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596"
+    },
+    {
+      "version": 13,
+      "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+    },
+    {
+      "version": 14,
+      "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+    },
+    {
+      "version": 15,
+      "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42"
+    },
+    {
+      "version": 16,
+      "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc"
+    },
+    {
+      "version": 17,
+      "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b"
+    },
+    {
+      "version": 18,
+      "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7"
+    },
+    {
+      "version": 19,
+      "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161"
+    },
+    {
+      "version": 20,
+      "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31"
+    },
+    {
+      "version": 21,
+      "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2"
+    },
+    {
+      "version": 22,
+      "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac"
+    },
+    {
+      "version": 23,
+      "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc"
+    },
+    {
+      "version": 24,
+      "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f"
+    },
+    {
+      "version": 25,
+      "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047"
+    },
+    {
+      "version": 26,
+      "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310"
+    },
+    {
+      "version": 27,
+      "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d"
+    },
+    {
+      "version": 28,
+      "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c"
+    },
+    {
+      "version": 29,
+      "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41"
+    },
+    {
+      "version": 30,
+      "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12"
+    },
+    {
+      "version": 31,
+      "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac"
+    },
+    {
+      "version": 32,
+      "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b"
+    },
+    {
+      "version": 33,
+      "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33"
+    },
+    {
+      "version": 34,
+      "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415"
+    },
+    {
+      "version": 35,
+      "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5"
+    },
+    {
+      "version": 36,
+      "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+    },
+    {
+      "version": 37,
+      "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+    },
+    {
+      "version": 38,
+      "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+    },
+    {
+      "version": 39,
+      "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+    },
+    {
+      "version": 40,
+      "sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89"
+    }
+  ],
+  "unregistered_draft_not_in_ledger": false,
+  "completed": true,
+  "runtime_source_sha256_end": {
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/contracts.py": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "apps/api/impact_api/bootstrap_profile.json": "362d98d5e8afea10fca27a5a79befdbe9a9866b4ec7ee3310432405daa1cc06d"
+  },
+  "runtime_source_changed_during_run": false,
+  "scope_limit": "Explicit synthetic direct SQL grants/negative storage fixtures; no reviewed profile upgrade, public HTTP API, browser, privacy removal, restart/restore/deployment acceptance",
+  "draft_sha256_end": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+  "runner_sha256": "723f8bf9bed9d16db8331ea79ce09cb757d2063d65eaa7477b5b5c4774cf72c3"
+}

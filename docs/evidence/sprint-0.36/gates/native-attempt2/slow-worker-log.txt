@@ -1,0 +1,6 @@
+2026-10-06 06:30:03,414 INFO impact.worker worker native-slow-f42a6b started build=0.36.0 adapter=synthetic
+2026-10-06 06:30:03,435 WARNING psycopg unknown PostgreSQL timezone: 'ASIA0'; will use UTC
+2026-10-06 06:30:15,033 INFO impact.worker delivery be278642-224c-42ea-8116-433251f38747 template=MEMBER_INVITATION outcome=sent class=None attempt=1
+2026-10-06 06:30:16,168 INFO impact.worker worker iteration {"cancelled": 0, "claimed": 1, "dead": 0, "exports_cancelled": 0, "exports_claimed": 0, "exports_failed": 0, "exports_retried": 0, "exports_succeeded": 0, "refused_cancellations": 0, "released": 0, "reminders": 0, "retention_claimed": 0, "retention_failed": 0, "retention_scheduled": 0, "retention_swept": 0, "retried": 0, "sent": 1, "stale_refused": 0, "superseded": 0, "tenant_failures": 0, "tenants": 90}
+2026-10-06 06:30:17,372 INFO impact.worker worker native-slow-f42a6b stopping on signal 15
+2026-10-06 06:30:17,382 INFO impact.worker worker native-slow-f42a6b stopped

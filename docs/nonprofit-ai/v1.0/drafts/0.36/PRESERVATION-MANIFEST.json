@@ -1,0 +1,2146 @@
+{
+  "status": "PRESERVED_DRAFTS_NOT_INTEGRATED_NOT_PRODUCT_QUALIFIED",
+  "recorded_at_utc": "2026-10-06T02:53:59.333351+00:00",
+  "candidate_build": "0.36.0",
+  "current_registered_build": "0.35.0",
+  "qualification": "Private synthetic and pure proofs retain their original scope; no actual0.36 API/full/native/build/browser/deployment run. Producer drafts and root checkpoint proposal were interrupted before final independent review.",
+  "files": [
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/INTEGRATION-CHECKLIST.md",
+      "sha256": "8f8410c1f9f1a645d085c074582aaba9c863bae8d3cc8dee8e5628e9493cbf98",
+      "bytes": 10907,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/INTEGRATION-CHECKLIST.md"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/PACKAGE-HANDOFF.json",
+      "sha256": "b03716c3eb5ac819dd9362915a9cae6125e11f1e0f98c105262665d17e7196b1",
+      "bytes": 4833,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/PACKAGE-HANDOFF.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/attempt-01/preflight-failure.json",
+      "sha256": "54760524e0cf024535166cb4216b512855b337740190248b55f1429fa4cedc78",
+      "bytes": 435,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/attempt-01/preflight-failure.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/files/apps/web/src/AIProcurementPreview.tsx",
+      "sha256": "c2b59be6a8d475c1a2249fb310ee806c9a4c2bfb22552b5a2fc6d30134803ccc",
+      "bytes": 3800,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/files/apps/web/src/AIProcurementPreview.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/files/apps/web/src/AIProcurementPreviewModel.ts",
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/files/apps/web/src/AIProcurementPreviewModel.ts"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/files/tools/browser/ai-enablement-check.mjs",
+      "sha256": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+      "bytes": 46170,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/files/tools/browser/ai-enablement-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/files/tools/browser/ai-procurement-preview-model-check.mjs",
+      "sha256": "d4fb4d7cfb3e1a73efe5c48878069e9f6680e083862bea03343bdd6de9dd69ea",
+      "bytes": 20963,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/files/tools/browser/ai-procurement-preview-model-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/integration-manifest.json",
+      "sha256": "4fd8aa1872d0a920c789bb54eb95f488b106a2623c5dcabc521aada13d13e2d1",
+      "bytes": 12255,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/integration-manifest.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/patches/Makefile.proposed.patch",
+      "sha256": "02e4b5165016f8549200d277103c69f199da821a18c64407f38a2dfd8eb6b108",
+      "bytes": 532,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/patches/Makefile.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/patches/browser-checker.proposed.patch",
+      "sha256": "8a84a8e869e86290567d2d73bdc3cafadfcc626f9815e3fd88e789df04f00898",
+      "bytes": 33003,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/patches/browser-checker.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/patches/build-version-only.proposed.patch",
+      "sha256": "e88015a43613239b166a297947eaf04c54f4871780dfd4576dd0b12166a3898b",
+      "bytes": 815,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/patches/build-version-only.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/patches/product.proposed.patch",
+      "sha256": "b3455058a0b61d3ceff6a73f0927ba0c26afc2b978749ef2f02283b361cb841e",
+      "bytes": 14336,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/patches/product.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/patches/workspace-only.proposed.patch",
+      "sha256": "66735362b7f3cd9a202654c5432252d98a2da92ad051a16573e7f46f30848093",
+      "bytes": 4136,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/patches/workspace-only.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-browser-checker-handoff.json",
+      "sha256": "cf7bfc9ff279a8a600de5aa5193f5dc02217411726ad0f59fbee0eaf934bc33a",
+      "bytes": 6899,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-browser-checker-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-browser-static-proof.json",
+      "sha256": "b71a123bbb4c264c74ae51abe374de52dfd917ff8bc56b567de1d21152eabb58",
+      "bytes": 1883,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-browser-static-proof.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-model-and-design-handoff.json",
+      "sha256": "872864848ef88d64c89596938fc7942aefb42c9a21de493613e24d13ace05ba9",
+      "bytes": 3580,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-model-and-design-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-model-tests.json",
+      "sha256": "a8cd56183daf803f85760d2151dbbddb3f633d3b612fd7b61e48faf52b6d9852",
+      "bytes": 6536,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-model-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-original28-model-tests.json",
+      "sha256": "c68029b3b0ff7a944064886bb9889c33f948d6f59e8d67e860b51461ee3af7b6",
+      "bytes": 8067,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-original28-model-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-prototype-handoff.json",
+      "sha256": "5c882de4edd780fd6be75a3d347b7943994b92895d9dcaad75e1d7ec054454be",
+      "bytes": 3018,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-prototype-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/proofs/private-synthetic12-ui-tests.json",
+      "sha256": "1d902a298dab1dbc7e4a6adc92131dd171d51645d0a95ba0c096caa1d5555b2c",
+      "bytes": 21382,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/proofs/private-synthetic12-ui-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/AIAdoptionWorkspace.baseline.tsx",
+      "sha256": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+      "bytes": 54482,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/AIAdoptionWorkspace.baseline.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/AIAdoptionWorkspace.proposed.tsx",
+      "sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+      "bytes": 53946,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/AIAdoptionWorkspace.proposed.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/DEVELOPMENT-procurement-preview.proposed.md",
+      "sha256": "fc59b52cc30a1a7349782bd070e054047e3378a1e5f051b5f950162618c67041",
+      "bytes": 15664,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/DEVELOPMENT-procurement-preview.proposed.md"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/metadata/VERSION.json",
+      "sha256": "b5709a476ba0af32bd60c48cc5f840d689545ddbfbd2109caca4012172688bf5",
+      "bytes": 214,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/metadata/VERSION.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/metadata/apps/web/package-lock.json",
+      "sha256": "b4101618b52dc2e50824f4ae2189fbd85ada1c431056afaa1e968bd6fa3b819e",
+      "bytes": 39846,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/metadata/apps/web/package-lock.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/integration-package/review/metadata/apps/web/package.json",
+      "sha256": "a0158ee08d107f5a8a037d735686f9ff810a471d787c759422c2264586a12c06",
+      "bytes": 508,
+      "source_set": "integration-package",
+      "original_path": "/private/tmp/tola-ai-036-integration-package/review/metadata/apps/web/package.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/AIAdoptionWorkspace.036-predecessor.tsx",
+      "sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+      "bytes": 53946,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/AIAdoptionWorkspace.036-predecessor.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/ai-enablement-check.036-predecessor.mjs",
+      "sha256": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+      "bytes": 46170,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/ai-enablement-check.036-predecessor.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/ai-enablement-check.proposed.mjs",
+      "sha256": "71219064a7e56352f45a3a92e58017bc0cdb184b3a40339c8970f13d007a7dc9",
+      "bytes": 48926,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/ai-enablement-check.proposed.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline/AIAdoptionWorkspace.tsx",
+      "sha256": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+      "bytes": 54482,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline/AIAdoptionWorkspace.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline/AIProcurementPreview.tsx",
+      "sha256": "c2b59be6a8d475c1a2249fb310ee806c9a4c2bfb22552b5a2fc6d30134803ccc",
+      "bytes": 3800,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline/AIProcurementPreview.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline/AIProcurementPreviewModel.ts",
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline/AIProcurementPreviewModel.ts"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline/fixture.tsx",
+      "sha256": "a344e4449429b3d45e7147fdd1781775a29ad5987f46369a4f71230d796ddc78",
+      "bytes": 8062,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline/index.html",
+      "sha256": "3f7e6e2b1949741d117ab7db78ee1142538bc5566eabcf2b4df886420313637e",
+      "bytes": 269,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline/index.html"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline-attempt-01/baseline-profile-lost-1440.png",
+      "sha256": "4d2257fb29df58f74a8a5eb91a8a6d2cfb88a37dba7cf6f360341d61bee932d3",
+      "bytes": 265386,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline-attempt-01/baseline-profile-lost-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline-attempt-01/reproduction.json",
+      "sha256": "d316717bd9eb55fc307595d760abb56122346464cf1a6cdfa9e2072b8f586f35",
+      "bytes": 25891,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline-attempt-01/reproduction.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/baseline-check.mjs",
+      "sha256": "ccb1f64ca123120b115146fd3dff5aa5a7812ae816104b39188f879a34676a99",
+      "bytes": 4849,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/baseline-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/composed-browser.from-035.patch",
+      "sha256": "d3bed3e575c52b1047bf1be23a497603b93cbc3d96be930d7cf51264d1d43987",
+      "bytes": 35829,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/composed-browser.from-035.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/composed-workspace.from-035.patch",
+      "sha256": "0b19859721042b2b4e760d6f215388faab1509d33e1732e7ac18aed6be0649e6",
+      "bytes": 5478,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/composed-workspace.from-035.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/handoff.json",
+      "sha256": "0c13e0ff7759d347b85a573cc5ebd931fe985bc7358157d35277ced40a824fd8",
+      "bytes": 5484,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/profile-baseline.after-036-preview.patch",
+      "sha256": "aeef3bf21535ebe703d344cde6920247807a0b4faaeda19ebae12792afef8ab2",
+      "bytes": 1428,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/profile-baseline.after-036-preview.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/profile-only-browser.after-036-preview.patch",
+      "sha256": "97452395a4bef21ae1a69eaf1734f9da24b4a7b9e36accf9176d4934c73451f0",
+      "bytes": 3363,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/profile-only-browser.after-036-preview.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/proposed/AIAdoptionWorkspace.tsx",
+      "sha256": "edf3944e3eb4330d0edbeb337bfe0a66aeaa866a17a273ce2d9aa44952f06612",
+      "bytes": 54382,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/proposed/AIAdoptionWorkspace.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/proposed-attempt-01/profile-only-cancel-1440.png",
+      "sha256": "0f76b5d09edcf36c89b7ab06988a4653ef642c50ab6a3f8d70dcb51eac73eefd",
+      "bytes": 128708,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/proposed-attempt-01/profile-only-cancel-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/proposed-attempt-01/profile-only-confirmation-320.png",
+      "sha256": "fd16fb8be6d7291fc6f0584db35da2d1aeb3fac354cb5343664b6740aaa58515",
+      "bytes": 146072,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/proposed-attempt-01/profile-only-confirmation-320.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/proposed-attempt-01/qualification.json",
+      "sha256": "73bea7c7abdc1210cfa3eba2defb96125e19c71c041facd5b8de58633d1bc7c1",
+      "bytes": 29205,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/proposed-attempt-01/qualification.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/before-discard-copy/proposed-check.mjs",
+      "sha256": "2bbb6a8d4b718a1dd2b0358b90a75fba4ab473dccf4f52f632fd818b3b250799",
+      "bytes": 17035,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/before-discard-copy/proposed-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/composed-browser.from-035.patch",
+      "sha256": "d3bed3e575c52b1047bf1be23a497603b93cbc3d96be930d7cf51264d1d43987",
+      "bytes": 35829,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/composed-browser.from-035.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/composed-workspace.from-035.patch",
+      "sha256": "8a83cadf1f260c41ffbb67a7c00a77eee68e043a84ffbc3b470216da25f6ea0f",
+      "bytes": 6278,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/composed-workspace.from-035.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/copy-assertion-anchor-attempt-01.json",
+      "sha256": "be36f218ac5fe2b800e61dbe67ebd3321ef1a9f0a76bbf8148044e5c0dffd46d",
+      "bytes": 297,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/copy-assertion-anchor-attempt-01.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/handoff.json",
+      "sha256": "19efd04ece03a3b017e3b81c3907db5999b74ad1beaa454b1082e56f5955fb90",
+      "bytes": 7432,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/preserved-source.json",
+      "sha256": "db1f65cc301216883a88d1ac1fd7d3a904271da9adae0982f580a2db6fffdf50",
+      "bytes": 507,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/preserved-source.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/profile-baseline.after-036-preview.patch",
+      "sha256": "3dbeaafa724a4c19a21212370421ae5deddfdce3e99ad8001a719447a57e3093",
+      "bytes": 2228,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/profile-baseline.after-036-preview.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/profile-only-browser.after-036-preview.patch",
+      "sha256": "97452395a4bef21ae1a69eaf1734f9da24b4a7b9e36accf9176d4934c73451f0",
+      "bytes": 3363,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/profile-only-browser.after-036-preview.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed/AIAdoptionWorkspace.tsx",
+      "sha256": "5a853988b3c3035ea84305a0f857d0a958113bc2913d3e26a8a7946c7d2b5230",
+      "bytes": 54564,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed/AIAdoptionWorkspace.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed/AIProcurementPreview.tsx",
+      "sha256": "c2b59be6a8d475c1a2249fb310ee806c9a4c2bfb22552b5a2fc6d30134803ccc",
+      "bytes": 3800,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed/AIProcurementPreview.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed/AIProcurementPreviewModel.ts",
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed/AIProcurementPreviewModel.ts"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed/fixture.tsx",
+      "sha256": "a344e4449429b3d45e7147fdd1781775a29ad5987f46369a4f71230d796ddc78",
+      "bytes": 8062,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed/index.html",
+      "sha256": "3f7e6e2b1949741d117ab7db78ee1142538bc5566eabcf2b4df886420313637e",
+      "bytes": 269,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed/index.html"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-01/profile-only-cancel-1440.png",
+      "sha256": "0f76b5d09edcf36c89b7ab06988a4653ef642c50ab6a3f8d70dcb51eac73eefd",
+      "bytes": 128708,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-01/profile-only-cancel-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-01/profile-only-confirmation-320.png",
+      "sha256": "fd16fb8be6d7291fc6f0584db35da2d1aeb3fac354cb5343664b6740aaa58515",
+      "bytes": 146072,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-01/profile-only-confirmation-320.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-01/qualification.json",
+      "sha256": "73bea7c7abdc1210cfa3eba2defb96125e19c71c041facd5b8de58633d1bc7c1",
+      "bytes": 29205,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-01/qualification.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-02-discard-copy/profile-only-cancel-1440.png",
+      "sha256": "0f76b5d09edcf36c89b7ab06988a4653ef642c50ab6a3f8d70dcb51eac73eefd",
+      "bytes": 128708,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-02-discard-copy/profile-only-cancel-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-02-discard-copy/profile-only-confirmation-320.png",
+      "sha256": "a1bd9d7869fc966eb48569cd7d29e62c94938a82d02bae3efa46841ea83e6abe",
+      "bytes": 146266,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-02-discard-copy/profile-only-confirmation-320.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-attempt-02-discard-copy/qualification.json",
+      "sha256": "7286766d31a18baf2101fae0fb9fed8ca18ba24154fb2ff3968fc663a046247a",
+      "bytes": 29205,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-attempt-02-discard-copy/qualification.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/proposed-check.mjs",
+      "sha256": "6ca1b9371d1a27c383990907b4c1828150ddbe80e403df7f3e00751a4f7417a4",
+      "bytes": 17519,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/proposed-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/server.mjs",
+      "sha256": "aaa53c7a60bc7b3ea8758947e32ad0c3caf653d03db03858803a39d2e2c22170",
+      "bytes": 767,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/server.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/tsconfig.json",
+      "sha256": "ba3762653a147af6d777b5a3a066869164375f0d4b266cb295d69914a479d329",
+      "bytes": 421,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/tsconfig.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/typecheck-attempt-01-missing-vite-global/reason.json",
+      "sha256": "272f50de5f153f6bca85dd17af42f11f2c12d52b3666d025d6a9f901b8392950",
+      "bytes": 305,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/typecheck-attempt-01-missing-vite-global/reason.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/profile-preservation/typecheck-attempt-01-missing-vite-global/tsconfig.json",
+      "sha256": "df794f48f440310938f5a6814cc5f6c30ae4335536c50023a590f31670188ae2",
+      "bytes": 291,
+      "source_set": "profile-preservation",
+      "original_path": "/private/tmp/tola-ai-profile-preservation-draft/typecheck-attempt-01-missing-vite-global/tsconfig.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/availability-neutral-practice-copy.patch",
+      "sha256": "7e812fe0485ee884935ac8c7f13b3da3a7f52ec10b9d8b4b74b8dad0370c3009",
+      "bytes": 2992,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/availability-neutral-practice-copy.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/baseline/apps/web/src/AITaskPractice.tsx",
+      "sha256": "6580578dbb37ac044d2356fb82a4d726b7c0ed2e0978cdc9acc43dba3323a86d",
+      "bytes": 13670,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/baseline/apps/web/src/AITaskPractice.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/baseline/tools/browser/ai-planning-check.mjs",
+      "sha256": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790",
+      "bytes": 76388,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/baseline/tools/browser/ai-planning-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/before-unsaved-revision-wording/availability-neutral-practice-copy.patch",
+      "sha256": "b312caecd34c189e36270f00519140a6956ee0b263314f762ce9d905291c1491",
+      "bytes": 2952,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/before-unsaved-revision-wording/availability-neutral-practice-copy.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/before-unsaved-revision-wording/handoff.json",
+      "sha256": "27f28c101f4feb743fb978ab4c99dbf2d21e33c7210d1160a50ea93010d54ea5",
+      "bytes": 3230,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/before-unsaved-revision-wording/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/before-unsaved-revision-wording/proposed/apps/web/src/AITaskPractice.tsx",
+      "sha256": "801373e0108b5891c38102a1447cbb1102fb660f39cbaa251515f40f664c3d45",
+      "bytes": 13741,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/before-unsaved-revision-wording/proposed/apps/web/src/AITaskPractice.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/before-unsaved-revision-wording/proposed/tools/browser/ai-planning-check.mjs",
+      "sha256": "2175f7fc688ad1efbfc04bf21ae8072da8ee006e385781384e020b0b825af426",
+      "bytes": 76547,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/before-unsaved-revision-wording/proposed/tools/browser/ai-planning-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/handoff.json",
+      "sha256": "59ccde359e7c55649d8134a00ffd94f002f8f11ba8fbdaa77eca4666ab510eb2",
+      "bytes": 2221,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/proposed/apps/web/src/AITaskPractice.tsx",
+      "sha256": "f38db47ca5c2a6dcff5258508e2ce09099f4f53e5ef2a1ab37d000c8c0745f59",
+      "bytes": 13765,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/proposed/apps/web/src/AITaskPractice.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/practice-copy/proposed/tools/browser/ai-planning-check.mjs",
+      "sha256": "3300a5e50303a6db2f81493f4c572d8b4e4dc3770d5f9f0ac2937daa9e9b65b8",
+      "bytes": 76563,
+      "source_set": "practice-copy",
+      "original_path": "/private/tmp/tola-ai-036-practice-copy-draft/proposed/tools/browser/ai-planning-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/Makefile.proposed.patch",
+      "sha256": "02e4b5165016f8549200d277103c69f199da821a18c64407f38a2dfd8eb6b108",
+      "bytes": 532,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/Makefile.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/apps/web/src/AIProcurementPreviewModel.ts",
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/apps/web/src/AIProcurementPreviewModel.ts"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/attempt-01/model-tests.json",
+      "sha256": "21242da510dd31a740902ad0504c1176ba159c93518d2e7d2eb0dceabb787d34",
+      "bytes": 6536,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/attempt-01/model-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/docs/evidence/procurement-preview-model-tests.json",
+      "sha256": "21242da510dd31a740902ad0504c1176ba159c93518d2e7d2eb0dceabb787d34",
+      "bytes": 6536,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/docs/evidence/procurement-preview-model-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/docs/evidence/sprint-0.36-procurement-preview-model-tests.json",
+      "sha256": "a8cd56183daf803f85760d2151dbbddb3f633d3b612fd7b61e48faf52b6d9852",
+      "bytes": 6536,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/docs/evidence/sprint-0.36-procurement-preview-model-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/docs/nonprofit-ai/v1.0/DEVELOPMENT-procurement-preview.proposed.md",
+      "sha256": "fc59b52cc30a1a7349782bd070e054047e3378a1e5f051b5f950162618c67041",
+      "bytes": 15664,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/docs/nonprofit-ai/v1.0/DEVELOPMENT-procurement-preview.proposed.md"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/handoff.json",
+      "sha256": "872864848ef88d64c89596938fc7942aefb42c9a21de493613e24d13ace05ba9",
+      "bytes": 3580,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/model-and-design/tools/browser/ai-procurement-preview-model-check.mjs",
+      "sha256": "d4fb4d7cfb3e1a73efe5c48878069e9f6680e083862bea03343bdd6de9dd69ea",
+      "bytes": 20963,
+      "source_set": "model-and-design",
+      "original_path": "/private/tmp/tola-ai-procurement-regression-draft/tools/browser/ai-procurement-preview-model-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIAdoptionWorkspace.proposed.tsx",
+      "sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+      "bytes": 53946,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIAdoptionWorkspace.proposed.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIAdoptionWorkspace.tsx",
+      "sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+      "bytes": 53946,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIAdoptionWorkspace.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIAdoptionWorkspace.tsx.baseline",
+      "sha256": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+      "bytes": 54482,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIAdoptionWorkspace.tsx.baseline"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIProcurementBrief.tsx.baseline",
+      "sha256": "d9e75a9040a7f03d94aa10c0179aa3aa53cd1ed99ed86e2afb31e65339c184f7",
+      "bytes": 1132,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIProcurementBrief.tsx.baseline"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIProcurementPreview.tsx",
+      "sha256": "c2b59be6a8d475c1a2249fb310ee806c9a4c2bfb22552b5a2fc6d30134803ccc",
+      "bytes": 3800,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIProcurementPreview.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/AIProcurementPreviewModel.ts",
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/AIProcurementPreviewModel.ts"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/INTEGRATION-PLAN.md",
+      "sha256": "a7cc95a33d2032ba44e1596451f218817a3b48285142b6b09dacb5ce4175c4a8",
+      "bytes": 1790,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/INTEGRATION-PLAN.md"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/ai-enablement-check.baseline.mjs",
+      "sha256": "641df36ec61e8f3314fc6fc142a443b3f9ad7291a8b871ada8ad81e37b3a58e9",
+      "bytes": 20428,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-check.baseline.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/ai-enablement-check.proposed.mjs",
+      "sha256": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+      "bytes": 46170,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-check.proposed.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/ai-enablement-procurement-preview.proposed.patch",
+      "sha256": "8a84a8e869e86290567d2d73bdc3cafadfcc626f9815e3fd88e789df04f00898",
+      "bytes": 33003,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-procurement-preview.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/baseline.json",
+      "sha256": "3ce11881cc5cdc2240cf374d2374a07e3571cb84fc41dfb7de47ba3551e29837",
+      "bytes": 225,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/baseline.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/checker-handoff.json",
+      "sha256": "cf7bfc9ff279a8a600de5aa5193f5dc02217411726ad0f59fbee0eaf934bc33a",
+      "bytes": 6899,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/checker-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/guarded-first-proposal/ai-enablement-check.proposed.mjs",
+      "sha256": "33d923189b9f72d27fed66ad132951d28863ccabb52f88ae0263c1a2918afa0b",
+      "bytes": 44504,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/guarded-first-proposal/ai-enablement-check.proposed.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/guarded-first-proposal/ai-enablement-procurement-preview.proposed.patch",
+      "sha256": "24d09035abd9c4ed012a756a0076e11e3d565495504f4b29aea535a87a973d85",
+      "bytes": 30936,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/guarded-first-proposal/ai-enablement-procurement-preview.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/guarded-first-proposal/checker-handoff.json",
+      "sha256": "db91e518b0fed562218e1e7675a54f965588f5d99fce164db265da3027b8fdb9",
+      "bytes": 5845,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/guarded-first-proposal/checker-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/guarded-first-proposal/static-proposal-proof.json",
+      "sha256": "eb6655e4a456e3917a8fee3cff0a77f14f8232c82fab8ad9ba4a98e42886e2a2",
+      "bytes": 1567,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/guarded-first-proposal/static-proposal-proof.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/reviewed-before-browser-metadata/ai-enablement-check.proposed.mjs",
+      "sha256": "f5c430389741de0d681d787cfd79a5345b9859b43b7d8f20e2fac6d857f7a326",
+      "bytes": 46223,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/reviewed-before-browser-metadata/ai-enablement-check.proposed.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/reviewed-before-browser-metadata/ai-enablement-procurement-preview.proposed.patch",
+      "sha256": "9ce0feec9f42b8f088443d19d535b2415d23e6866b155d9bf2d7a04ad9328a68",
+      "bytes": 32816,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/reviewed-before-browser-metadata/ai-enablement-procurement-preview.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/reviewed-before-browser-metadata/checker-handoff.json",
+      "sha256": "f97a9fc6817a28649ba61fdc381e22e0b827c82a49313e70ea1f87962f07f93d",
+      "bytes": 6667,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/reviewed-before-browser-metadata/checker-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/reviewed-before-browser-metadata/preserved.json",
+      "sha256": "072aa73f84f0b06315a6d7b9a64777c2ff2331c0fe78dca5b5bc3e60a0acdca1",
+      "bytes": 583,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/reviewed-before-browser-metadata/preserved.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/reviewed-before-browser-metadata/static-proposal-proof.json",
+      "sha256": "889601366334fc0d46b31de3e03e5f9b341f6926ed0f2f452905be0114695182",
+      "bytes": 1679,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/reviewed-before-browser-metadata/static-proposal-proof.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/browser-proposal/static-proposal-proof.json",
+      "sha256": "b71a123bbb4c264c74ae51abe374de52dfd917ff8bc56b567de1d21152eabb58",
+      "bytes": 1883,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/static-proposal-proof.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/current-source-assumptions.json",
+      "sha256": "9d3c79df015c62d262529afb9f5169f2ccd3c2c5d2e68a0e97c8e08785d7293f",
+      "bytes": 457,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/current-source-assumptions.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/fixture.css",
+      "sha256": "d98667897a1e40a5f5e02c6e3e5533cd863ad98318a20040710df66baa23dd7f",
+      "bytes": 65,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/fixture.css"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/fixture.tsx",
+      "sha256": "45b047150b3f09df0850a535a24cc59d1ec96955304d535d636cc1b276182f00",
+      "bytes": 7139,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/index.html",
+      "sha256": "1fe193ee6ebb544925937ddcb0536a0b0456a1cbd27473da03fa951b03117ceb",
+      "bytes": 282,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/index.html"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/model.pure.mjs",
+      "sha256": "69f933e63f97eaa5e18465a3b572c0122e84c085e3f53f57d7d0526561b400c4",
+      "bytes": 4003,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/model.pure.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/preview-1440.png",
+      "sha256": "7bcb42c9f621e005c9328fe9c1e0bc85afdd586b68ef74fdbebce934361d14d0",
+      "bytes": 119650,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/preview-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/preview-320.png",
+      "sha256": "75d915f3777d22ac84161ad8f37101a9030476bd053cdabd9d261bca433822cd",
+      "bytes": 75089,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/preview-320.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/procurement-preview.proposed.patch",
+      "sha256": "b3455058a0b61d3ceff6a73f0927ba0c26afc2b978749ef2f02283b361cb841e",
+      "bytes": 14336,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/procurement-preview.proposed.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/prototype-handoff.json",
+      "sha256": "5c882de4edd780fd6be75a3d347b7943994b92895d9dcaad75e1d7ec054454be",
+      "bytes": 3018,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/prototype-handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/pure-attempt1-compiler-api/failure.json",
+      "sha256": "745492fa91869d2faeec5820c091e7cfc8afff86f97e095518f6e81c61371e4a",
+      "bytes": 200,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/pure-attempt1-compiler-api/failure.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/pure-attempt1-compiler-api/pure-check.mjs",
+      "sha256": "1044b407cd5d6a96b1671f1b0ef13af6d6645bc667a9f8610612783574d5a4d2",
+      "bytes": 9819,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/pure-attempt1-compiler-api/pure-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/pure-check.mjs",
+      "sha256": "7e83b99a4b269cc1da501429969665ca786609def164b89ff273e46107662308",
+      "bytes": 12069,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/pure-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/pure-evidence.json",
+      "sha256": "c68029b3b0ff7a944064886bb9889c33f948d6f59e8d67e860b51461ee3af7b6",
+      "bytes": 8067,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/pure-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/server.mjs",
+      "sha256": "28723986ae2a1e9e2f7ffd456daef9c15089e5425747c484c19b4832aab4a91b",
+      "bytes": 697,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/server.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/tsconfig.json",
+      "sha256": "dae00da3f7a3a976041888a23324fcb45993baa5e129fe20361723c6ce6fbe07",
+      "bytes": 462,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/tsconfig.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-attempt3-empty-goal-render-wait/fixture.tsx",
+      "sha256": "e6074e3d2e85e3fde1757b0b6ecc106f6e6478ba12da30fe0d62a87ea0e579ff",
+      "bytes": 5513,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-attempt3-empty-goal-render-wait/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-attempt3-empty-goal-render-wait/reason.json",
+      "sha256": "b0bc894948db296f55c9e4018f81090cbda70443ed8d5821e478e969f7fb77a2",
+      "bytes": 266,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-attempt3-empty-goal-render-wait/reason.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-attempt3-empty-goal-render-wait/ui-check.mjs",
+      "sha256": "a5b4d6f9f7879be29fe3c25b212911cfd16f4d530fb8cfc603ddcf60d2ae9059",
+      "bytes": 9886,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-attempt3-empty-goal-render-wait/ui-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-attempt3-empty-goal-render-wait/ui-evidence.json",
+      "sha256": "5b88ab8e5647ea54ff52c49db1ef587e6a5c39f9cde218f6edb24e9ae6f2d998",
+      "bytes": 20898,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-attempt3-empty-goal-render-wait/ui-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-attempt3-empty-goal-render-wait/ui-failure.png",
+      "sha256": "41931bbbab6b6d5428cb89bbe751656b5d049833d0f653f5027cfafbceef97d7",
+      "bytes": 75052,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-attempt3-empty-goal-render-wait/ui-failure.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-check.mjs",
+      "sha256": "c4d20ede04cde51412b20713b9dab0e29a25b288c8f766f4b0a0e4e96cc98dd2",
+      "bytes": 12008,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-evidence.json",
+      "sha256": "1d902a298dab1dbc7e4a6adc92131dd171d51645d0a95ba0c096caa1d5555b2c",
+      "bytes": 21382,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-failure.png",
+      "sha256": "41931bbbab6b6d5428cb89bbe751656b5d049833d0f653f5027cfafbceef97d7",
+      "bytes": 75052,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-failure.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/fixture.tsx",
+      "sha256": "e6074e3d2e85e3fde1757b0b6ecc106f6e6478ba12da30fe0d62a87ea0e579ff",
+      "bytes": 5513,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/preview-1440.png",
+      "sha256": "7bcb42c9f621e005c9328fe9c1e0bc85afdd586b68ef74fdbebce934361d14d0",
+      "bytes": 119650,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/preview-1440.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/preview-320.png",
+      "sha256": "75d915f3777d22ac84161ad8f37101a9030476bd053cdabd9d261bca433822cd",
+      "bytes": 75089,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/preview-320.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/pure-check.mjs",
+      "sha256": "bd44a8454d4d31d4917a0a0e18c18f17a6afa337fbe9001bb6cf6b1ac2a01409",
+      "bytes": 9773,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/pure-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/pure-evidence.json",
+      "sha256": "47ff9c207177f1f078fd8b98732d574bd1cad03ab0590c0712ac5252c0a9fda7",
+      "bytes": 8067,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/pure-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/ui-check.mjs",
+      "sha256": "07bf79e7e61855aa2a204baea0b798686d0b138262a254851b3d0346c2790d8a",
+      "bytes": 10045,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/ui-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-green-before-final-format/ui-evidence.json",
+      "sha256": "398ea6037d7c2dc2365b06219301a16e10b61dc4f179799db8ba9f6d967dc2a6",
+      "bytes": 21382,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-green-before-final-format/ui-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-save-label-failure-retained/fixture.tsx",
+      "sha256": "e6074e3d2e85e3fde1757b0b6ecc106f6e6478ba12da30fe0d62a87ea0e579ff",
+      "bytes": 5513,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-save-label-failure-retained/fixture.tsx"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-save-label-failure-retained/reason.json",
+      "sha256": "e57122099014ac87ff36562faf4c5557b2d2d0a887d6ef2f2488dd394459d638",
+      "bytes": 500,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-save-label-failure-retained/reason.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-save-label-failure-retained/ui-check.mjs",
+      "sha256": "6051797b91864cf40625f9ba13c8aaeee57b6983dc33428b40ee07cffa6ae43d",
+      "bytes": 9888,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-save-label-failure-retained/ui-check.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-save-label-failure-retained/ui-evidence.json",
+      "sha256": "8260ffe6e6f5bd6469ac8e1489683e9c0a09ad932bc98ff72350e57ed0c7dc79",
+      "bytes": 19930,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-save-label-failure-retained/ui-evidence.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/ui-save-label-failure-retained/ui-failure.png",
+      "sha256": "d3eca96619df2b1380f8fd25ff772797c37b7dcffc1d296c872bb74fa17716dc",
+      "bytes": 87503,
+      "source_set": "procurement-prototype",
+      "original_path": "/private/tmp/tola-ai-procurement-preview-draft/ui-save-label-failure-retained/ui-failure.png"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/build-body.py.txt",
+      "sha256": "246b1669a309cca2002688fb5e4046300c76bc0160b3e888edc8fc235a60099a",
+      "bytes": 8701,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/build-body.py.txt"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/frozen-inventories.json",
+      "sha256": "1ac0d4863a49d2f56042ece4d851c3df27ffb616e38ae8971126cd6acd2a564c",
+      "bytes": 31649,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/frozen-inventories.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/full.patch",
+      "sha256": "f983201343c2954aeb43c852a5cfa4fec9309aacb3dbfad2826df1fd7d626d65",
+      "bytes": 30318,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/full.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/guard-template.py.txt",
+      "sha256": "362bcee90c15143ae5a175b5871dcca9ffb1cbcbafb6ecd4ef879bbfe73ced80",
+      "bytes": 4424,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/guard-template.py.txt"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/lint.patch",
+      "sha256": "bca40b2521286cad64b4ebc5975fd8a867d762d20c7b534cb0a77454f5192e04",
+      "bytes": 17480,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/lint.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/prepare_sources.py",
+      "sha256": "99395a2a4a698aaffe61617b13025c876743a592bfbbc9aa47ea4e02b2bc8638",
+      "bytes": 9238,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/prepare_sources.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/preserved035/tola-ai-035-full-qualification.py",
+      "sha256": "ef34dd7e234061616303e7b6bc9f07639f3b8e3aa1ae2e595094ada08bdc7bc8",
+      "bytes": 12131,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/preserved035/tola-ai-035-full-qualification.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/preserved035/tola-ai-035-lint-final.py",
+      "sha256": "3eaa50d9c6cefe56e0a6cd20adfd37f0b0316aa5a38379b563be5b90112ad723",
+      "bytes": 3351,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/preserved035/tola-ai-035-lint-final.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/preserved035/tola-ai-035-unit.py",
+      "sha256": "4fc7d6308ec30a98ba762a0d703a9f0392beb0e283f3bfd466d760eb7592649f",
+      "bytes": 3447,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/preserved035/tola-ai-035-unit.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/tola-ai-036-build-final.py",
+      "sha256": "519443ab6b48cb3fcb3d738cfca83d2f79af2eaf23b5e2568381e18c455ddc3a",
+      "bytes": 19946,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/tola-ai-036-build-final.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/tola-ai-036-full-qualification.py",
+      "sha256": "46cb08430de227730c2ec4426a65964ed35b3687c4c0d0c52e7cc8f7cf7c0e02",
+      "bytes": 38669,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/tola-ai-036-full-qualification.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/tola-ai-036-lint-final.py",
+      "sha256": "833c4dbf106cbb4002b420d3bec7e0523ba50b36c7899d185458d2d752bfaedc",
+      "bytes": 16288,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/tola-ai-036-lint-final.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/tola-ai-036-unit.py",
+      "sha256": "c1f01a5973f661e9e60de43bdef4eae52b7c255cb36ee3ee92775343da0903cc",
+      "bytes": 29856,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/tola-ai-036-unit.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/producer-drafts/unit.patch",
+      "sha256": "71efc2456a65e7ddbfbc3faefa68749c28dce0d7e2c1a01bf8f5ec3dcb351e20",
+      "bytes": 30108,
+      "source_set": "producer-drafts",
+      "original_path": "/private/tmp/tola-ai-036-producer-draft/unit.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/browser-qualification.035-v6.before.py",
+      "sha256": "9d8097d2218d9b27fa70872de4ebebb20e01df7e4a8792cc047fed163435de4f",
+      "bytes": 55140,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/browser-qualification.035-v6.before.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/browser-qualification.proposed.py",
+      "sha256": "83440b5857623ada24fc29f3f0cf0460a98685b42aac06fbfecc4ea484316d8c",
+      "bytes": 57421,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/browser-qualification.proposed.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/handoff.json",
+      "sha256": "802737eceeab043b7fb284539222ab55ce6447d13d081f169f2f97a1339e190e",
+      "bytes": 3323,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/offline-fixture-reproducer.py",
+      "sha256": "f8811a1aed2f1155939ee01741b9fba1c59d42b8725aea0c77718c5bd5cf10ac",
+      "bytes": 3639,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/offline-fixture-reproducer.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/offline-tests.json",
+      "sha256": "82a994aff647f7497b14d1f8787e18c89ec40984ea19f92c47514cdfa693893d",
+      "bytes": 1851,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/offline-tests.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-wrapper/wrapper-036.patch",
+      "sha256": "2ab1c6a131c7e6d996c377c5b238f4efa09a655b25e1170aaa9c3851d4b2d149",
+      "bytes": 8744,
+      "source_set": "browser-wrapper",
+      "original_path": "/private/tmp/tola-ai-036-browser-wrapper-proposal/wrapper-036.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/README-from-035.patch",
+      "sha256": "d6e85a0760725a485a36fa735befa0e70041e6c5ce8e8e5c00ad612e6a1aa706",
+      "bytes": 6945,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/README-from-035.patch"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/README.md",
+      "sha256": "4bc1d461bf338303d916d68e009ddced79cfdc2eeacbe08f473d7afc567a5bec",
+      "bytes": 10418,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/README.md"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/compose_browser.py",
+      "sha256": "c6623207b2e4ae899b250d2b6100b430ac018e77336ceda6f3b3cda86950ca3b",
+      "bytes": 11909,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/compose_browser.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/handoff.json",
+      "sha256": "ce3b4df729b378ba030c2d186dd61eecf859b97b5a02cc5f398cb0c32e045dce",
+      "bytes": 4576,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/handoff.json"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/run_offline_no_sockets.py",
+      "sha256": "3b0b5fce0e662b023023d5eade6079af09f880122063169cfa5379ce53fc938a",
+      "bytes": 808,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/run_offline_no_sockets.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/test_offline.py",
+      "sha256": "2030012a95abe075250e0c9265f3c4798ae42dde98da64f724a9c4d7cda34c56",
+      "bytes": 13326,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/test_offline.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/verify_deployment.py",
+      "sha256": "ef56bca3d3a8d4f15becb0e3ee001240e2ba5f17e8f498d394a902ee288faebe",
+      "bytes": 22239,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/verify_deployment.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/verify_walkthrough.mjs",
+      "sha256": "44df3cf9987a061aa13dff727ccb2cee956347a32cce98144facbdb0f2fe509a",
+      "bytes": 23126,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/verify_walkthrough.mjs"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/checkpoint-manifest.proposed.py",
+      "sha256": "21aaa2b284eeba7c7e66dfcdeb453b62494644e0d772e0a473e706968c78bf05",
+      "bytes": 34017,
+      "source_set": "root-or-agent-proposal",
+      "original_path": "/private/tmp/tola-ai-036-checkpoint-manifest.proposed.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/browser-qualification.proposed.py",
+      "sha256": "83440b5857623ada24fc29f3f0cf0460a98685b42aac06fbfecc4ea484316d8c",
+      "bytes": 57421,
+      "source_set": "root-or-agent-proposal",
+      "original_path": "/private/tmp/tola-ai-036-browser-qualification.py"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.36/deployment-verifier/offline-tests.log",
+      "sha256": "3962ba716f61477c4f15a3a8a66e33c11fbca4713dc030be0e0e9f929c6c8267",
+      "bytes": 3206,
+      "source_set": "deployment-verifier",
+      "original_path": "/private/tmp/tola-ai-036-deployment-verifier/offline-tests.log"
+    }
+  ],
+  "selected_file_count": 176,
+  "known_private_credentials_checked": 7,
+  "excluded_runtime_artifacts": [
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/_metadata.json",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/package.json",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react-dom_client.js",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react-dom_client.js.map",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react.js",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react.js.map",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react_jsx-dev-runtime.js",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/react_jsx-dev-runtime.js.map",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": ".vite-cache/deps/rolldown-runtime-BvCyGRYZ.js",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIEnablement.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIFictionalWalkthrough.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIFictionalWalkthroughAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIGuidanceArchive.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIHumanAdvice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIImpactEvidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AILearningLesson.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPlanExportAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPlanPortability.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPlanReviewChecklist.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPlanReviewModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPlanningTools.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPracticeStarter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIPracticeStarterModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIProcurementBrief.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AITaskPractice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AIToolComparison.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AccessGate.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AccessUpgrade.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Accounts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Administration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AuditExport.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/AuthorityRenewal.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Changes.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Configuration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Dashboards.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Evidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Forms.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Imports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/InitialAccess.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Landing.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Operators.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/PeriodGovernance.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Planning.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Portfolio.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Privacy.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/RecoveryContacts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ReferenceData.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ReportExports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Rounds.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/StatusBanner.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/TenantLifecycle.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/WorkCenter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/Workers.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/WorkspaceSettings.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/a11y.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ai-enablement.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ai-plan-review.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ai-planning-tools.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ai-walkthrough-main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/ai-walkthrough.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/operations.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/styles.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/vite-env.d.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "baseline/walkthrough-guidance.json",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIEnablement.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIFictionalWalkthrough.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIFictionalWalkthroughAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIGuidanceArchive.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIHumanAdvice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIImpactEvidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AILearningLesson.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPlanExportAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPlanPortability.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPlanReviewChecklist.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPlanReviewModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPlanningTools.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPracticeStarter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIPracticeStarterModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIProcurementBrief.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AITaskPractice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AIToolComparison.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AccessGate.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AccessUpgrade.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Accounts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Administration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AuditExport.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/AuthorityRenewal.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Changes.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Configuration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Dashboards.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Evidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Forms.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Imports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/InitialAccess.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Landing.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Operators.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/PeriodGovernance.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Planning.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Portfolio.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Privacy.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/RecoveryContacts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ReferenceData.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ReportExports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Rounds.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/StatusBanner.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/TenantLifecycle.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/WorkCenter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/Workers.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/WorkspaceSettings.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/a11y.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ai-enablement.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ai-plan-review.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ai-planning-tools.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ai-walkthrough-main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/ai-walkthrough.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/operations.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/styles.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/vite-env.d.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "profile-preservation",
+      "path": "proposed/walkthrough-guidance.json",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "model-and-design",
+      "path": "attempt-01/model-check.log",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "model-and-design",
+      "path": "model-check-01.log",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "model-and-design",
+      "path": "model-check-02.log",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIEnablement.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIFictionalWalkthrough.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIFictionalWalkthroughAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIGuidanceArchive.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIHumanAdvice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIImpactEvidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AILearningLesson.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPlanExportAdapter.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPlanPortability.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPlanReviewChecklist.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPlanReviewModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPlanningTools.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPracticeStarter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIPracticeStarterModel.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIProcurementBrief.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AITaskPractice.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AIToolComparison.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AccessGate.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AccessUpgrade.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Accounts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Administration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AuditExport.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "AuthorityRenewal.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Changes.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Configuration.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Dashboards.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Evidence.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Forms.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Imports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "InitialAccess.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Landing.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Operators.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "PeriodGovernance.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Planning.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Portfolio.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Privacy.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "RecoveryContacts.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ReferenceData.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ReportExports.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Rounds.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "StatusBanner.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "TenantLifecycle.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "WorkCenter.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "Workers.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "WorkspaceSettings.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "a11y.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ai-enablement.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ai-plan-review.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ai-planning-tools.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ai-walkthrough-main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "ai-walkthrough.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "main.tsx",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "operations.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "styles.css",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "vite-env.d.ts",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    },
+    {
+      "set": "procurement-prototype",
+      "path": "walkthrough-guidance.json",
+      "reason": "Runtime/cache/log/private artifact outside selected source/proof types"
+    }
+  ],
+  "copy_rule": "Exact source bytes preserved, including superseded source and original private-path references. Do not bulk apply; follow HANDOFF.md and verify final parent/hashes. No credentials/runtime databases/raw logs copied."
+}

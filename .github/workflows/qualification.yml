@@ -44,7 +44,16 @@ jobs:
           node-version: '24'
       - run: make setup
       - run: make lint test reference
-      - run: make browser
+      - name: Browser groups
+        # The last lines of the output are repeated as an annotation on failure, because job logs are
+        # not readable by every reviewer or tool.
+        run: |
+          set -o pipefail
+          make browser 2>&1 | tee browser-output.log || {
+            code=$?
+            tail -n 40 browser-output.log | cut -c1-300 | python3 -c "import sys,urllib.parse as u; print('::error title=make browser failed::' + u.quote(sys.stdin.read(), safe=' ,.:;()[]/-_=\'\"'))"
+            exit $code
+          }
       - uses: actions/upload-artifact@v6
         if: always()
         with:
@@ -135,6 +144,28 @@ jobs:
         run: .venv/bin/python scripts/provision_logins.py
       - name: Qualification suite on the provisioned login roles, then the API restart check
         run: .venv/bin/python scripts/run.py test --native --skip-upgrade-check --skip-restore-drill
+      - name: Surface failed native tests as annotations
+        # Job logs and artifacts are not readable by every reviewer or tool; the failed test ids and
+        # the first lines of each failure message are repeated as check-run annotations.
+        if: failure()
+        run: |
+          .venv/bin/python - <<'PY'
+          import glob
+          import xml.etree.ElementTree as ET
+          for path in glob.glob("docs/evidence/native-application-tests.xml") + glob.glob(".local/test-*/*.xml"):
+              try:
+                  root = ET.parse(path).getroot()
+              except ET.ParseError:
+                  continue
+              for case in root.iter("testcase"):
+                  for bad in list(case.findall("failure")) + list(case.findall("error")):
+                      text = " ".join((bad.get("message") or bad.text or "").split())[:600]
+                      print(f"::error title=FAILED {case.get('classname')}::{case.get('name')}: {text}")
+          for log in glob.glob(".local/test-*/api.log")[:3]:
+              lines = [x for x in open(log, errors="replace").read().splitlines() if "sqlstate=" in x or "failure correlation" in x or "Traceback" in x or "Error" in x or "ERROR" in x]
+              if lines:
+                  print("::error title=API log " + log + "::" + " | ".join(l[:200] for l in lines[-12:]).replace("%", "%25"))
+          PY
       - name: Install PostgreSQL 17 client tools from the PGDG repository
         # The service container runs PostgreSQL 17 while the runner image ships the 16 client;
         # pg_dump refuses a server newer than itself, so the drill uses the 17 binaries. The
@@ -168,8 +199,9 @@ jobs:
       - name: Upgrade a populated database at the deployed schema to the latest
         if: always()
         env:
-          # The schema staging runs (build 0.26.0); move it when a build with new migrations is deployed.
-          IMPACT_UPGRADE_BASELINE: '32'
+          # Verified staging build 0.29.0 runs schema 33 (deploy-status.json, 2026-10-05).
+          # Keep the populated upgrade fixture at the actual deployed schema.
+          IMPACT_UPGRADE_BASELINE: '33'
         run: .venv/bin/python scripts/native_upgrade_check.py --report docs/evidence/native-qualification.json
       - uses: actions/setup-java@v5
         if: always()

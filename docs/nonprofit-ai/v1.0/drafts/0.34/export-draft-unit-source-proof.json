@@ -1,0 +1,75 @@
+{
+  "recorded_at": "2026-10-05T19:11:06.088149Z",
+  "scope": "UNREGISTERED_PURE_BACKEND_DRAFT_ONLY",
+  "actual_api": "NOT_RUN",
+  "actual_native_database": "NOT_RUN",
+  "hosted": "NOT_RUN",
+  "source_before": {
+    "/private/tmp/tola-ai-portability-draft/ai_plan_exports.py": "3d8f76ecc2bde4282407ef15b5f64351975d37068143f6415945db99b0ea0ad5",
+    "/private/tmp/tola-ai-portability-draft/ai_plan_export_contracts.py": "a9d5fdf8d1be9ecd372e1c014f7661209f14de3b03ab8e000e10456ee7200dc5",
+    "/private/tmp/tola-ai-portability-draft/ai_plan_public_export_schema_v1.proposed.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "/private/tmp/tola-ai-portability-draft/test_ai_plan_exports_draft.py": "9d98722c50be973dd027079b97dff467282fc8c428b304944c356b384bdc94ec",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_content_schema_v1.json": "248434d7ddb31bdb76508b673ffc26c517f68a3fc46565856d556bc9f458994c",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/packages/contracts/event.schema.json": "696371cb2c69dc87ccf5eaa48e22f63c2c50931b6087dcfa13a0bb88385da7f3"
+  },
+  "source_after": {
+    "/private/tmp/tola-ai-portability-draft/ai_plan_exports.py": "3d8f76ecc2bde4282407ef15b5f64351975d37068143f6415945db99b0ea0ad5",
+    "/private/tmp/tola-ai-portability-draft/ai_plan_export_contracts.py": "a9d5fdf8d1be9ecd372e1c014f7661209f14de3b03ab8e000e10456ee7200dc5",
+    "/private/tmp/tola-ai-portability-draft/ai_plan_public_export_schema_v1.proposed.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "/private/tmp/tola-ai-portability-draft/test_ai_plan_exports_draft.py": "9d98722c50be973dd027079b97dff467282fc8c428b304944c356b384bdc94ec",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_content_schema_v1.json": "248434d7ddb31bdb76508b673ffc26c517f68a3fc46565856d556bc9f458994c",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/packages/contracts/event.schema.json": "696371cb2c69dc87ccf5eaa48e22f63c2c50931b6087dcfa13a0bb88385da7f3"
+  },
+  "source_unchanged": true,
+  "checks": [
+    {
+      "tool": "ruff",
+      "arguments": [
+        "check",
+        "--config",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/pyproject.toml",
+        "/private/tmp/tola-ai-portability-draft/ai_plan_exports.py",
+        "/private/tmp/tola-ai-portability-draft/ai_plan_export_contracts.py",
+        "/private/tmp/tola-ai-portability-draft/test_ai_plan_exports_draft.py"
+      ],
+      "exit_code": 0,
+      "output": "All checks passed!\n"
+    },
+    {
+      "tool": "ruff",
+      "arguments": [
+        "format",
+        "--config",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/pyproject.toml",
+        "--check",
+        "/private/tmp/tola-ai-portability-draft/ai_plan_exports.py",
+        "/private/tmp/tola-ai-portability-draft/ai_plan_export_contracts.py",
+        "/private/tmp/tola-ai-portability-draft/test_ai_plan_exports_draft.py"
+      ],
+      "exit_code": 0,
+      "output": "3 files already formatted\n"
+    },
+    {
+      "tool": "pytest",
+      "arguments": [
+        "-c",
+        "/dev/null",
+        "--rootdir=.",
+        "-o",
+        "cache_dir=.pytest_cache",
+        "test_ai_plan_exports_draft.py",
+        "-q",
+        "--junitxml=export-draft-unit-tests.xml"
+      ],
+      "exit_code": 0,
+      "output": "........................................................................ [ 91%]\n.......                                                                  [100%]\n79 passed in 0.35s\n"
+    }
+  ],
+  "all_passed": true,
+  "test_report": "export-draft-unit-tests.xml",
+  "test_report_sha256": "cc4f398218b2316c981b0a2ead7de359ddf7da87ccfee32663b915ae43afc706"
+}

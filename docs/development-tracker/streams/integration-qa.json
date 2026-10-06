@@ -1,0 +1,708 @@
+{
+  "id": "integration-qa",
+  "title": "Integration, review and qualification",
+  "domain": "One combined platform",
+  "owner": "/root",
+  "status": "REVIEWING",
+  "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+  "next_step": "Claude reads docs/CLAUDE-HANDOFF-2026-10-06.md and the preserved0.36application order; then requalifies before hosted release.",
+  "eta": {
+    "earliest": null,
+    "latest": null,
+    "confidence": "UNESTIMATED",
+    "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
+  },
+  "delivered": [
+    "Frozen corrected0.35 dual-entry build",
+    "Independent bounded source/mobile/security reviews",
+    "143independent reference checks pass",
+    "Full native restart, restore and deployed-schema upgrade pass",
+    "Full PGlite regression and exact unit set pass"
+  ],
+  "evidence": [
+    {
+      "title": "Prepared native PostgreSQL test environment",
+      "path": "docs/evidence/sprint-0.32-native-environment.json",
+      "result": "PREPARED_NOT_QUALIFIED",
+      "scope": "Verified official17.11 source, isolated local server, no product qualification assertion",
+      "recorded_at": "2026-10-05T08:54:22.266378Z"
+    },
+    {
+      "title": "Focused actual native runtime-login qualification",
+      "path": "docs/evidence/sprint-0.32-focused-native-qualification.json",
+      "result": "PASS_193_NO_SKIPS",
+      "scope": "Actual PostgreSQL17.11 and NOINHERIT runtime logins; focused only, no hosted/container/live IdP acceptance",
+      "recorded_at": "2026-10-05T09:14:46.452128Z"
+    },
+    {
+      "title": "Final integrated browser journeys",
+      "path": "docs/evidence/sprint-0.32-browser-tests.json",
+      "result": "PASS_13_GROUPS_SEVEN_CLEAN_SCANS",
+      "scope": "Real local API/database and Chrome; synthetic historical setup and dropped/aborted responses labelled; no hosted/manual accessibility/UAT acceptance",
+      "recorded_at": "2026-10-05T09:32:23.373602Z"
+    },
+    {
+      "title": "Actual Mac process-environment check",
+      "path": "docs/evidence/sprint-0.32-process-environment-unit.xml",
+      "result": "PASS_12",
+      "scope": "Parser and actual synthetic-child kernel inspection; final actual API restart phases also pass.",
+      "recorded_at": "2026-10-05T09:32:23.373602Z"
+    },
+    {
+      "title": "Final full native PostgreSQL qualification",
+      "path": "docs/evidence/sprint-0.32-full-native-qualification.json",
+      "result": "PASS_1689_RESTART_RESTORE_UPGRADE",
+      "scope": "PostgreSQL 17.11 actual NOINHERIT runtime logins; 26 explicit skips and one deselection; restart, restored database and populated schema upgrade pass. Local Mac only.",
+      "recorded_at": "2026-10-05T09:45:06.984556Z"
+    },
+    {
+      "title": "Final full PGlite regression",
+      "path": "docs/evidence/sprint-0.32-full-local-tests.xml",
+      "result": "PASS_1633_NO_FAILURES",
+      "scope": "82 explicit skips and one deselection; all seven old Mac operations failures resolved. Does not establish native-login security.",
+      "recorded_at": "2026-10-05T09:45:06.984638Z"
+    },
+    {
+      "title": "Saved checkpoint 0.32 exact source and evidence",
+      "path": "docs/evidence/sprint-0.32-local-summary.json",
+      "result": "SAVED_LOCAL_COMMIT_91DE7CBC",
+      "scope": "Bounded local checkpoint gates pass; source/evidence fingerprints match commit. Next0.33 source is separately under development. No hosted or production acceptance.",
+      "recorded_at": "2026-10-05T09:50:39.050408Z"
+    },
+    {
+      "title": "Current restrictions on retained dashboard details",
+      "path": "docs/evidence/sprint-0.33-core-visibility-local-summary.json",
+      "result": "PASS_84_SIX_SECURITY_CASES",
+      "scope": "Real local API/PGlite; historical decimal and snapshot hashes unchanged; native/combined/browser gates remain.",
+      "recorded_at": "2026-10-05T10:03:55.459602Z"
+    },
+    {
+      "title": "Focused real programme-link application qualification",
+      "path": "docs/evidence/nonprofit-ai-impact-reference-api-qualification.json",
+      "result": "PASS_104_FOUR_NATIVE_ONLY_SKIPS",
+      "scope": "Real local API/PGlite impact/plan/archive flows, source unchanged and actual schema38 ledger. Native, browser and combined gates remain. Initial role/audit fixture failures retained.",
+      "recorded_at": "2026-10-05T10:24:41.851577Z"
+    },
+    {
+      "title": "Focused internal-advice real application qualification",
+      "path": "docs/evidence/sprint-0.33-human-advice-pglite-source-proof.json",
+      "result": "PASS_118_SIX_NATIVE_ONLY_SKIPS",
+      "scope": "88 pure plus30 real local API cases, source unchanged, actual schema38 ledger; native-only/runtime/browser/full gates remain. Initial UUID/permission fixture failures retained.",
+      "recorded_at": "2026-10-05T10:28:24.261186Z"
+    },
+    {
+      "title": "Current retained definition/framework restrictions",
+      "path": "docs/evidence/sprint-0.33-retained-visibility-pglite-source-proof.json",
+      "result": "PASS_95_TEN_CURRENT_RESTRICTION_CASES",
+      "scope": "Four retained wording and six prior current visibility negatives plus actual dashboard/planning/measurement/impact API checks; two native-only skips; historical hashes and original decimal values unchanged. Exact historical unavailable-pin follow-up remains separate.",
+      "recorded_at": "2026-10-05T10:32:16.839085Z"
+    },
+    {
+      "title": "Schema39 advice and exact older-anchor checks",
+      "path": "docs/evidence/sprint-0.33-human-advice-pglite-source-proof.json",
+      "result": "PASS_122_SIX_NATIVE_ONLY_SKIPS",
+      "scope": "90 pure plus32 real local API cases; actual schema39 ledger and frozen0038/0039 hashes. Both unavailable historical anchors suppress current/history/list/replay and11pointer classes. Direct native pointer-login method and finalfull/browser gates remain.",
+      "recorded_at": "2026-10-05T10:48:14.626339Z"
+    },
+    {
+      "title": "Schema39 retained current and historical visibility",
+      "path": "docs/evidence/sprint-0.33-retained-visibility-schema39-focused-source-proof.json",
+      "result": "PASS_96_TWO_NATIVE_ONLY_SKIPS",
+      "scope": "Eleven strict current/old-pin cases plus adjacent real API checks; actual39 ledger and unchanged source. Counts overlap with previous scopes.",
+      "recorded_at": "2026-10-05T10:52:37.133886Z"
+    },
+    {
+      "title": "Actual native advice and exact-anchor privacy",
+      "path": "docs/evidence/sprint-0.33-human-advice-native-source-proof.json",
+      "result": "PASS_142_ZERO_SKIPS",
+      "scope": "Actual PostgreSQL17.11 NOINHERIT logins, executor topology, and actual app-login old-pin case/history/list/replay/eleven-pointer refusal. Unchanged171-source proof; no hosted acceptance.",
+      "recorded_at": "2026-10-05T10:52:37.133886Z"
+    },
+    {
+      "title": "Actual schema39 integrated browser journeys",
+      "path": "docs/evidence/sprint-0.33-browser-tests.json",
+      "result": "PASS_28_GROUPS_NINE_CLEAN_SCANS",
+      "scope": "Actual local API/PGlite/Chrome;47 sources and served assets unchanged. Synthetic setup and deliberately lost responses labelled; no hosted/manual accessibility/UAT acceptance.",
+      "recorded_at": "2026-10-05T11:00:55.186030Z"
+    },
+    {
+      "title": "Corrected current-visible listing and strict historical regression",
+      "path": "docs/evidence/sprint-0.33-listing-visibility-focused-source-proof.json",
+      "result": "PASS_130_THREE_NATIVE_ONLY_SKIPS",
+      "scope": "Real local API/PGlite; both formerly failingcases pass, eleven strict visibility cases and scoped/classification/head pagination pass. Fifteen pure budget/error/cursor checks also pass. Source unchanged and actual39ledger verified.",
+      "recorded_at": "2026-10-05T11:13:30.844440Z"
+    },
+    {
+      "title": "Preserved initial full native attempt",
+      "path": "docs/evidence/sprint-0.33-full-native-initial-preservation.json",
+      "result": "INITIAL_1908_PASS_TWO_FAILURES_RETAINED",
+      "scope": "Both API list failures corrected in focusedscope. Initial restartboth/upgraded33→39PASS; restoremissinglocalpg_dumpPATHFAIL. Finalfull rerun underway withcorrectedsourceandPATH.",
+      "recorded_at": "2026-10-05T11:13:30.844440Z"
+    },
+    {
+      "title": "Fresh browser qualification after the list correction",
+      "path": "docs/evidence/sprint-0.33-browser-tests.json",
+      "result": "PASS_28_GROUPS_NINE_CLEAN_SCANS_LATEST_SOURCE",
+      "scope": "Actual local Chrome/API/PGlite;50 unchanged source fingerprints including service/list cases; exact served assets and39 ledger. Nine fresh visuallyreviewed captures; no external/provider/JSerrors. Priorqualifiedattemptpreserved.",
+      "recorded_at": "2026-10-05T11:16:36.648205Z"
+    },
+    {
+      "title": "Final complete checkpoint native qualification",
+      "path": "docs/evidence/sprint-0.33-full-native-qualification.json",
+      "result": "PASS_1929_RESTART_RESTORE_UPGRADE",
+      "scope": "Actual PostgreSQL17.11 and six NOINHERIT runtime logins;25 explicit skips and one deselection. Both actual API restarts, backup restoration and populated33→39 upgrade pass;346 source fingerprints unchanged. No live IdP/hosted/container/UAT/provider acceptance.",
+      "recorded_at": "2026-10-05T11:21:08.369372Z"
+    },
+    {
+      "title": "Registered schema39 cleanup privacy residual",
+      "path": "docs/evidence/sprint-0.33-human-advice-retention-definer-residual.json",
+      "result": "KNOWN_UNRESOLVED_DEPLOYMENT_BLOCKER",
+      "scope": "Actual worker and fresh schema39-only baseline, no export draft. Both old purge functions reveal private advice operation keys; rollback fixture and redacted identifiers. Additive0040 remains unregistered.",
+      "recorded_at": "2026-10-05T19:11:29.953632Z"
+    },
+    {
+      "title": "Final full local regression",
+      "path": "docs/evidence/sprint-0.33-full-local-source-proof.json",
+      "result": "PASS_1865_89_SKIPS",
+      "scope": "Actual API/PGlite,346 source fingerprints unchanged;89 explicit skips and one deselection; not native/hosted/production acceptance.",
+      "recorded_at": "2026-10-05T11:25:50.756205Z"
+    },
+    {
+      "title": "Final explicit unit recipe",
+      "path": "docs/evidence/sprint-0.33-unit-summary.json",
+      "result": "PASS_1102_62_SKIPS",
+      "scope": "Exact Makefile recipe,source unchanged;62 database-dependent skips. Original specified cases remain unrun.",
+      "recorded_at": "2026-10-05T11:26:32.095479Z"
+    },
+    {
+      "title": "Registered40 privacy and immutable copy SQL",
+      "path": "docs/evidence/sprint-0.34-portability-sql-native-qualification.json",
+      "result": "PASS_21_NATIVE_GROUPS",
+      "scope": "Actual six runtime login topology/all40ledger; labelled synthetic grants, SQL/storage only; no actualAPI/reviewedtenantupgrade claim",
+      "recorded_at": "2026-10-05T19:29:52.644998Z"
+    },
+    {
+      "title": "Current-source actual plan downloads",
+      "path": "docs/evidence/sprint-0.34-export-browser-tests.json",
+      "result": "PASS_15_GROUPS_FOUR_BYTE_VERIFIED_DOWNLOADS",
+      "scope": "Synthetic local actual API/database and Chrome;303 sources and served bytes unchanged;3 clean axe scans. No hosted UAT or formal acceptance.",
+      "recorded_at": "2026-10-05T19:54:37.437Z"
+    },
+    {
+      "title": "Final registered0.34 full native gate",
+      "path": "docs/evidence/sprint-0.34-full-native-source-proof.json",
+      "result": "PASS_2045_RESTART_RESTORE_UPGRADE",
+      "scope": "Actual PostgreSQL17.11 runtime logins;26 skips and1 deselection retained; both restarts, restored190tables/108188rows and populated33→40 upgrade pass. All source fingerprints unchanged. Local Mac only.",
+      "recorded_at": "2026-10-05T19:59:28.093266Z"
+    },
+    {
+      "title": "Exact saved0.34 local checkpoint",
+      "path": "docs/evidence/sprint-0.34-saved-checkpoint.json",
+      "result": "SAVED_LOCAL_740F813",
+      "scope": "631 committed source/evidence/documentation blobs verified. Native2045/local1980/unit1185/export-browser15 bounded scopes pass; hosted CI/main merge/deployment remain unrun.",
+      "recorded_at": "2026-10-05T20:11:14.279019Z"
+    },
+    {
+      "title": "Final 0.35 full native regression",
+      "path": "docs/evidence/sprint-0.35-full-native-source-proof.json",
+      "result": "PASS_2102_RESTART_RESTORE_UPGRADE",
+      "scope": "Actual PostgreSQL17.11 runtime logins;26 skips and1 deselection. Both restarts, restore190tables/108137rows and populated33→40 upgrade pass;417 source fingerprints unchanged. Local only.",
+      "recorded_at": "2026-10-05T21:00:00Z"
+    },
+    {
+      "title": "Final 0.35 exact unit set",
+      "path": "docs/evidence/sprint-0.35-unit-summary.json",
+      "result": "PASS_1242_62_EXPLICIT_SKIPS",
+      "scope": "Exact Makefile unit target using local fixture sockets;1,242 passed and62 database-dependent skips. Sources unchanged; no hosted acceptance.",
+      "recorded_at": "2026-10-05T21:00:00Z"
+    },
+    {
+      "title": "Final 0.35 full PGlite regression",
+      "path": "docs/evidence/sprint-0.35-full-local-source-proof.json",
+      "result": "PASS_2037_91_EXPLICIT_SKIPS",
+      "scope": "2,037 passed,91 skips,1 deselection;417 source fingerprints unchanged. Actual40 migration ledger; historical shared reports restored. PGlite does not establish native-login security.",
+      "recorded_at": "2026-10-05T21:00:00Z"
+    },
+    {
+      "title": "Preserved first complete26-mode browser attempt",
+      "path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/qualification.json",
+      "result": "23_MODES_PASS_THREE_FAIL_246_GROUPS_PASS_FOUR_FAIL_ZERO_SKIP",
+      "scope": "All26 actual fresh Chrome/API/PGlite modes executed. Four pure prerequisites pass66 groups. 423 sources/eight built assets unchanged;40 owning migrations verified per fixture;666 historical evidence files restored. No final checkpoint or hosted/manual accessibility acceptance.",
+      "recorded_at": "2026-10-05T21:11:34.330490Z"
+    },
+    {
+      "title": "Immutable complete first browser-attempt archive",
+      "path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/preservation-manifest.json",
+      "result": "179_ORIGINAL_FILES_HASHED",
+      "scope": "Original failed namespace preserved with unchanged bytes; exact path map is retained separately. ManifestSHA6ac9a332ddef440aa5a0cd71851f1dc6d68326315c7d5343bbffc7578a3196fa; reportSHA342c8cd7baaf738a81d0d67f7d7bac206614d21ffc388685df28de63b2d6db92. Planning has three desktop captures; no failure-specific/mobile capture.",
+      "recorded_at": "2026-10-05T21:27:09Z"
+    },
+    {
+      "title": "Actual focused correction qualification",
+      "path": "docs/evidence/sprint-0.35-browser-corrections-focused/qualification.json",
+      "result": "PASS64_ACTUAL_GROUPS_AND66_PURE_ZERO_FAILURE_SKIP",
+      "scope": "Planning28,extension28,a11y8 actual Chrome/API/PGlite.423sources/eight assets unchanged;40owning migration hashes and authenticated runtime per fresh fixture;903historical files and packaged browser restored. Focused3 cannot qualifyall26.",
+      "recorded_at": "2026-10-05T21:31:45.616378Z"
+    },
+    {
+      "title": "Immutable focused proof and bounded mobile review",
+      "path": "docs/evidence/sprint-0.35-browser-corrections-focused/preservation-manifest.json",
+      "result": "38_ORIGINAL_FILES_HASHED_16_CAPTURE_REGIONS_REVIEWED",
+      "scope": "All16actual1440/390/320 captures viewed individually; intended320 table scrolling retained.21named axe scans clean;44broada11y pages retain50manual-review incomplete entries. No full WCAG/manual/hosted acceptance.",
+      "recorded_at": "2026-10-05T21:31:45.616378Z"
+    },
+    {
+      "title": "Fresh corrected-source full native qualification",
+      "path": "docs/evidence/sprint-0.35-full-native-source-proof.json",
+      "result": "PASS2102_26EXPLICITSKIPS_ONE_DESELECTED",
+      "scope": "Actual PostgreSQL17.11;417sources unchanged. Both restarts, restore and populated33→40 upgrade PASS. Fresh restore190tables/108188rows/71506951dump bytes; previous035initial values remain separately preserved. Not hosted/UAT/acceptance.",
+      "recorded_at": "2026-10-05T21:42:26Z"
+    },
+    {
+      "title": "Exact original-to-preserved first browser-attempt mapping",
+      "path": "docs/evidence/sprint-0.35-browser-attempt-03-preserved-path-map.json",
+      "result": "180PHYSICAL_FILES_UNCHANGED_179ORIGINAL_PROOF_FILES",
+      "scope": "Firstall26 attempt23PASS/3FAIL preserved byte-for-byte under attempt-03-original-checkers. Original report342c8... and179manifest6ac9... unchanged; exact original paths/hash mapping retains OCR/manual-review references. No result promotion.",
+      "recorded_at": "2026-10-05T21:49:31.784957Z"
+    },
+    {
+      "title": "Finalall26 actual browser qualification",
+      "path": "docs/evidence/sprint-0.35-full-browser/qualification.json",
+      "result": "PASS26MODES_281ACTUAL_GROUPS_66PURE_ZEROFAIL_SKIP",
+      "scope": "Actual Chrome/API/PGlite freshfixtures.423sources/eight assets unchanged,40owning hashes/current auth observed each mode;965historical files and packaged browser restored.96PNG captures/54clean namedaxe scans;44broada11ypages retain50manual incomplete entries. No formal accessibility/hosted/UAT acceptance.",
+      "recorded_at": "2026-10-05T21:55:24.701130Z"
+    },
+    {
+      "title": "Complete0.35 saved-checkpoint byte verification",
+      "path": "docs/evidence/sprint-0.35-saved-checkpoint.json",
+      "result": "SAVED_ALL_MANIFEST_BLOBS_MATCH",
+      "scope": "Historicalbe650866commit,494source/726evidence/14docs; no hosted/0.36 acceptance.",
+      "recorded_at": "2026-10-06T02:58:32.006093Z"
+    }
+  ],
+  "blockers": [
+    "Final26 browser modes must pass after fresh corrected-source native/unit/local gates.",
+    "Four hosted jobs, financial approval, main merge and deployment remain separate gates."
+  ],
+  "updated_at": "2026-10-06T02:58:32.017424Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:37:23Z",
+      "status": "INSPECTING",
+      "summary": "Coordinating isolated ownership and the first wave of development.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Estimate will follow stable interfaces and evidence from the first backend streams."
+      }
+    },
+    {
+      "at": "2026-10-05T08:42:17.425678Z",
+      "status": "BUILDING",
+      "summary": "Access review screens and exact-revision guidance viewer are connected to the shared platform; generated contracts now describe both increments.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:00:00Z",
+        "confidence": "LOW",
+        "basis": "First integrated local review checkpoint, depending on both backend focused qualification and security review; native, hosted and nonprofit acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T08:54:22.266935Z",
+      "status": "REVIEWING",
+      "summary": "Web build and type checks pass. Review is correcting role revocation preservation, signed access cursors and registered-profile SQL checks. Native PostgreSQL17.11 is prepared for final permission qualification.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:00:00Z",
+        "confidence": "LOW",
+        "basis": "First integrated local review checkpoint, depending on both backend focused qualification and security review; native, hosted and nonprofit acceptance excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:14:46.452575Z",
+      "status": "REVIEWING",
+      "summary": "All 193 focused native database checks pass with actual runtime logins. Both additive migrations are frozen and ledgered. Full native regression, restart/restore/upgrade and real browser journeys are running.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First local review checkpoint; focused native193 pass and web build pass; full native suite, browser and final documentation remain."
+      }
+    },
+    {
+      "at": "2026-10-05T09:32:23.374142Z",
+      "status": "REVIEWING",
+      "summary": "Full native regression passed1,677 checks with no failures; restore and populated33→37 upgrade passed. The Linux-only restart inspector was corrected to use actual Mac kernel data;12 qualification checks pass and full native rerun is underway. Final browser13 groups passed.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "First local review checkpoint; focused native193 pass and web build pass; full native suite, browser and final documentation remain."
+      }
+    },
+    {
+      "at": "2026-10-05T09:45:06.985119Z",
+      "status": "REVIEWING",
+      "summary": "Full native regression: 1,689 passed; actual API restart, backup/restore and populated 33→37 upgrade passed. Full PGlite regression: 1,633 passed. Integrated browser: 13 groups passed. Final source-bound checkpoint documentation is under review.",
+      "eta": {
+        "earliest": "2026-10-05T10:00:00Z",
+        "latest": "2026-10-05T10:30:00Z",
+        "confidence": "HIGH",
+        "basis": "All bounded product gates pass locally; documentation, final integrity review and commit remain."
+      }
+    },
+    {
+      "at": "2026-10-05T09:50:39.051142Z",
+      "status": "BUILDING",
+      "summary": "Checkpoint0.32 saved at91de7cbc with all bounded local gates passing. Next0.33 now integrates governed Tola measurement links and internal human advice, plus current-object dashboard visibility corrections.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:03:55.460342Z",
+      "status": "BUILDING",
+      "summary": "Checkpoint0.32 is saved at91de7cbc. Next0.33 routes/schema are integrated: governed programme links and existing-member human advice. Core dashboard visibility correction passes84 checks including all6 reproduced restriction cases. Focused application qualification and UI integration continue.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:17:22.180394Z",
+      "status": "BUILDING",
+      "summary": "Checkpoint 0.32 is saved at 91de7cbc. Both new AI-plan panels are integrated and the current web build passes. Core current-visibility checks pass 84 tests; human-advice public responses exclude private identity/authentication proofs. Focused impact API rerun is active, followed by human advice and actual browser/native gates.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:24:41.852547Z",
+      "status": "BUILDING",
+      "summary": "Saved0.32 is91de7cbc. Programme links now pass104 real local application/adjacent checks with4 native-only skips and unchanged source. Internal advice identifier fix passes88 pure checks; its corrected application run is next. The final browser/native/combined gates remain open.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:28:24.262855Z",
+      "status": "BUILDING",
+      "summary": "Both0.33 focused application scopes pass:104 programme-link/adjacent checks and118 advice pure/API checks, with explicit native-only skips. Four further retained-label visibility gaps were reproduced; minimal current-access guards are now in focused regression. Actual native and browser gates follow.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:32:16.840462Z",
+      "status": "BUILDING",
+      "summary": "Programme/advice focused API scopes pass104 and118checks. Ten current-restriction cases now pass in95focused checks, preserving old snapshots/decimals. Independent review is closing historical unavailable-pin handling before final native/browser/source freeze.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:48:14.627750Z",
+      "status": "BUILDING",
+      "summary": "Schema39 advice and old-anchor application checks pass122tests;6native-only cases remain. Both unavailable older-anchor fixtures nowhidecase/history/list/replay and11pointers. Final Framework historical-pin combinedregression isactive; actualnative/browser/full gates follow.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T10:52:37.135662Z",
+      "status": "REVIEWING",
+      "summary": "Schema39 retained visibility passes96 focused checks; internal advice passes142 actual PostgreSQL checks with zero skips. Full native restart/restore/upgrade regression and real browser journeys are running against frozen product sources.",
+      "eta": {
+        "earliest": "2026-10-05T11:00:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Next combined local review checkpoint; integration, current-authority negative cases and native/browser regression remain."
+      }
+    },
+    {
+      "at": "2026-10-05T11:00:55.188358Z",
+      "status": "REVIEWING",
+      "summary": "All28 actual browser groups pass with nine clean scans; focused native142 passes. Full regression has two failures pending diagnosis; restart/restore/upgrade phases follow. Product sources remain frozen.",
+      "eta": {
+        "earliest": "2026-10-05T11:30:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Actual browser28 groups and focused native142 pass. Two failures in full regression require diagnosis/correction and rerun; local PGlite/full checkpoint follow."
+      }
+    },
+    {
+      "at": "2026-10-05T11:13:30.848316Z",
+      "status": "TESTING",
+      "summary": "Current-visible list fix passes130 API/adjacent checks and15 pure checks without weakening original securityfixtures. Finalfullnative8184 and freshactualbrowser8183 nowqualifythecorrectedsource.",
+      "eta": {
+        "earliest": "2026-10-05T11:30:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Actual browser28 groups and focused native142 pass. Two failures in full regression require diagnosis/correction and rerun; local PGlite/full checkpoint follow."
+      }
+    },
+    {
+      "at": "2026-10-05T11:16:36.652790Z",
+      "status": "TESTING",
+      "summary": "Fresh latest-source browser28 groups pass with nine clean scans/reviewed captures. Fullnative regression continues with no failures observed so far; restart/restore/upgrade and fullPGlite follow.",
+      "eta": {
+        "earliest": "2026-10-05T11:30:00Z",
+        "latest": "2026-10-05T12:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Actual browser28 groups and focused native142 pass. Two failures in full regression require diagnosis/correction and rerun; local PGlite/full checkpoint follow."
+      }
+    },
+    {
+      "at": "2026-10-05T11:23:00.208014Z",
+      "status": "TESTING",
+      "summary": "Final database regression passes 1,929 tests, both restarts, backup restoration and populated upgrade. Latest browser 28 groups pass with nine clean scans. Full PGlite is running; final unit/documents/local save follow.",
+      "eta": {
+        "earliest": "2026-10-05T11:35:00Z",
+        "latest": "2026-10-05T12:05:00Z",
+        "confidence": "HIGH",
+        "basis": "Native and browser gates now pass. Remaining local regression, unit checks and exact-source evidence/documents are underway."
+      }
+    },
+    {
+      "at": "2026-10-05T19:14:17.839131Z",
+      "status": "BLOCKED",
+      "summary": "Window ended. Programme evidence and internal advice pass native 1,929/PGlite 1,865/unit 1,102/browser 28 local checks. Known cleanup privacy issue blocks deployment. Downloads remain preserved drafts.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+      }
+    },
+    {
+      "at": "2026-10-05T19:23:27.168358Z",
+      "status": "BUILDING",
+      "summary": "New eight-hour window active.0.33 is saved861c2a8; privacy/ordinary-audit SQL correction, exporter and UI are developing in parallel. Main merge and demo are owner-authorised after the required gates.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "Corrected SQL controls and peer review underway; actual export API/browser and full combined regression follow."
+      }
+    },
+    {
+      "at": "2026-10-05T19:33:09.356002Z",
+      "status": "TESTING",
+      "summary": "Registered40 privacy/immutable-copy SQL passes21 actual native groups. First focused40 API passes139 with4native-only skips. Actual historical HTTP upgrade/browser and full combined gates follow.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T19:58:12.608060Z",
+      "status": "TESTING",
+      "summary": "Current export API passes148 native checks; actual reviewed39→40 upgrade and15 browser groups pass. Full regression reruns after strengthening obsolete current-profile assertions; one prior failed run is preserved.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T20:00:35.661088Z",
+      "status": "TESTING",
+      "summary": "Final native regression passes2045 with26 explicit skips and1 deselection; both restarts, restore and populated33→40 upgrade pass. Latest export browser15 passes. Full PGlite runs; unit/local snapshot follow.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T20:13:11.943772Z",
+      "status": "BUILDING",
+      "summary": "0.34 saved740f813 with native2045/PGlite1980/unit1185/browser15. Next0.35 integrates guided practice, current canonical saved-review, clearer cost coverage and isolated fictional walkthrough.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "LOW",
+        "basis": "SQL and first focusedAPI pass; historical upgrade/latest temporal-boundary tests, actual browser and full combined qualification remain."
+      }
+    },
+    {
+      "at": "2026-10-05T20:32:48.844353Z",
+      "status": "BUILDING",
+      "summary": "Integrated0.35 dedicated planning28/review16/walkthrough16 browser groups passed preliminary source scopes. Independent mobile review found a cramped sticky cost column and scrolling caption; a bounded fix is underway.",
+      "eta": {
+        "earliest": "2026-10-05T21:15:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Dedicated flows passed; full platform checks await the corrected stable build and26-mode wrapper."
+      }
+    },
+    {
+      "at": "2026-10-05T20:49:33.434553Z",
+      "status": "TESTING",
+      "summary": "Corrected0.35 build and exact formatting gates pass with unchanged sources. Full native qualification is running;143reference checks pass. All26 browser modes follow the native/unit/local lease.",
+      "eta": {
+        "earliest": "2026-10-05T21:15:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Dedicated flows passed; full platform checks await the corrected stable build and26-mode wrapper."
+      }
+    },
+    {
+      "at": "2026-10-05T21:00:10.620886Z",
+      "status": "TESTING",
+      "summary": "Frozen0.35 full native2,102, PGlite2,037, exact units1,242 and reference143 pass; build and formatting pass. All26 browser modes plus4 pure prerequisites are running on the corrected shared build.",
+      "eta": {
+        "earliest": "2026-10-05T21:20:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "All non-browser local gates passed.26 fresh-fixture browser modes are running; failures may require targeted correction and requalification."
+      }
+    },
+    {
+      "at": "2026-10-05T21:13:05.974500Z",
+      "status": "TESTING",
+      "summary": "Frozen0.35 native/PGlite/unit/reference/build gates pass. Broad browser regression found three scopes needing correction or diagnosis: fractional mobile scrolling, stale schema39 expectation and native keyboard indicator selection; remaining unchanged modes are finishing.",
+      "eta": {
+        "earliest": "2026-10-05T21:20:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "All non-browser local gates passed.26 fresh-fixture browser modes are running; failures may require targeted correction and requalification."
+      }
+    },
+    {
+      "at": "2026-10-05T21:27:41.547514Z",
+      "status": "TESTING",
+      "summary": "First full0.35 browser run completed all26 modes:23 pass/3 fail,246 groups pass/4 fail/0 skip. Narrow mobile-scroll, exact-schema and native-keyboard checker corrections are reviewed; combined release remains unqualified.",
+      "eta": {
+        "earliest": "2026-10-05T22:00:00Z",
+        "latest": "2026-10-05T23:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "All26 original modes completed and bounded checker corrections reviewed. Focused3, updated source-bound full gates and final26 rerun still need execution; hosted release is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:34:01.683174Z",
+      "status": "TESTING",
+      "summary": "Corrected focused3 pass64 actual browser groups and66 pure checks. Sources/eight assets unchanged;903 historical files restored. Fresh final-source full native regression is running, followed by units/local and mandatory final26 browser rerun.",
+      "eta": {
+        "earliest": "2026-10-05T21:50:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "All3 corrected actual browser scopes pass. Fresh full native/unit/local proofs and final26 are still required; failures may extend the forecast. Hosted release is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:44:13.646318Z",
+      "status": "TESTING",
+      "summary": "Fresh corrected-source native regression passes2,102 with26 explicit skips/1 deselection; both restarts, restore and populated33→40 upgrade pass. Focused browser64/66passes. Exact units/local and finalall26 browser remain required.",
+      "eta": {
+        "earliest": "2026-10-05T21:50:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Fresh417-source native/full operational phases and focused3 pass. Units/local and final26 browser still require completion; failures may extend the21:50–22:45UTC forecast. Hosted release is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:50:00.328865Z",
+      "status": "TESTING",
+      "summary": "Fresh corrected-source native2,102/local2,037/units1,242 pass with explicit skips; restart/restore/upgrade pass. Focused browser64/66passes. The mandatory finalall26 browser run is ready on frozen source; original failed26 is preserved unchanged.",
+      "eta": {
+        "earliest": "2026-10-05T21:55:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Fresh non-browser full gates and focused3 pass. Final26 browser still needs completion; failures may extend the forecast. Hosted release and deployment remain separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:50:48.786858Z",
+      "status": "TESTING",
+      "summary": "Finalall26 browser modes plus4pure prerequisites are running on fresh fixtures and frozen corrected source. Fresh native2,102/local2,037/units1,242 and focused64/66pass with explicit scopes; original failed26 archive is unchanged.",
+      "eta": {
+        "earliest": "2026-10-05T21:55:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Fresh non-browser full gates and focused3 pass. Final26 browser still needs completion; failures may extend the forecast. Hosted release and deployment remain separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:53:23.358626Z",
+      "status": "TESTING",
+      "summary": "Finalall26 browser run in progress: 16 actual modes completed and passed so far, with no failed modes. Fresh native2,102/local2,037/units1,242 and focused64/66pass; unchanged-source/restoration final proof remains pending.",
+      "eta": {
+        "earliest": "2026-10-05T21:55:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Fresh non-browser full gates and focused3 pass. Final26 browser still needs completion; failures may extend the forecast. Hosted release and deployment remain separate."
+      }
+    },
+    {
+      "at": "2026-10-05T21:58:46.913964Z",
+      "status": "TESTING",
+      "summary": "Final0.35all26 browser modes PASS281actual groups/66pure, zero failure/skip.423sources/eight assets unchanged;965historical files and browser executable restored. Fresh native2,102/local2,037/units1,242 pass; root is reviewing captures and assembling the local checkpoint.",
+      "eta": {
+        "earliest": "2026-10-05T21:55:00Z",
+        "latest": "2026-10-05T22:45:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Fresh non-browser full gates and focused3 pass. Final26 browser still needs completion; failures may extend the forecast. Hosted release and deployment remain separate."
+      }
+    },
+    {
+      "at": "2026-10-05T22:01:54.484012Z",
+      "status": "TESTING",
+      "summary": "Final0.35all26 browser modes PASS281actual groups/66pure, zero failure/skip.423sources/eight assets unchanged;965historical files and browser executable restored. Fresh native2,102/local2,037/units1,242 pass; root is reviewing captures and assembling the local checkpoint.",
+      "eta": {
+        "earliest": "2026-10-05T22:05:00Z",
+        "latest": "2026-10-05T22:30:00Z",
+        "confidence": "MEDIUM",
+        "basis": "All0.35 actual local gates now pass; final evidence/document preservation and saved-commit verification remain.0.36 and hosted release have separate fresh gates."
+      }
+    },
+    {
+      "at": "2026-10-06T02:57:52.518891Z",
+      "status": "REVIEWING",
+      "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
+      }
+    },
+    {
+      "at": "2026-10-06T02:58:32.017424Z",
+      "status": "REVIEWING",
+      "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
+      }
+    }
+  ]
+}

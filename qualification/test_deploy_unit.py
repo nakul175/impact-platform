@@ -405,6 +405,24 @@ SECURE = {
     "cache-control": "no-store",
     "referrer-policy": "no-referrer",
 }
+WALKTHROUGH_CSP = (
+    "default-src 'none'; script-src 'self'; style-src 'self'; "
+    "style-src-attr 'unsafe-inline'; connect-src 'none'; img-src 'none'; "
+    "object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+)
+WALKTHROUGH_HEADERS = {
+    **SECURE,
+    "content-type": "text/html; charset=utf-8",
+    "content-security-policy": WALKTHROUGH_CSP,
+}
+WALKTHROUGH_HTML = """<!doctype html><html><head>
+<title>Fictional AI walkthrough · Tola / Impact Platform</title>
+<script type="module" src="/assets/walkthrough-fixture.js"></script>
+<link rel="modulepreload" href="/assets/public-sections.js">
+<link rel="stylesheet" href="/assets/walkthrough-fixture.css">
+</head><body><div id="root"></div><noscript>
+This fictional walkthrough needs JavaScript. It has no sign-in, network actions or persistence.
+</noscript></body></html>"""
 
 
 def fake_site(overrides=None):
@@ -437,6 +455,14 @@ def fake_site(overrides=None):
             return httpx.Response(
                 200, text='<div id="root"></div><script src="/assets/a.js">', headers=SECURE
             )
+        if path == "/ai-walkthrough.html":
+            return httpx.Response(200, text=WALKTHROUGH_HTML, headers=WALKTHROUGH_HEADERS)
+        if path in {"/assets/walkthrough-fixture.js", "/assets/public-sections.js"}:
+            return httpx.Response(
+                200, text="/* synthetic compiled fixture */", headers={"content-type": "text/javascript"}
+            )
+        if path == "/assets/walkthrough-fixture.css":
+            return httpx.Response(200, text="body { color: #183b32; }", headers={"content-type": "text/css"})
         if path == "/auth/mode":
             return httpx.Response(200, json={"development": False})
         if path == "/auth/login":
@@ -481,6 +507,7 @@ def test_smoke_passes_a_healthy_deployment():
         "provider",
         "provider_admin_hidden",
         "deploy_status",
+        "ai_walkthrough",
     }
 
 
@@ -519,6 +546,208 @@ def test_smoke_fails_each_broken_property(url, response, failed):
     report = run_smoke(fake_site({url: lambda request: response}))
     assert not report["passed"]
     assert [r["check"] for r in report["checks"] if r["status"] == "fail"] == [failed]
+
+
+def walkthrough_response(text=WALKTHROUGH_HTML, **headers):
+    return httpx.Response(200, text=text, headers={**WALKTHROUGH_HEADERS, **headers})
+
+
+def assert_walkthrough_smoke_refuses(response, path="/ai-walkthrough.html"):
+    report = run_smoke(fake_site({"https://app.example.org" + path: lambda request: response}))
+    assert not report["passed"]
+    assert [row["check"] for row in report["checks"] if row["status"] == "fail"] == ["ai_walkthrough"]
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        httpx.Response(404),
+        httpx.Response(302, headers={"location": "https://elsewhere.example.org/demo"}),
+        httpx.Response(200, json={"message": "source is not built"}, headers=SECURE),
+        walkthrough_response(**{"set-cookie": "synthetic_cookie=example"}),
+        walkthrough_response(**{"cache-control": "public, max-age=3600"}),
+        walkthrough_response(**{"x-content-type-options": ""}),
+        walkthrough_response(**{"referrer-policy": "same-origin"}),
+    ],
+)
+def test_smoke_refuses_missing_or_weak_walkthrough_document(response):
+    assert_walkthrough_smoke_refuses(response)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        WALKTHROUGH_HTML.replace('<div id="root"></div>', ""),
+        WALKTHROUGH_HTML.replace('<div id="root"></div>', '<div id="root"></div>' * 2),
+        WALKTHROUGH_HTML.replace("Fictional AI walkthrough · Tola / Impact Platform", "Impact Platform"),
+        WALKTHROUGH_HTML.replace(
+            "no sign-in, network actions or persistence", "no sign-in and persistence is enabled"
+        ),
+        WALKTHROUGH_HTML.replace("<noscript>", "<p>").replace("</noscript>", "</p>"),
+        WALKTHROUGH_HTML.replace("/assets/walkthrough-fixture.js", "/src/ai-walkthrough-main.tsx"),
+        WALKTHROUGH_HTML.replace('<script type="module"', '<script type="text/javascript"'),
+        WALKTHROUGH_HTML.replace('<link rel="stylesheet" href="/assets/walkthrough-fixture.css">', ""),
+        WALKTHROUGH_HTML.replace("</head>", '<script>fetch("/auth/me")</script></head>'),
+        WALKTHROUGH_HTML.replace(
+            "</head>", '<meta http-equiv="refresh" content="0;url=https://elsewhere.example.org"></head>'
+        ),
+        WALKTHROUGH_HTML.replace('<div id="root"', '<div onclick="signIn()" id="root"'),
+        WALKTHROUGH_HTML.replace("</head>", '<base href="https://elsewhere.example.org"></head>'),
+    ],
+)
+def test_smoke_refuses_source_only_or_wrong_walkthrough_structure(text):
+    assert_walkthrough_smoke_refuses(walkthrough_response(text))
+
+
+@pytest.mark.parametrize(
+    "reference",
+    [
+        "https://elsewhere.example.org/assets/public-sections.js",
+        "https://app.example.org/assets/public-sections.js",
+        "//elsewhere.example.org/assets/public-sections.js",
+        "/assets/public-sections.js?auth=example",
+        "/assets/public-sections.js#example",
+        "/assets/../auth/me.js",
+        "/assets/%2e%2e/auth.js",
+        "/assets/nested/public-sections.js",
+        "data:text/javascript,alert(1)",
+    ],
+)
+def test_smoke_never_follows_unexpected_walkthrough_asset_references(reference):
+    requests = []
+    site = fake_site(
+        {
+            "https://app.example.org/ai-walkthrough.html": lambda request: walkthrough_response(
+                WALKTHROUGH_HTML.replace("/assets/public-sections.js", reference)
+            )
+        }
+    )
+
+    def record(request):
+        requests.append(str(request.url))
+        return site.handle_request(request)
+
+    report = run_smoke(httpx.MockTransport(record), provider=False, status=False)
+    assert [row["check"] for row in report["checks"] if row["status"] == "fail"] == ["ai_walkthrough"]
+    assert not any("/assets/" in url for url in requests)
+    assert all(url.startswith("https://app.example.org/") for url in requests)
+
+
+@pytest.mark.parametrize(
+    "directive",
+    [
+        "default-src",
+        "connect-src",
+        "img-src",
+        "object-src",
+        "base-uri",
+        "form-action",
+        "frame-ancestors",
+        "script-src",
+        "style-src",
+    ],
+)
+def test_smoke_refuses_relaxed_walkthrough_csp(directive):
+    weakened = re.sub(re.escape(directive) + r" [^;]+", directive + " *", WALKTHROUGH_CSP)
+    assert_walkthrough_smoke_refuses(walkthrough_response(**{"content-security-policy": weakened}))
+
+
+@pytest.mark.parametrize(
+    "directive",
+    [
+        "default-src",
+        "connect-src",
+        "img-src",
+        "object-src",
+        "base-uri",
+        "form-action",
+        "frame-ancestors",
+        "script-src",
+        "style-src",
+    ],
+)
+def test_smoke_refuses_missing_walkthrough_csp_directive(directive):
+    missing = "; ".join(part for part in WALKTHROUGH_CSP.split("; ") if not part.startswith(directive + " "))
+    assert_walkthrough_smoke_refuses(walkthrough_response(**{"content-security-policy": missing}))
+
+
+@pytest.mark.parametrize(
+    "extra",
+    [
+        "connect-src *",
+        "script-src-elem *",
+        "script-src-attr 'unsafe-inline'",
+        "frame-src https://elsewhere.example.org",
+    ],
+)
+def test_smoke_refuses_duplicate_or_overridden_walkthrough_csp(extra):
+    assert_walkthrough_smoke_refuses(
+        walkthrough_response(**{"content-security-policy": WALKTHROUGH_CSP + "; " + extra})
+    )
+
+
+@pytest.mark.parametrize(
+    "path,response",
+    [
+        ("/assets/walkthrough-fixture.js", httpx.Response(404)),
+        (
+            "/assets/public-sections.js",
+            httpx.Response(200, text="<html>fallback</html>", headers={"content-type": "text/html"}),
+        ),
+        (
+            "/assets/walkthrough-fixture.css",
+            httpx.Response(
+                200, text="body{}", headers={"content-type": "text/css", "set-cookie": "synthetic=example"}
+            ),
+        ),
+        (
+            "/assets/walkthrough-fixture.js",
+            httpx.Response(302, headers={"location": "https://elsewhere.example.org/script.js"}),
+        ),
+        (
+            "/assets/walkthrough-fixture.css",
+            httpx.Response(200, content=b"", headers={"content-type": "text/css"}),
+        ),
+    ],
+)
+def test_smoke_refuses_missing_wrong_type_or_cookie_setting_built_asset(path, response):
+    assert_walkthrough_smoke_refuses(response, path)
+
+
+def test_smoke_walkthrough_bounds_document_asset_bytes_and_reference_count():
+    assert_walkthrough_smoke_refuses(walkthrough_response(" " * (128 * 1024 + 1)))
+    assert_walkthrough_smoke_refuses(
+        httpx.Response(
+            200, content=b"x" * (8 * 1024 * 1024 + 1), headers={"content-type": "text/javascript"}
+        ),
+        "/assets/walkthrough-fixture.js",
+    )
+    refs = "".join(f'<link rel="stylesheet" href="/assets/example-{n}.css">' for n in range(17))
+    assert_walkthrough_smoke_refuses(
+        walkthrough_response(WALKTHROUGH_HTML.replace("</head>", refs + "</head>"))
+    )
+
+
+def test_smoke_walkthrough_is_default_even_without_auth_provider_and_requests_only_static_assets():
+    requests = []
+    site = fake_site()
+
+    def record(request):
+        requests.append((request.method, str(request.url)))
+        return site.handle_request(request)
+
+    report = run_smoke(httpx.MockTransport(record), provider=False, status=False)
+    assert report["passed"], report
+    result = next(row for row in report["checks"] if row["check"] == "ai_walkthrough")
+    assert result["status"] == "pass" and result["detail"]["asset_count"] == 3
+    assert "static packaging/header smoke only" in result["detail"]["scope"]
+    assert all(method == "GET" and url.startswith("https://app.example.org/") for method, url in requests)
+    assert not any("/auth/" in url or "/v1/" in url for _, url in requests)
+    assert {url for _, url in requests if "/assets/" in url} == {
+        "https://app.example.org/assets/walkthrough-fixture.js",
+        "https://app.example.org/assets/public-sections.js",
+        "https://app.example.org/assets/walkthrough-fixture.css",
+    }
 
 
 @pytest.mark.parametrize(

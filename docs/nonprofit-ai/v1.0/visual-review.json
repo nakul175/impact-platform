@@ -1,0 +1,106 @@
+{
+  "edition": "1.0",
+  "date": "2026-10-05",
+  "scope": "DOCUMENT_LAYOUT_ONLY",
+  "method": "LibreOffice PDF rendering and individual original-resolution inspection of every page",
+  "documents": [
+    {
+      "file": "editable/01-BRD.docx",
+      "sha256": "485e8b3de22d7d2b179bc798a180e99cb9a0c5c20d00686b281727c395a65608",
+      "canonical_source_sha256": "7659aace3ce31cffb7c15678851dbb8669bb01133ab6122f5319d16c812d5eb6",
+      "rendered_pages": 11,
+      "inspected_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "status": "PASS",
+      "all_pages_inspected": true,
+      "reviewer": "root"
+    },
+    {
+      "file": "editable/02-FSD.docx",
+      "sha256": "7ecbbf2f0888794e8a7d12aac05fddc638488dce3721a29fc95ce5c1dab831c5",
+      "canonical_source_sha256": "ada42525ed9736f27b5726f4a32754cd64417e74f953c11b3ca08b429659141c",
+      "rendered_pages": 16,
+      "inspected_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "status": "PASS",
+      "all_pages_inspected": true,
+      "reviewer": "root"
+    },
+    {
+      "file": "editable/03-HLD.docx",
+      "sha256": "e68dd3786dbeca521f19a424c23b830a0ece3ed24a976ea315b858aa0883e84c",
+      "canonical_source_sha256": "ecac2f85e6d6ed21abebb05f6a19227f847693b452c74ef82b500449b113ff13",
+      "rendered_pages": 8,
+      "inspected_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "status": "PASS",
+      "all_pages_inspected": true,
+      "reviewer": "specification_design"
+    },
+    {
+      "file": "editable/04-LLD.docx",
+      "sha256": "191c06e8c91571354f03abc195f921fbccfd6c637365e29e33682ca2031bbeb3",
+      "canonical_source_sha256": "c026e68eac49ca57b94197595286ffdbb169bf3014e93f30509120207127e86a",
+      "rendered_pages": 13,
+      "inspected_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "status": "PASS",
+      "all_pages_inspected": true,
+      "reviewer": "specification_design"
+    }
+  ],
+  "pages_inspected": 48,
+  "unresolved_layout_findings": [],
+  "product_acceptance": false,
+  "limitations": [
+    "Document layout review does not establish product functionality, accessibility conformance, business acceptance or release readiness."
+  ]
+}

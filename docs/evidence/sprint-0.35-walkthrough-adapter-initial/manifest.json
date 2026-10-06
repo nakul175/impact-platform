@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-10-05T20:37:30.170501+00:00",
+  "exit_code": 1,
+  "scope": "Pure checker extension failed because it expected every catalog learning path; the fictional public tour deliberately bundles the Foundations-only learning projection. Product/guidance unchanged. Source-projection correction requires independent review. The six-group predecessor tested adapter boundaries without this new projection check.",
+  "files": {
+    "checker-with-incorrect-full-catalog-expectation.mjs": "05bccb6522a69c135f3b1b4e4c481b5fa0869dd021bc1c17cd5bca09795c56aa",
+    "projection-failure.txt": "89658b4b34be203776fa23ba2fbef84c4d809c3b9197eb9b4eaf89e4ec36c52b",
+    "six-group-predecessor-report.json": "1e46a8231191bf8550f5a3ab96209d85324da8b26f09529585fb28eef8cdaa38"
+  }
+}

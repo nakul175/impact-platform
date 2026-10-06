@@ -1,0 +1,45 @@
+{
+  "name": "prerequisite-04-ai-walkthrough-adapter-check",
+  "checker": "tools/browser/ai-walkthrough-adapter-check.mjs",
+  "exit_code": 0,
+  "scope": "Original registered pure Makefile prerequisite; no actual API/browser qualification",
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-aq93i24m/prerequisite-04-ai-walkthrough-adapter-check.log",
+    "published_sha256": "2b63c9c1ec96f14d13ac8883cf85fd3c19572492e00c9b2b6b31c34f6be4805b"
+  },
+  "archived_outputs": [
+    {
+      "original_evidence_path": "sprint-0.35-walkthrough-adapter-tests.json",
+      "archived_path": "sprint-0.35-full-browser/prerequisite-04-ai-walkthrough-adapter-check/outputs/sprint-0.35-walkthrough-adapter-tests.json",
+      "sha256": "b318ef623098ee1ae0ca0ea0f932e333f9bd73a8628d492295ac2156f0022323",
+      "size_bytes": 2607,
+      "new_file": false,
+      "content_changed": true,
+      "fresh_write_observed": true
+    }
+  ],
+  "fresh_result_reports": [
+    {
+      "path": "sprint-0.35-full-browser/prerequisite-04-ai-walkthrough-adapter-check/outputs/sprint-0.35-walkthrough-adapter-tests.json",
+      "executed_result_count": 7,
+      "result_counts": {
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0,
+        "unknown": 0
+      },
+      "reported_fields": {
+        "scope": "Registered pure checks of the actual clone-only bundled walkthrough adapter. Browser network/storage traps are qualified separately; no API, authentication, database, onboarding or authority acceptance.",
+        "sources_unchanged": true
+      },
+      "manual_visual_review": "NOT_RUN_BY_WRAPPER"
+    }
+  ],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": []
+}

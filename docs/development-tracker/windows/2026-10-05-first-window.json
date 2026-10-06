@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "title": "Tola + AI · eight-hour development sprint",
+  "branch": "integration/0.32-tola-ai-sprint",
+  "started_at": "2026-10-05T08:27:26Z",
+  "deadline": "2026-10-05T16:27:26Z",
+  "updated_at": "2026-10-05T19:14:17.855470Z",
+  "status": "WINDOW_ENDED",
+  "active_agent_limit": 4,
+  "stream_ids": [
+    "tracker",
+    "access-ceilings",
+    "content-archive",
+    "integration-qa",
+    "ops-portability",
+    "impact-references",
+    "human-advice",
+    "plan-portability"
+  ],
+  "rollup": {
+    "summary": "Window closed: five increments integrated, four bounded increments locally verified. Internal advice has a known cleanup privacy deployment blocker; sixth increment is draft only.",
+    "planned_increments": 6,
+    "integrated_increments": 5,
+    "verified_increments": 4,
+    "active_agents": 0,
+    "next_checkpoint": null
+  },
+  "limits": [
+    "The eight-hour deadline is a work window, not a promise that the complete platform will be finished.",
+    "There are four active-agent slots including integration; additional workstreams will run in waves.",
+    "ETA ranges are forecasts from agents and can change after inspection, review and testing.",
+    "Local implementation and passing tests do not establish production acceptance. Native, hosted, container and nonprofit UAT gates remain separate.",
+    "Paid provider calls, paid CI, merging and deployment need the owner’s separate approval.",
+    "The original requirement registers and their acceptance statuses remain unchanged; no overall completion percentage is inferred.",
+    "Observed session clock advanced from11:28UTC to19:10UTC beyond the deadline; this record does not claim eight uninterrupted processing hours.",
+    "At close,0.33 local automated scopes pass but worker cleanup privacy blocks deployment;0.34 remains unregistered."
+  ]
+}

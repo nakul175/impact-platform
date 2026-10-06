@@ -23,7 +23,7 @@ from datetime import datetime
 from decimal import Decimal, InvalidOperation, localcontext
 
 from .domain import DomainError, decimal_value, display, stored
-from .store import authorize, context, envelope, load, scopes, write
+from .store import authorize, context, currently_readable, envelope, load, scopes, write
 
 LEVELS = {"IMPACT": 4, "OUTCOME": 3, "OUTPUT": 2, "ACTIVITY": 1}
 RESULT_LEVELS = {"IMPACT", "OUTCOME", "OUTPUT"}
@@ -1048,7 +1048,7 @@ class Planning:
         views = {}
         for register in registers:
             p = payloads.get(str(register["target_revision"]))
-            if not p or not scopes(c, ctx, "targets.read", register["target_id"]):
+            if not p or not currently_readable(c, ctx, register["target_id"], "Target", "targets.read"):
                 continue
             views[(str(register["indicator_id"]), str(register["period_id"]), register["slot"])] = {
                 "target_id": str(register["target_id"]),
@@ -1079,14 +1079,20 @@ class Planning:
         baselines = {}
 
         def framework_at(register):
-            if not register or not scopes(c, ctx, "frameworks.read", register["framework_id"]):
+            if not register or not currently_readable(
+                c, ctx, register["framework_id"], "Framework", "frameworks.read"
+            ):
                 return None
             rev = str(register["framework_revision"])
             if rev not in baselines:
-                payload = c.execute(
-                    "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s",
-                    (ctx.tenant_id, rev),
-                ).fetchone()["payload"]
+                pinned = c.execute(
+                    "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s "
+                    "AND revision_id=%s AND object_type='Framework' AND restriction_state='AVAILABLE'",
+                    (ctx.tenant_id, register["framework_id"], rev),
+                ).fetchone()
+                if not pinned:
+                    return None
+                payload = pinned["payload"]
                 baselines[rev] = {
                     "framework_id": str(register["framework_id"]),
                     "revision_id": rev,
@@ -1190,7 +1196,13 @@ class Planning:
             definition = (
                 definition_row["payload"]
                 if definition_row
-                and scopes(c, ctx, "indicator-definitions.read", definition_row["object_id"])
+                and currently_readable(
+                    c,
+                    ctx,
+                    definition_row["object_id"],
+                    "IndicatorDefinition",
+                    "indicator-definitions.read",
+                )
                 else {}
             )
             places = definition.get("display_decimals", 2)
@@ -1216,7 +1228,9 @@ class Planning:
                 if (
                     found
                     and found["payload"].get("indicator_version") == pin
-                    and scopes(c, ctx, "calculated-results.read", found["object_id"])
+                    and currently_readable(
+                        c, ctx, found["object_id"], "CalculatedResult", "calculated-results.read"
+                    )
                 ):
                     actual = self.result_actual(found, "PROGRAMME_SNAPSHOT", str(snapshot["snapshot_id"]))
                 elif not snapshot and (indicator_id, period_id) in provisional:

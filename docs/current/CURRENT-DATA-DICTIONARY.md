@@ -1,5 +1,13 @@
 # Current data dictionary and schema evolution
 
+Local proposed schema40 candidate: migration0040 adds two insert-only issuer-private tables for JSON INTERNAL_SELF export of one exact saved adoption-plan revision. A typed immutable AuditEvent binds issuance metadata, original BYTEA, digest, original database generation time, exact archived guidance, one private nondelivery intent and pointer-only receipt in one deferred-sealed transaction. Current principal/member/scoped read plus export and both current readable head and exact AVAILABLE pin gate all reads; original bytes additionally expire for platform replay after168hours. Server-only slots bound actual retained issuances to100 per tenant principal across hidden/expired records. Exact MANAGERS-only export profile registration does not grant tenant business access. Both existing key-returning receipt purge definers exclude private advice/export commands while ordinary retention behavior remains; private advice has no hard permanent storage cap. Parent payload removal is refused while copied bytes remain. No new operated erasure path, retention duration, local-file revocation, hosted acceptance or deployment is claimed.
+
+Local proposed build 0.33.0, schema 39: migration0039 narrows the central participant helper to require the exact tenant/object/revision/type-qualified AI adoption plan anchor to remain AVAILABLE, in addition to its currently readable head. Earlier unavailable plan pins now withhold all case-related projections and pointer reads without changing old rows or roles. Migration0038 adds an existing-member human advice case projection and immutable private brief, tenant-qualified keys and forced participant row security. Invitation details and explicit sharing consent precede material adviser access; terminal adviser access ends. Narrow owner-definer helpers protect case-related registry/revision, audit, author, receipt and event pointers. The writable transaction-local principal context supports the authenticated application boundary and does not authenticate a human against a compromised database login. Programme evidence links reuse existing immutable AI-plan revisions without a new numeric-result table. Not merged or deployed.
+
+Local proposed build 0.32.0, schema 37: migration 0036 adds reviewed access-extension proposals and immutable application markers, forced tenant row security, an immutable registered access-profile directory and narrowly granted control-plane review/application functions. Existing tenants retain revoked capabilities, managed-role omissions and expiry dates; only the newly introduced registered-profile delta can be approved. Migration 0037 adds insert-only tenant-fenced AI guidance bundles and exact adoption-plan revision bindings, SELECT/INSERT for `impact_app` only. Retained archive schemas and verified content hashes preserve actual historical wording; missing historical text remains unavailable. Not merged or deployed.
+
+Local proposed build 0.30.0, schema 35: migration 0034 adds insert-only, forced-RLS AI advisory request/result registers. Only `impact_app` receives SELECT/INSERT; drafts are sealed, server-generated record IDs are independent from operation IDs. Migration 0035 adds the AIAdoptionPlan registry kind, using existing immutable tenant-fenced revisions and receipts without widening database-role grants. Not merged or deployed.
+
 Proposed build 0.28.0, schema 33 (PR 1, not merged): 0033 adds the application executor's
 tenant-fenced `import_commit` register, its due-tenant directory and an operational heartbeat.
 The executor login is separately provisioned with membership in `impact_app` only. No
@@ -50,6 +58,15 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0031_theory_of_change.sql | 2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac |
 | 0032_forms_languages_rounds.sql | 999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b |
 | 0033_application_executor.sql | a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33 |
+
+| 0034_ai_advisory.sql | 5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415 |
+| 0035_ai_adoption_plans.sql | 543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5 |
+
+| 0036_reviewed_ceiling_widening.sql | 4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464 |
+| 0037_ai_content_snapshots.sql | 668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e |
+| 0038_human_advice_cases.sql | ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00 |
+| 0039_human_advice_anchor_availability.sql | 12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0 |
+| 0040_ai_plan_portability.sql | a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89 |
 
 ## Executable schema definitions
 
@@ -4636,4 +4653,1484 @@ CREATE TABLE impact.executor_heartbeat(
 GRANT SELECT,INSERT,UPDATE ON impact.executor_heartbeat TO impact_app;
 GRANT SELECT ON impact.executor_heartbeat TO impact_platform;
 COMMIT;
+```
+
+### 0034 AI advisory
+
+Source: infrastructure/migrations/0034_ai_advisory.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Extend the current check, preserving kinds introduced by every prior migration.
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIAdvisoryRequest'')');
+END $$;
+
+CREATE TABLE impact.ai_advisory_request(
+ tenant_id uuid NOT NULL,
+ request_id uuid NOT NULL,
+ object_id uuid NOT NULL,
+ principal_id uuid NOT NULL,
+ fingerprint bytea NOT NULL CHECK(octet_length(fingerprint)=32),
+ reserved_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,request_id),
+ UNIQUE(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,object_id) REFERENCES impact.object_registry(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+CREATE INDEX ai_advisory_daily ON impact.ai_advisory_request(tenant_id,reserved_at);
+CREATE TABLE impact.ai_advisory_result(
+ tenant_id uuid NOT NULL,
+ request_id uuid NOT NULL,
+ sealed_output bytea,
+ failure_reason text CHECK(failure_reason='AI_PROVIDER_UNAVAILABLE'),
+ completed_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,request_id),
+ FOREIGN KEY(tenant_id,request_id) REFERENCES impact.ai_advisory_request(tenant_id,request_id),
+ CHECK((sealed_output IS NOT NULL) <> (failure_reason IS NOT NULL))
+);
+CREATE FUNCTION impact.guard_ai_advisory_insert_only() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+ BEGIN RAISE EXCEPTION 'AI advisory records are insert-only' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_advisory_insert_only() FROM PUBLIC;
+CREATE TRIGGER ai_advisory_request_immutable BEFORE UPDATE OR DELETE ON impact.ai_advisory_request
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_advisory_insert_only();
+CREATE TRIGGER ai_advisory_result_immutable BEFORE UPDATE OR DELETE ON impact.ai_advisory_result
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_advisory_insert_only();
+ALTER TABLE impact.ai_advisory_request ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_advisory_request FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_advisory_request
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_advisory_result ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_advisory_result FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_advisory_result
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_advisory_request,impact.ai_advisory_result TO impact_app;
+COMMIT;
+```
+
+## 0035_ai_adoption_plans.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Use existing forced-RLS registry/revisions/receipts; preserve every earlier kind.
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIAdoptionPlan'')');
+END $$;
+COMMIT;
+```
+
+## 0036_reviewed_ceiling_widening.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+-- Deployment metadata, not tenant-owned data. Only additive migrations may
+-- register an exact generated profile. Runtime control-plane code can read
+-- these immutable targets and cannot invent a wider profile for an old tenant.
+CREATE TABLE impact.platform_access_profile(
+ profile_hash varchar(64) PRIMARY KEY CHECK(profile_hash~'^[0-9a-f]{64}$'),
+ manifest jsonb NOT NULL CHECK(jsonb_typeof(manifest)='object'),
+ registered_at timestamptz NOT NULL DEFAULT now(), source_migration varchar(100) NOT NULL
+);
+GRANT SELECT ON impact.platform_access_profile TO impact_platform;
+CREATE FUNCTION impact.guard_platform_access_profile() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ RAISE EXCEPTION 'registered access profile immutable' USING ERRCODE='42501';
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_platform_access_profile() FROM PUBLIC;
+CREATE TRIGGER platform_access_profile_guard BEFORE UPDATE OR DELETE ON impact.platform_access_profile
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_platform_access_profile();
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration) VALUES('48e75c64f1ea2ddceeadce089d1c3f2b056254f236060f1c7d4a18ff439183b0',$profile_0036${"purpose_bound":["audit.export","privacy-cases.draft.create","privacy-cases.draft.edit","privacy-cases.read","privacy.approve","privacy.execute","privacy.export"],"roles":{"ANALYST":["ai.enablement.read","calculated-results.read","dashboards.read","decisions.read","evidence.download","evidence.read","framework.export","frameworks.read","imports.read","indicator-definitions.read","indicator-instances.read","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"AUDIT_READER":["audit-events.read","notifications.read","uploads.read"],"AUTHOR":["ai.enablement.read","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","disclosure.request","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.draft.create","observations.draft.edit","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","report.submit","reporting-calendars.read","reports.draft.create","reports.draft.edit","reports.read","restatement-requests.read","snapshots.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"DATA_STEWARD":["ai.enablement.read","assignments.read","calculated-results.read","dashboards.read","decisions.read","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","forms.read","frameworks.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","notifications.read","observations.draft.create","observations.draft.edit","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","submissions.read","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflows.read"],"ENUMERATOR":["assignments.read","collection-rounds.read","forms.read","notifications.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","upload.create","upload.write","uploads.read"],"EXTERNAL":["calculated-results.read","dashboards.read","decisions.read","evidence.read","frameworks.read","indicator-definitions.read","indicator-instances.read","invitation.accept","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"MEL_ADMIN":["ai.advisory.request","ai.enablement.manage","ai.enablement.read","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","disclosures.read","evidence.read","form.publish","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.export","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.activate","indicator.calculate","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","report.publish","report.withdraw","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"PRIVACY":["disclosure.request","disclosures.read","notifications.read","publication.download","report.withdraw","reports.read","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","uploads.read"],"PROGRAMME_MANAGER":["ai.advisory.request","ai.enablement.manage","ai.enablement.read","assignment.reassign","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","evidence.read","form.submit","forms.read","framework.export","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","indicator.activate","indicator.calculate","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"REVIEWER":["ai.enablement.read","assignments.read","calculated-results.read","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","evidence.download","evidence.read","forms.read","frameworks.read","geographies.read","imports.read","indicator-definitions.read","indicator-instances.read","lineage-manifests.read","measurement-changes.read","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflow.approve","workflow.reject","workflow.return","workflows.read"],"TENANT_ADMIN":["access-denials.read","access-requests.read","access-scopes.create","access-scopes.read","ai.advisory.request","ai.enablement.manage","ai.enablement.read","connections.read","grant.approve","grant.request","grant.revoke","grants.read","groups.approve","groups.manage","groups.read","groups.request","member-invitations.read","member.invite","membership.reactivate","membership.renew.approve","membership.renew.request","membership.revoke","membership.suspend","memberships.read","notifications.read","organisation-units.manage","organisation-units.read","ownership.transfer","reference-data.manage","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","role-templates.read","roles.manage","uploads.read"]},"version":"initial-access-v2"}$profile_0036$::jsonb,'0036_reviewed_ceiling_widening.sql');
+
+-- Existing applied profiles stay unchanged until the owner, named second
+-- administrator and an independent active platform operator review an upgrade.
+ALTER TABLE impact.tenant_access_bootstrap ADD CONSTRAINT access_bootstrap_tenant_request
+ UNIQUE(tenant_id,request_id);
+
+CREATE TABLE impact.tenant_access_upgrade(
+ tenant_id uuid NOT NULL REFERENCES impact.tenant_onboarding,
+ request_id uuid NOT NULL, revision_id uuid NOT NULL,
+ state varchar(20) NOT NULL CHECK(state IN ('Requested','Accepted','Applied','Rejected','Cancelled')),
+ bootstrap_request_id uuid NOT NULL,
+ owner_identity_id uuid NOT NULL REFERENCES impact.auth_identity,
+ second_identity_id uuid NOT NULL REFERENCES impact.auth_identity,
+ tenant_revision uuid NOT NULL, owner_revision uuid NOT NULL,
+ current_manifest jsonb NOT NULL CHECK(jsonb_typeof(current_manifest)='object'),
+ authority_hash varchar(64) NOT NULL CHECK(authority_hash~'^[0-9a-f]{64}$'),
+ profile_hash varchar(64) NOT NULL REFERENCES impact.platform_access_profile,
+ target_manifest jsonb NOT NULL CHECK(jsonb_typeof(target_manifest)='object'),
+ new_capabilities jsonb NOT NULL CHECK(jsonb_typeof(new_capabilities)='array'),
+ review_expires_at timestamptz NOT NULL,
+ owner_auth_time timestamptz NOT NULL, second_auth_time timestamptz,
+ accepted_at timestamptz, approved_by uuid REFERENCES impact.auth_identity,
+ approved_auth_time timestamptz, applied_at timestamptz,
+ reason varchar(1000) NOT NULL CHECK(reason~'\S'),
+ created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now(),
+ PRIMARY KEY(tenant_id,request_id), UNIQUE(request_id),
+ FOREIGN KEY(tenant_id,bootstrap_request_id) REFERENCES impact.tenant_access_bootstrap(tenant_id,request_id),
+ CHECK(owner_identity_id<>second_identity_id),
+ CHECK(review_expires_at>created_at AND review_expires_at<=created_at+interval '7 days'),
+ CHECK((state IN ('Accepted','Applied'))=(accepted_at IS NOT NULL AND second_auth_time IS NOT NULL)
+       OR state IN ('Rejected','Cancelled')),
+ CHECK((state='Applied')=(approved_by IS NOT NULL AND approved_auth_time IS NOT NULL AND applied_at IS NOT NULL))
+);
+CREATE UNIQUE INDEX access_upgrade_one_live ON impact.tenant_access_upgrade(tenant_id)
+ WHERE state IN ('Requested','Accepted');
+ALTER TABLE impact.tenant_access_upgrade ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.tenant_access_upgrade FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.tenant_access_upgrade
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+-- Only the owner-executed bounded inbox selector can discover tenant IDs
+-- before transaction-local tenant context is known. Runtime roles stay fenced.
+CREATE POLICY access_upgrade_owner_directory ON impact.tenant_access_upgrade TO impact_owner USING(true);
+GRANT SELECT,INSERT,UPDATE ON impact.tenant_access_upgrade TO impact_platform;
+
+CREATE TABLE impact.tenant_access_upgrade_applied(
+ tenant_id uuid NOT NULL, request_id uuid NOT NULL,
+ applied_at timestamptz NOT NULL DEFAULT now(), authorities_added integer NOT NULL CHECK(authorities_added>=0),
+ PRIMARY KEY(tenant_id,request_id),
+ FOREIGN KEY(tenant_id,request_id) REFERENCES impact.tenant_access_upgrade(tenant_id,request_id)
+);
+ALTER TABLE impact.tenant_access_upgrade_applied ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.tenant_access_upgrade_applied FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.tenant_access_upgrade_applied
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT ON impact.tenant_access_upgrade_applied TO impact_platform;
+
+CREATE FUNCTION impact.access_upgrade_refs(viewer uuid, after_request uuid)
+ RETURNS TABLE(tenant_id uuid,request_id uuid)
+ LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT u.tenant_id,u.request_id FROM impact.tenant_access_upgrade u
+ JOIN impact.tenant_onboarding o ON o.tenant_id=u.tenant_id
+ WHERE (impact.lock_platform_operator(viewer)
+        OR (viewer=o.owner_identity_id AND viewer=u.owner_identity_id)
+        OR (viewer=u.second_identity_id AND EXISTS(
+            SELECT 1 FROM impact.auth_identity i JOIN impact.identity_profile p USING(identity_id)
+            WHERE i.identity_id=viewer AND p.verified_email_hash IS NOT NULL)))
+ AND (after_request IS NULL OR u.request_id>after_request)
+ ORDER BY u.request_id LIMIT 51
+$$;
+REVOKE ALL ON FUNCTION impact.access_upgrade_refs(uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.access_upgrade_refs(uuid,uuid) TO impact_platform;
+
+-- Principal epochs are metadata about the viewer only. The existing
+-- principal_identity_directory owner policy supports this global visibility
+-- fingerprint without granting any cross-tenant runtime table access.
+CREATE FUNCTION impact.access_upgrade_visibility(viewer uuid) RETURNS jsonb
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE previous_context text:=current_setting('impact.tenant_id',true); person record;
+ principals jsonb:='[]'::jsonb; members jsonb; authorities jsonb;
+BEGIN
+ FOR person IN SELECT p.* FROM impact.tenant_principal p WHERE p.identity_id=viewer ORDER BY p.tenant_id,p.principal_id LOOP
+  PERFORM set_config('impact.tenant_id',person.tenant_id::text,true);
+  SELECT COALESCE(jsonb_agg(jsonb_build_object('member',m.object_id,'revision',h.head_revision,
+    'state',h.lifecycle_state,'status',m.status,'expiry',m.expires_at,
+    'unexpired',m.expires_at IS NULL OR m.expires_at>now()) ORDER BY m.object_id),'[]'::jsonb)
+    INTO members FROM impact.membership_current m JOIN impact.object_registry h
+    ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+    WHERE m.tenant_id=person.tenant_id AND m.identity_id=viewer;
+  SELECT COALESCE(jsonb_agg(jsonb_build_object('authority',a.authority_id,'capability',a.capability,
+    'scope',a.scope_id,'expiry',a.expires_at) ORDER BY a.authority_id),'[]'::jsonb)
+    INTO authorities FROM impact.grant_authority a WHERE a.tenant_id=person.tenant_id
+    AND a.principal_id=person.principal_id AND a.expires_at>now();
+  principals:=principals||jsonb_build_array(jsonb_build_object('tenant',person.tenant_id,
+    'principal',person.principal_id,'active',person.active,'epoch',person.subject_epoch,
+    'cutoff',person.auth_not_before,'members',members,'authorities',authorities));
+ END LOOP;
+ PERFORM set_config('impact.tenant_id',COALESCE(previous_context,''),true);
+ RETURN jsonb_build_object(
+  'operator',(SELECT to_jsonb(o) FROM impact.platform_operator o WHERE o.identity_id=viewer),
+  'operator_current',impact.lock_platform_operator(viewer),
+  'identity_cutoff',(SELECT s.auth_not_before FROM impact.identity_security_state s WHERE s.identity_id=viewer),
+  'principals',principals);
+END $$;
+REVOKE ALL ON FUNCTION impact.access_upgrade_visibility(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.access_upgrade_visibility(uuid) TO impact_platform;
+
+CREATE FUNCTION impact.guard_access_upgrade() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF TG_OP='DELETE' THEN RAISE EXCEPTION 'access upgrade immutable' USING ERRCODE='42501'; END IF;
+ IF TG_OP='INSERT' THEN
+  IF NEW.state<>'Requested' OR NEW.accepted_at IS NOT NULL OR NEW.second_auth_time IS NOT NULL
+  OR NEW.approved_by IS NOT NULL OR NEW.applied_at IS NOT NULL THEN
+   RAISE EXCEPTION 'access upgrade must start requested' USING ERRCODE='42501';
+  END IF;
+  RETURN NEW;
+ END IF;
+ IF OLD.state IN ('Applied','Rejected','Cancelled') THEN
+  RAISE EXCEPTION 'access upgrade final' USING ERRCODE='42501';
+ END IF;
+ IF (to_jsonb(NEW)-ARRAY['state','revision_id','updated_at','second_auth_time','accepted_at',
+                       'approved_by','approved_auth_time','applied_at'])
+ IS DISTINCT FROM
+ (to_jsonb(OLD)-ARRAY['state','revision_id','updated_at','second_auth_time','accepted_at',
+                       'approved_by','approved_auth_time','applied_at']) THEN
+  RAISE EXCEPTION 'access upgrade identity immutable' USING ERRCODE='42501';
+ END IF;
+ IF NOT ((OLD.state='Requested' AND NEW.state IN ('Accepted','Rejected','Cancelled'))
+      OR (OLD.state='Accepted' AND NEW.state IN ('Applied','Rejected','Cancelled'))) THEN
+  RAISE EXCEPTION 'invalid access upgrade transition' USING ERRCODE='42501';
+ END IF;
+ IF NEW.state='Applied' AND current_user<>'impact_owner' THEN
+  RAISE EXCEPTION 'access upgrade applicator required' USING ERRCODE='42501';
+ END IF;
+ IF OLD.state='Accepted' AND (NEW.second_auth_time IS DISTINCT FROM OLD.second_auth_time
+                             OR NEW.accepted_at IS DISTINCT FROM OLD.accepted_at) THEN
+  RAISE EXCEPTION 'access upgrade consent immutable' USING ERRCODE='42501';
+ END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_access_upgrade() FROM PUBLIC;
+CREATE TRIGGER access_upgrade_guard BEFORE INSERT OR UPDATE OR DELETE ON impact.tenant_access_upgrade
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_access_upgrade();
+
+CREATE FUNCTION impact.guard_access_upgrade_applied() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ RAISE EXCEPTION 'access upgrade applied marker immutable' USING ERRCODE='42501';
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_access_upgrade_applied() FROM PUBLIC;
+CREATE TRIGGER access_upgrade_applied_guard BEFORE UPDATE OR DELETE ON impact.tenant_access_upgrade_applied
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_access_upgrade_applied();
+
+-- Fixed search path, tenant-scoped selector, exact pre-change ceiling and
+-- consent checks, one-use marker. No runtime role receives INSERT on ceilings.
+CREATE FUNCTION impact.apply_access_upgrade(tenant uuid, requested uuid, approver uuid, authenticated timestamptz)
+ RETURNS integer LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE r impact.tenant_access_upgrade; p jsonb; item jsonb; added integer:=0;
+ expected integer; actual integer; principal uuid; scope uuid; expiry timestamptz;
+ cap text; owner_person uuid; second_person uuid; approver_person uuid;
+BEGIN
+ IF tenant IS DISTINCT FROM impact.current_tenant() THEN
+  RAISE EXCEPTION 'access upgrade denied' USING ERRCODE='42501';
+ END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended(tenant::text,0));
+ SELECT * INTO r FROM impact.tenant_access_upgrade WHERE tenant_id=tenant AND request_id=requested FOR UPDATE;
+ IF NOT FOUND OR r.state<>'Accepted' OR r.accepted_at IS NULL OR r.second_auth_time IS NULL
+ OR r.review_expires_at<=now() OR r.review_expires_at>r.created_at+interval '7 days'
+ OR authenticated IS NULL OR authenticated<=now()-interval '300 seconds' OR authenticated>now()
+ OR NOT impact.lock_platform_operator(approver)
+ OR EXISTS(SELECT 1 FROM impact.tenant_access_upgrade_applied WHERE tenant_id=tenant AND request_id=requested)
+ OR NOT EXISTS(SELECT 1 FROM impact.tenant_root WHERE tenant_id=tenant AND lifecycle_state='Active')
+ OR NOT EXISTS(SELECT 1 FROM impact.tenant_onboarding WHERE tenant_id=tenant
+               AND revision_id=r.tenant_revision AND owner_identity_id=r.owner_identity_id)
+ OR NOT EXISTS(SELECT 1 FROM impact.tenant_access_bootstrap_applied
+               WHERE tenant_id=tenant AND request_id=r.bootstrap_request_id)
+ OR NOT EXISTS(SELECT 1 FROM impact.platform_access_profile p
+               WHERE p.profile_hash=r.profile_hash AND p.manifest=r.target_manifest)
+ OR EXISTS(SELECT 1 FROM impact.tenant_authority_renewal WHERE tenant_id=tenant AND state IN ('Requested','Accepted'))
+ THEN RAISE EXCEPTION 'access upgrade denied' USING ERRCODE='42501'; END IF;
+
+ SELECT natural_identity_id INTO owner_person FROM impact.auth_identity WHERE identity_id=r.owner_identity_id;
+ SELECT natural_identity_id INTO second_person FROM impact.auth_identity WHERE identity_id=r.second_identity_id;
+ SELECT natural_identity_id INTO approver_person FROM impact.auth_identity WHERE identity_id=approver;
+ IF owner_person IS NULL OR second_person IS NULL OR approver_person IS NULL
+ OR owner_person=second_person OR approver_person IN(owner_person,second_person)
+ OR EXISTS(SELECT 1 FROM impact.identity_security_state s WHERE
+           (s.identity_id=r.owner_identity_id AND r.owner_auth_time<=s.auth_not_before)
+        OR (s.identity_id=r.second_identity_id AND r.second_auth_time<=s.auth_not_before)
+        OR (s.identity_id=approver AND authenticated<=s.auth_not_before))
+ OR NOT EXISTS(SELECT 1 FROM impact.tenant_custody t JOIN impact.membership_current m
+               ON m.tenant_id=t.tenant_id AND m.object_id=t.owner_membership_id
+               JOIN impact.object_registry h ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+               JOIN impact.tenant_principal o ON o.tenant_id=m.tenant_id AND o.identity_id=m.identity_id
+               WHERE t.tenant_id=tenant AND m.identity_id=r.owner_identity_id AND h.head_revision=r.owner_revision
+               AND h.lifecycle_state='Active' AND o.active AND (m.expires_at IS NULL OR m.expires_at>now())
+               AND (o.auth_not_before IS NULL OR r.owner_auth_time>o.auth_not_before))
+ THEN RAISE EXCEPTION 'access upgrade consent denied' USING ERRCODE='42501'; END IF;
+
+ IF jsonb_array_length(r.current_manifest->'principals')<>2 THEN
+  RAISE EXCEPTION 'access upgrade principals denied' USING ERRCODE='42501';
+ END IF;
+ SELECT count(*) INTO expected FROM jsonb_array_elements(r.current_manifest->'authority_rows');
+ SELECT count(*) INTO actual FROM impact.grant_authority a
+ WHERE a.tenant_id=tenant AND a.expires_at>now() AND a.principal_id IN
+ (SELECT (v->>'principal_id')::uuid FROM jsonb_array_elements(r.current_manifest->'principals') v);
+ IF expected<>actual THEN RAISE EXCEPTION 'AUTHORITY_CHANGED' USING ERRCODE='42501'; END IF;
+ FOR item IN SELECT value FROM jsonb_array_elements(r.current_manifest->'authority_rows') LOOP
+  IF NOT EXISTS(SELECT 1 FROM impact.grant_authority a WHERE a.tenant_id=tenant
+    AND a.authority_id=(item->>'authority_id')::uuid AND a.principal_id=(item->>'principal_id')::uuid
+    AND a.capability=item->>'capability' AND a.scope_id=(item->>'scope_id')::uuid
+    AND a.expires_at=(item->>'expires_at')::timestamptz AND a.expires_at>now()) THEN
+   RAISE EXCEPTION 'AUTHORITY_CHANGED' USING ERRCODE='42501';
+  END IF;
+ END LOOP;
+ FOR item IN SELECT value FROM jsonb_array_elements(r.current_manifest->'grant_revisions')
+ UNION ALL SELECT value FROM jsonb_array_elements(r.current_manifest->'membership_revisions') LOOP
+  IF NOT EXISTS(SELECT 1 FROM impact.object_registry h JOIN impact.object_revision v
+    ON v.tenant_id=h.tenant_id AND v.revision_id=h.head_revision
+    WHERE h.tenant_id=tenant AND h.object_id=(item->>'object_id')::uuid
+    AND h.head_revision=(item->>'revision_id')::uuid AND h.lifecycle_state='Active'
+    AND encode(v.payload_sha256,'hex')=item->>'payload_sha256') THEN
+   RAISE EXCEPTION 'AUTHORITY_CHANGED' USING ERRCODE='42501';
+  END IF;
+ END LOOP;
+ FOR item IN SELECT value FROM jsonb_array_elements(r.current_manifest->'managed_roles') LOOP
+  IF NOT EXISTS(SELECT 1 FROM impact.object_registry h JOIN impact.object_revision v
+    ON v.tenant_id=h.tenant_id AND v.revision_id=h.head_revision
+    WHERE h.tenant_id=tenant AND h.object_id=(item->>'object_id')::uuid
+    AND h.head_revision=(item->>'revision_id')::uuid AND h.lifecycle_state=item->>'state'
+    AND encode(v.payload_sha256,'hex')=item->>'payload_sha256') THEN
+   RAISE EXCEPTION 'AUTHORITY_CHANGED' USING ERRCODE='42501';
+  END IF;
+ END LOOP;
+ -- Source baseline is an immutable applied manifest; revoked baseline
+ -- capabilities cannot be classified as new and silently resurrected.
+ IF (r.current_manifest->>'source_request_id')::uuid IS DISTINCT FROM COALESCE(
+  (SELECT u.request_id FROM impact.tenant_access_upgrade u WHERE u.tenant_id=tenant AND u.state='Applied'
+   ORDER BY u.applied_at DESC,u.request_id DESC LIMIT 1),r.bootstrap_request_id) THEN
+  RAISE EXCEPTION 'access upgrade source stale' USING ERRCODE='42501';
+ END IF;
+ IF NOT EXISTS(SELECT 1 FROM impact.tenant_access_upgrade u WHERE u.tenant_id=tenant AND u.state='Applied'
+               AND u.request_id=(r.current_manifest->>'source_request_id')::uuid
+               AND u.target_manifest=r.current_manifest->'source_manifest')
+ AND NOT EXISTS(SELECT 1 FROM impact.tenant_access_bootstrap b WHERE b.tenant_id=tenant AND b.state='Applied'
+                AND b.request_id=r.bootstrap_request_id AND b.request_id=(r.current_manifest->>'source_request_id')::uuid
+                AND b.manifest=r.current_manifest->'source_manifest') THEN
+  RAISE EXCEPTION 'access upgrade source denied' USING ERRCODE='42501';
+ END IF;
+ IF EXISTS(SELECT 1 FROM jsonb_each(r.current_manifest->'source_manifest'->'roles') source
+  WHERE NOT (r.target_manifest->'roles' ? source.key)
+  OR NOT (r.target_manifest->'roles'->source.key @> source.value))
+ OR NOT (COALESCE(r.target_manifest->'purpose_bound','[]'::jsonb)
+         @> COALESCE(r.current_manifest->'source_manifest'->'purpose_bound','[]'::jsonb)) THEN
+  RAISE EXCEPTION 'access upgrade profile not monotonic' USING ERRCODE='42501';
+ END IF;
+ IF r.new_capabilities IS DISTINCT FROM COALESCE((SELECT jsonb_agg(delta.cap ORDER BY delta.cap)
+  FROM (SELECT jsonb_array_elements_text(value) AS cap FROM jsonb_each(r.target_manifest->'roles')
+        UNION SELECT jsonb_array_elements_text(COALESCE(r.target_manifest->'purpose_bound','[]'::jsonb))
+        EXCEPT (SELECT jsonb_array_elements_text(value) FROM jsonb_each(r.current_manifest->'source_manifest'->'roles')
+                UNION SELECT jsonb_array_elements_text(COALESCE(r.current_manifest->'source_manifest'->'purpose_bound','[]'::jsonb)))) delta),'[]'::jsonb) THEN
+  RAISE EXCEPTION 'access upgrade delta denied' USING ERRCODE='42501';
+ END IF;
+ IF EXISTS(SELECT 1 FROM jsonb_array_elements_text(r.new_capabilities) n
+  WHERE n.value IN(SELECT jsonb_array_elements_text(value) FROM jsonb_each(r.current_manifest->'source_manifest'->'roles')
+                   UNION SELECT jsonb_array_elements_text(COALESCE(r.current_manifest->'source_manifest'->'purpose_bound','[]'::jsonb))))
+ OR EXISTS(SELECT 1 FROM jsonb_array_elements_text(r.new_capabilities) n
+  WHERE n.value NOT IN(SELECT jsonb_array_elements_text(value) FROM jsonb_each(r.target_manifest->'roles')
+                       UNION SELECT jsonb_array_elements_text(COALESCE(r.target_manifest->'purpose_bound','[]'::jsonb)))) THEN
+  RAISE EXCEPTION 'access upgrade delta denied' USING ERRCODE='42501';
+ END IF;
+
+ FOR p IN SELECT value FROM jsonb_array_elements(r.current_manifest->'principals') LOOP
+  principal:=(p->>'principal_id')::uuid; scope:=(p->>'scope_id')::uuid;
+  IF (p->>'identity_id')::uuid NOT IN(r.owner_identity_id,r.second_identity_id)
+  OR NOT EXISTS(SELECT 1 FROM impact.tenant_principal t WHERE t.tenant_id=tenant AND t.principal_id=principal
+                AND t.identity_id=(p->>'identity_id')::uuid AND t.active
+                AND (t.auth_not_before IS NULL OR
+                     CASE WHEN t.identity_id=r.owner_identity_id THEN r.owner_auth_time ELSE r.second_auth_time END>t.auth_not_before))
+  OR NOT EXISTS(SELECT 1 FROM impact.membership_current m JOIN impact.object_registry h
+                ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+                WHERE m.tenant_id=tenant AND m.object_id=(p->>'membership_id')::uuid
+                AND m.identity_id=(p->>'identity_id')::uuid AND h.lifecycle_state='Active'
+                AND (m.status IS NULL OR m.status='Active') AND (m.expires_at IS NULL OR m.expires_at>now()))
+  THEN RAISE EXCEPTION 'access upgrade membership denied' USING ERRCODE='42501'; END IF;
+  SELECT min(a.expires_at) INTO expiry FROM impact.grant_authority a
+   WHERE a.tenant_id=tenant AND a.principal_id=principal AND a.expires_at>now();
+  IF expiry IS NULL OR expiry<r.review_expires_at THEN
+   RAISE EXCEPTION 'access upgrade expiry denied' USING ERRCODE='42501';
+  END IF;
+  FOR cap IN SELECT value FROM jsonb_array_elements_text(r.new_capabilities) LOOP
+   IF NOT EXISTS(SELECT 1 FROM impact.grant_authority a WHERE a.tenant_id=tenant
+                  AND a.principal_id=principal AND a.capability=cap AND a.scope_id=scope AND a.expires_at>now()) THEN
+    INSERT INTO impact.grant_authority(tenant_id,authority_id,principal_id,capability,scope_id,expires_at)
+     VALUES(tenant,gen_random_uuid(),principal,cap,scope,expiry);
+    added:=added+1;
+   END IF;
+  END LOOP;
+ END LOOP;
+ INSERT INTO impact.tenant_access_upgrade_applied(tenant_id,request_id,authorities_added) VALUES(tenant,requested,added);
+ UPDATE impact.tenant_access_upgrade SET state='Applied',approved_by=approver,approved_auth_time=authenticated,
+  applied_at=now(),updated_at=now(),revision_id=gen_random_uuid() WHERE tenant_id=tenant AND request_id=requested;
+ RETURN added;
+END $$;
+REVOKE ALL ON FUNCTION impact.apply_access_upgrade(uuid,uuid,uuid,timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.apply_access_upgrade(uuid,uuid,uuid,timestamptz) TO impact_platform;
+COMMIT;
+```
+
+## 0037_ai_content_snapshots.sql
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Editorial guidance is captured only when a new adoption-plan revision is saved.
+-- No old revision is backfilled from current content or re-pointed to another edition.
+CREATE TABLE impact.ai_content_snapshot(
+ tenant_id uuid NOT NULL,
+ snapshot_id uuid NOT NULL,
+ schema_version varchar(64) NOT NULL CHECK(schema_version='nonprofit-ai-guidance-v1'),
+ payload jsonb NOT NULL CHECK(jsonb_typeof(payload)='object'),
+ payload_sha256 bytea NOT NULL CHECK(octet_length(payload_sha256)=32),
+ captured_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,snapshot_id),
+ UNIQUE(tenant_id,payload_sha256),
+ FOREIGN KEY(tenant_id) REFERENCES impact.tenant_root(tenant_id)
+);
+-- A bundle can legitimately share unchanged components with other bundles.
+-- Under the tenant write lock the server checks a component edition's exact words;
+-- these non-unique indexes support that bounded lookup without cross-tenant reads.
+CREATE INDEX ai_content_catalog_edition ON impact.ai_content_snapshot
+ (tenant_id,(payload->'catalog'->>'content_version'));
+CREATE INDEX ai_content_solutions_edition ON impact.ai_content_snapshot
+ (tenant_id,(payload->'solutions'->>'content_version'));
+CREATE INDEX ai_content_practice_edition ON impact.ai_content_snapshot
+ (tenant_id,(payload->'practice'->>'content_version'));
+CREATE TABLE impact.ai_plan_content_binding(
+ tenant_id uuid NOT NULL,
+ object_id uuid NOT NULL,
+ revision_id uuid NOT NULL,
+ revision_kind text GENERATED ALWAYS AS ('AIAdoptionPlan') STORED,
+ snapshot_id uuid NOT NULL,
+ PRIMARY KEY(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,object_id,revision_id)
+   REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,revision_id,revision_kind)
+   REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,snapshot_id)
+   REFERENCES impact.ai_content_snapshot(tenant_id,snapshot_id)
+);
+CREATE FUNCTION impact.guard_ai_content_insert_only() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+ BEGIN RAISE EXCEPTION 'AI content archives are insert-only' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_content_insert_only() FROM PUBLIC;
+CREATE TRIGGER ai_content_snapshot_immutable BEFORE UPDATE OR DELETE ON impact.ai_content_snapshot
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_content_insert_only();
+CREATE TRIGGER ai_plan_content_binding_immutable BEFORE UPDATE OR DELETE ON impact.ai_plan_content_binding
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_content_insert_only();
+ALTER TABLE impact.ai_content_snapshot ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_content_snapshot FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_content_snapshot
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_plan_content_binding ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_plan_content_binding FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_plan_content_binding
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_content_snapshot,impact.ai_plan_content_binding TO impact_app;
+COMMIT;
+```
+
+
+## 0038_human_advice_cases.sql
+
+Source: infrastructure/migrations/0038_human_advice_cases.sql. SHA-256: `ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00`.
+
+Registered local build 0.33 candidate, not merged or deployed. The integrator copied the exact reviewed isolated draft into migration 0038 after disposable PostgreSQL 17.11 SQL/helper/RLS qualification (68 checks; `docs/evidence/sprint-0.33-human-advice-scratch-native.json`). That proof used existing checksum-ledgered schema 37 plus the explicitly unledgered draft, with a fixture superuser assuming non-owner runtime roles. It is not a schema-38 application/native-login/acceptance run. The original draft-provenance comments are retained in the frozen SQL below. Registered migrations0038/0039 and the participant API now pass the source-bound122-check PGlite focus (`docs/evidence/sprint-0.33-human-advice-pglite-tests.xml`), with six explicit native-only skips and actual schema39 checksum ledger. Focused actual PostgreSQL17.11 native-login qualification subsequently passes142 checks with no failures/errors/skips (`docs/evidence/sprint-0.33-human-advice-native-tests.xml`), actual39-migration checksum ledger and unchanged171-source proof. The six synthetic NOINHERIT login topologies are verified, including executor privacy. The authorised persisted map was applied once to owned synthetic cluster logins; later runs reuse it. Browser/full-release restart/restore/upgrade/acceptance qualification is still pending.
+
+Advice is from an existing organisation member with current scoped AI read/manage on an exact saved AI adoption plan; membership is not employment, certification, availability or supplier onboarding. The new `HumanAdviceCase` kind is excluded from generic entity/API dispatch. Both new tables use tenant-qualified primary and foreign keys, ENABLE/FORCE RLS and `tenant_fence`.
+
+| Table | Column | Type/nullability/default | Constraint or purpose |
+|---|---|---|---|
+| human_advice_case_current | tenant_id | uuid NOT NULL | Composite primary key and every foreign key; transaction-local current tenant fence |
+| human_advice_case_current | object_id | uuid NOT NULL | Composite primary key; typed HumanAdviceCase registry FK, deferred until commit |
+| human_advice_case_current | revision_id | uuid NOT NULL | Tenant/object/revision FK, deferred until commit; final current head consistency |
+| human_advice_case_current | object_type | text NOT NULL DEFAULT HumanAdviceCase | CHECK constant; typed registry FK |
+| human_advice_case_current | context_plan_id | uuid NOT NULL | Typed tenant/object/AIAdoptionPlan registry FK; immutable plan selector |
+| human_advice_case_current | context_plan_revision | uuid NOT NULL | Tenant/object/revision FK; immutable exact plan revision consent anchor |
+| human_advice_case_current | context_plan_type | text NOT NULL DEFAULT AIAdoptionPlan | CHECK constant for typed plan FK |
+| human_advice_case_current | requester_principal_id | uuid NOT NULL | Tenant-qualified principal FK; immutable named participant |
+| human_advice_case_current | requester_membership_id | uuid NOT NULL | Tenant-qualified membership FK; current active/expiry proof |
+| human_advice_case_current | requester_natural_id | uuid NOT NULL | Immutable server-resolved natural-person pin; current identity proof guard |
+| human_advice_case_current | adviser_principal_id | uuid NOT NULL | Tenant-qualified principal FK; differs from requester |
+| human_advice_case_current | adviser_membership_id | uuid NOT NULL | Tenant-qualified membership FK; current active/expiry proof |
+| human_advice_case_current | adviser_natural_id | uuid NOT NULL | Immutable server-resolved natural-person pin; differs from requester |
+| human_advice_case_current | case_state | text NOT NULL | Open, Assigned, AwaitingInput, AdviceDraft, Closed or Cancelled; terminal immutable |
+| human_advice_private_brief | tenant_id | uuid NOT NULL | Composite primary key and participant projection FK; current tenant fence |
+| human_advice_private_brief | object_id | uuid NOT NULL | Composite primary key and tenant-qualified projection FK |
+| human_advice_private_brief | problem | text NOT NULL | Nonblank, 1–4000 characters; immutable private brief |
+| human_advice_private_brief | problem_sha256 | bytea NOT NULL | Exactly 32 bytes; shared stored payload contains only the salted hex integrity digest |
+| human_advice_private_brief | brief_nonce | uuid NOT NULL | Private random salt; never included in shared invitation payload |
+
+`impact_app` has SELECT/INSERT/UPDATE on the participant projection and SELECT/INSERT on the immutable private brief. The requester retains current-authorised access to terminal records; the adviser loses case/history/receipt access immediately at Closed/Cancelled and sees the brief only after explicit assignment. Owner-definer helpers with fixed `pg_catalog,impact` search paths prove current active selected membership, expiry, natural person, available plan and current scoped AI read. A transaction-local principal GUC is server-resolved after application authentication; it guards missing/mis-scoped application context and does not authenticate a human against a compromised database login.
+
+The additive restrictive policies also protect case-related generic registry/revision, natural author, audit projection, operation receipt, outbox event, delivery and consumer receipt pointers. Other runtime roles cannot read these rows. Standard case outbox intent has no delivery channel; it grants no worker delivery authority. Deferred tenant-qualified FKs and final-head/private-brief consistency seal the participant-first creation transaction. Material plan consent, conflict declaration, assignment, complete action acknowledgement and fresh writes are application checks; no new database-role privilege or provider/disclosure authority is implied. Dedicated brief retention/removal and an operated external adviser service remain future work.
+
+```sql
+-- Isolated 0.33 candidate; intentionally outside the applied migration directory.
+-- The integrator assigns its contiguous migration number after the 0.32 checkpoint.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''HumanAdviceCase'')');
+END $$;
+
+CREATE TABLE impact.human_advice_case_current(
+ tenant_id uuid NOT NULL, object_id uuid NOT NULL, revision_id uuid NOT NULL,
+ object_type text NOT NULL DEFAULT 'HumanAdviceCase' CHECK(object_type='HumanAdviceCase'),
+ context_plan_id uuid NOT NULL, context_plan_revision uuid NOT NULL,
+ context_plan_type text NOT NULL DEFAULT 'AIAdoptionPlan' CHECK(context_plan_type='AIAdoptionPlan'),
+ requester_principal_id uuid NOT NULL, requester_membership_id uuid NOT NULL, requester_natural_id uuid NOT NULL,
+ adviser_principal_id uuid NOT NULL, adviser_membership_id uuid NOT NULL, adviser_natural_id uuid NOT NULL,
+ case_state text NOT NULL CHECK(case_state IN ('Open','Assigned','AwaitingInput','AdviceDraft','Closed','Cancelled')),
+ PRIMARY KEY(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,object_id,object_type) REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ FOREIGN KEY(tenant_id,object_id,revision_id) REFERENCES impact.object_revision(tenant_id,object_id,revision_id) DEFERRABLE INITIALLY DEFERRED,
+ FOREIGN KEY(tenant_id,context_plan_id,context_plan_type) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+ FOREIGN KEY(tenant_id,context_plan_id,context_plan_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,requester_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,adviser_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,requester_membership_id) REFERENCES impact.membership_current(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,adviser_membership_id) REFERENCES impact.membership_current(tenant_id,object_id),
+ CHECK(requester_principal_id<>adviser_principal_id AND requester_natural_id<>adviser_natural_id)
+);
+ALTER TABLE impact.human_advice_case_current ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.human_advice_case_current FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.human_advice_case_current
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT,UPDATE ON impact.human_advice_case_current TO impact_app;
+
+CREATE TABLE impact.human_advice_private_brief(
+ tenant_id uuid NOT NULL,object_id uuid NOT NULL,
+ problem text NOT NULL CHECK(length(problem) BETWEEN 1 AND 4000 AND problem ~ '\S'),
+ problem_sha256 bytea NOT NULL CHECK(octet_length(problem_sha256)=32),
+ brief_nonce uuid NOT NULL,
+ PRIMARY KEY(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,object_id) REFERENCES impact.human_advice_case_current(tenant_id,object_id)
+);
+ALTER TABLE impact.human_advice_private_brief ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.human_advice_private_brief FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.human_advice_private_brief
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.human_advice_private_brief TO impact_app;
+
+-- The application sets this only after resolving the authenticated current member,
+-- transaction-locally. A writable GUC guards uncertain/missing application context;
+-- it does not authenticate a human against a compromised impact_app database login.
+CREATE FUNCTION impact.human_advice_principal() RETURNS uuid
+ LANGUAGE sql STABLE SET search_path=pg_catalog,impact AS $$
+ SELECT nullif(current_setting('impact.human_advice_principal',true),'')::uuid
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_principal() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_principal() TO impact_app;
+
+CREATE FUNCTION impact.human_advice_read_scope(principal uuid,membership uuid,anchor uuid) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT EXISTS(SELECT 1 FROM (
+  SELECT g.capability,g.scope_id,s.scope_type FROM impact.grant_current g
+  JOIN impact.object_registry h ON h.tenant_id=g.tenant_id AND h.object_id=g.object_id
+  JOIN impact.scope_definition s ON s.tenant_id=g.tenant_id AND s.scope_id=g.scope_id
+  WHERE g.tenant_id=impact.current_tenant() AND g.subject_id=principal AND g.purpose IS NULL
+    AND h.lifecycle_state='Active' AND g.starts_at<=now() AND (g.expires_at IS NULL OR g.expires_at>now())
+  UNION ALL SELECT e.capability,e.scope_id,s.scope_type FROM impact.group_entitlement e
+  JOIN impact.object_registry h ON h.tenant_id=e.tenant_id AND h.object_id=e.group_id
+  JOIN impact.scope_definition s ON s.tenant_id=e.tenant_id AND s.scope_id=e.scope_id
+  WHERE e.tenant_id=impact.current_tenant() AND e.membership_id=membership
+    AND e.expires_at>now() AND h.lifecycle_state='Active'
+ ) g WHERE g.capability='ai.enablement.read' AND (g.scope_type='TENANT'
+   OR EXISTS(SELECT 1 FROM impact.scope_member sm WHERE sm.tenant_id=impact.current_tenant()
+             AND sm.scope_id=g.scope_id AND sm.object_id=anchor)))
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_read_scope(uuid,uuid,uuid) FROM PUBLIC;
+
+CREATE FUNCTION impact.human_advice_participant(target uuid,material boolean DEFAULT false) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT EXISTS(
+  SELECT 1 FROM impact.human_advice_case_current c
+  JOIN impact.tenant_principal p ON p.tenant_id=c.tenant_id AND p.principal_id=impact.human_advice_principal()
+  JOIN impact.auth_identity i ON i.identity_id=p.identity_id
+  JOIN impact.membership_current m ON m.tenant_id=c.tenant_id AND m.identity_id=p.identity_id
+  JOIN impact.object_registry h ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+  JOIN impact.object_registry plan ON plan.tenant_id=c.tenant_id AND plan.object_id=c.context_plan_id
+  JOIN impact.object_revision plan_head ON plan_head.tenant_id=plan.tenant_id
+    AND plan_head.object_id=plan.object_id AND plan_head.revision_id=plan.head_revision
+  WHERE c.tenant_id=impact.current_tenant() AND c.object_id=target AND p.active
+  AND plan.object_type='AIAdoptionPlan' AND plan.classification<>'RESTRICTED'
+  AND plan_head.restriction_state='AVAILABLE'
+  AND impact.human_advice_read_scope(p.principal_id,m.object_id,c.context_plan_id)
+  AND h.lifecycle_state='Active' AND (m.status IS NULL OR m.status='Active')
+  AND (m.expires_at IS NULL OR m.expires_at>now())
+  AND ((p.principal_id=c.requester_principal_id AND m.object_id=c.requester_membership_id AND i.natural_identity_id=c.requester_natural_id)
+       OR (p.principal_id=c.adviser_principal_id AND m.object_id=c.adviser_membership_id AND i.natural_identity_id=c.adviser_natural_id
+           AND c.case_state NOT IN ('Closed','Cancelled')
+           AND (NOT material OR c.case_state IN ('Assigned','AwaitingInput','AdviceDraft'))))
+ )
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_participant(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_participant(uuid,boolean) TO impact_app;
+
+CREATE FUNCTION impact.human_advice_auth_cutoff(target uuid) RETURNS timestamptz
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT greatest(p.auth_not_before,s.auth_not_before) FROM impact.tenant_principal p
+ LEFT JOIN impact.identity_security_state s ON s.identity_id=p.identity_id
+ WHERE p.tenant_id=impact.current_tenant() AND p.principal_id=target
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_auth_cutoff(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_auth_cutoff(uuid) TO impact_app;
+
+-- Case-related audit metadata must not reveal a hidden case's identity, actor
+-- or existence through ordinary audit lists/search/exports. Other audit rows
+-- retain their existing policy. The incomplete AuditEvent header is visible
+-- only during its own atomic creation, before its deferred revision FK seals.
+CREATE FUNCTION impact.human_advice_record_visible(kind text,target uuid,participants boolean) RETURNS boolean
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE p jsonb;
+BEGIN
+ IF kind='HumanAdviceCase' THEN
+  RETURN participants AND impact.human_advice_participant(target,false);
+ END IF;
+ IF kind<>'AuditEvent' THEN RETURN true; END IF;
+ SELECT v.payload INTO p FROM impact.object_registry h JOIN impact.object_revision v
+ ON v.tenant_id=h.tenant_id AND v.object_id=h.object_id AND v.revision_id=h.head_revision
+ WHERE h.tenant_id=impact.current_tenant() AND h.object_id=target AND h.object_type='AuditEvent';
+ IF p IS NULL THEN RETURN true; END IF;
+ IF COALESCE(p->>'action_type','') ~ '^(human_advice_|create_human_advice_case$)' THEN
+  RETURN participants AND impact.human_advice_participant((p->>'object_reference')::uuid,false);
+ END IF;
+ RETURN true;
+END $$;
+REVOKE ALL ON FUNCTION impact.human_advice_record_visible(text,uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_record_visible(text,uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+
+CREATE POLICY participant_context ON impact.human_advice_case_current AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_participant(object_id,false))
+ WITH CHECK(requester_principal_id=impact.human_advice_principal()
+   OR (adviser_principal_id=impact.human_advice_principal() AND case_state NOT IN ('Closed','Cancelled')));
+CREATE POLICY participant_material ON impact.human_advice_private_brief AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_participant(object_id,true))
+ WITH CHECK(EXISTS(SELECT 1 FROM impact.human_advice_case_current c
+   WHERE c.tenant_id=human_advice_private_brief.tenant_id AND c.object_id=human_advice_private_brief.object_id
+   AND c.requester_principal_id=impact.human_advice_principal()));
+CREATE POLICY human_advice_registry_participants ON impact.object_registry AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_record_visible(object_type,object_id,true))
+ WITH CHECK(impact.human_advice_record_visible(object_type,object_id,true));
+CREATE POLICY human_advice_revision_participants ON impact.object_revision AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_record_visible(object_type,object_id,true))
+ WITH CHECK(impact.human_advice_record_visible(object_type,object_id,true));
+CREATE POLICY human_advice_registry_no_other_runtime ON impact.object_registry AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.human_advice_record_visible(object_type,object_id,false))
+ WITH CHECK(impact.human_advice_record_visible(object_type,object_id,false));
+CREATE POLICY human_advice_revision_no_other_runtime ON impact.object_revision AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.human_advice_record_visible(object_type,object_id,false))
+ WITH CHECK(impact.human_advice_record_visible(object_type,object_id,false));
+CREATE FUNCTION impact.human_advice_object_visible(target uuid,participants boolean) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT COALESCE((SELECT impact.human_advice_record_visible(h.object_type,h.object_id,participants)
+  FROM impact.object_registry h WHERE h.tenant_id=impact.current_tenant() AND h.object_id=target),false)
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_object_visible(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_object_visible(uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+CREATE POLICY human_advice_authors_participants ON impact.object_natural_author AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_object_visible(object_id,true))
+ WITH CHECK(impact.human_advice_object_visible(object_id,true));
+CREATE POLICY human_advice_authors_no_other_runtime ON impact.object_natural_author AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.human_advice_object_visible(object_id,false))
+ WITH CHECK(impact.human_advice_object_visible(object_id,false));
+CREATE POLICY human_advice_audit_participants ON impact.audit_event_current AS RESTRICTIVE TO impact_app
+ USING(COALESCE(action_type,'') !~ '^(human_advice_|create_human_advice_case$)' OR impact.human_advice_participant(object_reference,false))
+ WITH CHECK(COALESCE(action_type,'') !~ '^(human_advice_|create_human_advice_case$)' OR impact.human_advice_participant(object_reference,false));
+CREATE POLICY human_advice_audit_no_other_runtime ON impact.audit_event_current AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(COALESCE(action_type,'') !~ '^(human_advice_|create_human_advice_case$)')
+ WITH CHECK(COALESCE(action_type,'') !~ '^(human_advice_|create_human_advice_case$)');
+
+CREATE POLICY human_advice_receipt_participants ON impact.operation_receipt AS RESTRICTIVE TO impact_app
+ USING(COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)'
+    OR impact.human_advice_participant((outcome->>'object_id')::uuid,false))
+ WITH CHECK(COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)'
+    OR (actor_id=impact.human_advice_principal() AND impact.human_advice_participant((outcome->>'object_id')::uuid,false)));
+CREATE POLICY human_advice_receipt_no_other_runtime ON impact.operation_receipt AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)')
+ WITH CHECK(COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)');
+
+CREATE FUNCTION impact.human_advice_event_visible(target uuid,participants boolean) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT COALESCE((SELECT CASE WHEN e.payload->>'aggregate_type'='HumanAdviceCase'
+   THEN participants AND impact.human_advice_participant((e.payload->>'aggregate_id')::uuid,false)
+   ELSE true END FROM impact.outbox_event e WHERE e.tenant_id=impact.current_tenant() AND e.event_id=target),false)
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_event_visible(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_event_visible(uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+CREATE POLICY human_advice_outbox_participants ON impact.outbox_event AS RESTRICTIVE TO impact_app
+ USING(COALESCE(payload->>'aggregate_type','')<>'HumanAdviceCase' OR impact.human_advice_participant((payload->>'aggregate_id')::uuid,false))
+ WITH CHECK(COALESCE(payload->>'aggregate_type','')<>'HumanAdviceCase' OR impact.human_advice_participant((payload->>'aggregate_id')::uuid,false));
+CREATE POLICY human_advice_outbox_no_other_runtime ON impact.outbox_event AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(COALESCE(payload->>'aggregate_type','')<>'HumanAdviceCase')
+ WITH CHECK(COALESCE(payload->>'aggregate_type','')<>'HumanAdviceCase');
+CREATE POLICY human_advice_delivery_participants ON impact.outbox_delivery AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_event_visible(event_id,true))
+ WITH CHECK(impact.human_advice_event_visible(event_id,true));
+CREATE POLICY human_advice_delivery_no_other_runtime ON impact.outbox_delivery AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.human_advice_event_visible(event_id,false))
+ WITH CHECK(impact.human_advice_event_visible(event_id,false));
+CREATE POLICY human_advice_consumer_participants ON impact.consumer_receipt AS RESTRICTIVE TO impact_app
+ USING(impact.human_advice_event_visible(event_id,true))
+ WITH CHECK(impact.human_advice_event_visible(event_id,true));
+CREATE POLICY human_advice_consumer_no_other_runtime ON impact.consumer_receipt AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.human_advice_event_visible(event_id,false))
+ WITH CHECK(impact.human_advice_event_visible(event_id,false));
+
+CREATE FUNCTION impact.guard_human_advice_projection() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+DECLARE person record; who text;
+BEGIN
+ IF TG_OP='UPDATE' THEN
+  IF (to_jsonb(NEW)-ARRAY['revision_id','case_state'])<>(to_jsonb(OLD)-ARRAY['revision_id','case_state']) THEN
+   RAISE EXCEPTION 'human advice participants and scope immutable' USING ERRCODE='42501';
+  END IF;
+  IF OLD.case_state IN ('Closed','Cancelled') THEN
+   RAISE EXCEPTION 'human advice terminal immutable' USING ERRCODE='42501';
+  END IF;
+  IF NEW.case_state IN ('Closed','Cancelled') AND impact.human_advice_principal()<>NEW.requester_principal_id THEN
+   RAISE EXCEPTION 'requester closure required' USING ERRCODE='42501';
+  END IF;
+ ELSE
+  IF NEW.case_state<>'Open' OR NEW.requester_principal_id<>impact.human_advice_principal() THEN
+   RAISE EXCEPTION 'requester opening required' USING ERRCODE='42501';
+  END IF;
+ END IF;
+ FOREACH who IN ARRAY ARRAY['requester','adviser'] LOOP
+  SELECT p.principal_id,m.object_id AS membership_id,impact.member_natural_identity(p.tenant_id,p.principal_id) AS natural_id
+  INTO person FROM impact.tenant_principal p JOIN impact.membership_current m
+    ON m.tenant_id=p.tenant_id AND m.identity_id=p.identity_id
+  JOIN impact.object_registry h ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+  WHERE p.tenant_id=NEW.tenant_id AND p.principal_id=(to_jsonb(NEW)->>(who||'_principal_id'))::uuid
+    AND m.object_id=(to_jsonb(NEW)->>(who||'_membership_id'))::uuid AND p.active
+    AND h.lifecycle_state='Active' AND (m.status IS NULL OR m.status='Active')
+    AND (m.expires_at IS NULL OR m.expires_at>now());
+  -- Requester can always cancel after counterpart expiry; no other mutation may.
+  IF (person IS NULL OR person.natural_id IS NULL OR person.natural_id<>(to_jsonb(NEW)->>(who||'_natural_id'))::uuid)
+    AND NOT(TG_OP='UPDATE' AND NEW.case_state='Cancelled' AND who='adviser') THEN
+   RAISE EXCEPTION 'current human advice participant required' USING ERRCODE='42501';
+  END IF;
+ END LOOP;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_human_advice_projection() FROM PUBLIC;
+CREATE TRIGGER human_advice_projection_guard BEFORE INSERT OR UPDATE ON impact.human_advice_case_current
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_human_advice_projection();
+
+CREATE FUNCTION impact.check_human_advice_head() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE p impact.human_advice_case_current; r record; b record; who text;
+BEGIN
+ SELECT * INTO STRICT p FROM impact.human_advice_case_current WHERE tenant_id=NEW.tenant_id AND object_id=NEW.object_id;
+ SELECT h.head_revision,h.lifecycle_state,v.payload INTO STRICT r
+ FROM impact.object_registry h JOIN impact.object_revision v
+ ON v.tenant_id=h.tenant_id AND v.object_id=h.object_id AND v.revision_id=h.head_revision
+ WHERE h.tenant_id=p.tenant_id AND h.object_id=p.object_id AND h.object_type='HumanAdviceCase';
+ SELECT * INTO STRICT b FROM impact.human_advice_private_brief WHERE tenant_id=p.tenant_id AND object_id=p.object_id;
+ IF p.revision_id IS DISTINCT FROM r.head_revision OR p.case_state IS DISTINCT FROM r.lifecycle_state
+    OR r.payload->>'state' IS DISTINCT FROM p.case_state OR r.payload IS NULL
+    OR r.payload->>'context_plan_id' IS DISTINCT FROM p.context_plan_id::text
+    OR r.payload->>'context_plan_revision' IS DISTINCT FROM p.context_plan_revision::text
+    OR r.payload->>'problem_sha256' IS DISTINCT FROM encode(b.problem_sha256,'hex') OR r.payload ? 'problem' THEN
+  RAISE EXCEPTION 'human advice head and private brief must agree' USING ERRCODE='23514';
+ END IF;
+ FOREACH who IN ARRAY ARRAY['requester','adviser'] LOOP
+  IF r.payload->>(who||'_principal_id') IS DISTINCT FROM (to_jsonb(p)->>(who||'_principal_id'))
+     OR r.payload->>(who||'_membership_id') IS DISTINCT FROM (to_jsonb(p)->>(who||'_membership_id'))
+     OR r.payload->>(who||'_natural_id') IS DISTINCT FROM (to_jsonb(p)->>(who||'_natural_id')) THEN
+   RAISE EXCEPTION 'human advice participant proof differs' USING ERRCODE='23514';
+  END IF;
+ END LOOP;
+ RETURN NULL;
+END $$;
+REVOKE ALL ON FUNCTION impact.check_human_advice_head() FROM PUBLIC;
+CREATE CONSTRAINT TRIGGER human_advice_head_consistency AFTER INSERT OR UPDATE ON impact.human_advice_case_current
+ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION impact.check_human_advice_head();
+
+CREATE FUNCTION impact.guard_human_advice_brief() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN RAISE EXCEPTION 'human advice brief immutable' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_human_advice_brief() FROM PUBLIC;
+CREATE TRIGGER human_advice_brief_immutable BEFORE UPDATE OR DELETE ON impact.human_advice_private_brief
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_human_advice_brief();
+
+COMMIT;
+
+```
+
+## 0039_human_advice_anchor_availability.sql
+
+Source: infrastructure/migrations/0039_human_advice_anchor_availability.sql. SHA-256: `12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0`.
+
+Registered local build0.33 candidate, not merged or deployed. No new tables or columns, data mutation, FK/trigger relaxation or broader runtime privilege. Frozen0038 remains byte-for-byte unchanged. `CREATE OR REPLACE impact.human_advice_participant(uuid,boolean)` retains the owner-definer, fixed search path, current natural-person membership/expiry/read scope, material-sharing and terminal-adviser gates. It additionally joins the exact anchored AIAdoptionPlan revision by tenant/object/revision/type and requires AVAILABLE. Existing case, private brief, registry/revision, natural-author, audit, operation-receipt and outbox event/delivery/consumer policies inherit the same refusal, including list/cursor visibility. The API checks the exact pin before case resolve and creation receipt lookup as a separate defense.
+
+The two before-fix diagnostics are retained in `docs/evidence/sprint-0.33-human-advice-anchor-before-observations.json` and the corresponding named tests/source-proof/applied-migration reports. They model RESTRICTED and REMOVED-at-insertion older pins with a readable new head through schema-valid append-only synthetic records; all FK/deferred/immutable guards remain enabled. They do not claim a supported API case-creation, retention or privacy-removal workflow. Before0039, both cases were visible via current/history/revision/list/replay and eleven pointer classes while direct old guidance was404. Actual registered0039 API/PGlite qualification passes both strict cases in the122-check focus (`docs/evidence/sprint-0.33-human-advice-pglite-tests.xml`): case/history/replay404, omitted list rows and all eleven pointer classes withheld. The actual schema39 ledger matches the frozen migration hash and captured source is unchanged during that run. Native pointer checks were subsequently refined to require the actual application login, retaining labelled fixture SET ROLE for PGlite; focused actual PostgreSQL17.11 native qualification now passes142 checks with no failures/errors/skips. Both exact-old-anchor observations explicitly use actual impact_app_login plus SET LOCAL ROLE impact_app (`docs/evidence/sprint-0.33-human-advice-native-anchor-observations.json`) and withhold all eleven pointer classes, list/history/replay. Final full-source PGlite and native restart/restore/upgrade regression, browser and acceptance remain pending.
+
+```sql
+-- Reviewed additive0039 candidate; integrator registers exact bytes after review.
+-- Older unavailable plan pins end every case/pointer read through the central helper.
+-- Keep frozen0038 unchanged; no new tables, data changes or broader runtime privileges.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+CREATE OR REPLACE FUNCTION impact.human_advice_participant(target uuid,material boolean DEFAULT false) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT EXISTS(
+  SELECT 1 FROM impact.human_advice_case_current c
+  JOIN impact.tenant_principal p ON p.tenant_id=c.tenant_id AND p.principal_id=impact.human_advice_principal()
+  JOIN impact.auth_identity i ON i.identity_id=p.identity_id
+  JOIN impact.membership_current m ON m.tenant_id=c.tenant_id AND m.identity_id=p.identity_id
+  JOIN impact.object_registry h ON h.tenant_id=m.tenant_id AND h.object_id=m.object_id
+  JOIN impact.object_registry plan ON plan.tenant_id=c.tenant_id AND plan.object_id=c.context_plan_id
+  JOIN impact.object_revision plan_head ON plan_head.tenant_id=plan.tenant_id
+    AND plan_head.object_id=plan.object_id AND plan_head.revision_id=plan.head_revision
+  JOIN impact.object_revision plan_anchor ON plan_anchor.tenant_id=c.tenant_id
+    AND plan_anchor.object_id=c.context_plan_id AND plan_anchor.revision_id=c.context_plan_revision
+    AND plan_anchor.object_type='AIAdoptionPlan'
+  WHERE c.tenant_id=impact.current_tenant() AND c.object_id=target AND p.active
+  AND plan.object_type='AIAdoptionPlan' AND plan.classification<>'RESTRICTED'
+  AND plan_head.restriction_state='AVAILABLE' AND plan_anchor.restriction_state='AVAILABLE'
+  AND impact.human_advice_read_scope(p.principal_id,m.object_id,c.context_plan_id)
+  AND h.lifecycle_state='Active' AND (m.status IS NULL OR m.status='Active')
+  AND (m.expires_at IS NULL OR m.expires_at>now())
+  AND ((p.principal_id=c.requester_principal_id AND m.object_id=c.requester_membership_id AND i.natural_identity_id=c.requester_natural_id)
+       OR (p.principal_id=c.adviser_principal_id AND m.object_id=c.adviser_membership_id AND i.natural_identity_id=c.adviser_natural_id
+           AND c.case_state NOT IN ('Closed','Cancelled')
+           AND (NOT material OR c.case_state IN ('Assigned','AwaitingInput','AdviceDraft'))))
+ )
+$$;
+REVOKE ALL ON FUNCTION impact.human_advice_participant(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.human_advice_participant(uuid,boolean) TO impact_app;
+
+COMMIT;
+
+```
+
+## 0040_ai_plan_portability.sql
+
+Source: infrastructure/migrations/0040_ai_plan_portability.sql. SHA-256: `a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89`. Registered additive local candidate after independent SQL review; frozen1–39 are identical to checkpoint861c2a807e774ec6bb53ef05c1ee25f853591085. The SQL header retains its earlier private-draft preparation label; this register records its current repository registration. No deployed state is implied.
+
+`ai_plan_export_issuance` is issuer-private immutable evidence, keyed by tenant and the issuance AuditEvent object. Every FK is tenant-qualified, and audit/plan revision FKs additionally bind exact object and kind. Runtime APP receives SELECT/INSERT only; no runtime UPDATE/DELETE or platform/worker body access. Forced row security requires the server-resolved transaction-local `impact.ai_plan_export_principal` to match the selected current HUMAN member, current tenant/member/principal status and expiry, separate current scoped `ai.enablement.read` and `ai.enablement.export`, readable plan current head/classification and exact pinned AVAILABLE revision. Direct/group authority is evaluated afresh. The writable GUC guards missing/mis-scoped application context; it does not authenticate a human against a compromised database login.
+
+| Column | SQL type / constraint | Meaning |
+| --- | --- | --- |
+| tenant_id | uuid, required | Tenant fence and part of every key/FK. |
+| issuance_id | uuid, required | Exact newly created AuditEvent object; paired primary key. |
+| audit_revision_id | uuid, required | Exact first immutable AuditEvent revision. |
+| audit_kind | generated text AuditEvent | Typed audit registry/revision FK discriminator. |
+| plan_object_id | uuid, required | Exact exported AI adoption-plan object. |
+| plan_revision_id | uuid, required | Exact saved edition, including an AVAILABLE historical pin. |
+| plan_kind | generated text AIAdoptionPlan | Typed parent registry/revision discriminator. |
+| principal_id | uuid, required | Tenant principal owning issuance and permanent operation identity. |
+| membership_id | uuid, required | Exact selected current tenant membership. |
+| issuer_slot | smallint1..100, required, server-assigned | Unique tenant/principal slot; actual retained storage cap. |
+| command_type | varchar64, fixed issue_ai_plan_export | Permanent operation command domain. |
+| operation_id | uuid, required | UNIQUE tenant/principal/command/operation, surviving receipt removal. |
+| request_sha256 | bytea32, required | Original route/request fingerprint. |
+| format | varchar16, JSON only | Closed supported format. |
+| restriction | varchar32, INTERNAL_SELF only | No external recipient or delivery. |
+| package_schema_version | varchar64, nonprofit-ai-plan-export-v1 | Frozen original public package shape. |
+| renderer_version | varchar64, nonprofit-ai-plan-json-v1 | Original renderer edition; retry never rerenders. |
+| guidance_status | varchar16, COMPLETE/PARTIAL/UNAVAILABLE | Exact saved guidance availability. |
+| guidance_snapshot_id | nullable uuid | Tenant-qualified archived snapshot binding. |
+| guidance_schema_version | nullable varchar64 | Exact snapshot schema; present only with snapshot. |
+| guidance_sha256 | nullable bytea32 | Exact original guidance digest. |
+| generated_at | timestamptz, required | Database timestamp within current runtime transaction. |
+| replay_until | timestamptz, required, generated_at+168h | Fixed platform byte-replay deadline. |
+| content_sha256 | bytea32, required | SHA-256 of original retained body. |
+| byte_count | integer2..1048576 | Exact retained byte count and package size bound. |
+| correlation_id | uuid, required | Original issuance correlation. |
+| outbox_event_id | uuid, required | Exact one object.changed nondelivery intent. |
+
+`ai_plan_export_bytes` holds only tenant_id(uuid), issuance_id(uuid) and body(BYTEA2..1048576), with paired primary key/FK to issuance. The insert guard verifies exact count/digest. Both tables refuse UPDATE/DELETE, including privileged owner DML, through immutable triggers. Metadata remains available under current authority after expiry for permanent deduplication; body SELECT also requires unexpired replay_until. Expiry cannot prevent opening a file already saved locally and never deletes the stored copy.
+
+The server allocator rejects a caller-supplied slot, locks tenant then issuer, validates actual APP authority (including executor using APP), and requires database generation within transaction_timestamp..statement_timestamp. UNIQUE tenant/principal/slot caps actual permanently retained export issuances at100, including hidden and expired rows, at most1MiB original body each. This is not a per-human or whole-tenant quota. No hidden-row count or remaining-capacity endpoint is granted; a neutral capacity refusal necessarily reveals only that this issuer's prior retained copies consumed the cap. Privileged storage-valid expired/unavailable-at-insertion fixtures remain explicitly labelled and cannot be performed by ordinary APP.
+
+The registered owner-only profile manifest keeps initial-access-v2 and exact purpose-bound capabilities, adding only ai.enablement.export to TENANT_ADMIN, MEL_ADMIN and PROGRAMME_MANAGER. Authoritative canonical hash: `422b86a900e54a661f6c4a4a35ee8146a504ff7d026478e18e9fafe19e510d3f`. Existing ceilings, ordinary role assignments and revoked managed-role omissions are unchanged until the existing owner/current-second/independent-platform reviewed upgrade and ordinary scoped grant workflow is completed.
+
+Deferred seals require matching immutable first AuditEvent/header/projection, issuer author, SUCCEEDED projection/outcome, nonempty matching specification_ref, exact body/count/digest, snapshot/status/binding, original nine-field pointer-only receipt and one exact AuditEvent-revision object.changed intent with channel-null PENDING delivery. No duplicate store.audit event is created. Ordinary APP core/store.audit, existing plan save/retry and worker notification/store.audit creation remain compatible; INSERT examines NEW ordinary audit payload while unknown/private read helpers remain uniformly false. Worker private export/advice creation stays refused. All existing human-advice policies remain restrictive, and the added public record/object/event helpers compose them. New pointers include registry/revision/audit, natural-author, receipt, outbox/delivery/consumer and both new tables. Public receipt matching requires current authority; owner-only structural matching is not executable by runtime APP.
+
+The existing worker SECURITY DEFINER retention_purge_receipts(integer) and retention_purge_receipts(integer,integer) could return private advice actor/operation keys despite row policies. The registered schema39-only actual-worker residual is preserved at `docs/evidence/sprint-0.33-human-advice-retention-definer-residual.json`.0040 replaces only those two function definitions, excluding the exact current private-advice predicate and new export command while preserving ordinary expired receipt purge and original ACLs. No private counts/keys are returned. Private advice's requester limit counts currently visible cases, so it is not a hard permanent receipt/storage cap; its operated retention/storage policy remains unresolved. No new DELETE/retention channel or erasure acceptance is introduced.
+
+The retained-child trigger refuses payload clearing of the exact parent plan and issued audit revision while original bytes remain, including expired copies. Current privacy executor does not inventory AI-plan text or copied export bytes; this refusal prevents silent child-copy survival without inventing an approved privacy scope. A later reviewed policy and additive narrow purge procedure must handle holds, archives, artifacts and backup replay before this boundary can be lifted.
+
+Qualification provenance: private actual PostgreSQL17.11 scratch `native-resumed04.json` records21 green SQL groups against frozen1→39 plus explicitly unregistered exact0040 bytes; no API/reviewed-profile-upgrade/erasure/restart/restore/browser acceptance is inferred. Actual registered40-ledger focus now records21 green SQL groups in `docs/evidence/sprint-0.34-portability-sql-native-qualification.json`: exact0040 checksum, unchanged captured runtime source, six actual NOINHERIT login topologies and all40 migration hashes. The normal checksum runner registered0040, distinct from earlier unregistered scratch. This includes ordinary APP core/store.audit, real saved-plan command/retry, worker notification/store.audit, current receipt authority, APP/executor future/backdated generation refusal, all ten pointer classes, inherited advice privacy, projection null/outcome/spec seals, exact scoped/group expiry, typed tenant/object/revision storage attacks, historical AVAILABLE versus unavailable pins, both purge overloads ordinary/private controls and actual100hidden/expired retained copies refusing101st. Negative expired/unavailable fixtures and structural FK attacks are explicitly trusted synthetic storage probes; current new-capability grants here are synthetic SQL authority, not reviewed API upgrades. Registered public API/reviewed profile upgrade, browser, privacy removal, restart/restore and deployment acceptance remain pending. Earlier ordinary APP/worker failures and malformed helper/retention diagnostics remain preserved distinctly.
+
+```sql
+-- Unregistered0040 draft, outside repository; not project-applied or integration-qualified.
+-- JSON-only INTERNAL_SELF export of one exact saved adoption-plan revision.
+-- Register only after the implemented policy generates this exact target hash.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Existing immutable0036 target and applied tenant ceilings remain unchanged.
+-- Runtime impact_platform has SELECT only; owner migrations register new profiles.
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ VALUES('422b86a900e54a661f6c4a4a35ee8146a504ff7d026478e18e9fafe19e510d3f',$profile_0040${"purpose_bound":["audit.export","privacy-cases.draft.create","privacy-cases.draft.edit","privacy-cases.read","privacy.approve","privacy.execute","privacy.export"],"roles":{"ANALYST":["ai.enablement.read","calculated-results.read","dashboards.read","decisions.read","evidence.download","evidence.read","framework.export","frameworks.read","imports.read","indicator-definitions.read","indicator-instances.read","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"AUDIT_READER":["audit-events.read","notifications.read","uploads.read"],"AUTHOR":["ai.enablement.read","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","disclosure.request","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.draft.create","observations.draft.edit","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","report.submit","reporting-calendars.read","reports.draft.create","reports.draft.edit","reports.read","restatement-requests.read","snapshots.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"DATA_STEWARD":["ai.enablement.read","assignments.read","calculated-results.read","dashboards.read","decisions.read","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","forms.read","frameworks.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","notifications.read","observations.draft.create","observations.draft.edit","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","submissions.read","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflows.read"],"ENUMERATOR":["assignments.read","collection-rounds.read","forms.read","notifications.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","upload.create","upload.write","uploads.read"],"EXTERNAL":["calculated-results.read","dashboards.read","decisions.read","evidence.read","frameworks.read","indicator-definitions.read","indicator-instances.read","invitation.accept","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"MEL_ADMIN":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","disclosures.read","evidence.read","form.publish","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.export","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.activate","indicator.calculate","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","report.publish","report.withdraw","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"PRIVACY":["disclosure.request","disclosures.read","notifications.read","publication.download","report.withdraw","reports.read","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","uploads.read"],"PROGRAMME_MANAGER":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignment.reassign","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","evidence.read","form.submit","forms.read","framework.export","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","indicator.activate","indicator.calculate","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"REVIEWER":["ai.enablement.read","assignments.read","calculated-results.read","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","evidence.download","evidence.read","forms.read","frameworks.read","geographies.read","imports.read","indicator-definitions.read","indicator-instances.read","lineage-manifests.read","measurement-changes.read","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflow.approve","workflow.reject","workflow.return","workflows.read"],"TENANT_ADMIN":["access-denials.read","access-requests.read","access-scopes.create","access-scopes.read","ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","connections.read","grant.approve","grant.request","grant.revoke","grants.read","groups.approve","groups.manage","groups.read","groups.request","member-invitations.read","member.invite","membership.reactivate","membership.renew.approve","membership.renew.request","membership.revoke","membership.suspend","memberships.read","notifications.read","organisation-units.manage","organisation-units.read","ownership.transfer","reference-data.manage","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","role-templates.read","roles.manage","uploads.read"]},"version":"initial-access-v2"}$profile_0040$::jsonb,'0040_ai_plan_portability.sql');
+
+CREATE TABLE impact.ai_plan_export_issuance(
+ tenant_id uuid NOT NULL,
+ issuance_id uuid NOT NULL,
+ audit_revision_id uuid NOT NULL,
+ audit_kind text GENERATED ALWAYS AS ('AuditEvent') STORED,
+ plan_object_id uuid NOT NULL,
+ plan_revision_id uuid NOT NULL,
+ plan_kind text GENERATED ALWAYS AS ('AIAdoptionPlan') STORED,
+ principal_id uuid NOT NULL,
+ membership_id uuid NOT NULL,
+ issuer_slot smallint NOT NULL CHECK(issuer_slot BETWEEN 1 AND 100),
+ command_type varchar(64) NOT NULL DEFAULT 'issue_ai_plan_export' CHECK(command_type='issue_ai_plan_export'),
+ operation_id uuid NOT NULL,
+ request_sha256 bytea NOT NULL CHECK(octet_length(request_sha256)=32),
+ format varchar(16) NOT NULL CHECK(format='JSON'),
+ restriction varchar(32) NOT NULL CHECK(restriction='INTERNAL_SELF'),
+ package_schema_version varchar(64) NOT NULL CHECK(package_schema_version='nonprofit-ai-plan-export-v1'),
+ renderer_version varchar(64) NOT NULL CHECK(renderer_version='nonprofit-ai-plan-json-v1'),
+ guidance_status varchar(16) NOT NULL CHECK(guidance_status IN ('COMPLETE','PARTIAL','UNAVAILABLE')),
+ guidance_snapshot_id uuid,
+ guidance_schema_version varchar(64),
+ guidance_sha256 bytea CHECK(guidance_sha256 IS NULL OR octet_length(guidance_sha256)=32),
+ generated_at timestamptz NOT NULL,
+ replay_until timestamptz NOT NULL,
+ content_sha256 bytea NOT NULL CHECK(octet_length(content_sha256)=32),
+ byte_count integer NOT NULL CHECK(byte_count BETWEEN 2 AND 1048576),
+ correlation_id uuid NOT NULL,
+ outbox_event_id uuid NOT NULL,
+ PRIMARY KEY(tenant_id,issuance_id),
+ UNIQUE(tenant_id,principal_id,command_type,operation_id),
+ UNIQUE(tenant_id,principal_id,issuer_slot),
+ CHECK(replay_until=generated_at+interval '168 hours'),
+ CHECK((guidance_status='UNAVAILABLE' AND guidance_snapshot_id IS NULL AND guidance_schema_version IS NULL AND guidance_sha256 IS NULL)
+    OR (guidance_status IN ('COMPLETE','PARTIAL') AND guidance_snapshot_id IS NOT NULL AND guidance_schema_version IS NOT NULL AND guidance_sha256 IS NOT NULL)),
+ FOREIGN KEY(tenant_id) REFERENCES impact.tenant_root(tenant_id),
+ FOREIGN KEY(tenant_id,issuance_id,audit_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ FOREIGN KEY(tenant_id,issuance_id,audit_revision_id) REFERENCES impact.object_revision(tenant_id,object_id,revision_id) DEFERRABLE INITIALLY DEFERRED,
+ FOREIGN KEY(tenant_id,audit_revision_id,audit_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type) DEFERRABLE INITIALLY DEFERRED,
+ FOREIGN KEY(tenant_id,plan_object_id,plan_kind) REFERENCES impact.object_registry(tenant_id,object_id,object_type),
+ FOREIGN KEY(tenant_id,plan_object_id,plan_revision_id) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,plan_revision_id,plan_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,membership_id) REFERENCES impact.membership_current(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,guidance_snapshot_id) REFERENCES impact.ai_content_snapshot(tenant_id,snapshot_id),
+ FOREIGN KEY(tenant_id,outbox_event_id) REFERENCES impact.outbox_event(tenant_id,event_id) DEFERRABLE INITIALLY DEFERRED
+);
+CREATE INDEX ai_plan_export_parent_revision ON impact.ai_plan_export_issuance(tenant_id,plan_object_id,plan_revision_id);
+CREATE INDEX ai_plan_export_actor_time ON impact.ai_plan_export_issuance(tenant_id,principal_id,generated_at,issuance_id);
+
+CREATE TABLE impact.ai_plan_export_bytes(
+ tenant_id uuid NOT NULL,issuance_id uuid NOT NULL,
+ body bytea NOT NULL CHECK(octet_length(body) BETWEEN 2 AND 1048576),
+ PRIMARY KEY(tenant_id,issuance_id),
+ FOREIGN KEY(tenant_id,issuance_id) REFERENCES impact.ai_plan_export_issuance(tenant_id,issuance_id)
+);
+ALTER TABLE impact.ai_plan_export_issuance ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_plan_export_issuance FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_plan_export_issuance
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_plan_export_bytes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_plan_export_bytes FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_plan_export_bytes
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_plan_export_issuance,impact.ai_plan_export_bytes TO impact_app;
+
+-- Resolved after authenticated current context. This writable GUC guards missing
+-- or mis-scoped application context; it does not authenticate a human against a
+-- compromised impact_app database login. Missing/invalid context returns NULL.
+CREATE FUNCTION impact.ai_plan_export_principal() RETURNS uuid
+ LANGUAGE plpgsql STABLE SET search_path=pg_catalog,impact AS $$
+DECLARE selected text:=current_setting('impact.ai_plan_export_principal',true);
+BEGIN
+ IF selected IS NULL OR selected='' THEN RETURN NULL; END IF;
+ BEGIN RETURN selected::uuid; EXCEPTION WHEN invalid_text_representation THEN RETURN NULL; END;
+END $$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_principal() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_principal() TO impact_app;
+
+CREATE FUNCTION impact.ai_plan_export_scope(principal uuid,membership uuid,target uuid,required_capability text) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT required_capability IN ('ai.enablement.read','ai.enablement.export') AND EXISTS(SELECT 1 FROM (
+  SELECT g.capability,g.scope_id,s.scope_type FROM impact.grant_current g
+  JOIN impact.object_registry h ON h.tenant_id=g.tenant_id AND h.object_id=g.object_id
+  JOIN impact.scope_definition s ON s.tenant_id=g.tenant_id AND s.scope_id=g.scope_id
+  WHERE g.tenant_id=impact.current_tenant() AND g.subject_id=principal AND g.purpose IS NULL
+    AND h.lifecycle_state='Active' AND g.starts_at<=statement_timestamp()
+    AND (g.expires_at IS NULL OR g.expires_at>statement_timestamp())
+  UNION ALL SELECT e.capability,e.scope_id,s.scope_type FROM impact.group_entitlement e
+  JOIN impact.object_registry h ON h.tenant_id=e.tenant_id AND h.object_id=e.group_id
+  JOIN impact.scope_definition s ON s.tenant_id=e.tenant_id AND s.scope_id=e.scope_id
+  WHERE e.tenant_id=impact.current_tenant() AND e.membership_id=membership
+    AND e.expires_at>statement_timestamp() AND h.lifecycle_state='Active'
+ ) g WHERE g.capability=required_capability AND (g.scope_type='TENANT'
+   OR EXISTS(SELECT 1 FROM impact.scope_member sm WHERE sm.tenant_id=impact.current_tenant()
+             AND sm.scope_id=g.scope_id AND sm.object_id=target)))
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_scope(uuid,uuid,uuid,text) FROM PUBLIC;
+
+CREATE FUNCTION impact.ai_plan_export_authority(actor uuid,member uuid,target uuid,exact_revision uuid) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT current_setting('role',true)='impact_app'
+ AND actor=impact.ai_plan_export_principal() AND EXISTS(
+  SELECT 1 FROM impact.tenant_root t
+  JOIN impact.tenant_principal p ON p.tenant_id=t.tenant_id AND p.principal_id=actor
+  JOIN impact.membership_current m ON m.tenant_id=p.tenant_id AND m.identity_id=p.identity_id AND m.object_id=member
+  JOIN impact.object_registry mh ON mh.tenant_id=m.tenant_id AND mh.object_id=m.object_id AND mh.object_type='Membership'
+  JOIN impact.object_registry plan ON plan.tenant_id=p.tenant_id AND plan.object_id=target AND plan.object_type='AIAdoptionPlan'
+  JOIN impact.object_revision head ON head.tenant_id=plan.tenant_id AND head.object_id=plan.object_id
+    AND head.revision_id=plan.head_revision AND head.object_type='AIAdoptionPlan'
+  JOIN impact.object_revision pin ON pin.tenant_id=plan.tenant_id AND pin.object_id=plan.object_id
+    AND pin.revision_id=exact_revision AND pin.object_type='AIAdoptionPlan'
+  WHERE t.tenant_id=impact.current_tenant() AND t.lifecycle_state='Active'
+    AND p.active AND p.principal_kind='HUMAN' AND mh.lifecycle_state='Active'
+    AND (m.status IS NULL OR m.status='Active') AND (m.expires_at IS NULL OR m.expires_at>statement_timestamp())
+    AND plan.classification<>'RESTRICTED' AND head.restriction_state='AVAILABLE' AND pin.restriction_state='AVAILABLE'
+    AND impact.ai_plan_export_scope(p.principal_id,m.object_id,target,'ai.enablement.read')
+    AND impact.ai_plan_export_scope(p.principal_id,m.object_id,target,'ai.enablement.export')
+ )
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_authority(uuid,uuid,uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_authority(uuid,uuid,uuid,uuid) TO impact_app;
+
+-- A true structural retained-storage bound, per tenant principal (not per human
+-- or whole tenant), including hidden and expired original copies. No count API,
+-- no expiry reuse and no deletion/retention policy are introduced. A generic
+-- capacity refusal can reveal only that one's retained copies consumed this cap.
+CREATE FUNCTION impact.allocate_ai_plan_export_slot() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE selected smallint; caller_role text:=current_setting('role',true);
+BEGIN
+ IF NEW.tenant_id IS DISTINCT FROM impact.current_tenant() THEN
+  RAISE EXCEPTION 'AI_PLAN_EXPORT_UNAVAILABLE' USING ERRCODE='42501';
+ END IF;
+ IF NEW.issuer_slot IS NOT NULL THEN
+  RAISE EXCEPTION 'AI_PLAN_EXPORT_SLOT_SERVER_ASSIGNED' USING ERRCODE='42501';
+ END IF;
+ -- Same order as commands: tenant lock first, then bounded issuer allocation.
+ -- Runtime creation uses a DB timestamp from this transaction; future/backdated
+ -- generation cannot extend the fixed168-hour replay window (including executor).
+ PERFORM pg_advisory_xact_lock(hashtextextended(NEW.tenant_id::text,0));
+ IF caller_role='impact_app' THEN
+  IF NOT COALESCE(impact.ai_plan_export_authority(NEW.principal_id,NEW.membership_id,NEW.plan_object_id,NEW.plan_revision_id),false) THEN
+   RAISE EXCEPTION 'AI_PLAN_EXPORT_UNAVAILABLE' USING ERRCODE='42501';
+  END IF;
+  IF NEW.generated_at<transaction_timestamp() OR NEW.generated_at>statement_timestamp() THEN
+   RAISE EXCEPTION 'AI_PLAN_EXPORT_GENERATION_TIME_INVALID' USING ERRCODE='23514';
+  END IF;
+ ELSIF caller_role IS DISTINCT FROM 'impact_owner' AND NOT EXISTS(
+  SELECT 1 FROM pg_roles WHERE rolname=session_user AND rolsuper) THEN
+  RAISE EXCEPTION 'AI_PLAN_EXPORT_UNAVAILABLE' USING ERRCODE='42501';
+ END IF;
+ -- impact_owner migration/trusted fixture seeding is not runtime authority;
+ -- unavailable/expired-at-insertion synthetic fixtures are labelled separately.
+ PERFORM pg_advisory_xact_lock(hashtextextended('ai-plan-export-slot:'||NEW.tenant_id::text||':'||NEW.principal_id::text,0));
+ SELECT slot::smallint INTO selected FROM generate_series(1,100) slot
+ WHERE NOT EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e
+  WHERE e.tenant_id=NEW.tenant_id AND e.principal_id=NEW.principal_id AND e.issuer_slot=slot)
+ ORDER BY slot LIMIT 1;
+ IF selected IS NULL THEN
+  RAISE EXCEPTION 'AI_PLAN_EXPORT_STORAGE_LIMIT' USING ERRCODE='54000';
+ END IF;
+ NEW.issuer_slot:=selected;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.allocate_ai_plan_export_slot() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_slot BEFORE INSERT ON impact.ai_plan_export_issuance
+ FOR EACH ROW EXECUTE FUNCTION impact.allocate_ai_plan_export_slot();
+
+-- Separate metadata/byte visibility keeps permanent operation uniqueness usable
+-- after seven-day receipt purge. Expired metadata cannot authorise byte replay.
+CREATE FUNCTION impact.ai_plan_export_visible(target uuid,bytes_required boolean DEFAULT false) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT COALESCE((SELECT impact.ai_plan_export_authority(e.principal_id,e.membership_id,e.plan_object_id,e.plan_revision_id)
+   AND (NOT bytes_required OR e.replay_until>statement_timestamp())
+  FROM impact.ai_plan_export_issuance e WHERE e.tenant_id=impact.current_tenant() AND e.issuance_id=target),false)
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_visible(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_visible(uuid,boolean) TO impact_app;
+CREATE POLICY ai_plan_export_actor ON impact.ai_plan_export_issuance AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_visible(issuance_id,false))
+ WITH CHECK(impact.ai_plan_export_authority(principal_id,membership_id,plan_object_id,plan_revision_id));
+CREATE POLICY ai_plan_export_actor ON impact.ai_plan_export_bytes AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_visible(issuance_id,true)) WITH CHECK(impact.ai_plan_export_visible(issuance_id,true));
+
+-- Existing store.write can create the closed AuditEvent first, without changing
+-- its writer or schema. Only INSERT may use this current creator gate; reads
+-- require completed issuance projection. Deferred commit sealing below prevents
+-- any export AuditEvent without its exact issuance/bytes/receipt/event surviving.
+CREATE FUNCTION impact.ai_plan_export_audit_creator(actor uuid,target uuid) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT EXISTS(SELECT 1 FROM impact.tenant_principal p JOIN impact.membership_current m
+   ON m.tenant_id=p.tenant_id AND m.identity_id=p.identity_id
+  JOIN impact.object_registry plan ON plan.tenant_id=p.tenant_id AND plan.object_id=target
+  WHERE p.tenant_id=impact.current_tenant() AND p.principal_id=actor
+    AND impact.ai_plan_export_authority(actor,m.object_id,target,plan.head_revision))
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_audit_creator(uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_audit_creator(uuid,uuid) TO impact_app;
+
+CREATE FUNCTION impact.ai_plan_export_record_visible(kind text,target uuid,app_participant boolean) RETURNS boolean
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE p jsonb;
+BEGIN
+ -- Compose existing private-case guards even for direct helper calls; policies
+ -- remain restrictive additions and never create a new case/event oracle.
+ IF NOT impact.human_advice_record_visible(kind,target,app_participant AND current_setting('role',true)='impact_app') THEN RETURN false; END IF;
+ IF kind<>'AuditEvent' THEN RETURN true; END IF;
+ IF EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e WHERE e.tenant_id=impact.current_tenant() AND e.issuance_id=target) THEN
+  RETURN app_participant AND current_setting('role',true)='impact_app' AND impact.ai_plan_export_visible(target,false);
+ END IF;
+ SELECT v.payload INTO p FROM impact.object_registry h JOIN impact.object_revision v
+  ON v.tenant_id=h.tenant_id AND v.object_id=h.object_id AND v.revision_id=h.head_revision
+  WHERE h.tenant_id=impact.current_tenant() AND h.object_id=target AND h.object_type='AuditEvent';
+ IF p IS NULL THEN RETURN false; END IF; -- unknown/unprojected export read is uniformly unavailable
+ RETURN COALESCE(p->>'action_type','')<>'issue_ai_plan_export';
+END $$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_record_visible(text,uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_record_visible(text,uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+CREATE POLICY ai_plan_export_registry_app ON impact.object_registry AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_record_visible(object_type,object_id,true))
+ WITH CHECK(object_type='AuditEvent' OR impact.ai_plan_export_record_visible(object_type,object_id,true));
+-- An AuditEvent header has no payload/target yet, so its INSERT check keeps the
+-- existing generic header allowance. SELECT remains uniform false when unknown;
+-- exact revision/audit creator checks and deferred completeness bind persistence.
+CREATE POLICY ai_plan_export_revision_app ON impact.object_revision AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_record_visible(object_type,object_id,true))
+ WITH CHECK(CASE WHEN object_type='AuditEvent' THEN CASE
+  WHEN payload->>'action_type'='issue_ai_plan_export' THEN
+    payload->>'real_actor_id'=impact.ai_plan_export_principal()::text
+    AND payload->>'effective_actor_id'=impact.ai_plan_export_principal()::text
+    AND author_id=impact.ai_plan_export_principal()
+    AND impact.ai_plan_export_audit_creator(author_id,(payload->>'object_reference')::uuid)
+  WHEN COALESCE(payload->>'action_type','') ~ '^(human_advice_|create_human_advice_case$)'
+    THEN impact.human_advice_participant((payload->>'object_reference')::uuid,false)
+  ELSE true END
+  ELSE impact.ai_plan_export_record_visible(object_type,object_id,true) END);
+-- INSERT sees the NEW first AuditEvent payload, not a missing stored revision.
+-- Existing ordinary creation stays allowed; private export/advice creation still
+-- proves its exact current actor/participant. SELECT uses uniform read refusal.
+CREATE POLICY ai_plan_export_registry_other ON impact.object_registry AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_record_visible(object_type,object_id,false))
+ WITH CHECK(object_type='AuditEvent' OR impact.ai_plan_export_record_visible(object_type,object_id,false));
+CREATE POLICY ai_plan_export_revision_other ON impact.object_revision AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_record_visible(object_type,object_id,false))
+ WITH CHECK(CASE WHEN object_type='AuditEvent' THEN
+  COALESCE(payload->>'action_type','')<>'issue_ai_plan_export'
+  AND COALESCE(payload->>'action_type','') !~ '^(human_advice_|create_human_advice_case$)'
+  ELSE impact.ai_plan_export_record_visible(object_type,object_id,false) END);
+-- Preserve the worker's existing ordinary first-audit INSERT. Other original
+-- runtime ACL/type policies stay binding; private advice/export remain refused.
+CREATE POLICY ai_plan_export_audit_app ON impact.audit_event_current AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_record_visible('AuditEvent',object_id,true))
+ WITH CHECK(CASE WHEN action_type='issue_ai_plan_export'
+  THEN real_actor_id=impact.ai_plan_export_principal() AND effective_actor_id=impact.ai_plan_export_principal()
+    AND impact.ai_plan_export_audit_creator(real_actor_id,object_reference)
+  ELSE impact.ai_plan_export_record_visible('AuditEvent',object_id,true) END);
+CREATE POLICY ai_plan_export_audit_other ON impact.audit_event_current AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_record_visible('AuditEvent',object_id,false))
+ WITH CHECK(COALESCE(action_type,'')<>'issue_ai_plan_export' AND impact.ai_plan_export_record_visible('AuditEvent',object_id,false));
+CREATE FUNCTION impact.ai_plan_export_object_visible(target uuid,app_participant boolean) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT COALESCE((SELECT impact.ai_plan_export_record_visible(h.object_type,h.object_id,app_participant)
+  FROM impact.object_registry h WHERE h.tenant_id=impact.current_tenant() AND h.object_id=target),false)
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_object_visible(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_object_visible(uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+CREATE POLICY ai_plan_export_author_app ON impact.object_natural_author AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_object_visible(object_id,true)) WITH CHECK(impact.ai_plan_export_object_visible(object_id,true));
+CREATE POLICY ai_plan_export_author_other ON impact.object_natural_author AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_object_visible(object_id,false)) WITH CHECK(impact.ai_plan_export_object_visible(object_id,false));
+
+CREATE FUNCTION impact.ai_plan_export_receipt_structural_match(actor uuid,operation uuid,fingerprint bytea,result jsonb,expiry timestamptz) RETURNS boolean
+ LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+ SELECT COALESCE((SELECT actor=e.principal_id AND operation=e.operation_id AND fingerprint=e.request_sha256
+  AND expiry=e.replay_until AND jsonb_typeof(result)='object'
+  AND (SELECT array_agg(key ORDER BY key) FROM jsonb_object_keys(result) key)=ARRAY['business_state','byte_count','content_sha256','correlation_id','object_id','operation_id','replay_until','revision_id','saved_at']
+  AND result->>'object_id'=e.issuance_id::text AND result->>'revision_id'=e.audit_revision_id::text
+  AND result->>'business_state'='Issued' AND result->>'operation_id'=e.operation_id::text
+  AND result->>'correlation_id'=e.correlation_id::text AND (result->>'saved_at')::timestamptz=e.generated_at
+  AND result->>'content_sha256'=encode(e.content_sha256,'hex') AND (result->>'byte_count')::integer=e.byte_count
+  AND (result->>'replay_until')::timestamptz=e.replay_until
+  FROM impact.ai_plan_export_issuance e WHERE e.tenant_id=impact.current_tenant() AND e.issuance_id=(result->>'object_id')::uuid),false)
+$$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_receipt_structural_match(uuid,uuid,bytea,jsonb,timestamptz) FROM PUBLIC;
+-- Structural matching is private to the owner/commit seal. Public RLS/replay
+-- matching must also prove the caller still owns a currently authorised export.
+CREATE FUNCTION impact.ai_plan_export_receipt_match(actor uuid,operation uuid,fingerprint bytea,result jsonb,expiry timestamptz) RETURNS boolean
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE target uuid;
+BEGIN
+ IF current_setting('role',true) IS DISTINCT FROM 'impact_app' OR impact.ai_plan_export_principal() IS NULL THEN RETURN false; END IF;
+ BEGIN target:=(result->>'object_id')::uuid; EXCEPTION WHEN invalid_text_representation THEN RETURN false; END;
+ IF NOT impact.ai_plan_export_visible(target,false) THEN RETURN false; END IF;
+ RETURN COALESCE(impact.ai_plan_export_receipt_structural_match(actor,operation,fingerprint,result,expiry),false);
+END $$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_receipt_match(uuid,uuid,bytea,jsonb,timestamptz) FROM PUBLIC;
+CREATE POLICY ai_plan_export_receipt_app ON impact.operation_receipt AS RESTRICTIVE TO impact_app
+ USING(command_type<>'issue_ai_plan_export' OR impact.ai_plan_export_visible((outcome->>'object_id')::uuid,false))
+ WITH CHECK(command_type<>'issue_ai_plan_export' OR (state='SUCCEEDED' AND actor_id=impact.ai_plan_export_principal()
+  AND impact.ai_plan_export_visible((outcome->>'object_id')::uuid,false)
+  AND impact.ai_plan_export_receipt_match(actor_id,operation_id,payload_hash,outcome,expires_at)));
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_receipt_match(uuid,uuid,bytea,jsonb,timestamptz) TO impact_app;
+CREATE POLICY ai_plan_export_receipt_other ON impact.operation_receipt AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(command_type<>'issue_ai_plan_export') WITH CHECK(command_type<>'issue_ai_plan_export');
+
+-- Tolerant selector conversion preserves unrelated legacy event envelopes.
+CREATE FUNCTION impact.ai_plan_export_uuid(value text) RETURNS uuid
+ LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF value IS NULL OR value='' THEN RETURN NULL; END IF;
+ BEGIN RETURN value::uuid; EXCEPTION WHEN invalid_text_representation THEN RETURN NULL; END;
+END $$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_uuid(text) FROM PUBLIC;
+CREATE FUNCTION impact.ai_plan_export_event_visible(target uuid,app_participant boolean) RETURNS boolean
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE v jsonb; issuance uuid;
+BEGIN
+ IF NOT impact.human_advice_event_visible(target,app_participant AND current_setting('role',true)='impact_app') THEN RETURN false; END IF;
+ SELECT payload INTO v FROM impact.outbox_event WHERE tenant_id=impact.current_tenant() AND event_id=target;
+ IF v IS NULL THEN RETURN false; END IF;
+ SELECT e.issuance_id INTO issuance FROM impact.ai_plan_export_issuance e
+ WHERE e.tenant_id=impact.current_tenant() AND (e.outbox_event_id=target
+   OR e.issuance_id=impact.ai_plan_export_uuid(v->>'aggregate_id')
+   OR e.issuance_id=impact.ai_plan_export_uuid(v->'payload'->>'object_id')) LIMIT 1;
+ IF issuance IS NOT NULL THEN
+  RETURN app_participant AND current_setting('role',true)='impact_app' AND impact.ai_plan_export_visible(issuance,false);
+ END IF;
+ IF v->>'aggregate_type'='AuditEvent' THEN
+  IF impact.ai_plan_export_uuid(v->>'aggregate_id') IS NULL THEN RETURN false; END IF;
+  RETURN impact.ai_plan_export_record_visible('AuditEvent',impact.ai_plan_export_uuid(v->>'aggregate_id'),app_participant);
+ END IF;
+ RETURN true;
+END $$;
+REVOKE ALL ON FUNCTION impact.ai_plan_export_event_visible(uuid,boolean) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION impact.ai_plan_export_event_visible(uuid,boolean)
+ TO impact_app,impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy;
+-- INSERT's direct aggregate gate does not query a not-yet-inserted event.
+CREATE POLICY ai_plan_export_outbox_app ON impact.outbox_event AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_event_visible(event_id,true))
+ WITH CHECK(CASE WHEN payload->>'aggregate_type'='AuditEvent'
+  THEN impact.ai_plan_export_record_visible('AuditEvent',(payload->>'aggregate_id')::uuid,true)
+  ELSE true END);
+CREATE POLICY ai_plan_export_outbox_other ON impact.outbox_event AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_event_visible(event_id,false))
+ WITH CHECK(CASE WHEN payload->>'aggregate_type'='AuditEvent'
+  THEN impact.ai_plan_export_record_visible('AuditEvent',(payload->>'aggregate_id')::uuid,false)
+  ELSE true END);
+CREATE POLICY ai_plan_export_delivery_app ON impact.outbox_delivery AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_event_visible(event_id,true)) WITH CHECK(impact.ai_plan_export_event_visible(event_id,true));
+CREATE POLICY ai_plan_export_delivery_other ON impact.outbox_delivery AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_event_visible(event_id,false)) WITH CHECK(impact.ai_plan_export_event_visible(event_id,false));
+CREATE POLICY ai_plan_export_consumer_app ON impact.consumer_receipt AS RESTRICTIVE TO impact_app
+ USING(impact.ai_plan_export_event_visible(event_id,true)) WITH CHECK(impact.ai_plan_export_event_visible(event_id,true));
+CREATE POLICY ai_plan_export_consumer_other ON impact.consumer_receipt AS RESTRICTIVE
+ TO impact_worker,impact_identity,impact_platform,impact_observer,impact_sensitive,impact_privacy
+ USING(impact.ai_plan_export_event_visible(event_id,false)) WITH CHECK(impact.ai_plan_export_event_visible(event_id,false));
+
+CREATE FUNCTION impact.guard_ai_plan_export_no_delivery() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e WHERE e.tenant_id=NEW.tenant_id AND e.outbox_event_id=NEW.event_id)
+  AND (TG_OP='UPDATE' OR NEW.channel IS NOT NULL OR NEW.state<>'PENDING' OR NEW.sent_at IS NOT NULL) THEN
+  RAISE EXCEPTION 'internal export has no delivery channel' USING ERRCODE='42501';
+ END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_no_delivery() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_no_delivery BEFORE INSERT OR UPDATE ON impact.outbox_delivery
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_no_delivery();
+CREATE FUNCTION impact.guard_ai_plan_export_insert_only() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN RAISE EXCEPTION 'AI plan export issuance and bytes insert-only' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_insert_only() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_issuance_immutable BEFORE UPDATE OR DELETE ON impact.ai_plan_export_issuance
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_insert_only();
+CREATE TRIGGER ai_plan_export_bytes_immutable BEFORE UPDATE OR DELETE ON impact.ai_plan_export_bytes
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_insert_only();
+CREATE FUNCTION impact.guard_ai_plan_export_bytes() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE evidence impact.ai_plan_export_issuance;
+BEGIN
+ SELECT * INTO STRICT evidence FROM impact.ai_plan_export_issuance WHERE tenant_id=NEW.tenant_id AND issuance_id=NEW.issuance_id;
+ IF octet_length(NEW.body)<>evidence.byte_count OR sha256(NEW.body)<>evidence.content_sha256 THEN
+  RAISE EXCEPTION 'issued bytes digest/count mismatch' USING ERRCODE='23514';
+ END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_bytes() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_bytes_digest BEFORE INSERT ON impact.ai_plan_export_bytes
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_bytes();
+
+CREATE FUNCTION impact.check_ai_plan_export_complete(target_tenant uuid,target_issuance uuid) RETURNS void
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DECLARE e impact.ai_plan_export_issuance; a record; b bytea; g record; o record;
+BEGIN
+ SELECT * INTO e FROM impact.ai_plan_export_issuance WHERE tenant_id=target_tenant AND issuance_id=target_issuance;
+ IF NOT FOUND THEN RAISE EXCEPTION 'export issuance required' USING ERRCODE='23514'; END IF;
+ SELECT h.head_revision,h.lifecycle_state,h.created_by,h.owner_id,v.payload,v.revision_number,v.restriction_state,
+  p.revision_id AS projection_revision,p.action_type,p.real_actor_id,p.effective_actor_id,p.object_reference,p.occurred_at,p.correlation_id,
+  p.outcome AS projection_outcome,p.specification_ref AS projection_specification_ref,v.author_id AS revision_author
+ INTO a FROM impact.object_registry h JOIN impact.object_revision v
+  ON v.tenant_id=h.tenant_id AND v.object_id=h.object_id AND v.revision_id=e.audit_revision_id AND v.object_type='AuditEvent'
+ JOIN impact.audit_event_current p ON p.tenant_id=h.tenant_id AND p.object_id=h.object_id
+ WHERE h.tenant_id=target_tenant AND h.object_id=target_issuance AND h.object_type='AuditEvent';
+ IF NOT FOUND OR a.head_revision IS DISTINCT FROM e.audit_revision_id OR a.projection_revision IS DISTINCT FROM e.audit_revision_id
+  OR a.lifecycle_state IS DISTINCT FROM 'Recorded' OR a.restriction_state IS DISTINCT FROM 'AVAILABLE' OR a.revision_number IS DISTINCT FROM 1
+  OR a.created_by IS DISTINCT FROM e.principal_id OR a.owner_id IS DISTINCT FROM e.principal_id
+  OR a.payload->>'action_type' IS DISTINCT FROM 'issue_ai_plan_export' OR a.payload->>'outcome' IS DISTINCT FROM 'SUCCEEDED'
+  OR a.payload->>'real_actor_id' IS DISTINCT FROM e.principal_id::text OR a.payload->>'effective_actor_id' IS DISTINCT FROM e.principal_id::text
+  OR a.payload->>'object_reference' IS DISTINCT FROM e.plan_object_id::text OR (a.payload->>'occurred_at')::timestamptz IS DISTINCT FROM e.generated_at
+  OR a.payload->>'correlation_id' IS DISTINCT FROM e.correlation_id::text OR a.action_type IS DISTINCT FROM 'issue_ai_plan_export'
+  OR a.real_actor_id IS DISTINCT FROM e.principal_id OR a.effective_actor_id IS DISTINCT FROM e.principal_id OR a.object_reference IS DISTINCT FROM e.plan_object_id
+  OR a.occurred_at IS DISTINCT FROM e.generated_at OR a.correlation_id IS DISTINCT FROM e.correlation_id
+  OR a.projection_outcome IS DISTINCT FROM 'SUCCEEDED' OR a.revision_author IS DISTINCT FROM e.principal_id
+  OR COALESCE(length(a.payload->>'specification_ref'),0)=0
+  OR a.projection_specification_ref IS DISTINCT FROM a.payload->>'specification_ref' THEN
+  RAISE EXCEPTION 'exact export audit evidence required' USING ERRCODE='23514';
+ END IF;
+ SELECT body INTO b FROM impact.ai_plan_export_bytes WHERE tenant_id=target_tenant AND issuance_id=target_issuance;
+ IF NOT FOUND OR octet_length(b)<>e.byte_count OR sha256(b)<>e.content_sha256 THEN
+  RAISE EXCEPTION 'exact issued artifact required' USING ERRCODE='23514';
+ END IF;
+ IF e.guidance_snapshot_id IS NOT NULL THEN
+  SELECT * INTO g FROM impact.ai_content_snapshot WHERE tenant_id=target_tenant AND snapshot_id=e.guidance_snapshot_id;
+  IF NOT FOUND OR g.schema_version IS DISTINCT FROM e.guidance_schema_version OR g.payload_sha256 IS DISTINCT FROM e.guidance_sha256
+   OR (CASE WHEN g.payload->'practice' IS NULL OR g.payload->'practice'='null'::jsonb THEN 'PARTIAL' ELSE 'COMPLETE' END) IS DISTINCT FROM e.guidance_status
+   OR NOT EXISTS(SELECT 1 FROM impact.ai_plan_content_binding WHERE tenant_id=target_tenant
+    AND object_id=e.plan_object_id AND revision_id=e.plan_revision_id AND snapshot_id=e.guidance_snapshot_id) THEN
+   RAISE EXCEPTION 'exact guidance binding required' USING ERRCODE='23514';
+  END IF;
+ ELSE
+  IF EXISTS(SELECT 1 FROM impact.ai_plan_content_binding WHERE tenant_id=target_tenant
+   AND object_id=e.plan_object_id AND revision_id=e.plan_revision_id) THEN
+   RAISE EXCEPTION 'available guidance cannot be relabelled unavailable' USING ERRCODE='23514';
+  END IF;
+ END IF;
+ IF NOT EXISTS(SELECT 1 FROM impact.operation_receipt r WHERE r.tenant_id=target_tenant
+  AND r.actor_id=e.principal_id AND r.command_type=e.command_type AND r.operation_id=e.operation_id
+  AND r.state='SUCCEEDED' AND impact.ai_plan_export_receipt_structural_match(r.actor_id,r.operation_id,r.payload_hash,r.outcome,r.expires_at)) THEN
+  RAISE EXCEPTION 'exact atomic export receipt required' USING ERRCODE='23514';
+ END IF;
+ SELECT * INTO o FROM impact.outbox_event WHERE tenant_id=target_tenant AND event_id=e.outbox_event_id;
+ IF NOT FOUND OR o.event_type IS DISTINCT FROM 'object.changed' OR o.occurred_at IS DISTINCT FROM e.generated_at
+  OR o.payload->>'aggregate_type' IS DISTINCT FROM 'AuditEvent' OR o.payload->>'aggregate_id' IS DISTINCT FROM e.issuance_id::text
+  OR o.payload->>'aggregate_revision' IS DISTINCT FROM e.audit_revision_id::text OR (o.payload->>'aggregate_sequence')::integer IS DISTINCT FROM 1
+  OR o.payload->>'actor_id' IS DISTINCT FROM e.principal_id::text OR o.payload->>'correlation_id' IS DISTINCT FROM e.correlation_id::text
+  OR o.payload->'payload'->>'object_id' IS DISTINCT FROM e.issuance_id::text OR o.payload->'payload'->>'revision_id' IS DISTINCT FROM e.audit_revision_id::text
+  OR o.payload->'payload'->>'state' IS DISTINCT FROM 'Recorded'
+  OR NOT EXISTS(SELECT 1 FROM impact.outbox_delivery WHERE tenant_id=target_tenant AND event_id=e.outbox_event_id AND channel IS NULL) THEN
+  RAISE EXCEPTION 'exact atomic nondelivery intent required' USING ERRCODE='23514';
+ END IF;
+END $$;
+REVOKE ALL ON FUNCTION impact.check_ai_plan_export_complete(uuid,uuid) FROM PUBLIC;
+CREATE FUNCTION impact.check_ai_plan_export_commit() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF TG_TABLE_NAME='object_revision' THEN
+  IF NEW.object_type<>'AuditEvent' OR COALESCE(NEW.payload->>'action_type','')<>'issue_ai_plan_export' THEN RETURN NULL; END IF;
+  PERFORM impact.check_ai_plan_export_complete(NEW.tenant_id,NEW.object_id);
+ ELSE
+  PERFORM impact.check_ai_plan_export_complete(NEW.tenant_id,NEW.issuance_id);
+ END IF;
+ RETURN NULL;
+END $$;
+REVOKE ALL ON FUNCTION impact.check_ai_plan_export_commit() FROM PUBLIC;
+CREATE CONSTRAINT TRIGGER ai_plan_export_audit_complete AFTER INSERT ON impact.object_revision
+ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION impact.check_ai_plan_export_commit();
+CREATE CONSTRAINT TRIGGER ai_plan_export_issuance_complete AFTER INSERT ON impact.ai_plan_export_issuance
+ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION impact.check_ai_plan_export_commit();
+
+-- A retained original artifact is a child copy of plan text. This guard refuses
+-- parent payload removal while it exists; it is not an erasure implementation.
+-- No new privacy-case scope, duration, purge path or restore acceptance is added.
+CREATE FUNCTION impact.guard_ai_plan_export_retained_child() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF NEW.payload IS NULL AND OLD.payload IS NOT NULL AND (
+  (OLD.object_type='AIAdoptionPlan' AND EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e
+   JOIN impact.ai_plan_export_bytes b USING(tenant_id,issuance_id)
+   WHERE e.tenant_id=OLD.tenant_id AND e.plan_object_id=OLD.object_id AND e.plan_revision_id=OLD.revision_id))
+  OR (OLD.object_type='AuditEvent' AND EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e
+   JOIN impact.ai_plan_export_bytes b USING(tenant_id,issuance_id)
+   WHERE e.tenant_id=OLD.tenant_id AND e.issuance_id=OLD.object_id AND e.audit_revision_id=OLD.revision_id))) THEN
+  RAISE EXCEPTION 'AI_PLAN_EXPORT_CHILD_RETAINED' USING ERRCODE='42501';
+ END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_retained_child() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_retained_child BEFORE UPDATE OF payload,restriction_state ON impact.object_revision
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_retained_child();
+CREATE FUNCTION impact.guard_ai_plan_export_audit_revision() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF NEW.object_type='AuditEvent' AND EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance e
+  WHERE e.tenant_id=NEW.tenant_id AND e.issuance_id=NEW.object_id AND e.audit_revision_id<>NEW.revision_id) THEN
+  RAISE EXCEPTION 'issued export audit revision immutable' USING ERRCODE='42501';
+ END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_audit_revision() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_audit_revision BEFORE INSERT ON impact.object_revision
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_audit_revision();
+CREATE FUNCTION impact.guard_ai_plan_export_audit_header() RETURNS trigger
+ LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF EXISTS(SELECT 1 FROM impact.ai_plan_export_issuance WHERE tenant_id=OLD.tenant_id AND issuance_id=OLD.object_id) THEN
+  RAISE EXCEPTION 'issued export audit header immutable' USING ERRCODE='42501';
+ END IF;
+ IF TG_OP='DELETE' THEN RETURN OLD; END IF;
+ RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_plan_export_audit_header() FROM PUBLIC;
+CREATE TRIGGER ai_plan_export_audit_header BEFORE UPDATE OR DELETE ON impact.object_registry
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_plan_export_audit_header();
+
+-- Existing worker purge definers intentionally expose affected keys. Private
+-- advice/export commands therefore remain excluded until a separately reviewed
+-- private retention path exists. Preserve all ordinary purge semantics/ACLs;
+-- expiry still closes byte replay, and permanent operation identity is retained.
+CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer) RETURNS TABLE(item text)
+ LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DELETE FROM impact.operation_receipt o USING (
+ SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt
+ WHERE tenant_id=impact.current_tenant() AND expires_at<=statement_timestamp()
+  AND command_type<>'issue_ai_plan_export'
+  AND COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)'
+ ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d
+ WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type AND o.operation_id=d.operation_id
+ RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text
+$$;
+CREATE OR REPLACE FUNCTION impact.retention_purge_receipts(max_rows integer,keep_days integer) RETURNS TABLE(item text)
+ LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
+DELETE FROM impact.operation_receipt o USING (
+ SELECT tenant_id,actor_id,command_type,operation_id FROM impact.operation_receipt
+ WHERE tenant_id=impact.current_tenant() AND expires_at<=statement_timestamp()-make_interval(days=>greatest(keep_days,7)-7)
+  AND command_type<>'issue_ai_plan_export'
+  AND COALESCE(command_type,'') !~ '^(human_advice_|create_human_advice_case$)'
+ ORDER BY expires_at,operation_id LIMIT greatest(least(max_rows,5000),0)) d
+ WHERE o.tenant_id=d.tenant_id AND o.actor_id=d.actor_id AND o.command_type=d.command_type AND o.operation_id=d.operation_id
+ RETURNING o.actor_id::text||':'||o.command_type||':'||o.operation_id::text
+$$;
+COMMIT;
+
 ```

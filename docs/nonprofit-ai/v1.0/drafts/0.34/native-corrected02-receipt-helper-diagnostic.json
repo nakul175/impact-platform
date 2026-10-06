@@ -1,0 +1,5 @@
+{
+  "scope": "Actual impact_app_login SET LOCAL ROLE impact_app missing current principal; structural receipt helper accepts exact prior receipt independently of authority",
+  "unauthorized_structural_receipt_match": true,
+  "privacy_residual_confirmed": true
+}

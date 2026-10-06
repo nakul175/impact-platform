@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-05T19:46:33.736635+00:00",
+  "scope": "82 isolated pure exporter tests; no live API/provider/native claim",
+  "report": {
+    "path": "docs/evidence/sprint-0.34-ai-plan-export-unit-tests.xml",
+    "sha256": "f69421acf5b684f7fa2592e9dcda00d9a374735dfd0043c4695ea2836bbd6594",
+    "source_sha256": "f69421acf5b684f7fa2592e9dcda00d9a374735dfd0043c4695ea2836bbd6594"
+  },
+  "counts": {
+    "tests": 82,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "report_timestamp": "2026-10-06T00:59:48.663763+05:30",
+  "source_sha256": {
+    "apps/api/impact_api/ai_plan_exports.py": "e81364635cdd7943da4f837c0bffc3037dfa6e90fe77b4f35b76f18b1735eec1",
+    "apps/api/impact_api/ai_plan_export_contracts.py": "8e4eef739b8ecd13bdb5c59e99c092edad3b83663896eb09e5dfde962672a2bd",
+    "apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "qualification/test_ai_plan_exports_unit.py": "3d5e974264237c4898eb385fd43b254d42994d0e96db148e3fd797668c2861d3"
+  },
+  "same_inputs_as_initial_source_bound_focused_gate": true
+}

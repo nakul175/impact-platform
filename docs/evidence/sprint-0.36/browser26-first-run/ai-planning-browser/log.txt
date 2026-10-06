@@ -1,0 +1,71 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /home/claude/impact-platform/.local/test-7974382c/passwords.json
+Ready at http://127.0.0.1:8306
+PASS Actual loopback runtime matches the qualified source and served build
+PASS An unfinished cost draft cannot calculate or save, and unknown amounts remain explicit
+PASS Complete monthly totals retain exact amounts and equally lowest supplied offers remain a tie
+PASS Actual entered-line totals distinguish explicit category zero from omitted and unknown amounts
+PASS Editing clears calculated output and invalid decimal notation makes no calculation request
+PASS A delayed real cost response cannot revive results after a new edit
+PASS Pilot calculations include human review and normalize different sample sizes
+PASS Zero baseline and incomparable samples produce undefined change rather than a false zero
+PASS A slower pilot shows negative improvement and preserves source values
+PASS Manual task practice exposes five review checks, resets checks after editing and makes no model request
+PASS Saving and reopening persists actual cost, pilot and practice inputs but no transient calculation result
+PASS Calculation binds exact opened inputs while a save receipt alone never claims a canonical read
+PASS A delayed real result cannot cross a same-valued new saved revision
+PASS Saved guide compatibility names current editions and reading leaves the revision unchanged
+PASS Foundations handoff and starter preview/cancel preserve saved practice and learning progress
+PASS Starter confirmation expires after edits and explicit replacement preserves own draft and review bytes
+PASS Deliberate actual save/reopen retains starter text, original own work and unchanged recorded lessons
+PASS Simulated retired-guide projection preserves unavailable progress until explicit removal
+PASS Simulated unavailable practice keeps entered text and requires deliberate replacement before saving
+PASS Simulated stale practice edition is labelled without assuming historical archive availability
+PASS Simulated unavailable practice is cleared only by the explicit clear action and save
+PASS Ambiguous save recovery replays exact planning inputs while newer changes remain unsaved
+PASS Navigating away during a real calculation cannot revive the previous section's result on return
+PASS New product controls fit desktop, 390 and 320 px views with actual keyboard scrolling and all accessibility findings retained
+PASS A delayed calculation from a previous signed-in tenant cannot appear after changing user and workspace
+PASS Read-only staff can study guides and calculate supplied drafts but cannot save or read another tenant's plan
+PASS Actual read-only management refusal creates no plan and leaves preserved canonical work unchanged
+PASS No advisory/provider request or uncaught browser error occurs across these synthetic workflows

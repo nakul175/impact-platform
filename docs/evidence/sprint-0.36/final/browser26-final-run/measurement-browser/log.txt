@@ -1,0 +1,60 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /home/claude/impact-platform/.local/test-58134e08/passwords.json
+Ready at http://127.0.0.1:8303
+PASS Create programme with calendar and geography
+PASS Create and submit a complete indicator definition
+PASS Independent definition review renders the correct candidate
+PASS Create indicator with approved definition and independent assignments
+PASS Create explicit collection obligations and submit the plan
+PASS Plan approval freezes the reviewed obligations
+PASS Activate indicator and pass programme readiness
+PASS Capture a planned observation for the activated indicator
+PASS Assigned reviewer approves the planned observation
+PASS Calculate and inspect approved-versus-missing coverage
+PASS Submit a governed correction without replacing the approved value
+PASS Reviewer sees current and proposed records and approves the correction
+PASS Author submits an obligation exception for independent review
+PASS Independent review activates the exact eligibility exception
+PASS Personal work centre acknowledges notice and recalculates current results
+PASS Correction requests remain usable on mobile
+PASS Setup remains usable on mobile without page overflow

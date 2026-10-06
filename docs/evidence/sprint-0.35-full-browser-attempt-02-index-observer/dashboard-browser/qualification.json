@@ -1,0 +1,26 @@
+{
+  "mode": "dashboard-browser",
+  "checker": "dashboard-check.mjs",
+  "started_at": "2026-10-05T21:03:06.612880+00:00",
+  "scope": "Original unmodified Makefile mode on a fresh actual local Chrome/API/PGlite synthetic fixture; not native/UAT/hosted/manual qualification",
+  "exit_code": 143,
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-aq93i24m/dashboard-browser.log",
+    "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "archived_outputs": [],
+  "fresh_result_reports": [],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": [],
+  "fixture_observations": [],
+  "source_changes": [],
+  "build_asset_changes": [],
+  "finished_at": "2026-10-05T21:03:07.362305+00:00",
+  "complete_fixture_observation": false,
+  "honest_local_result": "FAILED_OR_INCOMPLETE"
+}

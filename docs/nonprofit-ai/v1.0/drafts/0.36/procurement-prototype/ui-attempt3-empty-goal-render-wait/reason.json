@@ -1,0 +1,3 @@
+{
+  "scope": "Private fixture queried disabled state synchronously immediately after synthetic setState. Ten preceding groups passed. Repeat with a bounded DOM condition waiting for committed empty-goal refusal; no product mutation or weakened refusal assertion."
+}

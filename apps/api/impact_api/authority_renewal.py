@@ -93,6 +93,12 @@ class AuthorityRenewal:
             (tenant_id,),
         ).fetchone()
 
+    def upgrade_pending(self, c, tenant_id):
+        return c.execute(
+            "SELECT 1 FROM impact.tenant_access_upgrade WHERE tenant_id=%s AND state IN ('Requested','Accepted')",
+            (tenant_id,),
+        ).fetchone()
+
     def holding(self, c, tenant_id, identity_id):
         """Current delegated authority of one identity, or None when it holds none that is usable."""
         principal = c.execute(
@@ -200,6 +206,8 @@ class AuthorityRenewal:
                 if not all(self.lifecycle.readiness(c, tenant).values())
                 else "RENEWAL_PENDING"
                 if self.pending(c, tenant_id)
+                else "ACCESS_UPGRADE_PENDING"
+                if self.upgrade_pending(c, tenant_id)
                 else None
             )
         result["renewable"], result["reason_unavailable"] = reason is None, reason
@@ -323,6 +331,8 @@ class AuthorityRenewal:
             denied("SECOND_ADMIN_UNAVAILABLE")
         if self.pending(c, tenant_id):
             raise DomainError("CONFLICT_VERSION", 409, reason="RENEWAL_PENDING")
+        if self.upgrade_pending(c, tenant_id):
+            raise DomainError("CONFLICT_VERSION", 409, reason="ACCESS_UPGRADE_PENDING")
         manifest, rows = self.assemble([owner_holding, second_holding])
         authority_hash = hash_data(manifest).hex()
         if data["authority_hash"] != authority_hash:

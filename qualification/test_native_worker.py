@@ -191,7 +191,10 @@ def test_native_lease_takeover_while_the_first_holder_is_sending(live):
         "native-slow-" + uuid4().hex[:6],
         lease_seconds=5,
         smtp_timeout=2,
-        synthetic_delay=8,
+        # The rival's first pass visits every tenant the suite has created (about 6 s on a 2-vCPU
+        # runner against a full-suite database), so the first holder must still be sending after
+        # that pass: the send time is not what this test measures.
+        synthetic_delay=30,
         batch_size=1,
     )
     try:
@@ -203,7 +206,7 @@ def test_native_lease_takeover_while_the_first_holder_is_sending(live):
         taken = deliveries(live, receipt["object_id"])[0]
         assert (taken["state"], taken["lease_generation"], taken["attempts"]) == ("SENT", 2, 2)
         # The first holder finishes its send afterwards; its outcome is refused by generation.
-        wait_for(lambda: "lease generation superseded" in slow.log.read_text(), timeout=20)
+        wait_for(lambda: "lease generation superseded" in slow.log.read_text(), timeout=60)
     finally:
         assert stop(slow) == 0
     final = deliveries(live, receipt["object_id"])[0]
@@ -361,13 +364,15 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     try:
         wait_for(
             lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
-            timeout=20,
+            # The first pass walks every tenant of the shared database before it reaches this one; a
+            # loaded runner needs far longer than the 2 s per-row send, so the wait is not the claim.
+            timeout=90,
         )
         fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
         try:
             wait_for(
                 lambda: all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts),
-                timeout=60,
+                timeout=120,
             )
         finally:
             assert stop(fast) == 0

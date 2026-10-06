@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-10-05T21:59:06.610979+00:00",
+  "baseline_commit": "740f81339acf97ad49d3212dec7f1aa1555139b1",
+  "scope": "DOCUMENTATION_ONLY_LEAD_PARAGRAPH_REVIEW_ENGINEERING_RULES_UNCHANGED",
+  "status": "PASS",
+  "files": {
+    "AGENTS.md": {
+      "current_whole_sha256": "1f907ae708d673b89a92f20cd9ca776f8125a10af5269bf9b0b7ee7b4293a7c4",
+      "baseline_whole_sha256": "2a33c4e1fa1b1f17b81ee3c8f64ff40640b359e3eb3fd5dd23ada2c3d89c7730",
+      "current_body_sha256": "7a868abc4e746972b34d20c77e28224a602c01d9c481544cbd8117460e562241",
+      "baseline_body_sha256": "7a868abc4e746972b34d20c77e28224a602c01d9c481544cbd8117460e562241",
+      "engineering_rules_unchanged": true
+    },
+    "CLAUDE.md": {
+      "current_whole_sha256": "07cd2a39d469010c7321844c03d0528b8987f230abb8bc8cfadfe80905741b29",
+      "baseline_whole_sha256": "4a4f64899a67c8654abb99e831bcafffacb9df0a794c926a29de3786efec8be3",
+      "current_body_sha256": "fb647b1d74a26d9411ff450414af6899f0c059fb9f7f1c420c5a78337efeb029",
+      "baseline_body_sha256": "fb647b1d74a26d9411ff450414af6899f0c059fb9f7f1c420c5a78337efeb029",
+      "engineering_rules_unchanged": true
+    }
+  }
+}

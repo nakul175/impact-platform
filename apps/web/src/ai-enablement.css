@@ -1,0 +1,300 @@
+:root {
+  --ai-border: #dce2d8;
+  --ai-panel-border: #bccbb0;
+  --ai-surface: #fff;
+  --ai-panel: #f7f9f3;
+  --ai-notice: #edf2e7;
+  --ai-accent: #506b37;
+}
+.ai-enablement .ai-content {
+  padding: 1.25rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-enablement button,
+.ai-enablement summary,
+.ai-enablement input:not([type="checkbox"]):not([type="radio"]),
+.ai-enablement select {
+  min-height: 44px;
+}
+.ai-enablement summary {
+  display: list-item;
+  padding: 0.6rem 0;
+}
+.ai-enablement fieldset,
+.ai-enablement section,
+.ai-enablement label {
+  min-width: 0;
+}
+.ai-enablement textarea,
+.ai-enablement input,
+.ai-enablement select {
+  max-width: 100%;
+}
+.ai-enablement button {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-content-status {
+  background: var(--ai-notice);
+  padding: 1rem;
+  border-radius: 8px;
+}
+.ai-enablement .ai-discard-copy {
+  background: var(--ai-surface);
+  color: #294638;
+  padding: 0.2rem 0;
+  line-height: 1.6;
+}
+.ai-enablement .ai-discard-actions button {
+  min-height: 44px;
+  white-space: normal;
+}
+.ai-enablement .ai-content > section {
+  margin-bottom: 2rem;
+}
+.ai-enablement .ai-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+}
+.ai-enablement .ai-cards button {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-enablement article {
+  border: 1px solid var(--ai-border);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--ai-surface);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-enablement h4 {
+  margin-top: 0;
+}
+.ai-enablement h5 {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.ai-enablement li {
+  margin-bottom: 0.5rem;
+}
+.ai-enablement .ai-notice {
+  background: var(--ai-notice);
+  border-left: 3px solid var(--ai-accent);
+  padding: 0.85rem 1rem;
+}
+.ai-enablement .ai-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.ai-enablement .ai-checkbox {
+  min-height: 44px;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+.ai-enablement .ai-checkbox input {
+  width: auto;
+  margin-top: 0.2rem;
+}
+.ai-enablement .ai-draft {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+  border: 1px solid var(--ai-border);
+  padding: 1rem;
+  border-radius: 8px;
+}
+.ai-enablement summary {
+  cursor: pointer;
+}
+.ai-enablement .ai-adoption {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  background: var(--ai-panel);
+}
+.ai-enablement .ai-section-title,
+.ai-enablement .ai-plan-name {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.ai-enablement .ai-plan-name {
+  align-items: flex-end;
+}
+.ai-enablement .ai-plan-name label {
+  flex: 1;
+}
+.ai-enablement .ai-plan-name button {
+  margin-bottom: 1rem;
+}
+.ai-enablement .ai-plan-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem;
+}
+.ai-enablement .ai-plan-bar .ai-actions {
+  margin: 0 0 1rem;
+}
+.ai-enablement .ai-tabs {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
+}
+.ai-enablement .ai-tabs button {
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-adoption > section {
+  padding-top: 1rem;
+  border-top: 1px solid var(--ai-border);
+}
+.ai-enablement .ai-sources {
+  padding-left: 1rem;
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-sources a {
+  display: inline-block;
+  min-height: 24px;
+  padding: 0.25rem 0;
+  line-height: 1.5;
+}
+.ai-enablement .ai-comparison-scroll {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--ai-border);
+  border-radius: 8px;
+  background: var(--ai-surface);
+}
+.ai-enablement .ai-comparison {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.ai-enablement .ai-comparison th,
+.ai-enablement .ai-comparison td {
+  padding: 0.8rem;
+  vertical-align: top;
+  text-align: left;
+  border-right: 1px solid var(--ai-border);
+  border-bottom: 1px solid var(--ai-border);
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-comparison th {
+  background: var(--ai-notice);
+}
+.ai-enablement .ai-comparison th:first-child {
+  width: 150px;
+}
+.ai-enablement .ai-comparison thead th:not(:first-child) {
+  width: auto;
+}
+.ai-enablement .ai-comparison th button {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+.ai-enablement .ai-learning-step {
+  margin-bottom: 1rem;
+}
+.ai-enablement .ai-lesson {
+  margin: 0.75rem 0 0 1.5rem;
+}
+.ai-enablement .ai-lesson p {
+  white-space: pre-line;
+}
+.ai-enablement .ai-lesson fieldset {
+  margin: 0.75rem 0;
+  background: var(--ai-panel);
+}
+@media (max-width: 600px) {
+  .ai-enablement .ai-content {
+    padding: 0.85rem;
+  }
+  .ai-enablement .ai-actions button {
+    width: 100%;
+  }
+  .ai-enablement .ai-adoption {
+    padding: 0.85rem;
+  }
+  .ai-enablement .ai-plan-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .ai-enablement .ai-section-title,
+  .ai-enablement .ai-plan-name {
+    flex-direction: column;
+  }
+  .ai-enablement .ai-plan-name label,
+  .ai-enablement .ai-plan-name button {
+    width: 100%;
+  }
+  .ai-enablement .ai-tabs button {
+    flex: 1 1 45%;
+    min-width: 0;
+  }
+  .ai-enablement .ai-plan-name button {
+    margin-bottom: 0;
+  }
+  .ai-enablement .ai-discard-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.ai-guidance-archive {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border, #d1d9d4);
+  border-radius: 0.75rem;
+}
+.ai-guidance-archive details {
+  margin: 0.75rem 0;
+}
+.ai-guidance-archive summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.ai-guidance-archive article {
+  padding: 0.5rem 0;
+}
+.ai-guidance-archive label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+}
+.ai-guidance-archive select {
+  width: 100%;
+  min-width: 0;
+}
+.ai-plan-portability .ai-copy-verified {
+  min-width: 0;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--ai-notice);
+  border-radius: 0.5rem;
+}
+.ai-plan-portability .ai-copy-integrity p {
+  overflow-wrap: anywhere;
+}
+.ai-archive-hash {
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-impact-evidence .ai-cards article,
+.ai-enablement .ai-human-advice .ai-cards article {
+  padding: 1rem;
+}
+.ai-impact-evidence fieldset,
+.ai-human-advice fieldset {
+  min-width: 0;
+}

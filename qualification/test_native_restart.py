@@ -14,10 +14,10 @@ them, so the ordinary suite collects them as skipped.
 import hashlib
 import json
 import os
-from pathlib import Path
 
 import httpx
 import pytest
+from process_environment import process_environment
 from test_administration import expect
 from test_live_application import cmd, draft
 from test_native_sessions import sign_in
@@ -106,8 +106,7 @@ FORBIDDEN_API_ENVIRONMENT = [
 
 def api_environment(pid):
     """The environment of the running API process, as the kernel reports it."""
-    raw = Path("/proc/" + str(pid) + "/environ").read_bytes()
-    return [entry.decode(errors="replace") for entry in raw.split(b"\0") if entry]
+    return process_environment(pid)
 
 
 def assert_api_process_holds_no_privileged_connection(live, pid):
@@ -118,7 +117,8 @@ def assert_api_process_holds_no_privileged_connection(live, pid):
         if entry.split("=", 1)[0].startswith(("PG", *FORBIDDEN_API_ENVIRONMENT))
     ]
     assert not leaked, leaked
-    assert "IMPACT_CONFIG_FILE=" + str(live.local / "config.json") in environment
+    configured = "IMPACT_CONFIG_FILE=" + str(live.local / "config.json") in environment
+    assert configured, "API process must name its expected local configuration"
     # The configuration file names the three provisioned logins and never the fixture connection.
     fixture_dsn = os.environ["IMPACT_FIXTURE_DSN"]
     for name, login in [("app", "APP"), ("identity", "IDENTITY"), ("platform", "PLATFORM")]:

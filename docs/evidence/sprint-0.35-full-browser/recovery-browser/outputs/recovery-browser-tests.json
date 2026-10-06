@@ -1,0 +1,46 @@
+{
+  "engine": "Chromium",
+  "results": [
+    {
+      "name": "Tenant cannot activate without a verified recovery contact",
+      "status": "passed"
+    },
+    {
+      "name": "Owner nominates a bounded recovery contact in the interface",
+      "status": "passed"
+    },
+    {
+      "name": "Unrelated account cannot enumerate recovery nominations",
+      "status": "passed"
+    },
+    {
+      "name": "Nominated account verifies consent without gaining access",
+      "status": "passed"
+    },
+    {
+      "name": "Nominee confirms the registered email address with a single-use code",
+      "status": "passed"
+    },
+    {
+      "name": "Independent operator approves and tenant readiness permits activation",
+      "status": "passed"
+    },
+    {
+      "name": "Declining a replacement preserves the approved contact",
+      "status": "passed"
+    },
+    {
+      "name": "Replacement activates only after fresh consent and independent approval",
+      "status": "passed"
+    },
+    {
+      "name": "Contact revocation removes readiness without suspending the tenant",
+      "status": "passed"
+    },
+    {
+      "name": "Recovery review and history fit a mobile viewport",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

@@ -1,0 +1,27 @@
+{
+  "mode": "ai-saved-review-browser",
+  "checker": "ai-saved-review-check.mjs",
+  "started_at": "2026-10-05T21:02:44.704571+00:00",
+  "scope": "Original unmodified Makefile mode on a fresh actual local Chrome/API/PGlite synthetic fixture; not native/UAT/hosted/manual qualification",
+  "exit_code": 1,
+  "wrapper_error": "HTTPStatusError: Client error '404 Not Found' for url 'http://127.0.0.1:8185/index.html'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404",
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-aq93i24m/ai-saved-review-browser.log",
+    "published_sha256": "7c93c47a6214dd99280e5464acc03ae22e9b73cef56113194c50313d51ccb273"
+  },
+  "archived_outputs": [],
+  "fresh_result_reports": [],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": [],
+  "fixture_observations": [],
+  "source_changes": [],
+  "build_asset_changes": [],
+  "finished_at": "2026-10-05T21:02:48.644250+00:00",
+  "complete_fixture_observation": false,
+  "honest_local_result": "FAILED_OR_INCOMPLETE"
+}

@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-10-05T21:27:04.983488+00:00",
+  "scope": "Root-reviewed checker-only corrections; actual focused/full qualification remains NOT_RUN for corrected bytes. No application/API/CSS/build/SQL changes.",
+  "source_changes": [
+    {
+      "path": "tools/browser/ai-planning-check.mjs",
+      "before_sha256": "2491dadc371ad0eaf2bf705b039ad177d394456c2ead462bd38333c6f06e0861",
+      "after_sha256": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790",
+      "preserved_baseline": "docs/evidence/sprint-0.35-browser-checker-corrections/ai-planning-check.mjs.before"
+    },
+    {
+      "path": "tools/browser/tola-ai-extension-check.mjs",
+      "before_sha256": "0774474731e8879f1fbfced00f413ea8882223b5dcf2318c4b8e77a05d296844",
+      "after_sha256": "8fbfa8887c802d879ee9b12e90a8e072c4d8c48708b7e0227d09171ae8f84335",
+      "preserved_baseline": "docs/evidence/sprint-0.35-browser-checker-corrections/tola-ai-extension-check.mjs.before"
+    },
+    {
+      "path": "tools/browser/a11y-check.mjs",
+      "before_sha256": "ab0f2323815e19236535a122f1a80075b5bbd12c104c2ccc777a6f01ef861073",
+      "after_sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+      "preserved_baseline": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-check.mjs.before"
+    }
+  ],
+  "failed_full_browser_proof_sha256": "342c8cd7baaf738a81d0d67f7d7bac206614d21ffc388685df28de63b2d6db92",
+  "original_failed_output_namespace_preserved": true,
+  "correction_review": [
+    "390px 1px collapsed-border rounding uses existing full visibility tolerance;320px actual keyboard overflow and both native directions retained",
+    "All40 actual owning migration files/count/order/checksums rather than obsolete39 expectation; unchanged authority assertions",
+    "Keyboard-only actual enabled option label and observed Date AX order; exact original author/independent-reviewer flow retained; current default date private proof passes"
+  ],
+  "actual_application_tests": "NOT_RUN_AFTER_CORRECTION"
+}

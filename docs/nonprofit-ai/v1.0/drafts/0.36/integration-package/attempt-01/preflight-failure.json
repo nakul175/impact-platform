@@ -1,0 +1,6 @@
+{
+  "recorded_at": "2026-10-05T21:28:04.751094+00:00",
+  "status": "STATIC_PREFLIGHT_REFUSED",
+  "cause": "Saved0.34 migration map uses basename keys; proposed current map used repository-relative keys. No SQL SHA changed; no package manifest or source integration was emitted.",
+  "correction": "Normalize exact known basename\u2194infrastructure/migrations prefix boundary; preserve map ordinals/counts and all exact hash values."
+}

@@ -1,0 +1,89 @@
+{
+  "id": "plan-portability",
+  "title": "Internal saved-plan downloads",
+  "domain": "AI enablement and portability",
+  "owner": "/root",
+  "status": "COMPLETE",
+  "summary": "Bounded internal JSON downloads saved in locally qualified0.34 checkpoint740f813. Independent historical upgrade, current authority, original bytes, full API/unit and actual download browser pass; hosted release is separate.",
+  "next_step": "Retain exact0.34 proof; include downloads in final combined0.35 browser/CI release gates.",
+  "eta": {
+    "earliest": "2026-10-05T20:45:00Z",
+    "latest": "2026-10-05T21:45:00Z",
+    "confidence": "LOW",
+    "basis": "UI integrated/typechecked and actual checker in preparation; correctedSQL/backend still under review."
+  },
+  "delivered": [
+    "Bounded JSON-only contract, authority and immutable-byte approach reviewed"
+  ],
+  "evidence": [
+    {
+      "title": "Preserved unregistered download draft",
+      "path": "docs/nonprofit-ai/v1.0/drafts/0.34/DRAFT-MANIFEST.json",
+      "result": "DRAFT_NOT_INTEGRATED",
+      "scope": "Tmp-only code/proofs and failed attempts retained; separate pure/UI/native scratch scopes; export API NOT_RUN; do not apply0040 yet.",
+      "recorded_at": "2026-10-05T19:14:17.835057Z"
+    },
+    {
+      "title": "Current-source actual plan downloads",
+      "path": "docs/evidence/sprint-0.34-export-browser-tests.json",
+      "result": "PASS_15_GROUPS_FOUR_BYTE_VERIFIED_DOWNLOADS",
+      "scope": "Synthetic local actual API/database and Chrome;303 sources and served bytes unchanged;3 clean axe scans. No hosted UAT or formal acceptance.",
+      "recorded_at": "2026-10-05T19:54:37.437Z"
+    },
+    {
+      "title": "Exact saved0.34 local checkpoint",
+      "path": "docs/evidence/sprint-0.34-saved-checkpoint.json",
+      "result": "SAVED_LOCAL_740F813",
+      "scope": "631 committed source/evidence/documentation blobs verified. Native2045/local1980/unit1185/export-browser15 bounded scopes pass; hosted CI/main merge/deployment remain unrun.",
+      "recorded_at": "2026-10-05T20:11:14.279019Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T20:13:11.934776Z",
+  "history": [
+    {
+      "at": "2026-10-05T19:14:17.845755Z",
+      "status": "BUILDING",
+      "summary": "Unregistered download drafts preserved.79 backend pure,21 adapter pure,16 synthetic UI and16 native SQL scratch groups pass within their separate scopes; SQL compatibility/sealing and further probes remain unresolved.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+      }
+    },
+    {
+      "at": "2026-10-05T19:23:27.174163Z",
+      "status": "BUILDING",
+      "summary": "Exporter/contracts/pure cases and actual download interface are being integrated. SQL correction passes19 draft native groups; worker ordinary-audit compatibility review continues. Actual export API/browser not yet qualified.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T21:45:00Z",
+        "confidence": "LOW",
+        "basis": "UI integrated/typechecked and actual checker in preparation; correctedSQL/backend still under review."
+      }
+    },
+    {
+      "at": "2026-10-05T19:58:12.617898Z",
+      "status": "TESTING",
+      "summary": "Registered JSON downloads pass82 pure,148 native focused and15 actual browser groups, including4 original-byte downloads. Historical HTTP upgrade adds export only after independent review and preserves revoked access.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T21:45:00Z",
+        "confidence": "LOW",
+        "basis": "UI integrated/typechecked and actual checker in preparation; correctedSQL/backend still under review."
+      }
+    },
+    {
+      "at": "2026-10-05T20:13:11.934776Z",
+      "status": "COMPLETE",
+      "summary": "Bounded internal JSON downloads saved in locally qualified0.34 checkpoint740f813. Independent historical upgrade, current authority, original bytes, full API/unit and actual download browser pass; hosted release is separate.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T21:45:00Z",
+        "confidence": "LOW",
+        "basis": "UI integrated/typechecked and actual checker in preparation; correctedSQL/backend still under review."
+      }
+    }
+  ]
+}

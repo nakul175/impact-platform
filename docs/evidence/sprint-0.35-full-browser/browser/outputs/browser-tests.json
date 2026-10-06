@@ -1,0 +1,38 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Development sign-in and workspace load",
+      "status": "passed"
+    },
+    {
+      "name": "Create programme and read its durable revision",
+      "status": "passed"
+    },
+    {
+      "name": "Capture and submit a manual observation",
+      "status": "passed"
+    },
+    {
+      "name": "Author cannot approve their submitted record",
+      "status": "passed"
+    },
+    {
+      "name": "Independent reviewer approves the submitted revision",
+      "status": "passed"
+    },
+    {
+      "name": "Calculate a provisional pooled result",
+      "status": "passed"
+    },
+    {
+      "name": "Mobile navigation and bounded page width",
+      "status": "passed"
+    },
+    {
+      "name": "Logout invalidates the browser session",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

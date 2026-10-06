@@ -8,6 +8,7 @@ import io
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tarfile
@@ -200,6 +201,98 @@ def test_plain_strips_everything_that_would_need_json_escaping():
     assert out == "abcdeok_1.2:3/4-5\n"  # cut ends the line; $(plain ...) drops it
 
 
+@pytest.mark.parametrize(
+    ("epoch", "hour", "expected"),
+    [
+        (0, "21", 75600),
+        (75600, "21", 86400),
+        (82800, "21", 79200),
+        (86399, "0", 1),
+        (28740, "08", 60),
+        (0, "00", 86400),
+    ],
+)
+def test_backup_schedule_preserves_next_utc_hour_without_gnu_date(epoch, hour, expected):
+    result = run_bash(
+        "source deploy/backup.sh; "
+        'date() { [ "$*" = "-u +%s" ] || return 99; printf "%s\\n" "$TEST_EPOCH"; }; '
+        "seconds_until_next_run",
+        {"BACKUP_LIBRARY": "1", "BACKUP_HOUR_UTC": hour, "TEST_EPOCH": str(epoch), "TZ": "Pacific/Honolulu"},
+    )
+    assert int(result.stdout) == expected
+
+
+@pytest.mark.parametrize("hour", ["-1", "24", "99", "abc"])
+def test_backup_schedule_refuses_an_invalid_hour(hour):
+    result = run_bash(
+        "source deploy/backup.sh; seconds_until_next_run",
+        {"BACKUP_LIBRARY": "1", "BACKUP_HOUR_UTC": hour},
+        check=False,
+    )
+    assert result.returncode != 0 and not result.stdout
+
+
+def test_backup_set_listing_excludes_partial_files_and_symlinks(tmp_path):
+    for name in ["20261003", "20261004", "20261005-extra", "202610", ".partial-20261006"]:
+        (tmp_path / name).mkdir()
+    (tmp_path / "20261006").write_text("not a directory")
+    (tmp_path / "20261007").symlink_to(tmp_path / "20261004", target_is_directory=True)
+    result = run_bash(
+        "source deploy/backup.sh; sets_in " + shlex.quote(str(tmp_path)),
+        {"BACKUP_LIBRARY": "1"},
+    )
+    assert result.stdout.splitlines() == ["20261004", "20261003"]
+
+
+def test_backup_preserves_gnu_byte_accounting():
+    result = run_bash(
+        "source deploy/backup.sh; "
+        'stat() { [ "$1" = "-c" ] || return 99; echo 17; }; '
+        'du() { [ "$1" = "-sb" ] || return 99; printf "4321\\tfixture\\n"; }; '
+        "file_bytes fixture; set_bytes fixture",
+        {"BACKUP_LIBRARY": "1"},
+    )
+    assert result.stdout.splitlines() == ["17", "4321"]
+
+
+def test_backup_bsd_byte_fallback_handles_space_and_zero_length_files(tmp_path):
+    directory = tmp_path / "set with spaces"
+    directory.mkdir()
+    (directory / "empty").write_bytes(b"")
+    (directory / "payload").write_bytes(b"abcde")
+    sizes = {str(path): path.stat().st_size for path in [directory, *directory.iterdir()]}
+    arms = " ".join(shlex.quote(path) + ") echo " + str(size) + ";;" for path, size in sizes.items())
+    result = run_bash(
+        "source deploy/backup.sh; "
+        'du() { return 1; }; stat() { [ "$1 $2" = "-f %z" ] || return 1; '
+        'case "$3" in ' + arms + " *) return 1;; esac; }; "
+        "set_bytes " + shlex.quote(str(directory)),
+        {"BACKUP_LIBRARY": "1"},
+    )
+    assert int(result.stdout) == sum(sizes.values())
+
+
+@pytest.mark.parametrize(
+    ("override", "reason"),
+    [
+        ("stat() { return 1; };", "STEP_FAILED_manifest"),
+        ("set_bytes() { return 1; };", "STEP_FAILED_set_size"),
+    ],
+)
+def test_backup_metadata_failure_keeps_the_previous_complete_set(tmp_path, override, reason):
+    first_result, root, status = backup(tmp_path, WEEKDAY="1")
+    assert first_result.returncode == 0
+    previous = json.loads((status / "backup-status.json").read_text())
+    before = {path.name: path.read_bytes() for path in (root / "daily" / previous["set"]).iterdir()}
+    result, _, _ = backup(tmp_path, call=override + " take_set", WEEKDAY="1")
+    assert result.returncode != 0
+    report = json.loads((status / "backup-status.json").read_text())
+    assert (report["result"], report["reason"]) == ("failed", reason)
+    assert report["last_success"] == previous["last_success"]
+    assert [path.name for path in (root / "daily").iterdir()] == [previous["set"]]
+    assert {path.name: path.read_bytes() for path in (root / "daily" / previous["set"]).iterdir()} == before
+
+
 # ---- the drill's restore script ------------------------------------------------------------
 
 
@@ -207,9 +300,9 @@ def stub_tools(directory, failing=()):
     directory.mkdir()
     log = directory / "calls.log"
     for name in ["pg_isready", "createdb", "pg_restore", "psql"]:
-        body = '#!/bin/bash\necho "' + name + ' $*" >>' + str(log) + "\n"
+        body = '#!/bin/bash\necho "' + name + ' $*" >>' + shlex.quote(str(log)) + "\n"
         if name == "psql":
-            body += "cat >>" + str(directory / "roles.sql") + "\n"
+            body += "cat >>" + shlex.quote(str(directory / "roles.sql")) + "\n"
         if name in failing:
             body += "exit 1\n"
         (directory / name).write_text(body)
@@ -242,7 +335,7 @@ def drill_restore(tmp_path, *args, failing=()):
     tools = tmp_path / "bin"
     log = stub_tools(tools, failing)
     result = run_bash(
-        "bash deploy/drill_restore.sh " + " ".join(args),
+        "bash deploy/drill_restore.sh " + shlex.join(args),
         {"BACKUP_ROOT": str(tmp_path / "backups"), "PATH": str(tools) + ":" + os.environ["PATH"]},
         check=False,
     )
@@ -264,6 +357,7 @@ def test_drill_restores_the_newest_set_and_skips_the_bootstrap_superuser(tmp_pat
         "restore_impact",
         "restore_identity_provider",
     }
+    assert all(isinstance(value, (int, float)) and value >= 0 for value in report["seconds"].values())
     calls = log.read_text()
     assert "createdb impact" in calls and "createdb keycloak" in calls
     assert "--exit-on-error" in calls and "20261004/impact.dump" in calls
@@ -303,6 +397,42 @@ def test_drill_restore_reports_a_damaged_set_or_a_failed_restore(tmp_path):
     assert report["failed_step"] == "no_backup_set"
     _, report, _ = drill_restore(case(tmp_path, "bad"), "../../etc")
     assert report["failed_step"] == "no_backup_set"
+
+
+def test_drill_restore_handles_a_root_containing_spaces_and_quotes(tmp_path):
+    directory = case(tmp_path, "synthetic owner's restore")
+    make_set(directory / "backups", "daily", "20261004")
+    result, report, log = drill_restore(directory)
+    assert result.returncode == 0, result.stderr
+    assert report["result"] == "ok" and "createdb impact" in log.read_text()
+
+
+@pytest.mark.parametrize("selector", ["daily/20261004/../../outside", "daily/20261004-extra", "daily/202610"])
+def test_drill_restore_rejects_nonexact_selectors_without_reading_manifests(tmp_path, selector):
+    make_set(tmp_path / "backups", "daily", "20261004")
+    outside = tmp_path / "backups" / "outside"
+    outside.mkdir()
+    (outside / "manifest.json").write_text('{"must_not_read":"outside"}')
+    result, report, log = drill_restore(tmp_path, selector)
+    assert result.returncode != 0
+    assert report["failed_step"] == "no_backup_set" and report["manifest"] is None
+    assert "createdb" not in log.read_text()
+
+
+def test_drill_restore_ignores_or_refuses_a_symlinked_set(tmp_path):
+    newest = case(tmp_path, "newest")
+    root = newest / "backups"
+    make_set(root, "daily", "20261003")
+    target = make_set(newest / "outside", "daily", "20261004")
+    (root / "daily" / "20261004").symlink_to(target, target_is_directory=True)
+    result, report, _ = drill_restore(newest)
+    assert result.returncode == 0 and report["set"] == "daily/20261003"
+    explicit = case(tmp_path, "explicit")
+    (explicit / "backups" / "daily").mkdir()
+    (explicit / "backups" / "daily" / "20261004").symlink_to(target, target_is_directory=True)
+    result, report, log = drill_restore(explicit, "daily/20261004")
+    assert result.returncode != 0 and report["failed_step"] == "manifest_missing"
+    assert report["manifest"] is None and "createdb" not in log.read_text()
 
 
 # ---- the drill's checks --------------------------------------------------------------------

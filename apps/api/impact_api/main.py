@@ -23,6 +23,7 @@ from .store import Database
 from .tenant_lifecycle import TenantLifecycle
 from .access_bootstrap import AccessBootstrap
 from .authority_renewal import AuthorityRenewal
+from .access_upgrade import AccessUpgrade
 from .recovery_contacts import RecoveryContacts
 from .worker_status import WorkerStatus
 from .delivery_operations import DeliveryOperations
@@ -35,6 +36,14 @@ from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
+from .ai_enablement import AIEnablement
+from .ai_adoption_plans import AIAdoptionPlans
+from .ai_plan_exports import AIPlanExports
+from .ai_impact_references import AIImpactReferences
+from .human_advice import HumanAdviceCases
+from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
+from .ai_advisory_provider import OpenAIAdvisory
+from .contracts import validate
 
 LOG = logging.getLogger("impact")
 MAX_BODY = 262144
@@ -97,13 +106,19 @@ def create_app():
     auth = Auth(s, db)
     account = Account(auth)
     service = Service(s, db)
+    ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
+    ai_plans = AIAdoptionPlans(service)
+    ai_plan_exports = AIPlanExports(service)
+    human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
+    access_upgrade = AccessUpgrade(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
+    ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
     delivery_operations = DeliveryOperations(lifecycle)
@@ -294,6 +309,32 @@ def create_app():
         body = await strict_body(request)
         return await run_in_threadpool(
             bootstrap_access.command, auth.resolve(request), action, body, None, uuid(request_id)
+        )
+
+    @app.get("/v1/platform/access-upgrades")
+    def access_upgrade_directory(request: Request, cursor: str | None = None):
+        return access_upgrade.directory(auth.resolve(request), after=cursor)
+
+    @app.get("/v1/platform/tenants/{tenant_id}/access-upgrades")
+    def tenant_access_upgrades(request: Request, tenant_id: str, cursor: str | None = None):
+        return access_upgrade.directory(auth.resolve(request), uuid(tenant_id), cursor)
+
+    @app.get("/v1/platform/tenants/{tenant_id}/access-upgrade-preview")
+    def access_upgrade_preview(request: Request, tenant_id: str):
+        return access_upgrade.preview(auth.resolve(request), uuid(tenant_id))
+
+    @app.post("/v1/platform/tenants/{tenant_id}/access-upgrade")
+    async def request_access_upgrade(request: Request, tenant_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            access_upgrade.command, auth.resolve(request), "request", body, uuid(tenant_id)
+        )
+
+    @app.post("/v1/platform/tenants/{tenant_id}/access-upgrades/{request_id}/actions/{action}")
+    async def access_upgrade_action(request: Request, tenant_id: str, request_id: str, action: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            access_upgrade.command, auth.resolve(request), action, body, uuid(tenant_id), uuid(request_id)
         )
 
     @app.get("/v1/platform/authority-renewals")
@@ -487,6 +528,173 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/collection-rounds/{obj}/coverage")
     def round_coverage(request: Request, tenant: str, obj: str):
         return service.forms.read(auth.resolve(request), uuid(tenant), "get_round_coverage", uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice")
+    def human_advice_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return human_advice.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/eligible-peers")
+    def human_advice_peers(
+        request: Request, tenant: str, context_plan_id: str, limit: int = 50, cursor: str | None = None
+    ):
+        return human_advice.eligible_peers(
+            auth.resolve(request), uuid(tenant), uuid(context_plan_id), limit, cursor
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}")
+    def human_advice_get(request: Request, tenant: str, obj: str):
+        return human_advice.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/revisions")
+    def human_advice_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return human_advice.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/revisions/{revision_id}")
+    def human_advice_revision(request: Request, tenant: str, obj: str, revision_id: str):
+        return human_advice.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/human-advice", status_code=201)
+    async def human_advice_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("HumanAdviceCreate", body)
+        return await run_in_threadpool(
+            human_advice.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    def advice_action(action):
+        async def handler(request: Request, tenant: str, obj: str):
+            body = await strict_body(request)
+            # Only the closed, generated action routes below reach this handler.
+            schema = "HumanAdvice" + "".join(piece.title() for piece in action.split("-"))
+            validate(schema, body)
+            return await run_in_threadpool(
+                human_advice.save,
+                auth.resolve(request),
+                uuid(tenant),
+                body,
+                request.state.correlation,
+                uuid(obj),
+                action,
+            )
+
+        handler.__name__ = "human_advice_" + action.replace("-", "_")
+        return handler
+
+    for action in HUMAN_ADVICE_ACTIONS:
+        app.add_api_route(
+            "/v1/tenants/{tenant}/ai-enablement/human-advice/{obj}/actions/" + action,
+            advice_action(action),
+            methods=["POST"],
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/catalog")
+    def ai_catalog(request: Request, tenant: str):
+        return ai_enablement.catalog(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solutions")
+    def ai_solutions(request: Request, tenant: str):
+        return ai_enablement.solutions(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
+    def ai_task_templates(request: Request, tenant: str):
+        return ai_enablement.task_templates(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans")
+    def ai_plan_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return ai_plans.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}")
+    def ai_plan_get(request: Request, tenant: str, obj: str):
+        return ai_plans.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions/{revision_id}/guidance")
+    def ai_plan_guidance(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_plans.guidance(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions/{revision_id}/exports")
+    async def ai_plan_export(request: Request, tenant: str, obj: str, revision_id: str):
+        body = await strict_body(request)
+        validate("AIPlanExportRequest", body)
+        return await run_in_threadpool(
+            ai_plan_exports.create,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/revisions")
+    def ai_plan_history(request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None):
+        return ai_plans.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans", status_code=201)
+    async def ai_plan_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdoptionPlanCreate", body)
+        return await run_in_threadpool(
+            ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}")
+    async def ai_plan_update(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIAdoptionPlanUpdate", body)
+        return await run_in_threadpool(
+            ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation, uuid(obj)
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")
+    async def ai_impact_reference_save(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIImpactReferenceCommand", body)
+        return await run_in_threadpool(
+            ai_impact.save,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference/result")
+    def ai_impact_reference_result(request: Request, tenant: str, obj: str):
+        return ai_impact.result(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/assessment")
+    async def ai_assessment(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAssessmentRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.assessment, auth.resolve(request), uuid(tenant), body["profile"]
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory")
+    async def ai_advisory(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdvisoryRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.advisory, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
+    async def ai_cost_comparison(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AICostComparisonRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.cost_comparison, auth.resolve(request), uuid(tenant), body
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
+    async def ai_pilot_evaluation(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIPilotEvaluationRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.pilot_evaluation, auth.resolve(request), uuid(tenant), body
+        )
 
     @app.get("/v1/tenants/{tenant}/frameworks/{obj}/completeness")
     def framework_completeness(request: Request, tenant: str, obj: str):
@@ -996,6 +1204,23 @@ def create_app():
 
     if (ROOT / "apps/web/dist/assets").exists():
         app.mount("/assets", StaticFiles(directory=ROOT / "apps/web/dist/assets"), name="assets")
+
+    @app.get("/ai-walkthrough.html", include_in_schema=False)
+    def fictional_ai_walkthrough():
+        # Public static examples only: no identity, tenant, provider or DB access.
+        target = ROOT / "apps/web/dist/ai-walkthrough.html"
+        if not target.exists():
+            return JSONResponse({"message": "Fictional walkthrough unavailable."}, 503)
+        return FileResponse(
+            target,
+            headers={
+                "Content-Security-Policy": (
+                    "default-src 'none'; script-src 'self'; style-src 'self'; "
+                    "style-src-attr 'unsafe-inline'; connect-src 'none'; img-src 'none'; "
+                    "object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+                )
+            },
+        )
 
     @app.get("/")
     def index():

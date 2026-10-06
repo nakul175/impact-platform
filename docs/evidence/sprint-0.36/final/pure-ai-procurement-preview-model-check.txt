@@ -1,0 +1,220 @@
+TAP version 13
+# Subtest: Actual current local generators supply the public catalog and valid profile
+ok 1 - Actual current local generators supply the public catalog and valid profile
+  ---
+  duration_ms: 3.288749
+  type: 'test'
+  ...
+# Subtest: Exact existing four-field text retained for non-sensitive profile
+ok 2 - Exact existing four-field text retained for non-sensitive profile
+  ---
+  duration_ms: 0.968363
+  type: 'test'
+  ...
+# Subtest: Exact existing sensitive-data boundary retained without other string changes
+ok 3 - Exact existing sensitive-data boundary retained without other string changes
+  ---
+  duration_ms: 0.585906
+  type: 'test'
+  ...
+# Subtest: Exact fallback supplier wording without shortlist
+ok 4 - Exact fallback supplier wording without shortlist
+  ---
+  duration_ms: 0.40126
+  type: 'test'
+  ...
+# Subtest: Current catalog and supplier question ordering matches a literal expectation
+ok 5 - Current catalog and supplier question ordering matches a literal expectation
+  ---
+  duration_ms: 0.779081
+  type: 'test'
+  ...
+# Subtest: Unicode and newline text is preserved without normalizing existing work
+ok 6 - Unicode and newline text is preserved without normalizing existing work
+  ---
+  duration_ms: 1.830337
+  type: 'test'
+  ...
+# Subtest: Preview retains all existing fields byte-for-byte without mutating source
+ok 7 - Preview retains all existing fields byte-for-byte without mutating source
+  ---
+  duration_ms: 1.29633
+  type: 'test'
+  ...
+# Subtest: Apply returns exactly four fields and a bounded parent merge retains unrelated work
+ok 8 - Apply returns exactly four fields and a bounded parent merge retains unrelated work
+  ---
+  duration_ms: 0.765355
+  type: 'test'
+  ...
+# Subtest: Empty or whitespace goal refuses new preview
+ok 9 - Empty or whitespace goal refuses new preview
+  ---
+  duration_ms: 1.152842
+  type: 'test'
+  ...
+# Subtest: Current management hint is required for preview and prior apply
+ok 10 - Current management hint is required for preview and prior apply
+  ---
+  duration_ms: 0.99334
+  type: 'test'
+  ...
+# Subtest: Pending saved-plan action refuses new preview and prior apply
+ok 11 - Pending saved-plan action refuses new preview and prior apply
+  ---
+  duration_ms: 0.549695
+  type: 'test'
+  ...
+# Subtest: Exact actor/session/context binding: base
+ok 12 - Exact actor/session/context binding: base
+  ---
+  duration_ms: 1.523504
+  type: 'test'
+  ...
+# Subtest: Exact actor/session/context binding: principalId
+ok 13 - Exact actor/session/context binding: principalId
+  ---
+  duration_ms: 1.034753
+  type: 'test'
+  ...
+# Subtest: Exact actor/session/context binding: sessionIdentity
+ok 14 - Exact actor/session/context binding: sessionIdentity
+  ---
+  duration_ms: 2.137655
+  type: 'test'
+  ...
+# Subtest: Exact saved-head binding: object_id
+ok 15 - Exact saved-head binding: object_id
+  ---
+  duration_ms: 1.030358
+  type: 'test'
+  ...
+# Subtest: Exact saved-head binding: revision_id
+ok 16 - Exact saved-head binding: revision_id
+  ---
+  duration_ms: 0.92908
+  type: 'test'
+  ...
+# Subtest: New-plan versus saved-plan identity invalidates preview
+ok 17 - New-plan versus saved-plan identity invalidates preview
+  ---
+  duration_ms: 1.096206
+  type: 'test'
+  ...
+# Subtest: Full profile binding includes a field not interpolated into text
+ok 18 - Full profile binding includes a field not interpolated into text
+  ---
+  duration_ms: 1.581438
+  type: 'test'
+  ...
+# Subtest: Ordered shortlist and unavailable stored selection invalidate preview
+ok 19 - Ordered shortlist and unavailable stored selection invalidate preview
+  ---
+  duration_ms: 5.354984
+  type: 'test'
+  ...
+# Subtest: Full selected directory row and relevant wording stay bound
+ok 20 - Full selected directory row and relevant wording stay bound
+  ---
+  duration_ms: 1.657936
+  type: 'test'
+  ...
+# Subtest: Criterion identity, label, question content and ordering stay bound
+ok 21 - Criterion identity, label, question content and ordering stay bound
+  ---
+  duration_ms: 3.664048
+  type: 'test'
+  ...
+# Subtest: Current catalog and solutions editions stay bound
+ok 22 - Current catalog and solutions editions stay bound
+  ---
+  duration_ms: 1.347336
+  type: 'test'
+  ...
+# Subtest: Each existing procurement field edit invalidates confirmation
+ok 23 - Each existing procurement field edit invalidates confirmation
+  ---
+  duration_ms: 3.307574
+  type: 'test'
+  ...
+# Subtest: Whole plan edits outside procurement invalidate confirmation
+ok 24 - Whole plan edits outside procurement invalidate confirmation
+  ---
+  duration_ms: 0.784846
+  type: 'test'
+  ...
+# Subtest: Observed edit then undo cannot restore confirmation with parent generation
+ok 25 - Observed edit then undo cannot restore confirmation with parent generation
+  ---
+  duration_ms: 0.925186
+  type: 'test'
+  ...
+# Subtest: Observed management loss then return cannot restore confirmation
+ok 26 - Observed management loss then return cannot restore confirmation
+  ---
+  duration_ms: 1.274169
+  type: 'test'
+  ...
+# Subtest: Observed pending save then return cannot restore confirmation
+ok 27 - Observed pending save then return cannot restore confirmation
+  ---
+  duration_ms: 0.805512
+  type: 'test'
+  ...
+# Subtest: Tampered proposed text or binding cannot be applied
+ok 28 - Tampered proposed text or binding cannot be applied
+  ---
+  duration_ms: 0.822702
+  type: 'test'
+  ...
+# Subtest: Malformed known values, generations and oversize budget refuse preview
+ok 29 - Malformed known values, generations and oversize budget refuse preview
+  ---
+  duration_ms: 0.909248
+  type: 'test'
+  ...
+# Subtest: Each existing field accepts its exact JS length boundary and rejects the next unit
+ok 30 - Each existing field accepts its exact JS length boundary and rejects the next unit
+  ---
+  duration_ms: 2.97757
+  type: 'test'
+  ...
+# Subtest: Existing UTF-16 requirement cap preserves a full pair at the exact boundary
+ok 31 - Existing UTF-16 requirement cap preserves a full pair at the exact boundary
+  ---
+  duration_ms: 0.378595
+  type: 'test'
+  ...
+# Subtest: Existing requirement cap retains its split-surrogate behavior without a new claim
+ok 32 - Existing requirement cap retains its split-surrogate behavior without a new claim
+  ---
+  duration_ms: 0.290508
+  type: 'test'
+  ...
+# Subtest: Existing question cap preserves exact newline and UTF-16 boundary
+ok 33 - Existing question cap preserves exact newline and UTF-16 boundary
+  ---
+  duration_ms: 0.438731
+  type: 'test'
+  ...
+# Subtest: Existing worksheet whitespace still requires explicit replacement disclosure
+ok 34 - Existing worksheet whitespace still requires explicit replacement disclosure
+  ---
+  duration_ms: 0.400429
+  type: 'test'
+  ...
+# Subtest: All model and actual generator source bytes stay unchanged during pure checks
+ok 35 - All model and actual generator source bytes stay unchanged during pure checks
+  ---
+  duration_ms: 1.160538
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 88.507192

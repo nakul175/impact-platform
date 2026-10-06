@@ -1,0 +1,164 @@
+{
+  "recorded_at": "2026-10-05T21:28:26.685111+00:00",
+  "scope": "Immutable copies of genuine passing initial0.35 native/local/unit/lint reports before checker corrections affected their qualified source inventory. No current corrected-source pass is asserted by these copies.",
+  "reason": "Three reviewed registeredbrowserchecker corrections changed417-source proof inputs; fresh rootnative/local/unit/lint execution required. Production build72inputs contain noneofthe changedcheckerfiles.",
+  "file_count": 26,
+  "files": [
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-applied-migrations.json",
+      "sha256": "85795de178624b8a5a31f71bf656e215fe76573b1c8e95f23ad5226bd53fffce",
+      "size_bytes": 10944
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-golden.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-golden.json",
+      "sha256": "cd77f1a700b4055add3513bb86d5fe61474693a57350138c98d31bf6e78cfe29",
+      "size_bytes": 7576
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-reused/nonprofit-ai-content-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-reused/nonprofit-ai-content-applied-migrations.json",
+      "sha256": "dd4060efd7fbc3bb622f809617a8d58de2812a78b40e3040f181bafd3ba91adf",
+      "size_bytes": 10933
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-reused/nonprofit-ai-framework-old-pin-visibility-observation.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-reused/nonprofit-ai-framework-old-pin-visibility-observation.json",
+      "sha256": "04ef1bdc65ce31ec9ad3ecd7acd0af056a05de3065b34ab665ee29cef4a39724",
+      "size_bytes": 5576
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-reused/sprint-0.34-ai-plan-export-pglite-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-reused/sprint-0.34-ai-plan-export-pglite-applied-migrations.json",
+      "sha256": "70994a36d9b6a939e316b0a2a5bf2b1ccf4b7b1d2443afc6c5a1bea376abd804",
+      "size_bytes": 10911
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-reused/sprint-0.33-listing-visibility-pglite-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-reused/sprint-0.33-listing-visibility-pglite-applied-migrations.json",
+      "sha256": "b224bf27ce4413946efb21e25d8f65d07d48a618c9eed6a1649469e964084661",
+      "size_bytes": 10919
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-reused/sprint-0.33-retained-visibility-pglite-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-reused/sprint-0.33-retained-visibility-pglite-applied-migrations.json",
+      "sha256": "85795de178624b8a5a31f71bf656e215fe76573b1c8e95f23ad5226bd53fffce",
+      "size_bytes": 10944
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-source-proof.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-source-proof.json",
+      "sha256": "da390c8273ed410246a38f68ea4266792a09499e09e2dd5e23196d0fec31beeb",
+      "size_bytes": 94650
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-local-tests.xml",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-local-tests.xml",
+      "sha256": "710071e30c48731267765d6f4328b758e1fc248dc66202cf9adf9706cad6961a",
+      "size_bytes": 374624
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-applied-migrations.json",
+      "sha256": "e463fa10bbe5775db3ce4a6b46d45bed04ba8551d05497b64b114bcc167ca82f",
+      "size_bytes": 7063
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-golden.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-golden.json",
+      "sha256": "fcb6d70e91006288d3a77955d6388bd729e49282613cec5ae76f5a101850770a",
+      "size_bytes": 7576
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-qualification.json",
+      "sha256": "bd7ff5139d0341e5781182667887ebf138b2a0d66256d4e46eb04c7ce0a3d48f",
+      "size_bytes": 14439
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-restart-phase_1-tests.xml",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-restart-phase_1-tests.xml",
+      "sha256": "04dd7d9776cd0863e5177560b3184686babc48eeea1b087ebd8d8ed18fd2af13",
+      "size_bytes": 352
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-restart-phase_2-tests.xml",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-restart-phase_2-tests.xml",
+      "sha256": "08ef236c942678c51a2288570426e6ce3b8159d69c32b222faac14d8f0c8907b",
+      "size_bytes": 352
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-restore-drill.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-restore-drill.json",
+      "sha256": "833e2a11543e1ce2cf5ac1763ca5dc6ccd7c7c5f21104deabf38a5e549f70438",
+      "size_bytes": 3431
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-reused/sprint-0.33-listing-visibility-native-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-reused/sprint-0.33-listing-visibility-native-applied-migrations.json",
+      "sha256": "10912d061dee1a5b683caba6251f1d6275d178465f51a07643d3d51c1f745d65",
+      "size_bytes": 10930
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-reused/nonprofit-ai-content-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-reused/nonprofit-ai-content-applied-migrations.json",
+      "sha256": "cc3c56b37a4a510cbc1c6132634c555aadf9df63a05d340906355afa2d8b9f63",
+      "size_bytes": 10944
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-reused/sprint-0.34-ai-plan-export-native-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-reused/sprint-0.34-ai-plan-export-native-applied-migrations.json",
+      "sha256": "35db6b7f2fd63eda639060a5b4d91cc7f61a47a29d6f54e1bba1a40d90ad523f",
+      "size_bytes": 10922
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-reused/nonprofit-ai-framework-old-pin-visibility-observation.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-reused/nonprofit-ai-framework-old-pin-visibility-observation.json",
+      "sha256": "8f6300263b78a1b1329796a7aed242415d418d07a802d50961eb8f8cf7a24538",
+      "size_bytes": 5576
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-reused/sprint-0.33-retained-visibility-native-applied-migrations.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-reused/sprint-0.33-retained-visibility-native-applied-migrations.json",
+      "sha256": "9781ff6aa1e2ee6ea96041775c415170b45a64297841f900052acb681102729b",
+      "size_bytes": 10955
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-source-proof.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-source-proof.json",
+      "sha256": "e5755f80a1fce689f805c971b30dd428983ac0fa07c95e80e6dc44ebfe228410",
+      "size_bytes": 94872
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-native-tests.xml",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-full-native-tests.xml",
+      "sha256": "01a7b0bb1dee50bb4d7c8973b60558fba261e0de1816c4cb5bbc0f60e01030f6",
+      "size_bytes": 344563
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-lint-source-proof.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-lint-source-proof.json",
+      "sha256": "54eb25a6221dde14a09409c8870074702d14b7886f277dde6a5184b8b9006939",
+      "size_bytes": 23388
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-unit-golden.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-unit-golden.json",
+      "sha256": "76b5861ff8a58226a0eba6b62e1f4ba95e87434685be3451c5305e2e9537e4d4",
+      "size_bytes": 6761
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-unit-summary.json",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-unit-summary.json",
+      "sha256": "00ec52e2286d2b22f02d81d53cfadb8f2f3daabca30775b212e857f1bab5c398",
+      "size_bytes": 94015
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-unit-tests.xml",
+      "preserved_path": "docs/evidence/sprint-0.35-initial-full-source-qualification/sprint-0.35-unit-tests.xml",
+      "sha256": "f7605f8ab02ff8568a8f3d064715afbbf722b4d3e9b0ce26044a7f262ab34cea",
+      "size_bytes": 228033
+    }
+  ]
+}

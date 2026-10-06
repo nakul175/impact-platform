@@ -1,0 +1,27 @@
+{
+  "scope": "Temporary synthetic component and request-function fixture only; not actual API, PostgreSQL, capability enforcement, audit, release or acceptance evidence",
+  "actual_api_qualification": "NOT_RUN",
+  "finished_at": "2026-10-05T11:28:12.705Z",
+  "results": [],
+  "errors": [
+    "page.evaluate: Execution context was destroyed, most likely because of a navigation\n    at f (/private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:48:8)\n    at /private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:98:27\n    at async check (/private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:76:3)\n    at async file:///private/tmp/tola-ai-portability-draft/ui-fixture-check.mjs:86:3"
+  ],
+  "blocked_external_requests": [],
+  "accessibility_scans": [],
+  "screenshots": [],
+  "source_hashes": {
+    "AIPlanPortability.tsx": "ad1c305635d2e69704a6a9b2cb098696a117360d42d7ec550e9a13a312a941ae",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "c726f322a68c85f7907371f0b8136af30d3e9d7f85c392d7823f5eec5c23d2f8",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "1845b7f75d86886b6164ff62c0258e6e2b6c2eab84d88b04f0ea5746b41076dc"
+  },
+  "current_source_hashes": {
+    "AIPlanPortability.tsx": "ad1c305635d2e69704a6a9b2cb098696a117360d42d7ec550e9a13a312a941ae",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "c726f322a68c85f7907371f0b8136af30d3e9d7f85c392d7823f5eec5c23d2f8",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "1845b7f75d86886b6164ff62c0258e6e2b6c2eab84d88b04f0ea5746b41076dc"
+  },
+  "sources_unchanged": true
+}

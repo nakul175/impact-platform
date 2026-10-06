@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-05T08:54:22.266378Z",
+  "status": "PREPARED_NOT_QUALIFIED",
+  "engine": "PostgreSQL",
+  "version": "17.11",
+  "host_platform": "aarch64-apple-darwin27.2.0",
+  "compiler": "Apple clang21.0.0",
+  "official_source": "https://ftp.postgresql.org/pub/source/v17.11/postgresql-17.11.tar.bz2",
+  "source_sha256": "dd27f2b3c59e73ed14aa3324901242bf69a032a6347805f274e6260322d42979",
+  "configure_options": [
+    "--without-icu",
+    "--without-readline",
+    "--without-zlib"
+  ],
+  "database_scope": "Isolated loopback disposable synthetic fixture database; no production credentials or data",
+  "connection_security": "SCRAM-SHA-256 host authentication; loopback-only; local Unix-socket authentication is trust",
+  "qualification_scope": "Environment preparation only. No application, concurrency, restore or migration qualification is asserted by this record."
+}

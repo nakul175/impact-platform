@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-05T09:02:46.270666Z",
+  "scope": "Focused synthetic local PGlite application and SET ROLE evidence; no native concurrency, deployment, provider or acceptance claim.",
+  "migration": "infrastructure/migrations/0036_reviewed_ceiling_widening.sql",
+  "profile_hash": "48e75c64f1ea2ddceeadce089d1c3f2b056254f236060f1c7d4a18ff439183b0",
+  "source_sha256": {
+    "apps/api/impact_api/access_upgrade.py": "870062a422e45d164b47c6af5e18e68597ebe92cf1fac8e82e81516d87c0856c",
+    "apps/api/impact_api/access_upgrade_contracts.py": "d514db42147ce72f7e8aad23babb55a8a8102b75a48eaeace9bba85765b5af63",
+    "apps/api/impact_api/authority_renewal.py": "9601132ea9cae44949950ded0e9fdcfd65211c21ccfb39cb583a97dd48b9336d",
+    "apps/api/impact_api/renewal_contracts.py": "785d9f5e8aa65e2df739247e0a90fb38666e5162ebb16cfac57e465ff48599f5",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+    "qualification/test_access_upgrade.py": "85efae3cbeaed4cef0589d406aa9b69b11f4f1e248fd3e26602fae41db1f2e14",
+    "qualification/test_access_upgrade_unit.py": "6b51d734d3a37889c35fe03fa046bd3a1ce63424c8fbaaa8973cb3547f5a2554"
+  },
+  "reports": [
+    {
+      "path": "docs/evidence/sprint-0.32-access-upgrade-unit.xml",
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Pure closed DTO, profile compatibility and exact registry seed equality checks."
+    },
+    {
+      "path": "docs/evidence/sprint-0.32-access-upgrade-local-tests.xml",
+      "passed": 62,
+      "failed": 0,
+      "skipped": 4,
+      "scope": "Access upgrade 33 passed / 4 native-only skips; existing authority renewal 29 passed; actual local HTTP API and migrated PGlite database."
+    }
+  ],
+  "native_pending": [
+    "Registered profile per-role capability relocation refused through provisioned platform login.",
+    "Registered profile purpose-bound relocation refused through provisioned platform login.",
+    "Unregistered forged target refused through provisioned platform login.",
+    "App, identity and worker provisioned logins cannot access the registry or review tables."
+  ],
+  "historical_generic_evidence_restored": true,
+  "live_tenant_access_changed": false,
+  "requirements_accepted": 0
+}

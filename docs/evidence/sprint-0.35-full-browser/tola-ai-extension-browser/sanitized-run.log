@@ -1,0 +1,71 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/passwords.json
+Ready at http://127.0.0.1:8185
+PASS Actual runtime and all 40 owning migration checks match frozen source
+PASS Unopened plan panels stay lazy and saved-plan reads expose no private core reference
+PASS Actual absent reference returns the neutral evidence view without saving
+PASS Authorized bounded measurement selection never saves before deliberate confirmation
+PASS A deliberate relationship creates a plan revision without changing governed source heads
+PASS A later reviewed period close cannot silently add official evidence to an absent snapshot pin
+PASS Only an explicit saved-pin refresh displays the governed official snapshot
+PASS Lost actual evidence response retries the exact operation and reopens a newer canonical plan
+PASS Current source authority loss clears prior labels and values; missing and hidden results remain opaque
+PASS Actual evidence keyboard/mobile/accessibility 1440px
+PASS Actual evidence keyboard/mobile/accessibility 390px
+PASS Actual evidence keyboard/mobile/accessibility 320px
+PASS Eligible internal-member selection uses the separately authorized minimal bounded lookup
+PASS Lost actual invitation response repeats one exact command and preserves parent draft edits
+PASS An invited ordinary member discovers the case while Open private material and directory remain unavailable
+PASS A declared conflict prevents sharing until the current member accepts scope with no conflict
+PASS Requester assignment is deliberate, pins the exact declaration and enables private sharing
+PASS Current participant authority failure removes previously shared private material
+PASS Human advice records distinct accountable actions without provider calls
+PASS Historical case reads keep the current parent draft unchanged and never submit a command
+PASS Requester closure pins exact saved advice and every server-issued action before ending adviser access
+PASS Actual member advice keyboard/mobile/accessibility 1440px
+PASS Actual member advice keyboard/mobile/accessibility 390px
+PASS Actual member advice keyboard/mobile/accessibility 320px
+PASS Nonparticipants cannot recover case content through generic AI reads or case history
+PASS A failed evidence read clears prior values and an explicit retry reads the actual backend
+PASS Actual read-only AI permission retains authorized evidence and denies relationship writes
+PASS All qualified sources remained unchanged and no external/provider request occurred

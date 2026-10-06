@@ -1,0 +1,57 @@
+{
+  "id": "release-ci",
+  "title": "Release and four required CI checks",
+  "domain": "Release qualification",
+  "owner": "/root",
+  "status": "INSPECTING",
+  "summary": "Frozen0.35 native/PGlite/unit/reference/build/formatting gates pass. All26 browser modes are running. No PR or CI spending has been triggered.",
+  "next_step": "Finish final source review and full local checks, then run hosted checks only after the pending bounded540-runner-minute approval arrives.",
+  "eta": {
+    "earliest": "2026-10-05T22:00:00Z",
+    "latest": "2026-10-06T01:45:00Z",
+    "confidence": "LOW",
+    "basis": "Local product checks are progressing; hosted CI depends on financial permission and actual runner availability."
+  },
+  "delivered": [],
+  "evidence": [],
+  "blockers": [
+    "Final0.35 broad browser qualification and four hosted jobs remain.",
+    "Human financial approval for up to540 runner-minutes is pending; no spending-limit increase is proposed."
+  ],
+  "updated_at": "2026-10-05T21:00:10.630204Z",
+  "history": [
+    {
+      "at": "2026-10-05T19:33:09.368364Z",
+      "status": "INSPECTING",
+      "summary": "Remote main is build0.29/schema33 at69c2cca; no open PR found. Local0.33 saved861c2a8 has a known privacy blocker;0.34 correction is under review.",
+      "eta": {
+        "earliest": "2026-10-05T22:00:00Z",
+        "latest": "2026-10-06T01:45:00Z",
+        "confidence": "LOW",
+        "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
+      }
+    },
+    {
+      "at": "2026-10-05T20:32:48.836319Z",
+      "status": "INSPECTING",
+      "summary": "Saved0.34 privacy/copy correction passed full local gates. Candidate0.35 dedicated review/demo browser scopes passed; mobile cost clarity fix and final full qualification remain. No PR/CI spending has been triggered.",
+      "eta": {
+        "earliest": "2026-10-05T22:00:00Z",
+        "latest": "2026-10-06T01:45:00Z",
+        "confidence": "LOW",
+        "basis": "Local product checks are progressing; hosted CI depends on financial permission and actual runner availability."
+      }
+    },
+    {
+      "at": "2026-10-05T21:00:10.630204Z",
+      "status": "INSPECTING",
+      "summary": "Frozen0.35 native/PGlite/unit/reference/build/formatting gates pass. All26 browser modes are running. No PR or CI spending has been triggered.",
+      "eta": {
+        "earliest": "2026-10-05T22:00:00Z",
+        "latest": "2026-10-06T01:45:00Z",
+        "confidence": "LOW",
+        "basis": "Local product checks are progressing; hosted CI depends on financial permission and actual runner availability."
+      }
+    }
+  ]
+}

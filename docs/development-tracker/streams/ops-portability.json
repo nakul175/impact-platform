@@ -1,0 +1,56 @@
+{
+  "id": "ops-portability",
+  "title": "Portable backup and restore qualification",
+  "domain": "Shared platform reliability",
+  "owner": "/root/sprint_tracker",
+  "status": "COMPLETE",
+  "summary": "All seven original Mac backup/restore failures are fixed. The original 41 checks plus 20 focused portability and safety regressions pass locally.",
+  "next_step": "The integrator reviews the bounded operations change; this agent now prepares actual access-review and saved-guidance browser qualification.",
+  "eta": {
+    "earliest": "2026-10-05T09:06:28.381568Z",
+    "latest": "2026-10-05T09:06:28.381568Z",
+    "confidence": "HIGH",
+    "basis": "Completed earlier than the initial forecast after 61 synthetic operations checks, Ruff and shell syntax validation passed."
+  },
+  "delivered": [
+    "Portable complete-set selection, checked GNU/BSD logical byte accounting and JSON-safe line handling.",
+    "UTC daily schedule boundaries retained without GNU date parsing; Mac restore timings remain finite at whole-second resolution.",
+    "Mac archive metadata suppressed; checksum verification safely handles quoted root paths.",
+    "Failed metadata preserves the previous complete set and last-success record; exact restore selectors refuse symlinked sets and escaped paths."
+  ],
+  "evidence": [
+    {
+      "title": "Synthetic operations qualification",
+      "path": "docs/evidence/sprint-0.32-ops-unit.xml",
+      "result": "61 PASSED",
+      "scope": "41 original operations checks plus 20 focused regressions; PostgreSQL client tools are synthetic stubs. No real backup, database restore or container deployment was executed.",
+      "recorded_at": "2026-10-05T09:06:28.381568Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T09:06:28.382339Z",
+  "history": [
+    {
+      "at": "2026-10-05T08:55:07.418990Z",
+      "status": "INSPECTING",
+      "summary": "Investigating the seven unchanged Mac baseline failures without changing backup atomicity, security or Linux behavior.",
+      "eta": {
+        "earliest": "2026-10-05T09:25:07Z",
+        "latest": "2026-10-05T09:55:07Z",
+        "confidence": "MEDIUM",
+        "basis": "Initial 30–60 minute bounded code and synthetic-test forecast; native/container and real backup operations excluded."
+      }
+    },
+    {
+      "at": "2026-10-05T09:06:28.382339Z",
+      "status": "COMPLETE",
+      "summary": "All seven original Mac backup/restore failures are fixed. The original 41 checks plus 20 focused portability and safety regressions pass locally.",
+      "eta": {
+        "earliest": "2026-10-05T09:06:28.381568Z",
+        "latest": "2026-10-05T09:06:28.381568Z",
+        "confidence": "HIGH",
+        "basis": "Completed earlier than the initial forecast after 61 synthetic operations checks, Ruff and shell syntax validation passed."
+      }
+    }
+  ]
+}

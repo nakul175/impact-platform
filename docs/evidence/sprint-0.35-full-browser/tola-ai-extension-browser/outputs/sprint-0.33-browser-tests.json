@@ -1,0 +1,850 @@
+{
+  "scope": "Real Chrome UI and actual local API/application database using disposable synthetic facts; explicit response-loss injection and grant narrowing are labelled",
+  "started_at": "2026-10-05T21:52:13.300Z",
+  "finished_at": "2026-10-05T21:52:26.108Z",
+  "browser_version": "154.0.8037.97",
+  "base_origin": "http://127.0.0.1:8185",
+  "fixture_directory": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545",
+  "results": [
+    {
+      "name": "Actual runtime and all 40 owning migration checks match frozen source",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Unopened plan panels stay lazy and saved-plan reads expose no private core reference",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual absent reference returns the neutral evidence view without saving",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Authorized bounded measurement selection never saves before deliberate confirmation",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A deliberate relationship creates a plan revision without changing governed source heads",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A later reviewed period close cannot silently add official evidence to an absent snapshot pin",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Only an explicit saved-pin refresh displays the governed official snapshot",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Lost actual evidence response retries the exact operation and reopens a newer canonical plan",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Current source authority loss clears prior labels and values; missing and hidden results remain opaque",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual evidence keyboard/mobile/accessibility 1440px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual evidence keyboard/mobile/accessibility 390px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual evidence keyboard/mobile/accessibility 320px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Eligible internal-member selection uses the separately authorized minimal bounded lookup",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Lost actual invitation response repeats one exact command and preserves parent draft edits",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "An invited ordinary member discovers the case while Open private material and directory remain unavailable",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A declared conflict prevents sharing until the current member accepts scope with no conflict",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Requester assignment is deliberate, pins the exact declaration and enables private sharing",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Current participant authority failure removes previously shared private material",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Human advice records distinct accountable actions without provider calls",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Historical case reads keep the current parent draft unchanged and never submit a command",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Requester closure pins exact saved advice and every server-issued action before ending adviser access",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual member advice keyboard/mobile/accessibility 1440px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual member advice keyboard/mobile/accessibility 390px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual member advice keyboard/mobile/accessibility 320px",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Nonparticipants cannot recover case content through generic AI reads or case history",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A failed evidence read clears prior values and an explicit retry reads the actual backend",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual read-only AI permission retains authorized evidence and denies relationship writes",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "All qualified sources remained unchanged and no external/provider request occurred",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    }
+  ],
+  "request_counts": {
+    "planWrites": 1,
+    "evidenceWrites": 6,
+    "adviceWrites": 7,
+    "advisory": 0
+  },
+  "accessibility_scans": [
+    {
+      "name": "evidence 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "evidence 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "evidence 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-invitation 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-invitation 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-invitation 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-closed 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-closed 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "advice-closed 320px",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "evidence 1440px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-evidence-1440.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "evidence 390px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-evidence-390.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "evidence 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-evidence-320.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-invitation 1440px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-invitation-1440.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-invitation 390px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-invitation-390.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-invitation 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-invitation-320.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-closed 1440px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-closed-1440.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-closed 390px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-closed-390.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "advice-closed 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-da449545/tola-ai-extension-advice-closed-320.png",
+      "synthetic": true,
+      "realProduct": true
+    }
+  ],
+  "errors": [],
+  "console_errors": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual current-authority or absent-reference refusal"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual backend committed the evidence command; response deliberately aborted after a later actual plan edit"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual current-authority or absent-reference refusal"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual current-authority or absent-reference refusal"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual current-authority or absent-reference refusal"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/human-advice",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual backend created the invitation; only its response was deliberately aborted"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/human-advice?limit=50",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Actual current-authority or absent-reference refusal"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "One evidence GET was deliberately aborted before reaching the application; retry reads the actual backend"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expected_reason": "Anonymous session probe before synthetic sign-in"
+    }
+  ],
+  "blocked_external_requests": [],
+  "injected_failures": [
+    {
+      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference",
+      "scope": "Actual backend committed the evidence command; response deliberately aborted after a later actual plan edit"
+    },
+    {
+      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/human-advice",
+      "scope": "Actual backend created the invitation; only its response was deliberately aborted"
+    },
+    {
+      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/60080294-0cd0-4f88-9442-394359fd7378/impact-reference/result",
+      "scope": "One evidence GET was deliberately aborted before reaching the application; retry reads the actual backend"
+    }
+  ],
+  "fixture_setup": [
+    {
+      "operation": "runtime-schema",
+      "scope": "Read-only applied schema/core-state observation from the disposable qualification database"
+    },
+    {
+      "operation": "prepare",
+      "scope": "Actual local application API workflow using existing qualification helpers"
+    },
+    {
+      "operation": "core-state",
+      "scope": "Read-only applied schema/core-state observation from the disposable qualification database"
+    },
+    {
+      "operation": "core-state",
+      "scope": "Read-only applied schema/core-state observation from the disposable qualification database"
+    },
+    {
+      "operation": "close",
+      "scope": "Actual local application API workflow using existing qualification helpers"
+    },
+    {
+      "operation": "core-state",
+      "scope": "Read-only applied schema/core-state observation from the disposable qualification database"
+    },
+    {
+      "operation": "core-state",
+      "scope": "Read-only applied schema/core-state observation from the disposable qualification database"
+    },
+    {
+      "operation": "narrow",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    },
+    {
+      "operation": "restore",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    },
+    {
+      "operation": "narrow",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    },
+    {
+      "operation": "restore",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    },
+    {
+      "operation": "narrow",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    },
+    {
+      "operation": "restore",
+      "scope": "Explicit synthetic current-grant narrowing/restoration; immutable triggers and RLS retained"
+    }
+  ],
+  "runtime_qualification": {
+    "environment": "test",
+    "build_id": "impact-0.35.0",
+    "schema_version": "40",
+    "api_version": "1.25.0",
+    "mutation_tests_allowed": true,
+    "applied_migrations": [
+      {
+        "version": 1,
+        "sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7"
+      },
+      {
+        "version": 2,
+        "sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0"
+      },
+      {
+        "version": 3,
+        "sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148"
+      },
+      {
+        "version": 4,
+        "sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4"
+      },
+      {
+        "version": 5,
+        "sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c"
+      },
+      {
+        "version": 6,
+        "sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce"
+      },
+      {
+        "version": 7,
+        "sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0"
+      },
+      {
+        "version": 8,
+        "sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950"
+      },
+      {
+        "version": 9,
+        "sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f"
+      },
+      {
+        "version": 10,
+        "sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7"
+      },
+      {
+        "version": 11,
+        "sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683"
+      },
+      {
+        "version": 12,
+        "sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596"
+      },
+      {
+        "version": 13,
+        "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+      },
+      {
+        "version": 14,
+        "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+      },
+      {
+        "version": 15,
+        "sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42"
+      },
+      {
+        "version": 16,
+        "sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc"
+      },
+      {
+        "version": 17,
+        "sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b"
+      },
+      {
+        "version": 18,
+        "sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7"
+      },
+      {
+        "version": 19,
+        "sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161"
+      },
+      {
+        "version": 20,
+        "sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31"
+      },
+      {
+        "version": 21,
+        "sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2"
+      },
+      {
+        "version": 22,
+        "sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac"
+      },
+      {
+        "version": 23,
+        "sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc"
+      },
+      {
+        "version": 24,
+        "sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f"
+      },
+      {
+        "version": 25,
+        "sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047"
+      },
+      {
+        "version": 26,
+        "sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310"
+      },
+      {
+        "version": 27,
+        "sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d"
+      },
+      {
+        "version": 28,
+        "sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c"
+      },
+      {
+        "version": 29,
+        "sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41"
+      },
+      {
+        "version": 30,
+        "sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12"
+      },
+      {
+        "version": 31,
+        "sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac"
+      },
+      {
+        "version": 32,
+        "sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b"
+      },
+      {
+        "version": 33,
+        "sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33"
+      },
+      {
+        "version": 34,
+        "sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415"
+      },
+      {
+        "version": 35,
+        "sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5"
+      },
+      {
+        "version": 36,
+        "sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+      },
+      {
+        "version": 37,
+        "sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+      },
+      {
+        "version": 38,
+        "sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00"
+      },
+      {
+        "version": 39,
+        "sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+      },
+      {
+        "version": 40,
+        "sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89"
+      }
+    ],
+    "owning_migration_count": 40,
+    "owning_migration_files": [
+      "infrastructure/migrations/0001_roles.sql",
+      "infrastructure/migrations/0002_domain.sql",
+      "infrastructure/migrations/0003_security.sql",
+      "infrastructure/migrations/0004_application.sql",
+      "infrastructure/migrations/0005_access_administration.sql",
+      "infrastructure/migrations/0006_measurement_configuration.sql",
+      "infrastructure/migrations/0007_measurement_changes.sql",
+      "infrastructure/migrations/0008_period_governance.sql",
+      "infrastructure/migrations/0009_reporting_packages.sql",
+      "infrastructure/migrations/0010_work_and_recalculation.sql",
+      "infrastructure/migrations/0011_controlled_publication.sql",
+      "infrastructure/migrations/0012_workspace_administration.sql",
+      "infrastructure/migrations/0013_tenant_lifecycle.sql",
+      "infrastructure/migrations/0014_initial_access.sql",
+      "infrastructure/migrations/0015_recovery_contacts.sql",
+      "infrastructure/migrations/0016_authority_renewal.sql",
+      "infrastructure/migrations/0017_provider_logout.sql",
+      "infrastructure/migrations/0018_worker_delivery.sql",
+      "infrastructure/migrations/0019_results_framework.sql",
+      "infrastructure/migrations/0020_calculation_methods.sql",
+      "infrastructure/migrations/0021_web_forms.sql",
+      "infrastructure/migrations/0022_import_quality.sql",
+      "infrastructure/migrations/0023_evidence_objects.sql",
+      "infrastructure/migrations/0024_report_exports.sql",
+      "infrastructure/migrations/0025_worker_grants.sql",
+      "infrastructure/migrations/0026_worker_job_grants.sql",
+      "infrastructure/migrations/0027_privacy_execution.sql",
+      "infrastructure/migrations/0028_usable_staging.sql",
+      "infrastructure/migrations/0029_operator_lifecycle.sql",
+      "infrastructure/migrations/0030_security_privacy.sql",
+      "infrastructure/migrations/0031_theory_of_change.sql",
+      "infrastructure/migrations/0032_forms_languages_rounds.sql",
+      "infrastructure/migrations/0033_application_executor.sql",
+      "infrastructure/migrations/0034_ai_advisory.sql",
+      "infrastructure/migrations/0035_ai_adoption_plans.sql",
+      "infrastructure/migrations/0036_reviewed_ceiling_widening.sql",
+      "infrastructure/migrations/0037_ai_content_snapshots.sql",
+      "infrastructure/migrations/0038_human_advice_cases.sql",
+      "infrastructure/migrations/0039_human_advice_anchor_availability.sql",
+      "infrastructure/migrations/0040_ai_plan_portability.sql"
+    ]
+  },
+  "actor_workflow": {
+    "evidence_reader_and_manager": "author",
+    "internal_advice_requester_with_directory_authority": "admin",
+    "invited_organisation_member": "reviewer",
+    "independent_later_plan_editor": "admin",
+    "authority": "Existing fixture grants; no capability or role widening"
+  },
+  "qualified_sources": {
+    "tools/browser/tola-ai-extension-check.mjs": "8fbfa8887c802d879ee9b12e90a8e072c4d8c48708b7e0227d09171ae8f84335",
+    "scripts/run.py": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+    "VERSION.json": "3069e387adf9b2cb340cf3bd7e9921288b76342bfc6362537b9e833184ae4e4d",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "apps/api/impact_api/human_advice.py": "9d544565c7e91fe54ec644d4d1a6047005a2516e06148873486eb473c279352d",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "apps/api/impact_api/ai_impact_references.py": "5d5c0df33e1d1e729e9a2efe39a3ea423983f94ae9a3454dea14d2560285a047",
+    "apps/api/impact_api/ai_impact_reference_contracts.py": "fcef16fad9b6da0303b33d968f1f6e4492cddf10d0fb4828ee12518139099ba0",
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/main.py": "7996f1c6e8840380be5a3fc7b0b33653a7c154681a50d624896f9a6fda4bd188",
+    "apps/api/impact_api/dashboards.py": "9c32193dc36bcbf47c1eb64562f490e5c999e3698e3c309ac482a9f5cf4622b0",
+    "apps/api/impact_api/planning.py": "9740fb9dcf244a7ff9b22d3997a706268d6cdb764c44b4fa2a003b3d7097a47c",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/service.py": "d5190de989f0623bd9903ca7c7c78394f3eb8c21d331d689a68f345acf975b2e",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "packages/contracts/openapi.json": "069a79a8663cde6ada7f0f392564311c07886e213028ff401077dcac4e46a3f6",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "apps/web/dist/index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858",
+    "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "infrastructure/migrations/0039_human_advice_anchor_availability.sql": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+    "infrastructure/migrations/0040_ai_plan_portability.sql": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "qualification/conftest.py": "703f864cbb89eda879fa16976d57be4409fab9d9c60cd14980a4eab40e98c571",
+    "qualification/test_dashboards.py": "5a1c6697738f8d912412bd9320b2da55cb25c2ed2ae1d87d056f868dce2787e1",
+    "qualification/test_measurement.py": "8d221ead18188b0307bcded6aa907d740266fef62d44b5da1e1790e6e7d207df",
+    "qualification/test_ai_adoption_plans.py": "22a5a1aa1de085888d3629942e0f2ef504c48cad15c656aae4133b2ef1863615",
+    "qualification/test_ai_adoption_plans_live.py": "2781c9787ee91b9923a97707adcd1400bc0674b18afcf41200eab53801d96559",
+    "qualification/human_advice_anchor_fixtures.py": "b3b741b667937cecdadc9be5ba6280ffb15390f2fc353d61e3133aaa6800dcee",
+    "qualification/test_human_advice_anchor_availability.py": "6eb4fc60f68768dc43c7c3a59015ffe908accef2b760f4540bde7b8962256d37",
+    "qualification/prepared_human_advice_anchor_availability.py": "a0d46228818b018ffcaaaf5e202a955c91e34f4f51a8c8b612800bea3d4ad4d7",
+    "qualification/test_framework_old_pin_visibility.py": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+    "qualification/prepared_retained_label_visibility_repro.py": "b38882798d4019acdf5fee794688807046315f7f77e6933100dcd72446e066d8",
+    "qualification/prepared_dashboard_visibility_repro.py": "bb1d4ba07d0eba69dcd30329b960b40ace585754cce0cf0f277808821704e1b9",
+    "qualification/test_dashboard_current_visibility.py": "3d4ee4fbf62fc9a160e675437f94c2ed35255b61bb2622c29a4ed879ee62034c",
+    "qualification/test_retained_label_current_visibility.py": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+    "qualification/test_human_advice_unit.py": "7bf2006e0c7be12eb01914b40148ff689c7ae83e890d86744f9e061a9a6d8f2d",
+    "qualification/test_human_advice_live.py": "d7c4f28a5bb59cdac5ba3e66d792a5629dd6e4910fcacd6b6c2393177b3a7c8b",
+    "qualification/test_ai_impact_references.py": "291e327070602c2495bc94dd4ecfdeedabf081adb066c9d2f7805e19cc5f6110",
+    "qualification/test_ai_impact_references_live.py": "6872a0a9cad91044fb41fca105c6dd54bab1fdc690d1322216a1d9af4f381203",
+    "qualification/test_live_application.py": "ffa8c15774c1bb48727b4b350da22e66af40e5b3deffbba3333f947f4e08d31f",
+    "qualification/test_listing_visibility_unit.py": "114e1321806368dc83fe6bca9e3a2e7bf34c375795b2f4784b7031425ecb6206",
+    "qualification/test_listing_visibility_live.py": "50e0e86dabb67ec4a992016f18aee72d957109b874b348cd81aa46cb2dfbf1e9",
+    "qualification/test_planning.py": "9717843d37f2766a9c5a83d439382828dd0d1b83be81af6f676de7fc94864a58",
+    "scripts/fixture_support.py": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb",
+    "specification/fixtures/api-fixture.json": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+    "specification/fixtures/records.json": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5",
+    "infrastructure/migrations/0001_roles.sql": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+    "infrastructure/migrations/0002_domain.sql": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0004_application.sql": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+    "infrastructure/migrations/0005_access_administration.sql": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+    "infrastructure/migrations/0006_measurement_configuration.sql": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+    "infrastructure/migrations/0007_measurement_changes.sql": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+    "infrastructure/migrations/0008_period_governance.sql": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+    "infrastructure/migrations/0009_reporting_packages.sql": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+    "infrastructure/migrations/0010_work_and_recalculation.sql": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+    "infrastructure/migrations/0011_controlled_publication.sql": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+    "infrastructure/migrations/0012_workspace_administration.sql": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+    "infrastructure/migrations/0014_initial_access.sql": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+    "infrastructure/migrations/0015_recovery_contacts.sql": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+    "infrastructure/migrations/0016_authority_renewal.sql": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+    "infrastructure/migrations/0017_provider_logout.sql": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+    "infrastructure/migrations/0018_worker_delivery.sql": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+    "infrastructure/migrations/0019_results_framework.sql": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+    "infrastructure/migrations/0020_calculation_methods.sql": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+    "infrastructure/migrations/0021_web_forms.sql": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+    "infrastructure/migrations/0022_import_quality.sql": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+    "infrastructure/migrations/0023_evidence_objects.sql": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0026_worker_job_grants.sql": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+    "infrastructure/migrations/0027_privacy_execution.sql": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "infrastructure/migrations/0028_usable_staging.sql": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+    "infrastructure/migrations/0029_operator_lifecycle.sql": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+    "infrastructure/migrations/0030_security_privacy.sql": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "infrastructure/migrations/0031_theory_of_change.sql": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+    "infrastructure/migrations/0032_forms_languages_rounds.sql": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+    "infrastructure/migrations/0033_application_executor.sql": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+    "infrastructure/migrations/0034_ai_advisory.sql": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+    "infrastructure/migrations/0035_ai_adoption_plans.sql": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+  },
+  "current_sources": {
+    "tools/browser/tola-ai-extension-check.mjs": "8fbfa8887c802d879ee9b12e90a8e072c4d8c48708b7e0227d09171ae8f84335",
+    "scripts/run.py": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+    "VERSION.json": "3069e387adf9b2cb340cf3bd7e9921288b76342bfc6362537b9e833184ae4e4d",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "apps/api/impact_api/human_advice.py": "9d544565c7e91fe54ec644d4d1a6047005a2516e06148873486eb473c279352d",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "apps/api/impact_api/ai_impact_references.py": "5d5c0df33e1d1e729e9a2efe39a3ea423983f94ae9a3454dea14d2560285a047",
+    "apps/api/impact_api/ai_impact_reference_contracts.py": "fcef16fad9b6da0303b33d968f1f6e4492cddf10d0fb4828ee12518139099ba0",
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/main.py": "7996f1c6e8840380be5a3fc7b0b33653a7c154681a50d624896f9a6fda4bd188",
+    "apps/api/impact_api/dashboards.py": "9c32193dc36bcbf47c1eb64562f490e5c999e3698e3c309ac482a9f5cf4622b0",
+    "apps/api/impact_api/planning.py": "9740fb9dcf244a7ff9b22d3997a706268d6cdb764c44b4fa2a003b3d7097a47c",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/service.py": "d5190de989f0623bd9903ca7c7c78394f3eb8c21d331d689a68f345acf975b2e",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "packages/contracts/openapi.json": "069a79a8663cde6ada7f0f392564311c07886e213028ff401077dcac4e46a3f6",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "apps/web/dist/index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858",
+    "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "infrastructure/migrations/0039_human_advice_anchor_availability.sql": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+    "infrastructure/migrations/0040_ai_plan_portability.sql": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "qualification/conftest.py": "703f864cbb89eda879fa16976d57be4409fab9d9c60cd14980a4eab40e98c571",
+    "qualification/test_dashboards.py": "5a1c6697738f8d912412bd9320b2da55cb25c2ed2ae1d87d056f868dce2787e1",
+    "qualification/test_measurement.py": "8d221ead18188b0307bcded6aa907d740266fef62d44b5da1e1790e6e7d207df",
+    "qualification/test_ai_adoption_plans.py": "22a5a1aa1de085888d3629942e0f2ef504c48cad15c656aae4133b2ef1863615",
+    "qualification/test_ai_adoption_plans_live.py": "2781c9787ee91b9923a97707adcd1400bc0674b18afcf41200eab53801d96559",
+    "qualification/human_advice_anchor_fixtures.py": "b3b741b667937cecdadc9be5ba6280ffb15390f2fc353d61e3133aaa6800dcee",
+    "qualification/test_human_advice_anchor_availability.py": "6eb4fc60f68768dc43c7c3a59015ffe908accef2b760f4540bde7b8962256d37",
+    "qualification/prepared_human_advice_anchor_availability.py": "a0d46228818b018ffcaaaf5e202a955c91e34f4f51a8c8b612800bea3d4ad4d7",
+    "qualification/test_framework_old_pin_visibility.py": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+    "qualification/prepared_retained_label_visibility_repro.py": "b38882798d4019acdf5fee794688807046315f7f77e6933100dcd72446e066d8",
+    "qualification/prepared_dashboard_visibility_repro.py": "bb1d4ba07d0eba69dcd30329b960b40ace585754cce0cf0f277808821704e1b9",
+    "qualification/test_dashboard_current_visibility.py": "3d4ee4fbf62fc9a160e675437f94c2ed35255b61bb2622c29a4ed879ee62034c",
+    "qualification/test_retained_label_current_visibility.py": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+    "qualification/test_human_advice_unit.py": "7bf2006e0c7be12eb01914b40148ff689c7ae83e890d86744f9e061a9a6d8f2d",
+    "qualification/test_human_advice_live.py": "d7c4f28a5bb59cdac5ba3e66d792a5629dd6e4910fcacd6b6c2393177b3a7c8b",
+    "qualification/test_ai_impact_references.py": "291e327070602c2495bc94dd4ecfdeedabf081adb066c9d2f7805e19cc5f6110",
+    "qualification/test_ai_impact_references_live.py": "6872a0a9cad91044fb41fca105c6dd54bab1fdc690d1322216a1d9af4f381203",
+    "qualification/test_live_application.py": "ffa8c15774c1bb48727b4b350da22e66af40e5b3deffbba3333f947f4e08d31f",
+    "qualification/test_listing_visibility_unit.py": "114e1321806368dc83fe6bca9e3a2e7bf34c375795b2f4784b7031425ecb6206",
+    "qualification/test_listing_visibility_live.py": "50e0e86dabb67ec4a992016f18aee72d957109b874b348cd81aa46cb2dfbf1e9",
+    "qualification/test_planning.py": "9717843d37f2766a9c5a83d439382828dd0d1b83be81af6f676de7fc94864a58",
+    "scripts/fixture_support.py": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb",
+    "specification/fixtures/api-fixture.json": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+    "specification/fixtures/records.json": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5",
+    "infrastructure/migrations/0001_roles.sql": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+    "infrastructure/migrations/0002_domain.sql": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0004_application.sql": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+    "infrastructure/migrations/0005_access_administration.sql": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+    "infrastructure/migrations/0006_measurement_configuration.sql": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+    "infrastructure/migrations/0007_measurement_changes.sql": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+    "infrastructure/migrations/0008_period_governance.sql": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+    "infrastructure/migrations/0009_reporting_packages.sql": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+    "infrastructure/migrations/0010_work_and_recalculation.sql": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+    "infrastructure/migrations/0011_controlled_publication.sql": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+    "infrastructure/migrations/0012_workspace_administration.sql": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+    "infrastructure/migrations/0014_initial_access.sql": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+    "infrastructure/migrations/0015_recovery_contacts.sql": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+    "infrastructure/migrations/0016_authority_renewal.sql": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+    "infrastructure/migrations/0017_provider_logout.sql": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+    "infrastructure/migrations/0018_worker_delivery.sql": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+    "infrastructure/migrations/0019_results_framework.sql": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+    "infrastructure/migrations/0020_calculation_methods.sql": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+    "infrastructure/migrations/0021_web_forms.sql": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+    "infrastructure/migrations/0022_import_quality.sql": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+    "infrastructure/migrations/0023_evidence_objects.sql": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0026_worker_job_grants.sql": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+    "infrastructure/migrations/0027_privacy_execution.sql": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "infrastructure/migrations/0028_usable_staging.sql": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+    "infrastructure/migrations/0029_operator_lifecycle.sql": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+    "infrastructure/migrations/0030_security_privacy.sql": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "infrastructure/migrations/0031_theory_of_change.sql": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+    "infrastructure/migrations/0032_forms_languages_rounds.sql": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+    "infrastructure/migrations/0033_application_executor.sql": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+    "infrastructure/migrations/0034_ai_advisory.sql": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+    "infrastructure/migrations/0035_ai_adoption_plans.sql": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464"
+  },
+  "qualified_served_assets": {
+    "/assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+    "/assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+    "/assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+    "/assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856"
+  },
+  "current_served_assets": {
+    "/assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+    "/assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+    "/assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+    "/assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856"
+  },
+  "served_assets_unchanged": true,
+  "sources_unchanged": true
+}

@@ -7,6 +7,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
 from impact_api.contracts import SPEC  # noqa: E402
+from impact_api.ai_enablement_contracts import IMPLEMENTED as AI_ENABLEMENT_ROUTES  # noqa: E402
+from impact_api.ai_adoption_contracts import IMPLEMENTED as AI_ADOPTION_ROUTES  # noqa: E402
+from impact_api.ai_content_contracts import IMPLEMENTED as AI_CONTENT_ROUTES  # noqa: E402
+from impact_api.ai_impact_reference_contracts import IMPLEMENTED as AI_IMPACT_ROUTES  # noqa: E402
+from impact_api.human_advice_contracts import IMPLEMENTED as HUMAN_ADVICE_ROUTES  # noqa: E402
+from impact_api.ai_plan_export_contracts import IMPLEMENTED as AI_PLAN_EXPORT_ROUTES  # noqa: E402
+from impact_api.ai_planning_contracts import IMPLEMENTED as AI_PLANNING_ROUTES  # noqa: E402
 from impact_api.service import READ_ROUTES, WRITE_ROUTES, ACTIONS  # noqa: E402
 from impact_api.administration_contracts import COMMANDS, ADMIN_READS  # noqa: E402
 from impact_api.measurement_contracts import SPECIAL_READS  # noqa: E402
@@ -68,6 +75,13 @@ for route, action in COMMANDS:
         ("post", "/v1/tenants/{tenant_id}/" + route + ("/{object_id}/actions/" + action if action else ""))
     )
 spec = json.loads(json.dumps(SPEC))
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ENABLEMENT_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ADOPTION_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_CONTENT_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_IMPACT_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in HUMAN_ADVICE_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_PLAN_EXPORT_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_PLANNING_ROUTES)
 spec["info"]["title"] = "Impact Platform — implemented domain API"
 spec["info"]["description"] = (
     "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."

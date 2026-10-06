@@ -1,0 +1,228 @@
+{
+  "scope": "Actual no-context runtime logins; before correction current draft693bac; pointer reads hidden but public record helper unknown/private responses differ",
+  "observations": [
+    {
+      "login": "impact_app_login",
+      "role": "impact_app",
+      "unknown_record": true,
+      "private_record": false,
+      "oracle_residual": true,
+      "pointers": {
+        "issuance": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "bytes": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "registry": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "revision": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "audit": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "author": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "receipt": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "event": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "delivery": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "consumer": {
+          "access": "ROWS",
+          "count": 0
+        }
+      }
+    },
+    {
+      "login": "impact_executor_login",
+      "role": "impact_app",
+      "unknown_record": true,
+      "private_record": false,
+      "oracle_residual": true,
+      "pointers": {
+        "issuance": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "bytes": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "registry": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "revision": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "audit": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "author": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "receipt": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "event": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "delivery": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "consumer": {
+          "access": "ROWS",
+          "count": 0
+        }
+      }
+    },
+    {
+      "login": "impact_worker_login",
+      "role": "impact_worker",
+      "unknown_record": true,
+      "private_record": false,
+      "oracle_residual": true,
+      "pointers": {
+        "issuance": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "bytes": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "registry": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "revision": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "audit": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "author": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "receipt": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "event": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "delivery": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "consumer": {
+          "access": "ROWS",
+          "count": 0
+        }
+      }
+    },
+    {
+      "login": "impact_identity_login",
+      "role": "impact_identity",
+      "unknown_record": true,
+      "private_record": false,
+      "oracle_residual": true,
+      "pointers": {
+        "issuance": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "bytes": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "registry": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "revision": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "audit": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "author": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "receipt": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "event": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "delivery": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "consumer": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        }
+      }
+    },
+    {
+      "login": "impact_platform_login",
+      "role": "impact_platform",
+      "unknown_record": true,
+      "private_record": false,
+      "oracle_residual": true,
+      "pointers": {
+        "issuance": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "bytes": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "registry": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "revision": {
+          "access": "ROWS",
+          "count": 0
+        },
+        "audit": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "author": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "receipt": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "event": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "delivery": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        },
+        "consumer": {
+          "access": "TABLE_PRIVILEGE_DENIED"
+        }
+      }
+    }
+  ]
+}

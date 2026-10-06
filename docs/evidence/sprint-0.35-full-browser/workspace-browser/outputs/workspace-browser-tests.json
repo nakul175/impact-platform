@@ -1,0 +1,46 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Initialize settings after delayed permissions and create a custom role",
+      "status": "passed"
+    },
+    {
+      "name": "Create an organisation unit and preserve its stable code on rename",
+      "status": "passed"
+    },
+    {
+      "name": "Create a group and submit a complete access proposal",
+      "status": "passed"
+    },
+    {
+      "name": "Reject requester self-approval without applying the proposal",
+      "status": "passed"
+    },
+    {
+      "name": "Independent owner reviews scopes and capabilities before group approval",
+      "status": "passed"
+    },
+    {
+      "name": "Remove group membership through an explicit reviewed action",
+      "status": "passed"
+    },
+    {
+      "name": "Nominate an existing administrator and accept custody as the successor",
+      "status": "passed"
+    },
+    {
+      "name": "Persist personal preferences and apply reduced motion",
+      "status": "passed"
+    },
+    {
+      "name": "Desktop and mobile account screens remain usable",
+      "status": "passed"
+    },
+    {
+      "name": "Revoke all sessions and return to sign-in",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

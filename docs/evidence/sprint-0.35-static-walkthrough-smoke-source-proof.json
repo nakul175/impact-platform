@@ -1,0 +1,35 @@
+{
+  "started_at": "2026-10-05T20:38:50.859786+00:00",
+  "finished_at": "2026-10-05T20:38:51.490449+00:00",
+  "scope": "Focused pure deployment smoke checks with in-process httpx MockTransport, including unchanged legacy smoke controls and static walkthrough packaging/header/asset negatives; no browser execution, real API, auth/account, database, deployed HTTP, container or CI qualification.",
+  "command": [
+    "-m",
+    "pytest",
+    "qualification/test_deploy_unit.py",
+    "-k",
+    "smoke",
+    "-q",
+    "--junitxml=docs/evidence/sprint-0.35-static-walkthrough-smoke-tests.xml"
+  ],
+  "exit_code": 0,
+  "tests": 80,
+  "passed": 80,
+  "failures_or_errors": 0,
+  "skipped": 0,
+  "qualified_sources": {
+    "scripts/smoke.py": "f6b49af52ae620e924b4aa0d66e0840cc2481a2a8e09a91c0bd7f99df39e0ce1",
+    "qualification/test_deploy_unit.py": "797577b7939f23bc0416a1e91e40ef7b3fe5137a591e85c62fcb4528a8314ee3"
+  },
+  "current_sources": {
+    "scripts/smoke.py": "f6b49af52ae620e924b4aa0d66e0840cc2481a2a8e09a91c0bd7f99df39e0ce1",
+    "qualification/test_deploy_unit.py": "797577b7939f23bc0416a1e91e40ef7b3fe5137a591e85c62fcb4528a8314ee3"
+  },
+  "sources_unchanged": true,
+  "report": "sprint-0.35-static-walkthrough-smoke-tests.xml",
+  "limits": {
+    "document_bytes": 131072,
+    "per_asset_bytes": 8388608,
+    "unique_asset_references": 16
+  },
+  "hosted_static_smoke_executed": false
+}

@@ -1,0 +1,82 @@
+{
+  "scope": "Registered guided-practice model checks against actual current public task-template module; no HTTP/native database/learner competency or formal acceptance",
+  "started_at": "2026-10-05T21:02:17.957Z",
+  "finished_at": "2026-10-05T21:02:17.980Z",
+  "results": [
+    {
+      "name": "preview changes no learner worksheet and no completion",
+      "status": "passed"
+    },
+    {
+      "name": "first starter uses exact loaded source and existing five-field shape",
+      "status": "passed"
+    },
+    {
+      "name": "explicit replacement preserves existing draft and review bytes while clearing checks",
+      "status": "passed"
+    },
+    {
+      "name": "read-only study cannot apply a starter",
+      "status": "passed"
+    },
+    {
+      "name": "lost current management or pending-mutation permission blocks existing confirmation",
+      "status": "passed"
+    },
+    {
+      "name": "changed tenant context invalidates preview",
+      "status": "passed"
+    },
+    {
+      "name": "changed principal context invalidates preview",
+      "status": "passed"
+    },
+    {
+      "name": "changed plan context invalidates preview",
+      "status": "passed"
+    },
+    {
+      "name": "changed revision context invalidates preview",
+      "status": "passed"
+    },
+    {
+      "name": "changed guidance edition cannot apply previously previewed wording",
+      "status": "passed"
+    },
+    {
+      "name": "changed wording under same edition cannot apply old preview",
+      "status": "passed"
+    },
+    {
+      "name": "learner edits made after preview are not overwritten",
+      "status": "passed"
+    },
+    {
+      "name": "retired mismatched absent or duplicate task refuses without selecting a fallback",
+      "status": "passed"
+    },
+    {
+      "name": "oversized missing and invalid synthetic examples fail without truncation",
+      "status": "passed"
+    },
+    {
+      "name": "a draft-only or whitespace-only worksheet still requires explicit replacement",
+      "status": "passed"
+    },
+    {
+      "name": "each existing loaded task gives its own exact example without ID invention",
+      "status": "passed"
+    }
+  ],
+  "qualified_sources": {
+    "apps/web/src/AIPracticeStarterModel.ts": "a0766649a5eb6c8af548880451a0c26db018cc5dc087a32e7c1950aac62aadcd",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "tools/browser/ai-practice-starter-model-check.mjs": "ba43a6cb175ccdcea08a557e4155217ac84894f485db7ac842f3270ccf19d861"
+  },
+  "current_sources": {
+    "apps/web/src/AIPracticeStarterModel.ts": "a0766649a5eb6c8af548880451a0c26db018cc5dc087a32e7c1950aac62aadcd",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "tools/browser/ai-practice-starter-model-check.mjs": "ba43a6cb175ccdcea08a557e4155217ac84894f485db7ac842f3270ccf19d861"
+  },
+  "sources_unchanged": true
+}

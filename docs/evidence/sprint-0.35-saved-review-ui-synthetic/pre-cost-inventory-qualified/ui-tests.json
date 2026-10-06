@@ -1,0 +1,267 @@
+{
+  "scope": "Private prototype and proposed Workspace in in-memory request-function fixture only; not actual product/API/database authority, accepted requirement or deployment evidence",
+  "results": [
+    {
+      "name": "Derived saved review is lazy, advisory and makes no requests",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Section actions only open existing sections without writes or worksheet starters",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Mutation gates disable navigation until the existing mutation resolves",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Dirty source immediately hides and clears prior review until fresh capture",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Context, exact head, read and canonical availability failures hide all prior derived content",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Private/future linkage metadata never enters visible review or changes its derived output",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Proposed parent does not derive a saved review from the plan list",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Successful canonical Open establishes review tied to exact public source",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Parent dirty edit and manual revert cannot restore review without a fresh Open",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Receipt-only save never restores review or interprets plan-list captured draft content",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Failed fresh canonical Open clears prior review while preserving working draft",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Draft changes during a held canonical read discard its later review response",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Read hint lost during held canonical reply cannot restore review on later hint return",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Read loss and return before a held reply cannot resurrect an old review",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "An edit and undo during a held reply still require a new deliberate canonical Open",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "New plan and same-tenant actor reset discard saved-review state",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Private checklist keyboard/mobile/accessibility1440px",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Private checklist keyboard/mobile/accessibility390px",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Private checklist keyboard/mobile/accessibility320px",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    },
+    {
+      "name": "Prototype sources stayed fixed and no actual API/provider/external request occurred",
+      "status": "passed",
+      "scope": "Unregistered private prototype/proposed parent in an in-memory request-function fixture. Actual API/database authority and integrated product NOT_RUN."
+    }
+  ],
+  "errors": [],
+  "blocked_external_requests": [],
+  "actual_api_requests": [],
+  "accessibility_scans": [
+    {
+      "width": 1440,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 320,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "captures": [
+    {
+      "width": 1440,
+      "file": "/private/tmp/tola-ai-plan-review-draft/review-1440.png",
+      "sha256": "6ad91c09ca48cd73c36ea3affb3571a96d387f0a7f13b4e3f9a56cc6dad8ec6b"
+    },
+    {
+      "width": 390,
+      "file": "/private/tmp/tola-ai-plan-review-draft/review-390.png",
+      "sha256": "67b81dcdb4097c965ba2005e3f9bae2f01b7c905a4ffb2f1387cd3cc7b5e954b"
+    },
+    {
+      "width": 320,
+      "file": "/private/tmp/tola-ai-plan-review-draft/review-320.png",
+      "sha256": "e7af3f84b2aa0ec322c57d01f0687f78577813a24563ea4ea76e3598f87ec160"
+    }
+  ],
+  "qualified_sources": {
+    "AIAdoptionWorkspace.fixture.tsx": "56f9d214a0a766acfda152f19edc9311d33f25fb8d967eedad4c713c3225c075",
+    "AIAdoptionWorkspace.proposed.tsx": "bf57f5c4862947c540280da0aca63eaaba25db862a389ac0091ff42d37b997b0",
+    "AIPlanReviewChecklist.tsx": "b1e5d936f7ab58ee285e11d71e0c7e555d0ec0376c2459eef184e2ff0dfecb97",
+    "fixtures.ts": "4ef35368c1ce76c92e2f8a0d213bbd1b6da1eb8ac4976871ede431502a0f73dd",
+    "index.html": "75dcf668581e54989fd270b45983fa159c5212f4cca8c181c3b63c221fc1dd98",
+    "model-check.mjs": "02ed3d96ee40d8fd50ca647d9c8123776fbbf95b5ef140fbd2860307a2c2e95a",
+    "review-model.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "review-style.patch": "97686823a92f979a5f399f254b992271050562770f7d04c605fedb884c4b25e4",
+    "ui-check.mjs": "7022a6b3b15aeb9760d191eae1d99603951504212f4b97c5f2a410e44bc85cb5",
+    "ui-fixture.css": "b75e228013360e9c1085a97df47fde1b027cda16071740d845f0d1377f914b66",
+    "ui-fixture.tsx": "908dbfbe72710c11a6dfa1977ee2deeb5bd7883910011d21264b8fea8562c19b",
+    "ui-server.mjs": "2b4d0b8243281d30e11f4fde087295ccc3ca556b8ceccd1c60fa38752454a404",
+    "workspace-mount.patch": "dd78cfe4eb803d9cae61cbc8d38f746ffd64d1c46c45bdf8dbe02d9bec033fb6",
+    "BASELINE-SOURCE.json": "8f682f733ca52cabdebdbe33529424c155852d923b37047bcebc3ad63d1b9024",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIAdoptionWorkspace.tsx": "3d380b4599e00d7231d771d311e9fad62b626ae82993e8ac5704969b40901a68",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanningTools.tsx": "384d3c85fc8da9a47d12fb2572b86291072afc0606542abf1f2bb36a77995c7b",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AITaskPractice.tsx": "aacec5a0c3c44168c983b07fa8c7401cd705463e009fb4f4acdb0f52eabf858a",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AccessGate.tsx": "fe912d15c199227f13158ac366bb58ff33d016bae6894b60742a8b824ef89c03",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Accounts.tsx": "5de6db5946676079df1a81022f5a1591a1c7aba4464438767d27d029f321d758",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Administration.tsx": "357781661ae8d8d3be3c84bb8beb52cb0d65253aa7c958c3df5bad91228548c6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AuditExport.tsx": "3d1b0e52066df8f8081e7b249d02ec1bd02e369daf3c67ccc574ebf4d8eae2b5",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AuthorityRenewal.tsx": "25255d49d2a58deeec5ae28eaa4b8e27022bad018768aa5b96ecc6ce4e4af0f6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Changes.tsx": "4105c281cf1f92b7014544b8258edb9137cb995ea5a319b08aea7196758ca772",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Configuration.tsx": "eb9bdd1487de09ec81b861bef47b89e65e9a0bad9adab7f3167c8f966a3133fb",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Dashboards.tsx": "e310267e87585bdb4d6e6c30835dc72cd51f0a0d4c8c5f410354515b61cf21c2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Evidence.tsx": "722363c9d58894ffa9c742704ecaedcbe9dd3b1a771581edf915d7c6b0667d53",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Forms.tsx": "4d9a869e747c0ebb7c37c3b76c35031635a7c5f931cd2fbf122ac63b4fba5d80",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Imports.tsx": "2c4c6cbf28c9b427a0b002613da882e1cb0905cf3fb96eafa2894895253df2a2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/InitialAccess.tsx": "cdbe3c7a532c454b6cb49ce289e30e7d94e81316495289675eb21ee3361ace31",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Landing.tsx": "3fbe0518ab63219ab86cd489c249766df428baee4b58e7439c924457d50d8915",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Operators.tsx": "2cc2bc9c05956a6488c765953e0b150566241e105529b3a372cb96d67122f631",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/PeriodGovernance.tsx": "d8bdd05f8fb789e61e03c740514607e0c7644d146c3d6be91c753ef998cd0f5e",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Planning.tsx": "a56ec6bdf17b235b0c399d5c64fb150d559163ed75d53a689757c78a8065c46d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Portfolio.tsx": "8446a581b21bbb25a6b9e16492b6a6673532fd8535ac53faa115b5bd4522531d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Privacy.tsx": "0261bccfc0d649342c0c07752c7a1781d530e55b2f7cc28ece157c8ea4a589b4",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/RecoveryContacts.tsx": "f3947ff360dc6bdc1c7d23a9f7f7671021380a45439a0b5e9b4120b26666b77f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ReferenceData.tsx": "9a73cf7e280c824fea1de030c3bf5eaba34a522e44fa03537e32dcd011e9be51",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ReportExports.tsx": "b1526392b4987f12d0740d4409fce8bbbe799cbdb6cdeb6b6d2f901bac7c50aa",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Rounds.tsx": "31b752c9ea81cc7decf1825926d8a3a47a7ab19c1a089ecedbfc0ed8d77ef59f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/StatusBanner.tsx": "1b9a919cfa29d0db89fdf8fb03a087f1c063889a36dbd9fd4793330bc4e743e2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/TenantLifecycle.tsx": "68c4f3788d1041bdef4ff2cb78a43cd79e6985109d9d951c6172a932e6187409",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/WorkCenter.tsx": "7b93540e5c3e55fbe9845e6a7ce50ad67b9b83fd0389199fe802c2baf2ed04ca",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Workers.tsx": "a2b75b4342ff4079b854d03384021c7cb53b40f8722fa3d83e23d5b5757bd4c7",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/WorkspaceSettings.tsx": "049fda63a032c30d415ff659cbe268c5c2767f79fbf26812abf727ff15408310",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/a11y.ts": "60a6755087d7f409aeafcd756dcbbac9b8fa0d71fc2b70ecd9cbb8f880dcb026",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ai-planning-tools.css": "1dde4cf710ff71617e9cdd86017cfa95052afb1a7c31b24b0efe7a634ef5cecc",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/operations.ts": "6ad64ffe31d5f38e86a31d2f52ea66aff1c621ff4b4891b2270fd6df166b4b5f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/styles.css": "8281fec2786fff78a2d115d52a19f7c00971432ba2f4f3c13ace0bf3215a1400",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0"
+  },
+  "current_sources": {
+    "AIAdoptionWorkspace.fixture.tsx": "56f9d214a0a766acfda152f19edc9311d33f25fb8d967eedad4c713c3225c075",
+    "AIAdoptionWorkspace.proposed.tsx": "bf57f5c4862947c540280da0aca63eaaba25db862a389ac0091ff42d37b997b0",
+    "AIPlanReviewChecklist.tsx": "b1e5d936f7ab58ee285e11d71e0c7e555d0ec0376c2459eef184e2ff0dfecb97",
+    "fixtures.ts": "4ef35368c1ce76c92e2f8a0d213bbd1b6da1eb8ac4976871ede431502a0f73dd",
+    "index.html": "75dcf668581e54989fd270b45983fa159c5212f4cca8c181c3b63c221fc1dd98",
+    "model-check.mjs": "02ed3d96ee40d8fd50ca647d9c8123776fbbf95b5ef140fbd2860307a2c2e95a",
+    "review-model.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "review-style.patch": "97686823a92f979a5f399f254b992271050562770f7d04c605fedb884c4b25e4",
+    "ui-check.mjs": "7022a6b3b15aeb9760d191eae1d99603951504212f4b97c5f2a410e44bc85cb5",
+    "ui-fixture.css": "b75e228013360e9c1085a97df47fde1b027cda16071740d845f0d1377f914b66",
+    "ui-fixture.tsx": "908dbfbe72710c11a6dfa1977ee2deeb5bd7883910011d21264b8fea8562c19b",
+    "ui-server.mjs": "2b4d0b8243281d30e11f4fde087295ccc3ca556b8ceccd1c60fa38752454a404",
+    "workspace-mount.patch": "dd78cfe4eb803d9cae61cbc8d38f746ffd64d1c46c45bdf8dbe02d9bec033fb6",
+    "BASELINE-SOURCE.json": "8f682f733ca52cabdebdbe33529424c155852d923b37047bcebc3ad63d1b9024",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIAdoptionWorkspace.tsx": "3d380b4599e00d7231d771d311e9fad62b626ae82993e8ac5704969b40901a68",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AIPlanningTools.tsx": "384d3c85fc8da9a47d12fb2572b86291072afc0606542abf1f2bb36a77995c7b",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AITaskPractice.tsx": "aacec5a0c3c44168c983b07fa8c7401cd705463e009fb4f4acdb0f52eabf858a",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AccessGate.tsx": "fe912d15c199227f13158ac366bb58ff33d016bae6894b60742a8b824ef89c03",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Accounts.tsx": "5de6db5946676079df1a81022f5a1591a1c7aba4464438767d27d029f321d758",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Administration.tsx": "357781661ae8d8d3be3c84bb8beb52cb0d65253aa7c958c3df5bad91228548c6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AuditExport.tsx": "3d1b0e52066df8f8081e7b249d02ec1bd02e369daf3c67ccc574ebf4d8eae2b5",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/AuthorityRenewal.tsx": "25255d49d2a58deeec5ae28eaa4b8e27022bad018768aa5b96ecc6ce4e4af0f6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Changes.tsx": "4105c281cf1f92b7014544b8258edb9137cb995ea5a319b08aea7196758ca772",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Configuration.tsx": "eb9bdd1487de09ec81b861bef47b89e65e9a0bad9adab7f3167c8f966a3133fb",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Dashboards.tsx": "e310267e87585bdb4d6e6c30835dc72cd51f0a0d4c8c5f410354515b61cf21c2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Evidence.tsx": "722363c9d58894ffa9c742704ecaedcbe9dd3b1a771581edf915d7c6b0667d53",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Forms.tsx": "4d9a869e747c0ebb7c37c3b76c35031635a7c5f931cd2fbf122ac63b4fba5d80",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Imports.tsx": "2c4c6cbf28c9b427a0b002613da882e1cb0905cf3fb96eafa2894895253df2a2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/InitialAccess.tsx": "cdbe3c7a532c454b6cb49ce289e30e7d94e81316495289675eb21ee3361ace31",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Landing.tsx": "3fbe0518ab63219ab86cd489c249766df428baee4b58e7439c924457d50d8915",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Operators.tsx": "2cc2bc9c05956a6488c765953e0b150566241e105529b3a372cb96d67122f631",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/PeriodGovernance.tsx": "d8bdd05f8fb789e61e03c740514607e0c7644d146c3d6be91c753ef998cd0f5e",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Planning.tsx": "a56ec6bdf17b235b0c399d5c64fb150d559163ed75d53a689757c78a8065c46d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Portfolio.tsx": "8446a581b21bbb25a6b9e16492b6a6673532fd8535ac53faa115b5bd4522531d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Privacy.tsx": "0261bccfc0d649342c0c07752c7a1781d530e55b2f7cc28ece157c8ea4a589b4",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/RecoveryContacts.tsx": "f3947ff360dc6bdc1c7d23a9f7f7671021380a45439a0b5e9b4120b26666b77f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ReferenceData.tsx": "9a73cf7e280c824fea1de030c3bf5eaba34a522e44fa03537e32dcd011e9be51",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ReportExports.tsx": "b1526392b4987f12d0740d4409fce8bbbe799cbdb6cdeb6b6d2f901bac7c50aa",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Rounds.tsx": "31b752c9ea81cc7decf1825926d8a3a47a7ab19c1a089ecedbfc0ed8d77ef59f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/StatusBanner.tsx": "1b9a919cfa29d0db89fdf8fb03a087f1c063889a36dbd9fd4793330bc4e743e2",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/TenantLifecycle.tsx": "68c4f3788d1041bdef4ff2cb78a43cd79e6985109d9d951c6172a932e6187409",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/WorkCenter.tsx": "7b93540e5c3e55fbe9845e6a7ce50ad67b9b83fd0389199fe802c2baf2ed04ca",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/Workers.tsx": "a2b75b4342ff4079b854d03384021c7cb53b40f8722fa3d83e23d5b5757bd4c7",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/WorkspaceSettings.tsx": "049fda63a032c30d415ff659cbe268c5c2767f79fbf26812abf727ff15408310",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/a11y.ts": "60a6755087d7f409aeafcd756dcbbac9b8fa0d71fc2b70ecd9cbb8f880dcb026",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/ai-planning-tools.css": "1dde4cf710ff71617e9cdd86017cfa95052afb1a7c31b24b0efe7a634ef5cecc",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/operations.ts": "6ad64ffe31d5f38e86a31d2f52ea66aff1c621ff4b4891b2270fd6df166b4b5f",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/styles.css": "8281fec2786fff78a2d115d52a19f7c00971432ba2f4f3c13ace0bf3215a1400",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0"
+  },
+  "sources_unchanged": true
+}

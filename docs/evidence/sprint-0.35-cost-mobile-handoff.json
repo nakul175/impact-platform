@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-10-05T20:39:13.533075+00:00",
+  "scope": "Narrow UI layout correction; private actual-global-style synthetic JSON UI proof, actual current HTTP/browser rerun pending root stable shared build. No arithmetic/API/coverage/persistence change.",
+  "owned_source_hashes": {
+    "apps/web/src/AIPlanningTools.tsx": "218c8a31c5c4f7c632b2537dc9b16d7ef484dbd268b4e7674ec5aa2c69988a3b",
+    "apps/web/src/ai-planning-tools.css": "4c5cd958b5b8c1aa42ab437c40fe5c36931088d3986806cc73c83d66e92d76ca",
+    "tools/browser/ai-planning-check.mjs": "2491dadc371ad0eaf2bf705b039ad177d394456c2ead462bd38333c6f06e0861"
+  },
+  "initial_actual_proof": "docs/evidence/sprint-0.35-planning-browser-initial/preservation-manifest.json",
+  "prototype_report": "docs/evidence/sprint-0.35-cost-mobile-prototype-tests.json",
+  "checks": [
+    "Successful tsc --noEmit using actual apps/web/tsconfig.json",
+    "Checker Node syntax and Prettier checks",
+    "Four320/390 \u00d72/4-offer cases with full first/last statuses and fixed external title",
+    "Opaque computed text/background contrast at least11.949842267861488; not a substitute for all manual accessibility review"
+  ],
+  "capture_review": [
+    "320/two: complete first-offer statuses visible beside84px sticky label, external title wraps naturally",
+    "390/two: both offer statuses fully fit; title fully visible",
+    "Private four-offer captures retained; actual HTTP uses two offers"
+  ],
+  "accessibility": {
+    "violations": 0,
+    "scans": 4,
+    "incomplete_scans": 2,
+    "retained_incomplete": "Color-contrast analyzer overlap on sticky row-header at320 far scroll end. Original clipped caption removed; no full accessibility-complete claim."
+  },
+  "private_attempts_retained": [
+    "attempt1-fixture-heading",
+    "attempt2-sticky-collapsed-border",
+    "attempt3-separated-border-observation",
+    "attempt4-nonoverflow-390-fixture"
+  ],
+  "ready_for_root_build": true
+}

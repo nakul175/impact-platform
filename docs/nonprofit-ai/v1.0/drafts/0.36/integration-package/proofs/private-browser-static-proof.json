@@ -1,0 +1,42 @@
+{
+  "scope": "STATIC proposal checks only. No Chrome, application API, database fixture or provider execution.",
+  "recorded_at": "2026-10-05T21:23:25.351389+00:00",
+  "result": "PASS",
+  "checks": {
+    "original_group_titles_preserved": 10,
+    "proposed_group_titles": 14,
+    "original_assertion_calls_preserved": 50,
+    "proposed_assertion_calls": 126,
+    "baseline_checker_current_bytes_equal": true,
+    "embedded_fixture_python_parse": "PASS",
+    "node_syntax_check": "PASS with explicit bundled Node",
+    "prettier": "PASS",
+    "normal_always_on_runner_registration": "PASS static guard/14groups/default0.36 names; no custom env gate",
+    "browser_runtime_metadata": "Static PASS: engine browser.version(), platform process.platform; no guessed browser version"
+  },
+  "previous_environment_probe": {
+    "result": "NOT_RUN",
+    "reason": "Plain node was absent from shell PATH; corrected explicit bundled Node syntax check passed without executing checker"
+  },
+  "files": [
+    {
+      "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-check.baseline.mjs",
+      "sha256": "641df36ec61e8f3314fc6fc142a443b3f9ad7291a8b871ada8ad81e37b3a58e9",
+      "bytes": 20428
+    },
+    {
+      "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-check.proposed.mjs",
+      "sha256": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+      "bytes": 46170
+    },
+    {
+      "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-procurement-preview.proposed.patch",
+      "sha256": "8a84a8e869e86290567d2d73bdc3cafadfcc626f9815e3fd88e789df04f00898",
+      "bytes": 33003
+    }
+  ],
+  "actual_browser": "NOT_RUN",
+  "actual_api": "NOT_RUN",
+  "actual_database_fixture": "NOT_RUN",
+  "preserved_prior_metadata_proposal": "reviewed-before-browser-metadata/"
+}

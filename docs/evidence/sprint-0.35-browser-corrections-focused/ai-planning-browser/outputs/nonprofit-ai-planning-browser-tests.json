@@ -1,0 +1,1797 @@
+{
+  "build": {
+    "build": "0.35.0",
+    "domain_api": "1.25.0",
+    "platform_api": "1.10.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "started_at": "2026-10-05T21:30:28.644Z",
+  "completed_at": "2026-10-05T21:30:37.134Z",
+  "engine": "Configured Chromium browser",
+  "browser_version": "154.0.8037.97",
+  "database": "Disposable local database through the real FastAPI service; engine and applied ledger are captured by the owning runner qualification",
+  "fixture": "Synthetic fixture only",
+  "results": [
+    {
+      "name": "Actual loopback runtime matches the qualified source and served build",
+      "status": "passed"
+    },
+    {
+      "name": "An unfinished cost draft cannot calculate or save, and unknown amounts remain explicit",
+      "status": "passed"
+    },
+    {
+      "name": "Complete monthly totals retain exact amounts and equally lowest supplied offers remain a tie",
+      "status": "passed"
+    },
+    {
+      "name": "Actual entered-line totals distinguish explicit category zero from omitted and unknown amounts",
+      "status": "passed"
+    },
+    {
+      "name": "Editing clears calculated output and invalid decimal notation makes no calculation request",
+      "status": "passed"
+    },
+    {
+      "name": "A delayed real cost response cannot revive results after a new edit",
+      "status": "passed"
+    },
+    {
+      "name": "Pilot calculations include human review and normalize different sample sizes",
+      "status": "passed"
+    },
+    {
+      "name": "Zero baseline and incomparable samples produce undefined change rather than a false zero",
+      "status": "passed"
+    },
+    {
+      "name": "A slower pilot shows negative improvement and preserves source values",
+      "status": "passed"
+    },
+    {
+      "name": "Manual task practice exposes five review checks, resets checks after editing and makes no model request",
+      "status": "passed"
+    },
+    {
+      "name": "Saving and reopening persists actual cost, pilot and practice inputs but no transient calculation result",
+      "status": "passed"
+    },
+    {
+      "name": "Calculation binds exact opened inputs while a save receipt alone never claims a canonical read",
+      "status": "passed"
+    },
+    {
+      "name": "A delayed real result cannot cross a same-valued new saved revision",
+      "status": "passed"
+    },
+    {
+      "name": "Saved guide compatibility names current editions and reading leaves the revision unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Foundations handoff and starter preview/cancel preserve saved practice and learning progress",
+      "status": "passed"
+    },
+    {
+      "name": "Starter confirmation expires after edits and explicit replacement preserves own draft and review bytes",
+      "status": "passed"
+    },
+    {
+      "name": "Deliberate actual save/reopen retains starter text, original own work and unchanged recorded lessons",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated retired-guide projection preserves unavailable progress until explicit removal",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated unavailable practice keeps entered text and requires deliberate replacement before saving",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated stale practice edition is labelled without claiming historical guide wording",
+      "status": "passed"
+    },
+    {
+      "name": "Simulated unavailable practice is cleared only by the explicit clear action and save",
+      "status": "passed"
+    },
+    {
+      "name": "Ambiguous save recovery replays exact planning inputs while newer changes remain unsaved",
+      "status": "passed"
+    },
+    {
+      "name": "Navigating away during a real calculation cannot revive the previous section's result on return",
+      "status": "passed"
+    },
+    {
+      "name": "New product controls fit desktop, 390 and 320 px views with actual keyboard scrolling and all accessibility findings retained",
+      "status": "passed"
+    },
+    {
+      "name": "A delayed calculation from a previous signed-in tenant cannot appear after changing user and workspace",
+      "status": "passed"
+    },
+    {
+      "name": "Read-only staff can study guides and calculate supplied drafts but cannot save or read another tenant's plan",
+      "status": "passed"
+    },
+    {
+      "name": "Actual read-only management refusal creates no plan and leaves preserved canonical work unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "No advisory/provider request or uncaught browser error occurs across these synthetic workflows",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": [],
+  "consoleErrors": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: net::ERR_CONNECTION_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/b754928e-2995-4ea9-ac3d-fac21817d03e",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/b754928e-2995-4ea9-ac3d-fac21817d03e",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/91a8cd3f-ed2a-53cd-8569-d4f715d2b4d4/ai-enablement/plans",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    }
+  ],
+  "accessibilityScans": [
+    {
+      "name": "Simulated unavailable practice preservation",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Practise a useful task: 1440px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Practise a useful task: 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 320px scrolled to last offer",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Procurement brief: 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Pilot tracker: 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Practise a useful task: 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Read-only practice worksheet",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "coverageLayouts": [
+    {
+      "edge": "first",
+      "viewport": 390,
+      "clientWidth": 279,
+      "scrollWidth": 280,
+      "integerScrollRange": 1,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 0,
+      "region": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "category": {
+        "left": 55.78125,
+        "right": 139.78125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 139.78125,
+        "right": 237.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 237.28125,
+        "right": 334.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 200.453125
+        },
+        {
+          "left": 149.375,
+          "right": 201.34375
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 297.953125
+        },
+        {
+          "left": 246.875,
+          "right": 298.84375
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 306.65625
+        },
+        {
+          "left": 55.28125,
+          "right": 86.890625
+        }
+      ],
+      "titleOutsideScroller": true
+    },
+    {
+      "edge": "last",
+      "viewport": 390,
+      "clientWidth": 279,
+      "scrollWidth": 280,
+      "integerScrollRange": 1,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 0,
+      "region": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "category": {
+        "left": 55.78125,
+        "right": 139.78125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 139.78125,
+        "right": 237.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 237.28125,
+        "right": 334.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 200.453125
+        },
+        {
+          "left": 149.375,
+          "right": 201.34375
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 297.953125
+        },
+        {
+          "left": 246.875,
+          "right": 298.84375
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 306.65625
+        },
+        {
+          "left": 55.28125,
+          "right": 86.890625
+        }
+      ],
+      "titleOutsideScroller": true
+    },
+    {
+      "edge": "first",
+      "viewport": 390,
+      "clientWidth": 279,
+      "scrollWidth": 280,
+      "integerScrollRange": 1,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 0,
+      "region": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "category": {
+        "left": 55.78125,
+        "right": 139.78125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 139.78125,
+        "right": 237.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 237.28125,
+        "right": 334.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 200.453125
+        },
+        {
+          "left": 149.375,
+          "right": 201.34375
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 297.953125
+        },
+        {
+          "left": 246.875,
+          "right": 298.84375
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 334.71875,
+        "width": 279.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 306.65625
+        },
+        {
+          "left": 55.28125,
+          "right": 86.890625
+        }
+      ],
+      "titleOutsideScroller": true
+    },
+    {
+      "edge": "first",
+      "viewport": 320,
+      "clientWidth": 209,
+      "scrollWidth": 280,
+      "integerScrollRange": 71,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 0,
+      "region": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "category": {
+        "left": 55.78125,
+        "right": 139.78125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 139.78125,
+        "right": 237.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 237.28125,
+        "right": 334.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 200.453125
+        },
+        {
+          "left": 149.375,
+          "right": 201.34375
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 297.953125
+        },
+        {
+          "left": 246.875,
+          "right": 298.84375
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 250.671875
+        },
+        {
+          "left": 55.28125,
+          "right": 142.875
+        }
+      ],
+      "titleOutsideScroller": true
+    },
+    {
+      "edge": "last",
+      "viewport": 320,
+      "clientWidth": 209,
+      "scrollWidth": 280,
+      "integerScrollRange": 71,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 71,
+      "region": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "category": {
+        "left": 55.28125,
+        "right": 139.28125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 68.78125,
+        "right": 166.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 166.28125,
+        "right": 263.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 129.453125
+        },
+        {
+          "left": 78.375,
+          "right": 130.34375
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        },
+        {
+          "left": 78.375,
+          "right": 154.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 226.953125
+        },
+        {
+          "left": 175.875,
+          "right": 227.84375
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        },
+        {
+          "left": 175.875,
+          "right": 252
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 250.671875
+        },
+        {
+          "left": 55.28125,
+          "right": 142.875
+        }
+      ],
+      "titleOutsideScroller": true
+    },
+    {
+      "edge": "first",
+      "viewport": 320,
+      "clientWidth": 209,
+      "scrollWidth": 280,
+      "integerScrollRange": 71,
+      "documentHasFocus": true,
+      "visibilityState": "visible",
+      "scrollLeft": 0,
+      "region": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "category": {
+        "left": 55.78125,
+        "right": 139.78125,
+        "width": 84
+      },
+      "firstOffer": {
+        "left": 139.78125,
+        "right": 237.28125,
+        "width": 97.5
+      },
+      "lastOffer": {
+        "left": 237.28125,
+        "right": 334.78125,
+        "width": 97.5
+      },
+      "firstText": [
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 200.453125
+        },
+        {
+          "left": 149.375,
+          "right": 201.34375
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        },
+        {
+          "left": 149.375,
+          "right": 225.5
+        }
+      ],
+      "lastText": [
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 297.953125
+        },
+        {
+          "left": 246.875,
+          "right": 298.84375
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        },
+        {
+          "left": 246.875,
+          "right": 323
+        }
+      ],
+      "title": {
+        "left": 55.28125,
+        "right": 264.71875,
+        "width": 209.4375
+      },
+      "titleText": [
+        {
+          "left": 55.28125,
+          "right": 250.671875
+        },
+        {
+          "left": 55.28125,
+          "right": 142.875
+        }
+      ],
+      "titleOutsideScroller": true
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "cost-desktop",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-cost-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "pilot-desktop",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-pilot-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "practice-desktop",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-practice-desktop.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "cost-mobile",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-cost-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "pilot-mobile",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-pilot-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "practice-mobile",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-practice-mobile.png",
+      "synthetic": true,
+      "realProduct": true
+    },
+    {
+      "name": "cost-320",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-72404c2b/ai-planning-captures/ai-planning-cost-320.png",
+      "synthetic": true,
+      "realProduct": true
+    }
+  ],
+  "expectedConsoleNetworkEvents": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_CONNECTION_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/b754928e-2995-4ea9-ac3d-fac21817d03e",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Deliberate lost save response after real server commit"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8185/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/b754928e-2995-4ea9-ac3d-fac21817d03e",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Deliberate cross-tenant plan refusal"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:8185/v1/tenants/91a8cd3f-ed2a-53cd-8569-d4f715d2b4d4/ai-enablement/plans",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Deliberate current read-only actor create refusal; no management grant or profile widening"
+    }
+  ],
+  "advisoryRequests": 0,
+  "planWrites": 11,
+  "costRequests": 15,
+  "planReads": 25,
+  "blocked_external_requests": [],
+  "deliberate_current_authority_refusals": [
+    {
+      "path": "/v1/tenants/91a8cd3f-ed2a-53cd-8569-d4f715d2b4d4/ai-enablement/plans",
+      "status": 404,
+      "scope": "Deliberate current read-only actor create refusal; no management grant or profile widening"
+    }
+  ],
+  "runtime_manifest": {
+    "environment": "test",
+    "build_id": "impact-0.35.0",
+    "schema_version": "40",
+    "api_version": "1.25.0",
+    "fixture_id": "impact-acceptance-20260925-v1",
+    "mutation_tests_allowed": true
+  },
+  "qualified_sources": {
+    "VERSION.json": "3069e387adf9b2cb340cf3bd7e9921288b76342bfc6362537b9e833184ae4e4d",
+    "apps/api/impact_api/access_bootstrap.py": "436c925c6aab257c737cbd74e7b97a944e2bdc319e9dbf0c492998237ced2bdd",
+    "apps/api/impact_api/access_upgrade.py": "870062a422e45d164b47c6af5e18e68597ebe92cf1fac8e82e81516d87c0856c",
+    "apps/api/impact_api/access_upgrade_contracts.py": "d514db42147ce72f7e8aad23babb55a8a8102b75a48eaeace9bba85765b5af63",
+    "apps/api/impact_api/account.py": "1e94a2310a22802216ddb739f50c6b24b4d9f31ced800159fd6fb4d83385bf3a",
+    "apps/api/impact_api/administration.py": "c32cf4d0c4a140645d16aefd385e8c56f69ab109308265b5f123e0227afd0cfc",
+    "apps/api/impact_api/administration_contracts.py": "482ec447f4f2107135b5c04c033d951937dbeb75a1e12ddb3e36cbe48e6713e5",
+    "apps/api/impact_api/ai_adoption_contracts.py": "b17164d8e4bb49481f42203bab0909df3e8ee492ccb45c161924804953e01e9a",
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/ai_advisory_provider.py": "1c43ec93c502d84aee9462babcc149e232777d943391a6da46dbe605c035e72e",
+    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "apps/api/impact_api/ai_content_contracts.py": "56f9ce2adaf8e09f1400404cf2e87b09c14a293a1523868bc001dfde44b8d8db",
+    "apps/api/impact_api/ai_content_schema_v1.json": "248434d7ddb31bdb76508b673ffc26c517f68a3fc46565856d556bc9f458994c",
+    "apps/api/impact_api/ai_enablement.py": "c67125af0a57fa49dc810d00dbcabed889315e6aad8fcc2d90c496dcfc4a4409",
+    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
+    "apps/api/impact_api/ai_enablement_contracts.py": "9f9b9ff2b1306e3d82679ff190efb12ddfb75309fc91c0e7942826ce397f0020",
+    "apps/api/impact_api/ai_impact_reference_contracts.py": "fcef16fad9b6da0303b33d968f1f6e4492cddf10d0fb4828ee12518139099ba0",
+    "apps/api/impact_api/ai_impact_references.py": "5d5c0df33e1d1e729e9a2efe39a3ea423983f94ae9a3454dea14d2560285a047",
+    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333",
+    "apps/api/impact_api/ai_pilot_outcomes.py": "2f5ca5a0c43623fc93de56c35dffae147f266a48579ee33861bf9068f101e604",
+    "apps/api/impact_api/ai_plan_export_contracts.py": "8e4eef739b8ecd13bdb5c59e99c092edad3b83663896eb09e5dfde962672a2bd",
+    "apps/api/impact_api/ai_plan_exports.py": "e81364635cdd7943da4f837c0bffc3037dfa6e90fe77b4f35b76f18b1735eec1",
+    "apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "apps/api/impact_api/ai_planning_contracts.py": "809adfc04c642d06f9e8048f9157bd6404da7b482bf92866e582abc3298d275e",
+    "apps/api/impact_api/ai_procurement_costs.py": "abdabc90cdef64497b5bb5d1fc23d8dae719d9d4b3692c24150076ed5f7b63ec",
+    "apps/api/impact_api/ai_solutions_catalog.py": "fa66d52dd5b8a7d66f27cae1e1588170eb7b46cc4a5c239e06112dda2b9d57f0",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "apps/api/impact_api/application_executor.py": "c3af78f40eef7895c58c44abdd0b97051731fda91dc67c6952b1b9ea60c3ab88",
+    "apps/api/impact_api/audit_export.py": "5fe0378ca0c0fd3e2adcc2a0ec56068ac4859971c7bebeb7aff124db1b1cb0f9",
+    "apps/api/impact_api/audit_export_contracts.py": "61040ac323deed4786325f6f502cec86c08d57f677b590bc052bf5ce30f51298",
+    "apps/api/impact_api/auth.py": "b260cd5ef099eaa61a7bbce4a1efa92803dc633a740016b9c1e2acaa02f903e5",
+    "apps/api/impact_api/authority_renewal.py": "9601132ea9cae44949950ded0e9fdcfd65211c21ccfb39cb583a97dd48b9336d",
+    "apps/api/impact_api/bootstrap_contracts.py": "7b1e3ecb4750cc2d69503a9ad4dbe71f404a7a7fb3c607f789c01595c146a6de",
+    "apps/api/impact_api/bootstrap_profile.json": "362d98d5e8afea10fca27a5a79befdbe9a9866b4ec7ee3310432405daa1cc06d",
+    "apps/api/impact_api/calculation_contracts.py": "3cd82a703f24ebc6a1ecdd53e2b2d257f2be2095a872c480d2e828ec9d94c473",
+    "apps/api/impact_api/changes.py": "90122c8247b9bf0835ea277a851ddb3e1916d3d6a28349f2545243a92fea82b6",
+    "apps/api/impact_api/changes_contracts.py": "c7a46f1b8b04defc6250051bd08ab16fa15920837755c0bc913f0798889b1828",
+    "apps/api/impact_api/config.py": "aa17fec2e7d22212fe51499366780b0a4c60a9b0639b300e70ea573793562592",
+    "apps/api/impact_api/content_safety.py": "b7091e00e27d211be60da668453b85e25e0d1991539981f0bb78bc2a8d05f2a4",
+    "apps/api/impact_api/contracts.py": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+    "apps/api/impact_api/dashboard_contracts.py": "ef43731b78a59877178fae68827b187392ef1aeef1944e6edc303aac7f0e192f",
+    "apps/api/impact_api/dashboards.py": "9c32193dc36bcbf47c1eb64562f490e5c999e3698e3c309ac482a9f5cf4622b0",
+    "apps/api/impact_api/delivery.py": "1b73d9708c802ca2c3a9c786a506c2cf303529ab0c10fcc1752448cf03f838d7",
+    "apps/api/impact_api/delivery_operations.py": "1cbfbe8ab98cf32687a4e12136945b3cffe131a8a0bcba1368d63af843cd058c",
+    "apps/api/impact_api/domain.py": "4d171df4d27950190f388c609f24f147d9bdbfb54f30965d663a627e11e76502",
+    "apps/api/impact_api/evidence.py": "03d5dab4fcb2749a7cd63c0b2c0291cf530d94c73c9b95a339ba434532758200",
+    "apps/api/impact_api/evidence_contracts.py": "e930aeb906f15d533c6d891b11696563ffa70f76de05d82c970c8e6609f64787",
+    "apps/api/impact_api/export_contracts.py": "32775a76fa1ed285c705efae7e35eff4c9dbaf9e12456f7db3b291950631fc70",
+    "apps/api/impact_api/export_render.py": "65026a2d589386e2713eac736f712045a98ac88a26058db8892a726a02f49f4d",
+    "apps/api/impact_api/exports.py": "668af83f3f1a3d32be9b58ab119951eed92086632fe5ca34bd659f44c0cf0452",
+    "apps/api/impact_api/forms.py": "108a15c003f58933ac2b86628e08e2c9f2abd851f7bafd68a55aeface9f648ad",
+    "apps/api/impact_api/forms_contracts.py": "aa75a972463beadad7b3d417a0ac3f2a89b09ba39569bbbe153ba59ec9d99f3d",
+    "apps/api/impact_api/human_advice.py": "9d544565c7e91fe54ec644d4d1a6047005a2516e06148873486eb473c279352d",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "apps/api/impact_api/identity_profile.py": "b5a4ca8e0c6551c08539a844e74b33fcd8ff6c8f3f31072dc78fde1427e89e0c",
+    "apps/api/impact_api/import_contracts.py": "851eb581d0731282d79a39a06d153a001136d3199cc46f20b4ba22f1a9570522",
+    "apps/api/impact_api/imports.py": "fd7f36c6acf2d3c45e6a531b942a6b2e19c7b5cfdff435ca5e1dc7f4593e31e3",
+    "apps/api/impact_api/keyring.py": "71e04f475a205e71c87250b044caf02fbdd22c9d50763bc4f2bdd940d8f47f68",
+    "apps/api/impact_api/logframe.py": "9391e8f274109524843374cd8cf8a90f6e1dee34a9208df92493d5f49c4b2592",
+    "apps/api/impact_api/mail_rate.py": "2e92ec12bb8dc774dbcd5ad79df7a9143d024bda3e40b4d7306c702da3048e72",
+    "apps/api/impact_api/main.py": "7996f1c6e8840380be5a3fc7b0b33653a7c154681a50d624896f9a6fda4bd188",
+    "apps/api/impact_api/measurement.py": "00255d76e64cd28edcdb005a030df32951a5ce887ad25dd52b782825082c6b74",
+    "apps/api/impact_api/measurement_contracts.py": "47d5838f784e581fdb7c6a8ffe62108cfbc3c2fdf9927c7c008d20a64609c93c",
+    "apps/api/impact_api/metrics_contracts.py": "cdfb4c2911fa9f9d027b8a1438f8a74285b99949777b9f70314a80c6143e98a8",
+    "apps/api/impact_api/object_store.py": "7dde2b36dce8af9c664159036440664af80ab37d606321860d4b0fc6f0589a20",
+    "apps/api/impact_api/operator_contracts.py": "1beb4455ac6e8b0c3646911ca517530b694d57c2cd5f2a87c168448579bab59f",
+    "apps/api/impact_api/operators.py": "44e5121ee04f9b9ca21644f26c99ec39758e9ca831839e0865a608ffbace3bfa",
+    "apps/api/impact_api/ops_metrics.py": "e499b1c894f304c245e1467e5699a1f3201f44da2e4561ff5a2d03b2f7d4813e",
+    "apps/api/impact_api/period_contracts.py": "70c56f4eea53a1c94a78b46704ef0b22f47b4b1440d68c30fd4e2e584c208e48",
+    "apps/api/impact_api/period_governance.py": "798a1648447a1d834d65b321eac7dfdf0eacf0a348113fea0c487bce81fdc362",
+    "apps/api/impact_api/planning.py": "9740fb9dcf244a7ff9b22d3997a706268d6cdb764c44b4fa2a003b3d7097a47c",
+    "apps/api/impact_api/planning_contracts.py": "3f43c903b7158190037bb82910815099ff172036071744b4246e693b988f31be",
+    "apps/api/impact_api/platform_security.py": "1b030132115e04b40ec4c02473fe81c68614d5783e4f309394f9fe62c3b007f9",
+    "apps/api/impact_api/privacy.py": "f066d5ccbfe550acbade6d400c11ff727a07232698b3ef56c38982ba329ec5e2",
+    "apps/api/impact_api/privacy_contracts.py": "d6365d7252944b558e75ddee0e26ca269c3469ec238ee87d3497f46ce835108b",
+    "apps/api/impact_api/provider_accounts.py": "e56e23720b21dcf2e8e00618eabbe27319a9a6772007a5dcfbf760fa8d06f06e",
+    "apps/api/impact_api/provider_admin.py": "19264e8da8a7415425bb07f9a8309214f36439e0d1856a4afff5f73111608476",
+    "apps/api/impact_api/publication_contracts.py": "0e6e0fd3f850faf0816803fd0f767946db6547a1cb741b19215abb39a754fa12",
+    "apps/api/impact_api/purpose_grants.py": "7aa13ec58b6f79333fb8de44971e0d0d66b63cbd2acacf3c9d3785dbf594a2d3",
+    "apps/api/impact_api/recovery_contacts.py": "4efad2d96d458760e4ceba1406cbe0c81b34da0951536534020e0ad8b426baa4",
+    "apps/api/impact_api/recovery_contracts.py": "726043801cc2866d6d60cb5e4dbdd9e521df7d14938268809afb7778d0a88a35",
+    "apps/api/impact_api/reference_contracts.py": "c9e348d0e37d0023167f2d5a88224b3935245e582c1035f1537c88df2b2a8807",
+    "apps/api/impact_api/reference_data.py": "dee41e875d3779cd4223581261b5d6e96981a404e00745746e603dd9921ebd40",
+    "apps/api/impact_api/renewal_contracts.py": "785d9f5e8aa65e2df739247e0a90fb38666e5162ebb16cfac57e465ff48599f5",
+    "apps/api/impact_api/report_charts.py": "3b44c4167e04aeb31b751c62bcfbb2df25e6a2286c25baa74f2948da336938b8",
+    "apps/api/impact_api/reporting.py": "01ff6844d612408cad279c6461979d4b77543a9e61642f52ab9907d39583f6d6",
+    "apps/api/impact_api/reporting_contracts.py": "36ba4d41e6e024e25ee984666575b13ddef1964fe9eb5666a78ac38fbd5e2416",
+    "apps/api/impact_api/requeue_contracts.py": "e5f4eb5554a23aab986fc000da199857c45fa32be337381ff3b380b6858d653a",
+    "apps/api/impact_api/retention.py": "c89c93ea7f7edbcc1478be03a17d3a28aa42e86e12dfe50029276fbf97188033",
+    "apps/api/impact_api/retention_contracts.py": "acf670bbb0c79381017a20583140ab8d18075bea515eaebf7773afdced2fee61",
+    "apps/api/impact_api/retention_policies.py": "8479a7840d8d246072f540bc02621306a928da71b14fe03190d5a45442a11ada",
+    "apps/api/impact_api/security_events.py": "609d369dabbb633fef5fa69d879af886f85b01ea5883a502ee539ef460617527",
+    "apps/api/impact_api/service.py": "d5190de989f0623bd9903ca7c7c78394f3eb8c21d331d689a68f345acf975b2e",
+    "apps/api/impact_api/status.py": "dbe00f4cb95afdb20182acd490a1b159985f9ab098020c45555ba743f4dfe198",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/tenant_contracts.py": "a2811d31b40dac1f20b28868361d39bc20246ae77fb4949342f8b7cfc3e9bb5c",
+    "apps/api/impact_api/tenant_lifecycle.py": "e3c1525dc933d0a971e0a11a58ee10f137647851b3c2c0a648d7f30aeb658c58",
+    "apps/api/impact_api/version.py": "38c61aff95a8ebd67aae7a0c74bda556e75d06d62a52bf3330bdb078b6db3bf5",
+    "apps/api/impact_api/work.py": "9e986e122d015cb37300b196594931b8851a63d79078433e1349b57e759fa618",
+    "apps/api/impact_api/work_contracts.py": "390c5299b98264a315d27c7ee22362c90ba1d41baa22bee500b0789985d8839f",
+    "apps/api/impact_api/worker.py": "3025c8dc9ce3a6b684d19bd4d089d19f4ce9fe73d01dc9f7796c7c3d53ec259e",
+    "apps/api/impact_api/worker_contracts.py": "f65420ed16feaebfeaf0a5f142fa7fd93a83e661c776d7534f51b690f8fe9fef",
+    "apps/api/impact_api/worker_status.py": "0e4e46e203c959348aa05e44f0c60335aaff373024ad3e200e348373e5e432d3",
+    "apps/api/impact_api/workspace_administration.py": "354dc06660954a8875cd65b5ef893415cfa0ddd37eaede7a7282634196dd8fac",
+    "apps/api/impact_api/workspace_contracts.py": "c6e99f63b1d10d67ab5e84441737c9da57454e447f8ee4613c768f48ccd54c71",
+    "apps/web/dist/index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/AIFictionalWalkthrough.tsx": "b5de8361eb3d71268421d851d810a744927e9df98991b7dd25fb2a01269e9877",
+    "apps/web/src/AIFictionalWalkthroughAdapter.ts": "9db03e6009f70f6da315f5843bda463eff3011e30628b8000a806dc12bfc6413",
+    "apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AILearningLesson.tsx": "1e477a09b3ad6b8a84db6e44c6aeb782925f925441893118edfc4e5cc58cb212",
+    "apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "apps/web/src/AIPlanReviewChecklist.tsx": "6390c5e30d513e9484ac606db281ac5bf95af3987609605b0bbd5b3fbab5037c",
+    "apps/web/src/AIPlanReviewModel.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "apps/web/src/AIPlanningTools.tsx": "218c8a31c5c4f7c632b2537dc9b16d7ef484dbd268b4e7674ec5aa2c69988a3b",
+    "apps/web/src/AIPracticeStarter.tsx": "cb6f29cb237209e84788b9ec17a1aea4b0d72f31be0e1fc28e4a07ea1e577bbd",
+    "apps/web/src/AIPracticeStarterModel.ts": "a0766649a5eb6c8af548880451a0c26db018cc5dc087a32e7c1950aac62aadcd",
+    "apps/web/src/AIProcurementBrief.tsx": "d9e75a9040a7f03d94aa10c0179aa3aa53cd1ed99ed86e2afb31e65339c184f7",
+    "apps/web/src/AITaskPractice.tsx": "6580578dbb37ac044d2356fb82a4d726b7c0ed2e0978cdc9acc43dba3323a86d",
+    "apps/web/src/AIToolComparison.tsx": "9c846d46822a5c548f189dd963de88aed43833c90213090739bf5991792906f5",
+    "apps/web/src/AccessGate.tsx": "fe912d15c199227f13158ac366bb58ff33d016bae6894b60742a8b824ef89c03",
+    "apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
+    "apps/web/src/Accounts.tsx": "5de6db5946676079df1a81022f5a1591a1c7aba4464438767d27d029f321d758",
+    "apps/web/src/Administration.tsx": "357781661ae8d8d3be3c84bb8beb52cb0d65253aa7c958c3df5bad91228548c6",
+    "apps/web/src/AuditExport.tsx": "3d1b0e52066df8f8081e7b249d02ec1bd02e369daf3c67ccc574ebf4d8eae2b5",
+    "apps/web/src/AuthorityRenewal.tsx": "25255d49d2a58deeec5ae28eaa4b8e27022bad018768aa5b96ecc6ce4e4af0f6",
+    "apps/web/src/Changes.tsx": "4105c281cf1f92b7014544b8258edb9137cb995ea5a319b08aea7196758ca772",
+    "apps/web/src/Configuration.tsx": "eb9bdd1487de09ec81b861bef47b89e65e9a0bad9adab7f3167c8f966a3133fb",
+    "apps/web/src/Dashboards.tsx": "e310267e87585bdb4d6e6c30835dc72cd51f0a0d4c8c5f410354515b61cf21c2",
+    "apps/web/src/Evidence.tsx": "722363c9d58894ffa9c742704ecaedcbe9dd3b1a771581edf915d7c6b0667d53",
+    "apps/web/src/Forms.tsx": "4d9a869e747c0ebb7c37c3b76c35031635a7c5f931cd2fbf122ac63b4fba5d80",
+    "apps/web/src/Imports.tsx": "2c4c6cbf28c9b427a0b002613da882e1cb0905cf3fb96eafa2894895253df2a2",
+    "apps/web/src/InitialAccess.tsx": "cdbe3c7a532c454b6cb49ce289e30e7d94e81316495289675eb21ee3361ace31",
+    "apps/web/src/Landing.tsx": "3fbe0518ab63219ab86cd489c249766df428baee4b58e7439c924457d50d8915",
+    "apps/web/src/Operators.tsx": "2cc2bc9c05956a6488c765953e0b150566241e105529b3a372cb96d67122f631",
+    "apps/web/src/PeriodGovernance.tsx": "d8bdd05f8fb789e61e03c740514607e0c7644d146c3d6be91c753ef998cd0f5e",
+    "apps/web/src/Planning.tsx": "a56ec6bdf17b235b0c399d5c64fb150d559163ed75d53a689757c78a8065c46d",
+    "apps/web/src/Portfolio.tsx": "8446a581b21bbb25a6b9e16492b6a6673532fd8535ac53faa115b5bd4522531d",
+    "apps/web/src/Privacy.tsx": "0261bccfc0d649342c0c07752c7a1781d530e55b2f7cc28ece157c8ea4a589b4",
+    "apps/web/src/RecoveryContacts.tsx": "f3947ff360dc6bdc1c7d23a9f7f7671021380a45439a0b5e9b4120b26666b77f",
+    "apps/web/src/ReferenceData.tsx": "9a73cf7e280c824fea1de030c3bf5eaba34a522e44fa03537e32dcd011e9be51",
+    "apps/web/src/ReportExports.tsx": "b1526392b4987f12d0740d4409fce8bbbe799cbdb6cdeb6b6d2f901bac7c50aa",
+    "apps/web/src/Rounds.tsx": "31b752c9ea81cc7decf1825926d8a3a47a7ab19c1a089ecedbfc0ed8d77ef59f",
+    "apps/web/src/StatusBanner.tsx": "1b9a919cfa29d0db89fdf8fb03a087f1c063889a36dbd9fd4793330bc4e743e2",
+    "apps/web/src/TenantLifecycle.tsx": "68c4f3788d1041bdef4ff2cb78a43cd79e6985109d9d951c6172a932e6187409",
+    "apps/web/src/WorkCenter.tsx": "7b93540e5c3e55fbe9845e6a7ce50ad67b9b83fd0389199fe802c2baf2ed04ca",
+    "apps/web/src/Workers.tsx": "a2b75b4342ff4079b854d03384021c7cb53b40f8722fa3d83e23d5b5757bd4c7",
+    "apps/web/src/WorkspaceSettings.tsx": "049fda63a032c30d415ff659cbe268c5c2767f79fbf26812abf727ff15408310",
+    "apps/web/src/a11y.ts": "60a6755087d7f409aeafcd756dcbbac9b8fa0d71fc2b70ecd9cbb8f880dcb026",
+    "apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "apps/web/src/ai-plan-review.css": "d161772e174bd9b2c200c919f3f4209f54b6ade8f47745e9eec9e4aa8ef18b29",
+    "apps/web/src/ai-planning-tools.css": "4c5cd958b5b8c1aa42ab437c40fe5c36931088d3986806cc73c83d66e92d76ca",
+    "apps/web/src/ai-walkthrough-main.tsx": "5fc6b300960c228a76bfe266184fcabf3d27ec788b7f5e97fe849befbc0b589a",
+    "apps/web/src/ai-walkthrough.css": "a3e478b412729a0e92520c31ac2ace2ee38dec241ce85a3b8d1da3a9b552068d",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/operations.ts": "6ad64ffe31d5f38e86a31d2f52ea66aff1c621ff4b4891b2270fd6df166b4b5f",
+    "apps/web/src/styles.css": "8281fec2786fff78a2d115d52a19f7c00971432ba2f4f3c13ace0bf3215a1400",
+    "apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "apps/web/src/walkthrough-guidance.json": "8c7a80413722f8a5a7c7fa99a9ee138703380e7ceee9de2cee9da01cd59f0e47",
+    "infrastructure/migrations/0001_roles.sql": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+    "infrastructure/migrations/0002_domain.sql": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0004_application.sql": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+    "infrastructure/migrations/0005_access_administration.sql": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+    "infrastructure/migrations/0006_measurement_configuration.sql": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+    "infrastructure/migrations/0007_measurement_changes.sql": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+    "infrastructure/migrations/0008_period_governance.sql": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+    "infrastructure/migrations/0009_reporting_packages.sql": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+    "infrastructure/migrations/0010_work_and_recalculation.sql": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+    "infrastructure/migrations/0011_controlled_publication.sql": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+    "infrastructure/migrations/0012_workspace_administration.sql": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+    "infrastructure/migrations/0014_initial_access.sql": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+    "infrastructure/migrations/0015_recovery_contacts.sql": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+    "infrastructure/migrations/0016_authority_renewal.sql": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+    "infrastructure/migrations/0017_provider_logout.sql": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+    "infrastructure/migrations/0018_worker_delivery.sql": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+    "infrastructure/migrations/0019_results_framework.sql": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+    "infrastructure/migrations/0020_calculation_methods.sql": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+    "infrastructure/migrations/0021_web_forms.sql": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+    "infrastructure/migrations/0022_import_quality.sql": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+    "infrastructure/migrations/0023_evidence_objects.sql": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0026_worker_job_grants.sql": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+    "infrastructure/migrations/0027_privacy_execution.sql": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "infrastructure/migrations/0028_usable_staging.sql": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+    "infrastructure/migrations/0029_operator_lifecycle.sql": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+    "infrastructure/migrations/0030_security_privacy.sql": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "infrastructure/migrations/0031_theory_of_change.sql": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+    "infrastructure/migrations/0032_forms_languages_rounds.sql": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+    "infrastructure/migrations/0033_application_executor.sql": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+    "infrastructure/migrations/0034_ai_advisory.sql": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+    "infrastructure/migrations/0035_ai_adoption_plans.sql": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+    "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "infrastructure/migrations/0039_human_advice_anchor_availability.sql": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+    "infrastructure/migrations/0040_ai_plan_portability.sql": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "packages/contracts/event.schema.json": "696371cb2c69dc87ccf5eaa48e22f63c2c50931b6087dcfa13a0bb88385da7f3",
+    "packages/contracts/openapi-baseline.json": "0ee471ca58772a0658299e290be3aadcfd36aeeaa2587a169efc0d4842eb7e82",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "packages/contracts/openapi-platform.json": "a9b7e122e2243a69428448a6c631e37bd0e8949e7ad41b6199d5f83324025319",
+    "packages/contracts/openapi.json": "069a79a8663cde6ada7f0f392564311c07886e213028ff401077dcac4e46a3f6",
+    "qualification/conftest.py": "703f864cbb89eda879fa16976d57be4409fab9d9c60cd14980a4eab40e98c571",
+    "qualification/human_advice_anchor_fixtures.py": "b3b741b667937cecdadc9be5ba6280ffb15390f2fc353d61e3133aaa6800dcee",
+    "qualification/perf_harness.py": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd",
+    "qualification/perf_support.py": "d34c3727509e10921a56199f18aa91c76ca62e3f5b2f655ea5e80b3c1990b49a",
+    "qualification/prepared_dashboard_visibility_repro.py": "bb1d4ba07d0eba69dcd30329b960b40ace585754cce0cf0f277808821704e1b9",
+    "qualification/prepared_human_advice_anchor_availability.py": "a0d46228818b018ffcaaaf5e202a955c91e34f4f51a8c8b612800bea3d4ad4d7",
+    "qualification/prepared_retained_label_visibility_repro.py": "b38882798d4019acdf5fee794688807046315f7f77e6933100dcd72446e066d8",
+    "qualification/process_environment.py": "e888c5046afac6461ef179fc91288c69583d799829f182f491d9cf10814e1145",
+    "qualification/smtp_sink.py": "36c7daad76583428126f47549e06337cb86e87633f1d55bdb8d70854be036748",
+    "qualification/test_access_bootstrap.py": "7d6613800e5855730c42d15557ba17ca7e310383fa4587ceb8c25577fa8f13d3",
+    "qualification/test_access_upgrade.py": "78f23c8ae251a8e7622f13812f96234c24f10bbaa3d32895b35afc4b56a6d6fc",
+    "qualification/test_access_upgrade_unit.py": "10121732fc1ac5b64ecd45f73df06277acb023a349c687c3e9cc4326e7ad96d4",
+    "qualification/test_administration.py": "b7f9ca8d456462fb2900b5cb2ae11443f59ee028b5082b05ffbdd72885fd0d47",
+    "qualification/test_administration_unit.py": "37cd42516f58118bdf91c3108fad4dc31d5367baf1da6bcc4acf9f6c14064286",
+    "qualification/test_ai_adoption_plans.py": "22a5a1aa1de085888d3629942e0f2ef504c48cad15c656aae4133b2ef1863615",
+    "qualification/test_ai_adoption_plans_live.py": "2781c9787ee91b9923a97707adcd1400bc0674b18afcf41200eab53801d96559",
+    "qualification/test_ai_advisory_provider.py": "dbb7b24416fcd1cd9dc5ac86e8c5267582933163c6ffb9e7d375b7672cf53cec",
+    "qualification/test_ai_content_archives.py": "38f25bfb40a64af33ce15a1b0cfc9950d3bafa0772f158c2a100d47a6a84acd1",
+    "qualification/test_ai_content_archives_live.py": "116eabf6825c50a277f701ea41dee124c9e9e879e1cdb7f2922d1b5235bb869c",
+    "qualification/test_ai_enablement.py": "c1ed4bae1de90a49c88234cb606c3b4d49e77583e6997d08dd960260658eb8e6",
+    "qualification/test_ai_enablement_catalog.py": "82152e63b3b86705164a34bb727a54eba661356144ba5397d2e84bfdca07fec6",
+    "qualification/test_ai_enablement_live.py": "218432b4467d1dbc5ab0453d8e894bab8f3a6a0e7a42f52dc6664fafe4082783",
+    "qualification/test_ai_impact_references.py": "291e327070602c2495bc94dd4ecfdeedabf081adb066c9d2f7805e19cc5f6110",
+    "qualification/test_ai_impact_references_live.py": "6872a0a9cad91044fb41fca105c6dd54bab1fdc690d1322216a1d9af4f381203",
+    "qualification/test_ai_learning_content.py": "7cf621ee34595501ba0af95a4ecaf166d72f449041b3662b926eddc4ecfa5b23",
+    "qualification/test_ai_pilot_outcomes.py": "8455b4bf543c26496d0fa56a55ab3e6bc9e6ad2db2742f4bcbc4afe4f6dd8a07",
+    "qualification/test_ai_plan_exports_live.py": "154461af0a0246118f178e1746efb5b95ef96fe91448eefa3650e931b59e2e9b",
+    "qualification/test_ai_plan_exports_unit.py": "3d5e974264237c4898eb385fd43b254d42994d0e96db148e3fd797668c2861d3",
+    "qualification/test_ai_plan_exports_upgrade.py": "00c6ff246071fa92e3431222b2d95e7d1197fb36bdb7863920663a49bf0d8ed0",
+    "qualification/test_ai_planning_inputs.py": "18f2d2de2288a8ab1bc46974ad5819533532efbc097db73c7926d5cfffc49032",
+    "qualification/test_ai_planning_live.py": "f97210899087655417a3318548810cd4d1f7c281c95bcda311c7e3e8d9887be6",
+    "qualification/test_ai_procurement_costs.py": "d3cba062ba0f3ebfa88912769913d02703093ce76443bcbf8eb05c96a44f7584",
+    "qualification/test_ai_solutions_catalog.py": "5b01aee72c6947b574422e194d458b06980d13b8afec64a86dc0c6c4230b756b",
+    "qualification/test_ai_task_practice.py": "b504552f269ef2f50c9753997877641cfae5f535507a29dd815aa6f87165afaf",
+    "qualification/test_audit_export.py": "9617d00bd500abf7835718206e0e20f143b54d4c8b9902f89dbd1748bb297537",
+    "qualification/test_authority_renewal.py": "29fde764064da2672f0a8b1960c9a96ca588bc2a77c7ffbdad771b5843e7368b",
+    "qualification/test_backchannel_logout.py": "7e8e8e07f0b2f2d4ba28ab3796bf86ba7d2fef72015ad1de18541e80b0c4d117",
+    "qualification/test_calculation_methods.py": "f6e4897903630b9257c05a48d532684947a9c8d51acbdd3284057dd008ce88ac",
+    "qualification/test_changes.py": "2ccf7ec93bc10e1e430cce7fedf89e14b06819e3142672724d3bad6e8cada800",
+    "qualification/test_dashboard_current_visibility.py": "3d4ee4fbf62fc9a160e675437f94c2ed35255b61bb2622c29a4ed879ee62034c",
+    "qualification/test_dashboards.py": "5a1c6697738f8d912412bd9320b2da55cb25c2ed2ae1d87d056f868dce2787e1",
+    "qualification/test_delivery_requeue.py": "ad666362cbd182913fb03d5012dae2c7ec835eb711758dd2ce635fecda69405c",
+    "qualification/test_deploy_unit.py": "797577b7939f23bc0416a1e91e40ef7b3fe5137a591e85c62fcb4528a8314ee3",
+    "qualification/test_email_readiness.py": "02f13f758a0e3e2361a828b76a074c29aca0192489870e56d2b5b4481a928298",
+    "qualification/test_email_readiness_unit.py": "8e12aac00c24466a83899110aa133683aea43f8ad1b24e3add6112e3644a721d",
+    "qualification/test_evidence.py": "e78c0f95985f666cc8b1dbb8b37678adb02fc673600ebc35c5761949ed37cb2e",
+    "qualification/test_evidence_unit.py": "a886af2eac4f5d27012b33671825acd2f2ad0ffe0b15e0612f0014b993dd8105",
+    "qualification/test_forms.py": "e360e9c0275b906e9565f1c3edfe9dc527e70f1e737bad61c035cf12bbb62ae9",
+    "qualification/test_forms_rounds.py": "0203032b214a9a872063b8b7c0c33a88e6886f8e6a3f4a5afb6096a4367a7df1",
+    "qualification/test_framework_old_pin_visibility.py": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+    "qualification/test_golden.py": "1338ac425af9a1c2e2a272f2c7dbb44b258d7a9a95cccb51805e9f50152e2bab",
+    "qualification/test_human_advice_anchor_availability.py": "6eb4fc60f68768dc43c7c3a59015ffe908accef2b760f4540bde7b8962256d37",
+    "qualification/test_human_advice_live.py": "d7c4f28a5bb59cdac5ba3e66d792a5629dd6e4910fcacd6b6c2393177b3a7c8b",
+    "qualification/test_human_advice_unit.py": "7bf2006e0c7be12eb01914b40148ff689c7ae83e890d86744f9e061a9a6d8f2d",
+    "qualification/test_import.py": "8564bcfb5b94bf0ef37d0d92156b9f435e032c7af0f07760493e6aacb062a23e",
+    "qualification/test_key_rotation.py": "490c624b65cd4c7b38bc342a60c4a43612b3343ece0b1117274c2b00f67de5b1",
+    "qualification/test_listing_visibility_live.py": "50e0e86dabb67ec4a992016f18aee72d957109b874b348cd81aa46cb2dfbf1e9",
+    "qualification/test_listing_visibility_unit.py": "114e1321806368dc83fe6bca9e3a2e7bf34c375795b2f4784b7031425ecb6206",
+    "qualification/test_live_application.py": "ffa8c15774c1bb48727b4b350da22e66af40e5b3deffbba3333f947f4e08d31f",
+    "qualification/test_live_idp.py": "c5819b0946c9e937ec1dab062040825be1633d56f56dc2dbe1abe720edacaf17",
+    "qualification/test_logframe.py": "0624be247e774b55cf63b285db9e8cfa78aa94d5b9a0e28e6ff05d8cce6c361d",
+    "qualification/test_measurement.py": "8d221ead18188b0307bcded6aa907d740266fef62d44b5da1e1790e6e7d207df",
+    "qualification/test_measurement_unit.py": "c7886271004e4f808dc1651f506783757859242904e9a85b8fe2d360d71a1f55",
+    "qualification/test_native_concurrency.py": "219bb18140238bb832682fadfd6970bb4898cb16d8d6828f7d69b00cd4f0fbd9",
+    "qualification/test_native_degradation.py": "928f00a3036d5449a71b22b0bd27cd995dae8223e28946f20a00ffb93e733767",
+    "qualification/test_native_nonfunctional.py": "22745bf7169438a612fc655840231bb62b2501ec8f53b39ac6e685d2ebed355f",
+    "qualification/test_native_restart.py": "90c287e22fa90a0871b8d099f1a0983d11ab09d6ac5acf97bddf743c814d8664",
+    "qualification/test_native_roles.py": "97faa1f3fc14778d23616187d71aaabd98261d64f55822cb0a339b6c382724d3",
+    "qualification/test_native_sessions.py": "1bd70f247c8897dea68a78ad0922679bb0c593b5d8921e9915aec7ce3b5f4dff",
+    "qualification/test_native_worker.py": "7eaec826dbbb8b46f8a179ea11bd25fd0fb6866efd38678bbb5bf10471f06bea",
+    "qualification/test_operator_lifecycle.py": "2b0f9e094f611a73e54ba49cedc8440789718e2674d584bf133e180eeb6dde3c",
+    "qualification/test_operator_onboarding.py": "91a22e13e4bff2fb4751a10362dfd61848b58953b982a183f572ffed8808d5d5",
+    "qualification/test_ops_metrics.py": "37636ba66cbe155e848e078d47875671e348fcf36e4467269fd0f56b476f14a6",
+    "qualification/test_ops_unit.py": "ea5e6557f86076f6b9e469112f60ea74d1d73492b2a223fb306f1fab6fc92d81",
+    "qualification/test_perf_unit.py": "01477a7ad49e40acaf86f5711b9ee3e139dea148b760ce2132c41f027313c41a",
+    "qualification/test_period_governance.py": "56f1e5a372537fff3cebcf2853cfed2590271eba9d2540aa2e3c8b54d92d05bd",
+    "qualification/test_planning.py": "9717843d37f2766a9c5a83d439382828dd0d1b83be81af6f676de7fc94864a58",
+    "qualification/test_planning_unit.py": "fdd1cb4ad009b0ea5f7bd85229e20d421d653598833f5daa8a90515e03889bb6",
+    "qualification/test_pooler_unit.py": "ccfa6af432eb3f159c19e18edeaef0f979e3a4d513e15a72c5f20c69004242e8",
+    "qualification/test_privacy_requests.py": "3f37bbc33b0d962668dcf3db8c6c7c8c317d361f330ebf2c233b06fa152ba589",
+    "qualification/test_process_environment_unit.py": "2f111545240f8d68a7542a0cc4ddd3bd73f44755133c9ba640d26e83f8cefdd9",
+    "qualification/test_publication.py": "e13f8f77e421055a503ab37e6ae5b36789e7904f1220d1842481708c7d58ee1c",
+    "qualification/test_recovery_contacts.py": "fb7883b11a9b94a59fbc84f5470a46f4ea6753af73f9e7df3694bda82aecffa8",
+    "qualification/test_report_charts.py": "c9f98030294315959999f5319f3db4ec9df515e70eab52852d0a5baf42025c9f",
+    "qualification/test_report_exports.py": "ce5325216579e5a224b9ba8f3dc028ced9a9226126d593ede88a86e8994741df",
+    "qualification/test_reporting.py": "d292c0e09585790f54e2c6d903220bd964149bb7a7f9fbcce2d4b2f34cf05aea",
+    "qualification/test_retained_label_current_visibility.py": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+    "qualification/test_retention.py": "1048fd10640f40432050f107d5ca21744644a340c6dc6283902360e69dd5ff38",
+    "qualification/test_security_privacy.py": "b4d263cfcdfc6129037c24cc4910c9f2152cee9dde82278bb71bb1af49cf6cab",
+    "qualification/test_status.py": "2c6fec1a592c8a93dddf1dc5d2cb076738d38b07deef28c9b1bd7146ea77fc9c",
+    "qualification/test_status_alerts_unit.py": "2dae81b0914d78210033fd187a21ade404539834f95a76cb7201cfdcaa4604de",
+    "qualification/test_tenant_lifecycle.py": "ca807b038c21f0c8afb48979c6fd53c68638496833ccbd1365a22dbf685500d7",
+    "qualification/test_toladata_reuse_scenarios.py": "19b1fbb51c0bb029dd0d3e7e2582e83903a3975a0715190390031904167f2d57",
+    "qualification/test_unit.py": "2d01239cd6833f722871e57b6d076ffcd58a5ef94eca073c6e3c69ce33e8eb7c",
+    "qualification/test_usable_staging.py": "aa59101d47e4c7b32dcecdc4dcca3e6d226a1683fcd0af4554f7cb65e563d918",
+    "qualification/test_usable_staging_unit.py": "023e7243c46844bcb0ad23cef99f5fa16fa55fdfaf73c865532fdf671f38fc7e",
+    "qualification/test_version_unit.py": "e56cfd8624b2835b5f712bd60c52d13c5ae101eba84c50e8c0cccb201743b0f7",
+    "qualification/test_work_center.py": "d011141aa8e94b7715ef32f573e1faa52470f6b00f794801ad2dcb32f17bf772",
+    "qualification/test_worker.py": "b7dc8edc9baa62c4014f25656726e7bc94a4154f3cb3e66a10003f1aef758dd2",
+    "qualification/test_workspace_administration.py": "19e55d3c8a8065e32dedac503a6765aeba62362270d6663abd5ecd29b8f55f29",
+    "scripts/fixture_support.py": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb",
+    "scripts/run.py": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+    "specification/fixtures/api-fixture.json": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+    "specification/fixtures/records.json": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5",
+    "tools/browser/ai-planning-check.mjs": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790"
+  },
+  "current_sources": {
+    "VERSION.json": "3069e387adf9b2cb340cf3bd7e9921288b76342bfc6362537b9e833184ae4e4d",
+    "apps/api/impact_api/access_bootstrap.py": "436c925c6aab257c737cbd74e7b97a944e2bdc319e9dbf0c492998237ced2bdd",
+    "apps/api/impact_api/access_upgrade.py": "870062a422e45d164b47c6af5e18e68597ebe92cf1fac8e82e81516d87c0856c",
+    "apps/api/impact_api/access_upgrade_contracts.py": "d514db42147ce72f7e8aad23babb55a8a8102b75a48eaeace9bba85765b5af63",
+    "apps/api/impact_api/account.py": "1e94a2310a22802216ddb739f50c6b24b4d9f31ced800159fd6fb4d83385bf3a",
+    "apps/api/impact_api/administration.py": "c32cf4d0c4a140645d16aefd385e8c56f69ab109308265b5f123e0227afd0cfc",
+    "apps/api/impact_api/administration_contracts.py": "482ec447f4f2107135b5c04c033d951937dbeb75a1e12ddb3e36cbe48e6713e5",
+    "apps/api/impact_api/ai_adoption_contracts.py": "b17164d8e4bb49481f42203bab0909df3e8ee492ccb45c161924804953e01e9a",
+    "apps/api/impact_api/ai_adoption_plans.py": "61ea666afdd29a0f187b1ef3baca9ea1fde5ecb71ec3e8799f3891a78605ca2b",
+    "apps/api/impact_api/ai_advisory_provider.py": "1c43ec93c502d84aee9462babcc149e232777d943391a6da46dbe605c035e72e",
+    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "apps/api/impact_api/ai_content_contracts.py": "56f9ce2adaf8e09f1400404cf2e87b09c14a293a1523868bc001dfde44b8d8db",
+    "apps/api/impact_api/ai_content_schema_v1.json": "248434d7ddb31bdb76508b673ffc26c517f68a3fc46565856d556bc9f458994c",
+    "apps/api/impact_api/ai_enablement.py": "c67125af0a57fa49dc810d00dbcabed889315e6aad8fcc2d90c496dcfc4a4409",
+    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
+    "apps/api/impact_api/ai_enablement_contracts.py": "9f9b9ff2b1306e3d82679ff190efb12ddfb75309fc91c0e7942826ce397f0020",
+    "apps/api/impact_api/ai_impact_reference_contracts.py": "fcef16fad9b6da0303b33d968f1f6e4492cddf10d0fb4828ee12518139099ba0",
+    "apps/api/impact_api/ai_impact_references.py": "5d5c0df33e1d1e729e9a2efe39a3ea423983f94ae9a3454dea14d2560285a047",
+    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333",
+    "apps/api/impact_api/ai_pilot_outcomes.py": "2f5ca5a0c43623fc93de56c35dffae147f266a48579ee33861bf9068f101e604",
+    "apps/api/impact_api/ai_plan_export_contracts.py": "8e4eef739b8ecd13bdb5c59e99c092edad3b83663896eb09e5dfde962672a2bd",
+    "apps/api/impact_api/ai_plan_exports.py": "e81364635cdd7943da4f837c0bffc3037dfa6e90fe77b4f35b76f18b1735eec1",
+    "apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673",
+    "apps/api/impact_api/ai_planning_contracts.py": "809adfc04c642d06f9e8048f9157bd6404da7b482bf92866e582abc3298d275e",
+    "apps/api/impact_api/ai_procurement_costs.py": "abdabc90cdef64497b5bb5d1fc23d8dae719d9d4b3692c24150076ed5f7b63ec",
+    "apps/api/impact_api/ai_solutions_catalog.py": "fa66d52dd5b8a7d66f27cae1e1588170eb7b46cc4a5c239e06112dda2b9d57f0",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "apps/api/impact_api/application_executor.py": "c3af78f40eef7895c58c44abdd0b97051731fda91dc67c6952b1b9ea60c3ab88",
+    "apps/api/impact_api/audit_export.py": "5fe0378ca0c0fd3e2adcc2a0ec56068ac4859971c7bebeb7aff124db1b1cb0f9",
+    "apps/api/impact_api/audit_export_contracts.py": "61040ac323deed4786325f6f502cec86c08d57f677b590bc052bf5ce30f51298",
+    "apps/api/impact_api/auth.py": "b260cd5ef099eaa61a7bbce4a1efa92803dc633a740016b9c1e2acaa02f903e5",
+    "apps/api/impact_api/authority_renewal.py": "9601132ea9cae44949950ded0e9fdcfd65211c21ccfb39cb583a97dd48b9336d",
+    "apps/api/impact_api/bootstrap_contracts.py": "7b1e3ecb4750cc2d69503a9ad4dbe71f404a7a7fb3c607f789c01595c146a6de",
+    "apps/api/impact_api/bootstrap_profile.json": "362d98d5e8afea10fca27a5a79befdbe9a9866b4ec7ee3310432405daa1cc06d",
+    "apps/api/impact_api/calculation_contracts.py": "3cd82a703f24ebc6a1ecdd53e2b2d257f2be2095a872c480d2e828ec9d94c473",
+    "apps/api/impact_api/changes.py": "90122c8247b9bf0835ea277a851ddb3e1916d3d6a28349f2545243a92fea82b6",
+    "apps/api/impact_api/changes_contracts.py": "c7a46f1b8b04defc6250051bd08ab16fa15920837755c0bc913f0798889b1828",
+    "apps/api/impact_api/config.py": "aa17fec2e7d22212fe51499366780b0a4c60a9b0639b300e70ea573793562592",
+    "apps/api/impact_api/content_safety.py": "b7091e00e27d211be60da668453b85e25e0d1991539981f0bb78bc2a8d05f2a4",
+    "apps/api/impact_api/contracts.py": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+    "apps/api/impact_api/dashboard_contracts.py": "ef43731b78a59877178fae68827b187392ef1aeef1944e6edc303aac7f0e192f",
+    "apps/api/impact_api/dashboards.py": "9c32193dc36bcbf47c1eb64562f490e5c999e3698e3c309ac482a9f5cf4622b0",
+    "apps/api/impact_api/delivery.py": "1b73d9708c802ca2c3a9c786a506c2cf303529ab0c10fcc1752448cf03f838d7",
+    "apps/api/impact_api/delivery_operations.py": "1cbfbe8ab98cf32687a4e12136945b3cffe131a8a0bcba1368d63af843cd058c",
+    "apps/api/impact_api/domain.py": "4d171df4d27950190f388c609f24f147d9bdbfb54f30965d663a627e11e76502",
+    "apps/api/impact_api/evidence.py": "03d5dab4fcb2749a7cd63c0b2c0291cf530d94c73c9b95a339ba434532758200",
+    "apps/api/impact_api/evidence_contracts.py": "e930aeb906f15d533c6d891b11696563ffa70f76de05d82c970c8e6609f64787",
+    "apps/api/impact_api/export_contracts.py": "32775a76fa1ed285c705efae7e35eff4c9dbaf9e12456f7db3b291950631fc70",
+    "apps/api/impact_api/export_render.py": "65026a2d589386e2713eac736f712045a98ac88a26058db8892a726a02f49f4d",
+    "apps/api/impact_api/exports.py": "668af83f3f1a3d32be9b58ab119951eed92086632fe5ca34bd659f44c0cf0452",
+    "apps/api/impact_api/forms.py": "108a15c003f58933ac2b86628e08e2c9f2abd851f7bafd68a55aeface9f648ad",
+    "apps/api/impact_api/forms_contracts.py": "aa75a972463beadad7b3d417a0ac3f2a89b09ba39569bbbe153ba59ec9d99f3d",
+    "apps/api/impact_api/human_advice.py": "9d544565c7e91fe54ec644d4d1a6047005a2516e06148873486eb473c279352d",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "apps/api/impact_api/identity_profile.py": "b5a4ca8e0c6551c08539a844e74b33fcd8ff6c8f3f31072dc78fde1427e89e0c",
+    "apps/api/impact_api/import_contracts.py": "851eb581d0731282d79a39a06d153a001136d3199cc46f20b4ba22f1a9570522",
+    "apps/api/impact_api/imports.py": "fd7f36c6acf2d3c45e6a531b942a6b2e19c7b5cfdff435ca5e1dc7f4593e31e3",
+    "apps/api/impact_api/keyring.py": "71e04f475a205e71c87250b044caf02fbdd22c9d50763bc4f2bdd940d8f47f68",
+    "apps/api/impact_api/logframe.py": "9391e8f274109524843374cd8cf8a90f6e1dee34a9208df92493d5f49c4b2592",
+    "apps/api/impact_api/mail_rate.py": "2e92ec12bb8dc774dbcd5ad79df7a9143d024bda3e40b4d7306c702da3048e72",
+    "apps/api/impact_api/main.py": "7996f1c6e8840380be5a3fc7b0b33653a7c154681a50d624896f9a6fda4bd188",
+    "apps/api/impact_api/measurement.py": "00255d76e64cd28edcdb005a030df32951a5ce887ad25dd52b782825082c6b74",
+    "apps/api/impact_api/measurement_contracts.py": "47d5838f784e581fdb7c6a8ffe62108cfbc3c2fdf9927c7c008d20a64609c93c",
+    "apps/api/impact_api/metrics_contracts.py": "cdfb4c2911fa9f9d027b8a1438f8a74285b99949777b9f70314a80c6143e98a8",
+    "apps/api/impact_api/object_store.py": "7dde2b36dce8af9c664159036440664af80ab37d606321860d4b0fc6f0589a20",
+    "apps/api/impact_api/operator_contracts.py": "1beb4455ac6e8b0c3646911ca517530b694d57c2cd5f2a87c168448579bab59f",
+    "apps/api/impact_api/operators.py": "44e5121ee04f9b9ca21644f26c99ec39758e9ca831839e0865a608ffbace3bfa",
+    "apps/api/impact_api/ops_metrics.py": "e499b1c894f304c245e1467e5699a1f3201f44da2e4561ff5a2d03b2f7d4813e",
+    "apps/api/impact_api/period_contracts.py": "70c56f4eea53a1c94a78b46704ef0b22f47b4b1440d68c30fd4e2e584c208e48",
+    "apps/api/impact_api/period_governance.py": "798a1648447a1d834d65b321eac7dfdf0eacf0a348113fea0c487bce81fdc362",
+    "apps/api/impact_api/planning.py": "9740fb9dcf244a7ff9b22d3997a706268d6cdb764c44b4fa2a003b3d7097a47c",
+    "apps/api/impact_api/planning_contracts.py": "3f43c903b7158190037bb82910815099ff172036071744b4246e693b988f31be",
+    "apps/api/impact_api/platform_security.py": "1b030132115e04b40ec4c02473fe81c68614d5783e4f309394f9fe62c3b007f9",
+    "apps/api/impact_api/privacy.py": "f066d5ccbfe550acbade6d400c11ff727a07232698b3ef56c38982ba329ec5e2",
+    "apps/api/impact_api/privacy_contracts.py": "d6365d7252944b558e75ddee0e26ca269c3469ec238ee87d3497f46ce835108b",
+    "apps/api/impact_api/provider_accounts.py": "e56e23720b21dcf2e8e00618eabbe27319a9a6772007a5dcfbf760fa8d06f06e",
+    "apps/api/impact_api/provider_admin.py": "19264e8da8a7415425bb07f9a8309214f36439e0d1856a4afff5f73111608476",
+    "apps/api/impact_api/publication_contracts.py": "0e6e0fd3f850faf0816803fd0f767946db6547a1cb741b19215abb39a754fa12",
+    "apps/api/impact_api/purpose_grants.py": "7aa13ec58b6f79333fb8de44971e0d0d66b63cbd2acacf3c9d3785dbf594a2d3",
+    "apps/api/impact_api/recovery_contacts.py": "4efad2d96d458760e4ceba1406cbe0c81b34da0951536534020e0ad8b426baa4",
+    "apps/api/impact_api/recovery_contracts.py": "726043801cc2866d6d60cb5e4dbdd9e521df7d14938268809afb7778d0a88a35",
+    "apps/api/impact_api/reference_contracts.py": "c9e348d0e37d0023167f2d5a88224b3935245e582c1035f1537c88df2b2a8807",
+    "apps/api/impact_api/reference_data.py": "dee41e875d3779cd4223581261b5d6e96981a404e00745746e603dd9921ebd40",
+    "apps/api/impact_api/renewal_contracts.py": "785d9f5e8aa65e2df739247e0a90fb38666e5162ebb16cfac57e465ff48599f5",
+    "apps/api/impact_api/report_charts.py": "3b44c4167e04aeb31b751c62bcfbb2df25e6a2286c25baa74f2948da336938b8",
+    "apps/api/impact_api/reporting.py": "01ff6844d612408cad279c6461979d4b77543a9e61642f52ab9907d39583f6d6",
+    "apps/api/impact_api/reporting_contracts.py": "36ba4d41e6e024e25ee984666575b13ddef1964fe9eb5666a78ac38fbd5e2416",
+    "apps/api/impact_api/requeue_contracts.py": "e5f4eb5554a23aab986fc000da199857c45fa32be337381ff3b380b6858d653a",
+    "apps/api/impact_api/retention.py": "c89c93ea7f7edbcc1478be03a17d3a28aa42e86e12dfe50029276fbf97188033",
+    "apps/api/impact_api/retention_contracts.py": "acf670bbb0c79381017a20583140ab8d18075bea515eaebf7773afdced2fee61",
+    "apps/api/impact_api/retention_policies.py": "8479a7840d8d246072f540bc02621306a928da71b14fe03190d5a45442a11ada",
+    "apps/api/impact_api/security_events.py": "609d369dabbb633fef5fa69d879af886f85b01ea5883a502ee539ef460617527",
+    "apps/api/impact_api/service.py": "d5190de989f0623bd9903ca7c7c78394f3eb8c21d331d689a68f345acf975b2e",
+    "apps/api/impact_api/status.py": "dbe00f4cb95afdb20182acd490a1b159985f9ab098020c45555ba743f4dfe198",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "apps/api/impact_api/tenant_contracts.py": "a2811d31b40dac1f20b28868361d39bc20246ae77fb4949342f8b7cfc3e9bb5c",
+    "apps/api/impact_api/tenant_lifecycle.py": "e3c1525dc933d0a971e0a11a58ee10f137647851b3c2c0a648d7f30aeb658c58",
+    "apps/api/impact_api/version.py": "38c61aff95a8ebd67aae7a0c74bda556e75d06d62a52bf3330bdb078b6db3bf5",
+    "apps/api/impact_api/work.py": "9e986e122d015cb37300b196594931b8851a63d79078433e1349b57e759fa618",
+    "apps/api/impact_api/work_contracts.py": "390c5299b98264a315d27c7ee22362c90ba1d41baa22bee500b0789985d8839f",
+    "apps/api/impact_api/worker.py": "3025c8dc9ce3a6b684d19bd4d089d19f4ce9fe73d01dc9f7796c7c3d53ec259e",
+    "apps/api/impact_api/worker_contracts.py": "f65420ed16feaebfeaf0a5f142fa7fd93a83e661c776d7534f51b690f8fe9fef",
+    "apps/api/impact_api/worker_status.py": "0e4e46e203c959348aa05e44f0c60335aaff373024ad3e200e348373e5e432d3",
+    "apps/api/impact_api/workspace_administration.py": "354dc06660954a8875cd65b5ef893415cfa0ddd37eaede7a7282634196dd8fac",
+    "apps/api/impact_api/workspace_contracts.py": "c6e99f63b1d10d67ab5e84441737c9da57454e447f8ee4613c768f48ccd54c71",
+    "apps/web/dist/index.html": "b399d08383dfcdd4b5d6f7017e3a62bb4188411acde6f491949182824c8d7858",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246",
+    "apps/web/src/AIFictionalWalkthrough.tsx": "b5de8361eb3d71268421d851d810a744927e9df98991b7dd25fb2a01269e9877",
+    "apps/web/src/AIFictionalWalkthroughAdapter.ts": "9db03e6009f70f6da315f5843bda463eff3011e30628b8000a806dc12bfc6413",
+    "apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
+    "apps/web/src/AIHumanAdvice.tsx": "96a6d130c87b880bb7e49f44f543a75f6e069ff5361faea0ec60a59152ef3582",
+    "apps/web/src/AIImpactEvidence.tsx": "0c88bfd607256e907d42d3bcfac9c715f8962d4811878644a85f3303ed8921db",
+    "apps/web/src/AILearningLesson.tsx": "1e477a09b3ad6b8a84db6e44c6aeb782925f925441893118edfc4e5cc58cb212",
+    "apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
+    "apps/web/src/AIPlanPortability.tsx": "ea05df666b538cdd72b9c76384d95a20de66b6ffe05ab522548bdaaf72b636f2",
+    "apps/web/src/AIPlanReviewChecklist.tsx": "6390c5e30d513e9484ac606db281ac5bf95af3987609605b0bbd5b3fbab5037c",
+    "apps/web/src/AIPlanReviewModel.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "apps/web/src/AIPlanningTools.tsx": "218c8a31c5c4f7c632b2537dc9b16d7ef484dbd268b4e7674ec5aa2c69988a3b",
+    "apps/web/src/AIPracticeStarter.tsx": "cb6f29cb237209e84788b9ec17a1aea4b0d72f31be0e1fc28e4a07ea1e577bbd",
+    "apps/web/src/AIPracticeStarterModel.ts": "a0766649a5eb6c8af548880451a0c26db018cc5dc087a32e7c1950aac62aadcd",
+    "apps/web/src/AIProcurementBrief.tsx": "d9e75a9040a7f03d94aa10c0179aa3aa53cd1ed99ed86e2afb31e65339c184f7",
+    "apps/web/src/AITaskPractice.tsx": "6580578dbb37ac044d2356fb82a4d726b7c0ed2e0978cdc9acc43dba3323a86d",
+    "apps/web/src/AIToolComparison.tsx": "9c846d46822a5c548f189dd963de88aed43833c90213090739bf5991792906f5",
+    "apps/web/src/AccessGate.tsx": "fe912d15c199227f13158ac366bb58ff33d016bae6894b60742a8b824ef89c03",
+    "apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
+    "apps/web/src/Accounts.tsx": "5de6db5946676079df1a81022f5a1591a1c7aba4464438767d27d029f321d758",
+    "apps/web/src/Administration.tsx": "357781661ae8d8d3be3c84bb8beb52cb0d65253aa7c958c3df5bad91228548c6",
+    "apps/web/src/AuditExport.tsx": "3d1b0e52066df8f8081e7b249d02ec1bd02e369daf3c67ccc574ebf4d8eae2b5",
+    "apps/web/src/AuthorityRenewal.tsx": "25255d49d2a58deeec5ae28eaa4b8e27022bad018768aa5b96ecc6ce4e4af0f6",
+    "apps/web/src/Changes.tsx": "4105c281cf1f92b7014544b8258edb9137cb995ea5a319b08aea7196758ca772",
+    "apps/web/src/Configuration.tsx": "eb9bdd1487de09ec81b861bef47b89e65e9a0bad9adab7f3167c8f966a3133fb",
+    "apps/web/src/Dashboards.tsx": "e310267e87585bdb4d6e6c30835dc72cd51f0a0d4c8c5f410354515b61cf21c2",
+    "apps/web/src/Evidence.tsx": "722363c9d58894ffa9c742704ecaedcbe9dd3b1a771581edf915d7c6b0667d53",
+    "apps/web/src/Forms.tsx": "4d9a869e747c0ebb7c37c3b76c35031635a7c5f931cd2fbf122ac63b4fba5d80",
+    "apps/web/src/Imports.tsx": "2c4c6cbf28c9b427a0b002613da882e1cb0905cf3fb96eafa2894895253df2a2",
+    "apps/web/src/InitialAccess.tsx": "cdbe3c7a532c454b6cb49ce289e30e7d94e81316495289675eb21ee3361ace31",
+    "apps/web/src/Landing.tsx": "3fbe0518ab63219ab86cd489c249766df428baee4b58e7439c924457d50d8915",
+    "apps/web/src/Operators.tsx": "2cc2bc9c05956a6488c765953e0b150566241e105529b3a372cb96d67122f631",
+    "apps/web/src/PeriodGovernance.tsx": "d8bdd05f8fb789e61e03c740514607e0c7644d146c3d6be91c753ef998cd0f5e",
+    "apps/web/src/Planning.tsx": "a56ec6bdf17b235b0c399d5c64fb150d559163ed75d53a689757c78a8065c46d",
+    "apps/web/src/Portfolio.tsx": "8446a581b21bbb25a6b9e16492b6a6673532fd8535ac53faa115b5bd4522531d",
+    "apps/web/src/Privacy.tsx": "0261bccfc0d649342c0c07752c7a1781d530e55b2f7cc28ece157c8ea4a589b4",
+    "apps/web/src/RecoveryContacts.tsx": "f3947ff360dc6bdc1c7d23a9f7f7671021380a45439a0b5e9b4120b26666b77f",
+    "apps/web/src/ReferenceData.tsx": "9a73cf7e280c824fea1de030c3bf5eaba34a522e44fa03537e32dcd011e9be51",
+    "apps/web/src/ReportExports.tsx": "b1526392b4987f12d0740d4409fce8bbbe799cbdb6cdeb6b6d2f901bac7c50aa",
+    "apps/web/src/Rounds.tsx": "31b752c9ea81cc7decf1825926d8a3a47a7ab19c1a089ecedbfc0ed8d77ef59f",
+    "apps/web/src/StatusBanner.tsx": "1b9a919cfa29d0db89fdf8fb03a087f1c063889a36dbd9fd4793330bc4e743e2",
+    "apps/web/src/TenantLifecycle.tsx": "68c4f3788d1041bdef4ff2cb78a43cd79e6985109d9d951c6172a932e6187409",
+    "apps/web/src/WorkCenter.tsx": "7b93540e5c3e55fbe9845e6a7ce50ad67b9b83fd0389199fe802c2baf2ed04ca",
+    "apps/web/src/Workers.tsx": "a2b75b4342ff4079b854d03384021c7cb53b40f8722fa3d83e23d5b5757bd4c7",
+    "apps/web/src/WorkspaceSettings.tsx": "049fda63a032c30d415ff659cbe268c5c2767f79fbf26812abf727ff15408310",
+    "apps/web/src/a11y.ts": "60a6755087d7f409aeafcd756dcbbac9b8fa0d71fc2b70ecd9cbb8f880dcb026",
+    "apps/web/src/ai-enablement.css": "8692183ad2995f4e6f4d320c9ac9b5f543b8c1aa940f0c71811c4abf3358d70d",
+    "apps/web/src/ai-plan-review.css": "d161772e174bd9b2c200c919f3f4209f54b6ade8f47745e9eec9e4aa8ef18b29",
+    "apps/web/src/ai-planning-tools.css": "4c5cd958b5b8c1aa42ab437c40fe5c36931088d3986806cc73c83d66e92d76ca",
+    "apps/web/src/ai-walkthrough-main.tsx": "5fc6b300960c228a76bfe266184fcabf3d27ec788b7f5e97fe849befbc0b589a",
+    "apps/web/src/ai-walkthrough.css": "a3e478b412729a0e92520c31ac2ace2ee38dec241ce85a3b8d1da3a9b552068d",
+    "apps/web/src/main.tsx": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+    "apps/web/src/operations.ts": "6ad64ffe31d5f38e86a31d2f52ea66aff1c621ff4b4891b2270fd6df166b4b5f",
+    "apps/web/src/styles.css": "8281fec2786fff78a2d115d52a19f7c00971432ba2f4f3c13ace0bf3215a1400",
+    "apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "apps/web/src/walkthrough-guidance.json": "8c7a80413722f8a5a7c7fa99a9ee138703380e7ceee9de2cee9da01cd59f0e47",
+    "infrastructure/migrations/0001_roles.sql": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+    "infrastructure/migrations/0002_domain.sql": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0004_application.sql": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+    "infrastructure/migrations/0005_access_administration.sql": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+    "infrastructure/migrations/0006_measurement_configuration.sql": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+    "infrastructure/migrations/0007_measurement_changes.sql": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+    "infrastructure/migrations/0008_period_governance.sql": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+    "infrastructure/migrations/0009_reporting_packages.sql": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+    "infrastructure/migrations/0010_work_and_recalculation.sql": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+    "infrastructure/migrations/0011_controlled_publication.sql": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+    "infrastructure/migrations/0012_workspace_administration.sql": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+    "infrastructure/migrations/0014_initial_access.sql": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+    "infrastructure/migrations/0015_recovery_contacts.sql": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+    "infrastructure/migrations/0016_authority_renewal.sql": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+    "infrastructure/migrations/0017_provider_logout.sql": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+    "infrastructure/migrations/0018_worker_delivery.sql": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+    "infrastructure/migrations/0019_results_framework.sql": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+    "infrastructure/migrations/0020_calculation_methods.sql": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+    "infrastructure/migrations/0021_web_forms.sql": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+    "infrastructure/migrations/0022_import_quality.sql": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+    "infrastructure/migrations/0023_evidence_objects.sql": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0026_worker_job_grants.sql": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+    "infrastructure/migrations/0027_privacy_execution.sql": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+    "infrastructure/migrations/0028_usable_staging.sql": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+    "infrastructure/migrations/0029_operator_lifecycle.sql": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+    "infrastructure/migrations/0030_security_privacy.sql": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+    "infrastructure/migrations/0031_theory_of_change.sql": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+    "infrastructure/migrations/0032_forms_languages_rounds.sql": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+    "infrastructure/migrations/0033_application_executor.sql": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+    "infrastructure/migrations/0034_ai_advisory.sql": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+    "infrastructure/migrations/0035_ai_adoption_plans.sql": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+    "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "infrastructure/migrations/0039_human_advice_anchor_availability.sql": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+    "infrastructure/migrations/0040_ai_plan_portability.sql": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+    "packages/contracts/access-policy.json": "8539329f5c506b31a04715de7e996562c61d7262b682bfe3717ceb1078f50fb9",
+    "packages/contracts/event.schema.json": "696371cb2c69dc87ccf5eaa48e22f63c2c50931b6087dcfa13a0bb88385da7f3",
+    "packages/contracts/openapi-baseline.json": "0ee471ca58772a0658299e290be3aadcfd36aeeaa2587a169efc0d4842eb7e82",
+    "packages/contracts/openapi-implemented.json": "9c915b9c28f65aea1fca6bae0630a1015836aa66f69ead25e58b265cec0884a0",
+    "packages/contracts/openapi-platform.json": "a9b7e122e2243a69428448a6c631e37bd0e8949e7ad41b6199d5f83324025319",
+    "packages/contracts/openapi.json": "069a79a8663cde6ada7f0f392564311c07886e213028ff401077dcac4e46a3f6",
+    "qualification/conftest.py": "703f864cbb89eda879fa16976d57be4409fab9d9c60cd14980a4eab40e98c571",
+    "qualification/human_advice_anchor_fixtures.py": "b3b741b667937cecdadc9be5ba6280ffb15390f2fc353d61e3133aaa6800dcee",
+    "qualification/perf_harness.py": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd",
+    "qualification/perf_support.py": "d34c3727509e10921a56199f18aa91c76ca62e3f5b2f655ea5e80b3c1990b49a",
+    "qualification/prepared_dashboard_visibility_repro.py": "bb1d4ba07d0eba69dcd30329b960b40ace585754cce0cf0f277808821704e1b9",
+    "qualification/prepared_human_advice_anchor_availability.py": "a0d46228818b018ffcaaaf5e202a955c91e34f4f51a8c8b612800bea3d4ad4d7",
+    "qualification/prepared_retained_label_visibility_repro.py": "b38882798d4019acdf5fee794688807046315f7f77e6933100dcd72446e066d8",
+    "qualification/process_environment.py": "e888c5046afac6461ef179fc91288c69583d799829f182f491d9cf10814e1145",
+    "qualification/smtp_sink.py": "36c7daad76583428126f47549e06337cb86e87633f1d55bdb8d70854be036748",
+    "qualification/test_access_bootstrap.py": "7d6613800e5855730c42d15557ba17ca7e310383fa4587ceb8c25577fa8f13d3",
+    "qualification/test_access_upgrade.py": "78f23c8ae251a8e7622f13812f96234c24f10bbaa3d32895b35afc4b56a6d6fc",
+    "qualification/test_access_upgrade_unit.py": "10121732fc1ac5b64ecd45f73df06277acb023a349c687c3e9cc4326e7ad96d4",
+    "qualification/test_administration.py": "b7f9ca8d456462fb2900b5cb2ae11443f59ee028b5082b05ffbdd72885fd0d47",
+    "qualification/test_administration_unit.py": "37cd42516f58118bdf91c3108fad4dc31d5367baf1da6bcc4acf9f6c14064286",
+    "qualification/test_ai_adoption_plans.py": "22a5a1aa1de085888d3629942e0f2ef504c48cad15c656aae4133b2ef1863615",
+    "qualification/test_ai_adoption_plans_live.py": "2781c9787ee91b9923a97707adcd1400bc0674b18afcf41200eab53801d96559",
+    "qualification/test_ai_advisory_provider.py": "dbb7b24416fcd1cd9dc5ac86e8c5267582933163c6ffb9e7d375b7672cf53cec",
+    "qualification/test_ai_content_archives.py": "38f25bfb40a64af33ce15a1b0cfc9950d3bafa0772f158c2a100d47a6a84acd1",
+    "qualification/test_ai_content_archives_live.py": "116eabf6825c50a277f701ea41dee124c9e9e879e1cdb7f2922d1b5235bb869c",
+    "qualification/test_ai_enablement.py": "c1ed4bae1de90a49c88234cb606c3b4d49e77583e6997d08dd960260658eb8e6",
+    "qualification/test_ai_enablement_catalog.py": "82152e63b3b86705164a34bb727a54eba661356144ba5397d2e84bfdca07fec6",
+    "qualification/test_ai_enablement_live.py": "218432b4467d1dbc5ab0453d8e894bab8f3a6a0e7a42f52dc6664fafe4082783",
+    "qualification/test_ai_impact_references.py": "291e327070602c2495bc94dd4ecfdeedabf081adb066c9d2f7805e19cc5f6110",
+    "qualification/test_ai_impact_references_live.py": "6872a0a9cad91044fb41fca105c6dd54bab1fdc690d1322216a1d9af4f381203",
+    "qualification/test_ai_learning_content.py": "7cf621ee34595501ba0af95a4ecaf166d72f449041b3662b926eddc4ecfa5b23",
+    "qualification/test_ai_pilot_outcomes.py": "8455b4bf543c26496d0fa56a55ab3e6bc9e6ad2db2742f4bcbc4afe4f6dd8a07",
+    "qualification/test_ai_plan_exports_live.py": "154461af0a0246118f178e1746efb5b95ef96fe91448eefa3650e931b59e2e9b",
+    "qualification/test_ai_plan_exports_unit.py": "3d5e974264237c4898eb385fd43b254d42994d0e96db148e3fd797668c2861d3",
+    "qualification/test_ai_plan_exports_upgrade.py": "00c6ff246071fa92e3431222b2d95e7d1197fb36bdb7863920663a49bf0d8ed0",
+    "qualification/test_ai_planning_inputs.py": "18f2d2de2288a8ab1bc46974ad5819533532efbc097db73c7926d5cfffc49032",
+    "qualification/test_ai_planning_live.py": "f97210899087655417a3318548810cd4d1f7c281c95bcda311c7e3e8d9887be6",
+    "qualification/test_ai_procurement_costs.py": "d3cba062ba0f3ebfa88912769913d02703093ce76443bcbf8eb05c96a44f7584",
+    "qualification/test_ai_solutions_catalog.py": "5b01aee72c6947b574422e194d458b06980d13b8afec64a86dc0c6c4230b756b",
+    "qualification/test_ai_task_practice.py": "b504552f269ef2f50c9753997877641cfae5f535507a29dd815aa6f87165afaf",
+    "qualification/test_audit_export.py": "9617d00bd500abf7835718206e0e20f143b54d4c8b9902f89dbd1748bb297537",
+    "qualification/test_authority_renewal.py": "29fde764064da2672f0a8b1960c9a96ca588bc2a77c7ffbdad771b5843e7368b",
+    "qualification/test_backchannel_logout.py": "7e8e8e07f0b2f2d4ba28ab3796bf86ba7d2fef72015ad1de18541e80b0c4d117",
+    "qualification/test_calculation_methods.py": "f6e4897903630b9257c05a48d532684947a9c8d51acbdd3284057dd008ce88ac",
+    "qualification/test_changes.py": "2ccf7ec93bc10e1e430cce7fedf89e14b06819e3142672724d3bad6e8cada800",
+    "qualification/test_dashboard_current_visibility.py": "3d4ee4fbf62fc9a160e675437f94c2ed35255b61bb2622c29a4ed879ee62034c",
+    "qualification/test_dashboards.py": "5a1c6697738f8d912412bd9320b2da55cb25c2ed2ae1d87d056f868dce2787e1",
+    "qualification/test_delivery_requeue.py": "ad666362cbd182913fb03d5012dae2c7ec835eb711758dd2ce635fecda69405c",
+    "qualification/test_deploy_unit.py": "797577b7939f23bc0416a1e91e40ef7b3fe5137a591e85c62fcb4528a8314ee3",
+    "qualification/test_email_readiness.py": "02f13f758a0e3e2361a828b76a074c29aca0192489870e56d2b5b4481a928298",
+    "qualification/test_email_readiness_unit.py": "8e12aac00c24466a83899110aa133683aea43f8ad1b24e3add6112e3644a721d",
+    "qualification/test_evidence.py": "e78c0f95985f666cc8b1dbb8b37678adb02fc673600ebc35c5761949ed37cb2e",
+    "qualification/test_evidence_unit.py": "a886af2eac4f5d27012b33671825acd2f2ad0ffe0b15e0612f0014b993dd8105",
+    "qualification/test_forms.py": "e360e9c0275b906e9565f1c3edfe9dc527e70f1e737bad61c035cf12bbb62ae9",
+    "qualification/test_forms_rounds.py": "0203032b214a9a872063b8b7c0c33a88e6886f8e6a3f4a5afb6096a4367a7df1",
+    "qualification/test_framework_old_pin_visibility.py": "94452a271be9ef5f41518363ee53dadf29434aee7e4d161ab5f3513550320181",
+    "qualification/test_golden.py": "1338ac425af9a1c2e2a272f2c7dbb44b258d7a9a95cccb51805e9f50152e2bab",
+    "qualification/test_human_advice_anchor_availability.py": "6eb4fc60f68768dc43c7c3a59015ffe908accef2b760f4540bde7b8962256d37",
+    "qualification/test_human_advice_live.py": "d7c4f28a5bb59cdac5ba3e66d792a5629dd6e4910fcacd6b6c2393177b3a7c8b",
+    "qualification/test_human_advice_unit.py": "7bf2006e0c7be12eb01914b40148ff689c7ae83e890d86744f9e061a9a6d8f2d",
+    "qualification/test_import.py": "8564bcfb5b94bf0ef37d0d92156b9f435e032c7af0f07760493e6aacb062a23e",
+    "qualification/test_key_rotation.py": "490c624b65cd4c7b38bc342a60c4a43612b3343ece0b1117274c2b00f67de5b1",
+    "qualification/test_listing_visibility_live.py": "50e0e86dabb67ec4a992016f18aee72d957109b874b348cd81aa46cb2dfbf1e9",
+    "qualification/test_listing_visibility_unit.py": "114e1321806368dc83fe6bca9e3a2e7bf34c375795b2f4784b7031425ecb6206",
+    "qualification/test_live_application.py": "ffa8c15774c1bb48727b4b350da22e66af40e5b3deffbba3333f947f4e08d31f",
+    "qualification/test_live_idp.py": "c5819b0946c9e937ec1dab062040825be1633d56f56dc2dbe1abe720edacaf17",
+    "qualification/test_logframe.py": "0624be247e774b55cf63b285db9e8cfa78aa94d5b9a0e28e6ff05d8cce6c361d",
+    "qualification/test_measurement.py": "8d221ead18188b0307bcded6aa907d740266fef62d44b5da1e1790e6e7d207df",
+    "qualification/test_measurement_unit.py": "c7886271004e4f808dc1651f506783757859242904e9a85b8fe2d360d71a1f55",
+    "qualification/test_native_concurrency.py": "219bb18140238bb832682fadfd6970bb4898cb16d8d6828f7d69b00cd4f0fbd9",
+    "qualification/test_native_degradation.py": "928f00a3036d5449a71b22b0bd27cd995dae8223e28946f20a00ffb93e733767",
+    "qualification/test_native_nonfunctional.py": "22745bf7169438a612fc655840231bb62b2501ec8f53b39ac6e685d2ebed355f",
+    "qualification/test_native_restart.py": "90c287e22fa90a0871b8d099f1a0983d11ab09d6ac5acf97bddf743c814d8664",
+    "qualification/test_native_roles.py": "97faa1f3fc14778d23616187d71aaabd98261d64f55822cb0a339b6c382724d3",
+    "qualification/test_native_sessions.py": "1bd70f247c8897dea68a78ad0922679bb0c593b5d8921e9915aec7ce3b5f4dff",
+    "qualification/test_native_worker.py": "7eaec826dbbb8b46f8a179ea11bd25fd0fb6866efd38678bbb5bf10471f06bea",
+    "qualification/test_operator_lifecycle.py": "2b0f9e094f611a73e54ba49cedc8440789718e2674d584bf133e180eeb6dde3c",
+    "qualification/test_operator_onboarding.py": "91a22e13e4bff2fb4751a10362dfd61848b58953b982a183f572ffed8808d5d5",
+    "qualification/test_ops_metrics.py": "37636ba66cbe155e848e078d47875671e348fcf36e4467269fd0f56b476f14a6",
+    "qualification/test_ops_unit.py": "ea5e6557f86076f6b9e469112f60ea74d1d73492b2a223fb306f1fab6fc92d81",
+    "qualification/test_perf_unit.py": "01477a7ad49e40acaf86f5711b9ee3e139dea148b760ce2132c41f027313c41a",
+    "qualification/test_period_governance.py": "56f1e5a372537fff3cebcf2853cfed2590271eba9d2540aa2e3c8b54d92d05bd",
+    "qualification/test_planning.py": "9717843d37f2766a9c5a83d439382828dd0d1b83be81af6f676de7fc94864a58",
+    "qualification/test_planning_unit.py": "fdd1cb4ad009b0ea5f7bd85229e20d421d653598833f5daa8a90515e03889bb6",
+    "qualification/test_pooler_unit.py": "ccfa6af432eb3f159c19e18edeaef0f979e3a4d513e15a72c5f20c69004242e8",
+    "qualification/test_privacy_requests.py": "3f37bbc33b0d962668dcf3db8c6c7c8c317d361f330ebf2c233b06fa152ba589",
+    "qualification/test_process_environment_unit.py": "2f111545240f8d68a7542a0cc4ddd3bd73f44755133c9ba640d26e83f8cefdd9",
+    "qualification/test_publication.py": "e13f8f77e421055a503ab37e6ae5b36789e7904f1220d1842481708c7d58ee1c",
+    "qualification/test_recovery_contacts.py": "fb7883b11a9b94a59fbc84f5470a46f4ea6753af73f9e7df3694bda82aecffa8",
+    "qualification/test_report_charts.py": "c9f98030294315959999f5319f3db4ec9df515e70eab52852d0a5baf42025c9f",
+    "qualification/test_report_exports.py": "ce5325216579e5a224b9ba8f3dc028ced9a9226126d593ede88a86e8994741df",
+    "qualification/test_reporting.py": "d292c0e09585790f54e2c6d903220bd964149bb7a7f9fbcce2d4b2f34cf05aea",
+    "qualification/test_retained_label_current_visibility.py": "887786d778cbb1078788eb0bdd2ef1277b7711df27b0181ef3a5bb6185ea2567",
+    "qualification/test_retention.py": "1048fd10640f40432050f107d5ca21744644a340c6dc6283902360e69dd5ff38",
+    "qualification/test_security_privacy.py": "b4d263cfcdfc6129037c24cc4910c9f2152cee9dde82278bb71bb1af49cf6cab",
+    "qualification/test_status.py": "2c6fec1a592c8a93dddf1dc5d2cb076738d38b07deef28c9b1bd7146ea77fc9c",
+    "qualification/test_status_alerts_unit.py": "2dae81b0914d78210033fd187a21ade404539834f95a76cb7201cfdcaa4604de",
+    "qualification/test_tenant_lifecycle.py": "ca807b038c21f0c8afb48979c6fd53c68638496833ccbd1365a22dbf685500d7",
+    "qualification/test_toladata_reuse_scenarios.py": "19b1fbb51c0bb029dd0d3e7e2582e83903a3975a0715190390031904167f2d57",
+    "qualification/test_unit.py": "2d01239cd6833f722871e57b6d076ffcd58a5ef94eca073c6e3c69ce33e8eb7c",
+    "qualification/test_usable_staging.py": "aa59101d47e4c7b32dcecdc4dcca3e6d226a1683fcd0af4554f7cb65e563d918",
+    "qualification/test_usable_staging_unit.py": "023e7243c46844bcb0ad23cef99f5fa16fa55fdfaf73c865532fdf671f38fc7e",
+    "qualification/test_version_unit.py": "e56cfd8624b2835b5f712bd60c52d13c5ae101eba84c50e8c0cccb201743b0f7",
+    "qualification/test_work_center.py": "d011141aa8e94b7715ef32f573e1faa52470f6b00f794801ad2dcb32f17bf772",
+    "qualification/test_worker.py": "b7dc8edc9baa62c4014f25656726e7bc94a4154f3cb3e66a10003f1aef758dd2",
+    "qualification/test_workspace_administration.py": "19e55d3c8a8065e32dedac503a6765aeba62362270d6663abd5ecd29b8f55f29",
+    "scripts/fixture_support.py": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb",
+    "scripts/run.py": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+    "specification/fixtures/api-fixture.json": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+    "specification/fixtures/records.json": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5",
+    "tools/browser/ai-planning-check.mjs": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790"
+  },
+  "sources_unchanged": true,
+  "qualified_served_assets": {
+    "/assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+    "/assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+    "/assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+    "/assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856"
+  },
+  "current_served_assets": {
+    "/assets/app-CGYUPPHD.js": "b54906db5dc8b833a621ee25a3dc6dccdc2d5a3373723b5780fa08a2a1b24f5f",
+    "/assets/ai-enablement-D1zZNkL1.js": "c0b0973e69718b922b53c227a09db68813e56802c085477e6548cdebd0fc277b",
+    "/assets/ai-enablement-DvzFvT_y.css": "7c8cb4c23291e257bcee843968fcf6e5f95fef678e936a5dced538bbb9334d8a",
+    "/assets/app-cRBbFmRU.css": "7461664f7cc312dc814a14cabd24d6256a18e02108206b1f33ddfe0780aad856"
+  },
+  "served_assets_unchanged": true,
+  "implementation_scope": "Actual local existing HTTP/login/grant browser workflow; category coverage uses exact entered inputs, arithmetic unchanged; guided starters remain deliberate local manual work with normal save.",
+  "limits": [
+    "Local browser evidence only; no native concurrency, hosted deployment, manual screen-reader review or user acceptance.",
+    "No live provider, supplier message, purchase, competence certification or official impact record was exercised.",
+    "Accessibility incomplete findings are retained separately and require manual review.",
+    "Four historical content-compatibility projections are explicitly simulated; their surrounding authority, calculations and persisted writes use the real API."
+  ]
+}

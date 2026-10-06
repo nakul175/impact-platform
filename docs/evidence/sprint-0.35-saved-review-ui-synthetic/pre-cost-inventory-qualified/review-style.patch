@@ -1,0 +1,15 @@
+--- a/apps/web/src/ai-enablement.css
++++ b/apps/web/src/ai-enablement.css
+@@ -298,3 +298,12 @@
+ .ai-human-advice fieldset {
+   min-width: 0;
+ }
++
++.ai-plan-review p,
++.ai-plan-review li,
++.ai-plan-review summary {
++  overflow-wrap: anywhere;
++}
++.ai-enablement .ai-plan-review .ai-cards article {
++  padding: 1rem;
++}

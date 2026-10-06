@@ -1,0 +1,135 @@
+{
+  "scope": "Temporary synthetic component and request-function fixture only; not actual API, PostgreSQL, capability enforcement, audit, release or acceptance evidence",
+  "actual_api_qualification": "NOT_RUN",
+  "finished_at": "2026-10-05T19:11:01.743Z",
+  "results": [
+    {
+      "name": "Lazy options and separate export hint do not call the request fixture",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Bounded authorised history selection is deliberate and never saves the parent draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Explicit download freshly replays the exact operation and preserves UTF-8 content byte-for-byte",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost prepare response keeps one exact issuance command and parent mutual-write lock",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Lost download response retains the verified manifest and exact original command",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A tampered issuance receipt after response loss cannot replace the pinned copy",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A fresh server authority refusal clears issued metadata and uncertain intent",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Same-tenant exposed actor change discards a late response and cannot download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Local draft changes while a download reply is pending prevent latent download",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Exact uncertain prepare retry remains possible after local draft edits",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Current saved-head change clears private copy and history without touching any draft",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "A wrong-plan history response cannot create a saved revision choice",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Definitive replay expiry releases the parent lock and requires a fresh explicit acknowledgement",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 1440px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 390px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    },
+    {
+      "name": "Synthetic keyboard/mobile/accessibility 320px",
+      "status": "passed",
+      "scope": "Temporary component and in-memory request-function fixture only; no actual API/backend authorisation evidence"
+    }
+  ],
+  "errors": [],
+  "blocked_external_requests": [],
+  "accessibility_scans": [
+    {
+      "width": 1440,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 390,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "width": 320,
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-1440.png",
+      "width": 1440
+    },
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-390.png",
+      "width": 390
+    },
+    {
+      "path": "/private/tmp/tola-ai-portability-draft/ui-fixture-320.png",
+      "width": 320
+    }
+  ],
+  "source_hashes": {
+    "AIPlanPortability.tsx": "ad1c305635d2e69704a6a9b2cb098696a117360d42d7ec550e9a13a312a941ae",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "c726f322a68c85f7907371f0b8136af30d3e9d7f85c392d7823f5eec5c23d2f8",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "1845b7f75d86886b6164ff62c0258e6e2b6c2eab84d88b04f0ea5746b41076dc"
+  },
+  "current_source_hashes": {
+    "AIPlanPortability.tsx": "ad1c305635d2e69704a6a9b2cb098696a117360d42d7ec550e9a13a312a941ae",
+    "export-adapter.ts": "02f9d803f00fe78768d8b81011b2f2b8135d5dfafa09da2794177064fc35d9fc",
+    "ui-fixture.tsx": "c726f322a68c85f7907371f0b8136af30d3e9d7f85c392d7823f5eec5c23d2f8",
+    "ui-fixture.css": "dbd1c7c51c6ada01a1d466a956e42627abdb7d406282d8c33b6f0c0cc56fa927",
+    "ui-fixture-check.mjs": "1845b7f75d86886b6164ff62c0258e6e2b6c2eab84d88b04f0ea5746b41076dc"
+  },
+  "sources_unchanged": true
+}

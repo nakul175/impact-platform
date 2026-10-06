@@ -1,0 +1,45 @@
+{
+  "scope": "Private narrowly proposed original a11y checker keyboard-only platform correction; no registered edit or real application/full mode execution",
+  "runtime_full_mode": "NOT_RUN",
+  "candidate_sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+  "native_widget_result": "5 PASS,0 FAIL",
+  "original_assertion_calls_preserved": 21,
+  "original_groups": [
+    "Scan: sign-in page",
+    "Scan: every author workspace area, tab and record dialog",
+    "Scan: review queue, people and access, workspace settings, tenant lifecycle and workers",
+    "Keyboard only: arrow keys move between tabs and Enter selects one",
+    "Scan: portfolio at 390 px width",
+    "Keyboard only: author captures and submits an observation",
+    "Keyboard only: independent reviewer approves the submitted observation",
+    "No scanned page has an unaccepted serious or critical WCAG violation"
+  ],
+  "baseline_matches_current_frozen_checker": true,
+  "files": {
+    "a11y-check.baseline.mjs": "ab0f2323815e19236535a122f1a80075b5bbd12c104c2ccc777a6f01ef861073",
+    "a11y-check.proposed.mjs": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+    "a11y-check.proposed.patch": "ba62b880e153111a2cec42b98e95cf023c7969f4a7283f78fb247652e597eff2",
+    "native-check.mjs": "6f87bfdf3df353c76da394d79139e56c42c218932c5261ae98e02dbd1e1d9ce0",
+    "native-helper-tests.json": "f221d0d223aeced247609800de893063f7a65e10fb6766df7fd5613f41ef3f21",
+    "native-helper-check.log": "f97224c247c486e05148e3c27b04b2e11732ea8fe16bae575801e395d62376e1"
+  },
+  "gestures": [
+    "ArrowDown retained; if empty, type actual visible first enabled option label with keyboard only",
+    "Require exact actual first option value and retained keyboard focus for Indicator and Review template",
+    "Read-only CDP native Date AX descendants bound to exact labelled event_at input in open dialog",
+    "Require known English locale, exactly one Day/Month/Year and first-part keyboard focus; unknown/missing/duplicate layout fails",
+    "Type target digits in actual observed native order; exact2026-08-15 remains required"
+  ],
+  "report_changes": [
+    "actual browser.version()/platform rather than hardcodedChromium153",
+    "selected gesture/value and observed native date order"
+  ],
+  "limits": [
+    "Exact original modal/focus/reachability/save/API and independent author/reviewer assertions remain unchanged",
+    "Isolated native DOM/helper proof is not real application save or fulla11y qualification",
+    "No pointer, selectOption, JS value/event assignment, API/auth/account or provider call",
+    "Initial sandbox launch failure and unsuccessful native gesture probes preserved separately"
+  ],
+  "diagnostic_lineage": "/private/tmp/tola-ai-a11y-native-widget/handoff.json cf18ff4c10fd1f0692dd4beb85227d16f8ca1c361be6ed78169e5f92adcd8421",
+  "next_gate": "Root reviews/copies narrow candidate and reruns full actual a11y mode under source-bound proof; retain original failed evidence"
+}

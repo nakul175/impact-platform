@@ -1,0 +1,329 @@
+import { chromium } from "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/tools/browser/node_modules/playwright-core/index.mjs";
+import fs from "node:fs";
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+const folder = "/private/tmp/tola-ai-procurement-preview-draft",
+  repo =
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform";
+const paths = fs
+  .readdirSync(folder)
+  .filter((p) => /\.(?:tsx?|css)$/.test(p))
+  .map((p) => folder + "/" + p)
+  .concat([
+    folder + "/ui-check.mjs",
+    folder + "/server.mjs",
+    folder + "/index.html",
+  ]);
+const hashes = () =>
+  Object.fromEntries(
+    paths.map((p) => [
+      p,
+      createHash("sha256").update(fs.readFileSync(p)).digest("hex"),
+    ]),
+  );
+const before = hashes(),
+  results = [],
+  scans = [],
+  errors = [],
+  external = [],
+  captures = [];
+const browser = await chromium.launch({
+  executablePath:
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  headless: true,
+  args: ["--no-sandbox"],
+});
+const context = await browser.newContext();
+await context.route("**/*", (route) => {
+  if (new URL(route.request().url()).origin !== "http://127.0.0.1:8192") {
+    external.push(route.request().url());
+    return route.abort();
+  }
+  return route.continue();
+});
+const page = await context.newPage({ viewport: { width: 1440, height: 1000 } });
+page.setDefaultTimeout(8000);
+page.on("pageerror", (error) => errors.push(error.message));
+const button = (name) => page.getByRole("button", { name, exact: true }),
+  field = (name) => page.getByRole("textbox", { name, exact: true }),
+  preview = () =>
+    page.getByRole("group", { name: "Procurement draft preview", exact: true });
+const fields = [
+  "Pilot requirements",
+  "Data boundary",
+  "Budget and nonprofit offer checks",
+  "Questions for suppliers",
+];
+const fixture = (method, value) =>
+  page.evaluate(({ method, value }) => window.fixture[method](value), {
+    method,
+    value,
+  });
+const values = async () =>
+  Object.fromEntries(
+    await Promise.all(
+      fields.map(async (name) => [name, await field(name).inputValue()]),
+    ),
+  );
+const writes = async () =>
+  (await fixture("calls")).filter((row) => row.method !== "GET");
+async function open() {
+  await page.goto("http://127.0.0.1:8192");
+  await page
+    .getByRole("heading", { name: "Private procurement preview", exact: true })
+    .waitFor();
+  await page
+    .getByRole("combobox", { name: "Saved adoption plans", exact: true })
+    .selectOption("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa");
+  await button("Open saved plan").click();
+  await page
+    .getByText(
+      "Saved plan opened. These are shared draft records for your organisation.",
+      { exact: true },
+    )
+    .waitFor();
+  await button("Procurement brief").click();
+  await field(fields[0]).waitFor();
+}
+async function start() {
+  await button("Preview draft from brief and shortlist").click();
+  await preview().waitFor();
+}
+async function test(name, work) {
+  await work();
+  results.push({
+    name,
+    status: "passed",
+    scope:
+      "Private candidate Workspace + in-memory request responses; not actual API/current-role proof",
+  });
+  console.log("PASS " + name);
+}
+try {
+  await test("Preview preserves current own text and all stored bytes without save", async () => {
+    await open();
+    const original = await values(),
+      stored = await fixture("row");
+    await start();
+    assert.deepEqual(await values(), original);
+    assert.deepEqual(await fixture("row"), stored);
+    assert.deepEqual(await writes(), []);
+    await preview()
+      .getByText(
+        "Your procurement fields already contain work. Applying this preview replaces all four fields below. Other plan fields are kept.",
+        { exact: true },
+      )
+      .waitFor();
+    await preview()
+      .getByText(/Pilot goal: Review invented Café messages/)
+      .waitFor();
+  });
+  await test("Deliberate cancel leaves draft and saved source unchanged", async () => {
+    const original = await values();
+    await button("Keep my procurement fields unchanged").click();
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await values(), original);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Draft edit followed by undo cannot restore old confirmation", async () => {
+    await start();
+    const old = await field(fields[0]).inputValue();
+    await field(fields[0]).fill(old + " later edit");
+    assert.equal(await preview().count(), 0);
+    await field(fields[0]).fill(old);
+    assert.equal(await preview().count(), 0);
+    assert.equal(await button("Replace these four draft fields").count(), 0);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Profile edit followed by undo cannot restore old confirmation", async () => {
+    await start();
+    const original = await fixture("profile");
+    await fixture("patchProfile", { goal: original.goal + " changed" });
+    await preview().waitFor({ state: "hidden" });
+    await fixture("patchProfile", { goal: original.goal });
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Current criterion edit followed by undo cannot restore old confirmation", async () => {
+    await start();
+    const original = await fixture("catalog"),
+      changed = structuredClone(original);
+    changed.procurement_criteria[0].title += " changed";
+    await fixture("setCatalog", changed);
+    await preview().waitFor({ state: "hidden" });
+    await fixture("setCatalog", original);
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Management loss and return clears preview without changing own text", async () => {
+    await start();
+    const original = await values();
+    await fixture("canManage", false);
+    await preview().waitFor({ state: "hidden" });
+    assert.equal(
+      await button("Preview draft from brief and shortlist").count(),
+      0,
+    );
+    assert(await field(fields[0]).isDisabled());
+    await fixture("canManage", true);
+    await button("Preview draft from brief and shortlist").waitFor();
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await values(), original);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Pending save blocks preview/apply and ambiguous retry cannot queue replacement", async () => {
+    await start();
+    const original = await values();
+    await fixture("holdSave");
+    await fixture("loseSave");
+    await button("Save plan changes").click();
+    await page.waitForFunction(() => window.fixture.saveHeld());
+    assert.equal(await preview().count(), 0);
+    assert(await button("Preview draft from brief and shortlist").isDisabled());
+    await fixture("releaseSave");
+    await button("Retry previous save").waitFor();
+    assert(await button("Preview draft from brief and shortlist").isDisabled());
+    assert.deepEqual(await values(), original);
+    await button("Retry previous save").click();
+    await page
+      .getByText("Plan saved. Any edits made while saving remain unsaved.", {
+        exact: true,
+      })
+      .waitFor();
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await values(), original);
+    const attempts = await writes();
+    assert.equal(attempts.length, 2);
+    assert.deepEqual(attempts[0].body, attempts[1].body);
+  });
+  await test("Explicit apply replaces exactly four fields without saving or changing other work", async () => {
+    await open();
+    const stored = await fixture("row");
+    await start();
+    await button("Replace these four draft fields").click();
+    assert.equal(await preview().count(), 0);
+    assert.deepEqual(await writes(), []);
+    const changed = await values();
+    assert.match(
+      changed[fields[0]],
+      /Shortlist: First Café, Second supplied tool/,
+    );
+    assert.equal(
+      changed[fields[3]],
+      "What is retained?\nHow is data deleted?\nWho can access it?\nWhat can be exported?",
+    );
+    assert.deepEqual(await fixture("row"), stored);
+    assert.equal(await field("Plan name").inputValue(), stored.data.title);
+  });
+  await test("Normal deliberate save and canonical reopen retain exact unrelated draft/progress", async () => {
+    const original = await fixture("seed");
+    await button("Save plan changes").click();
+    await page
+      .getByText("Plan saved. Any edits made while saving remain unsaved.", {
+        exact: true,
+      })
+      .waitFor();
+    const attempts = await writes();
+    assert.equal(attempts.length, 1);
+    const saved = attempts[0].body.data;
+    for (const key of [
+      "title",
+      "profile",
+      "solution_ids",
+      "learning_completed",
+      "pilot",
+      "planning",
+    ])
+      assert.deepEqual(saved[key], original.data[key]);
+    const expected = await values();
+    await button("Open saved plan").click();
+    await page
+      .getByText(
+        "Saved plan opened. These are shared draft records for your organisation.",
+        { exact: true },
+      )
+      .waitFor();
+    assert.deepEqual(await values(), expected);
+  });
+  await test("Actor switch invalidates preview and clears prior local confirmation", async () => {
+    await start();
+    await fixture("principal", "different-invented-editor");
+    await preview().waitFor({ state: "hidden" });
+    assert.equal(await button("Replace these four draft fields").count(), 0);
+  });
+  await test("Empty goal refuses preview without requests or field change", async () => {
+    await open();
+    const original = await values();
+    await fixture("patchProfile", { goal: " \n " });
+    await page.waitForFunction(
+      () =>
+        [...document.querySelectorAll("button")].find(
+          (button) =>
+            button.textContent === "Preview draft from brief and shortlist",
+        )?.disabled,
+    );
+    assert(await button("Preview draft from brief and shortlist").isDisabled());
+    assert.deepEqual(await values(), original);
+    assert.deepEqual(await writes(), []);
+  });
+  await test("Desktop/320 preview fits and all accessibility findings retained", async () => {
+    await open();
+    await start();
+    for (const width of [1440, 320]) {
+      await page.setViewportSize({ width, height: 1000 });
+      assert(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth + 1,
+        ),
+      );
+      await page.addScriptTag({
+        path: repo + "/tools/browser/node_modules/axe-core/axe.min.js",
+      });
+      const result = await page.evaluate(() => window.axe.run(document));
+      scans.push({
+        width,
+        violations: result.violations,
+        incomplete: result.incomplete,
+      });
+      assert.deepEqual(result.violations, []);
+      const path = folder + `/preview-${width}.png`;
+      await preview().evaluate((e) => e.scrollIntoView({ block: "start" }));
+      await page.screenshot({ path, fullPage: false });
+      captures.push(path);
+    }
+  });
+  assert.deepEqual(errors, []);
+  assert.deepEqual(external, []);
+  assert.deepEqual(hashes(), before);
+} catch (error) {
+  results.push({
+    name: "Private procurement composed UI qualification",
+    status: "failed",
+    error: String(error),
+  });
+  console.error(error);
+  await page.screenshot({ path: folder + "/ui-failure.png" });
+  process.exitCode = 1;
+} finally {
+  fs.writeFileSync(
+    folder + "/ui-evidence.json",
+    JSON.stringify(
+      {
+        recorded_at: new Date().toISOString(),
+        scope:
+          "Private unregistered procurement preview; synthetic request-function responses only; no0.35/API/authority acceptance",
+        results,
+        scans,
+        errors,
+        external,
+        captures,
+        source_before: before,
+        source_after: hashes(),
+        source_unchanged: JSON.stringify(before) === JSON.stringify(hashes()),
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+  await browser.close();
+}

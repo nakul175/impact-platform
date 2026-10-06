@@ -1,0 +1,125 @@
+{
+  "recorded_at": "2026-10-05T21:31:23.281248+00:00",
+  "status": "PRIVATE_SOURCE_BOUND_PACKAGE_READY_FOR_REVIEW_ONLY",
+  "api_browser": "NOT_RUN",
+  "registered_edits": false,
+  "manifest": "integration-manifest.json",
+  "checklist": "INTEGRATION-CHECKLIST.md",
+  "files": {
+    "INTEGRATION-CHECKLIST.md": {
+      "sha256": "8f8410c1f9f1a645d085c074582aaba9c863bae8d3cc8dee8e5628e9493cbf98",
+      "bytes": 10907
+    },
+    "attempt-01/preflight-failure.json": {
+      "sha256": "54760524e0cf024535166cb4216b512855b337740190248b55f1429fa4cedc78",
+      "bytes": 435
+    },
+    "files/apps/web/src/AIProcurementPreview.tsx": {
+      "sha256": "c2b59be6a8d475c1a2249fb310ee806c9a4c2bfb22552b5a2fc6d30134803ccc",
+      "bytes": 3800
+    },
+    "files/apps/web/src/AIProcurementPreviewModel.ts": {
+      "sha256": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
+      "bytes": 5959
+    },
+    "files/tools/browser/ai-enablement-check.mjs": {
+      "sha256": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+      "bytes": 46170
+    },
+    "files/tools/browser/ai-procurement-preview-model-check.mjs": {
+      "sha256": "d4fb4d7cfb3e1a73efe5c48878069e9f6680e083862bea03343bdd6de9dd69ea",
+      "bytes": 20963
+    },
+    "integration-manifest.json": {
+      "sha256": "4fd8aa1872d0a920c789bb54eb95f488b106a2623c5dcabc521aada13d13e2d1",
+      "bytes": 12255
+    },
+    "patches/Makefile.proposed.patch": {
+      "sha256": "02e4b5165016f8549200d277103c69f199da821a18c64407f38a2dfd8eb6b108",
+      "bytes": 532
+    },
+    "patches/browser-checker.proposed.patch": {
+      "sha256": "8a84a8e869e86290567d2d73bdc3cafadfcc626f9815e3fd88e789df04f00898",
+      "bytes": 33003
+    },
+    "patches/build-version-only.proposed.patch": {
+      "sha256": "e88015a43613239b166a297947eaf04c54f4871780dfd4576dd0b12166a3898b",
+      "bytes": 815
+    },
+    "patches/product.proposed.patch": {
+      "sha256": "b3455058a0b61d3ceff6a73f0927ba0c26afc2b978749ef2f02283b361cb841e",
+      "bytes": 14336
+    },
+    "patches/workspace-only.proposed.patch": {
+      "sha256": "66735362b7f3cd9a202654c5432252d98a2da92ad051a16573e7f46f30848093",
+      "bytes": 4136
+    },
+    "proofs/private-browser-checker-handoff.json": {
+      "sha256": "cf7bfc9ff279a8a600de5aa5193f5dc02217411726ad0f59fbee0eaf934bc33a",
+      "bytes": 6899
+    },
+    "proofs/private-browser-static-proof.json": {
+      "sha256": "b71a123bbb4c264c74ae51abe374de52dfd917ff8bc56b567de1d21152eabb58",
+      "bytes": 1883
+    },
+    "proofs/private-model-and-design-handoff.json": {
+      "sha256": "872864848ef88d64c89596938fc7942aefb42c9a21de493613e24d13ace05ba9",
+      "bytes": 3580
+    },
+    "proofs/private-model-tests.json": {
+      "sha256": "a8cd56183daf803f85760d2151dbbddb3f633d3b612fd7b61e48faf52b6d9852",
+      "bytes": 6536
+    },
+    "proofs/private-original28-model-tests.json": {
+      "sha256": "c68029b3b0ff7a944064886bb9889c33f948d6f59e8d67e860b51461ee3af7b6",
+      "bytes": 8067
+    },
+    "proofs/private-prototype-handoff.json": {
+      "sha256": "5c882de4edd780fd6be75a3d347b7943994b92895d9dcaad75e1d7ec054454be",
+      "bytes": 3018
+    },
+    "proofs/private-synthetic12-ui-tests.json": {
+      "sha256": "1d902a298dab1dbc7e4a6adc92131dd171d51645d0a95ba0c096caa1d5555b2c",
+      "bytes": 21382
+    },
+    "review/AIAdoptionWorkspace.baseline.tsx": {
+      "sha256": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+      "bytes": 54482
+    },
+    "review/AIAdoptionWorkspace.proposed.tsx": {
+      "sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+      "bytes": 53946
+    },
+    "review/DEVELOPMENT-procurement-preview.proposed.md": {
+      "sha256": "fc59b52cc30a1a7349782bd070e054047e3378a1e5f051b5f950162618c67041",
+      "bytes": 15664
+    },
+    "review/metadata/VERSION.json": {
+      "sha256": "b5709a476ba0af32bd60c48cc5f840d689545ddbfbd2109caca4012172688bf5",
+      "bytes": 214
+    },
+    "review/metadata/apps/web/package-lock.json": {
+      "sha256": "b4101618b52dc2e50824f4ae2189fbd85ada1c431056afaa1e968bd6fa3b819e",
+      "bytes": 39846
+    },
+    "review/metadata/apps/web/package.json": {
+      "sha256": "a0158ee08d107f5a8a037d735686f9ff810a471d787c759422c2264586a12c06",
+      "bytes": 508
+    }
+  },
+  "predecessor_gate": "Root must save fully-qualified0.35 before integration",
+  "planning_correction_preserved": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790",
+  "future_groups": {
+    "pure_prerequisites": 5,
+    "browser_modes": 26,
+    "enablement_groups": 14,
+    "new_pure_groups": 35
+  },
+  "versions": {
+    "build": "0.36.0",
+    "domain_api": "1.25.0",
+    "platform_api": "1.10.0",
+    "schema": 40
+  },
+  "shared_execution": "No API/browser/database/full runner or shared evidence writes performed for package preparation."
+}

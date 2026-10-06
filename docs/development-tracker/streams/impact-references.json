@@ -1,0 +1,207 @@
+{
+  "id": "impact-references",
+  "title": "AI plans linked to governed Tola results",
+  "domain": "Impact evidence and AI adoption",
+  "owner": "/root/sprint_content",
+  "status": "COMPLETE",
+  "summary": "Deliberate programme evidence is integrated; latest actual browser28/full native1,929/full PGlite1,865 local scopes pass and historical arithmetic is preserved. Counts overlap; no formal acceptance.",
+  "next_step": "Hosted identity/container, manual accessibility and nonprofit UAT remain outside the local checkpoint.",
+  "eta": {
+    "earliest": null,
+    "latest": null,
+    "confidence": "UNESTIMATED",
+    "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+  },
+  "delivered": [
+    "Closed deliberate impact-link command and read result; private metadata retained by generic edits and projected out of ordinary plan reads.",
+    "Immutable core pins, official/provisional separation, truthful verified archive inheritance and atomic operation receipts.",
+    "149 pure and104 real API checks passing; failed fixture attempts retained separately."
+  ],
+  "evidence": [
+    {
+      "title": "Final schema39 core/impact focused gate",
+      "path": "docs/evidence/sprint-0.33-retained-visibility-schema39-focused-tests.xml",
+      "result": "96 passed;2 explicit native-only skips;0 failures/errors;11 strict current/old-pin cases green",
+      "scope": "Overlapping local PGlite focused API checks, not native/browser/hosted or acceptance",
+      "recorded_at": "2026-10-05T10:48:56.164522Z"
+    },
+    {
+      "title": "Final schema39 focused source proof",
+      "path": "docs/evidence/sprint-0.33-retained-visibility-schema39-focused-source-proof.json",
+      "result": "Runtime/contract/migration/test source unchanged; shared reports restored exactly",
+      "scope": "Final bounded local regression source checkpoint",
+      "recorded_at": "2026-10-05T10:48:56.164522Z"
+    },
+    {
+      "title": "Final39 actually applied migration hashes",
+      "path": "docs/evidence/sprint-0.33-retained-visibility-schema39-focused-applied-migrations.json",
+      "result": "39 observed applied hashes matched source; final ledger separately preserved before full/native writes",
+      "scope": "Final focused disposable PGlite database",
+      "recorded_at": "2026-10-05T10:48:56.164522Z"
+    },
+    {
+      "title": "Exact old Framework pin passing observation",
+      "path": "docs/evidence/sprint-0.33-framework-old-pin-green-observation.json",
+      "result": "Unavailable latest/open pin hidden; distinct AVAILABLE locked baseline retains 46.363636363636; immutable/FK guards intact",
+      "scope": "Storage-valid negative; no supported approval/privacy API workflow claim",
+      "recorded_at": "2026-10-05T10:48:56.164522Z"
+    },
+    {
+      "title": "Integrated impact and adjacent AI pure checks",
+      "path": "docs/evidence/nonprofit-ai-impact-reference-unit-tests.xml",
+      "result": "149 passed, including 51 impact regressions; scoped earlier source checkpoint",
+      "scope": "Pure checks for integrated impact/adoption/planning/archive/version behaviour; no runtime or acceptance claim",
+      "recorded_at": "2026-10-05T10:24:12.103885Z"
+    },
+    {
+      "title": "Focused impact/adoption/planning/archive API evidence",
+      "path": "docs/evidence/nonprofit-ai-impact-reference-api-tests.xml",
+      "result": "104 passed; 4 explicit native-only skips; no failures; preserved earlier schema38 run",
+      "scope": "Earlier focused PGlite API scope, overlaps final core/impact checks and is not a count to add to them",
+      "recorded_at": "2026-10-05T10:24:12.103885Z"
+    },
+    {
+      "title": "Final integrated native qualification",
+      "path": "docs/evidence/sprint-0.33-full-native-source-proof.json",
+      "result": "PASS_BOUND_LOCAL_SCOPE",
+      "scope": "Actual integrated native suite and restart/restore/upgrade;346 source fingerprints unchanged. Private-advice cleanup residual is separately recorded.",
+      "recorded_at": "2026-10-05T19:14:17.835057Z"
+    }
+  ],
+  "blockers": [],
+  "updated_at": "2026-10-05T19:14:17.853392Z",
+  "history": [
+    {
+      "at": "2026-10-05T09:15:38.984264Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 43 pure checks pass and 23 governed-flow live cases prepared. Dedicated result protects private core pins from generic AI-plan reads.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T09:20:06.200220Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 44 pure checks pass and 24 governed-flow live cases prepared. Uniform dedicated lookup authority prevents AI-only readers probing linked versus unlinked plans.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T09:41:24.906571Z",
+      "status": "REVIEWING",
+      "summary": "Isolated impact-reference backend and closed DTOs built; 47 pure checks pass and 25 governed-flow live cases prepared. Current core visibility gates and uniform opaque unavailable responses protect private pins.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T09:54:32.320617Z",
+      "status": "TESTING",
+      "summary": "Impact-reference routes and private plan metadata handling integrated in build0.33/domain1.24.149 pure checks pass, including51 impact regressions;25 governed live cases await the shared runner.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T10:10:57.393077Z",
+      "status": "TESTING",
+      "summary": "Build0.33 impact backend integrated;149 pure checks pass. Initial live run exposed incorrect test-actor authority, corrected to the existing ProgrammeManager;26 impact live cases await stable shared contracts for rerun.",
+      "eta": {
+        "earliest": "2026-10-05T10:15:00Z",
+        "latest": "2026-10-05T11:15:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Backend and meaningful tests are prepared; remaining forecast includes route/privacy integration and focused qualification after the current release checkpoint. Parent-owned UI/native/browser/hosted acceptance is separate."
+      }
+    },
+    {
+      "at": "2026-10-05T10:26:05.405920Z",
+      "status": "REVIEWING",
+      "summary": "Impact references are integrated:149 pure checks and104 focused real API checks pass, with four explicit native-only skips. Source hashes were unchanged and shared baseline reports restored. Independent/native/browser review remains.",
+      "eta": {
+        "earliest": "2026-10-05T10:46:05.379169Z",
+        "latest": "2026-10-05T11:26:05.379169Z",
+        "confidence": "MEDIUM",
+        "basis": "Local backend implementation and focused PGlite evidence complete; shared native/browser checkpoints and review remain separately scoped."
+      }
+    },
+    {
+      "at": "2026-10-05T10:27:43.474984Z",
+      "status": "REVIEWING",
+      "summary": "Impact references are integrated:149 pure checks and104 focused real API checks pass, with four explicit native-only skips. Source hashes were unchanged and shared baseline reports restored. Independent/native/browser review remains.",
+      "eta": {
+        "earliest": "2026-10-05T10:46:05.379169Z",
+        "latest": "2026-10-05T11:26:05.379169Z",
+        "confidence": "MEDIUM",
+        "basis": "Local backend implementation and focused PGlite evidence complete; shared native/browser checkpoints and review remain separately scoped."
+      }
+    },
+    {
+      "at": "2026-10-05T10:30:24.626039Z",
+      "status": "REVIEWING",
+      "summary": "Impact references integrated with149 pure and104 focused real API checks passing. Four reproduced retained-wording gaps are fixed and strict/current-value/adjacent regression passes95 checks with2 native-only skips. Independent native/browser review remains.",
+      "eta": {
+        "earliest": "2026-10-05T10:46:05.379169Z",
+        "latest": "2026-10-05T11:26:05.379169Z",
+        "confidence": "MEDIUM",
+        "basis": "Local backend implementation and focused PGlite evidence complete; shared native/browser checkpoints and review remain separately scoped."
+      }
+    },
+    {
+      "at": "2026-10-05T10:43:40.715446Z",
+      "status": "REVIEWING",
+      "summary": "Impact references integrated with149 pure and104 focused real API checks passing. Four reproduced retained-wording gaps are fixed and strict/current-value/adjacent regression passes95 checks with2 native-only skips. Independent native/browser review remains.",
+      "eta": {
+        "earliest": "2026-10-05T11:13:40.688986Z",
+        "latest": "2026-10-05T11:58:40.688986Z",
+        "confidence": "MEDIUM",
+        "basis": "Impact backend is delivered locally; two reproduced historical-pin gaps added source-bound security qualification before shared native/browser. The final local runner is serialized after advice."
+      }
+    },
+    {
+      "at": "2026-10-05T10:48:56.194155Z",
+      "status": "REVIEWING",
+      "summary": "Impact references backend is handed off:149 pure and104 focused impact/AI API checks pass. Final schema39 strict current-value/wording/old-pin and adjacent core/impact gate passes96 with2 native-only skips; all39 hashes match and source/baselines are exact. Native/browser release review remains.",
+      "eta": {
+        "earliest": "2026-10-05T11:13:40.688986Z",
+        "latest": "2026-10-05T11:58:40.688986Z",
+        "confidence": "MEDIUM",
+        "basis": "Impact backend is delivered locally; two reproduced historical-pin gaps added source-bound security qualification before shared native/browser. The final local runner is serialized after advice."
+      }
+    },
+    {
+      "at": "2026-10-05T10:49:27.414708Z",
+      "status": "REVIEWING",
+      "summary": "Impact references backend is handed off:149 pure and104 focused impact/AI API checks pass. Final schema39 strict current-value/wording/old-pin and adjacent core/impact gate passes96 with2 native-only skips; all39 hashes match and source/baselines are exact. Native/browser release review remains.",
+      "eta": {
+        "earliest": "2026-10-05T11:13:40.688986Z",
+        "latest": "2026-10-05T11:58:40.688986Z",
+        "confidence": "MEDIUM",
+        "basis": "Impact backend is delivered locally; two reproduced historical-pin gaps added source-bound security qualification before shared native/browser. The final local runner is serialized after advice."
+      }
+    },
+    {
+      "at": "2026-10-05T19:14:17.853392Z",
+      "status": "COMPLETE",
+      "summary": "Deliberate programme evidence is integrated; latest actual browser28/full native1,929/full PGlite1,865 local scopes pass and historical arithmetic is preserved. Counts overlap; no formal acceptance.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Timed work window ended; no further work or deployment ETA scheduled."
+      }
+    }
+  ]
+}

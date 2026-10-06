@@ -1,0 +1,357 @@
+{
+  "build": {
+    "build": "0.32.0",
+    "domain_api": "1.23.0",
+    "platform_api": "1.10.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "started_at": "2026-10-05T09:19:10.570Z",
+  "completed_at": "2026-10-05T09:19:21.935Z",
+  "browser_version": "154.0.8037.97",
+  "database": "Disposable in-memory PGlite through real FastAPI; this does not establish native-login security",
+  "fixture": "Synthetic identities and invented nonprofit facts only",
+  "qualification": "Dirty working tree development candidate; bounded evidence only",
+  "source_sha256": {
+    "tools/browser/tola-ai-sprint-check.mjs": "d956d0298aaecb394ddc8b0350a4330942d5e1a64b742051a78f639e268b011b",
+    "scripts/run.py": "af087790b51fe75604a6940e1c75461b111c15fba128e54bea98c29e247f8bbd",
+    "VERSION.json": "924dc08c0bf3153969a87b8fd2e1eed3c569490ec8a260021553ee473dce88eb",
+    "apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
+    "apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "fc352891019cdbba9624601d15118177cce8f42058774a3c7740b346d2646247",
+    "apps/web/src/ai-enablement.css": "c2e0b3968944d818c637f60c36dd83ef9efe20875900bb38f2386eac3ce2c770",
+    "apps/api/impact_api/access_upgrade.py": "870062a422e45d164b47c6af5e18e68597ebe92cf1fac8e82e81516d87c0856c",
+    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
+    "apps/api/impact_api/ai_adoption_plans.py": "29a71c039d5bfce16c424ce7192979b2799da21fd74715fe3c30bfbccd0f6f01",
+    "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+    "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
+  },
+  "fixtureSetup": [
+    {
+      "operation": "pre-ai-profile",
+      "scope": "Explicit synthetic setup; RLS and immutable triggers remain enabled"
+    },
+    {
+      "operation": "legacy-plan",
+      "scope": "Explicit synthetic setup; RLS and immutable triggers remain enabled"
+    },
+    {
+      "operation": "legacy-plan",
+      "scope": "Explicit synthetic setup; RLS and immutable triggers remain enabled"
+    },
+    {
+      "operation": "readonly",
+      "scope": "Explicit synthetic setup; RLS and immutable triggers remain enabled"
+    }
+  ],
+  "injectedFailures": [
+    {
+      "route": "/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+      "scope": "Actual proposal POST committed before its browser response was deliberately dropped"
+    },
+    {
+      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+      "scope": "One archive GET deliberately aborted for UI recovery; retry uses the actual backend"
+    }
+  ],
+  "results": [
+    {
+      "name": "Owner sees the real proposed AI capability delta; no authority applies on inspection",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A lost real proposal response retries its exact operation and creates one request",
+      "status": "passed",
+      "scope": "Actual POST committed; browser response deliberately dropped, then actual exact receipt retry"
+    },
+    {
+      "name": "Named second administrator accepts the proposal without applying capabilities",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Switching approval and rejection clears the reason and keeps the exact proposal explicit",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Independent operator approval applies only the reviewed capabilities and keeps expiry",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Applied extension is unavailable for repeat proposal and an unrelated person sees no review",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Saving through the real workspace captures complete guidance for two immutable revisions",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Real archived revision switching leaves unsaved draft and learning progress untouched",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "A failed archive read retries against the real backend without changing the draft",
+      "status": "passed",
+      "scope": "Browser read failure deliberately injected; recovery fetch returns actual archived guidance"
+    },
+    {
+      "name": "A real read-only person reads complete history without save controls or writes",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual legacy revision reports unavailable guidance instead of reconstructing current wording",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Actual partial archive marks missing practice and preserves the original saved worksheet",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    },
+    {
+      "name": "Archive and access qualification makes no external or provider requests and has no uncaught errors",
+      "status": "passed",
+      "scope": "Real UI and actual local backend"
+    }
+  ],
+  "accessibilityScans": [
+    {
+      "name": "access-accepted 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Applied access review desktop",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "access-applied 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "complete-archive 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "complete-archive 390px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Read-only archive desktop",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "partial-archive 320px",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "access-accepted 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-accepted-320.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-accepted-320.png"
+    },
+    {
+      "name": "Applied access review desktop",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-desktop.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-desktop.png"
+    },
+    {
+      "name": "access-applied 390px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-applied-390.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-applied-390.png"
+    },
+    {
+      "name": "Complete guidance archive desktop",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-archive-desktop.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-archive-desktop.png"
+    },
+    {
+      "name": "complete-archive 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-complete-archive-320.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-complete-archive-320.png"
+    },
+    {
+      "name": "complete-archive 390px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-complete-archive-390.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-complete-archive-390.png"
+    },
+    {
+      "name": "partial-archive 320px",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-partial-archive-320.png",
+      "synthetic": true,
+      "realProduct": true,
+      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-partial-archive-320.png"
+    }
+  ],
+  "uncaughtErrors": [],
+  "consoleErrors": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8183/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8183/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      }
+    }
+  ],
+  "expectedConsoleNetworkEvents": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8183/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Actual proposal POST committed before its browser response was deliberately dropped"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    },
+    {
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "location": {
+        "url": "http://127.0.0.1:8183/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "One archive GET deliberately aborted for UI recovery; retry uses the actual backend"
+    },
+    {
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "location": {
+        "url": "http://127.0.0.1:8183/auth/me",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "reason": "Anonymous session probe before synthetic sign-in"
+    }
+  ],
+  "unexpectedConsoleErrors": [],
+  "blockedExternalRequests": [],
+  "requestCounts": {
+    "planWrites": 2,
+    "accessWrites": 4,
+    "advisory": 0
+  },
+  "limitations": [
+    "Development sign-in fixture; live identity provider and deployment gates remain separate",
+    "Passing local checks are development evidence, not production or nonprofit UAT acceptance"
+  ],
+  "visual_review": {
+    "reviewer": "/root/sprint_tracker",
+    "all_seven_captures_inspected": true,
+    "root_spot_check": [
+      "Applied access review desktop",
+      "Complete guidance archive desktop",
+      "complete-archive320px"
+    ],
+    "result": "Legible actual synthetic product captures; no real personal data or credential screens"
+  }
+}

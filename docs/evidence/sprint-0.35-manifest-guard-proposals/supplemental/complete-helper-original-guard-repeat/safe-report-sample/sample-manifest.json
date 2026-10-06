@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-10-05T21:33:03.460434+00:00",
+  "scope": "Published safe actual prerequisite bytes copied read-only for private guard-predicate controls; no requalification of that run. Current Makefile/run source copied for parser-only registry tests.",
+  "original_prefix": "sprint-0.35-full-browser/prerequisite-01-ai-plan-export-adapter-check",
+  "files": {
+    "sanitized-run.log": {
+      "sha256": "d5e7b4cf2325a7439386cd7021e2fd958fed53a31d94109ccd0287a6ba3684eb",
+      "bytes": 1553
+    },
+    "run.py": {
+      "sha256": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+      "bytes": 32060
+    },
+    "qualification.json": {
+      "sha256": "49fa897f26b6402431bc365102428c3588ba3f1233fee8240b9863dc8892299c",
+      "bytes": 1965
+    },
+    "report.json": {
+      "sha256": "9d71014bd9f64bce9c703087745f885e07384498ec23afa3379b3835bca5cc0a",
+      "bytes": 3151
+    },
+    "Makefile": {
+      "sha256": "cffd6ad3f7c114a0c2973a1da90532b6571bd1c3fd1aa23f29e2a48636f5f9f1",
+      "bytes": 5110
+    }
+  }
+}

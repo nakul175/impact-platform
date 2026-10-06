@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Request PDF, XLSX and DOCX renderings of the approved package",
+      "status": "passed"
+    },
+    {
+      "name": "One worker iteration renders them; the panel moves to Succeeded on its own",
+      "status": "passed"
+    },
+    {
+      "name": "Each rendering downloads through the UI with its signature and media type",
+      "status": "passed"
+    },
+    {
+      "name": "Include the PDF in a disclosure; the named recipient downloads it",
+      "status": "passed"
+    },
+    {
+      "name": "The exports panel stays within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

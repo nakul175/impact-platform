@@ -1,5 +1,7 @@
 # AGENTS.md — Impact Platform
 
+**Current local candidate, 6 October 2026:** build 0.36.0/domain 1.25.0/platform 1.10.0/schema 40 on `integration/0.32-tola-ai-sprint`, local candidate (see [RELEASE-0.36](docs/RELEASE-0.36-procurement-preview.md)). Final-head local gates: native 2,102 / embedded 2,037 / unit 1,242 passed with explicit skips; 26 browser modes, 285 groups; restart, restore and populated 33→40 upgrade pass. Evidence under `docs/evidence/sprint-0.36/`. This is a local record, not a producer-generated manifest. Hosted CI, merge and the hosted demo are not done; paid-CI permission is pending and main auto-deploys, so never push to it directly. Handover and preserved 0.35 state: [Claude handover](docs/CLAUDE-HANDOFF-2026-10-06.md). Migrations 0001–0040 frozen; next is 0041.
+
 Entry point for any engineering agent (GPT/Codex, Claude or another) and for human engineers. Read it completely before changing anything. It is short on purpose; the full brief and the current state are linked below.
 
 ## What this is
@@ -45,7 +47,7 @@ Engineering invariants (HLD/LLD/MIG; verified in code):
 19. Server-owned fields (issuer, approver, author, scan state, epochs) never come from request bodies; every write DTO is closed (`additionalProperties:false`); unknown fields and duplicate JSON keys are rejected.
 20. `impact_platform` stays inside the RESTRICTIVE object-type lists of migrations 0013/0014; app and identity roles can never create custody, delegation ceilings or recovery evidence (only `accept_custody`, `apply_initial_authority` and the control plane can).
 21. Cursors are HMAC-signed, bound to tenant/principal/route/visibility, 15-minute TTL; no `total_rows`.
-22. Migrations are additive, ordered, checksum-ledgered; never change a byte of 0001–0032; next is 0033 (contiguous numbering); no destructive down migration.
+22. Migrations are additive, ordered, checksum-ledgered; never change a byte of 0001–0040; next is 0041 (contiguous numbering); no destructive down migration.
 23. Keep the "current implementation" versus "retained target design" split in every document you touch; a documentation edition is not a product run.
 
 <!-- END CLAUDE.md §4 -->
@@ -76,8 +78,8 @@ IMPACT_PORT=8123 make test     # full suite on fresh in-memory PGlite; writes do
 make reference        # preserved design-reference assertions
 make browser          # Chromium checks of the real UI (19 groups); one group: .venv/bin/python scripts/run.py tenant-browser
 make idp              # live Keycloak suite (Java 21)
-IMPACT_FIXTURE_DSN=postgresql://postgres:<pw>@127.0.0.1:<port>/impact_test_<x> IMPACT_UPGRADE_BASELINE=28 make native
-                      # full suite on provisioned login roles + API restart + restore drill + populated upgrade from schema 28
+IMPACT_FIXTURE_DSN=postgresql://postgres:<pw>@127.0.0.1:<port>/impact_test_<x> IMPACT_UPGRADE_BASELINE=33 make native
+                      # full suite on provisioned login roles + API restart + restore drill + populated upgrade from deployed schema 33
 .venv/bin/python scripts/run.py test --pytest-path qualification/test_<area>.py   # one file (use a unique IMPACT_PORT)
 make ledger           # regenerate docs/COMPLETION-LEDGER.{json,md} from scripts/build_completion_ledger.py
 python scripts/build_contracts.py && python scripts/export_implemented_api.py    # after any contract change
@@ -91,7 +93,7 @@ A focused run overwrites files in `docs/evidence/`; restore them before committi
 - **Domain action:** add schemas, path and policy row in the feature's `*_contracts.py` `augment()` (register new modules in `scripts/build_contracts.py`, keeping `augment_reference` last); regenerate the contracts; register the action in `service.py` and implement it; give fixture actors the capability in `scripts/bootstrap.py`; regenerate the onboarding profile; add the capability prefix to `areaCapabilities` in `apps/web/src/main.tsx` if a screen uses it; tests for the positive case, another tenant (404), revoked (401/404), wrong role (403), self-approval (`INDEPENDENCE_REQUIRED`), stale revision (409), exact retry and changed payload under the same operation ID.
 - **Tenant-admin command:** a tuple in `COMMANDS` of `administration_contracts.py` / `workspace_contracts.py` (OWNER/TENANT_ADMIN and 300 s assurance are generated) and a dispatch branch.
 - **Control-plane operation:** closed schemas and paths in a `*_contracts.py` wired into `tenant_contracts.openapi()`, a class on `TenantLifecycle`, explicit routes in `main.py`, tables granted to `impact_platform` only, platform event and receipt in one transaction.
-- **Migration:** next is `infrastructure/migrations/0033_<topic>.sql` — additive, `BEGIN;`/`SET LOCAL ROLE impact_owner;`/`COMMIT;`, `tenant_id` in every key, forced RLS with `tenant_fence`, narrowest grants, never edit an applied migration; append the SQL and SHA-256 to `docs/current/CURRENT-DATA-DICTIONARY.md`; add real-role RLS negative tests.
+- **Migration:** next is `infrastructure/migrations/0041_<topic>.sql` — additive, `BEGIN;`/`SET LOCAL ROLE impact_owner;`/`COMMIT;`, `tenant_id` in every key, forced RLS with `tenant_fence`, narrowest grants, never edit an applied migration; append the SQL and SHA-256 to `docs/current/CURRENT-DATA-DICTIONARY.md`; add real-role RLS negative tests.
 - **Versions:** only in `VERSION.json` plus `apps/web/package.json` and its lock (the schema is the migration count); regenerate the contracts after a bump.
 - **Documents together:** a release note per increment (`docs/RELEASE-0.N.md` or `RELEASE-0.N-<topic>.md`, with Delivered, Contract and persistence, Limits, Reproduction and, on a parallel slice, **Integration notes**), then the shared documents listed in CLAUDE.md §8 step 6; promote a requirement in the ledger only with named passing tests.
 
@@ -101,7 +103,7 @@ A focused run overwrites files in `docs/evidence/`; restore them before committi
 |---|---|
 | `apps/api/impact_api/` | FastAPI service: `main.py` routes, `auth.py` identity, `store.py` tenant context, RLS, authorisation, revisions, audit and outbox, `service.py` domain dispatcher, one module per area (`planning.py`, `forms.py`, `imports.py`, `evidence.py`, `reporting.py`, `exports.py`, `dashboards.py`, `privacy.py`, `retention_policies.py`, `security_events.py`, `status.py`, …), the control plane (`tenant_lifecycle.py`, `operators.py`, …), `worker.py` (separate worker process) and `*_contracts.py` contract generators |
 | `apps/web/src/` | React client: `main.tsx` (shell, navigation, `areaCapabilities` gate) and one file per area |
-| `infrastructure/migrations/` | 32 checksum-ledgered SQL migrations (never edit an applied one) |
+| `infrastructure/migrations/` | 40 checksum-ledgered SQL migrations (never edit an applied one) |
 | `packages/contracts/` | Generated contracts: `openapi-implemented.json` (the implemented domain API), `openapi-platform.json` (control plane), `access-policy.json`; `openapi.json` is the broad design contract |
 | `qualification/` | The test suite (PGlite and native PostgreSQL), unit tests, performance harness |
 | `scripts/` | Runner (`run.py`), migration runner, login provisioning, contract and profile generators, restore drill, upgrade check, ledger builder, secret rotation, Keycloak runner, pooler |
@@ -115,7 +117,7 @@ A focused run overwrites files in `docs/evidence/`; restore them before committi
 - Branches: `release/<version>-<topic>`, `qa/<yyyy-mm>-<topic>`, `ux/<version>-<topic>`, `docs/<yyyy-mm>-<topic>`, `integration/<build>`. Branch from the current `main`.
 - Integrations use real merge commits (`git merge --no-ff`) so the component pull requests show as merged; one integration pull request per build.
 - Every increment has a release note with an **Integration notes** section (proposed requirement movements with exact test names, lines for the shared documents, files touched, risks).
-- Parallel builders follow `docs/handover/PARALLEL-WORK.md`: no version bumps, no shared-document edits, migration placeholder `0033_<topic>.sql`, focused tests only, one push plus at most two fix pushes, never merge.
+- Parallel builders follow `docs/handover/PARALLEL-WORK.md`: no version bumps, no shared-document edits, migration placeholder supplied by the integrator (next registered0041), focused tests only, one push plus at most two fix pushes, never merge.
 - Commit messages: a short imperative summary line, a body explaining why, and any attribution lines your tooling requires.
 
 ## Where the current state lives

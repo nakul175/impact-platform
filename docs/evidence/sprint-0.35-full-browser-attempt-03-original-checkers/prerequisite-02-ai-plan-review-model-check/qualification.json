@@ -1,0 +1,45 @@
+{
+  "name": "prerequisite-02-ai-plan-review-model-check",
+  "checker": "tools/browser/ai-plan-review-model-check.mjs",
+  "exit_code": 0,
+  "scope": "Original registered pure Makefile prerequisite; no actual API/browser qualification",
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-jj10g2id/prerequisite-02-ai-plan-review-model-check.log",
+    "published_sha256": "cb27675dc17310bd301273154f6bd8f656c54bef35b03a4f9fead0826826a5c2"
+  },
+  "archived_outputs": [
+    {
+      "original_evidence_path": "sprint-0.35-saved-review-model-tests.json",
+      "archived_path": "sprint-0.35-full-browser/prerequisite-02-ai-plan-review-model-check/outputs/sprint-0.35-saved-review-model-tests.json",
+      "sha256": "f8239220bd02d0697f2d3f81238be293767e4fa461e20ea2031f2594fabbe52e",
+      "size_bytes": 3745,
+      "new_file": false,
+      "content_changed": false,
+      "fresh_write_observed": true
+    }
+  ],
+  "fresh_result_reports": [
+    {
+      "path": "sprint-0.35-full-browser/prerequisite-02-ai-plan-review-model-check/outputs/sprint-0.35-saved-review-model-tests.json",
+      "executed_result_count": 22,
+      "result_counts": {
+        "passed": 22,
+        "failed": 0,
+        "skipped": 0,
+        "unknown": 0
+      },
+      "reported_fields": {
+        "scope": "Registered saved-review pure public snapshot checks only; no actual UI/API/database authority or accepted requirement evidence",
+        "sources_unchanged": true
+      },
+      "manual_visual_review": "NOT_RUN_BY_WRAPPER"
+    }
+  ],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": []
+}

@@ -1,0 +1,9 @@
+{
+  "status": "PRIVATE_PREPARATION",
+  "scope": "Original0.35 static audit finding and separate synthetic actual React reproduction; no API/security/database acceptance",
+  "baseline035_workspace_sha256": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+  "proposed036_predecessor_sha256": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+  "registered_sources_changed": false,
+  "port": 8196,
+  "cache": "/private/tmp/tola-ai-profile-preservation-draft/.vite-cache"
+}

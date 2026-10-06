@@ -1,0 +1,75 @@
+{
+  "started_at": "2026-10-05T09:37:25.259Z",
+  "finished_at": "2026-10-05T09:37:49.755Z",
+  "browser": "154.0.8037.97",
+  "platform": "darwin",
+  "dashboard": "http://127.0.0.1:8170",
+  "passed": 8,
+  "failed": 1,
+  "uncaught_javascript_errors": [],
+  "results": [
+    {
+      "name": "Actual status endpoint and security headers",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Desktop reads actual bounded counts and workstreams",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Deadline countdown only measures time",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Desktop accessibility scan",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Expanded scope stays open across live polls",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Mobile reflow at 390 and 320 pixels",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Keyboard skip link and visible control focus",
+      "status": "PASS",
+      "scope": "Real loopback dashboard reading actual source files"
+    },
+    {
+      "name": "Live polling consumes a changed source snapshot",
+      "status": "PASS",
+      "scope": "Dashboard behavior with explicitly synthetic intercepted source snapshots; actual HTTP source reload is separately qualified"
+    },
+    {
+      "name": "Unestimated integration remains explicit",
+      "status": "FAIL",
+      "scope": "Dashboard behavior with explicitly synthetic intercepted source snapshots; actual HTTP source reload is separately qualified",
+      "error": "locator.waitFor: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('ETA not yet estimated', { exact: true }).first() to be visible\u001b[22m\n"
+    }
+  ],
+  "accessibility_scans": [
+    {
+      "name": "Actual desktop dashboard",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Actual mobile dashboard",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "qualification_limits": [
+    "Tracker-only supporting tool, not product qualification or acceptance.",
+    "Synthetic intercepted snapshots explicitly identify failure, stale-source, polling and keyboard-state simulations.",
+    "Axe findings are recorded; zero automated violations is not complete accessibility conformance."
+  ]
+}

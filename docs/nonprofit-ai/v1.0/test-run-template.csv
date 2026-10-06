@@ -1,0 +1,1 @@
+run_id,case_id,requirement_ids,candidate_commit,build,schema,domain_api_version,platform_api_version,environment,database_engine,database_version,harness,harness_version,fixture_ids,content_versions,executor_name,executor_role,executed_at_utc,result,actual_result,evidence_path,defect_id,blocker_reason,scope_decision,reviewer_name,reviewer_role,reviewed_at_utc

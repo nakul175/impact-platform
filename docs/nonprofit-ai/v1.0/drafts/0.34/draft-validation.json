@@ -1,0 +1,141 @@
+{
+  "recorded_at": "2026-10-05T11:25:49.845462+00:00",
+  "scope": "Unregistered private filesystem draft: SQL/Python syntax and in-memory monotonic profile checks only. No migration application, database role execution, API/browser test or requirement acceptance.",
+  "sql_sha256": "262cb9d5d7691e8ba34d88266cbbd4e8abe5fa8f964c51c02dc49f03055bdca4",
+  "profile_hash": "422b86a900e54a661f6c4a4a35ee8146a504ff7d026478e18e9fafe19e510d3f",
+  "profile_role_delta": {
+    "TENANT_ADMIN": [
+      "ai.enablement.export"
+    ],
+    "MEL_ADMIN": [
+      "ai.enablement.export"
+    ],
+    "PROGRAMME_MANAGER": [
+      "ai.enablement.export"
+    ]
+  },
+  "top_level_statement_count": 93,
+  "ast_statement_kinds": {
+    "TransactionStmt": 2,
+    "VariableSetStmt": 1,
+    "InsertStmt": 1,
+    "CreateStmt": 2,
+    "IndexStmt": 2,
+    "AlterTableStmt": 4,
+    "CreatePolicyStmt": 20,
+    "GrantStmt": 29,
+    "CreateFunctionStmt": 22,
+    "CreateTrigStmt": 10
+  },
+  "function_body_results": [
+    {
+      "function": "impact.ai_plan_export_principal",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_scope",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_authority",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.allocate_ai_plan_export_slot",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.ai_plan_export_visible",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_audit_creator",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_record_visible",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_object_visible",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_receipt_structural_match",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_receipt_match",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_uuid",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.ai_plan_export_event_visible",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_no_delivery",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_insert_only",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_bytes",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "ParseError",
+      "parser_error": "Not implemented (LookupExplicitNamespace only supports pg_catalog and public)"
+    },
+    {
+      "function": "impact.check_ai_plan_export_complete",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "ParseError",
+      "parser_error": "Not implemented (LookupExplicitNamespace only supports pg_catalog and public)"
+    },
+    {
+      "function": "impact.check_ai_plan_export_commit",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_retained_child",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_audit_revision",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.guard_ai_plan_export_audit_header",
+      "result": "PARSER_LIMITATION_REQUIRES_NATIVE_APPLICATION",
+      "parser_error_type": "JSONDecodeError",
+      "parser_error": "Expecting ',' delimiter: line 2 column 124 (char 125)"
+    },
+    {
+      "function": "impact.retention_purge_receipts",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    },
+    {
+      "function": "impact.retention_purge_receipts",
+      "result": "BODY_SYNTAX_PARSED_ONLY"
+    }
+  ],
+  "native_probes": "PYTHON_COMPILED_ONLY",
+  "repository_product_edits": false,
+  "native_connection_attempted": false
+}

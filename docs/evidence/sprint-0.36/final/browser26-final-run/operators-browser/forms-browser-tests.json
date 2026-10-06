@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Design a form bound to an indicator with a relevance rule",
+      "status": "passed"
+    },
+    {
+      "name": "Send for review; the reviewer approves in the review queue and publishes",
+      "status": "passed"
+    },
+    {
+      "name": "Fill in: relevance hides the count, the retry after a lost submit response is exact",
+      "status": "passed"
+    },
+    {
+      "name": "Round, assignment and coverage are usable through the screen",
+      "status": "passed"
+    },
+    {
+      "name": "Forms stay within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

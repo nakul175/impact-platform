@@ -1,0 +1,110 @@
+--- /private/tmp/tola-ai-035-browser-corrections-focused.first-proposal-preserved.py
++++ /private/tmp/tola-ai-035-browser-corrections-focused.py
+@@ -176,18 +176,26 @@
+ def asset_hashes(root=ROOT):
+     paths = sorted((root / "apps/web/dist").rglob("*"))
+     files = [path for path in paths if path.is_file()]
+-    if (
+-        not files
+-        or len(files) > 100
+-        or any(path.is_symlink() or path.stat().st_size > 10 * 1024 * 1024 for path in files)
+-    ):
+-        raise RuntimeError("Bounded built asset inventory required")
++    if len(files) != 8 or any(path.is_symlink() or path.stat().st_size > 10 * 1024 * 1024 for path in files):
++        raise RuntimeError("Exact eight bounded built assets required")
+     if (
+         not (root / "apps/web/dist/index.html").is_file()
+         or not (root / "apps/web/dist/ai-walkthrough.html").is_file()
+     ):
+         raise RuntimeError("Both actual built entrypoints are required")
+-    return {str(path.relative_to(root / "apps/web/dist")): digest(path) for path in files}
++    actual = {str(path.relative_to(root / "apps/web/dist")): digest(path) for path in files}
++    proof_path = root / "docs/evidence/sprint-0.35-web-build-source-proof.json"
++    if proof_path.is_symlink() or not proof_path.is_file():
++        raise RuntimeError("Current source-bound build proof required")
++    proof = json.loads(proof_path.read_text())
++    if proof.get("exit_codes") != [0, 0] or proof.get("built_assets_sha256") != actual:
++        raise RuntimeError("Actual eight built assets differ from the current successful build proof")
++    return actual
++
++
++def publication_passes(entry):
++    guard = entry.get("publication_guard", {})
++    return guard.get("status") == "PASSED_KNOWN_VALUE_AND_TEXT_SCAN" and guard.get("refused_outputs") == []
+ 
+ 
+ def changes(before, after):
+@@ -814,6 +822,55 @@
+     groups.append(
+         "Exact built app bytes use / while walkthrough and six static asset routes remain unchanged"
+     )
++    with tempfile.TemporaryDirectory(prefix="tola-browser-asset-refusal-") as name:
++        root = Path(name)
++        dist = root / "apps/web/dist"
++        (dist / "assets").mkdir(parents=True)
++        for name in ("index.html", "ai-walkthrough.html", *[f"assets/file-{i}.js" for i in range(6)]):
++            (dist / name).write_text("synthetic asset " + name)
++        proof_path = root / "docs/evidence/sprint-0.35-web-build-source-proof.json"
++        proof_path.parent.mkdir(parents=True)
++        expected = {
++            str(path.relative_to(dist)): digest(path) for path in sorted(dist.rglob("*")) if path.is_file()
++        }
++        proof_path.write_text(json.dumps({"exit_codes": [0, 0], "built_assets_sha256": expected}))
++        assert asset_hashes(root) == expected
++        for mutation in ("missing", "extra", "changed", "failed-proof"):
++            target = dist / "assets/file-5.js"
++            original = target.read_bytes()
++            if mutation == "missing":
++                target.unlink()
++            elif mutation == "extra":
++                (dist / "extra.js").write_text("extra")
++            elif mutation == "changed":
++                target.write_text("different asset")
++            else:
++                proof_path.write_text(json.dumps({"exit_codes": [0, 1], "built_assets_sha256": expected}))
++            try:
++                asset_hashes(root)
++                raise AssertionError("Invalid asset inventory/proof accepted: " + mutation)
++            except RuntimeError:
++                pass
++            target.write_bytes(original)
++            (dist / "extra.js").unlink(missing_ok=True)
++            proof_path.write_text(json.dumps({"exit_codes": [0, 0], "built_assets_sha256": expected}))
++        groups.append(
++            "Actual asset inventory refuses missing/extra/changed bytes and failed current build proof"
++        )
++    assert publication_passes(
++        {"publication_guard": {"status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN", "refused_outputs": []}}
++    )
++    for status in (None, "FAILED", "UNKNOWN", "PENDING", "PASSED"):
++        assert not publication_passes({"publication_guard": {"status": status, "refused_outputs": []}})
++    assert not publication_passes(
++        {
++            "publication_guard": {
++                "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
++                "refused_outputs": ["synthetic refusal"],
++            }
++        }
++    )
++    groups.append("Only the exact successful publication status with no refused outputs qualifies")
+     summary = report_summary(
+         {
+             "results": [
+@@ -1084,7 +1141,7 @@
+                     if entry.get("exit_code") == 0
+                     and entry["complete_fixture_observation"]
+                     and summaries_pass(entry["fresh_result_reports"])
+-                    and entry["publication_guard"]["status"] != "FAILED"
++                    and publication_passes(entry)
+                     and entry.get("sanitized_log_guard", {}).get("publication_status")
+                     == "SANITIZED_DERIVATIVE"
+                     and not entry["source_changes"]
+@@ -1105,7 +1162,7 @@
+             and all(
+                 entry["exit_code"] == 0
+                 and summaries_pass(entry["fresh_result_reports"])
+-                and entry["publication_guard"]["status"] != "FAILED"
++                and publication_passes(entry)
+                 and entry.get("sanitized_log_guard", {}).get("publication_status") == "SANITIZED_DERIVATIVE"
+                 for entry in prereq_results
+             )

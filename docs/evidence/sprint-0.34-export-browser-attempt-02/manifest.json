@@ -1,0 +1,13 @@
+{
+  "scope": "Preserved incomplete actual run. Six checks passed, including current and older byte-exact downloads. Pending-response lock assertion happened as retry first appeared, before checking retry-enabled/failure-settled state; repeat must retain the exact parent lock assertion after that meaningful boundary. No product or served-source drift; do not aggregate later passes.",
+  "checks_passed": 6,
+  "sources_unchanged": true,
+  "served_assets_unchanged": true,
+  "files": {
+    "report.json": "2807b43e2ad86f0ae41a70bd6030e79b8821fbdca949f22fc15f846ecf2d279d",
+    "checker.mjs": "ae0b6c78448c67be6b669b227cc492330d5967db74cf137a0f848ff12fb6a7db",
+    "failure.png": "221ba5aed294b89b2d022c7bb4b8dbc1081ab26ea06250bff46212cfaded6573",
+    "download-1.json": "4b90480d74528b9c039616f713fe0c12b3e35a815a84a470ed8b2c0e2fbb3797",
+    "download-2.json": "1a5444ba0726edb519c8703ed5af9fdfbfdc3b4c936148d6ed38f59f2db82061"
+  }
+}

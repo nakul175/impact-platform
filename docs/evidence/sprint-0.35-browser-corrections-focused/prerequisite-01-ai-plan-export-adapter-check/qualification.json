@@ -1,0 +1,45 @@
+{
+  "name": "prerequisite-01-ai-plan-export-adapter-check",
+  "checker": "tools/browser/ai-plan-export-adapter-check.mjs",
+  "exit_code": 0,
+  "scope": "Original registered pure Makefile prerequisite; no actual API/browser qualification",
+  "sanitized_log_guard": {
+    "publication_status": "SANITIZED_DERIVATIVE",
+    "private_raw_log": "/private/tmp/tola-ai-035-browser-034_f2y6/prerequisite-01-ai-plan-export-adapter-check.log",
+    "published_sha256": "20e9c0723fd944b2e33a650de02d9716771762c75fdc5d7c86f427569990ec5d"
+  },
+  "archived_outputs": [
+    {
+      "original_evidence_path": "sprint-0.34-export-adapter-tests.json",
+      "archived_path": "sprint-0.35-browser-corrections-focused/prerequisite-01-ai-plan-export-adapter-check/outputs/sprint-0.34-export-adapter-tests.json",
+      "sha256": "78cc201b4ffa5aa7c76b0048c67dbd0d755817f802874c7b78398dfd2ab8f58f",
+      "size_bytes": 3151,
+      "new_file": false,
+      "content_changed": true,
+      "fresh_write_observed": true
+    }
+  ],
+  "fresh_result_reports": [
+    {
+      "path": "sprint-0.35-browser-corrections-focused/prerequisite-01-ai-plan-export-adapter-check/outputs/sprint-0.34-export-adapter-tests.json",
+      "executed_result_count": 21,
+      "result_counts": {
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "unknown": 0
+      },
+      "reported_fields": {
+        "scope": "Pure integrated frontend adapter checks using installed Node; synthetic in-memory replies only, no API, database, UI, native-role or acceptance qualification",
+        "sources_unchanged": true
+      },
+      "manual_visual_review": "NOT_RUN_BY_WRAPPER"
+    }
+  ],
+  "publication_guard": {
+    "status": "PASSED_KNOWN_VALUE_AND_TEXT_SCAN",
+    "refused_outputs": [],
+    "limitation": "Unknown generated credentials are also checked by common token/password forms and secret-valued JSON fields. This is not OCR or a manual credential review of image pixels/binary formats."
+  },
+  "deleted_evidence_paths": []
+}

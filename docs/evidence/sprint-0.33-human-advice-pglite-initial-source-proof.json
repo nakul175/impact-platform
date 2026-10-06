@@ -1,0 +1,44 @@
+{
+  "recorded_at": "2026-10-05T10:21:01.695434+00:00",
+  "exit_code": 1,
+  "scope": "Focused pure and PGlite API participant/privacy qualification only; no native login, concurrency, browser, hosted or acceptance evidence.",
+  "source_sha256_start": {
+    "apps/api/impact_api/human_advice.py": "5b496cea118e71505f29465f1afec5798e71a83411c8711469925ccbe594b593",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "qualification/test_human_advice_unit.py": "b95aaeb8b4938a385a56a3e3322a84f20293fa77121396d239cfe2390300d5e0",
+    "qualification/test_human_advice_live.py": "3563fe6a5ffa65a0c1f6f76149de909cbd45ba9bf07654e5dee89bcff2533800",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "apps/api/impact_api/main.py": "ee26d4879d5f218688619fc1c2b9ee3f34a412f4af2ea8589246d956555f3a8f",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "scripts/run.py": "384ce40cb7a169de05dca3b30f5add3031436e9582a6aa052f4b0eb6cb297aff",
+    "packages/contracts/openapi-implemented.json": "903f8ac6201e2a509b2db903bd91ea01c599273c21d8911a96d2cd01e0966405",
+    "packages/contracts/access-policy.json": "d6825fcc8ec7b460fa1b8198d754902d390f833ecaaf136b9d9e7bd557d10a25",
+    "VERSION.json": "1e6fa553524926cbbb4e733dc52b694bc303cf0b23fecae16f94718b3d1e37f7"
+  },
+  "source_sha256_end": {
+    "apps/api/impact_api/human_advice.py": "5b496cea118e71505f29465f1afec5798e71a83411c8711469925ccbe594b593",
+    "apps/api/impact_api/human_advice_contracts.py": "fc6e9633f115473be164ace6b17733a605222c2c0d6d5f6cb4f5e0e1461c2294",
+    "qualification/test_human_advice_unit.py": "b95aaeb8b4938a385a56a3e3322a84f20293fa77121396d239cfe2390300d5e0",
+    "qualification/test_human_advice_live.py": "3563fe6a5ffa65a0c1f6f76149de909cbd45ba9bf07654e5dee89bcff2533800",
+    "infrastructure/migrations/0038_human_advice_cases.sql": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+    "apps/api/impact_api/main.py": "ee26d4879d5f218688619fc1c2b9ee3f34a412f4af2ea8589246d956555f3a8f",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "scripts/run.py": "384ce40cb7a169de05dca3b30f5add3031436e9582a6aa052f4b0eb6cb297aff",
+    "packages/contracts/openapi-implemented.json": "903f8ac6201e2a509b2db903bd91ea01c599273c21d8911a96d2cd01e0966405",
+    "packages/contracts/access-policy.json": "d6825fcc8ec7b460fa1b8198d754902d390f833ecaaf136b9d9e7bd557d10a25",
+    "VERSION.json": "1e6fa553524926cbbb4e733dc52b694bc303cf0b23fecae16f94718b3d1e37f7"
+  },
+  "source_changed_during_run": false,
+  "testsuites": [
+    {
+      "errors": "0",
+      "failures": "13",
+      "skipped": "6",
+      "tests": "123",
+      "time": "4.278"
+    }
+  ],
+  "reports_written_this_run": [
+    "sprint-0.33-human-advice-pglite-tests.xml"
+  ]
+}

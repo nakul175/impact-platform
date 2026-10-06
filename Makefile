@@ -18,7 +18,7 @@ test:
 	$(PY) scripts/run.py test
 # Needs IMPACT_FIXTURE_DSN: a superuser connection to an empty disposable impact_test[_suffix] database.
 # Runs the suite on the provisioned logins, the API restart check, the backup and restore drill of
-# that database, and the schema-15 upgrade check; see scripts/run.py for the --skip-* flags.
+# that database, and the populated schema upgrade check; see scripts/run.py for the --skip-* flags.
 native:
 	$(PY) scripts/run.py test --native
 # Needs Java 21+; downloads the pinned Keycloak into .local/keycloak on first use (scripts/idp.py).
@@ -28,7 +28,7 @@ idp:
 	node tools/browser/prepare.mjs
 	$(PY) scripts/run.py idp-browser --idp keycloak
 unit:
-	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_logframe.py qualification/test_golden.py qualification/test_deploy_unit.py qualification/test_ops_unit.py qualification/test_version_unit.py qualification/test_evidence_unit.py qualification/test_key_rotation.py qualification/test_audit_export.py qualification/test_perf_unit.py qualification/test_pooler_unit.py qualification/test_usable_staging_unit.py qualification/test_email_readiness_unit.py qualification/test_status_alerts_unit.py qualification/test_security_privacy.py
+	$(PY) -m pytest qualification/test_unit.py qualification/test_administration_unit.py qualification/test_measurement_unit.py qualification/test_planning_unit.py qualification/test_logframe.py qualification/test_ai_enablement_catalog.py qualification/test_ai_solutions_catalog.py qualification/test_ai_learning_content.py qualification/test_ai_adoption_plans.py qualification/test_ai_content_archives.py qualification/test_human_advice_unit.py qualification/test_ai_impact_references.py qualification/test_ai_plan_exports_unit.py qualification/test_access_upgrade_unit.py qualification/test_ai_advisory_provider.py qualification/test_ai_procurement_costs.py qualification/test_ai_pilot_outcomes.py qualification/test_ai_task_practice.py qualification/test_ai_planning_inputs.py qualification/test_ai_enablement.py qualification/test_toladata_reuse_scenarios.py qualification/test_golden.py qualification/test_deploy_unit.py qualification/test_ops_unit.py qualification/test_version_unit.py qualification/test_process_environment_unit.py qualification/test_listing_visibility_unit.py qualification/test_evidence_unit.py qualification/test_key_rotation.py qualification/test_audit_export.py qualification/test_perf_unit.py qualification/test_pooler_unit.py qualification/test_usable_staging_unit.py qualification/test_email_readiness_unit.py qualification/test_status_alerts_unit.py qualification/test_security_privacy.py
 # VF-DIN-001: golden corpus through the independent reference, the domain code and the live API;
 # writes docs/evidence/golden-reconciliation.json.
 # Performance measurement harness (QA 2026-10); needs IMPACT_FIXTURE_DSN like native. PERF_ARGS e.g. --scale smoke --recreate
@@ -42,10 +42,22 @@ reference:
 browser:
 	npm ci --prefix tools/browser
 	node tools/browser/prepare.mjs
+	node --experimental-strip-types tools/browser/ai-plan-export-adapter-check.mjs
+	node --experimental-strip-types tools/browser/ai-plan-review-model-check.mjs
+	node --experimental-strip-types tools/browser/ai-practice-starter-model-check.mjs
+	node --experimental-strip-types tools/browser/ai-walkthrough-adapter-check.mjs
+	node --experimental-strip-types tools/browser/ai-procurement-preview-model-check.mjs
 	$(PY) scripts/run.py browser
 	$(PY) scripts/run.py admin-browser
 	$(PY) scripts/run.py measurement-browser
 	$(PY) scripts/run.py planning-browser
+	$(PY) scripts/run.py ai-enablement-browser
+	$(PY) scripts/run.py ai-planning-browser
+	$(PY) scripts/run.py ai-saved-review-browser
+	$(PY) scripts/run.py ai-walkthrough-browser
+	$(PY) scripts/run.py tola-ai-sprint-browser
+	$(PY) scripts/run.py tola-ai-extension-browser
+	$(PY) scripts/run.py ai-plan-export-browser
 	$(PY) scripts/run.py dashboard-browser
 	$(PY) scripts/run.py forms-browser
 	$(PY) scripts/run.py reporting-browser
@@ -64,7 +76,7 @@ browser:
 lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy
-	apps/web/node_modules/.bin/prettier --check apps/web/src apps/web/index.html apps/web/vite.config.ts tools/dev-db/server.mjs tools/browser/*.mjs
+	apps/web/node_modules/.bin/prettier --check apps/web/src apps/web/index.html apps/web/ai-walkthrough.html apps/web/vite.config.ts tools/dev-db/server.mjs tools/browser/*.mjs
 package:
 	$(PY) scripts/package_source.py
 ledger:

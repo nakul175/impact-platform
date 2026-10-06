@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tola + AI · Development tracker</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main-content">Skip to development progress</a>
+    <header>
+      <div class="brand-mark" aria-hidden="true">i</div>
+      <div>
+        <p class="eyebrow">IMPACT PLATFORM</p>
+        <p class="brand-name">Tola + AI development</p>
+      </div>
+      <span class="live-indicator" id="connection"
+        >Connecting to live files…</span
+      >
+    </header>
+    <main id="main-content">
+      <div class="heading-row">
+        <div>
+          <p class="eyebrow">EIGHT-HOUR DEVELOPMENT WINDOW</p>
+          <h1>One platform. Visible progress.</h1>
+          <p class="intro" id="summary">
+            Loading the recorded development state…
+          </p>
+        </div>
+        <div class="controls">
+          <button id="refresh" type="button">Refresh now</button
+          ><button id="pause" type="button" aria-pressed="false">
+            Pause updates
+          </button>
+        </div>
+      </div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div
+        id="announce"
+        class="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+      <section
+        class="metrics"
+        aria-label="Sprint window and verified development"
+      >
+        <article class="metric deadline">
+          <p class="eyebrow">TIME LEFT IN THIS WINDOW</p>
+          <strong id="countdown">—</strong>
+          <p id="deadline">Deadline loading…</p>
+          <p class="small" id="utc-deadline"></p>
+        </article>
+        <article class="metric">
+          <p class="eyebrow">INTEGRATED INCREMENTS</p>
+          <strong id="integrated">—</strong>
+          <p id="planned">Bounded sprint scope</p>
+          <p class="small">Integration is distinct from verification.</p>
+        </article>
+        <article class="metric">
+          <p class="eyebrow">LOCALLY VERIFIED INCREMENTS</p>
+          <strong id="verified">—</strong>
+          <p>With named supporting evidence</p>
+          <p class="small">This does not establish production acceptance.</p>
+        </article>
+        <article class="metric">
+          <p class="eyebrow">AGENTS WORKING</p>
+          <strong id="agents">—</strong>
+          <p id="agent-limit">Actual concurrency limit</p>
+          <p class="small">More workstreams can run in successive waves.</p>
+        </article>
+      </section>
+      <div class="freshness-row">
+        <p id="updated">Source update: waiting</p>
+        <p id="checkpoint">Next checkpoint: waiting</p>
+      </div>
+      <section aria-labelledby="streams-heading">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">DEVELOPMENT WORKSTREAMS</p>
+            <h2 id="streams-heading">What is happening now</h2>
+          </div>
+          <label class="filter"
+            >Show
+            <select id="filter">
+              <option value="all">All workstreams</option>
+              <option value="active">Active work</option>
+              <option value="BLOCKED">Blocked work</option>
+              <option value="COMPLETE">Completed work</option>
+            </select></label
+          >
+        </div>
+        <div id="streams" class="streams">
+          <p class="empty">Waiting for the first live snapshot.</p>
+        </div>
+      </section>
+      <section class="scope-panel" aria-labelledby="scope-heading">
+        <p class="eyebrow">THE COMBINED PLATFORM BACKLOG</p>
+        <h2 id="scope-heading">One scope, without double counting</h2>
+        <p>
+          Shared identity, governance, privacy and operations are counted once.
+          The source requirement registers remain unchanged. These domain groups
+          describe scope; they are not equal-sized units of development effort.
+        </p>
+        <div class="baseline" id="baseline"></div>
+        <details>
+          <summary>View consolidated domains and remaining work</summary>
+          <div id="backlog" class="backlog"></div>
+        </details>
+      </section>
+      <section class="limits" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">What these numbers mean</h2>
+        <ul id="limits"></ul>
+      </section>
+      <footer>
+        <p id="branch"></p>
+        <p>
+          Updates come from actual saved workstream records every five seconds.
+          The countdown only measures time; it never turns elapsed time into
+          completion.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

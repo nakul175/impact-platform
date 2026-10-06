@@ -1,0 +1,6 @@
+{
+  "scope": "Unqualified local execution attempts; not a product failure or pass count.",
+  "reason": "A second green runner was started while its predecessor was still active, competing for the same port and shared JUnit. Those outputs cannot bind a result to source. The shared baseline files were restored from the saved checkpoint, and the fresh rerun now uses an exclusive process lock and refuses stale JUnit.",
+  "follow_up": "A serialized fresh green run is required.",
+  "security_assertions_changed": false
+}

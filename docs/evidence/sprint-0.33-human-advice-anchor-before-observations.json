@@ -1,0 +1,60 @@
+{
+  "RESTRICTED": {
+    "recorded_at": "2026-10-05T10:37:56.524922+00:00",
+    "scope": "Storage-valid synthetic negative fixture with appended unavailable old pin and readable new head. No public API creation/retention/erasure workflow claim; immutable guards/FKs stay enabled.",
+    "old_pin_state": "RESTRICTED",
+    "current_plan_status": 200,
+    "older_guidance_status": 404,
+    "fresh_noncurrent_available_anchor_status": 409,
+    "case_statuses": {
+      "requester_current": 200,
+      "adviser_current": 200,
+      "history": 200,
+      "exact_revision": 200,
+      "receipt_replay": 201
+    },
+    "case_listed": true,
+    "pointer_rows_visible": {
+      "case": true,
+      "registry": true,
+      "revision": true,
+      "brief": true,
+      "author": true,
+      "audit": true,
+      "audit_revision": true,
+      "receipt": true,
+      "event": true,
+      "delivery": true,
+      "consumer": true
+    }
+  },
+  "REMOVED": {
+    "recorded_at": "2026-10-05T10:37:56.777845+00:00",
+    "scope": "Storage-valid synthetic negative fixture with appended unavailable old pin and readable new head. No public API creation/retention/erasure workflow claim; immutable guards/FKs stay enabled.",
+    "old_pin_state": "REMOVED",
+    "current_plan_status": 200,
+    "older_guidance_status": 404,
+    "fresh_noncurrent_available_anchor_status": 409,
+    "case_statuses": {
+      "requester_current": 200,
+      "adviser_current": 200,
+      "history": 200,
+      "exact_revision": 200,
+      "receipt_replay": 201
+    },
+    "case_listed": true,
+    "pointer_rows_visible": {
+      "case": true,
+      "registry": true,
+      "revision": true,
+      "brief": true,
+      "author": true,
+      "audit": true,
+      "audit_revision": true,
+      "receipt": true,
+      "event": true,
+      "delivery": true,
+      "consumer": true
+    }
+  }
+}

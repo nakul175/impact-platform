@@ -1,0 +1,112 @@
+{
+  "recorded_at": "2026-10-05T19:46:33.736635+00:00",
+  "scope": "Separate actual saved0.33 HTTP/native39->40 reviewed exporter upgrade; synthetic local tenant only",
+  "redaction": "No identity/tenant/plan selectors, saved brief/document content, credentials or configuration are published. Original private proofs and exact bytes retained.",
+  "original_snapshot_commit": "861c2a807e774ec6bb53ef05c1ee25f853591085",
+  "old_profile_sha256": "48e75c64f1ea2ddceeadce089d1c3f2b056254f236060f1c7d4a18ff439183b0",
+  "old_profile_source_migration": "0036_reviewed_ceiling_widening.sql",
+  "current_reviewed_profile_sha256": "422b86a900e54a661f6c4a4a35ee8146a504ff7d026478e18e9fafe19e510d3f",
+  "reviewed_business_roles": [
+    "ANALYST",
+    "AUDIT_READER",
+    "AUTHOR",
+    "DATA_STEWARD",
+    "ENUMERATOR",
+    "EXTERNAL",
+    "MEL_ADMIN",
+    "PRIVACY",
+    "PROGRAMME_MANAGER",
+    "REVIEWER"
+  ],
+  "observed_old_capabilities": {
+    "read": true,
+    "manage_revoked_by_supported_http": true,
+    "export": false
+  },
+  "migration_did_not_widen_access": true,
+  "request_and_second_acceptance_did_not_widen_access": true,
+  "new_capabilities_after_independent_operator_approval": [
+    "ai.enablement.export"
+  ],
+  "new_authority_rows": 2,
+  "original_authorities_unchanged_until_review": true,
+  "original_grant_rows_unchanged_after_review": true,
+  "revoked_heads_and_payloads_unchanged": true,
+  "revoked_head_payload_sha256": "36490c5dec5e27cc9360afb6f76a2eb26add87faff610e39ca955b7c87577b7e",
+  "current_export_without_manage": true,
+  "saved_plan_and_archived_guidance_unchanged": true,
+  "exact_retry_qualified": true,
+  "later_ordinary_manager_request_self_approval": 403,
+  "later_ordinary_manager_request_independent_approval": 200,
+  "login_passwords_reset": false,
+  "bootstrap_rerun": false,
+  "profile_or_authority_fixture_rewritten": false,
+  "provider_calls": "NOT_RUN",
+  "hosted_uat": "NOT_RUN",
+  "formal_requirement_case_acceptance": "UNCHANGED",
+  "rejected_fixture": "TENANT_ADMIN cannot be explicitly nominated as a business role; contract adds it automatically. Rejected old setup preserved.",
+  "limited_role_observation": "A real old tenant with only TENANT_ADMIN and PROGRAMME_MANAGER ceilings receives39 proposed capabilities when the full current profile is offered. This is explicit reviewed role-family widening, not automatic authority or a product defect.",
+  "reports": {
+    "prepare_rejected": {
+      "path": "docs/evidence/sprint-0.34-export-historical-allroles-rejected-fixture-tests.xml",
+      "sha256": "21681974fc2a875ce10222b8a169e4b3cebebb0562c7032b8619b985ad3efcd5",
+      "source_sha256": "21681974fc2a875ce10222b8a169e4b3cebebb0562c7032b8619b985ad3efcd5",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "old_http_prepare": {
+      "path": "docs/evidence/sprint-0.34-export-historical-old-http-prepare-tests.xml",
+      "sha256": "2bf7e9532c6a5eac91fa7a4c49cbcdf1d52e305bf0273a6944d071aa40d222bb",
+      "source_sha256": "2bf7e9532c6a5eac91fa7a4c49cbcdf1d52e305bf0273a6944d071aa40d222bb",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "old_http_revocation": {
+      "path": "docs/evidence/sprint-0.34-export-historical-old-http-revocation-tests.xml",
+      "sha256": "b0b2b8e10dbb54d7d6623e2e3c30fb8f5d5332c5cf85e1c12e9e9b8f952bb2c6",
+      "source_sha256": "b0b2b8e10dbb54d7d6623e2e3c30fb8f5d5332c5cf85e1c12e9e9b8f952bb2c6",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "limited_profile_preview": {
+      "path": "docs/evidence/sprint-0.34-export-historical-limited-role-observation-tests.xml",
+      "sha256": "08a224142548a59d5f4b72db6c4a83076df7b6632c979faf4dfef9605b43559a",
+      "source_sha256": "08a224142548a59d5f4b72db6c4a83076df7b6632c979faf4dfef9605b43559a",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "reviewed_upgrade": {
+      "path": "docs/evidence/sprint-0.34-export-historical-reviewed-upgrade-tests.xml",
+      "sha256": "67cd91ecb73b58161afb93e22e7ace76e3e1b64640ce6c1586756e0b12b92811",
+      "source_sha256": "67cd91ecb73b58161afb93e22e7ace76e3e1b64640ce6c1586756e0b12b92811",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "private_original_sha256": {
+    "old-http-033-allroles-state.json": "786c53f7600dafac130ca38e8e8b8fec6406e12621f0ea1911644e97e2a2fb8d",
+    "old-http-033-allroles-revocation-state.json": "9612dd8544d308afb0a6e4287025554003038973606999018fa833cfd453d5e6",
+    "historical-034-allroles-http-result.json": "c1467ff13519818027dafaa734a0eaa965b4c65eb89d32add0eb13359958fc69",
+    "historical-034-allroles-source-proof.json": "4ef112a6b46ee6adf267e2b8e2e31b03f76f6860c4fbed991dd0b896a8729611"
+  }
+}

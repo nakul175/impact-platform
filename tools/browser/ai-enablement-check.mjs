@@ -184,6 +184,10 @@ async function observe(target) {
 await observe(page);
 const button = (name) => page.getByRole("button", { name, exact: true });
 const label = (name) => page.getByLabel(name, { exact: true });
+// The open preview renders a labelled region per generated field with the same
+// visible name as its text area. Address the editable field by role so reads and
+// fills stay unambiguous while a preview is open.
+const textbox = (name) => page.getByRole("textbox", { name, exact: true });
 const preview = () =>
   page.getByRole("group", { name: "Procurement draft preview", exact: true });
 const procurementFields = [
@@ -197,14 +201,14 @@ async function readProcurement() {
     await Promise.all(
       procurementFields.map(async ([key, title]) => [
         key,
-        await label(title).inputValue(),
+        await textbox(title).inputValue(),
       ]),
     ),
   );
 }
 async function fillProcurement(value) {
   for (const [key, title] of procurementFields)
-    await label(title).fill(value[key]);
+    await textbox(title).fill(value[key]);
 }
 async function hiddenPreview() {
   await page.waitForFunction(
@@ -621,12 +625,12 @@ try {
     await button("Replace these four draft fields").click();
     await hiddenPreview();
     assert(
-      (await label("Pilot requirements").inputValue()).includes(
+      (await textbox("Pilot requirements").inputValue()).includes(
         "Prepare a synthetic staff communication pilot.",
       ),
     );
-    assert((await label("Questions for suppliers").inputValue()).length > 0);
-    await label("Budget and nonprofit offer checks").fill(
+    assert((await textbox("Questions for suppliers").inputValue()).length > 0);
+    await textbox("Budget and nonprofit offer checks").fill(
       "Confirm a bounded synthetic pilot cost with the purchasing owner.",
     );
     await button("Pilot tracker").click();
@@ -641,9 +645,9 @@ try {
       beforeWrites = planWrites;
     for (const [key, title] of procurementFields) {
       await preparePreview();
-      await label(title).fill(original[key] + " — transient synthetic edit");
+      await textbox(title).fill(original[key] + " — transient synthetic edit");
       await hiddenPreview();
-      await label(title).fill(original[key]);
+      await textbox(title).fill(original[key]);
       await hiddenPreview();
     }
     const name = await label("Plan name").inputValue(),
@@ -784,7 +788,7 @@ try {
     );
     await button("Procurement brief").click();
     assert.equal(
-      await label("Budget and nonprofit offer checks").inputValue(),
+      await textbox("Budget and nonprofit offer checks").inputValue(),
       "Confirm a bounded synthetic pilot cost with the purchasing owner.",
     );
     await button("Pilot tracker").click();
@@ -1219,7 +1223,7 @@ try {
       ).isDisabled(),
     );
     await button("Procurement brief").click();
-    assert(await label("Pilot requirements").isDisabled());
+    assert(await textbox("Pilot requirements").isDisabled());
     assert.equal(
       await button("Preview draft from brief and shortlist").count(),
       0,

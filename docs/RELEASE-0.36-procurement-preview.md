@@ -1,6 +1,6 @@
 # Build 0.36 procurement preview and unsaved-brief protection
 
-6 October 2026 · Integrated local candidate; hosted gates pending · build 0.36.0 · domain API 1.25.0 · platform API 1.10.0 · schema 40 (unchanged) · head on `integration/0.32-tola-ai-sprint`, built from handover commit `29e40e6`.
+6 October 2026 · Integrated local candidate; hosted gates pending · build 0.36.0 · domain API 1.25.0 · platform API 1.10.0 · schema 40 (unchanged; no new migration) · head on `integration/0.32-tola-ai-sprint`, built from handover commit `29e40e6`.
 
 Three bounded client changes to the existing AI adoption workspace, plus one reporting improvement and three checker/test robustness fixes. No migration, API operation, capability, role, provider call, supplier contact, purchase or automatic save was added. Official arithmetic is untouched.
 
@@ -35,6 +35,15 @@ All runs are on the committed head `4ecf543` unless stated. Counts overlap and a
 | Inventories and migrations | 420 / 74 / 111 as frozen; all 40 migration hashes unchanged. |
 
 Failed and superseded runs kept: first pure/enablement attempts (`ev/`), 25-of-26 browser run (`browser26-first-run/`), two native runs failing the takeover test (`gates/native-attempt1`, `-attempt2`).
+
+## Defect found by hosted CI, and its fix
+
+The first hosted run of the four required checks on this branch (PR #85) failed `native-postgresql-gate`; three attempts at head `c17109d`, `28cbd3e` and `ed95386` failed the same way. The local gates had passed on PostgreSQL 16.15 and 17.10 databases created with the C collation, which hid the cause.
+
+- **Real defect (access upgrade).** `Access upgrade.request` stored the list of new capabilities sorted by Python code point, while the applicator in migration 0036 compares it with a list ordered by the database's **default collation**. On a database with an `en_US`-style collation (the CI service container's `postgres:17.11`, and so also the hosted staging database if it uses that image) the lists differ and approval is refused with `access upgrade delta denied`, which the API reports as a 503. Seven `test_access_upgrade` tests failed. Reproduced locally on an ICU collation that ignores punctuation (`en-US-u-ka-shifted`), and fixed in `access_upgrade.py` by ordering the list with the same database collation. Migrations are unchanged. The fix is verified: 37 of 37 `test_access_upgrade` tests pass on that collation, and the full native suite passes on it (2,102 passed, 26 skipped, 1 deselected, PostgreSQL 17.10, separately pre-provisioned logins, database named `impact_test`).
+- **Timing-sensitive tests.** `test_native_batch_outliving_its_lease_sends_every_row_once` waited 20 s for a worker pass that walks every tenant of the shared database, and `test_actual_synthetic_child_environment_is_read_from_the_kernel` read `/proc/<pid>/environ` before the child's exec had completed. Both failed on the hosted runner and passed locally. Waits are widened or retried; assertions are unchanged.
+- **One browser-job failure** (run on `28cbd3e`, `make browser`, exit 2) did not recur on identical client code at `ed95386`; its cause is not known because the log is not readable from this workspace. It is recorded here, not explained.
+- The workflow now repeats failed native test names, API database-failure lines and the browser output tail as check-run annotations.
 
 ## Limits
 

@@ -3,6 +3,7 @@
 import ctypes
 import subprocess
 import sys
+import time
 
 import pytest
 from process_environment import darwin_environment, process_environment
@@ -53,8 +54,15 @@ def test_actual_synthetic_child_environment_is_read_from_the_kernel():
         env={variable: value},
     )
     try:
-        entries = process_environment(child.pid)
-        present = variable + "=" + value in entries
+        # The kernel exposes the new image's environment only once the exec has finished; a loaded
+        # runner can be observed in between, so the read is retried for a bounded time.
+        deadline = time.monotonic() + 10
+        while True:
+            entries = process_environment(child.pid)
+            present = variable + "=" + value in entries
+            if present or time.monotonic() > deadline:
+                break
+            time.sleep(0.05)
         assert present, "Actual child marker must be visible"
         keys = [entry.split("=", 1)[0] for entry in entries]
         assert "PGPASSWORD" not in keys, "An argument must never be mistaken for an environment variable"

@@ -302,7 +302,17 @@ class AccessUpgrade:
             "AND v.payload->>'custom'='true' AND lower(v.payload->>'name')=ANY(%s) LIMIT 1",
             (tenant["tenant_id"], [name.lower() for name in target["roles"]]),
         ).fetchone()
-        new = sorted(capabilities(target) - capabilities(manifest["source_manifest"])) if manifest else []
+        new = []
+        if manifest:
+            # The applicator (migration 0036) orders its delta with the database's default collation, so the
+            # stored list must use that order too; a code-point sort differs under en_US-style collations.
+            added = sorted(capabilities(target) - capabilities(manifest["source_manifest"]))
+            new = [
+                r["value"]
+                for r in c.execute(
+                    "SELECT value FROM jsonb_array_elements_text(%s::jsonb) ORDER BY value", (Jsonb(added),)
+                ).fetchall()
+            ]
         reason = (
             "ACCESS_PROFILE_NOT_REGISTERED"
             if not registered

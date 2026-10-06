@@ -1,0 +1,29 @@
+✔ exact command and saved-revision path contain only the closed internal-self intent (1.016542ms)
+✔ Unicode UTF-8 bytes and original formatting are preserved exactly (1.502292ms)
+✔ closed decoder refuses response extras (0.078458ms)
+✔ closed decoder refuses manifest extras (0.075916ms)
+✔ closed decoder refuses receipt extras (0.096292ms)
+✔ closed decoder refuses missing guidance status (0.0455ms)
+✔ closed decoder refuses unknown guidance status (0.047834ms)
+✔ closed decoder refuses unknown renderer (0.045541ms)
+✔ closed decoder refuses path filename (0.086834ms)
+✔ closed decoder refuses receipt digest mismatch (0.298041ms)
+✔ closed decoder refuses receipt byte mismatch (0.079708ms)
+✔ closed decoder refuses issuance timestamp mismatch (0.052917ms)
+✔ closed decoder refuses expiry timestamp mismatch (0.038666ms)
+✔ closed decoder refuses expired-before-generation manifest (0.03775ms)
+✔ closed decoder refuses invalid receipt selector (0.033291ms)
+✔ closed decoder refuses string byte count (0.045667ms)
+✔ closed decoder refuses oversized manifest (0.04925ms)
+✔ content corruption fails byte/digest verification without reserialization (0.092083ms)
+✔ wrong plan, revision and operation are refused (0.061083ms)
+✔ replay pins exact manifest and issuance receipt after lost-response retry (0.183333ms)
+✔ even valid reissued bytes with the same operation cannot replace a pinned copy (0.152834ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7.425166

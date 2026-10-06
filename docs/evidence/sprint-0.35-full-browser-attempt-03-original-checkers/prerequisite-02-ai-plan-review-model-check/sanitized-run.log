@@ -1,0 +1,30 @@
+✔ Canonical read validity stays distinct from unavailable public interpretation (0.69075ms)
+✔ Review binds only the exact successful public saved selectors (0.489416ms)
+✔ Actor, tenant/base and exposed identity changes immediately hide the old review (0.086334ms)
+✔ Different plan or revision cannot reuse a prior saved review (0.079958ms)
+✔ Lost read authority, unavailable canonical source and dirty draft deny display (0.0755ms)
+✔ A receipt without canonical data cannot establish the review (0.042208ms)
+✔ Malformed base plan shape or selectors never become recorded preparation (0.092959ms)
+✔ Explicit zero is a recorded entered cost, with no total-cost approval (0.112042ms)
+✔ Null amount remains a follow-up without inferred complete cost (0.076667ms)
+✔ Missing required cost line identity, label or category is uninterpretable (0.118041ms)
+✔ Invalid known cost enum, identifier or decimal remains uninterpretable (0.09225ms)
+✔ Duplicate offer or within-offer line identities are uninterpretable (0.081291ms)
+✔ Blank procurement fields produce concrete review actions (0.05975ms)
+✔ Legacy absent planning remains missing follow-up without invented measurements (0.083708ms)
+✔ Malformed or incomplete planning object remains interpretation unavailable (0.087375ms)
+✔ Saved worksheet inputs do not certify competence or interpret retired learning keys (0.0675ms)
+✔ Blank practice review notes remain follow-up even if steps are ticked (0.029708ms)
+✔ Pilot incomparable flag prevents a recorded comparable-observation label (0.036209ms)
+✔ Comparable self-entered pilot does not claim calculated improvement or official impact (0.066708ms)
+✔ Edition strings alone never assert archive completeness (0.054542ms)
+✔ Additional private/future metadata produces byte-identical review output (0.140459ms)
+✔ Source public payload stays untouched and raw notes are not retained (0.081417ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5.891

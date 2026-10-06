@@ -135,6 +135,24 @@ jobs:
         run: .venv/bin/python scripts/provision_logins.py
       - name: Qualification suite on the provisioned login roles, then the API restart check
         run: .venv/bin/python scripts/run.py test --native --skip-upgrade-check --skip-restore-drill
+      - name: Surface failed native tests as annotations
+        # Job logs and artifacts are not readable by every reviewer or tool; the failed test ids and
+        # the first lines of each failure message are repeated as check-run annotations.
+        if: failure()
+        run: |
+          .venv/bin/python - <<'PY'
+          import glob
+          import xml.etree.ElementTree as ET
+          for path in glob.glob("docs/evidence/native-application-tests.xml") + glob.glob(".local/test-*/*.xml"):
+              try:
+                  root = ET.parse(path).getroot()
+              except ET.ParseError:
+                  continue
+              for case in root.iter("testcase"):
+                  for bad in list(case.findall("failure")) + list(case.findall("error")):
+                      text = " ".join((bad.get("message") or bad.text or "").split())[:600]
+                      print(f"::error title=FAILED {case.get('classname')}::{case.get('name')}: {text}")
+          PY
       - name: Install PostgreSQL 17 client tools from the PGDG repository
         # The service container runs PostgreSQL 17 while the runner image ships the 16 client;
         # pg_dump refuses a server newer than itself, so the drill uses the 17 binaries. The

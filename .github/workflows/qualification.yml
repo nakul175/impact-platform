@@ -162,7 +162,7 @@ jobs:
                       text = " ".join((bad.get("message") or bad.text or "").split())[:600]
                       print(f"::error title=FAILED {case.get('classname')}::{case.get('name')}: {text}")
           for log in glob.glob(".local/test-*/api.log")[:3]:
-              lines = [x for x in open(log, errors="replace").read().splitlines() if "Traceback" in x or "Error" in x or "ERROR" in x]
+              lines = [x for x in open(log, errors="replace").read().splitlines() if "sqlstate=" in x or "failure correlation" in x or "Traceback" in x or "Error" in x or "ERROR" in x]
               if lines:
                   print("::error title=API log " + log + "::" + " | ".join(l[:200] for l in lines[-12:]).replace("%", "%25"))
           PY

@@ -44,7 +44,16 @@ jobs:
           node-version: '24'
       - run: make setup
       - run: make lint test reference
-      - run: make browser
+      - name: Browser groups
+        # The last lines of the output are repeated as an annotation on failure, because job logs are
+        # not readable by every reviewer or tool.
+        run: |
+          set -o pipefail
+          make browser 2>&1 | tee browser-output.log || {
+            code=$?
+            tail -n 40 browser-output.log | cut -c1-300 | python3 -c "import sys,urllib.parse as u; print('::error title=make browser failed::' + u.quote(sys.stdin.read(), safe=' ,.:;()[]/-_=\'\"'))"
+            exit $code
+          }
       - uses: actions/upload-artifact@v6
         if: always()
         with:
@@ -152,6 +161,10 @@ jobs:
                   for bad in list(case.findall("failure")) + list(case.findall("error")):
                       text = " ".join((bad.get("message") or bad.text or "").split())[:600]
                       print(f"::error title=FAILED {case.get('classname')}::{case.get('name')}: {text}")
+          for log in glob.glob(".local/test-*/api.log")[:3]:
+              lines = [x for x in open(log, errors="replace").read().splitlines() if "Traceback" in x or "Error" in x or "ERROR" in x]
+              if lines:
+                  print("::error title=API log " + log + "::" + " | ".join(l[:200] for l in lines[-12:]).replace("%", "%25"))
           PY
       - name: Install PostgreSQL 17 client tools from the PGDG repository
         # The service container runs PostgreSQL 17 while the runner image ships the 16 client;

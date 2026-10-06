@@ -66,6 +66,8 @@ Capacity building remains self-paced preparation and manual practice. Learning p
 
 The proposed public demo path is `/ai-walkthrough.html`; no hosted 0.35 link is claimed here. A usable hosted link must be checked after the exact candidate passes the remaining gates and the actual deployed commit/schema/health are observed. A private read-only post-merge verifier is prepared and reviewed as a proposal; it has not contacted hosting or executed a deployed-browser scope. The authenticated application remains the real product.
 
+**Update, 6 October 2026:** both limitations above are fixed in [build 0.36](RELEASE-0.36-procurement-preview.md). This note is otherwise unchanged.
+
 ## Reproduction and integration notes
 
 The feature sources are `AIPracticeStarter.tsx`, `AIPracticeStarterModel.ts`, `AITaskPractice.tsx`, `AIPlanReviewChecklist.tsx`, `AIPlanReviewModel.ts`, `AIPlanningTools.tsx` and the composed `AIAdoptionWorkspace.tsx`. The three public stateless sections are `AILearningLesson.tsx`, `AIToolComparison.tsx` and `AIProcurementBrief.tsx`. The separate entry is `AIFictionalWalkthrough.tsx`, its strict adapter, bundled guidance, `ai-walkthrough-main.tsx`, CSS and `ai-walkthrough.html`. The fixed response is in `main.py`; Vite, the local runner and Makefile register the separate entry/check. `scripts/smoke.py` checks its static packaging by default, including in the existing container-stack smoke invocation; the focused fixture checks are in `qualification/test_deploy_unit.py`.

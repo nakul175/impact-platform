@@ -1,0 +1,7 @@
+.venv/bin/ruff check apps/api scripts qualification deploy
+All checks passed!
+.venv/bin/ruff format --check apps/api scripts qualification deploy
+232 files already formatted
+apps/web/node_modules/.bin/prettier --check apps/web/src apps/web/index.html apps/web/ai-walkthrough.html apps/web/vite.config.ts tools/dev-db/server.mjs tools/browser/*.mjs
+Checking formatting...
+All matched files use Prettier code style!

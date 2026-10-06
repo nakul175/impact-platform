@@ -1,0 +1,11 @@
+lint rc=0
+build rc=0
+tsc rc=0
+pure-ai-plan-export-adapter-check rc=0
+pure-ai-plan-review-model-check rc=0
+pure-ai-practice-starter-model-check rc=0
+pure-ai-walkthrough-adapter-check rc=0
+pure-ai-procurement-preview-model-check rc=0
+browser26 rc=see browser26-final-run/summary.txt
+native rc=1
+ALLDONE

@@ -1,0 +1,1785 @@
+{
+  "engine": "Chromium 153.0.8010.0",
+  "browser_version": "153.0.8010.0",
+  "platform": "linux",
+  "axe_core": "4.13.0",
+  "rule_tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "failing_impacts": [
+    "serious",
+    "critical"
+  ],
+  "scope_note": "Automated axe-core scans and one keyboard-only flow. Not a WCAG 2.2 AA conformance claim: no screen reader, zoom/reflow at 400 %, other browsers or manual audit.",
+  "results": [
+    {
+      "name": "Scan: sign-in page",
+      "status": "passed"
+    },
+    {
+      "name": "Scan: every author workspace area, tab and record dialog",
+      "status": "passed"
+    },
+    {
+      "name": "Scan: review queue, people and access, workspace settings, tenant lifecycle and workers",
+      "status": "passed"
+    },
+    {
+      "name": "Keyboard only: arrow keys move between tabs and Enter selects one",
+      "status": "passed"
+    },
+    {
+      "name": "Scan: portfolio at 390 px width",
+      "status": "passed"
+    },
+    {
+      "name": "Keyboard only: author captures and submits an observation",
+      "status": "passed"
+    },
+    {
+      "name": "Keyboard only: independent reviewer approves the submitted observation",
+      "status": "passed"
+    },
+    {
+      "name": "No scanned page has an unaccepted serious or critical WCAG violation",
+      "status": "passed"
+    }
+  ],
+  "pages": [
+    {
+      "page": "sign-in",
+      "actor": "anonymous",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "portfolio",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "portfolio-record-dialog",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "new-programme-dialog",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "measurement",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "observation-record-dialog-evidence",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "add-observation-dialog",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": ".footnote",
+              "reason": "Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "measurement-setup/definitions",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "measurement-setup/indicators",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "measurement-setup/collection-plans",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "results-framework/framework",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "results-framework/targets",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "results-framework/targets-vs-actuals",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "results-framework/reviews",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "dashboards",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "forms",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "imports",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "change-requests",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "period-close",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(8) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "my-work",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".panel:nth-child(2) > .table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".panel:nth-child(3) > .table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "results",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "reports",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "my-account",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 14,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "result-record-dialog",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "report-record-dialog-exports",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "review-queue",
+      "actor": "reviewer",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/members",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/invitations",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/access-requests",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/scopes",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/role-templates",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 2,
+          "examples": [
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "people-and-access/purpose-bound-access",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": ".active > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 3,
+          "examples": [
+            {
+              "target": ".table-wrap > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(4) > table",
+              "reason": "Table data cells are missing or empty"
+            },
+            {
+              "target": ".table-scroll:nth-child(6) > table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/custom-roles",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/groups",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/group-reviews",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/organisation",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/renewals",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "workspace-settings/ownership",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(2) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(3) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        },
+        {
+          "rule": "th-has-data-cells",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": "table",
+              "reason": "Table data cells are missing or empty"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "tenant-lifecycle-and-workers",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 1,
+          "examples": [
+            {
+              "target": ".on-call",
+              "reason": "aria-label attribute is not well supported on a p with no valid role attribute."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "recovery-contacts",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "initial-access",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "authority-renewal",
+      "actor": "admin",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    },
+    {
+      "page": "portfolio-390px",
+      "actor": "author",
+      "url": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": [
+        {
+          "rule": "color-contrast",
+          "impact": "serious",
+          "nodes": 15,
+          "examples": [
+            {
+              "target": "button:nth-child(1) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button[aria-current=\"page\"] > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            },
+            {
+              "target": "button:nth-child(5) > span[aria-hidden=\"true\"]",
+              "reason": "Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "review-decision-dialog",
+      "actor": "reviewer",
+      "url": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "failing": [],
+      "accepted": [],
+      "minor_wcag": [],
+      "advisory_best_practice": [],
+      "needs_manual_review": []
+    }
+  ],
+  "keyboard_focus_trail": [
+    {
+      "control": "Measurement setup navigation",
+      "tab_presses": 6,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(201, 229, 157)",
+      "behind": "rgb(24, 59, 50)",
+      "contrast": 8.87
+    },
+    {
+      "control": "First configuration tab",
+      "tab_presses": 17,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(246, 247, 243)",
+      "contrast": 5.87
+    },
+    {
+      "control": "Measurement navigation",
+      "tab_presses": 5,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(201, 229, 157)",
+      "behind": "rgb(24, 59, 50)",
+      "contrast": 8.87
+    },
+    {
+      "control": "Add observation",
+      "tab_presses": 18,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(246, 247, 243)",
+      "contrast": 5.87
+    },
+    {
+      "control": "Indicator",
+      "tab_presses": 3,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Source key",
+      "tab_presses": 2,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Event date (UTC)",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Recorded value",
+      "tab_presses": 2,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Numerator",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Denominator",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Save draft",
+      "tab_presses": 2,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Observation record",
+      "tab_presses": 7,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Submit for review (inspect)",
+      "tab_presses": 6,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Review template",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Submit for review (confirm)",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Observation record (again)",
+      "tab_presses": 5,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Review queue navigation",
+      "tab_presses": 15,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(201, 229, 157)",
+      "behind": "rgb(24, 59, 50)",
+      "contrast": 8.87
+    },
+    {
+      "control": "Search loaded records",
+      "tab_presses": 8,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Review queue row",
+      "tab_presses": 2,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(250, 252, 247)",
+      "contrast": 6.12
+    },
+    {
+      "control": "Review submission",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Decision reason",
+      "tab_presses": 1,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    },
+    {
+      "control": "Approve",
+      "tab_presses": 3,
+      "visible": true,
+      "matches": true,
+      "outline": "solid 3px rgb(47, 107, 74)",
+      "behind": "rgb(255, 255, 255)",
+      "contrast": 6.32
+    }
+  ],
+  "keyboard_widget_observations": [
+    {
+      "control": "Indicator",
+      "gesture": "ArrowDown",
+      "option_label": "Programme A",
+      "selected_value": "8b60ce5c-83ae-5dbe-9110-2edd7cacb748"
+    },
+    {
+      "control": "Event date (UTC)",
+      "gesture": "keyboard digits in observed native AX order",
+      "locale": "en-US",
+      "native_part_order": [
+        "Month",
+        "Day",
+        "Year"
+      ],
+      "chosen_date": "2026-08-15"
+    },
+    {
+      "control": "Review template",
+      "gesture": "ArrowDown",
+      "option_label": "Record 99d39667",
+      "selected_value": "ff396e2e-06e6-5218-90b0-7b66b1d41896"
+    }
+  ],
+  "accepted_exceptions": [],
+  "uncaughtErrors": []
+}

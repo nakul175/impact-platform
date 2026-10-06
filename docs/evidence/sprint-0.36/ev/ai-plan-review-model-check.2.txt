@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: Canonical read validity stays distinct from unavailable public interpretation
+ok 1 - Canonical read validity stays distinct from unavailable public interpretation
+  ---
+  duration_ms: 4.861433
+  type: 'test'
+  ...
+# Subtest: Review binds only the exact successful public saved selectors
+ok 2 - Review binds only the exact successful public saved selectors
+  ---
+  duration_ms: 2.84605
+  type: 'test'
+  ...
+# Subtest: Actor, tenant/base and exposed identity changes immediately hide the old review
+ok 3 - Actor, tenant/base and exposed identity changes immediately hide the old review
+  ---
+  duration_ms: 0.417627
+  type: 'test'
+  ...
+# Subtest: Different plan or revision cannot reuse a prior saved review
+ok 4 - Different plan or revision cannot reuse a prior saved review
+  ---
+  duration_ms: 0.552584
+  type: 'test'
+  ...
+# Subtest: Lost read authority, unavailable canonical source and dirty draft deny display
+ok 5 - Lost read authority, unavailable canonical source and dirty draft deny display
+  ---
+  duration_ms: 0.608371
+  type: 'test'
+  ...
+# Subtest: A receipt without canonical data cannot establish the review
+ok 6 - A receipt without canonical data cannot establish the review
+  ---
+  duration_ms: 0.21504
+  type: 'test'
+  ...
+# Subtest: Malformed base plan shape or selectors never become recorded preparation
+ok 7 - Malformed base plan shape or selectors never become recorded preparation
+  ---
+  duration_ms: 0.468874
+  type: 'test'
+  ...
+# Subtest: Explicit zero is a recorded entered cost, with no total-cost approval
+ok 8 - Explicit zero is a recorded entered cost, with no total-cost approval
+  ---
+  duration_ms: 0.607599
+  type: 'test'
+  ...
+# Subtest: Null amount remains a follow-up without inferred complete cost
+ok 9 - Null amount remains a follow-up without inferred complete cost
+  ---
+  duration_ms: 0.724459
+  type: 'test'
+  ...
+# Subtest: Missing required cost line identity, label or category is uninterpretable
+ok 10 - Missing required cost line identity, label or category is uninterpretable
+  ---
+  duration_ms: 0.691845
+  type: 'test'
+  ...
+# Subtest: Invalid known cost enum, identifier or decimal remains uninterpretable
+ok 11 - Invalid known cost enum, identifier or decimal remains uninterpretable
+  ---
+  duration_ms: 0.371418
+  type: 'test'
+  ...
+# Subtest: Duplicate offer or within-offer line identities are uninterpretable
+ok 12 - Duplicate offer or within-offer line identities are uninterpretable
+  ---
+  duration_ms: 0.266086
+  type: 'test'
+  ...
+# Subtest: Blank procurement fields produce concrete review actions
+ok 13 - Blank procurement fields produce concrete review actions
+  ---
+  duration_ms: 0.286944
+  type: 'test'
+  ...
+# Subtest: Legacy absent planning remains missing follow-up without invented measurements
+ok 14 - Legacy absent planning remains missing follow-up without invented measurements
+  ---
+  duration_ms: 0.206411
+  type: 'test'
+  ...
+# Subtest: Malformed or incomplete planning object remains interpretation unavailable
+ok 15 - Malformed or incomplete planning object remains interpretation unavailable
+  ---
+  duration_ms: 0.233743
+  type: 'test'
+  ...
+# Subtest: Saved worksheet inputs do not certify competence or interpret retired learning keys
+ok 16 - Saved worksheet inputs do not certify competence or interpret retired learning keys
+  ---
+  duration_ms: 0.216412
+  type: 'test'
+  ...
+# Subtest: Blank practice review notes remain follow-up even if steps are ticked
+ok 17 - Blank practice review notes remain follow-up even if steps are ticked
+  ---
+  duration_ms: 0.180733
+  type: 'test'
+  ...
+# Subtest: Pilot incomparable flag prevents a recorded comparable-observation label
+ok 18 - Pilot incomparable flag prevents a recorded comparable-observation label
+  ---
+  duration_ms: 0.181791
+  type: 'test'
+  ...
+# Subtest: Comparable self-entered pilot does not claim calculated improvement or official impact
+ok 19 - Comparable self-entered pilot does not claim calculated improvement or official impact
+  ---
+  duration_ms: 0.20419
+  type: 'test'
+  ...
+# Subtest: Edition strings alone never assert archive completeness
+ok 20 - Edition strings alone never assert archive completeness
+  ---
+  duration_ms: 0.205608
+  type: 'test'
+  ...
+# Subtest: Additional private/future metadata produces byte-identical review output
+ok 21 - Additional private/future metadata produces byte-identical review output
+  ---
+  duration_ms: 1.929065
+  type: 'test'
+  ...
+# Subtest: Source public payload stays untouched and raw notes are not retained
+ok 22 - Source public payload stays untouched and raw notes are not retained
+  ---
+  duration_ms: 0.574527
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 39.137648

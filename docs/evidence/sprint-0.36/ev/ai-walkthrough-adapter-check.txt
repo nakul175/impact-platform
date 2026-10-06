@@ -1,0 +1,23 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Registered pure public guidance must load
+
+null !== 0
+
+    at file:///home/claude/impact-platform/tools/browser/ai-walkthrough-adapter-check.mjs:48:12
+    at check (file:///home/claude/impact-platform/tools/browser/ai-walkthrough-adapter-check.mjs:33:9)
+    at file:///home/claude/impact-platform/tools/browser/ai-walkthrough-adapter-check.mjs:37:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.22.0

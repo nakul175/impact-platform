@@ -3,14 +3,14 @@
   "title": "Integration, review and qualification",
   "domain": "One combined platform",
   "owner": "/root",
-  "status": "TESTING",
-  "summary": "Final0.35all26 browser modes PASS281actual groups/66pure, zero failure/skip.423sources/eight assets unchanged;965historical files and browser executable restored. Fresh native2,102/local2,037/units1,242 pass; root is reviewing captures and assembling the local checkpoint.",
-  "next_step": "Finish root capture/instruction-lead/manifest review and save0.35. Hosted four-job release, main merge and deployment remain separate.",
+  "status": "REVIEWING",
+  "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+  "next_step": "Claude reads docs/CLAUDE-HANDOFF-2026-10-06.md and the preserved0.36application order; then requalifies before hosted release.",
   "eta": {
-    "earliest": "2026-10-05T22:05:00Z",
-    "latest": "2026-10-05T22:30:00Z",
-    "confidence": "MEDIUM",
-    "basis": "All0.35 actual local gates now pass; final evidence/document preservation and saved-commit verification remain.0.36 and hosted release have separate fresh gates."
+    "earliest": null,
+    "latest": null,
+    "confidence": "UNESTIMATED",
+    "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
   },
   "delivered": [
     "Frozen corrected0.35 dual-entry build",
@@ -271,13 +271,20 @@
       "result": "PASS26MODES_281ACTUAL_GROUPS_66PURE_ZEROFAIL_SKIP",
       "scope": "Actual Chrome/API/PGlite freshfixtures.423sources/eight assets unchanged,40owning hashes/current auth observed each mode;965historical files and packaged browser restored.96PNG captures/54clean namedaxe scans;44broada11ypages retain50manual incomplete entries. No formal accessibility/hosted/UAT acceptance.",
       "recorded_at": "2026-10-05T21:55:24.701130Z"
+    },
+    {
+      "title": "Complete0.35 saved-checkpoint byte verification",
+      "path": "docs/evidence/sprint-0.35-saved-checkpoint.json",
+      "result": "SAVED_ALL_MANIFEST_BLOBS_MATCH",
+      "scope": "Historicalbe650866commit,494source/726evidence/14docs; no hosted/0.36 acceptance.",
+      "recorded_at": "2026-10-06T02:58:32.006093Z"
     }
   ],
   "blockers": [
     "Final26 browser modes must pass after fresh corrected-source native/unit/local gates.",
     "Four hosted jobs, financial approval, main merge and deployment remain separate gates."
   ],
-  "updated_at": "2026-10-05T22:01:54.484012Z",
+  "updated_at": "2026-10-06T02:58:32.017424Z",
   "history": [
     {
       "at": "2026-10-05T08:37:23Z",
@@ -673,6 +680,28 @@
         "latest": "2026-10-05T22:30:00Z",
         "confidence": "MEDIUM",
         "basis": "All0.35 actual local gates now pass; final evidence/document preservation and saved-commit verification remain.0.36 and hosted release have separate fresh gates."
+      }
+    },
+    {
+      "at": "2026-10-06T02:57:52.518891Z",
+      "status": "REVIEWING",
+      "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
+      }
+    },
+    {
+      "at": "2026-10-06T02:58:32.017424Z",
+      "status": "REVIEWING",
+      "summary": "Qualified0.35 and exact evidence are saved. Owner requested consolidation and Claude handoff; unintegrated0.36 proposals preserved, no ongoing build claimed.",
+      "eta": {
+        "earliest": null,
+        "latest": null,
+        "confidence": "UNESTIMATED",
+        "basis": "Development paused for handover after account usage limit; no continuous eight-hour execution or release ETA promised."
       }
     }
   ]

@@ -1,0 +1,60 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "finding_scope": "Static_ONLY: known 0.35 copy limitation, no API/security/persisted data loss finding",
+  "prepared_at_utc": "2026-10-05T21:40:02.616117Z",
+  "baseline_sha256": {
+    "apps/web/src/AITaskPractice.tsx": "6580578dbb37ac044d2356fb82a4d726b7c0ed2e0978cdc9acc43dba3323a86d",
+    "tools/browser/ai-planning-check.mjs": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790"
+  },
+  "proposed_sha256": {
+    "apps/web/src/AITaskPractice.tsx": "801373e0108b5891c38102a1447cbb1102fb660f39cbaa251515f40f664c3d45",
+    "tools/browser/ai-planning-check.mjs": "2175f7fc688ad1efbfc04bf21ae8072da8ee006e385781384e020b0b825af426"
+  },
+  "registered_bytes_changed": false,
+  "changes": [
+    {
+      "path": "apps/web/src/AITaskPractice.tsx",
+      "before": "Historical guidance wording is not available. Review the saved\n              draft and self-checks against the current guidance before\n              continuing.",
+      "after": "Choose View saved guidance to check whether this revision\u2019s\n              original wording was retained. This worksheet uses current\n              guidance; review your saved draft and self-checks before\n              continuing.",
+      "occurrences": 1
+    },
+    {
+      "path": "apps/web/src/AITaskPractice.tsx",
+      "before": "These identifiers are preserved as recorded. Their historical\n              wording and assessment are unavailable; they do not certify\n              competence.",
+      "after": "These identifiers are preserved as recorded. Choose View saved\n              guidance to check for any retained original wording. They do not\n              certify competence.",
+      "occurrences": 1
+    },
+    {
+      "path": "tools/browser/ai-planning-check.mjs",
+      "before": "Historical guidance wording is not available.",
+      "after": "Choose View saved guidance to check whether this revision\u2019s original wording was retained.",
+      "occurrences": 2
+    },
+    {
+      "path": "tools/browser/ai-planning-check.mjs",
+      "before": "Simulated stale practice edition is labelled without claiming historical guide wording",
+      "after": "Simulated stale practice edition is labelled without assuming historical archive availability",
+      "occurrences": 1
+    }
+  ],
+  "qualification": {
+    "new_dedicated_tests": "NONE: text-only correction",
+    "actual_API": "NOT_RUN",
+    "actual_browser": "NOT_RUN",
+    "actual_full_0.36": "REQUIRED_AFTER_INTEGRATION"
+  },
+  "guards": [
+    "Preserve root-approved planning checker d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790 baseline",
+    "No archive API/DTO/permission/provenance/assessment change",
+    "Unknown/Stale current edition labels and unavailable current-task preservation/replacement/save gates remain unchanged",
+    "Original registered bytes retained under baseline/",
+    "No completeness or absence inferred from edition mismatch"
+  ],
+  "patch_sha256": "b312caecd34c189e36270f00519140a6956ee0b263314f762ce9d905291c1491",
+  "static_checks": {
+    "format": "PASS private files only",
+    "registered_predecessors_still_exact": true,
+    "whole_actual_browser": "NOT_RUN",
+    "no_new_dedicated_tests": true
+  }
+}

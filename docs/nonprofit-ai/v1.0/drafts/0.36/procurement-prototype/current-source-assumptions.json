@@ -1,0 +1,8 @@
+{
+  "scope": "Private next-increment preparation; no registered source mutation or0.35 qualification claim",
+  "sources": {
+    "apps/web/src/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "apps/web/src/AIProcurementBrief.tsx": "d9e75a9040a7f03d94aa10c0179aa3aa53cd1ed99ed86e2afb31e65339c184f7",
+    "apps/web/src/AIEnablement.tsx": "f3e5aea96bf0b4215733e68f75ac5bf22ccfbffc6e0d7374c4f8539a90590246"
+  }
+}

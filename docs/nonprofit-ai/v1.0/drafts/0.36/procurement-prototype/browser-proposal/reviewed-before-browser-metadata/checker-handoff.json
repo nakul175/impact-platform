@@ -1,0 +1,89 @@
+{
+  "scope": "Next-release private proposed checker adaptation; not registered or qualified 0.35",
+  "recorded_at": "2026-10-05T21:13:17.623352+00:00",
+  "runtime_status": "NOT_RUN",
+  "baseline": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/tools/browser/ai-enablement-check.mjs",
+    "sha256": "641df36ec61e8f3314fc6fc142a443b3f9ad7291a8b871ada8ad81e37b3a58e9",
+    "bytes": 20428
+  },
+  "candidate": {
+    "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-check.proposed.mjs",
+    "sha256": "f5c430389741de0d681d787cfd79a5345b9859b43b7d8f20e2fac6d857f7a326",
+    "bytes": 46223
+  },
+  "patch": {
+    "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/ai-enablement-procurement-preview.proposed.patch",
+    "sha256": "9ce0feec9f42b8f088443d19d535b2415d23e6866b155d9bf2d7a04ad9328a68",
+    "bytes": 32816
+  },
+  "static_proof": {
+    "path": "/private/tmp/tola-ai-procurement-preview-draft/browser-proposal/static-proposal-proof.json",
+    "sha256": "889601366334fc0d46b31de3e03e5f9b341f6926ed0f2f452905be0114695182",
+    "bytes": 1679
+  },
+  "preserved_assertions": 50,
+  "preserved_original_groups": [
+    "Open the working tool directory with published sources and honest transaction limits",
+    "Assess readiness without a model call and clear stale results when the brief changes",
+    "Search and filter published tools, and cap a side-by-side comparison at four",
+    "Use a practical lesson, self-check, procurement draft and pilot tracker",
+    "A lost save response retries the same operation and keeps newer edits unsaved",
+    "Reopening a saved plan restores shortlist, readiness, learning, procurement and pilot progress",
+    "A stale shared-plan save preserves local edits and leaves the current server revision intact",
+    "Disabled advisory sends no requests, and the product fits desktop and 390 px mobile views",
+    "New product sections and discard confirmation have no serious or critical automated WCAG findings",
+    "An existing read-only actor can browse tools but cannot save plans or record completion"
+  ],
+  "proposed_groups": [
+    "Open the working tool directory with published sources and honest transaction limits",
+    "Assess readiness without a model call and clear stale results when the brief changes",
+    "Search and filter published tools, and cap a side-by-side comparison at four",
+    "Use a practical lesson, self-check, procurement draft and pilot tracker",
+    "Procurement confirmation is discarded after observed edit and undo, profile change, shortlist change or an empty goal",
+    "A lost save response retries the same operation and keeps newer edits unsaved",
+    "Reopening a saved plan restores shortlist, readiness, learning, procurement and pilot progress",
+    "Preview and cancel leave exact stored work intact; explicit replacement changes only four fields before normal save and reopen",
+    "A stale shared-plan save preserves local edits and leaves the current server revision intact",
+    "A freshly opened same-valued server revision invalidates a previous procurement confirmation",
+    "Cached positive management hints do not grant saving authority after actual management revocation",
+    "Disabled advisory sends no requests, and the product fits desktop and 390 px mobile views",
+    "New product sections and discard confirmation have no serious or critical automated WCAG findings",
+    "An existing read-only actor can browse tools but cannot save plans or record completion"
+  ],
+  "new_boundaries": [
+    "Preview/cancel make no field or plan-write change; deliberately applying the existing exact text changes four procurement fields only",
+    "Observed procurement-field/profile/whole-plan edit and undo, shortlist change and blank-goal refusal",
+    "An actual committed first save held before response invalidates pending preview; exact lost-response retry retains one revision/audit/outbox intent/receipt",
+    "Exact previously stored manual Unicode procurement work survives cancel; full non-procurement payload stays equal on apply/normal save/current canonical reopen",
+    "Same-valued newly saved server revision and actual current GET invalidate a previous preview",
+    "Existing actual author management grants are narrowed and exactly restored; cached positive hints cannot authorize save; actual404 leaves stored plan and its counters unchanged",
+    "Read-only actor has no prepare/apply controls; existing read-only learning/save assertions retained",
+    "1440/390/320 preview keyboard order, no page overflow, named captures, unchanged axe severity checks with incompletes retained",
+    "Current source/build bytes before/end, no external requests or advisory call",
+    "Actual authenticated runtime matches VERSION/build/API/schema40; each actual applied migration1..40 matches exact frozen SQL hash; final ledger must equal initial"
+  ],
+  "fixture_constraints": [
+    "Use disposable loopback run.py ai-enablement-browser fixture only",
+    "No new grant, role/profile/ceiling mutation, RLS/trigger relaxation, account/provider/supplier call",
+    "Serialized root shared writer lease and exact named evidence preservation required before actual future run",
+    "Current source/build must integrate reviewed preview first; do not run against 0.35",
+    "Final proposal is always-on under existing normal run.py/Makefile/CI invocation; all14 groups required, distinct0.36 default report/capture names; no conditional skip or new custom env requirement"
+  ],
+  "limits": [
+    "No actual API/browser/database proof has run for this adaptation",
+    "Catalog/criterion mutation and management-hint loss-return remain model/synthetic proof; no actual catalog deployment-change claim",
+    "The current-head/audit/outbox/receipt observations use the qualification fixture role; no native APP-role security qualification implied",
+    "Outbox intent is not delivery",
+    "No financial approval, procurement award, provider result, hosted/UAT or original requirement acceptance"
+  ],
+  "registration": {
+    "path": "tools/browser/ai-enablement-check.mjs",
+    "existing_invocation": "scripts/run.py ai-enablement-browser",
+    "new_required_environment": [],
+    "default_report": "docs/evidence/sprint-0.36-procurement-preview-browser-tests.json",
+    "default_captures": "IMPACT_TEST_LOCAL/sprint-0.36-procurement-preview-captures",
+    "always_required_groups": 14,
+    "first_guarded_proposal": "guarded-first-proposal preserved; extra custom env requirement was unsuitable for normal registration and removed before any run"
+  }
+}

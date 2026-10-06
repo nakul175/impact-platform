@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-10-05T22:02:27.178923+00:00",
+  "scope": "PRIVATE_0.36_ORCHESTRATION_PROPOSAL_ONLY_NOT_PRODUCT_OR_BROWSER_QUALIFICATION",
+  "actual_0_36_status": "NOT_RUN",
+  "wrapper": "/private/tmp/tola-ai-036-browser-qualification.py",
+  "wrapper_sha256": "83440b5857623ada24fc29f3f0cf0460a98685b42aac06fbfecc4ea484316d8c",
+  "approved_predecessor_sha256": "9d8097d2218d9b27fa70872de4ebebb20e01df7e4a8792cc047fed163435de4f",
+  "files": {
+    "browser-qualification.035-v6.before.py": "9d8097d2218d9b27fa70872de4ebebb20e01df7e4a8792cc047fed163435de4f",
+    "browser-qualification.proposed.py": "83440b5857623ada24fc29f3f0cf0460a98685b42aac06fbfecc4ea484316d8c",
+    "offline-fixture-reproducer.py": "f8811a1aed2f1155939ee01741b9fba1c59d42b8725aea0c77718c5bd5cf10ac",
+    "offline-tests.json": "82a994aff647f7497b14d1f8787e18c89ec40984ea19f92c47514cdfa693893d",
+    "wrapper-036.patch": "2ab1c6a131c7e6d996c377c5b238f4efa09a655b25e1170aaa9c3851d4b2d149"
+  },
+  "offline": {
+    "passed_groups": 16,
+    "scope": "Offline wrapper orchestration checks only; no API/database/browser run",
+    "recipe_asset_input_scope": "PRIVATE_SYNTHETIC_FUTURE_RECIPE_AND_ASSETS_NOT_0.36_PRODUCT_QUALIFICATION",
+    "additional_recipe_refusals": [
+      "missing fifth prerequisite",
+      "reordered prerequisite",
+      "stale build tuple"
+    ],
+    "additional_refusals_not_added_to_16_group_count": true
+  },
+  "future_contract": {
+    "build": "0.36.0",
+    "domain_api": "1.25.0",
+    "platform_api": "1.10.0",
+    "schema": 40,
+    "source_count": 426,
+    "pure_prerequisites": 5,
+    "modes": 26,
+    "port": 8185,
+    "assets": 8,
+    "required_actual_build_proof": "docs/evidence/sprint-0.36-web-build-source-proof.json",
+    "new_source_files": [
+      "apps/web/src/AIProcurementPreviewModel.ts",
+      "apps/web/src/AIProcurementPreview.tsx",
+      "tools/browser/ai-procurement-preview-model-check.mjs"
+    ]
+  },
+  "unchanged_guards": [
+    "original26mode and checker execution semantics",
+    "shared lock and fresh distinct local PGlite fixtures",
+    "author authenticated runtime observer and test mutation guard",
+    "all40 owning migration hashes before and after every mode",
+    "exact eight HTTP response status and byte hashes including index.html route /",
+    "frozen source and asset equality",
+    "all historical evidence bytes/mode/mtime restoration",
+    "preserved original or packaged Linux executable with installed Chrome launcher and restricted environment",
+    "fresh passing report with no unknown result or source failure",
+    "strict publication status and known/private credential text refusal with raw0600 quarantine",
+    "preserved failure and partial NOT_RUN counts",
+    "named scope distinct from native/UAT/hosted/provider/manual acceptance"
+  ],
+  "read_only_current_state": {
+    "version": {
+      "build": "0.35.0",
+      "domain_api": "1.25.0",
+      "platform_api": "1.10.0",
+      "documentation_edition": "1.1",
+      "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+    },
+    "pure_prerequisites": 4,
+    "future_build_proof_present": false
+  },
+  "launch_condition": "Root must first save0.35, integrate/build0.36, review exact wrapper hash and release exclusive frozen8185/evidence lease. No launch performed."
+}

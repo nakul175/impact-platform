@@ -1,0 +1,80 @@
+--- a/tools/browser/ai-enablement-check.mjs
++++ b/tools/browser/ai-enablement-check.mjs
+@@ -799,7 +799,76 @@
+       ),
+     );
+   });
+-  await test("Preview and cancel leave exact stored work intact; explicit replacement changes only four fields before normal save and reopen", async () => {
++  await test("Fresh-brief confirmation and procurement preview preserve exact stored work; explicit replacement changes only four fields before normal save and reopen", async () => {
++    const profileBaseline = await reopenCurrentPlan(),
++      profileCounts = setup("state", { object_id: planId }),
++      profileWrites = planWrites,
++      freshGoal =
++        profileBaseline.data.profile.goal +
++        " — own fresh Café brief\nPreserve this exact input";
++    const canonicalReads = [];
++    const observeCanonicalRead = (request) => {
++      if (
++        request.method() === "GET" &&
++        new URL(request.url()).pathname === planRoute
++      )
++        canonicalReads.push(request.url());
++    };
++    page.on("request", observeCanonicalRead);
++    try {
++      await button("New adoption plan").click();
++      assert.equal(await label("Plan name").inputValue(), "");
++      assert.equal(
++        await label("AI goal").inputValue(),
++        profileBaseline.data.profile.goal,
++      );
++      await label("AI goal").fill(freshGoal);
++      await label("Saved adoption plans").selectOption(planId);
++      await button("Open saved plan").click();
++      const discard = page.getByRole("dialog", {
++        name: "Discard unsaved edits?",
++        exact: true,
++      });
++      await discard.waitFor();
++      assert.equal(
++        canonicalReads.length,
++        0,
++        "A profile-only fresh edit must not read or replace a saved plan before confirmation",
++      );
++      await button("Keep editing").click();
++      assert.equal(await label("AI goal").inputValue(), freshGoal);
++      assert.equal(await label("Plan name").inputValue(), "");
++      assert.equal(canonicalReads.length, 0);
++      assert.equal(planWrites, profileWrites);
++      assert.deepEqual(setup("state", { object_id: planId }), profileCounts);
++      await button("Open saved plan").click();
++      await discard.waitFor();
++      assert.equal(canonicalReads.length, 0);
++      const response = page.waitForResponse(
++        (r) =>
++          r.request().method() === "GET" &&
++          new URL(r.url()).pathname === planRoute,
++      );
++      await button("Discard edits and open plan").click();
++      const received = await response;
++      assert(received.ok(), await received.text());
++      assert.deepEqual(await received.json(), profileBaseline);
++      await page.getByText("Saved plan opened.", { exact: false }).waitFor();
++      assert.equal(canonicalReads.length, 1);
++      assert.equal(
++        await label("AI goal").inputValue(),
++        profileBaseline.data.profile.goal,
++      );
++      assert.equal(
++        await label("Plan name").inputValue(),
++        profileBaseline.data.title,
++      );
++      assert.equal(planWrites, profileWrites);
++      assert.deepEqual(setup("state", { object_id: planId }), profileCounts);
++    } finally {
++      page.off("request", observeCanonicalRead);
++    }
++    assert.deepEqual(await getPlan(), profileBaseline);
+     await button("Procurement brief").click();
+     const own = {
+       requirements:

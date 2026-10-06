@@ -1,0 +1,154 @@
+--- a/apps/web/src/AIAdoptionWorkspace.tsx
++++ b/apps/web/src/AIAdoptionWorkspace.tsx
+@@ -16,6 +16,7 @@
+ import { AILearningLesson } from "./AILearningLesson";
+ import { AIToolComparison, AIToolSources } from "./AIToolComparison";
+ import { AIProcurementBriefFields } from "./AIProcurementBrief";
++import { AIProcurementPreview } from "./AIProcurementPreview";
+ import { AIPlanReviewChecklist } from "./AIPlanReviewChecklist";
+ import {
+   captureReviewSnapshot,
+@@ -199,6 +200,11 @@
+     null,
+   );
+   const [savedSnapshot, setSavedSnapshot] = useState("");
++  // A fresh plan can have unsaved brief edits before any plan field is filled.
++  // Rebase only at deliberate fresh/context transitions, never on a profile edit.
++  const [freshProfileSnapshot, setFreshProfileSnapshot] = useState(() =>
++    JSON.stringify(profile),
++  );
+   const [savedContent, setSavedContent] = useState<{
+     versions: Plan["data"]["content_versions"];
+     compatibility?: ContentCompatibility;
+@@ -244,7 +250,8 @@
+   latestData.current = serializedData;
+   const dirty = savedSnapshot
+     ? savedSnapshot !== serializedData
+-    : draft.title !== "" ||
++    : freshProfileSnapshot !== JSON.stringify(profile) ||
++      draft.title !== "" ||
+       draft.solution_ids.length > 0 ||
+       draft.learning_completed.length > 0 ||
+       Object.values(draft.procurement).some(Boolean) ||
+@@ -289,6 +296,7 @@
+     setPlans([]);
+     setNextCursor(null);
+     setDraft(blankDraft());
++    setFreshProfileSnapshot(JSON.stringify(profile));
+     setReviewSnapshot(null);
+     setCanonicalRead(null);
+     setHead(null);
+@@ -446,6 +454,7 @@
+       return;
+     }
+     setDraft(blankDraft());
++    setFreshProfileSnapshot(JSON.stringify(profile));
+     setReviewSnapshot(null);
+     setCanonicalRead(null);
+     setHead(null);
+@@ -752,38 +761,6 @@
+         setBusy(false);
+       }
+     }
+-  }
+-  function fillProcurement() {
+-    const supplierNames =
+-      selected.map((solution) => solution.name).join(", ") ||
+-      "a supplier to be selected";
+-    edit((previous) => ({
+-      ...previous,
+-      procurement: {
+-        requirements: (
+-          "Pilot goal: " +
+-          profile.goal +
+-          "\nTeam: " +
+-          profile.team_size +
+-          " people.\nShortlist: " +
+-          supplierNames +
+-          ".\nRequire human review of every output and a documented exit/export process."
+-        ).slice(0, 2000),
+-        data_boundary: profile.sensitive_data
+-          ? "The intended work involves sensitive information. Begin with synthetic material only. An authorised data steward must approve a specific data boundary, access controls, retention and supplier processing terms before any real data is used."
+-          : "Use synthetic or approved non-sensitive material in the pilot. Do not send participant identities, confidential records or credentials. Confirm retention, deletion and permissions before wider use.",
+-        budget_notes:
+-          "Request the total cost of the bounded pilot, including seats, API usage, onboarding, support, taxes and exit costs. Confirm any nonprofit eligibility and renewal conditions directly with the supplier.",
+-        vendor_questions: [
+-          ...catalog.procurement_criteria.flatMap(
+-            (criterion) => criterion.questions,
+-          ),
+-          ...selected.flatMap((solution) => solution.data_review_questions),
+-        ]
+-          .join("\n")
+-          .slice(0, 2000),
+-      },
+-    }));
+   }
+   const filtered =
+     solutions?.solutions.filter(
+@@ -1432,16 +1409,43 @@
+             Use the same questions for every supplier. Ask for evidence and
+             compare the total pilot cost before committing.
+           </p>
+-          {canManage && (
+-            <button
+-              type="button"
+-              className="secondary"
+-              onClick={fillProcurement}
+-              disabled={!profile.goal.trim()}
+-            >
+-              Fill draft from brief and shortlist
+-            </button>
+-          )}
++          <AIProcurementPreview
++            context={{ base, principalId, sessionIdentity }}
++            head={head}
++            profile={profile}
++            catalog={catalog}
++            solutionsVersion={solutions?.content_version ?? null}
++            solutionIds={draft.solution_ids}
++            selected={selected}
++            selectedSourceKey={JSON.stringify(selected)}
++            value={draft.procurement}
++            planKey={serializedData}
++            planGeneration={draftGeneration.current.generation}
++            canManage={canManage}
++            mutationBlocked={
++              busy ||
++              loading ||
++              hasPendingSave ||
++              evidenceMutation ||
++              adviceMutation ||
++              exportMutation ||
++              canonicalUnavailable
++            }
++            onChange={(value) => {
++              if (
++                !canManage ||
++                busyRef.current ||
++                pending.current ||
++                loading ||
++                evidenceMutation ||
++                adviceMutation ||
++                exportMutation ||
++                canonicalUnavailable
++              )
++                return;
++              edit((previous) => ({ ...previous, procurement: value }));
++            }}
++          />
+           <p className="muted">
+             Review and edit the draft with your data steward and purchasing
+             owner. It does not place an order.
+@@ -1555,9 +1559,9 @@
+       {discard && (
+         <Dialog title="Discard unsaved edits?" close={() => setDiscard(null)}>
+           <p className="ai-discard-copy">
+-            Your current brief, shortlist and plan edits have not been saved.
+-            Opening another plan or starting a new one replaces them in this
+-            view.
++            {discard === "open"
++              ? "Your current organisation brief, shortlist and plan edits have not been saved. Opening the selected saved plan replaces them in this view."
++              : "Your current shortlist and plan edits have not been saved. Starting a new plan clears those plan fields and keeps your current organisation brief."}
+           </p>
+           <div className="ai-discard-actions dialog-actions">
+             <button

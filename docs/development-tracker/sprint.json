@@ -4,8 +4,8 @@
   "branch": "integration/0.32-tola-ai-sprint",
   "started_at": "2026-10-05T19:17:34Z",
   "deadline": "2026-10-06T03:17:34Z",
-  "updated_at": "2026-10-05T22:01:54.471861Z",
-  "status": "ACTIVE",
+  "updated_at": "2026-10-06T02:57:52.507557Z",
+  "status": "PAUSED",
   "active_agent_limit": 4,
   "stream_ids": [
     "tracker",
@@ -20,12 +20,12 @@
     "demo-deployment"
   ],
   "rollup": {
-    "summary": "All frozen0.35 local gates pass, including final26browser/281workflow groups and66pure checks. Root is saving that exact tested checkpoint; reviewed0.36 procurement preview and brief-preservation fixes are next. Hosted CI finance approval is still pending.",
+    "summary": "Owner-requested Claude handover: complete0.35 saved atbe650866 with matching494source/726evidence/14doc hashes;176unintegrated0.36draft files preserved. Parallel agents stopped at account usage limit. Main/hosted demo pending requiredCI and finance permission.",
     "planned_increments": 10,
     "integrated_increments": 7,
     "verified_increments": 5,
-    "active_agents": 4,
-    "next_checkpoint": "2026-10-05T22:30:00Z"
+    "active_agents": 0,
+    "next_checkpoint": null
   },
   "limits": [
     "Maximum four concurrent agents including integration; ten workstreams run in waves.",

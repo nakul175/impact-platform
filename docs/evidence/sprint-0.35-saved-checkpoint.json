@@ -1,0 +1,18 @@
+{
+  "status": "SAVED_LOCAL_CHECKPOINT_ALL_MANIFEST_BLOBS_MATCH",
+  "checkpoint_commit": "be65086636804027a5fe33943478446b557ebff9",
+  "product_commit": "7cf440513fcb8ba4402636345792b7f4c934aff9",
+  "manifest": "docs/evidence/sprint-0.35-local-summary.json",
+  "manifest_sha256": "77c60b7c1acf7d79f49534c2454ce1f6146bc10b5829a181a6232459258724dd",
+  "verified_blob_counts": {
+    "source_and_verification_sha256": 494,
+    "evidence_sha256": 726,
+    "documentation_sha256": 14
+  },
+  "preservation_correction": "Follow-up commit adds87 exact sanitized logs omitted by standard ignore; original manifest unchanged.",
+  "build": "0.35.0",
+  "schema": 40,
+  "hosted_CI": "NOT_RUN",
+  "merged": false,
+  "deployed": false
+}

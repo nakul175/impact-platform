@@ -1,0 +1,75 @@
+
+def qualification_guard(baseline_commit):
+    """Future saved035 baseline, unchanged schema/dependencies, build-only delta."""
+    import re
+    if not isinstance(baseline_commit, str) or not re.fullmatch(r'[0-9a-f]{40}', baseline_commit):
+        raise RuntimeError('Root-supplied actual saved0.35 baseline commit required')
+    resolved = subprocess.check_output(['git','rev-parse',baseline_commit+'^{commit}'],cwd=ROOT,text=True).strip()
+    if resolved != baseline_commit:
+        raise RuntimeError('Baseline must identify the exact saved commit')
+    subprocess.run(['git','merge-base','--is-ancestor',baseline_commit,'HEAD'],cwd=ROOT,check=True)
+    baseline_version = json.loads(subprocess.check_output(['git','show',baseline_commit+':VERSION.json'],cwd=ROOT,text=True))
+    expected_baseline = dict(EXPECTED_VERSION,build='0.35.0')
+    if baseline_version != expected_baseline or json.loads((ROOT/'VERSION.json').read_text()) != EXPECTED_VERSION:
+        raise RuntimeError('Only the reviewed build0.36 metadata delta is permitted')
+    files = sorted((ROOT/'infrastructure/migrations').glob('*.sql'))
+    if {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files} != FROZEN_MIGRATIONS:
+        raise RuntimeError('Exact unchanged forty migrations required')
+    for p in files:
+        old = subprocess.check_output(['git','show',baseline_commit+':'+str(p.relative_to(ROOT))],cwd=ROOT)
+        if hashlib.sha256(old).hexdigest() != FROZEN_MIGRATIONS[p.name]:
+            raise RuntimeError('Current migration differs from the actual saved035 baseline')
+    for name, expected in DEPENDENCY_SHA256.items():
+        value = json.loads((ROOT/name).read_text())
+        if value.get('version') != '0.36.0':
+            raise RuntimeError('Web package root version must be0.36.0')
+        value.pop('version')
+        if 'packages' in value:
+            if value['packages'][''].get('version') != '0.36.0':
+                raise RuntimeError('Web lock root version must be0.36.0')
+            value['packages'][''].pop('version')
+        body = json.dumps(value,sort_keys=True,separators=(',',':')).encode()
+        if hashlib.sha256(body).hexdigest() != expected:
+            raise RuntimeError('No dependency or non-version package metadata delta allowed')
+
+
+def safe_evidence_file(path):
+    evidence = (ROOT/'docs/evidence').resolve()
+    if not path.resolve().is_relative_to(evidence) or any(p.is_symlink() for p in [path,*path.parents] if p.is_relative_to(ROOT)):
+        raise RuntimeError('Evidence path must remain inside the owned non-symlink evidence tree')
+    if path.exists() and not path.is_file():
+        raise RuntimeError('Evidence target is not a regular file')
+
+
+def prior_proof(target, preserved):
+    safe_evidence_file(target);safe_evidence_file(preserved)
+    exists=(target.exists(),preserved.exists())
+    if exists == (False,False):
+        return None
+    if exists != (True,True) or target.read_bytes() != preserved.read_bytes():
+        raise RuntimeError('Refuse asymmetric or mismatched prior qualification proof; preserve exact bytes first')
+    return str(preserved.relative_to(ROOT))
+
+
+def preserve_prior_outputs(evidence,prefix,archive):
+    """Every pre-existing named full result needs an exact root-preserved copy."""
+    prior=[]
+    for entry in sorted(evidence.glob(prefix+'*')):
+        if entry.is_symlink():raise RuntimeError('Named full evidence symlink refused')
+        prior += [entry] if entry.is_file() else [p for p in entry.rglob('*') if p.is_file()]
+    if not prior:
+        if archive is not None:raise RuntimeError('No prior outputs exist for the supplied archive')
+        return []
+    if archive is None:raise RuntimeError('Preserve all prior named full outputs before rerun')
+    if not archive.is_absolute():archive=evidence/archive
+    if archive.is_symlink() or not archive.is_dir() or not archive.resolve().is_relative_to(evidence.resolve()):
+        raise RuntimeError('Preserved full archive must be an owned evidence directory')
+    preserved=[]
+    for path in prior:
+        safe_evidence_file(path)
+        target=archive/path.relative_to(evidence)
+        safe_evidence_file(target)
+        if not target.is_file() or target.read_bytes()!=path.read_bytes():
+            raise RuntimeError('Every existing named full report must have exact preserved bytes')
+        preserved.append(str(target.relative_to(ROOT)))
+    return preserved

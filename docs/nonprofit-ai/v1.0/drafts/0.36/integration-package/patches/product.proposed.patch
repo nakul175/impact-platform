@@ -1,0 +1,394 @@
+--- /dev/null
++++ b/apps/web/src/AIProcurementPreviewModel.ts
+@@ -0,0 +1,176 @@
++export type ProcurementDraft = {
++  requirements: string;
++  data_boundary: string;
++  budget_notes: string;
++  vendor_questions: string;
++};
++export type ProcurementProfile = {
++  sector: string;
++  team_size: number;
++  goal: string;
++  data_readiness: string;
++  ai_experience: string;
++  sensitive_data: boolean;
++};
++export type ProcurementPreviewSource = {
++  context: { base: string; principalId: string; sessionIdentity: string };
++  head: { object_id: string; revision_id: string } | null;
++  profile: ProcurementProfile;
++  catalog: {
++    content_version: string;
++    procurement_criteria: { id: string; title: string; questions: string[] }[];
++  };
++  solutionsVersion: string | null;
++  solutionIds: string[];
++  selected: { id: string; name: string; data_review_questions: string[] }[];
++  selectedSourceKey: string;
++  value: ProcurementDraft;
++  planKey: string;
++  planGeneration: number;
++  interactionGeneration: number;
++  canManage: boolean;
++  mutationBlocked: boolean;
++};
++export type ProcurementPreview = {
++  binding: string;
++  before: ProcurementDraft;
++  proposed: ProcurementDraft;
++  hasExistingWork: boolean;
++};
++
++const limits = {
++  requirements: 2000,
++  data_boundary: 2000,
++  budget_notes: 500,
++  vendor_questions: 2000,
++};
++function usable(source: ProcurementPreviewSource): boolean {
++  return Boolean(
++    source.context.base &&
++      source.context.principalId &&
++      source.context.sessionIdentity &&
++      typeof source.profile.goal === "string" &&
++      source.profile.goal.trim() &&
++      typeof source.profile.team_size === "number" &&
++      Number.isFinite(source.profile.team_size) &&
++      typeof source.profile.sensitive_data === "boolean" &&
++      Number.isSafeInteger(source.planGeneration) &&
++      source.planGeneration >= 0 &&
++      Number.isSafeInteger(source.interactionGeneration) &&
++      source.interactionGeneration >= 0 &&
++      source.planKey &&
++      source.selectedSourceKey &&
++      source.catalog.content_version &&
++      Object.entries(limits).every(([key, limit]) => {
++        const value = source.value[key as keyof ProcurementDraft];
++        return typeof value === "string" && value.length <= limit;
++      }) &&
++      Array.isArray(source.catalog.procurement_criteria) &&
++      source.catalog.procurement_criteria.every(
++        (row) =>
++          Array.isArray(row.questions) &&
++          row.questions.every((question) => typeof question === "string"),
++      ) &&
++      Array.isArray(source.selected) &&
++      source.selected.every(
++        (row) =>
++          typeof row.name === "string" &&
++          Array.isArray(row.data_review_questions) &&
++          row.data_review_questions.every(
++            (question) => typeof question === "string",
++          ),
++      ),
++  );
++}
++
++// These four strings are the existing Workspace fill text, including its exact
++// ordering, fallback supplier wording and UTF-16 slice boundaries.
++export function prepareProcurementText(
++  source: ProcurementPreviewSource,
++): ProcurementDraft {
++  const supplierNames =
++    source.selected.map((solution) => solution.name).join(", ") ||
++    "a supplier to be selected";
++  return {
++    requirements: (
++      "Pilot goal: " +
++      source.profile.goal +
++      "\nTeam: " +
++      source.profile.team_size +
++      " people.\nShortlist: " +
++      supplierNames +
++      ".\nRequire human review of every output and a documented exit/export process."
++    ).slice(0, 2000),
++    data_boundary: source.profile.sensitive_data
++      ? "The intended work involves sensitive information. Begin with synthetic material only. An authorised data steward must approve a specific data boundary, access controls, retention and supplier processing terms before any real data is used."
++      : "Use synthetic or approved non-sensitive material in the pilot. Do not send participant identities, confidential records or credentials. Confirm retention, deletion and permissions before wider use.",
++    budget_notes:
++      "Request the total cost of the bounded pilot, including seats, API usage, onboarding, support, taxes and exit costs. Confirm any nonprofit eligibility and renewal conditions directly with the supplier.",
++    vendor_questions: [
++      ...source.catalog.procurement_criteria.flatMap(
++        (criterion) => criterion.questions,
++      ),
++      ...source.selected.flatMap((solution) => solution.data_review_questions),
++    ]
++      .join("\n")
++      .slice(0, 2000),
++  };
++}
++
++export function procurementSourceFingerprint(
++  source: ProcurementPreviewSource,
++): string {
++  return JSON.stringify([
++    source.context,
++    source.head,
++    source.profile,
++    source.catalog,
++    source.solutionsVersion,
++    source.solutionIds,
++    source.selected,
++    source.selectedSourceKey,
++    source.value,
++    source.planKey,
++    source.planGeneration,
++    source.interactionGeneration,
++    source.canManage,
++    source.mutationBlocked,
++  ]);
++}
++
++export function previewProcurement(
++  source: ProcurementPreviewSource,
++): ProcurementPreview | null {
++  if (!source.canManage || source.mutationBlocked || !usable(source))
++    return null;
++  return {
++    binding: procurementSourceFingerprint(source),
++    before: { ...source.value },
++    proposed: prepareProcurementText(source),
++    hasExistingWork: Object.values(source.value).some(
++      (value) => value.length > 0,
++    ),
++  };
++}
++
++export function currentProcurementPreview(
++  source: ProcurementPreviewSource,
++  preview: ProcurementPreview | null,
++): boolean {
++  if (!preview) return false;
++  const current = previewProcurement(source);
++  return Boolean(
++    current &&
++      current.binding === preview.binding &&
++      JSON.stringify(current.proposed) === JSON.stringify(preview.proposed) &&
++      JSON.stringify(current.before) === JSON.stringify(preview.before),
++  );
++}
++
++export function applyProcurementPreview(
++  source: ProcurementPreviewSource,
++  preview: ProcurementPreview,
++): ProcurementDraft | null {
++  if (!currentProcurementPreview(source, preview)) return null;
++  return prepareProcurementText(source);
++}
+--- /dev/null
++++ b/apps/web/src/AIProcurementPreview.tsx
+@@ -0,0 +1,109 @@
++import { useEffect, useId, useRef, useState } from "react";
++import {
++  applyProcurementPreview,
++  currentProcurementPreview,
++  previewProcurement,
++  procurementSourceFingerprint,
++  type ProcurementDraft,
++  type ProcurementPreview,
++  type ProcurementPreviewSource,
++} from "./AIProcurementPreviewModel";
++type Props = Omit<ProcurementPreviewSource, "interactionGeneration"> & {
++  onChange(value: ProcurementDraft): void;
++};
++const fields = [
++  ["requirements", "Pilot requirements"],
++  ["data_boundary", "Data boundary"],
++  ["budget_notes", "Budget and nonprofit offer checks"],
++  ["vendor_questions", "Questions for suppliers"],
++] as const;
++
++export function AIProcurementPreview({ onChange, ...inputs }: Props) {
++  const id = useId();
++  const signature = procurementSourceFingerprint({
++    ...inputs,
++    interactionGeneration: 0,
++  });
++  const generation = useRef({ signature, value: 0 });
++  if (generation.current.signature !== signature) {
++    generation.current = { signature, value: generation.current.value + 1 };
++  }
++  const source: ProcurementPreviewSource = {
++    ...inputs,
++    interactionGeneration: generation.current.value,
++  };
++  const latest = useRef(source);
++  latest.current = source;
++  const [preview, setPreview] = useState<ProcurementPreview | null>(null);
++  const visible = currentProcurementPreview(source, preview) ? preview : null;
++  const candidate = previewProcurement(source);
++  useEffect(() => {
++    setPreview(null);
++  }, [signature, source.interactionGeneration]);
++  function apply() {
++    if (!visible) return;
++    const value = applyProcurementPreview(latest.current, visible);
++    if (!value) return;
++    onChange(value);
++    setPreview(null);
++  }
++  if (!source.canManage) return null;
++  return (
++    <section aria-labelledby={id + "-heading"} className="ai-notice">
++      <h5 id={id + "-heading"}>Prepare a procurement draft</h5>
++      <p>
++        Preview the existing planning text from your current brief, shortlist
++        and supplier questions. Review it before changing your four procurement
++        fields.
++      </p>
++      <button
++        type="button"
++        className="secondary"
++        disabled={!candidate}
++        onClick={() => setPreview(candidate)}
++      >
++        Preview draft from brief and shortlist
++      </button>
++      {source.mutationBlocked && (
++        <p>
++          Wait for the pending saved-plan action before preparing or replacing
++          draft text.
++        </p>
++      )}
++      {visible && (
++        <div role="group" aria-label="Procurement draft preview">
++          <p>This preview has changed no field and saved nothing.</p>
++          {visible.hasExistingWork && (
++            <p>
++              Your procurement fields already contain work. Applying this
++              preview replaces all four fields below. Other plan fields are
++              kept.
++            </p>
++          )}
++          {fields.map(([key, title]) => (
++            <section key={key} aria-labelledby={id + "-" + key}>
++              <h6 id={id + "-" + key}>{title}</h6>
++              <p className="ai-draft">{visible.proposed[key]}</p>
++            </section>
++          ))}
++          <p className="muted">
++            Current catalog edition {source.catalog.content_version}; tool
++            directory edition {source.solutionsVersion ?? "unavailable"}. This
++            prepares a local draft, without contacting suppliers or approving a
++            purchase.
++          </p>
++          <button type="button" className="secondary" onClick={apply}>
++            Replace these four draft fields
++          </button>
++          <button
++            type="button"
++            className="secondary"
++            onClick={() => setPreview(null)}
++          >
++            Keep my procurement fields unchanged
++          </button>
++        </div>
++      )}
++    </section>
++  );
++}
+--- a/apps/web/src/AIAdoptionWorkspace.tsx
++++ b/apps/web/src/AIAdoptionWorkspace.tsx
+@@ -16,6 +16,7 @@
+ import { AILearningLesson } from "./AILearningLesson";
+ import { AIToolComparison, AIToolSources } from "./AIToolComparison";
+ import { AIProcurementBriefFields } from "./AIProcurementBrief";
++import { AIProcurementPreview } from "./AIProcurementPreview";
+ import { AIPlanReviewChecklist } from "./AIPlanReviewChecklist";
+ import {
+   captureReviewSnapshot,
+@@ -752,38 +753,6 @@
+         setBusy(false);
+       }
+     }
+-  }
+-  function fillProcurement() {
+-    const supplierNames =
+-      selected.map((solution) => solution.name).join(", ") ||
+-      "a supplier to be selected";
+-    edit((previous) => ({
+-      ...previous,
+-      procurement: {
+-        requirements: (
+-          "Pilot goal: " +
+-          profile.goal +
+-          "\nTeam: " +
+-          profile.team_size +
+-          " people.\nShortlist: " +
+-          supplierNames +
+-          ".\nRequire human review of every output and a documented exit/export process."
+-        ).slice(0, 2000),
+-        data_boundary: profile.sensitive_data
+-          ? "The intended work involves sensitive information. Begin with synthetic material only. An authorised data steward must approve a specific data boundary, access controls, retention and supplier processing terms before any real data is used."
+-          : "Use synthetic or approved non-sensitive material in the pilot. Do not send participant identities, confidential records or credentials. Confirm retention, deletion and permissions before wider use.",
+-        budget_notes:
+-          "Request the total cost of the bounded pilot, including seats, API usage, onboarding, support, taxes and exit costs. Confirm any nonprofit eligibility and renewal conditions directly with the supplier.",
+-        vendor_questions: [
+-          ...catalog.procurement_criteria.flatMap(
+-            (criterion) => criterion.questions,
+-          ),
+-          ...selected.flatMap((solution) => solution.data_review_questions),
+-        ]
+-          .join("\n")
+-          .slice(0, 2000),
+-      },
+-    }));
+   }
+   const filtered =
+     solutions?.solutions.filter(
+@@ -1432,16 +1401,43 @@
+             Use the same questions for every supplier. Ask for evidence and
+             compare the total pilot cost before committing.
+           </p>
+-          {canManage && (
+-            <button
+-              type="button"
+-              className="secondary"
+-              onClick={fillProcurement}
+-              disabled={!profile.goal.trim()}
+-            >
+-              Fill draft from brief and shortlist
+-            </button>
+-          )}
++          <AIProcurementPreview
++            context={{ base, principalId, sessionIdentity }}
++            head={head}
++            profile={profile}
++            catalog={catalog}
++            solutionsVersion={solutions?.content_version ?? null}
++            solutionIds={draft.solution_ids}
++            selected={selected}
++            selectedSourceKey={JSON.stringify(selected)}
++            value={draft.procurement}
++            planKey={serializedData}
++            planGeneration={draftGeneration.current.generation}
++            canManage={canManage}
++            mutationBlocked={
++              busy ||
++              loading ||
++              hasPendingSave ||
++              evidenceMutation ||
++              adviceMutation ||
++              exportMutation ||
++              canonicalUnavailable
++            }
++            onChange={(value) => {
++              if (
++                !canManage ||
++                busyRef.current ||
++                pending.current ||
++                loading ||
++                evidenceMutation ||
++                adviceMutation ||
++                exportMutation ||
++                canonicalUnavailable
++              )
++                return;
++              edit((previous) => ({ ...previous, procurement: value }));
++            }}
++          />
+           <p className="muted">
+             Review and edit the draft with your data steward and purchasing
+             owner. It does not place an order.

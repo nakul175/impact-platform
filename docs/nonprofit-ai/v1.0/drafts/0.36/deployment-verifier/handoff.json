@@ -1,0 +1,86 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "prepared_at_utc": "2026-10-05T21:35:30Z",
+  "scope": "Private 0.36 verifier documentation and exact runtime-copy preparation. Existing 23 offline controls executed with socket/DNS refusal. No actual hosting, network, browser, provider, CI, account, merge, deployment or registered repository/evidence mutations.",
+  "files_sha256": {
+    "verify_deployment.py": "ef56bca3d3a8d4f15becb0e3ee001240e2ba5f17e8f498d394a902ee288faebe",
+    "verify_walkthrough.mjs": "44df3cf9987a061aa13dff727ccb2cee956347a32cce98144facbdb0f2fe509a",
+    "test_offline.py": "2030012a95abe075250e0c9265f3c4798ae42dde98da64f724a9c4d7cda34c56",
+    "compose_browser.py": "c6623207b2e4ae899b250d2b6100b430ac018e77336ceda6f3b3cda86950ca3b",
+    "README.md": "4bc1d461bf338303d916d68e009ddced79cfdc2eeacbe08f473d7afc567a5bec",
+    "run_offline_no_sockets.py": "3b0b5fce0e662b023023d5eade6079af09f880122063169cfa5379ce53fc938a",
+    "offline-tests.log": "3962ba716f61477c4f15a3a8a66e33c11fbca4713dc030be0e0e9f929c6c8267",
+    "README-from-035.patch": "d6e85a0760725a485a36fa735befa0e70041e6c5ce8e8e5c00ad612e6a1aa706"
+  },
+  "preserved_predecessor": {
+    "path": "/private/tmp/tola-ai-035-deployment-verifier",
+    "manifest_sha256": "6b19f70d42facf21e53f0fa3d3981bb61d5b3f1dbe7b1928e42f9609839b68f9",
+    "all_recorded_files_still_exact": true
+  },
+  "runtime_delta": {
+    "changed_files": [],
+    "exact_copies": [
+      "verify_deployment.py",
+      "verify_walkthrough.mjs",
+      "test_offline.py",
+      "compose_browser.py"
+    ],
+    "reason": "Runtime already parameterizes expected main commit, frozen proof and trusted gate record. No version logic change needed."
+  },
+  "preparation_delta": {
+    "readme": "Future 0.36 proof/output/launch instructions, strict unchanged tour and asset graph, explicit predecessor offline-fixture scope; diff retained.",
+    "new_runner": "Socket/create_connection/getaddrinfo refused around the exact copied offline controls."
+  },
+  "expected_contract": {
+    "domain_api": "1.25.0",
+    "platform_api": "1.10.0",
+    "schema": 40,
+    "future_build_proof": "docs/evidence/sprint-0.36-web-build-source-proof.json",
+    "future_proof_supplied": false,
+    "expected_main_commit_supplied": false,
+    "current_tour_checker_sha256": "f5e40df0a16cd36f75ed6d6f55e224128f96aa402166698513a4272b99881ba4",
+    "built_files": 8,
+    "html_entries": 2,
+    "assets": 6,
+    "tour_files": 5,
+    "tour_groups": 16,
+    "graph_changes_require_review": true
+  },
+  "mandatory_root_gates": [
+    "Trusted financial approval and human merge authorization",
+    "Four exact-head CI job successes with real head/run references",
+    "Expected main merge C available locally; tested head exact C or verified ancestor with identical full tree",
+    "Future frozen source proof matches local and C Git bytes and exact local built files",
+    "TLS certificate chain and hostname valid",
+    "Initial/final public status exact C/schema40 and healthy; bounded streamed no-cookie JSON",
+    "Default static smoke with auth/provider probes skipped; no accounts/sign-in/provider",
+    "Anonymous strict 16-group public tour with exact allowlist/build hashes; no API/auth/storage/provider fallback"
+  ],
+  "offline_tests": {
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "socket_dns_policy": "Actual socket, create_connection and getaddrinfo patched to raise immediately",
+    "transport": "In-process httpx.MockTransport and local byte/Git stubs only",
+    "build_comparison_fixture": "Saved 0.35 proof intentionally retained in copied tests; not future 0.36 build evidence",
+    "fixture_build_proof_sha256": "38ef03e78b415eca3dea0a6e759c2292dfecc111b3348e10e017040bb0d50736"
+  },
+  "local_static_checks": {
+    "new_runner_ruff": "PASS",
+    "new_runner_format": "PASS unchanged",
+    "readme_prettier": "PASS unchanged",
+    "javascript_node_check": "PASS syntax only"
+  },
+  "actual_deployment": "NOT_RUN",
+  "actual_browser": "NOT_RUN",
+  "actual_ci": "NOT_RUN",
+  "actual_036_build": "NOT_RUN",
+  "actual_036_qualification": "NOT_RUN",
+  "limits": [
+    "Gate record supplied by root is validated but independent GitHub authorization/billing observation remains root responsibility.",
+    "Status/ready checks do not prove a privileged live migration ledger.",
+    "Anonymous fresh context does not make claims about ambient cookies in existing user contexts.",
+    "All incompletes and manual accessibility limits retained.",
+    "A mismatched/nondeterministic asset hash or graph is recorded and refused, never waived."
+  ]
+}

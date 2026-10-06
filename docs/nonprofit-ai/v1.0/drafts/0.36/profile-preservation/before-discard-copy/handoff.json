@@ -1,0 +1,69 @@
+{
+  "status": "PRIVATE_REVIEW_READY_NOT_INTEGRATED",
+  "prepared_at_utc": "2026-10-05T21:49:27.740067Z",
+  "finding_scope": "Original0.35 source + synthetic actual Chrome reproduction; not actual API/current authority/database or formal acceptance",
+  "candidate_sha256": "edf3944e3eb4330d0edbeb337bfe0a66aeaa866a17a273ce2d9aa44952f06612",
+  "browser_candidate_sha256": "71219064a7e56352f45a3a92e58017bc0cdb184b3a40339c8970f13d007a7dc9",
+  "predecessors": {
+    "registered035Workspace": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "private036PreviewWorkspace": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+    "private036AlwaysOn14Browser": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+    "registered035PlanningChecker": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790"
+  },
+  "files_sha256": {
+    "AIAdoptionWorkspace.036-predecessor.tsx": "ac1c11e6224fe93e7507d8a4c021fa208cb4061b678e4338ec6f1789842c2958",
+    "proposed/AIAdoptionWorkspace.tsx": "edf3944e3eb4330d0edbeb337bfe0a66aeaa866a17a273ce2d9aa44952f06612",
+    "ai-enablement-check.036-predecessor.mjs": "d7427e5ddd902baa5e9b421adeb64e177f6d790a7ff205389f5ca1994ba86245",
+    "ai-enablement-check.proposed.mjs": "71219064a7e56352f45a3a92e58017bc0cdb184b3a40339c8970f13d007a7dc9",
+    "baseline/AIAdoptionWorkspace.tsx": "b1c807582555e362800b7db5cef93e65927fd4b9ab461dc7bb0c13f8bb561eda",
+    "baseline/fixture.tsx": "a344e4449429b3d45e7147fdd1781775a29ad5987f46369a4f71230d796ddc78",
+    "proposed/fixture.tsx": "a344e4449429b3d45e7147fdd1781775a29ad5987f46369a4f71230d796ddc78",
+    "baseline-check.mjs": "ccb1f64ca123120b115146fd3dff5aa5a7812ae816104b39188f879a34676a99",
+    "proposed-check.mjs": "2bbb6a8d4b718a1dd2b0358b90a75fba4ab473dccf4f52f632fd818b3b250799",
+    "server.mjs": "aaa53c7a60bc7b3ea8758947e32ad0c3caf653d03db03858803a39d2e2c22170",
+    "tsconfig.json": "ba3762653a147af6d777b5a3a066869164375f0d4b266cb295d69914a479d329",
+    "baseline-attempt-01/reproduction.json": "d316717bd9eb55fc307595d760abb56122346464cf1a6cdfa9e2072b8f586f35",
+    "baseline-attempt-01/baseline-profile-lost-1440.png": "4d2257fb29df58f74a8a5eb91a8a6d2cfb88a37dba7cf6f360341d61bee932d3",
+    "proposed-attempt-01/qualification.json": "73bea7c7abdc1210cfa3eba2defb96125e19c71c041facd5b8de58633d1bc7c1",
+    "proposed-attempt-01/profile-only-cancel-1440.png": "0f76b5d09edcf36c89b7ab06988a4653ef642c50ab6a3f8d70dcb51eac73eefd",
+    "proposed-attempt-01/profile-only-confirmation-320.png": "fd16fb8be6d7291fc6f0584db35da2d1aeb3fac354cb5343664b6740aaa58515",
+    "typecheck-attempt-01-missing-vite-global/tsconfig.json": "df794f48f440310938f5a6814cc5f6c30ae4335536c50023a590f31670188ae2",
+    "typecheck-attempt-01-missing-vite-global/reason.json": "272f50de5f153f6bca85dd17af42f11f2c12d52b3666d025d6a9f901b8392950",
+    "profile-baseline.after-036-preview.patch": "aeef3bf21535ebe703d344cde6920247807a0b4faaeda19ebae12792afef8ab2",
+    "composed-workspace.from-035.patch": "0b19859721042b2b4e760d6f215388faab1509d33e1732e7ac18aed6be0649e6",
+    "profile-only-browser.after-036-preview.patch": "97452395a4bef21ae1a69eaf1734f9da24b4a7b9e36accf9176d4934c73451f0",
+    "composed-browser.from-035.patch": "d3bed3e575c52b1047bf1be23a497603b93cbc3d96be930d7cf51264d1d43987"
+  },
+  "delta": "Fresh-profile snapshot initializer; profile-only dirty branch when savedSnapshot empty; baseline reset only on context/new-plan transitions. SavedSnapshot branch and immutable read/draft response generations unchanged. Existing036 procurement preview/model bytes unchanged.",
+  "synthetic_qualification": {
+    "baseline": "REPRODUCED unsaved profile-only input replacement without confirmation",
+    "candidate": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "source_count": 64,
+      "source_unchanged": true,
+      "axe_scans": 2,
+      "axe_violations": 0,
+      "axe_incompletes": 0
+    },
+    "browser": "154.0.8037.97",
+    "platform": "darwin",
+    "api": "Mocked in-memory request function; HTTP API/database NOT_RUN",
+    "typecheck": "PASS strict noEmit with the actual Vite global CSS declarations included",
+    "initial_private_config_failure": "Preserved separately; missing Vite global declarations, no source weakening",
+    "captures": "Desktop Cancel and320 confirmation reviewed; mocked Dialog layout, not actual app modal qualification"
+  },
+  "future_actual_browser": {
+    "status": "NOT_RUN",
+    "always_on_groups": 14,
+    "original_groups_retained": 10,
+    "custom_guard_or_skip": false,
+    "new_case": "Existing extended procurement preservation group now includes actual only-goal fresh-plan Cancel with zero canonical GET/no writes/counters unchanged, then explicit Discard exact canonical row/current profile. Existing procurement/authority/ambiguous-retry/mobile/arithmetic gates remain.",
+    "strict8_asset_assumption": "NOT_RUN until future036 actual dual-entry build",
+    "fresh_api_and_full_regression_required": true
+  },
+  "registration": "Root-owned after clean035 checkpoint. Apply existing preview package first, then the narrow profile patch; prefer exact final candidate copy if composition proven. Apply final browser candidate rather than restoring predecessor d742. Availability-neutral copy remains separate7e812fe patch on d837. No SQL/API/domain/platform/capability change.",
+  "processes": "Owned Chrome and8196 server stopped; privatecache only",
+  "registered_writes": false
+}

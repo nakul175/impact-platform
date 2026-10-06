@@ -1,0 +1,46 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "finding_scope": "Static_ONLY: known 0.35 copy limitation, no API/security/persisted data loss finding",
+  "prepared_at_utc": "2026-10-05T21:40:02.616117Z",
+  "baseline_sha256": {
+    "apps/web/src/AITaskPractice.tsx": "6580578dbb37ac044d2356fb82a4d726b7c0ed2e0978cdc9acc43dba3323a86d",
+    "tools/browser/ai-planning-check.mjs": "d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790"
+  },
+  "proposed_sha256": {
+    "apps/web/src/AITaskPractice.tsx": "f38db47ca5c2a6dcff5258508e2ce09099f4f53e5ef2a1ab37d000c8c0745f59",
+    "tools/browser/ai-planning-check.mjs": "3300a5e50303a6db2f81493f4c572d8b4e4dc3770d5f9f0ac2937daa9e9b65b8"
+  },
+  "registered_bytes_changed": false,
+  "changes": [
+    {
+      "path": "apps/web/src/AITaskPractice.tsx",
+      "scope": "Two availability-neutral paragraphs only"
+    },
+    {
+      "path": "tools/browser/ai-planning-check.mjs",
+      "scope": "Two existing exact-copy waits and one existing stale group label only"
+    }
+  ],
+  "qualification": {
+    "new_dedicated_tests": "NONE: text-only correction",
+    "actual_API": "NOT_RUN",
+    "actual_browser": "NOT_RUN",
+    "actual_full_0.36": "REQUIRED_AFTER_INTEGRATION"
+  },
+  "guards": [
+    "Preserve root-approved planning checker d83752e823e5f47d4a0cddaea014937db17b05821397601a96485497e267d790 baseline",
+    "No archive API/DTO/permission/provenance/assessment change",
+    "Unknown/Stale current edition labels and unavailable current-task preservation/replacement/save gates remain unchanged",
+    "Original registered bytes retained under baseline/",
+    "No completeness or absence inferred from edition mismatch"
+  ],
+  "patch_sha256": "7e812fe0485ee884935ac8c7f13b3da3a7f52ec10b9d8b4b74b8dad0370c3009",
+  "static_checks": {
+    "format": "PASS private files only",
+    "registered_predecessors_still_exact": true,
+    "whole_actual_browser": "NOT_RUN",
+    "no_new_dedicated_tests": true
+  },
+  "unsaved_draft_boundary": "Pointer is explicitly conditional on a saved revision; new unsaved worksheets do not imply a revision/archive control exists.",
+  "preserved_pre_refinement": "before-unsaved-revision-wording/ contains b312caec patch and 27f28c10 handoff exact bytes"
+}

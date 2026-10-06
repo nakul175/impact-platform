@@ -1,0 +1,5 @@
+{
+  "status": "FAILED_PRIVATE_FIXTURE_CONFIGURATION",
+  "reason": "Original private tsconfig did not include existing Vite global CSS module declarations; actual candidate emitted five TS2882 diagnostics for side-effect CSS imports, no candidate logic/type error.",
+  "registered_inputs_changed": false
+}

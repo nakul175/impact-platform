@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-10-05T20:31:12.168905+00:00",
+  "scope": "Original actual local browser 28 passed groups, 11 axe scans with zero violations and one incomplete caption observation; exact original source and applied ledger retained before mobile layout correction. No revised-layout acceptance claim.",
+  "files": {
+    "apps/web/src/AIPlanningTools.tsx": {
+      "sha256": "da93bcd251d18fd45d79eea8a660c72ed155159c84edb317dfb12194657f05ff",
+      "bytes": 38680
+    },
+    "apps/web/src/ai-planning-tools.css": {
+      "sha256": "3f73d214bf32336e6dfc5b033fd06c462f549db1ec93f0f8ef2f445f2d2d9ad3",
+      "bytes": 4189
+    },
+    "docs/evidence/sprint-0.35-planning-browser-applied-migrations.json": {
+      "sha256": "c248c6055545417ea3f3b9ff7ef16d28b680c4231648e3f8a97752e7827f9729",
+      "bytes": 12312
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-cost-desktop.png": {
+      "sha256": "79400fb00a0f4567346bb3a5870c10bbed7975394d94e525e17fce1fcc411292",
+      "bytes": 122202
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-cost-mobile.png": {
+      "sha256": "a9cebbcce2d7d218a7d23be6195aeb6cd5ded06929b158dca7ec57004f13a124",
+      "bytes": 54171
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-pilot-desktop.png": {
+      "sha256": "4e33c6bbf06fdfa96e4aff1ac436ee84a3d4f8bb171f080b369f8df0bacd18cc",
+      "bytes": 217065
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-pilot-mobile.png": {
+      "sha256": "a8644423b1ff8b7cace561307c8bad60b558c7a0c0d38fcac29bf48c703f87c0",
+      "bytes": 59008
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-practice-desktop.png": {
+      "sha256": "d80bf2a3be7f1464e9b4b94af34d587f82752564d578c8c56eb23599ff097abc",
+      "bytes": 141627
+    },
+    "docs/evidence/sprint-0.35-planning-browser-proof/captures/ai-planning-practice-mobile.png": {
+      "sha256": "db90c7e3a52472018818252053c1d9a38709cd6408103206790690fae3f321eb",
+      "bytes": 48767
+    },
+    "docs/evidence/sprint-0.35-planning-browser-source-proof.json": {
+      "sha256": "96e60e9d5a313ade82068053467d75febc9a2130109486db6959c6eb2053af57",
+      "bytes": 83772
+    },
+    "docs/evidence/sprint-0.35-planning-browser-tests.json": {
+      "sha256": "29cf2333ef8062609b8a3841da54fb63c3740e4befbef94ea376471507f93fdc",
+      "bytes": 86102
+    },
+    "tools/browser/ai-planning-check.mjs": {
+      "sha256": "34c3c66584ff088d5edee017b48b1c1c3e56e860fa43e2823251d57c15e90501",
+      "bytes": 70790
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "started_at": "2026-10-05T21:37:31.022219+00:00",
+  "recorded_at": "2026-10-05T21:37:31.586405+00:00",
+  "exit_code": 0,
+  "scope": "Existing42 pure tracker/schema/editorial-domain predicates; exact8tracker source files. HTTP handler tests use in-process mocks; no real server/browser/API or acceptance movement.",
+  "source_sha256_start": {
+    "tools/development-tracker/app.js": "977fa65669092ff33583334319f64213bbc0df50d414c7ae04f07e810827dfa8",
+    "tools/development-tracker/browser_check.mjs": "72cbbfe83cd0a69aa218c87c719bb63119bf0605e86af52c2cbc30708425dd43",
+    "tools/development-tracker/build_backlog.py": "dbd26c56d39ad5efb7e7a151dd797078303ef2b8a92fc9c3c48a88d645564822",
+    "tools/development-tracker/index.html": "73d03fdf92c044393c460235e37d4c280e8cd200455027b85a0b51b20e3a86f7",
+    "tools/development-tracker/styles.css": "722773dd3dfc8443b011e679f2430882414f58ade7b3bc835ef711b7d2e5cd20",
+    "tools/development-tracker/test_tracker.py": "b1188d54bc0b52136af83eaec40b78fdda34c8c33f292fc5e2b84924bc4379f0",
+    "tools/development-tracker/tracker.py": "ee4f2bfa51b29d52f0b58e0ba5e7105eb2deb8b357b6b7f18bb89e74d2c1f707",
+    "tools/development-tracker/update.py": "e0c0aaf9d6f5cad7a38a70a3ef5525d5cc68f0f5e4443dc47380889f572aaf24"
+  },
+  "source_sha256_end": {
+    "tools/development-tracker/app.js": "977fa65669092ff33583334319f64213bbc0df50d414c7ae04f07e810827dfa8",
+    "tools/development-tracker/browser_check.mjs": "72cbbfe83cd0a69aa218c87c719bb63119bf0605e86af52c2cbc30708425dd43",
+    "tools/development-tracker/build_backlog.py": "dbd26c56d39ad5efb7e7a151dd797078303ef2b8a92fc9c3c48a88d645564822",
+    "tools/development-tracker/index.html": "73d03fdf92c044393c460235e37d4c280e8cd200455027b85a0b51b20e3a86f7",
+    "tools/development-tracker/styles.css": "722773dd3dfc8443b011e679f2430882414f58ade7b3bc835ef711b7d2e5cd20",
+    "tools/development-tracker/test_tracker.py": "b1188d54bc0b52136af83eaec40b78fdda34c8c33f292fc5e2b84924bc4379f0",
+    "tools/development-tracker/tracker.py": "ee4f2bfa51b29d52f0b58e0ba5e7105eb2deb8b357b6b7f18bb89e74d2c1f707",
+    "tools/development-tracker/update.py": "e0c0aaf9d6f5cad7a38a70a3ef5525d5cc68f0f5e4443dc47380889f572aaf24"
+  },
+  "source_changed_during_run": [],
+  "counts": {
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit": "docs/evidence/sprint-0.35-tracker-tests.xml",
+  "junit_sha256": "746d7ccff334fdbdb186cb902ec454c55f9e5c987fdfbd340eca7174bf5580cb",
+  "source_register_sha256_before": {
+    "docs/COMPLETION-LEDGER.json": "49beef38fa043f809f86514a39b4fea24bb4c18bef41af9e8ef5217e4482c69d",
+    "docs/nonprofit-ai/v1.0/requirements.json": "397c43d6be1a23df5d7104c3488d398b08b72d64b6884edeb5825ad8ad76c075"
+  },
+  "source_register_sha256_after": {
+    "docs/COMPLETION-LEDGER.json": "49beef38fa043f809f86514a39b4fea24bb4c18bef41af9e8ef5217e4482c69d",
+    "docs/nonprofit-ai/v1.0/requirements.json": "397c43d6be1a23df5d7104c3488d398b08b72d64b6884edeb5825ad8ad76c075"
+  },
+  "source_registers_unchanged": true,
+  "helper_sha256": "6b69910269a01e801eb5a21731d1457d625bf0290db5f6fea520ad7f7d4e068a"
+}

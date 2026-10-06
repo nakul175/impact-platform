@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from "react";
+import { AIPracticeStarter } from "./AIPracticeStarter";
 
 export type TaskPractice = {
   template_id: string;
@@ -25,11 +26,14 @@ type TemplateGuide = {
 };
 type Props = {
   base: string;
+  contextKey: string;
+  mutationBlocked?: boolean;
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (error: unknown) => string;
   value: TaskPractice | null;
   onChange: (value: TaskPractice | null) => void;
   canManage: boolean;
+  persistenceNotice?: string;
   sourceVersion?: string | null;
   onUnavailableChange?: (unavailable: boolean) => void;
 };
@@ -52,11 +56,14 @@ function Items({ items }: { items: string[] }) {
 
 export function AITaskPractice({
   base,
+  contextKey,
+  mutationBlocked = false,
   request,
   explain,
   value,
   onChange,
   canManage,
+  persistenceNotice,
   sourceVersion,
   onUnavailableChange,
 }: Props) {
@@ -329,6 +336,15 @@ export function AITaskPractice({
               any information to a provider.
             </p>
           </details>
+          <AIPracticeStarter
+            context={contextKey}
+            guide={currentGuide}
+            templateId={template.id}
+            value={value}
+            canManage={canManage}
+            mutationBlocked={mutationBlocked}
+            onChange={onChange}
+          />
           {!canManage && (
             <p className="muted">
               You can study every exercise. Editing a shared worksheet requires
@@ -338,8 +354,9 @@ export function AITaskPractice({
           <fieldset disabled={!canManage}>
             <legend>Manual practice worksheet · draft for human review</legend>
             <p className="muted" id={id + "-saving"}>
-              Changes are saved only when you save the adoption plan. Updating
-              the brief, draft or review notes resets your self-checks.
+              {persistenceNotice ??
+                "Changes are saved only when you save the adoption plan."}{" "}
+              Updating the brief, draft or review notes resets your self-checks.
             </p>
             {(
               [

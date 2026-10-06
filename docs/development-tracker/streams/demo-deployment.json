@@ -4,25 +4,59 @@
   "domain": "User-visible demo",
   "owner": "/root",
   "status": "INSPECTING",
-  "summary": "Owner explicitly requested main merge by the end of the new eight-hour window. The existing main branch auto-deploys; no new release has been merged.",
-  "next_step": "After four required jobs pass on the exact PR head, use the authorised main merge and verify deployed commit/schema/health and demo URL.",
+  "summary": "Frozen0.35 fictional walkthrough is available as a pinned local anonymous preview at http://127.0.0.1:8171/ai-walkthrough.html. Static demo/asset check passed; final hosted link remains pending required CI and main merge.",
+  "next_step": "After all final-source local and four exact-head hosted gates, merge as authorised and verify public deployment commit/schema40/health/assets and anonymous five-step demo.",
   "eta": {
     "earliest": "2026-10-06T01:45:00Z",
     "latest": "2026-10-06T03:17:34Z",
     "confidence": "LOW",
     "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
   },
-  "delivered": [],
-  "evidence": [],
-  "blockers": [
-    "Final current-head local qualification and four green hosted CI jobs pending."
+  "delivered": [
+    "Pinned local fictional preview: http://127.0.0.1:8171/ai-walkthrough.html",
+    "Default deployed-static walkthrough check added;80focused smoke tests pass"
   ],
-  "updated_at": "2026-10-05T19:33:09.367952Z",
+  "evidence": [
+    {
+      "title": "First integrated fictional walkthrough browser scope",
+      "path": "docs/evidence/sprint-0.35-walkthrough-browser-tests.json",
+      "result": "16 groups pass;15 axe scans zero violations;190 impact tables unchanged",
+      "scope": "Actual disposable PGlite/installedChrome only; final shared-build rerun pending after mobile cost fix. No hosted/UAT/onboarding acceptance.",
+      "recorded_at": "2026-10-05T20:30:09Z"
+    }
+  ],
+  "blockers": [
+    "Final0.35 source qualification and four hosted jobs pending.",
+    "CI financial approval is pending; no public final-demo claim yet."
+  ],
+  "updated_at": "2026-10-05T20:49:33.444945Z",
   "history": [
     {
       "at": "2026-10-05T19:33:09.367952Z",
       "status": "INSPECTING",
       "summary": "Owner explicitly requested main merge by the end of the new eight-hour window. The existing main branch auto-deploys; no new release has been merged.",
+      "eta": {
+        "earliest": "2026-10-06T01:45:00Z",
+        "latest": "2026-10-06T03:17:34Z",
+        "confidence": "LOW",
+        "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
+      }
+    },
+    {
+      "at": "2026-10-05T20:32:48.837006Z",
+      "status": "INSPECTING",
+      "summary": "Fictional public walkthrough passed16 actual Chrome groups,15 accessibility scans and unchanged190-table checks locally. Existing hosted main remains build0.29/schema33; the new demo is not deployed.",
+      "eta": {
+        "earliest": "2026-10-06T01:45:00Z",
+        "latest": "2026-10-06T03:17:34Z",
+        "confidence": "LOW",
+        "basis": "Forecast depends on fixing privacy/SQL, completing actual API/browser/full gates and required CI availability."
+      }
+    },
+    {
+      "at": "2026-10-05T20:49:33.444945Z",
+      "status": "INSPECTING",
+      "summary": "Frozen0.35 fictional walkthrough is available as a pinned local anonymous preview at http://127.0.0.1:8171/ai-walkthrough.html. Static demo/asset check passed; final hosted link remains pending required CI and main merge.",
       "eta": {
         "earliest": "2026-10-06T01:45:00Z",
         "latest": "2026-10-06T03:17:34Z",

@@ -11,6 +11,8 @@ Checks, each reported as pass, fail or skip in one JSON document (exit 1 when an
     live, ready      /health/live and /health/ready answer 200 (ready: schema, database logins)
     headers          HSTS, CSP, nosniff, no-store, no-referrer on the application's responses
     web_client       / serves the compiled web client
+    ai_walkthrough   the separate fictional walkthrough is packaged with restrictive headers
+                     and bounded same-origin compiled script/style assets (static smoke only)
     live_provider    /auth/mode reports development sign-in off
     login_redirect   /auth/login redirects to the provider's authorization endpoint with S256 PKCE,
                      the web client, the callback on this origin and the required ACR
@@ -29,6 +31,7 @@ import re
 import socket
 import ssl
 import sys
+from html.parser import HTMLParser
 from urllib.parse import parse_qs, urlparse
 
 import httpx
@@ -41,6 +44,134 @@ REQUIRED_HEADERS = {
     "referrer-policy": lambda v: v.lower() == "no-referrer",
 }
 SECRET_WORDS = ("password", "passwd", "secret", "token", "dsn", "key", "credential")
+WALKTHROUGH_HTML_LIMIT = 128 * 1024
+WALKTHROUGH_ASSET_LIMIT = 8 * 1024 * 1024
+WALKTHROUGH_REFERENCE_LIMIT = 16
+
+
+class WalkthroughDocument(HTMLParser):
+    """Inspect the static production entry without executing scripts or authenticating."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.roots, self.scripts, self.assets = 0, [], {}
+        self.title, self.notice = [], []
+        self.capture = None
+        self.doctype = False
+
+    def handle_decl(self, decl):
+        self.doctype = decl.lower() == "doctype html"
+
+    def handle_starttag(self, tag, attrs):
+        values = dict(attrs)
+        assert len(values) == len(attrs), "duplicate static entry attribute"
+        assert not any(name.startswith("on") for name in values), "inline static event handler"
+        if values.get("id") == "root":
+            assert tag == "div", "unexpected static root"
+            self.roots += 1
+        if tag in {"title", "noscript", "script"}:
+            self.capture = tag
+        for name in {
+            "src",
+            "href",
+            "xlink:href",
+            "srcset",
+            "srcdoc",
+            "action",
+            "formaction",
+            "poster",
+            "data",
+        } & values.keys():
+            path = values[name] or ""
+            assert re.fullmatch(r"/assets/[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:js|css)", path), (
+                "static reference is not a bounded same-origin compiled asset"
+            )
+            assert ".." not in path, "static asset traversal"
+            if tag == "script" and name == "src":
+                assert values.get("type") == "module" and path.endswith(".js"), (
+                    "walkthrough entry is not a compiled module"
+                )
+                assert re.fullmatch(r"/assets/walkthrough-[A-Za-z0-9_-]+\.js", path), (
+                    "unexpected walkthrough script entry"
+                )
+                self.scripts.append(path)
+                kind = "script"
+            elif tag == "link" and name == "href":
+                rel = values.get("rel", "").lower()
+                assert rel in {"stylesheet", "modulepreload"}, "unexpected static asset relation"
+                kind = "style" if rel == "stylesheet" else "script"
+                assert path.endswith(".css" if kind == "style" else ".js"), (
+                    "static asset extension does not match its relation"
+                )
+            else:
+                raise AssertionError("unexpected static resource reference")
+            assert path not in self.assets, "duplicate static resource reference"
+            self.assets[path] = kind
+            assert len(self.assets) <= WALKTHROUGH_REFERENCE_LIMIT, "too many static assets"
+        if tag == "script":
+            assert values.get("src"), "inline/source-only walkthrough script"
+        assert tag not in {"base", "iframe", "object", "embed", "form"}, (
+            "unexpected static document navigation or embedded content"
+        )
+        assert not (tag == "meta" and values.get("http-equiv", "").lower() == "refresh"), (
+            "unexpected static document redirect"
+        )
+
+    def handle_endtag(self, tag):
+        if tag == self.capture:
+            self.capture = None
+
+    def handle_data(self, data):
+        if self.capture == "title":
+            self.title.append(data)
+        elif self.capture == "noscript":
+            self.notice.append(data)
+        elif self.capture == "script":
+            assert not data.strip(), "inline walkthrough script body"
+
+
+def walkthrough_csp(value):
+    directives = {}
+    for item in value.split(";"):
+        words = item.strip().split()
+        if not words:
+            continue
+        name = words[0].lower()
+        assert name not in directives, "duplicate walkthrough CSP directive"
+        directives[name] = words[1:]
+    for name in (
+        "default-src",
+        "connect-src",
+        "img-src",
+        "object-src",
+        "base-uri",
+        "form-action",
+        "frame-ancestors",
+    ):
+        assert directives.get(name) == ["'none'"], "weak walkthrough CSP: " + name
+    for name in ("script-src", "style-src"):
+        assert directives.get(name) == ["'self'"], "weak walkthrough CSP: " + name
+    for name in ("script-src-elem", "style-src-elem"):
+        assert name not in directives or directives[name] == ["'self'"], "weak walkthrough CSP: " + name
+    for name in ("script-src-attr", "frame-src", "child-src", "worker-src", "font-src", "media-src"):
+        assert name not in directives or directives[name] == ["'none'"], "weak walkthrough CSP: " + name
+    assert "style-src-attr" not in directives or directives["style-src-attr"] in (
+        ["'none'"],
+        ["'unsafe-inline'"],
+    ), "weak walkthrough CSP: style-src-attr"
+
+
+def bounded_static_get(client, url, limit):
+    """Bound downloaded bytes and do not follow a redirect to another origin."""
+    with client.stream("GET", url, follow_redirects=False) as response:
+        assert response.status_code == 200, "static status " + str(response.status_code)
+        assert "set-cookie" not in response.headers, "static response sets a cookie"
+        chunks, size = [], 0
+        for chunk in response.iter_bytes():
+            size += len(chunk)
+            assert size <= limit, "static response exceeds byte limit"
+            chunks.append(chunk)
+        return response.headers, b"".join(chunks)
 
 
 def secret_looking(name):
@@ -140,6 +271,45 @@ class Smoke:
         assert "<script" in response.text and 'id="root"' in response.text, "no compiled web client"
         return {"bytes": len(response.content)}
 
+    def ai_walkthrough(self):
+        headers, body = bounded_static_get(
+            self.client, self.base + "/ai-walkthrough.html", WALKTHROUGH_HTML_LIMIT
+        )
+        assert headers.get("content-type", "").split(";", 1)[0].lower() == "text/html", (
+            "walkthrough is not HTML"
+        )
+        for name, expected in (("x-content-type-options", "nosniff"), ("referrer-policy", "no-referrer")):
+            assert headers.get(name, "").lower() == expected, "weak static header: " + name
+        cache = [item.strip().lower() for item in headers.get("cache-control", "").split(",")]
+        assert "no-store" in cache, "walkthrough response is not no-store"
+        walkthrough_csp(headers.get("content-security-policy", ""))
+        document = WalkthroughDocument()
+        document.feed(body.decode("utf-8"))
+        document.close()
+        assert document.doctype and document.roots == 1, "no unique production walkthrough root"
+        assert " ".join("".join(document.title).split()) == (
+            "Fictional AI walkthrough · Tola / Impact Platform"
+        ), "missing fictional walkthrough title"
+        notice = " ".join("".join(document.notice).split()).lower()
+        assert notice == (
+            "this fictional walkthrough needs javascript. it has no sign-in, network actions or persistence."
+        ), "missing static fictional/no-persistence notice"
+        assert len(document.scripts) == 1 and "style" in document.assets.values(), (
+            "missing compiled walkthrough entry or style"
+        )
+        for path, kind in document.assets.items():
+            asset_headers, asset_body = bounded_static_get(
+                self.client, self.base + path, WALKTHROUGH_ASSET_LIMIT
+            )
+            content_type = asset_headers.get("content-type", "").split(";", 1)[0].lower()
+            permitted = {"text/css"} if kind == "style" else {"text/javascript", "application/javascript"}
+            assert content_type in permitted and asset_body.strip(), "missing/wrong-type compiled asset"
+        return {
+            "scope": "static packaging/header smoke only; no script execution, authentication or persistence",
+            "document_bytes": len(body),
+            "asset_count": len(document.assets),
+        }
+
     def live_provider(self):
         response = self.get("/auth/mode")
         assert response.status_code == 200 and response.json() == {"development": False}, response.text[:200]
@@ -213,6 +383,7 @@ class Smoke:
         self.check("ready", self.ready)
         self.check("headers", self.headers)
         self.check("web_client", self.web_client)
+        self.check("ai_walkthrough", self.ai_walkthrough)
         for name in ("live_provider", "login_redirect", "provider", "provider_admin_hidden"):
             self.check(name, getattr(self, name) if provider else lambda: ("skip", "--no-provider"))
         self.check("deploy_status", self.deploy_status if status else lambda: ("skip", "--no-deploy-status"))

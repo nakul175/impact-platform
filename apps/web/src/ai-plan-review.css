@@ -1,0 +1,8 @@
+.ai-plan-review p,
+.ai-plan-review li,
+.ai-plan-review summary {
+  overflow-wrap: anywhere;
+}
+.ai-enablement .ai-plan-review .ai-cards article {
+  padding: 1rem;
+}

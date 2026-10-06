@@ -1,0 +1,80 @@
+{
+  "status": "PRIVATE_PREDICATE_TEST_PASS_NOT_ASSEMBLED",
+  "assembler_sha256": "bc3208216fadf6452b664d2ea25e241a306f820b78944878581833db650061d7",
+  "scope": "Complete new helper definitions imported under a non-main name for original30 cases, with ROOT/EVIDENCE replaced by private pytest temp paths; additional31 synthetic AST-extracted helpers. Never assemble/main, product/runner/API/DB/browser/registered writes.",
+  "counts": {
+    "original_complete_helper_pytest_cases": 30,
+    "supplemental_synthetic_cases": 31,
+    "sum_predicate_cases": 61,
+    "failures": 0,
+    "skipped": 0,
+    "overlap": "Scopes overlap;61 is not61 product or acceptance tests."
+  },
+  "files": {
+    "checkpoint-manifest.before.py": {
+      "sha256": "3cfc095b76cc985873679d53679d8f040a63a135834eb409f25af1662ed1db83",
+      "byte_count": 27730
+    },
+    "checkpoint-manifest.proposed.py": {
+      "sha256": "bc3208216fadf6452b664d2ea25e241a306f820b78944878581833db650061d7",
+      "byte_count": 33291
+    },
+    "complete-helper-original-guard-repeat/checkpoint-manifest.proposed.py": {
+      "sha256": "bc3208216fadf6452b664d2ea25e241a306f820b78944878581833db650061d7",
+      "byte_count": 33291
+    },
+    "complete-helper-original-guard-repeat/guard-predicate-tests.xml": {
+      "sha256": "2928cf71ae60ab76c6f0e5a1be3d5a5b3045ba3207627fa073662593ae7ea766",
+      "byte_count": 3610
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/Makefile": {
+      "sha256": "cffd6ad3f7c114a0c2973a1da90532b6571bd1c3fd1aa23f29e2a48636f5f9f1",
+      "byte_count": 5110
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/qualification.json": {
+      "sha256": "49fa897f26b6402431bc365102428c3588ba3f1233fee8240b9863dc8892299c",
+      "byte_count": 1965
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/report.json": {
+      "sha256": "9d71014bd9f64bce9c703087745f885e07384498ec23afa3379b3835bca5cc0a",
+      "byte_count": 3151
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/run.py": {
+      "sha256": "41469d2ab81d09996c76ffe330bf9014c808ae3c9169fdb27acd8f528dd0b357",
+      "byte_count": 32060
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/sample-manifest.json": {
+      "sha256": "e982f9adfcc48188a7dfdf1622041f9231a3151c3f1b7962319b7f01b733321e",
+      "byte_count": 1042
+    },
+    "complete-helper-original-guard-repeat/safe-report-sample/sanitized-run.log": {
+      "sha256": "d5e7b4cf2325a7439386cd7021e2fd958fed53a31d94109ccd0287a6ba3684eb",
+      "byte_count": 1553
+    },
+    "complete-helper-original-guard-repeat/test_checkpoint_guards.py": {
+      "sha256": "dcec24715eb84b3c51dbb57d5b656de8e3f6c5f13b0ebc9a390d7f447ef1f8f7",
+      "byte_count": 10246
+    },
+    "handoff.json": {
+      "sha256": "efb8f1c875e51046497799fc04a85b4c3204fcea7e93504c76bd5f3cf32a68fb",
+      "byte_count": 2769
+    },
+    "proposal.patch": {
+      "sha256": "aeb147a71a3d69c76c58211a8253044975f08bee04aff9df5a258c99412d4e5a",
+      "byte_count": 6804
+    },
+    "supplemental-guard-tests.json": {
+      "sha256": "af57105b0bc3545a2b20845d873467523fb041e26d6e32c6225108ae78ab91df",
+      "byte_count": 3443
+    },
+    "test_supplemental_guards.py": {
+      "sha256": "3548f23347c3cd2ea2f0a5e97ade1f94fefd2b0d5fe5e3c27ebf3ce75fce2e8f",
+      "byte_count": 11351
+    }
+  },
+  "preserved_prior_subject_sha256": "3cfc095b76cc985873679d53679d8f040a63a135834eb409f25af1662ed1db83",
+  "preserved_prior_30_case_junit_sha256": "923a46296241f1f2dbb7ca7406ccc3ec6c3da04e7d2310b361c6374606c7598b",
+  "actual_assembler": "NOT_RUN",
+  "root_instruction_proof": "REQUIRED_AFTER_FINAL_LEAD_UPDATES",
+  "previous_handoff": "handoff.json preserved unchanged"
+}

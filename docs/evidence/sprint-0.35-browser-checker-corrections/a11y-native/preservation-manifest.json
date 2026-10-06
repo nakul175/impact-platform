@@ -1,0 +1,98 @@
+{
+  "scope": "Approved private native-markup keyboard-helper proof and reproducers only; native markup is not actual authenticated React/API/save/independent-review qualification",
+  "candidate_sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+  "results": "Five prior native helper groups PASS;one additional current-default-date/tab-order positive PASS",
+  "current_default_date": "2026-10-05",
+  "exact_target_date": "2026-08-15",
+  "actual_full_corrected_a11y_mode": "PENDING root-run qualification",
+  "copy_method": "Exact UTF-8 source/report copies; no source rewrite or raw browser log publication",
+  "credential_text_audit": {
+    "result": "PASS for copied text",
+    "checks": [
+      "bounded known disposable fixture/native password values without publication",
+      "JWT and authenticated DSN/commonBearer patterns",
+      "private PEM and secret-valued JSON fields"
+    ],
+    "limitation": "Text audit only; no broad security or credential-absence certification"
+  },
+  "reproducer_limit": "Original machine-local paths preserved; reproducer launches isolated installed Chrome and blank-page native DOM only. Do not infer actual app or portability between host paths.",
+  "files": [
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/native-helper-tests.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/native-helper-tests.json",
+      "sha256": "f221d0d223aeced247609800de893063f7a65e10fb6766df7fd5613f41ef3f21",
+      "bytes": 2017,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/native-check.mjs",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/native-check.mjs",
+      "sha256": "6f87bfdf3df353c76da394d79139e56c42c218932c5261ae98e02dbd1e1d9ce0",
+      "bytes": 7127,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/current-default-date-tests.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/current-default-date-tests.json",
+      "sha256": "30ea12c81c2db65554dc98de558039e90e643082b4fff19550c3f7ee71722221",
+      "bytes": 2177,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/current-default-date-check.mjs",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/current-default-date-check.mjs",
+      "sha256": "6b1ff623587cb6611ffc36fd9b7c268e18d43619dea148c1d1541fe87786b545",
+      "bytes": 7410,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/handoff.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/handoff.json",
+      "sha256": "e474b71b1f4c67aee09e542bbdb692d49977d91101657154a4ca93393fe37d2c",
+      "bytes": 3004,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/current-default-handoff.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/current-default-handoff.json",
+      "sha256": "970b04571861a1790923391e67865ade2c38d34677cd9a919f328f6c16f5eb7e",
+      "bytes": 2616,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/a11y-check.proposed.mjs",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/a11y-check.proposed.mjs",
+      "sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+      "bytes": 29293,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/previous-five-results/native-helper-tests.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/previous-five-results/native-helper-tests.json",
+      "sha256": "f221d0d223aeced247609800de893063f7a65e10fb6766df7fd5613f41ef3f21",
+      "bytes": 2017,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/previous-five-results/native-check.mjs",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/previous-five-results/native-check.mjs",
+      "sha256": "6f87bfdf3df353c76da394d79139e56c42c218932c5261ae98e02dbd1e1d9ce0",
+      "bytes": 7127,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/previous-five-results/handoff.json",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/previous-five-results/handoff.json",
+      "sha256": "e474b71b1f4c67aee09e542bbdb692d49977d91101657154a4ca93393fe37d2c",
+      "bytes": 3004,
+      "original_bytes_preserved": true
+    },
+    {
+      "source": "/private/tmp/tola-ai-a11y-checker-correction/previous-five-results/a11y-check.proposed.mjs",
+      "path": "docs/evidence/sprint-0.35-browser-checker-corrections/a11y-native/previous-five-results/a11y-check.proposed.mjs",
+      "sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+      "bytes": 29293,
+      "original_bytes_preserved": true
+    }
+  ]
+}

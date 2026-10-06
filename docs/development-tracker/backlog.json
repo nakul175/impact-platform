@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-05T19:15:57.441095Z",
+  "generated_at": "2026-10-05T21:58:08.759511Z",
   "method": "Each source requirement belongs to exactly one editorial domain. Shared domains are shown once. Counts do not measure effort, accepted scope, overall percentage or remaining person-hours. Source registers are not rewritten.",
   "baseline": {
-    "current_build": "0.32.0",
-    "last_saved_local_commit": "91de7cbc3bde3d76b080d9a235167744df6a39e2",
-    "tentative_sprint_build": "0.33.0",
+    "current_build": "0.34.0",
+    "last_saved_local_commit": "740f81339acf97ad49d3212dec7f1aa1555139b1",
+    "tentative_sprint_build": "0.35.0",
     "impact_ledger_build": "0.33.0",
     "impact_ledger_assessment_date": "2026-10-05",
     "impact_requirements": 307,
@@ -27,7 +27,7 @@
     },
     {
       "path": "docs/IMPLEMENTATION.md",
-      "sha256": "33f8b078b26b9e5df93318c36f1281ed209013a3c84f64ba85fec1f70af18eff"
+      "sha256": "2661f6aa7013f233366b81a5ef096c009bb1026ffecf1ad88f95f17869b72065"
     },
     {
       "path": "docs/handover/BACKLOG.md",
@@ -46,8 +46,16 @@
       "sha256": "07c7d828f33b5a87dd0c8f75a6518db62c32482328fe7b752857a19a0d64a36c"
     },
     {
+      "path": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+      "sha256": "6c2cc46e143b9630b51e9292cf23de5faad1f05786105e9571d5cdd003d96fa9"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md",
+      "sha256": "a656ca942a57bf912cfb49b8727343f891a6d0aafedc48477b738bed5f40cfd4"
+    },
+    {
       "path": "VERSION.json",
-      "sha256": "1e6fa553524926cbbb4e733dc52b694bc303cf0b23fecae16f94718b3d1e37f7"
+      "sha256": "3069e387adf9b2cb340cf3bd7e9921288b76342bfc6362537b9e833184ae4e4d"
     }
   ],
   "domains": [
@@ -104,7 +112,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -155,7 +165,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -218,7 +230,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -260,7 +274,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -298,7 +314,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -325,7 +343,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -353,7 +373,9 @@
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -377,14 +399,16 @@
         "FR-NPA-030",
         "FR-NPA-036"
       ],
-      "current": "Application executor and bounded logframe export are documented current increments.",
+      "current": "Application executor, bounded logframe export and separate-authorised exact saved AI-plan JSON copies are documented local increments.",
       "remaining": "Kobo and Google connectors, deployment support and complete portability/exit workflows.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -401,14 +425,16 @@
         "FR-NPA-034",
         "FR-NPA-037"
       ],
-      "current": "Readiness, saved adoption drafts and pilot comparisons exist; deliberate governed programme links are integrated in0.33 with passing bounded local database/browser checks; no formal acceptance.",
+      "current": "Readiness, saved adoption drafts, pilot comparisons and governed programme links exist locally. Candidate0.35 adds a canonical saved-plan preparation review; no formal acceptance.",
       "remaining": "Complete impact-link qualification, verified quality/evidence, independent pilot acceptance and feedback workflows.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -423,14 +449,16 @@
         "FR-NPA-031",
         "FR-NPA-038"
       ],
-      "current": "Twelve stable lessons, four manual practice worksheets and exact saved-guidance archives exist locally.",
+      "current": "Twelve stable lessons, four manual practice worksheets and exact saved-guidance archives exist locally. Candidate0.35 adds deliberate lesson-to-practice navigation and a previewed synthetic brief starter.",
       "remaining": "Content governance, complete retention, competence evidence, cohorts and governed generated task runs.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -459,14 +487,16 @@
         "FR-NPA-019",
         "FR-NPA-020"
       ],
-      "current": "Eight-tool discovery, procurement briefs and deterministic whole-cost comparisons exist locally.",
+      "current": "Eight-tool discovery, procurement briefs and deterministic entered-line cost comparisons exist locally. Candidate0.35 distinguishes recorded, unknown and omitted cost categories; it does not establish full ownership costs.",
       "remaining": "Supplier verification, quote provenance, RFQs, awards, bookings and conditional purchasing/payments policy.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -502,14 +532,16 @@
         "FR-NPA-011",
         "FR-NPA-023"
       ],
-      "current": "Consented provider advisory has mocked qualification and bounded I/O; existing-member consent/declaration/advice cases are locally tested in0.33; known worker-cleanup privacy disclosure blocks deployment.",
+      "current": "Consented provider advisory has mocked qualification and bounded I/O. Internal existing-member advice is locally tested; saved0.34 corrects both worker-cleanup private receipt disclosures. Operated private retention/removal remains unbuilt.",
       "remaining": "Complete internal-advice qualification, operated adviser service, funded live evaluation, money/token controls and hard process-wide recovery policy.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -557,14 +589,16 @@
       "ai_requirement_ids": [
         "FR-NPA-026"
       ],
-      "current": "Tenant isolation, sensitive controls, erasure/retention machinery and key rotation have bounded support.",
+      "current": "Tenant isolation, sensitive controls, core erasure/retention machinery and key rotation have bounded support. Saved0.34 protects private advice and plan-copy receipts from generic worker cleanup; this is not an operated private removal workflow.",
       "remaining": "Independent security assessment, restored privacy-erasure replay and complete provider/data-lifecycle policy.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     },
     {
@@ -620,14 +654,16 @@
         "FR-NPA-033",
         "FR-NPA-040"
       ],
-      "current": "Shared web navigation, actual local native recovery checks, Mac operations portability and live ETA tracking are documented.",
+      "current": "Shared web navigation, actual local native recovery checks, Mac operations portability and live ETA tracking are documented. Candidate0.35 includes an isolated fictional public walkthrough; hosted deployment remains pending.",
       "remaining": "Hosted/container/live identity-provider qualification, UAT, language UI, off-server backups and support readiness.",
       "sources": [
         "docs/IMPLEMENTATION.md",
         "docs/handover/BACKLOG.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
-        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md"
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md"
       ]
     }
   ]

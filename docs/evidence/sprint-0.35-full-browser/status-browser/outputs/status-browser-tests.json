@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "A member sees plain-language notices and no detail",
+      "status": "passed"
+    },
+    {
+      "name": "A platform operator opens the detail: alert codes and who is on call",
+      "status": "passed"
+    },
+    {
+      "name": "The Workers panel of the tenant console shows who is on call",
+      "status": "passed"
+    },
+    {
+      "name": "A healthy check removes the banner",
+      "status": "passed"
+    },
+    {
+      "name": "When the status call itself fails for the database, the client says so",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

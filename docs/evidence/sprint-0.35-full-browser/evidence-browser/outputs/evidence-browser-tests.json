@@ -1,0 +1,30 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Attach a PNG: the upload is scanned CLEAN and listed with its scan state",
+      "status": "passed"
+    },
+    {
+      "name": "Download through the UI returns the exact bytes as a sandboxed attachment",
+      "status": "passed"
+    },
+    {
+      "name": "A PDF is attached as a second evidence item and downloads with its signature",
+      "status": "passed"
+    },
+    {
+      "name": "The EICAR test file is INFECTED, refused and never downloadable",
+      "status": "passed"
+    },
+    {
+      "name": "Another tenant's session sees nothing of this evidence",
+      "status": "passed"
+    },
+    {
+      "name": "The evidence panel stays within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

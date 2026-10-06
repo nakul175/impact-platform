@@ -96,6 +96,38 @@ const categories: CostCategory[] = [
   "EXIT",
   "OTHER",
 ];
+export type CostCoverageStatus =
+  | "AMOUNTS_RECORDED"
+  | "UNKNOWN_AMOUNT"
+  | "NOT_RECORDED";
+export type CostCoverageRow = {
+  category: CostCategory;
+  offers: { id: string; name: string; status: CostCoverageStatus }[];
+};
+// Describe entered coverage only. No amount, currency or total is calculated.
+export function costCategoryCoverage(value: CostInput): CostCoverageRow[] {
+  return categories.map((category) => ({
+    category,
+    offers: value.offers.map((offer) => {
+      const lines = offer.lines.filter((line) => line.category === category);
+      return {
+        id: offer.id,
+        name: offer.name,
+        status: !lines.length
+          ? "NOT_RECORDED"
+          : lines.some((line) => line.unit_amount === null)
+            ? "UNKNOWN_AMOUNT"
+            : "AMOUNTS_RECORDED",
+      };
+    }),
+  }));
+}
+const coverageLabel: Record<CostCoverageStatus, string> = {
+  AMOUNTS_RECORDED: "Amounts recorded",
+  UNKNOWN_AMOUNT: "Contains an unknown amount",
+  NOT_RECORDED: "Not recorded",
+};
+
 const decimalPattern = /^(?:0|[1-9][0-9]{0,25})(?:\.[0-9]{1,12})?$/;
 const idPattern = /^[a-z][a-z0-9_-]{0,63}$/;
 const categoryLabel = (value: string) =>
@@ -213,9 +245,10 @@ function useCalculation<T, R>(
   props: ToolProps<T>,
   route: string,
   validation: string | null,
+  sourceKey: string | null = null,
 ) {
   const { base, value, request, explain } = props;
-  const signature = JSON.stringify([base, value]);
+  const signature = JSON.stringify([base, value, sourceKey]);
   const currentSignature = useRef(signature);
   currentSignature.current = signature;
   const epoch = useRef(0);
@@ -299,14 +332,30 @@ function useCalculation<T, R>(
   };
 }
 
-export function AICostComparison(props: ToolProps<CostInput>) {
+export function AICostComparison(
+  props: ToolProps<CostInput> & {
+    inputContext?: "SAVED_PLAN" | "SAVED_NOT_REOPENED" | "UNSAVED_DRAFT";
+    sourceRevision?: string;
+  },
+) {
   const { value, onChange, canManage } = props;
   const prefix = useId();
+  const inputContext =
+    props.inputContext === "SAVED_PLAN" && Boolean(props.sourceRevision)
+      ? "SAVED_PLAN"
+      : props.inputContext === "SAVED_NOT_REOPENED" ||
+          props.inputContext === "SAVED_PLAN"
+        ? "SAVED_NOT_REOPENED"
+        : "UNSAVED_DRAFT";
+  const sourceKey = JSON.stringify([
+    inputContext,
+    props.sourceRevision ?? null,
+  ]);
   const validation = value ? validateCostInput(value) : null;
   const { result, busy, error, calculate, invalidate } = useCalculation<
     CostInput,
     CostResult
-  >(props, "cost-comparison", validation);
+  >(props, "cost-comparison", validation, sourceKey);
   function update(next: CostInput | null) {
     if (!canManage) return;
     invalidate();
@@ -357,10 +406,17 @@ export function AICostComparison(props: ToolProps<CostInput>) {
         )
       ) : (
         <>
+          <p className="ai-planning-note" aria-live="polite">
+            {inputContext === "SAVED_PLAN"
+              ? "Calculation source: the opened saved plan inputs. Results remain temporary."
+              : inputContext === "SAVED_NOT_REOPENED"
+                ? "Calculation source: local plan inputs. Reopen the saved plan to check its saved revision."
+                : "Calculation source: unsaved plan inputs. Save the plan to keep these entries."}
+          </p>
           {!canManage && (
             <p className="ai-planning-note">
-              You can calculate the saved inputs. Editing and saving require
-              plan management access.
+              You can calculate the inputs shown here. Editing and saving
+              require plan management access.
             </p>
           )}
           <fieldset className="ai-planning-inputs" disabled={!canManage}>
@@ -598,14 +654,67 @@ export function AICostComparison(props: ToolProps<CostInput>) {
               aria-live="polite"
             >
               <h4>
-                Draft cost comparison — {result.currency},{" "}
+                Draft entered-line comparison — {result.currency},{" "}
                 {result.period_months} months
               </h4>
               <p>
                 {result.status === "INCOMPLETE"
-                  ? "Some costs are unknown. No lowest total is selected while any offer is incomplete."
-                  : "All supplied amounts are known. Totals reflect these entries only, not verified quotes or a recommendation."}
+                  ? "Some entered amounts are unknown. No lowest entered-line total is selected while any offer has an unknown amount."
+                  : "All entered amounts are known. This describes entered lines only; unrecorded cost categories remain unassessed. Totals are not verified quotes or a supplier recommendation."}
               </p>
+              <p id={prefix + "-coverage-help"}>
+                Compare what each offer records. Not recorded is neither zero
+                nor not applicable. Unknown amounts also leave the entered-line
+                total unknown; even a complete entered-line total does not show
+                full supplier or ownership costs.
+              </p>
+              <p
+                id={prefix + "-coverage-scroll"}
+                className="ai-cost-coverage-hint"
+              >
+                Scroll across to compare offers that extend beyond this view.
+              </p>
+              <p
+                id={prefix + "-coverage-title"}
+                className="ai-cost-coverage-title"
+              >
+                Categories recorded in these entered lines
+              </p>
+              <div
+                className="ai-cost-coverage"
+                role="region"
+                tabIndex={0}
+                aria-label="Cost category coverage"
+                aria-describedby={
+                  prefix + "-coverage-help " + prefix + "-coverage-scroll"
+                }
+              >
+                <table
+                  aria-labelledby={prefix + "-coverage-title"}
+                  style={{ minWidth: `${6 + value.offers.length * 7}rem` }}
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Cost category</th>
+                      {value.offers.map((offer) => (
+                        <th scope="col" key={offer.id}>
+                          {offer.name}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {costCategoryCoverage(value).map((row) => (
+                      <tr key={row.category}>
+                        <th scope="row">{categoryLabel(row.category)}</th>
+                        {row.offers.map((offer) => (
+                          <td key={offer.id}>{coverageLabel[offer.status]}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <div className="ai-planning-results-grid">
                 {result.offers.map((offer) => {
                   const lowest =
@@ -622,7 +731,7 @@ export function AICostComparison(props: ToolProps<CostInput>) {
                         <dd className="ai-planning-amount">
                           {offer.known_subtotal} {result.currency}
                         </dd>
-                        <dt>Complete total</dt>
+                        <dt>Entered-line total</dt>
                         <dd className="ai-planning-amount">
                           {offer.complete_total === null
                             ? "Unknown"
@@ -645,8 +754,8 @@ export function AICostComparison(props: ToolProps<CostInput>) {
                       {lowest && (
                         <p className="ai-planning-note">
                           {result.cheapest_offer_ids.length > 1
-                            ? "Equal lowest supplied total (tie)."
-                            : "Lowest supplied complete total."}{" "}
+                            ? "Equal lowest supplied entered-line total (tie)."
+                            : "Lowest supplied entered-line total."}{" "}
                           This is not a supplier recommendation.
                         </p>
                       )}

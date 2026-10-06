@@ -1,0 +1,50 @@
+{
+  "engine": "Chromium",
+  "results": [
+    {
+      "name": "Operator submits a pinned tenant profile",
+      "status": "passed"
+    },
+    {
+      "name": "Nominated owner accepts without receiving automatic data access",
+      "status": "passed"
+    },
+    {
+      "name": "Requester cannot independently activate their own request",
+      "status": "passed"
+    },
+    {
+      "name": "Independent operator activates the tenant",
+      "status": "passed"
+    },
+    {
+      "name": "Owner awaiting initial access sees what happens next, not a permission error",
+      "status": "passed"
+    },
+    {
+      "name": "Operator suspends and independently reactivates without replay",
+      "status": "passed"
+    },
+    {
+      "name": "Closing state preserves records and has no reactivation shortcut",
+      "status": "passed"
+    },
+    {
+      "name": "Operator sees worker heartbeats; an owner does not",
+      "status": "passed"
+    },
+    {
+      "name": "Every sidebar entry stays reachable on a short screen",
+      "status": "passed"
+    },
+    {
+      "name": "Tenant console fits a mobile viewport",
+      "status": "passed"
+    },
+    {
+      "name": "Signing out of the console starts the next person in their own workspace",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

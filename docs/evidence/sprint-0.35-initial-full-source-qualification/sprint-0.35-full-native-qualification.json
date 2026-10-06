@@ -1,0 +1,505 @@
+{
+  "started_at": "2026-10-05T20:43:41+00:00",
+  "engine": "PostgreSQL",
+  "server_version": "PostgreSQL 17.11 on aarch64-apple-darwin27.2.0, compiled by Apple clang version 21.0.0 (clang-2100.3.33.1), 64-bit",
+  "database": "impact_test_tola_ai_checkpoint035_native_final01",
+  "login_topology": {
+    "database": "impact_test_tola_ai_checkpoint035_native_final01",
+    "privilege_roles_created": [],
+    "public_connect": true,
+    "logins": {
+      "impact_app_login": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_app"
+        ]
+      },
+      "impact_identity_login": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_identity"
+        ]
+      },
+      "impact_platform_login": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_platform"
+        ]
+      },
+      "impact_worker_login": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_worker"
+        ]
+      },
+      "impact_executor_login": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_app"
+        ]
+      },
+      "impact_migrator": {
+        "login": true,
+        "superuser": false,
+        "bypass_rls": false,
+        "inherit": false,
+        "memberships": [
+          "impact_owner"
+        ]
+      }
+    },
+    "verified": {
+      "impact_app_login": {
+        "current_user": "impact_app_login",
+        "assumes": "impact_app",
+        "denied": [
+          "impact_owner",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_identity_login": {
+        "current_user": "impact_identity_login",
+        "assumes": "impact_identity",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_worker",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_platform_login": {
+        "current_user": "impact_platform_login",
+        "assumes": "impact_platform",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer"
+        ]
+      },
+      "impact_worker_login": {
+        "current_user": "impact_worker_login",
+        "assumes": "impact_worker",
+        "denied": [
+          "impact_owner",
+          "impact_app",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_executor_login": {
+        "current_user": "impact_executor_login",
+        "assumes": "impact_app",
+        "denied": [
+          "impact_owner",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      },
+      "impact_migrator": {
+        "current_user": "impact_migrator",
+        "assumes": "impact_owner",
+        "denied": [
+          "impact_app",
+          "impact_worker",
+          "impact_identity",
+          "impact_sensitive",
+          "impact_privacy",
+          "impact_observer",
+          "impact_platform"
+        ]
+      }
+    }
+  },
+  "migration": {
+    "database": "impact_test_tola_ai_checkpoint035_native_final01",
+    "session_user": "impact_migrator",
+    "migration_role": "impact_owner",
+    "applied": [
+      "0001_roles.sql",
+      "0002_domain.sql",
+      "0003_security.sql",
+      "0004_application.sql",
+      "0005_access_administration.sql",
+      "0006_measurement_configuration.sql",
+      "0007_measurement_changes.sql",
+      "0008_period_governance.sql",
+      "0009_reporting_packages.sql",
+      "0010_work_and_recalculation.sql",
+      "0011_controlled_publication.sql",
+      "0012_workspace_administration.sql",
+      "0013_tenant_lifecycle.sql",
+      "0014_initial_access.sql",
+      "0015_recovery_contacts.sql",
+      "0016_authority_renewal.sql",
+      "0017_provider_logout.sql",
+      "0018_worker_delivery.sql",
+      "0019_results_framework.sql",
+      "0020_calculation_methods.sql",
+      "0021_web_forms.sql",
+      "0022_import_quality.sql",
+      "0023_evidence_objects.sql",
+      "0024_report_exports.sql",
+      "0025_worker_grants.sql",
+      "0026_worker_job_grants.sql",
+      "0027_privacy_execution.sql",
+      "0028_usable_staging.sql",
+      "0029_operator_lifecycle.sql",
+      "0030_security_privacy.sql",
+      "0031_theory_of_change.sql",
+      "0032_forms_languages_rounds.sql",
+      "0033_application_executor.sql",
+      "0034_ai_advisory.sql",
+      "0035_ai_adoption_plans.sql",
+      "0036_reviewed_ceiling_widening.sql",
+      "0037_ai_content_snapshots.sql",
+      "0038_human_advice_cases.sql",
+      "0039_human_advice_anchor_availability.sql",
+      "0040_ai_plan_portability.sql"
+    ],
+    "schema_version": 40,
+    "fixture_loaded": true,
+    "fixture_user": "tola_fixture"
+  },
+  "api_requires_unprivileged_db": true,
+  "api_ready_seconds": 0.57,
+  "runtime_manifest": {
+    "build_id": "impact-0.35.0",
+    "schema_version": "40",
+    "api_version": "1.25.0",
+    "environment": "test"
+  },
+  "tests": {
+    "junit": "docs/evidence/native-application-tests.xml",
+    "targets": [
+      "qualification",
+      "specification/reference-v1/tests/test_smoke.py",
+      "specification/reference-v1/tests/test_integration.py"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 533.4,
+    "tests": 2128,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 26,
+    "reported_seconds": 532.879,
+    "renewal_race_winners": {
+      "0": {
+        "mode": "race",
+        "winner": "approval"
+      },
+      "1": {
+        "mode": "race",
+        "winner": "approval"
+      },
+      "2": {
+        "mode": "race",
+        "winner": "approval"
+      },
+      "3": {
+        "mode": "revocation_first",
+        "winner": "revocation"
+      },
+      "4": {
+        "mode": "approval_first",
+        "winner": "approval"
+      }
+    }
+  },
+  "restart_check": {
+    "phase_1": {
+      "api_pid": 55729,
+      "exit_code": 0,
+      "duration_seconds": 0.8,
+      "junit": ".local/test-fcc821fb/restart-phase-1.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 0.451
+    },
+    "first_api": {
+      "pid": 55729,
+      "exit_code": -15,
+      "clean_shutdown": true,
+      "stop_seconds": 0.14
+    },
+    "second_api": {
+      "pid": 20701,
+      "ready_seconds": 0.55
+    },
+    "phase_2": {
+      "api_pid": 20701,
+      "exit_code": 0,
+      "duration_seconds": 0.7,
+      "junit": ".local/test-fcc821fb/restart-phase-2.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "reported_seconds": 0.404
+    },
+    "state_file": ".local/test-fcc821fb/restart-state.json",
+    "outcome": "PASS"
+  },
+  "finished_at": "2026-10-05T20:52:40+00:00",
+  "restore_drill": {
+    "started_at": "2026-10-05T20:52:40+00:00",
+    "source_database": "impact_test_tola_ai_checkpoint035_native_final01",
+    "restored_database": "impact_test_tola_ai_checkpoint035_native_final01_restored",
+    "server_version": "17.11",
+    "client": {
+      "pg_dump": {
+        "path": "/private/tmp/tola-ai-native-build/runtime/bin/pg_dump",
+        "version": "pg_dump (PostgreSQL) 17.11",
+        "major": 17
+      },
+      "pg_restore": {
+        "path": "/private/tmp/tola-ai-native-build/runtime/bin/pg_restore",
+        "version": "pg_restore (PostgreSQL) 17.11",
+        "major": 17
+      }
+    },
+    "source": {
+      "golden": {
+        "result_revision": "44ecbc34-025b-53b8-81cb-f6e1d4910861",
+        "snapshot_revision": "6777e50d-8a76-5a3a-9619-84ca1bf41519",
+        "expected": {
+          "displayed_value": "46.36",
+          "value": "46.363636363636",
+          "mode": "OFFICIAL"
+        },
+        "found": {
+          "displayed_value": "46.36",
+          "value": "46.363636363636",
+          "mode": "OFFICIAL"
+        },
+        "payload_sha256": "8219da1217138373d8e38849462cad77c753289dd51582ff3d60bf12d69f2ce5",
+        "result_in_seeded_snapshot": true,
+        "projection": [
+          "46.36",
+          "OFFICIAL"
+        ],
+        "ok": true
+      }
+    },
+    "dump": {
+      "format": "custom",
+      "seconds": 0.3,
+      "bytes": 71478272,
+      "warnings": null
+    },
+    "restore": {
+      "seconds": 2.0,
+      "warnings": null
+    },
+    "migration": {
+      "session_user": "impact_migrator",
+      "migration_role": "impact_owner",
+      "applied": [],
+      "schema_version": 40,
+      "checksums_verified": 40,
+      "checksum_mismatches": []
+    },
+    "restored": {
+      "golden": {
+        "result_revision": "44ecbc34-025b-53b8-81cb-f6e1d4910861",
+        "snapshot_revision": "6777e50d-8a76-5a3a-9619-84ca1bf41519",
+        "expected": {
+          "displayed_value": "46.36",
+          "value": "46.363636363636",
+          "mode": "OFFICIAL"
+        },
+        "found": {
+          "displayed_value": "46.36",
+          "value": "46.363636363636",
+          "mode": "OFFICIAL"
+        },
+        "payload_sha256": "8219da1217138373d8e38849462cad77c753289dd51582ff3d60bf12d69f2ce5",
+        "result_in_seeded_snapshot": true,
+        "projection": [
+          "46.36",
+          "OFFICIAL"
+        ],
+        "ok": true
+      }
+    },
+    "row_counts": {
+      "tables_compared": 190,
+      "rows_compared": 108137,
+      "named": {
+        "object_revision": 25067,
+        "operation_receipt": 4363,
+        "outbox_event": 4926,
+        "outbox_delivery": 4926,
+        "platform_event": 1231
+      },
+      "differing": {}
+    },
+    "security": {
+      "tables": 190,
+      "owners": [
+        "impact_owner"
+      ],
+      "rls_and_policies_identical": true,
+      "functions_identical": true,
+      "grants_identical": true,
+      "fenced_reads": {
+        "rows_without_tenant": 0,
+        "rows_with_tenant_a": 11822,
+        "tenants_visible_with_tenant_a": [
+          "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
+        ],
+        "control_plane_tables_denied": [
+          "tenant_authority_renewal",
+          "tenant_recovery_contact",
+          "platform_operator"
+        ],
+        "ok": true
+      }
+    },
+    "checks": {
+      "migration_applied_nothing": true,
+      "checksums_ok": true,
+      "golden_official_result": true,
+      "row_counts_equal": true,
+      "owned_by_impact_owner": true,
+      "rls_survived": true
+    },
+    "restored_database_dropped": true,
+    "duration_seconds": 2.92,
+    "finished_at": "2026-10-05T20:52:43+00:00",
+    "outcome": "PASS",
+    "credentials_altered": false
+  },
+  "upgrade_check": {
+    "database": "impact_test_tola_ai_checkpoint035_native_final01_upgrade",
+    "started_at": "2026-10-05T20:52:43+00:00",
+    "baseline": {
+      "applied": [
+        "0001_roles.sql",
+        "0002_domain.sql",
+        "0003_security.sql",
+        "0004_application.sql",
+        "0005_access_administration.sql",
+        "0006_measurement_configuration.sql",
+        "0007_measurement_changes.sql",
+        "0008_period_governance.sql",
+        "0009_reporting_packages.sql",
+        "0010_work_and_recalculation.sql",
+        "0011_controlled_publication.sql",
+        "0012_workspace_administration.sql",
+        "0013_tenant_lifecycle.sql",
+        "0014_initial_access.sql",
+        "0015_recovery_contacts.sql",
+        "0016_authority_renewal.sql",
+        "0017_provider_logout.sql",
+        "0018_worker_delivery.sql",
+        "0019_results_framework.sql",
+        "0020_calculation_methods.sql",
+        "0021_web_forms.sql",
+        "0022_import_quality.sql",
+        "0023_evidence_objects.sql",
+        "0024_report_exports.sql",
+        "0025_worker_grants.sql",
+        "0026_worker_job_grants.sql",
+        "0027_privacy_execution.sql",
+        "0028_usable_staging.sql",
+        "0029_operator_lifecycle.sql",
+        "0030_security_privacy.sql",
+        "0031_theory_of_change.sql",
+        "0032_forms_languages_rounds.sql",
+        "0033_application_executor.sql"
+      ],
+      "schema_version": 33,
+      "session_user": "impact_migrator",
+      "migration_role": "impact_owner",
+      "fixture_loaded": true,
+      "fixture_user": "tola_fixture",
+      "fixture_loaded_at_schema": 33,
+      "tenants": 2,
+      "revisions": 509,
+      "sessions": 1,
+      "platform_operators": 1,
+      "assignment_rows": 1,
+      "calculation_rows": 3,
+      "form_rows": 1,
+      "outbox_deliveries": 1
+    },
+    "upgrade": {
+      "applied": [
+        "0034_ai_advisory.sql",
+        "0035_ai_adoption_plans.sql",
+        "0036_reviewed_ceiling_widening.sql",
+        "0037_ai_content_snapshots.sql",
+        "0038_human_advice_cases.sql",
+        "0039_human_advice_anchor_availability.sql",
+        "0040_ai_plan_portability.sql"
+      ],
+      "session_user": "impact_migrator",
+      "migration_role": "impact_owner"
+    },
+    "verification": {
+      "rows": 40,
+      "max_version": 40,
+      "checksum_mismatches": [],
+      "tenants_after_upgrade": 2,
+      "revisions_after_upgrade": 509,
+      "sessions_after_upgrade": 1,
+      "provider_logout_columns_present": true,
+      "logout_token_table_present": true,
+      "outbox_deliveries_after_upgrade": 1,
+      "dispatch_columns_present": true,
+      "worker_tables_present": true,
+      "planning_columns_present": true,
+      "planning_tables_present": true,
+      "calculation_columns_present": true,
+      "calculation_rows_preserved": 3,
+      "form_columns_present": true,
+      "form_publication_table_present": true,
+      "form_rows_preserved": 1,
+      "export_tables_present": true,
+      "disclosure_rows_preserved": true,
+      "v027_columns_present": true,
+      "v027_tables_present": true,
+      "operator_rows_preserved": true,
+      "assignment_rows_preserved": true,
+      "data_preserved": true
+    },
+    "duration_seconds": 1.04,
+    "outcome": "PASS"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-05T20:11:14.279019+00:00",
+  "commit": "740f81339acf97ad49d3212dec7f1aa1555139b1",
+  "manifest": "docs/evidence/sprint-0.34-local-summary.json",
+  "manifest_sha256": "e906a242182d601c58362f9079bd4effa8f701a261b3a5a1d5761210e0764f11",
+  "committed_blob_fingerprints_verified": {
+    "source_and_verification_sha256": 474,
+    "evidence_sha256": 145,
+    "documentation_sha256": 12
+  },
+  "generated_served_assets_separate": true,
+  "pushed": false,
+  "main_merged": false,
+  "deployed": false,
+  "scope": "Exact local0.34 snapshot; bounded API/unit/export-browser gates pass; full hosted release gates remain pending."
+}

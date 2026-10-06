@@ -1,0 +1,46 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Period governance workspace shows programme-scoped status",
+      "status": "passed"
+    },
+    {
+      "name": "Author drafts a report from a locked snapshot",
+      "status": "passed"
+    },
+    {
+      "name": "Author submits the exact package for independent review",
+      "status": "passed"
+    },
+    {
+      "name": "Independent reviewer approves the frozen package",
+      "status": "passed"
+    },
+    {
+      "name": "Approved export renders pinned context and value",
+      "status": "passed"
+    },
+    {
+      "name": "Author requests recipient-bounded disclosure review",
+      "status": "passed"
+    },
+    {
+      "name": "Independent publisher approves and freezes the disclosure",
+      "status": "passed"
+    },
+    {
+      "name": "Named recipient can view HTML and download exact CSV",
+      "status": "passed"
+    },
+    {
+      "name": "Withdrawal closes recipient access without erasing history",
+      "status": "passed"
+    },
+    {
+      "name": "Reporting workspace remains bounded on mobile",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

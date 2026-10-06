@@ -1,0 +1,54 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Administrator loads the access-management workspace",
+      "status": "passed"
+    },
+    {
+      "name": "Designated owner has no ordinary offboarding controls",
+      "status": "passed"
+    },
+    {
+      "name": "Create an immutable exact-object access scope",
+      "status": "passed"
+    },
+    {
+      "name": "Create a time-bounded invitation with explicit manual delivery",
+      "status": "passed"
+    },
+    {
+      "name": "A forwarded invitation cannot be accepted by the wrong account",
+      "status": "passed"
+    },
+    {
+      "name": "Intended account accepts once and receives the granted workspace",
+      "status": "passed"
+    },
+    {
+      "name": "Role proposal is recorded and requester self-approval is denied",
+      "status": "passed"
+    },
+    {
+      "name": "Independent administrator approves the precise role request",
+      "status": "passed"
+    },
+    {
+      "name": "Suspension blocks the member's existing browser session",
+      "status": "passed"
+    },
+    {
+      "name": "Reactivation requires a fresh sign-in and clears stale client state",
+      "status": "passed"
+    },
+    {
+      "name": "Permanent offboarding revokes access and preserves history",
+      "status": "passed"
+    },
+    {
+      "name": "Access-management page fits a mobile viewport without script errors",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

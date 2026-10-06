@@ -1,0 +1,101 @@
+{
+  "scope": "Wrapper-only app-entrypoint observer failure, not product assertion failure",
+  "attempted_fixture_modes": 12,
+  "actual_node_browser_checkers_launched": 0,
+  "actual_browser_result_groups_executed": 0,
+  "actual_pure_prerequisite_result_counts": [
+    {
+      "checker": "tools/browser/ai-plan-export-adapter-check.mjs",
+      "exit_code": 0,
+      "reports": [
+        {
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "unknown": 0
+        }
+      ]
+    },
+    {
+      "checker": "tools/browser/ai-plan-review-model-check.mjs",
+      "exit_code": 0,
+      "reports": [
+        {
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "unknown": 0
+        }
+      ]
+    },
+    {
+      "checker": "tools/browser/ai-practice-starter-model-check.mjs",
+      "exit_code": 0,
+      "reports": [
+        {
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "unknown": 0
+        }
+      ]
+    },
+    {
+      "checker": "tools/browser/ai-walkthrough-adapter-check.mjs",
+      "exit_code": 0,
+      "reports": [
+        {
+          "passed": 7,
+          "failed": 0,
+          "skipped": 0,
+          "unknown": 0
+        }
+      ]
+    }
+  ],
+  "reason": "Original app routes serve index.html at /; old observer asked /index.html and failed before launching each original checker. Last fixture interrupted deliberately for correction; later modes NOT_RUN.",
+  "historical_evidence_restored": true,
+  "browser_restored_exactly": true,
+  "source_changes": [],
+  "asset_changes": [],
+  "files": {
+    "admin-browser/qualification.json": "252b23a4a62ea62b0ca4acb3bfb2cbaa226f0cd13e9d482c7fa172ead04aa5a0",
+    "admin-browser/sanitized-run.log": "2e24de2ee90443e8dcd76a29d18dff29c626edd4258dbfb350356adf797e9286",
+    "ai-enablement-browser/qualification.json": "a3444f1b06fff8acfdc53b7a18928071c7f52cd057ddc69a565176efa02ec6aa",
+    "ai-enablement-browser/sanitized-run.log": "9e64b595aa1ab275b80e6706d4f2ee6bdc078541a7e7de2137a18b9d6bf2bfbe",
+    "ai-plan-export-browser/qualification.json": "581a56a7a1c9af5861336d6c6a9ba464dc6e554864e24baf2ed97ef807ef0e08",
+    "ai-plan-export-browser/sanitized-run.log": "ebaab954e385420804c669846217c1600e67b162d5adee1406126ddeeef9ae8b",
+    "ai-planning-browser/qualification.json": "478975995fdd0f7ef401e69c76f7b8838012b40104984f060cc2e937157c9b52",
+    "ai-planning-browser/sanitized-run.log": "a161d07bfe013343ac637c3b286790b3591f1d27c2592b02424ca0e4baec5aba",
+    "ai-saved-review-browser/qualification.json": "a2992293c4b0c42dfe914f723cf75e2fcd29d07a7d0a2b933ca52a3f48893254",
+    "ai-saved-review-browser/sanitized-run.log": "7c93c47a6214dd99280e5464acc03ae22e9b73cef56113194c50313d51ccb273",
+    "ai-walkthrough-browser/qualification.json": "cf786ac7fa7d8fba417b786a5b2c63a74e8a89abeabce4bee2f0ad17c7838710",
+    "ai-walkthrough-browser/sanitized-run.log": "78d0eb8f431b76542c9d05296d5a7baa29770ecd0744ee74bbe0496a8f4ff077",
+    "browser/qualification.json": "af3e5541b2e2afe6ca9faf74c7d32dcc85a52e54579196738b77bc424dc380e0",
+    "browser/sanitized-run.log": "7e1c62355e375253c89cca052f6fa97bb13dd663a3e4183bc8bb68e8762b3ac5",
+    "dashboard-browser/qualification.json": "331a17f3cd893bf6fa55134b7fafd426d4ce755b150a28bef7bade230236d6d4",
+    "dashboard-browser/sanitized-run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "measurement-browser/qualification.json": "b2ae54ae06c97ba75dbf5d433009b8a26d10d261dbc980dd46348f06c2cd8581",
+    "measurement-browser/sanitized-run.log": "0134c4f0a83108b8146b632e21f9553f42696dc7a7e78cc739f1804a3d8fa5e2",
+    "planning-browser/qualification.json": "e57fab8c2409c0051217246778daa7de2b6b2ef60da0c0a8a4f06554b127bc35",
+    "planning-browser/sanitized-run.log": "fb1e4701bad856ce3c17ef03f54f89084cb6d2d5fb324889e051ed632cb84321",
+    "prerequisite-01-ai-plan-export-adapter-check/outputs/sprint-0.34-export-adapter-tests.json": "f3bd3ff1f86f4f782a03cd92eee76b73ee0c6430ed8745d4ace1ac7108901da9",
+    "prerequisite-01-ai-plan-export-adapter-check/qualification.json": "f3ec34c642cc739bd72a025d7708822b0e81036e4221e505654e7bb6bc5bdf1f",
+    "prerequisite-01-ai-plan-export-adapter-check/sanitized-run.log": "a8b5530686f060b9ee7a894e32a6967c3f9677435b6e5a3ab528ab9a31c16aae",
+    "prerequisite-02-ai-plan-review-model-check/outputs/sprint-0.35-saved-review-model-tests.json": "f8239220bd02d0697f2d3f81238be293767e4fa461e20ea2031f2594fabbe52e",
+    "prerequisite-02-ai-plan-review-model-check/qualification.json": "b575f78529b2c7b5e381d7ad8d585be87e3dc3c4599b6a6d6731b8180c7ec65a",
+    "prerequisite-02-ai-plan-review-model-check/sanitized-run.log": "e9d1496e4cacff3b02e4808107b6cb9a7cf7c4a56542d235e0896ec80a0c5a6c",
+    "prerequisite-03-ai-practice-starter-model-check/outputs/sprint-0.35-practice-starter-model-tests.json": "186fef8164635277d8603c7bc38c8109baa22dd1aa3d58832cb1e82abf355116",
+    "prerequisite-03-ai-practice-starter-model-check/qualification.json": "1ac8530cc299db59844e08a9a87947d3d9dd614f3b5e987e6fe1b6a8df211725",
+    "prerequisite-03-ai-practice-starter-model-check/sanitized-run.log": "1dce7e95242aef6182b7a7611da5dfe9206589f0aab684c0acb89c1db10f7104",
+    "prerequisite-04-ai-walkthrough-adapter-check/outputs/sprint-0.35-walkthrough-adapter-tests.json": "b318ef623098ee1ae0ca0ea0f932e333f9bd73a8628d492295ac2156f0022323",
+    "prerequisite-04-ai-walkthrough-adapter-check/qualification.json": "2255cda499d2715721e67e0a1099320f36c55552cc3872c9ed62e47301f1fb5f",
+    "prerequisite-04-ai-walkthrough-adapter-check/sanitized-run.log": "2b63c9c1ec96f14d13ac8883cf85fd3c19572492e00c9b2b6b31c34f6be4805b",
+    "qualification.json": "144942c11de962fd89ebb7ccf363a552c1de595fbbb82a3398e53fec5bd6dd3f",
+    "tola-ai-extension-browser/qualification.json": "359187321b30ee59a8c26da4c9a5346ebcddb3053355adf37d1a59a28bb1f950",
+    "tola-ai-extension-browser/sanitized-run.log": "aaf176a369a859a97643b91a8edd3bff9f6d763409dc9e2b32891848f0fd7553",
+    "tola-ai-sprint-browser/qualification.json": "510e840ac64f750a7335eabc9552de1ad144056d3089c2f6492c265957faf2c6",
+    "tola-ai-sprint-browser/sanitized-run.log": "c8bafb0584591c64783e2f35d84df4496df347aeb5d1bf35252eba65d66b9dc8",
+    "wrapper-v4.py": "79f3fe8bcd6d83431da9b231c65fec1d39323a054ff2a6f4847ee94fe626c30b"
+  }
+}

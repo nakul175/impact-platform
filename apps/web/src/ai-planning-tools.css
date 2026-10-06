@@ -164,3 +164,51 @@
     align-items: stretch;
   }
 }
+
+.ai-cost-coverage {
+  overflow-x: auto;
+  margin-block: 1rem;
+}
+.ai-cost-coverage table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  font-size: 0.875rem;
+}
+.ai-cost-coverage-title {
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.ai-cost-coverage th,
+.ai-cost-coverage td {
+  border: 1px solid var(--ai-border);
+  background: var(--ai-surface);
+  color: inherit;
+  padding: 0.65rem;
+  text-align: left;
+  overflow-wrap: anywhere;
+  font-size: inherit;
+}
+.ai-cost-coverage:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+.ai-cost-coverage-hint {
+  display: none;
+}
+.ai-cost-coverage th:first-child {
+  width: 6rem;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.ai-cost-coverage th:last-child {
+  width: auto;
+}
+@media (max-width: 680px) {
+  .ai-cost-coverage-hint {
+    display: block;
+  }
+}

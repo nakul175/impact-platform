@@ -95,6 +95,7 @@ const sourcePaths = [
   "infrastructure/migrations/0037_ai_content_snapshots.sql",
   "infrastructure/migrations/0038_human_advice_cases.sql",
   "infrastructure/migrations/0039_human_advice_anchor_availability.sql",
+  "infrastructure/migrations/0040_ai_plan_portability.sql",
   "qualification/conftest.py",
   "qualification/test_dashboards.py",
   "qualification/test_measurement.py",
@@ -120,6 +121,60 @@ const sourcePaths = [
   "specification/fixtures/api-fixture.json",
   "specification/fixtures/records.json",
 ];
+const owningMigrationPaths = (
+  await fs.readdir(path.join(root, "infrastructure/migrations"))
+)
+  .filter((file) => file.endsWith(".sql"))
+  .sort()
+  .map((file) => "infrastructure/migrations/" + file);
+assert.equal(
+  owningMigrationPaths.length,
+  40,
+  "The current registered checkpoint has exactly 40 owning migrations",
+);
+for (const [index, file] of owningMigrationPaths.entries()) {
+  assert.match(file, /^infrastructure\/migrations\/\d{4}_[a-z0-9_]+\.sql$/);
+  assert.equal(
+    Number(
+      file.slice(
+        "infrastructure/migrations/".length,
+        "infrastructure/migrations/".length + 4,
+      ),
+    ),
+    index + 1,
+    "Owning migrations are contiguous and ordered",
+  );
+  if (!sourcePaths.includes(file)) sourcePaths.push(file);
+}
+function assertCurrentMigrationLedger(
+  applied,
+  migrationPaths,
+  sourceFingerprints,
+) {
+  assert.equal(
+    migrationPaths.length,
+    40,
+    "Current owning file inventory remains exact",
+  );
+  assert.equal(
+    applied.length,
+    migrationPaths.length,
+    "The actual applied ledger has the exact owning file count",
+  );
+  assert.deepEqual(
+    applied.map((row) => row.version),
+    migrationPaths.map((_, index) => index + 1),
+    "Every owning migration is applied once, in order",
+  );
+  for (const [index, file] of migrationPaths.entries()) {
+    assert.match(sourceFingerprints[file], /^[a-f0-9]{64}$/);
+    assert.equal(
+      applied[index].sha256,
+      sourceFingerprints[file],
+      "Actual applied checksum matches owning file: " + file,
+    );
+  }
+}
 async function hashes() {
   return Object.fromEntries(
     await Promise.all(
@@ -599,10 +654,10 @@ let narrowed;
 let runtimeQualification;
 const adviceTitle = name + " internal member case";
 try {
-  await test("Actual runtime and applied migration checks match frozen schema 39", async () => {
+  await test("Actual runtime and all 40 owning migration checks match frozen source", async () => {
     const manifest = await api("admin", "/v1/runtime-manifest");
     assert.equal(manifest.environment, "test");
-    assert.equal(manifest.schema_version, "39");
+    assert.equal(manifest.schema_version, String(owningMigrationPaths.length));
     assert.equal(manifest.mutation_tests_allowed, true);
     const version = JSON.parse(
       await fs.readFile(path.join(root, "VERSION.json"), "utf8"),
@@ -610,7 +665,12 @@ try {
     assert.equal(manifest.build_id, "impact-" + version.build);
     assert.equal(manifest.api_version, version.domain_api);
     const applied = setup("runtime-schema").applied_migrations;
-    assert.equal(applied.at(-1).version, 39);
+    assertCurrentMigrationLedger(
+      applied,
+      owningMigrationPaths,
+      qualifiedSources,
+    );
+    assert.equal(applied.at(-1).version, owningMigrationPaths.length);
     for (const number of [37, 38, 39]) {
       const file = sourcePaths.find((name) =>
         name.startsWith(
@@ -629,6 +689,8 @@ try {
       api_version: manifest.api_version,
       mutation_tests_allowed: manifest.mutation_tests_allowed,
       applied_migrations: applied,
+      owning_migration_count: owningMigrationPaths.length,
+      owning_migration_files: owningMigrationPaths,
     };
   });
   prepared = setup("prepare", { title: name });

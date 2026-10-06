@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "The operator sees the failed delivery in the Workers panel",
+      "status": "passed"
+    },
+    {
+      "name": "Re-queue needs a reason; a lost response is retried with the same operation",
+      "status": "passed"
+    },
+    {
+      "name": "The next worker iteration sends the re-queued delivery",
+      "status": "passed"
+    },
+    {
+      "name": "Only platform operators can read or re-queue deliveries",
+      "status": "passed"
+    },
+    {
+      "name": "The operator console stays within a 390 px mobile width",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

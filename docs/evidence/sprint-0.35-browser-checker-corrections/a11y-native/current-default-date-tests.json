@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-10-05T21:25:47.618Z",
+  "scope": "Private exact proposed helper with current-shaped actual native markup/tab order and dynamic current UTC ISO default; no application/API/save/reviewer qualification",
+  "browser_version": "154.0.8037.97",
+  "platform": "darwin",
+  "candidate_sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+  "main_tsx_sha256": "43af88b9631eedfc929d7efdfb9cb47c47e3e78b4182fcd7726022b4f4dac3f6",
+  "sources_unchanged": true,
+  "results": [
+    {
+      "name": "Exact unchanged proposed helper overwrites actual current ISO default using current modal and observation tab order with keyboard only",
+      "status": "passed",
+      "start_date": "2026-10-05",
+      "final_date": "2026-08-15"
+    }
+  ],
+  "focus_trail": [
+    {
+      "tag": "BUTTON",
+      "name": null,
+      "label": "Close dialog",
+      "type": "button"
+    },
+    {
+      "tag": "SELECT",
+      "name": "indicator_id",
+      "label": "Indicator",
+      "type": null
+    },
+    {
+      "tag": "SELECT",
+      "name": "indicator_id",
+      "label": "Indicator",
+      "type": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "source_namespace",
+      "label": null,
+      "type": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "source_key",
+      "label": null,
+      "type": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "source_key",
+      "label": null,
+      "type": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "event_at",
+      "label": null,
+      "type": "date"
+    }
+  ],
+  "keyboard_widget_observations": [
+    {
+      "control": "Indicator",
+      "gesture": "ArrowDown then visible-label keyboard typeahead",
+      "option_label": "Invented current indicator",
+      "selected_value": "invented-current-indicator"
+    },
+    {
+      "control": "Event date (UTC)",
+      "gesture": "keyboard digits in observed native AX order",
+      "locale": "en-US",
+      "native_part_order": [
+        "Day",
+        "Month",
+        "Year"
+      ],
+      "chosen_date": "2026-08-15"
+    }
+  ],
+  "actual_full_mode": "NOT_RUN",
+  "preserved_previous_five": "previous-five-results/native-helper-tests.json"
+}

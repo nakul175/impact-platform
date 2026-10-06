@@ -1,0 +1,916 @@
+{
+  "status": "PRESERVED_ORIGINAL_BYTES_WITH_EXACT_PATH_MAPPING",
+  "original_namespace": "docs/evidence/sprint-0.35-full-browser",
+  "proposed_preserved_namespace": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers",
+  "original_report_sha256": "342c8cd7baaf738a81d0d67f7d7bac206614d21ffc388685df28de63b2d6db92",
+  "original_preservation_manifest_sha256": "6ac9a332ddef440aa5a0cd71851f1dc6d68326315c7d5343bbffc7578a3196fa",
+  "original_proof_files": 179,
+  "physical_files_including_preservation_manifest": 180,
+  "mapping": [
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/a11y-browser/outputs/a11y-browser-failure.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/a11y-browser/outputs/a11y-browser-failure.png",
+      "sha256": "9ef6cf8683da27935e05aa9c4c3236d9f51b1436c063f6f0c456791dd2bf7653"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/a11y-browser/outputs/a11y-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/a11y-browser/outputs/a11y-browser-tests.json",
+      "sha256": "566336d5473345cda3be7a63ccdfcd1b6b7447e94e646c552653baf8fa0c57e8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/a11y-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/a11y-browser/qualification.json",
+      "sha256": "9e0acfee2c3e669e58f25b7c312f563e3c2bbf3dd446cff933aa93ac96718b7b"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/a11y-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/a11y-browser/sanitized-run.log",
+      "sha256": "aa70c94301a42fbd476d4f0e41ce66f54f28eeca9604e3f2c0ebed9dc67778b8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/outputs/access-approval.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/outputs/access-approval.png",
+      "sha256": "2ebf8f2a3d3e19d3852b8d7440eeddf0cb667f0aa2a997129fc9a92c40490201"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/outputs/access-invitations.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/outputs/access-invitations.png",
+      "sha256": "9415cb6069489ade57f11acd7167fcae2cc9ca0a811572af3a2dd4caa3fa6a87"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/outputs/access-members.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/outputs/access-members.png",
+      "sha256": "7dbd62090ad6d3261abada418a73c65de187696c844715b3612179fefd49e86d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/outputs/access-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/outputs/access-mobile.png",
+      "sha256": "790cbfd8523e56e2e30b70e27f3450dee7425371ef2febad06bea04f5c81b1e1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/outputs/admin-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/outputs/admin-browser-tests.json",
+      "sha256": "eb4c25905ea6befd0e04410a3d6984f6c3b0799b611c44109a2f1601d8eb1592"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/qualification.json",
+      "sha256": "ffda383c49182a03cc0c9f5f47c6c865f93b375949b1a478e7895d2821591f97"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/admin-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/admin-browser/sanitized-run.log",
+      "sha256": "ef1ae8dda39df59104cba2c8c1003aaae22d1ad70724d8827607414ab6ea3d0b"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-enablement-browser/outputs/ai-enablement-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-enablement-browser/outputs/ai-enablement-browser-tests.json",
+      "sha256": "2f2baca226d3160d9983d72ef3129dd2c6157320972cc8d8faf2f96499eea1ef"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-enablement-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-enablement-browser/qualification.json",
+      "sha256": "6f78d0421f95fa85e1d25857b99f4cbd3a29f7a8f93a0167f86673262d771f0d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-enablement-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-enablement-browser/sanitized-run.log",
+      "sha256": "51ac6d35561e17509d86d4cbdf7ef41a0ebe163be31d34d192fb1ca7ecd370f2"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-1440-component.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-1440-component.png",
+      "sha256": "99d29bb15c8d96219235d9934bbd1950beb310b8808eb45e7abd8d6ad856b145"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-1440.png",
+      "sha256": "6328b9c332f798e27e12bd5ce3e52261881d282ffa9d3d1bd40259d2be429714"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-320-component.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-320-component.png",
+      "sha256": "86a01f80ab9b743ffe38b7e40647fa4f22f5bf3db5562d25b1e0308f4bbd05d8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-320.png",
+      "sha256": "7bf6cb9bd91c4bc391f7e03016c217a0bf02371579e60da00fa91b8cf9d4e7df"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-390-component.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-390-component.png",
+      "sha256": "35973dde6498ce3ae9611a3c317d64b8a3c7cf06a1e1cb01a6994e1336df007e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-390.png",
+      "sha256": "2bc27d60217d46c512dc3c7a36f0e482ef591201bf09372577da16c9d56b05cf"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-1.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-1.json",
+      "sha256": "0c0cb3f4225ec67ba1395167f1890d5fd8c7d50aa7160909b2b00332a12ce9c0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-2.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-2.json",
+      "sha256": "820e9a8671577cbaa3c2119776d2c1e53d13416da9538f7815419111d5b7f0eb"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-3.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-3.json",
+      "sha256": "f93951f635577c141a424b084c1d4862353123a0295e5440e1fecffe81b6f5d1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-4.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/fixture-artifacts/ai-plan-export-download-4.json",
+      "sha256": "fc018cf0d3ca2bfe9a3fb4eb7d06baf2e8225564809b71ec100fd226a9ed21b1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/outputs/sprint-0.34-export-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/outputs/sprint-0.34-export-browser-tests.json",
+      "sha256": "4217acf21a366d70b026778e120e79e9341f66dc06a08ff8ddc29b714364a7f2"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/qualification.json",
+      "sha256": "22deaab98c4ce08ea7786d37ec04259729d312981a7efaaea228271608b96dc6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-plan-export-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-plan-export-browser/sanitized-run.log",
+      "sha256": "5c4c9c9719b625c3ede76a066fce4150060f5a005d66f71b29c021d3d2e3fd1d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-cost-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-cost-desktop.png",
+      "sha256": "37e04194e4e2644fac1950ed35c9121338ee4531493efa50e889724709a3091d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-pilot-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-pilot-desktop.png",
+      "sha256": "4e33c6bbf06fdfa96e4aff1ac436ee84a3d4f8bb171f080b369f8df0bacd18cc"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-practice-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/fixture-artifacts/ai-planning-captures/ai-planning-practice-desktop.png",
+      "sha256": "d80bf2a3be7f1464e9b4b94af34d587f82752564d578c8c56eb23599ff097abc"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/outputs/nonprofit-ai-planning-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/outputs/nonprofit-ai-planning-browser-tests.json",
+      "sha256": "0fa6b02f6c06c7b494d3f1107342ba15d62e749c701ee5d4c7391c805ee52e51"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/qualification.json",
+      "sha256": "34582291aa3d988a860a84570793cae61ce37d72d1721bbc69ea03efcb291d18"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-planning-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-planning-browser/sanitized-run.log",
+      "sha256": "c890bf15c0fac019215bbff8ac55ba12c6db95e1ae494fc7947b337a15742a7c"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/fixture-artifacts/ai-plan-review-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/fixture-artifacts/ai-plan-review-1440.png",
+      "sha256": "c66aee3a33bd87a33d0f62412f3da8a717d920c5552d0f223f7f3f17f2d19780"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/fixture-artifacts/ai-plan-review-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/fixture-artifacts/ai-plan-review-320.png",
+      "sha256": "487dc56fcfc279ff735f70d9960c07933784c1b38d81d0960493472dc32e51fb"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/fixture-artifacts/ai-plan-review-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/fixture-artifacts/ai-plan-review-390.png",
+      "sha256": "be745fc7e18ec501784191ac5ff4239ee384c7b0a207306fdcb2ea2737841026"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/outputs/sprint-0.35-saved-review-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/outputs/sprint-0.35-saved-review-browser-tests.json",
+      "sha256": "f609fcc6c4f7922122f6df31acf5f673a75dbfcee602dc8ebdb8b4a352b592f0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/qualification.json",
+      "sha256": "c4a2532aa013f152f85728f5d47c6067589adcec9f616941c8c12eb4e4913909"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-saved-review-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-saved-review-browser/sanitized-run.log",
+      "sha256": "ff4c9227da167e8796987d1b91eac5e8afd17d2e0d975ac81cc8a9cf7aabfee8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-1440.png",
+      "sha256": "cdb579b0a25a31f0b86947c1541911bcf3e6bc618291cd9f0f23df18d67538c3"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-320.png",
+      "sha256": "299501a847b89d173f48c690f15e5bb2c75bbdad1d38dd2b2b7c077ae11a3c27"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-learning-390.png",
+      "sha256": "c5855a0d6bbd85db176339b3647a163736f37123ea3d21a7a7a0554c00b42da8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-1440.png",
+      "sha256": "d13e3205e2e226ec00f8aa1fc7e167414e2712dc20496dee88d2dee05a3ceeb4"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-320.png",
+      "sha256": "eca3c270bc345fddf09d0db91eff9bd420dece981c3d5f1c4ce7e591d956a4ad"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-practice-390.png",
+      "sha256": "ad74ca64ffd666ab20065213e3dbccb2012c7f7b1ca772f46885cc22e6a8d8d0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-1440.png",
+      "sha256": "6cc487a726d08fe43a8c475386f5e91d627fdc2defe8ed1518022623cee90e37"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-320.png",
+      "sha256": "d11b01797c7a2258efbbf7f0ca975caf6a37548d5ce6e948b1fb5497ffc76d67"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-procurement-390.png",
+      "sha256": "4217d23b2c12e5b32ec679e72e8964f7a81d9ac3393a30c204dd337609553495"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-1440.png",
+      "sha256": "2060604ac58e01fb8d053dfd86731e18589b28bf2f631562661190f2acac16b8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-320.png",
+      "sha256": "c7893b60a15a7d50bc8b98954dd3aced8d90972cb978af6ea0d9d7ea43f0a89d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-start-390.png",
+      "sha256": "e37ad859083171fbb35b0740db95baa1f5424ef3948d9f310143cc8fd7287f93"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-1440.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-1440.png",
+      "sha256": "da65ff32c01c01ed60ad7f6f14875c773acb68a88af2a408362223a022f8b2d8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-320.png",
+      "sha256": "0c5e03216549827a91265fb5ab6cb1b88f64a83bc4570c748854ba15cd6781f6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests-captures/walkthrough-tools-390.png",
+      "sha256": "9848150b843f6cb0691bde1a5c1cd09862ec7b2a055697f97bd19caa1ad0bed9"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/outputs/sprint-0.35-walkthrough-browser-tests.json",
+      "sha256": "7de0f3a5e2677666717c013d1508a072ccb697af70823159b06725ac290f56c9"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/qualification.json",
+      "sha256": "d1a577508610dfdf0034650c761f197a7334e984cd428bea60e4b14202bc3893"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/ai-walkthrough-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/ai-walkthrough-browser/sanitized-run.log",
+      "sha256": "e284474ac5e929b07552f802da7b9d8a9f1cca01490c88744416bf51e8695854"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/outputs/bootstrap-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/outputs/bootstrap-browser-tests.json",
+      "sha256": "3bf5f6181acc3ff892aac20aee3755dd5ab3a004c0d97bf6dc1f78aca0c89c9d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/outputs/initial-access-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/outputs/initial-access-mobile.png",
+      "sha256": "c19fe9d6a19f464b3597bf87cb845052793a42c194980d24380304147f21f043"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/outputs/initial-access-programme.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/outputs/initial-access-programme.png",
+      "sha256": "6a6ad9576fa44a0937ecb6034878b6967d3ab9e7f5e112fb5b78516d3d48931a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/outputs/initial-access.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/outputs/initial-access.png",
+      "sha256": "03dc69810a14e871351a37e7c8190d4921766bcf256f6217a582a836f64c7517"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/qualification.json",
+      "sha256": "106ba334f1e3c363b36a507503f780745dc8f045710edc1d789b05f35cc94056"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/bootstrap-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/bootstrap-browser/sanitized-run.log",
+      "sha256": "ff303147b99501d9b78cccfd7ba715aa26fd653f19bafebc560777fdc7aca135"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/outputs/browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/outputs/browser-tests.json",
+      "sha256": "7fb32dd0f1aa9a8cb4dc6563a8bf73570e04594a6d07b4ce9957d230a252cd93"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/outputs/mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/outputs/mobile.png",
+      "sha256": "b1b4cb0aeab4bc579dc9d2f7b34399c23226d50a457b59421121e124667ac1a8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/outputs/portfolio.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/outputs/portfolio.png",
+      "sha256": "5fe5080066e5cca2e2c6daf307c6c3fab22b1f6aff1c0e8a906070365c9b26ee"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/outputs/result-lineage.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/outputs/result-lineage.png",
+      "sha256": "af174a563ed51f29818853da8f9bc65d05859440fce8dab9c13fd50c870e078a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/outputs/sign-in.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/outputs/sign-in.png",
+      "sha256": "151df19d1b6a68da044132e2b31401ae6eb7145d641e556efabb2205f61c9672"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/qualification.json",
+      "sha256": "7396d032147989eebbc7f02c68c9646ff52b6b0c4a19e8052e8eb07b66fff3ea"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/browser/sanitized-run.log",
+      "sha256": "4d047e63b5b28a1b0a240fa3d0f77d60297a49a748be27801b4779ffb3715488"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/outputs/dashboard-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/outputs/dashboard-browser-tests.json",
+      "sha256": "e40be48e94a934abc07f5aec5b956ecce141ed21e1e78aa892581a3bf7e09469"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/outputs/dashboard-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/outputs/dashboard-mobile.png",
+      "sha256": "23684d21b8fa45d8ed31888814a1cf8fcf68698bdfb56728be1192db340b5577"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/outputs/dashboard-official.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/outputs/dashboard-official.png",
+      "sha256": "78e5d8baa2706aacfb7647aaf75431936e0b2d007a6bae15eda544f44f92db4e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/outputs/dashboard-portfolio.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/outputs/dashboard-portfolio.png",
+      "sha256": "467e7ebc6902d77c6043ce4edb91f5c7945cf4707b4c3325935a8137f5c4f054"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/outputs/dashboard-provisional.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/outputs/dashboard-provisional.png",
+      "sha256": "8da225e1040090f18439a754b5fd94878d981d25fa8a0aa9f825c88e84179eb9"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/qualification.json",
+      "sha256": "a60956acb3cb82aec9c632fb577536da544102ded3d536aed1d8f98d3f3f06b1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/dashboard-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/dashboard-browser/sanitized-run.log",
+      "sha256": "8fec37a11ec7355de171bf5e712bbd7f0d74a575e4d321e71dd4176701f59052"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/outputs/evidence-attached.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/outputs/evidence-attached.png",
+      "sha256": "120822c0a6d64668c3abdd7d236dd4edf856a5a17c7d197f912af3bc7158d735"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/outputs/evidence-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/outputs/evidence-browser-tests.json",
+      "sha256": "7618d7b03c1edcfad6f086e13783350eb70e4b0d8016062479a2dc7d91f1eff6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/outputs/evidence-infected.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/outputs/evidence-infected.png",
+      "sha256": "89c02c66871a334165eceea3f6868bdf651f5ae5bff9ed5d3c3accf9217adc77"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/outputs/evidence-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/outputs/evidence-mobile.png",
+      "sha256": "2f3301b382f33b2c7f78bd57ce9ab3c7762038d4365037edecfe206f5f623966"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/qualification.json",
+      "sha256": "fe68a5d5072eae473bce097e17516b3339d97abe5eab3ef36388daf1ec91ad85"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/evidence-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/evidence-browser/sanitized-run.log",
+      "sha256": "2e788c7f0bc713406a8c5fc8760d42be4287b45ca34cac5ba69a6d32a94ee0da"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/export-browser/outputs/export-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/export-browser/outputs/export-browser-tests.json",
+      "sha256": "aa832587ca37e6fbae3ec91878dcb565b114f2abf24275e2712015f3140ccac0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/export-browser/outputs/export-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/export-browser/outputs/export-mobile.png",
+      "sha256": "08fa67fb1fafb7d56ead9b868f795ee07e56954d85aab45c695f2727b2ec20e0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/export-browser/outputs/export-succeeded.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/export-browser/outputs/export-succeeded.png",
+      "sha256": "47ce15dcd38008c029d3495ac839408d1abd4b8c42c5d9295048fd0be156387e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/export-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/export-browser/qualification.json",
+      "sha256": "82f7c8945101768ba742d8c8bd894309441d68750ae495859fbb58734211f955"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/export-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/export-browser/sanitized-run.log",
+      "sha256": "e1cfff78bbf0374dfe6bca345a2793364823a5fe75daa9ba2fa950b317ce7bcc"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/forms-browser/outputs/forms-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/forms-browser/outputs/forms-browser-tests.json",
+      "sha256": "38fe1e16a790cf32ed1ba6ea169a6374908b338d8e96e89a7deddaf71abe887b"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/forms-browser/outputs/forms-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/forms-browser/outputs/forms-mobile.png",
+      "sha256": "28d9f0125b665003966f416a8fdce1908768d21d928f364e795c326def50f528"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/forms-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/forms-browser/qualification.json",
+      "sha256": "5603ae427ebc35787111a3553aedb971414c4f6543096684c5787dfb425a7a29"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/forms-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/forms-browser/sanitized-run.log",
+      "sha256": "ba714c0d1186eb35918a09adfefc04f3840e23923cc04b0a8ef83b4820cc8f54"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/import-browser/outputs/import-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/import-browser/outputs/import-browser-tests.json",
+      "sha256": "be1b8de3cb89a1d89c61ba2854e179e5b7ffd8981370d3a4bc9ced3ae3aecf53"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/import-browser/outputs/import-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/import-browser/outputs/import-mobile.png",
+      "sha256": "3f37e6f004278c2998b099be470625b46183e2a73d11df177c6010c16692da53"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/import-browser/outputs/import-preview.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/import-browser/outputs/import-preview.png",
+      "sha256": "d8c4dfa4f544f25724c37a7002b4a93a15328f7f29c39705d7ce7148980ef366"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/import-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/import-browser/qualification.json",
+      "sha256": "237a8bc42d0d253868d48b758873e78813147c00e0f196e4c8dbcff0913ab77d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/import-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/import-browser/sanitized-run.log",
+      "sha256": "1339093583131018b1c2a31746c2f51c042539f88a64a943c2580663aaeb5cd6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/collection-coverage.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/collection-coverage.png",
+      "sha256": "71fb360a48f8469be972f15579a0ca612ee47d203f63216d6d850ba33873d7ea"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/correction-review.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/correction-review.png",
+      "sha256": "9f7cb0d93b5bc0f50d384481b6ffba7afe8c9b85f41096c5e738505b2504612f"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/measurement-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/measurement-browser-tests.json",
+      "sha256": "b04cb978cabb1e799e752a5e839522eb0ea24de342c5310babb58d6f7a3c2043"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/measurement-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/measurement-mobile.png",
+      "sha256": "396991ec6e18423bd24e4ab7bce93153d1f17d021a6c09f51c447ca1a5fe16a6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/measurement-setup.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/measurement-setup.png",
+      "sha256": "81e884bebf16cb39f704da03fa069ffe51d0624ab785f55c5be216a226269a24"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/programme-readiness.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/programme-readiness.png",
+      "sha256": "33d714a6081b22cd4d35047ebb8b30de7db50aab9f6ad8d5a44a71ecefae4a31"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/outputs/work-center.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/outputs/work-center.png",
+      "sha256": "a4d82960624eafb804dc1952bfe6aa02adfe7bbfe0d38b31fa5e494d505ee3f7"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/qualification.json",
+      "sha256": "b3e93796eb3fc692ef93ea464ad6e62886ed830be88e83aabd4ddd0874098b41"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/measurement-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/measurement-browser/sanitized-run.log",
+      "sha256": "edeaad2ae8fc49be7d3f7de3776472a6216aab2500867eaf9e3f445b37d3a129"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/operators-browser/outputs/operators-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/operators-browser/outputs/operators-browser-tests.json",
+      "sha256": "17d93e43ce443cc17eb336e15adfb6dcc3a9de520841325b73fa6dfc15f8f82a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/operators-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/operators-browser/qualification.json",
+      "sha256": "aa27f21159dd9a12161bb765e923cf9f8113e49cd8ae2644a26fe3e8dfb682c6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/operators-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/operators-browser/sanitized-run.log",
+      "sha256": "6025619cb7cba3f2fd9cf2ebea63cc4d527a2b1dabb632e2cd4578fa375ace6c"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/outputs/planning-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/outputs/planning-browser-tests.json",
+      "sha256": "425f5a4717c7a5ae8bb7f8ba8055e5dff6ff9192fda360ee41d70fbd3dca4cde"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/outputs/planning-framework.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/outputs/planning-framework.png",
+      "sha256": "ec3d4d6c8207601b4f879a5349e1b28bf198701fd4a6e0777f724911bf0b7473"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/outputs/planning-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/outputs/planning-mobile.png",
+      "sha256": "07d77a8c138e24dfd7b9ea4bdd95b49d43b85752e15ebf1f5bd719a747da15ec"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/outputs/planning-targets-vs-actuals.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/outputs/planning-targets-vs-actuals.png",
+      "sha256": "4d3c9935d69016665a48e07b53842b8789fb3edb3a25b97705a273922d61b021"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/qualification.json",
+      "sha256": "affeaea2e7374afa6655712b67e4f33f34d19a7e01550581b5339e4860981210"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/planning-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/planning-browser/sanitized-run.log",
+      "sha256": "aaadf687310a117062a84720426135204df2e53dabb882f19b6388de9cc2ceb3"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-01-ai-plan-export-adapter-check/outputs/sprint-0.34-export-adapter-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-01-ai-plan-export-adapter-check/outputs/sprint-0.34-export-adapter-tests.json",
+      "sha256": "9d71014bd9f64bce9c703087745f885e07384498ec23afa3379b3835bca5cc0a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-01-ai-plan-export-adapter-check/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-01-ai-plan-export-adapter-check/qualification.json",
+      "sha256": "49fa897f26b6402431bc365102428c3588ba3f1233fee8240b9863dc8892299c"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-01-ai-plan-export-adapter-check/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-01-ai-plan-export-adapter-check/sanitized-run.log",
+      "sha256": "d5e7b4cf2325a7439386cd7021e2fd958fed53a31d94109ccd0287a6ba3684eb"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-02-ai-plan-review-model-check/outputs/sprint-0.35-saved-review-model-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-02-ai-plan-review-model-check/outputs/sprint-0.35-saved-review-model-tests.json",
+      "sha256": "f8239220bd02d0697f2d3f81238be293767e4fa461e20ea2031f2594fabbe52e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-02-ai-plan-review-model-check/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-02-ai-plan-review-model-check/qualification.json",
+      "sha256": "f4e12af35a01e77aceefc373097aef439d91cd489b1cd505745ff5fbcbe55990"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-02-ai-plan-review-model-check/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-02-ai-plan-review-model-check/sanitized-run.log",
+      "sha256": "cb27675dc17310bd301273154f6bd8f656c54bef35b03a4f9fead0826826a5c2"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-03-ai-practice-starter-model-check/outputs/sprint-0.35-practice-starter-model-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-03-ai-practice-starter-model-check/outputs/sprint-0.35-practice-starter-model-tests.json",
+      "sha256": "d2dbdd1e9b4adddc0c8ddb7d053cf129f33695f44245a73faf116025f6e2c7e2"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-03-ai-practice-starter-model-check/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-03-ai-practice-starter-model-check/qualification.json",
+      "sha256": "e0633883e4c3986d376bd8198e50530d8ab6796f7f116d89e361277e620b9b07"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-03-ai-practice-starter-model-check/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-03-ai-practice-starter-model-check/sanitized-run.log",
+      "sha256": "1dce7e95242aef6182b7a7611da5dfe9206589f0aab684c0acb89c1db10f7104"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-04-ai-walkthrough-adapter-check/outputs/sprint-0.35-walkthrough-adapter-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-04-ai-walkthrough-adapter-check/outputs/sprint-0.35-walkthrough-adapter-tests.json",
+      "sha256": "6465d0cf61b9c91168aef958ffbce3ea0c6f4ed8500f16eff7f0051edcec84b6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-04-ai-walkthrough-adapter-check/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-04-ai-walkthrough-adapter-check/qualification.json",
+      "sha256": "f96d59a8172cef7e2a5111061e59442855e90197309a7cda9d673acf7dd4e749"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/prerequisite-04-ai-walkthrough-adapter-check/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/prerequisite-04-ai-walkthrough-adapter-check/sanitized-run.log",
+      "sha256": "2b63c9c1ec96f14d13ac8883cf85fd3c19572492e00c9b2b6b31c34f6be4805b"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/preservation-manifest.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/preservation-manifest.json",
+      "sha256": "6ac9a332ddef440aa5a0cd71851f1dc6d68326315c7d5343bbffc7578a3196fa"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/qualification.json",
+      "sha256": "342c8cd7baaf738a81d0d67f7d7bac206614d21ffc388685df28de63b2d6db92"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/recovery-browser/outputs/recovery-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/recovery-browser/outputs/recovery-browser-tests.json",
+      "sha256": "be85e2f7dfecedc4ba1d63c50f257033a076ebfcea87db4542fcaa03ff8d9874"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/recovery-browser/outputs/recovery-contact-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/recovery-browser/outputs/recovery-contact-mobile.png",
+      "sha256": "165d331f81ad694b68e8c6836c8c056ae2a1bb16ed59b5904d80d1a7490a0024"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/recovery-browser/outputs/recovery-contact-verified.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/recovery-browser/outputs/recovery-contact-verified.png",
+      "sha256": "a2c6909f39241f071f2de01384de86b2f83c428f050e8bf74e494442da68d321"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/recovery-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/recovery-browser/qualification.json",
+      "sha256": "da9ef5d4fc42d8284087d59cca3b963d13059cc4cb136afe55139385086c1e70"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/recovery-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/recovery-browser/sanitized-run.log",
+      "sha256": "3d8456f438edd6d6412b80ba3c30a11074bc10144be9460f8dc9e9083f8b50ec"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/renewal-browser/outputs/authority-renewal-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/renewal-browser/outputs/authority-renewal-mobile.png",
+      "sha256": "913e41c7bdd08da46935c335e12554ce02a017da7ab4bedfb06babd9a2f595b1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/renewal-browser/outputs/authority-renewal.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/renewal-browser/outputs/authority-renewal.png",
+      "sha256": "a12abbba4b893dd8268e103a5f9bcccf67a68af3f954ae24b0a2e8f8cabdcfad"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/renewal-browser/outputs/renewal-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/renewal-browser/outputs/renewal-browser-tests.json",
+      "sha256": "e7d1a8cae758caacc49932413d5ab3e14949a0fb26368ed157ad0bd24d1dbe21"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/renewal-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/renewal-browser/qualification.json",
+      "sha256": "ea20f7a223d35c15af0ddb6565ff4c18ff5cb37661c18cc7aee08d142a3f1685"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/renewal-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/renewal-browser/sanitized-run.log",
+      "sha256": "cec02ae4bb80a56c7805b2dbb0244b0177ca9c2dc0928c1ca97a69806318e117"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/outputs/controlled-publication.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/outputs/controlled-publication.png",
+      "sha256": "ed9fe5ae8775ea74164cc5f5657fbe1213a96b5a5de360488c44bcc6ac677032"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/outputs/period-close.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/outputs/period-close.png",
+      "sha256": "9f6a50fd20582d13c257283b86edf27a01ba65898997970a19c4a37f4c56d2a0"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/outputs/publication-preview.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/outputs/publication-preview.png",
+      "sha256": "4691aa0c806ce0da72fb590a20a729eee5c8f09d2a7e6f7770c35465794b5390"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/outputs/reporting-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/outputs/reporting-browser-tests.json",
+      "sha256": "238ed198eb364e1978944c49a12a1c51cbf8c050320230ea55e02dfec30cc256"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/outputs/reporting-package.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/outputs/reporting-package.png",
+      "sha256": "ed9fe5ae8775ea74164cc5f5657fbe1213a96b5a5de360488c44bcc6ac677032"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/qualification.json",
+      "sha256": "289f8adbf458c670694f7731ea8b62914685ed247f277357696d2151ef2b261a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/reporting-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/reporting-browser/sanitized-run.log",
+      "sha256": "c61984af3bae7b39b328d6e54b7ffd8f78b97cb0c93a1ba8e370f7bbd09d53a7"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/requeue-browser/outputs/requeue-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/requeue-browser/outputs/requeue-browser-tests.json",
+      "sha256": "55ce0828cdce46f47cb23cf41e4b7392e588ac5695d87c938444c86584a06524"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/requeue-browser/outputs/requeue-dead.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/requeue-browser/outputs/requeue-dead.png",
+      "sha256": "add911cadddb05ac2dd12e0a9d886455b3da25d3b4793a106c48a288e688a657"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/requeue-browser/outputs/requeue-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/requeue-browser/outputs/requeue-mobile.png",
+      "sha256": "b893b0783214b2fc93678aeaa0f0de1bf45462799275895e64cfdba89245daa9"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/requeue-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/requeue-browser/qualification.json",
+      "sha256": "84e3365e654054c613da39c59921e20f67ad8f6d379b530cd5f3ce58ceb11a45"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/requeue-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/requeue-browser/sanitized-run.log",
+      "sha256": "38989117c95bf52a123288c5ff3dacb11a26b1cabb9e8865d85359cd2fff7f35"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/outputs/status-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/outputs/status-browser-tests.json",
+      "sha256": "fb25b2186ff8e32bf4f9a74ce9fffe58e3552a1aee48d24f5006297735397352"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/outputs/status-member.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/outputs/status-member.png",
+      "sha256": "275e58c05eaab251d401b8bad014af11c6066d0284420a74506fa2fec121b620"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/outputs/status-operator.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/outputs/status-operator.png",
+      "sha256": "40c00e0defb51085fe67e73c79501501b4870981eac4f7c5e8ff9bb91601778c"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/outputs/status-outage.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/outputs/status-outage.png",
+      "sha256": "eb5c47581428d0d439b68f91d3875855dabe6813ccf870d90d6b1407d8836609"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/qualification.json",
+      "sha256": "16d179810e1c6a237002de29058e20b3d58bf17ed8d6009b122e0bf080ba408a"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/status-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/status-browser/sanitized-run.log",
+      "sha256": "e659e84790da69a6e30ae42c8e80f4d107f4e33d69de98255b81541f82acec33"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tenant-browser/outputs/tenant-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tenant-browser/outputs/tenant-browser-tests.json",
+      "sha256": "94694b910320e3e44df2e5f9b2e9f7e8ebd587776064faadb207f16161a467d1"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tenant-browser/outputs/tenant-lifecycle-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tenant-browser/outputs/tenant-lifecycle-mobile.png",
+      "sha256": "03f8a14e6653438dec21db6740cabc99a7340d4238a2567cfb408913adbc303e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tenant-browser/outputs/tenant-lifecycle.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tenant-browser/outputs/tenant-lifecycle.png",
+      "sha256": "960a9e560a8ba66332f7e8b031f7ec065ef8d276c46bd0512844a6768e47e590"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tenant-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tenant-browser/qualification.json",
+      "sha256": "0eaa9d323638b2ffb1bcd51686a5dc1e02e34fcee7b5ec817da1b4ec804fde2f"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tenant-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tenant-browser/sanitized-run.log",
+      "sha256": "bf5b45ad1cf797dfd925223b1270313542bb05d602ae855717876d4b0c78d0b2"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-extension-browser/outputs/sprint-0.33-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-extension-browser/outputs/sprint-0.33-browser-tests.json",
+      "sha256": "75f55ae95caed913b6e818568e6182601f297cdb54362b34106f64054db88245"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-extension-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-extension-browser/qualification.json",
+      "sha256": "14cac1e82f8090eda8362bce6b94a86136d7ed7726277642816f898cae08c282"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-extension-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-extension-browser/sanitized-run.log",
+      "sha256": "9bb5e8e47b47c1d8df23e5f3cd97f1e4060a25654f90b7a11b0c0f01f307686d"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-accepted-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-accepted-320.png",
+      "sha256": "8be6c44ecde3f4626c4ea80eb5abb7fdf0e98508df0691ec81e46e0138bdccd3"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-applied-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-applied-390.png",
+      "sha256": "2037a6f9d37a8c4de47f29aa7766b5cdb625f7b9e87675b1557eaeaf16841f9b"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-access-desktop.png",
+      "sha256": "196c0cbed51495c237ad70e317c0626e94f9f852fd0c4fd38221c3c7037d90b7"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-archive-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-archive-desktop.png",
+      "sha256": "19798b355765a47eeb392bca4c5f77b59c0303896a74a587879e3db4bfca9ab5"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-complete-archive-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-complete-archive-320.png",
+      "sha256": "2880aeec628a3e32b67d035ddfcc27619a8da05c75275a109bfee0c7affa9f5f"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-complete-archive-390.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-complete-archive-390.png",
+      "sha256": "9021005925e87bf2be41f3795b3e6144b710bf81c12fb93edfaeff7674ee3b32"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-partial-archive-320.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/fixture-artifacts/tola-ai-sprint-partial-archive-320.png",
+      "sha256": "ffe58484aa74a27b2a9844e4eb3764482cb42615095cfd9c7f00da77b6ea8538"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/outputs/sprint-0.32-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/outputs/sprint-0.32-browser-tests.json",
+      "sha256": "65acbd3fd9883678e6f1466066dea099a94a11ed91ac37301e2cbeb7e8df671e"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/qualification.json",
+      "sha256": "f9de98dc64e6e4c27c3ac730b4e33c50c2c38474f5007013cbbdf90012d468e3"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/tola-ai-sprint-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/tola-ai-sprint-browser/sanitized-run.log",
+      "sha256": "3b912985446733a279ed58b5aed4a8566ffc934fca51d431274a8eaea4159ee8"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/workspace-browser/outputs/workspace-account-desktop.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/workspace-browser/outputs/workspace-account-desktop.png",
+      "sha256": "460566ff5847d7188bccda12124e33dc757583c11cb8151eecd0b6049f77ffb5"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/workspace-browser/outputs/workspace-account-mobile.png",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/workspace-browser/outputs/workspace-account-mobile.png",
+      "sha256": "d25c735ec0537182bb3637dadb31b8d5a2b0c9c73e7c02a6f4de4978fcb2a179"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/workspace-browser/outputs/workspace-browser-tests.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/workspace-browser/outputs/workspace-browser-tests.json",
+      "sha256": "9a27f68dbd9c798b454ea4973b53881c061586d4893c82b4a22f527b9f4c1094"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/workspace-browser/qualification.json",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/workspace-browser/qualification.json",
+      "sha256": "e42e581ac1cebf7c49c7f7f25021d0af0047fbd002aaba0cab5506c4789224e6"
+    },
+    {
+      "original_path": "docs/evidence/sprint-0.35-full-browser/workspace-browser/sanitized-run.log",
+      "preserved_path": "docs/evidence/sprint-0.35-full-browser-attempt-03-original-checkers/workspace-browser/sanitized-run.log",
+      "sha256": "00347823914e59af0be014fc20a9d1a5e01dbc42592d9be14027131c5031d01d"
+    }
+  ],
+  "method": "Check all hashes and absent destination; rename the directory atomically; verify every original hash at mapped preserved path. Do not edit embedded original paths/reports. Publish exact original-to-preserved mapping separately afterward.",
+  "scope": "First complete all26 attempt23PASS/3FAIL,246pass4fail0skip. No qualification promotion. Original OCR/capture-review paths resolve through this mapping. Root explicit GO required.",
+  "executed_at": "2026-10-05T21:49:31.784957+00:00",
+  "approved_private_plan_sha256": "7956d941aaea0dba73f0e32abfe5a582f76bf7b98b1efb21ab6ea8149a70e66a",
+  "original_bytes_changed": false
+}

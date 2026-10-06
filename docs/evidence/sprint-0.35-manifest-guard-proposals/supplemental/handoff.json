@@ -1,0 +1,56 @@
+{
+  "status": "PRIVATE_PROPOSAL_NOT_ASSEMBLED",
+  "scope": "31 synthetic AST-extracted helper predicates passed. No assemble/main import or execution, no API/database/browser/checkpoint or registered source/evidence writes.",
+  "files": {
+    "checkpoint-manifest.before.py": {
+      "sha256": "3cfc095b76cc985873679d53679d8f040a63a135834eb409f25af1662ed1db83",
+      "byte_count": 27730
+    },
+    "checkpoint-manifest.proposed.py": {
+      "sha256": "bc3208216fadf6452b664d2ea25e241a306f820b78944878581833db650061d7",
+      "byte_count": 33291
+    },
+    "proposal.patch": {
+      "sha256": "aeb147a71a3d69c76c58211a8253044975f08bee04aff9df5a258c99412d4e5a",
+      "byte_count": 6804
+    },
+    "test_supplemental_guards.py": {
+      "sha256": "3548f23347c3cd2ea2f0a5e97ade1f94fefd2b0d5fe5e3c27ebf3ce75fce2e8f",
+      "byte_count": 11351
+    },
+    "supplemental-guard-tests.json": {
+      "sha256": "af57105b0bc3545a2b20845d873467523fb041e26d6e32c6225108ae78ab91df",
+      "byte_count": 3443
+    }
+  },
+  "changes": [
+    "Require exact8tracker source proof at docs/evidence/sprint-0.35-tracker-source-proof.json with identical current start/end maps, zero drift, process exit0 and actual42passing child cases from exact bound sprint-0.35-tracker-tests.xml.",
+    "Require unchanged current two source registers from root tracker proof; supporting scope does not imply product acceptance.",
+    "Require explicit docs/evidence/sprint-0.35-instruction-lead-review.json with fixed740f81339acf97ad49d3212dec7f1aa1555139b1 baseline, two exact documentation files, root reviewed scope and statusPASS.",
+    "Independently compare git baseline title/body to current title/body after one candidate lead paragraph; validate original/current whole and body hashes and unchanged engineering-rules flag.",
+    "Supplemental stored source maps enter before predecessor-only equality, without conflicts/current-hash overwrite/fallback; output scopes remain distinct."
+  ],
+  "expected_root_instruction_proof": {
+    "baseline_commit": "740f81339acf97ad49d3212dec7f1aa1555139b1",
+    "scope": "DOCUMENTATION_ONLY_LEAD_PARAGRAPH_REVIEW_ENGINEERING_RULES_UNCHANGED",
+    "status": "PASS",
+    "files": {
+      "AGENTS.md": {
+        "current_whole_sha256": "<SHA256>",
+        "baseline_whole_sha256": "<SHA256>",
+        "current_body_sha256": "<SHA256>",
+        "baseline_body_sha256": "<SHA256>",
+        "engineering_rules_unchanged": true
+      },
+      "CLAUDE.md": {
+        "current_whole_sha256": "<SHA256>",
+        "baseline_whole_sha256": "<SHA256>",
+        "current_body_sha256": "<SHA256>",
+        "baseline_body_sha256": "<SHA256>",
+        "engineering_rules_unchanged": true
+      }
+    }
+  },
+  "actual_assembler": "NOT_RUN",
+  "qualification": "NOT_CLAIMED"
+}

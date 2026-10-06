@@ -72,7 +72,7 @@ GROUPS = [
         "Connectors, portability and reuse",
         "INT PRT",
         [22, 30, 36],
-        "Application executor and bounded logframe export are documented current increments.",
+        "Application executor, bounded logframe export and separate-authorised exact saved AI-plan JSON copies are documented local increments.",
         "Kobo and Google connectors, deployment support and complete portability/exit workflows.",
     ),
     (
@@ -80,7 +80,7 @@ GROUPS = [
         "Nonprofit AI adoption and pilot planning",
         "",
         [1, 2, 3, 6, 21, 24, 34, 37],
-        "Readiness, saved adoption drafts and pilot comparisons exist; deliberate governed programme links are integrated in0.33 with passing bounded local database/browser checks; no formal acceptance.",
+        "Readiness, saved adoption drafts, pilot comparisons and governed programme links exist locally. Candidate0.35 adds a canonical saved-plan preparation review; no formal acceptance.",
         "Complete impact-link qualification, verified quality/evidence, independent pilot acceptance and feedback workflows.",
     ),
     (
@@ -88,7 +88,7 @@ GROUPS = [
         "Capacity building and maintained content",
         "",
         [7, 8, 9, 12, 31, 38],
-        "Twelve stable lessons, four manual practice worksheets and exact saved-guidance archives exist locally.",
+        "Twelve stable lessons, four manual practice worksheets and exact saved-guidance archives exist locally. Candidate0.35 adds deliberate lesson-to-practice navigation and a previewed synthetic brief starter.",
         "Content governance, complete retention, competence evidence, cohorts and governed generated task runs.",
     ),
     (
@@ -96,7 +96,7 @@ GROUPS = [
         "Marketplace, procurement and costs",
         "FIN ECO",
         [4, 5, 13, 14, 15, 16, 17, 18, 19, 20],
-        "Eight-tool discovery, procurement briefs and deterministic whole-cost comparisons exist locally.",
+        "Eight-tool discovery, procurement briefs and deterministic entered-line cost comparisons exist locally. Candidate0.35 distinguishes recorded, unknown and omitted cost categories; it does not establish full ownership costs.",
         "Supplier verification, quote provenance, RFQs, awards, bookings and conditional purchasing/payments policy.",
     ),
     (
@@ -104,7 +104,7 @@ GROUPS = [
         "AI and human advisory",
         "AI AIQ",
         [10, 11, 23],
-        "Consented provider advisory has mocked qualification and bounded I/O; existing-member consent/declaration/advice cases are locally tested in0.33; known worker-cleanup privacy disclosure blocks deployment.",
+        "Consented provider advisory has mocked qualification and bounded I/O. Internal existing-member advice is locally tested; saved0.34 corrects both worker-cleanup private receipt disclosures. Operated private retention/removal remains unbuilt.",
         "Complete internal-advice qualification, operated adviser service, funded live evaluation, money/token controls and hard process-wide recovery policy.",
     ),
     (
@@ -112,7 +112,7 @@ GROUPS = [
         "Privacy, participant protection and security",
         "PRV PAR SEC",
         [26],
-        "Tenant isolation, sensitive controls, erasure/retention machinery and key rotation have bounded support.",
+        "Tenant isolation, sensitive controls, core erasure/retention machinery and key rotation have bounded support. Saved0.34 protects private advice and plan-copy receipts from generic worker cleanup; this is not an operated private removal workflow.",
         "Independent security assessment, restored privacy-erasure replay and complete provider/data-lifecycle policy.",
     ),
     (
@@ -120,7 +120,7 @@ GROUPS = [
         "Experience, reliability and service operations",
         "UX CMP L10 CAP PER AVL DR OBS OPS MNT SUP",
         [28, 29, 32, 33, 40],
-        "Shared web navigation, actual local native recovery checks, Mac operations portability and live ETA tracking are documented.",
+        "Shared web navigation, actual local native recovery checks, Mac operations portability and live ETA tracking are documented. Candidate0.35 includes an isolated fictional public walkthrough; hosted deployment remains pending.",
         "Hosted/container/live identity-provider qualification, UAT, language UI, off-server backups and support readiness.",
     ),
 ]
@@ -155,6 +155,8 @@ def build() -> dict:
                     "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
                     "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
                     "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+                    "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+                    "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md",
                 ],
             }
         )
@@ -169,6 +171,8 @@ def build() -> dict:
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.31.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.32.md",
         "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.33.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.34.md",
+        "docs/nonprofit-ai/v1.0/DEVELOPMENT-0.35.md",
         "VERSION.json",
     ]
     return {
@@ -176,8 +180,8 @@ def build() -> dict:
         "generated_at": utc_now(),
         "method": "Each source requirement belongs to exactly one editorial domain. Shared domains are shown once. Counts do not measure effort, accepted scope, overall percentage or remaining person-hours. Source registers are not rewritten.",
         "baseline": {
-            "current_build": "0.32.0",
-            "last_saved_local_commit": "91de7cbc3bde3d76b080d9a235167744df6a39e2",
+            "current_build": "0.34.0",
+            "last_saved_local_commit": "740f81339acf97ad49d3212dec7f1aa1555139b1",
             "tentative_sprint_build": json.loads((ROOT / "VERSION.json").read_text())["build"],
             "impact_ledger_build": ledger["build"],
             "impact_ledger_assessment_date": ledger["assessment_date"],

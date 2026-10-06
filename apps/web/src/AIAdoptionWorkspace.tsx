@@ -13,6 +13,17 @@ import { AIGuidanceArchive } from "./AIGuidanceArchive";
 import { AIImpactEvidence } from "./AIImpactEvidence";
 import { AIHumanAdvice } from "./AIHumanAdvice";
 import { AIPlanPortability } from "./AIPlanPortability";
+import { AILearningLesson } from "./AILearningLesson";
+import { AIToolComparison, AIToolSources } from "./AIToolComparison";
+import { AIProcurementBriefFields } from "./AIProcurementBrief";
+import { AIPlanReviewChecklist } from "./AIPlanReviewChecklist";
+import {
+  captureReviewSnapshot,
+  captureCanonicalRead,
+  canonicalReadVisible,
+  type CanonicalReadMarker,
+  type ReviewSnapshot,
+} from "./AIPlanReviewModel";
 
 type Planning = {
   cost_comparison: CostInput | null;
@@ -152,58 +163,6 @@ function extractDraft(plan: Plan): PlanDraft {
     planning: data.planning ? clone(data.planning) : blankDraft().planning,
   };
 }
-function Sources({ solution }: { solution: Solution }) {
-  return (
-    <ul className="ai-sources">
-      {solution.source_urls
-        .filter((source) => source.url.startsWith("https://"))
-        .map((source) => (
-          <li key={source.url}>
-            <a href={source.url} target="_blank" rel="noopener noreferrer">
-              {source.label} ↗
-            </a>
-          </li>
-        ))}
-    </ul>
-  );
-}
-function Lesson({
-  lesson,
-}: {
-  lesson: NonNullable<Catalog["learning_paths"][number]["lessons"]>[number];
-}) {
-  const [answer, setAnswer] = useState<number | null>(null);
-  return (
-    <details className="ai-lesson">
-      <summary>Lesson: {lesson.title}</summary>
-      <p>{lesson.lesson}</p>
-      <p>
-        <strong>Try it:</strong> {lesson.exercise}
-      </p>
-      <fieldset>
-        <legend>{lesson.check.question}</legend>
-        {lesson.check.options.map((option, index) => (
-          <label className="ai-checkbox" key={index}>
-            <input
-              type="radio"
-              name={"lesson-" + lesson.key}
-              checked={answer === index}
-              onChange={() => setAnswer(index)}
-            />
-            {option}
-          </label>
-        ))}
-      </fieldset>
-      {answer !== null && (
-        <p role="status" className="ai-notice">
-          {answer === lesson.check.answer ? "Correct. " : "Try again. "}
-          {lesson.check.explanation}
-        </p>
-      )}
-    </details>
-  );
-}
-
 export function AIAdoptionWorkspace({
   base,
   principalId,
@@ -216,6 +175,7 @@ export function AIAdoptionWorkspace({
   onLoadProfile,
   Dialog,
 }: Props) {
+  const canRead = capabilities.includes("ai.enablement.read");
   const canManage = capabilities.includes("ai.enablement.manage");
   const canExport = capabilities.includes("ai.enablement.export");
   const [solutions, setSolutions] = useState<Solutions | null>(null);
@@ -226,6 +186,18 @@ export function AIAdoptionWorkspace({
     object_id: string;
     revision_id: string;
   } | null>(null);
+  const [canonicalRead, setCanonicalRead] =
+    useState<CanonicalReadMarker | null>(null);
+  const readAuthority = useRef({ canRead, generation: 0 });
+  if (readAuthority.current.canRead !== canRead) {
+    readAuthority.current = {
+      canRead,
+      generation: readAuthority.current.generation + 1,
+    };
+  }
+  const [reviewSnapshot, setReviewSnapshot] = useState<ReviewSnapshot | null>(
+    null,
+  );
   const [savedSnapshot, setSavedSnapshot] = useState("");
   const [savedContent, setSavedContent] = useState<{
     versions: Plan["data"]["content_versions"];
@@ -262,6 +234,13 @@ export function AIAdoptionWorkspace({
   latestHead.current = head;
   const data: PlanData = { ...draft, profile };
   const serializedData = JSON.stringify(data);
+  const draftGeneration = useRef({ serializedData, generation: 0 });
+  if (draftGeneration.current.serializedData !== serializedData) {
+    draftGeneration.current = {
+      serializedData,
+      generation: draftGeneration.current.generation + 1,
+    };
+  }
   latestData.current = serializedData;
   const dirty = savedSnapshot
     ? savedSnapshot !== serializedData
@@ -272,9 +251,24 @@ export function AIAdoptionWorkspace({
       !!draft.pilot.success_measure ||
       draft.pilot.completed_actions.length > 0 ||
       Object.values(draft.planning).some((value) => value !== null);
+  const hasCanonicalSavedRead = canonicalReadVisible(
+    canonicalRead,
+    { base, principalId, sessionIdentity },
+    head,
+    canRead,
+    canonicalUnavailable,
+    dirty,
+  );
   const selected = draft.solution_ids
     .map((id) => solutions?.solutions.find((solution) => solution.id === id))
     .filter((value): value is Solution => !!value);
+
+  useEffect(() => {
+    if (dirty || !canRead || canonicalUnavailable) {
+      setReviewSnapshot(null);
+      setCanonicalRead(null);
+    }
+  }, [dirty, canRead, canonicalUnavailable]);
 
   useEffect(() => {
     const current = ++epoch.current;
@@ -295,6 +289,8 @@ export function AIAdoptionWorkspace({
     setPlans([]);
     setNextCursor(null);
     setDraft(blankDraft());
+    setReviewSnapshot(null);
+    setCanonicalRead(null);
     setHead(null);
     setSavedSnapshot("");
     setSavedContent(null);
@@ -365,6 +361,8 @@ export function AIAdoptionWorkspace({
       return;
     }
     const current = epoch.current;
+    const authorityGeneration = readAuthority.current.generation;
+    const capturedDraftGeneration = draftGeneration.current.generation;
     const beforeLoad = latestData.current;
     busyRef.current = true;
     setBusy(true);
@@ -375,8 +373,22 @@ export function AIAdoptionWorkspace({
         { signal: abort.current?.signal },
       );
       if (current !== epoch.current) return;
+      if (
+        !readAuthority.current.canRead ||
+        authorityGeneration !== readAuthority.current.generation
+      ) {
+        setReviewSnapshot(null);
+        setCanonicalRead(null);
+        setNotice(
+          "Your access changed while the saved plan was opening. Open it again using your current access.",
+        );
+        return;
+      }
       const nextDraft = extractDraft(plan);
-      if (beforeLoad !== latestData.current) {
+      if (
+        beforeLoad !== latestData.current ||
+        capturedDraftGeneration !== draftGeneration.current.generation
+      ) {
         setNotice(
           "Your brief or draft changed while the saved plan was opening. Your edits remain here; open it again when ready.",
         );
@@ -392,13 +404,27 @@ export function AIAdoptionWorkspace({
           : undefined,
       });
       setHead({ object_id: plan.object_id, revision_id: plan.revision_id });
+      setCanonicalRead(
+        readAuthority.current.canRead
+          ? captureCanonicalRead(plan, { base, principalId, sessionIdentity })
+          : null,
+      );
+      setReviewSnapshot(
+        readAuthority.current.canRead
+          ? captureReviewSnapshot(plan, { base, principalId, sessionIdentity })
+          : null,
+      );
       setCanonicalUnavailable(false);
       setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
       setNotice(
         "Saved plan opened. These are shared draft records for your organisation.",
       );
     } catch (e) {
-      if (current === epoch.current) setError(explain(e));
+      if (current === epoch.current) {
+        setReviewSnapshot(null);
+        setCanonicalRead(null);
+        setError(explain(e));
+      }
     } finally {
       if (current === epoch.current) {
         busyRef.current = false;
@@ -420,6 +446,8 @@ export function AIAdoptionWorkspace({
       return;
     }
     setDraft(blankDraft());
+    setReviewSnapshot(null);
+    setCanonicalRead(null);
     setHead(null);
     setCanonicalUnavailable(false);
     setSavedSnapshot("");
@@ -433,6 +461,8 @@ export function AIAdoptionWorkspace({
   async function evidenceSaved(receipt: { object_id: string }) {
     const current = epoch.current;
     if (latestHead.current?.object_id !== receipt.object_id) return;
+    const authorityGeneration = readAuthority.current.generation;
+    const capturedDraftGeneration = draftGeneration.current.generation;
     const beforeRead = latestData.current;
     const cleanBeforeRead = beforeRead === savedSnapshot;
     busyRef.current = true;
@@ -450,14 +480,39 @@ export function AIAdoptionWorkspace({
         latestHead.current?.object_id !== receipt.object_id
       )
         return;
+      if (
+        !readAuthority.current.canRead ||
+        authorityGeneration !== readAuthority.current.generation
+      ) {
+        setReviewSnapshot(null);
+        setCanonicalRead(null);
+        setCanonicalUnavailable(true);
+        setNotice(
+          "Your access changed while the saved plan was being checked. Your local edits remain here; reopen the saved plan using your current access.",
+        );
+        return;
+      }
       const nextDraft = extractDraft(plan);
       const nextProfile = clone(plan.data.profile);
-      const replaceDraft = cleanBeforeRead && latestData.current === beforeRead;
+      const replaceDraft =
+        cleanBeforeRead &&
+        latestData.current === beforeRead &&
+        capturedDraftGeneration === draftGeneration.current.generation;
       if (replaceDraft) {
         setDraft(nextDraft);
         onLoadProfile(nextProfile);
       }
       setHead({ object_id: plan.object_id, revision_id: plan.revision_id });
+      setCanonicalRead(
+        replaceDraft && readAuthority.current.canRead
+          ? captureCanonicalRead(plan, { base, principalId, sessionIdentity })
+          : null,
+      );
+      setReviewSnapshot(
+        replaceDraft && readAuthority.current.canRead
+          ? captureReviewSnapshot(plan, { base, principalId, sessionIdentity })
+          : null,
+      );
       setCanonicalUnavailable(false);
       setPlanChoice(plan.object_id);
       setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
@@ -604,6 +659,9 @@ export function AIAdoptionWorkspace({
         signal: abort.current?.signal,
       });
       if (current !== epoch.current) return;
+      // A receipt is not a canonical read of saved public content.
+      setReviewSnapshot(null);
+      setCanonicalRead(null);
       setHead({
         object_id: receipt.object_id,
         revision_id: receipt.revision_id,
@@ -630,6 +688,8 @@ export function AIAdoptionWorkspace({
       });
     } catch (e) {
       if (current !== epoch.current) return;
+      setReviewSnapshot(null);
+      setCanonicalRead(null);
       const failure = e as { code?: string; reason?: string };
       if (
         ["CONFLICT", "CONFLICT_VERSION"].includes(failure.code || "") ||
@@ -873,6 +933,31 @@ export function AIAdoptionWorkspace({
           ) : null}
         </section>
       )}
+      <AIPlanReviewChecklist
+        key={
+          base +
+          ":" +
+          sessionIdentity +
+          ":" +
+          principalId +
+          ":review:" +
+          (head?.object_id || "new")
+        }
+        snapshot={reviewSnapshot}
+        currentContext={{ base, principalId, sessionIdentity }}
+        openedHead={head}
+        canRead={canRead}
+        canonicalUnavailable={canonicalUnavailable}
+        hasUnsavedChanges={dirty}
+        hasConflictingMutation={
+          busy ||
+          hasPendingSave ||
+          evidenceMutation ||
+          adviceMutation ||
+          exportMutation
+        }
+        onOpenSection={setActiveTab}
+      />
       {head && !canonicalUnavailable && (
         <AIGuidanceArchive
           key={
@@ -1129,7 +1214,7 @@ export function AIAdoptionWorkspace({
                         : "Compare "}
                       {solution.name}
                     </button>
-                    <Sources solution={solution} />
+                    <AIToolSources solution={solution} />
                     <details>
                       <summary>What to verify before a pilot</summary>
                       <ul>
@@ -1179,84 +1264,7 @@ export function AIAdoptionWorkspace({
                     </button>
                   </p>
                 ))}
-              {selected.length > 0 && (
-                <section
-                  className="ai-comparison-scroll"
-                  tabIndex={0}
-                  aria-label="Tool comparison table"
-                >
-                  <table
-                    className="ai-comparison"
-                    style={{ minWidth: 150 + 240 * selected.length }}
-                  >
-                    <thead>
-                      <tr>
-                        <th scope="col">Compare</th>
-                        {selected.map((solution) => (
-                          <th scope="col" key={solution.id}>
-                            {solution.name}
-                            <button
-                              className="secondary"
-                              type="button"
-                              onClick={() => toggleSolution(solution.id)}
-                              aria-label={
-                                "Remove " + solution.name + " from comparison"
-                              }
-                            >
-                              Remove
-                            </button>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(
-                        [
-                          ["Provider", "provider"],
-                          ["Category", "category"],
-                          ["Deployment", "deployment"],
-                          ["Commercial model", "commercial_model"],
-                          ["Nonprofit offer", "nonprofit_offer"],
-                          ["API availability", "api_available"],
-                        ] as const
-                      ).map(([title, key]) => (
-                        <tr key={key}>
-                          <th scope="row">{title}</th>
-                          {selected.map((solution) => (
-                            <td key={solution.id}>
-                              {key === "category"
-                                ? categoryLabel(solution.category)
-                                : solution[key]}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                      <tr>
-                        <th scope="row">Published sources</th>
-                        {selected.map((solution) => (
-                          <td key={solution.id}>
-                            <Sources solution={solution} />
-                          </td>
-                        ))}
-                      </tr>
-                      <tr>
-                        <th scope="row">Data questions</th>
-                        {selected.map((solution) => (
-                          <td key={solution.id}>
-                            <ul>
-                              {solution.data_review_questions.map(
-                                (question, index) => (
-                                  <li key={index}>{question}</li>
-                                ),
-                              )}
-                            </ul>
-                          </td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </section>
-              )}
+              <AIToolComparison selected={selected} onRemove={toggleSolution} />
             </section>
           )}
         </section>
@@ -1309,10 +1317,25 @@ export function AIAdoptionWorkspace({
                         />
                         {lesson.title}
                       </label>
-                      <Lesson lesson={lesson} />
+                      <AILearningLesson lesson={lesson} />
                     </div>
                   );
                 })}
+                {path.id === "foundations" && (
+                  <>
+                    <p>
+                      Try these ideas with an invented brief and a manual draft.
+                      Opening practice does not record lesson completion.
+                    </p>
+                    <button
+                      type="button"
+                      className="secondary"
+                      onClick={() => setActiveTab("practice")}
+                    >
+                      Open a guided practice worksheet
+                    </button>
+                  </>
+                )}
               </article>
             ))}
           </div>
@@ -1371,6 +1394,20 @@ export function AIAdoptionWorkspace({
           )}
           <AITaskPractice
             key={base + ":practice:" + (head?.object_id ?? "new")}
+            contextKey={[
+              base,
+              principalId,
+              sessionIdentity,
+              head?.object_id ?? "new",
+              head?.revision_id ?? "unsaved",
+            ].join("|")}
+            mutationBlocked={
+              busy ||
+              hasPendingSave ||
+              evidenceMutation ||
+              adviceMutation ||
+              exportMutation
+            }
             base={base}
             request={request}
             explain={explain}
@@ -1409,36 +1446,13 @@ export function AIAdoptionWorkspace({
             Review and edit the draft with your data steward and purchasing
             owner. It does not place an order.
           </p>
-          <fieldset disabled={!canManage}>
-            <legend>Your requirements</legend>
-            {(
-              [
-                ["requirements", "Pilot requirements", 2000],
-                ["data_boundary", "Data boundary", 2000],
-                ["budget_notes", "Budget and nonprofit offer checks", 500],
-                ["vendor_questions", "Questions for suppliers", 2000],
-              ] as const
-            ).map(([key, title, limit]) => (
-              <label key={key}>
-                {title}
-                <textarea
-                  aria-label={title}
-                  maxLength={limit}
-                  rows={key === "vendor_questions" ? 6 : 4}
-                  value={draft.procurement[key]}
-                  onChange={(event) =>
-                    edit((previous) => ({
-                      ...previous,
-                      procurement: {
-                        ...previous.procurement,
-                        [key]: event.target.value,
-                      },
-                    }))
-                  }
-                />
-              </label>
-            ))}
-          </fieldset>
+          <AIProcurementBriefFields
+            value={draft.procurement}
+            canEdit={canManage}
+            onChange={(value) =>
+              edit((previous) => ({ ...previous, procurement: value }))
+            }
+          />
           <AICostComparison
             key={base + ":cost:" + (head?.object_id ?? "new")}
             base={base}
@@ -1447,6 +1461,14 @@ export function AIAdoptionWorkspace({
             value={draft.planning.cost_comparison}
             onChange={(value) => updatePlanning("cost_comparison", value)}
             canManage={canManage}
+            inputContext={
+              hasCanonicalSavedRead
+                ? "SAVED_PLAN"
+                : head && !dirty
+                  ? "SAVED_NOT_REOPENED"
+                  : "UNSAVED_DRAFT"
+            }
+            sourceRevision={head?.revision_id}
           />
           <div className="ai-cards">
             {catalog.procurement_criteria.map((criterion) => (

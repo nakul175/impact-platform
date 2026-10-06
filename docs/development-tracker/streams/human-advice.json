@@ -3,9 +3,9 @@
   "title": "Consent-based internal human advice",
   "domain": "AI capability and advisory support",
   "owner": "/root/sprint_access",
-  "status": "TESTING",
-  "summary": "The old schema39 cleanup disclosure is preserved as a failed baseline. Registered0040 now excludes private advice/export receipts in21 focused actual native SQL groups; final full/currentAPI regression pending.",
-  "next_step": "Requalify private advice and ordinary worker/audit paths in complete current40 native/PGlite suite.",
+  "status": "REVIEWING",
+  "summary": "Registered0040 closes both historical advice cleanup disclosures; actual worker controls and full native regression pass. Original39 failure is retained. Operated retention/removal and formal acceptance remain target work.",
+  "next_step": "Include internal advice/current-read/write/replay in final combined browser and hosted release gate.",
   "eta": {
     "earliest": "2026-10-05T20:45:00Z",
     "latest": "2026-10-05T22:00:00Z",
@@ -98,10 +98,17 @@
       "result": "PASS_21_NATIVE_GROUPS",
       "scope": "Actual six runtime login topology/all40ledger; labelled synthetic grants, SQL/storage only; no actualAPI/reviewedtenantupgrade claim",
       "recorded_at": "2026-10-05T19:29:52.644998Z"
+    },
+    {
+      "title": "Exact saved0.34 local checkpoint",
+      "path": "docs/evidence/sprint-0.34-saved-checkpoint.json",
+      "result": "SAVED_LOCAL_740F813",
+      "scope": "631 committed source/evidence/documentation blobs verified. Native2045/local1980/unit1185/export-browser15 bounded scopes pass; hosted CI/main merge/deployment remain unrun.",
+      "recorded_at": "2026-10-05T20:11:14.279019Z"
     }
   ],
   "blockers": [],
-  "updated_at": "2026-10-05T19:33:09.364507Z",
+  "updated_at": "2026-10-05T20:13:11.957327Z",
   "history": [
     {
       "at": "2026-10-05T09:15:31.017457Z",
@@ -261,6 +268,17 @@
       "at": "2026-10-05T19:33:09.364507Z",
       "status": "TESTING",
       "summary": "The old schema39 cleanup disclosure is preserved as a failed baseline. Registered0040 now excludes private advice/export receipts in21 focused actual native SQL groups; final full/currentAPI regression pending.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T22:00:00Z",
+        "confidence": "MEDIUM",
+        "basis": "Registered40 focused correction passes; final source-bound full regression still pending."
+      }
+    },
+    {
+      "at": "2026-10-05T20:13:11.957327Z",
+      "status": "REVIEWING",
+      "summary": "Registered0040 closes both historical advice cleanup disclosures; actual worker controls and full native regression pass. Original39 failure is retained. Operated retention/removal and formal acceptance remain target work.",
       "eta": {
         "earliest": "2026-10-05T20:45:00Z",
         "latest": "2026-10-05T22:00:00Z",

@@ -5,5 +5,10 @@ export default defineConfig({
   server: {
     proxy: { "/v1": "http://127.0.0.1:8000", "/auth": "http://127.0.0.1:8000" },
   },
-  build: { sourcemap: false },
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      input: { app: "index.html", walkthrough: "ai-walkthrough.html" },
+    },
+  },
 });

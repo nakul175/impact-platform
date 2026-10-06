@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-10-05T20:51:51.496837+00:00",
+  "scope": "Pinned local anonymous fictional walkthrough preview. Static GET smoke passed,1109document bytes/four direct built assets. No actual API/auth/database/hosted/acceptance claim; broader actual application-served browser qualification is separate.",
+  "url": "http://127.0.0.1:8171/ai-walkthrough.html",
+  "helper_sha256": "69fdb7633e2353d978cd0b1144e6bb6b729146547e6ed1f134abd0fa2f43a788",
+  "frozen_build_proof": "docs/evidence/sprint-0.35-web-build-source-proof.json",
+  "frozen_build_proof_sha256": "38ef03e78b415eca3dea0a6e759c2292dfecc111b3348e10e017040bb0d50736",
+  "served_document_sha256": "47c0bbba2911cf18f709ff3c623ca531a9274177bf97774ff5eac6f6f67846e6",
+  "status": "LOCAL_STATIC_PREVIEW_AVAILABLE",
+  "public_final_demo": "NOT_DEPLOYED"
+}

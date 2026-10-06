@@ -1,0 +1,142 @@
+--- /private/tmp/tola-ai-035-manifest-supplemental/checkpoint-manifest.before.py
++++ /private/tmp/tola-ai-035-manifest-supplemental/checkpoint-manifest.proposed.py
+@@ -334,6 +334,116 @@
+     return proof[before]
+ 
+ 
++def tracker_names():
++    expected = {
++        "tools/development-tracker/app.js",
++        "tools/development-tracker/browser_check.mjs",
++        "tools/development-tracker/build_backlog.py",
++        "tools/development-tracker/index.html",
++        "tools/development-tracker/styles.css",
++        "tools/development-tracker/test_tracker.py",
++        "tools/development-tracker/tracker.py",
++        "tools/development-tracker/update.py",
++    }
++    actual = {
++        str(path.relative_to(ROOT))
++        for path in (ROOT / "tools/development-tracker").rglob("*")
++        if path.is_file()
++        and not any(part in {"__pycache__", ".pytest_cache", "node_modules"} for part in path.parts)
++    }
++    require(actual == expected, "Exact eight registered tracker tool inputs required")
++    require(all(not (ROOT / name).is_symlink() for name in expected), "Tracker source symlinks refused")
++    return expected
++
++
++def verify_tracker():
++    name = "docs/evidence/sprint-0.35-tracker-source-proof.json"
++    proof = read(name)
++    require(proof.get("exit_code") == 0, "Supplemental tracker qualification did not pass")
++    names = tracker_names()
++    require(
++        set(proof.get("source_sha256_start", {})) == names
++        and set(proof.get("source_sha256_end", {})) == names,
++        "Supplemental tracker proof must include the exact eight inputs",
++    )
++    qualified = unchanged(proof, "source_sha256_start", "source_sha256_end", "source_changed_during_run")
++    report = "docs/evidence/sprint-0.35-tracker-tests.xml"
++    require(
++        proof.get("junit") == report and proof.get("junit_sha256") == sha(ROOT / report),
++        "Supplemental tracker JUnit must be the exact recorded bytes",
++    )
++    counts = junit(report)
++    require(
++        counts == dict(tests=42, failures=0, errors=0, skipped=0, passed=42)
++        and proof.get("counts") == {key: counts[key] for key in ("tests", "failures", "errors", "skipped")},
++        "Exactly42 genuine passing tracker cases without skips required",
++    )
++    registers = {"docs/COMPLETION-LEDGER.json", "docs/nonprofit-ai/v1.0/requirements.json"}
++    require(
++        proof.get("source_registers_unchanged") is True
++        and set(proof.get("source_register_sha256_before", {})) == registers
++        and proof["source_register_sha256_before"] == proof.get("source_register_sha256_after")
++        and all(sha(ROOT / key) == value for key, value in proof["source_register_sha256_before"].items()),
++        "Tracker source registers must remain unchanged from recorded bytes",
++    )
++    return qualified, {
++        "proof": name,
++        "scope": "SUPPLEMENTAL_TRACKER_ONLY_NOT_PRODUCT_ACCEPTANCE",
++        "counts": counts,
++        "junit": report,
++        "source_count": 8,
++        "source_registers_unchanged": True,
++    }
++
++
++def instruction_parts(data):
++    parts = data.split(b"\n\n", 2)
++    require(
++        len(parts) == 3 and parts[0].startswith(b"# ") and parts[1].startswith(b"**Current local candidate,"),
++        "Instruction title/current-candidate lead/body boundary required",
++    )
++    return parts
++
++
++def verify_instruction_leads():
++    name = "docs/evidence/sprint-0.35-instruction-lead-review.json"
++    proof = read(name)
++    baseline = "740f81339acf97ad49d3212dec7f1aa1555139b1"
++    require(
++        proof.get("baseline_commit") == baseline
++        and proof.get("scope") == "DOCUMENTATION_ONLY_LEAD_PARAGRAPH_REVIEW_ENGINEERING_RULES_UNCHANGED"
++        and proof.get("status") == "PASS"
++        and set(proof.get("files", {})) == {"AGENTS.md", "CLAUDE.md"},
++        "Explicit fixed-baseline two-document lead review required",
++    )
++    qualified = {}
++    for document in ("AGENTS.md", "CLAUDE.md"):
++        path = ROOT / document
++        require(path.is_file() and not path.is_symlink(), "Instruction file/symlink failure")
++        current = path.read_bytes()
++        original = subprocess.check_output(["git", "show", baseline + ":" + document], cwd=ROOT)
++        current_parts, baseline_parts = instruction_parts(current), instruction_parts(original)
++        row = proof["files"][document]
++        require(
++            current_parts[0] == baseline_parts[0]
++            and current_parts[2] == baseline_parts[2]
++            and row.get("current_whole_sha256") == hashlib.sha256(current).hexdigest()
++            and row.get("baseline_whole_sha256") == hashlib.sha256(original).hexdigest()
++            and row.get("current_body_sha256") == hashlib.sha256(current_parts[2]).hexdigest()
++            and row.get("baseline_body_sha256") == hashlib.sha256(baseline_parts[2]).hexdigest()
++            and row.get("engineering_rules_unchanged") is True,
++            "Instruction changes must be only the reviewed lead; title/body/rules and hashes must match",
++        )
++        qualified[document] = row["current_whole_sha256"]
++    return qualified, {
++        "proof": name,
++        "scope": proof["scope"],
++        "baseline_commit": baseline,
++        "documents": ["AGENTS.md", "CLAUDE.md"],
++        "title_and_engineering_body_unchanged": True,
++    }
++
++
+ def assemble():
+     version = read("VERSION.json")
+     require(version["build"] == "0.35.0", "This helper is bound to build0.35.0")
+@@ -423,6 +533,14 @@
+     for p in [native, local, unit, build, lint]:
+         sources.update(unchanged(p, "source_sha256_start", "source_sha256_end", "source_changed_during_run"))
+     sources.update(unchanged(browser, "source_sha256_before", "source_sha256_after", "source_changes"))
++    tracker_sources, tracker_scope = verify_tracker()
++    instruction_sources, instruction_scope = verify_instruction_leads()
++    for supplemental in (tracker_sources, instruction_sources):
++        require(
++            all(name not in sources or sources[name] == value for name, value in supplemental.items()),
++            "Supplemental source proof conflicts with an already qualified source",
++        )
++        sources.update(supplemental)
+     previous = read("docs/evidence/sprint-0.34-local-summary.json")
+     saved_previous = json.loads(
+         subprocess.check_output(
+@@ -577,6 +695,7 @@
+         "native_restart": "PASS_BOTH_PHASES",
+         "native_restore_report": "docs/evidence/sprint-0.35-full-native-restore-drill.json",
+         "native_upgrade": "PASS_POPULATED_SCHEMA33_TO40",
++        "supplemental_qualification": {"tracker": tracker_scope, "instruction_leads": instruction_scope},
+         "source_and_verification_sha256": sources,
+         "evidence_sha256": evidence,
+         "documentation_sha256": docs,

@@ -1,0 +1,104 @@
+{
+  "scope": "Registered saved-review pure public snapshot checks only; no actual UI/API/database authority or accepted requirement evidence",
+  "results": [
+    {
+      "name": "Canonical read validity stays distinct from unavailable public interpretation",
+      "status": "passed"
+    },
+    {
+      "name": "Review binds only the exact successful public saved selectors",
+      "status": "passed"
+    },
+    {
+      "name": "Actor, tenant/base and exposed identity changes immediately hide the old review",
+      "status": "passed"
+    },
+    {
+      "name": "Different plan or revision cannot reuse a prior saved review",
+      "status": "passed"
+    },
+    {
+      "name": "Lost read authority, unavailable canonical source and dirty draft deny display",
+      "status": "passed"
+    },
+    {
+      "name": "A receipt without canonical data cannot establish the review",
+      "status": "passed"
+    },
+    {
+      "name": "Malformed base plan shape or selectors never become recorded preparation",
+      "status": "passed"
+    },
+    {
+      "name": "Explicit zero is a recorded entered cost, with no total-cost approval",
+      "status": "passed"
+    },
+    {
+      "name": "Null amount remains a follow-up without inferred complete cost",
+      "status": "passed"
+    },
+    {
+      "name": "Missing required cost line identity, label or category is uninterpretable",
+      "status": "passed"
+    },
+    {
+      "name": "Invalid known cost enum, identifier or decimal remains uninterpretable",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate offer or within-offer line identities are uninterpretable",
+      "status": "passed"
+    },
+    {
+      "name": "Blank procurement fields produce concrete review actions",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy absent planning remains missing follow-up without invented measurements",
+      "status": "passed"
+    },
+    {
+      "name": "Malformed or incomplete planning object remains interpretation unavailable",
+      "status": "passed"
+    },
+    {
+      "name": "Saved worksheet inputs do not certify competence or interpret retired learning keys",
+      "status": "passed"
+    },
+    {
+      "name": "Blank practice review notes remain follow-up even if steps are ticked",
+      "status": "passed"
+    },
+    {
+      "name": "Pilot incomparable flag prevents a recorded comparable-observation label",
+      "status": "passed"
+    },
+    {
+      "name": "Comparable self-entered pilot does not claim calculated improvement or official impact",
+      "status": "passed"
+    },
+    {
+      "name": "Edition strings alone never assert archive completeness",
+      "status": "passed"
+    },
+    {
+      "name": "Additional private/future metadata produces byte-identical review output",
+      "status": "passed"
+    },
+    {
+      "name": "Source public payload stays untouched and raw notes are not retained",
+      "status": "passed"
+    }
+  ],
+  "source_fingerprints": {
+    "apps/web/src/AIPlanReviewModel.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "tools/browser/ai-plan-review-model-check.mjs": "7c6069066fb339f88103a3f84c21d5bd902744a04a223ecf41ef1c53fd5f8b50",
+    "apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673"
+  },
+  "current_sources": {
+    "apps/web/src/AIPlanReviewModel.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "tools/browser/ai-plan-review-model-check.mjs": "7c6069066fb339f88103a3f84c21d5bd902744a04a223ecf41ef1c53fd5f8b50",
+    "apps/api/impact_api/ai_plan_public_export_schema_v1.json": "2d924c9b6eedc4d6e2d2cd454741bc5fc61781a945eb9d45331b62440614e673"
+  },
+  "sources_unchanged": true
+}

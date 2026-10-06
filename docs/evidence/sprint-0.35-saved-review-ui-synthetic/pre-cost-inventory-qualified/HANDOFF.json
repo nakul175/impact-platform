@@ -1,0 +1,30 @@
+{
+  "scope": "Unregistered private prototype/proposed parent in synthetic in-memory request-function fixture only. Actual product/API/backend qualification NOT_RUN; no accepted requirement/deployment claim. Prior attempts and18-group pre-generation proof retained; no aggregation.",
+  "pure_model_pass": 22,
+  "private_browser_pass": 20,
+  "sources_unchanged": true,
+  "source_fingerprints": 60,
+  "accessibility": {
+    "scans": 3,
+    "violations": 0,
+    "incomplete": 0
+  },
+  "visual_review": {
+    "all_three_reviewed": true,
+    "finding": "Desktop and390/320 full private component captures inspected; labels, buttons and long public title wrap within cards; no horizontal clipping/overlap observed; scrolling continues. This is not full accessibility conformance."
+  },
+  "files": {
+    "AIPlanReviewChecklist.tsx": "b1e5d936f7ab58ee285e11d71e0c7e555d0ec0376c2459eef184e2ff0dfecb97",
+    "review-model.ts": "29f13e942b81af7b33c068373f14243cc50d906418f039482d09e5bdd9c1abe5",
+    "AIAdoptionWorkspace.proposed.tsx": "bf57f5c4862947c540280da0aca63eaaba25db862a389ac0091ff42d37b997b0",
+    "workspace-mount.patch": "dd78cfe4eb803d9cae61cbc8d38f746ffd64d1c46c45bdf8dbe02d9bec033fb6",
+    "review-style.patch": "97686823a92f979a5f399f254b992271050562770f7d04c605fedb884c4b25e4",
+    "model-check.mjs": "02ed3d96ee40d8fd50ca647d9c8123776fbbf95b5ef140fbd2860307a2c2e95a",
+    "model-tests.json": "d12ab1fd530bb73d81282dd9d42b4293194642c65ea35c2d41016bff0e410475",
+    "ui-check.mjs": "7022a6b3b15aeb9760d191eae1d99603951504212f4b97c5f2a410e44bc85cb5",
+    "ui-tests.json": "4fe6f5271a1e420fe677412aeb44821f8a0ace2deb42c4b5a75d31d211c749d7",
+    "review-1440.png": "6ad91c09ca48cd73c36ea3affb3571a96d387f0a7f13b4e3f9a56cc6dad8ec6b",
+    "review-390.png": "67b81dcdb4097c965ba2005e3f9bae2f01b7c905a4ffb2f1387cd3cc7b5e954b",
+    "review-320.png": "e7af3f84b2aa0ec322c57d01f0687f78577813a24563ea4ea76e3598f87ec160"
+  }
+}

@@ -3,9 +3,9 @@
   "title": "Internal saved-plan downloads",
   "domain": "AI enablement and portability",
   "owner": "/root",
-  "status": "TESTING",
-  "summary": "Registered JSON downloads pass82 pure,148 native focused and15 actual browser groups, including4 original-byte downloads. Historical HTTP upgrade adds export only after independent review and preserves revoked access.",
-  "next_step": "Complete full regression and exact-source local checkpoint; hosted CI/deployment remain separate.",
+  "status": "COMPLETE",
+  "summary": "Bounded internal JSON downloads saved in locally qualified0.34 checkpoint740f813. Independent historical upgrade, current authority, original bytes, full API/unit and actual download browser pass; hosted release is separate.",
+  "next_step": "Retain exact0.34 proof; include downloads in final combined0.35 browser/CI release gates.",
   "eta": {
     "earliest": "2026-10-05T20:45:00Z",
     "latest": "2026-10-05T21:45:00Z",
@@ -29,10 +29,17 @@
       "result": "PASS_15_GROUPS_FOUR_BYTE_VERIFIED_DOWNLOADS",
       "scope": "Synthetic local actual API/database and Chrome;303 sources and served bytes unchanged;3 clean axe scans. No hosted UAT or formal acceptance.",
       "recorded_at": "2026-10-05T19:54:37.437Z"
+    },
+    {
+      "title": "Exact saved0.34 local checkpoint",
+      "path": "docs/evidence/sprint-0.34-saved-checkpoint.json",
+      "result": "SAVED_LOCAL_740F813",
+      "scope": "631 committed source/evidence/documentation blobs verified. Native2045/local1980/unit1185/export-browser15 bounded scopes pass; hosted CI/main merge/deployment remain unrun.",
+      "recorded_at": "2026-10-05T20:11:14.279019Z"
     }
   ],
   "blockers": [],
-  "updated_at": "2026-10-05T19:58:12.617898Z",
+  "updated_at": "2026-10-05T20:13:11.934776Z",
   "history": [
     {
       "at": "2026-10-05T19:14:17.845755Z",
@@ -60,6 +67,17 @@
       "at": "2026-10-05T19:58:12.617898Z",
       "status": "TESTING",
       "summary": "Registered JSON downloads pass82 pure,148 native focused and15 actual browser groups, including4 original-byte downloads. Historical HTTP upgrade adds export only after independent review and preserves revoked access.",
+      "eta": {
+        "earliest": "2026-10-05T20:45:00Z",
+        "latest": "2026-10-05T21:45:00Z",
+        "confidence": "LOW",
+        "basis": "UI integrated/typechecked and actual checker in preparation; correctedSQL/backend still under review."
+      }
+    },
+    {
+      "at": "2026-10-05T20:13:11.934776Z",
+      "status": "COMPLETE",
+      "summary": "Bounded internal JSON downloads saved in locally qualified0.34 checkpoint740f813. Independent historical upgrade, current authority, original bytes, full API/unit and actual download browser pass; hosted release is separate.",
       "eta": {
         "earliest": "2026-10-05T20:45:00Z",
         "latest": "2026-10-05T21:45:00Z",

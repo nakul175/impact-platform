@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
 
 const require = createRequire(import.meta.url);
 const axeSource = await fs.readFile(
@@ -12,10 +13,113 @@ const axeSource = await fs.readFile(
 const root = process.cwd();
 const local = process.env.IMPACT_TEST_LOCAL;
 const base = process.env.IMPACT_BASE_URL;
-if (!local || !base) throw Error("Use scripts/run.py ai-planning-browser");
+if (
+  !local ||
+  !base ||
+  new URL(base).hostname !== "127.0.0.1" ||
+  process.env.IMPACT_ENVIRONMENT !== "test" ||
+  process.env.IMPACT_ALLOW_FIXTURE_LOAD !== "1"
+)
+  throw Error(
+    "Use scripts/run.py ai-planning-browser with a disposable loopback fixture",
+  );
 const evidenceFile =
   process.env.IMPACT_BROWSER_EVIDENCE_FILE ||
   path.join(root, "docs/evidence/nonprofit-ai-planning-browser-tests.json");
+const captureDirectory =
+  process.env.IMPACT_BROWSER_CAPTURE_DIRECTORY ||
+  path.join(local, "ai-planning-captures");
+await fs.mkdir(captureDirectory, { recursive: true });
+const fixture = JSON.parse(
+  await fs.readFile(
+    path.join(root, "specification/fixtures/api-fixture.json"),
+    "utf8",
+  ),
+);
+const sourceDirectories = [
+  "apps/api/impact_api",
+  "apps/web/src",
+  "packages/contracts",
+  "infrastructure/migrations",
+  "qualification",
+];
+const fixedSources = [
+  "VERSION.json",
+  "tools/browser/ai-planning-check.mjs",
+  "scripts/run.py",
+  "scripts/fixture_support.py",
+  "specification/fixtures/api-fixture.json",
+  "specification/fixtures/records.json",
+  "apps/web/dist/index.html",
+];
+async function sourceHashes() {
+  const files = new Set(fixedSources);
+  for (const directory of sourceDirectories) {
+    const entries = await fs.readdir(path.join(root, directory), {
+      withFileTypes: true,
+    });
+    assert(entries.length <= 1000, "Bounded source inventory");
+    for (const entry of entries)
+      if (entry.isFile() && /\.(py|json|tsx?|css|sql)$/.test(entry.name))
+        files.add(directory + "/" + entry.name);
+  }
+  return Object.fromEntries(
+    await Promise.all(
+      [...files].sort().map(async (file) => [
+        file,
+        createHash("sha256")
+          .update(await fs.readFile(path.join(root, file)))
+          .digest("hex"),
+      ]),
+    ),
+  );
+}
+async function servedHashes() {
+  const response = await fetch(base);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.equal(
+    html,
+    await fs.readFile(path.join(root, "apps/web/dist/index.html"), "utf8"),
+  );
+  const assets = [
+    ...new Set(
+      [
+        ...html.matchAll(
+          /(?:src|href)="(\/assets\/[A-Za-z0-9._/-]+\.(?:js|css))"/g,
+        ),
+      ].map((match) => match[1]),
+    ),
+  ];
+  assert(assets.length > 0 && assets.length <= 32);
+  return Object.fromEntries(
+    await Promise.all(
+      assets.map(async (asset) => {
+        assert(!asset.includes(".."));
+        const response = await fetch(new URL(asset, base));
+        assert.equal(response.status, 200);
+        const bytes = Buffer.from(await response.arrayBuffer());
+        assert(bytes.length <= 10 * 1024 * 1024);
+        assert.deepEqual(
+          bytes,
+          await fs.readFile(path.join(root, "apps/web/dist", asset.slice(1))),
+        );
+        return [asset, createHash("sha256").update(bytes).digest("hex")];
+      }),
+    ),
+  );
+}
+const canonical = (value) =>
+  JSON.stringify(value, (key, item) =>
+    item && typeof item === "object" && !Array.isArray(item)
+      ? Object.fromEntries(
+          Object.keys(item)
+            .sort()
+            .map((key) => [key, item[key]]),
+        )
+      : item,
+  );
+let qualifiedSources, currentSources, qualifiedAssets, currentAssets, runtime;
 const passwords = JSON.parse(
   await fs.readFile(path.join(local, "passwords.json"), "utf8"),
 );
@@ -42,17 +146,35 @@ const results = [],
   errors = [],
   consoleErrors = [],
   accessibilityScans = [],
-  screenshots = [];
+  coverageLayouts = [],
+  screenshots = [],
+  externalRequests = [],
+  deliberateRefusals = [];
 let advisoryRequests = 0,
   planWrites = 0,
   costRequests = 0,
+  planReads = 0,
+  guidedBefore,
+  expectedGuidedPractice,
   catalogue,
   templates,
   planId,
   planRoute,
   savedPlan;
 const startedAt = new Date().toISOString();
-function observe(target) {
+async function observe(target) {
+  await target.route("**/*", (route) => {
+    const url = new URL(route.request().url());
+    if (url.origin !== new URL(base).origin) {
+      externalRequests.push({
+        method: route.request().method(),
+        origin: url.origin,
+        path: url.pathname,
+      });
+      return route.abort();
+    }
+    return route.continue();
+  });
   target.on("request", (request) => {
     const route = new URL(request.url()).pathname;
     if (
@@ -70,6 +192,11 @@ function observe(target) {
       route.endsWith("/ai-enablement/cost-comparison")
     )
       costRequests++;
+    if (
+      request.method() === "GET" &&
+      /\/ai-enablement\/plans\/[^/?]+$/.test(route)
+    )
+      planReads++;
   });
   target.on("pageerror", (error) => errors.push(error.message));
   target.on("console", (message) => {
@@ -80,7 +207,7 @@ function observe(target) {
       });
   });
 }
-observe(page);
+await observe(page);
 function expectedConsoleNetworkEvent(record) {
   let route;
   try {
@@ -113,6 +240,13 @@ function expectedConsoleNetworkEvent(record) {
     )
   )
     return "Deliberate lost save response after real server commit";
+  const deliberate = deliberateRefusals.find(
+    (item) =>
+      item.path === route &&
+      record.message ===
+        `Failed to load resource: the server responded with a status of ${item.status} (Not Found)`,
+  );
+  if (deliberate) return deliberate.scope;
   return null;
 }
 const button = (name) => page.getByRole("button", { name, exact: true });
@@ -122,6 +256,106 @@ const practiceField = (name) =>
   page.getByRole("textbox", { name: new RegExp("^" + name) });
 const costResult = () =>
   page.getByRole("region", { name: "Supplied cost results", exact: true });
+const coverage = () =>
+  page.getByRole("region", { name: "Cost category coverage", exact: true });
+const coverageRow = (category) =>
+  coverage()
+    .getByRole("row")
+    .filter({
+      has: page.getByRole("rowheader", { name: category, exact: true }),
+    });
+async function settleCoverageScroll() {
+  assert(
+    await coverage().evaluate(async (element) => {
+      let previous = element.scrollLeft,
+        stable = 0;
+      for (let frame = 0; frame < 90; frame++) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        const current = element.scrollLeft;
+        stable = current === previous ? stable + 1 : 0;
+        previous = current;
+        if (stable >= 10) return true;
+      }
+      return false;
+    }),
+    "Coverage scrolling did not settle within its bounded animation wait",
+  );
+}
+async function coverageLayout(edge) {
+  const geometry = await coverage().evaluate((element) => {
+    const table = element.querySelector("table"),
+      title = document.getElementById(table.getAttribute("aria-labelledby")),
+      rows = [...table.querySelectorAll("tbody tr")],
+      row = rows[0],
+      cells = row.querySelectorAll("td"),
+      rect = (node) => {
+        const { left, right, width } = node.getBoundingClientRect();
+        return { left, right, width };
+      },
+      textRects = (node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return [...range.getClientRects()].map(({ left, right }) => ({
+          left,
+          right,
+        }));
+      };
+    return {
+      viewport: innerWidth,
+      clientWidth: element.clientWidth,
+      scrollWidth: element.scrollWidth,
+      integerScrollRange: element.scrollWidth - element.clientWidth,
+      documentHasFocus: document.hasFocus(),
+      visibilityState: document.visibilityState,
+      scrollLeft: element.scrollLeft,
+      region: rect(element),
+      category: rect(row.querySelector("th")),
+      firstOffer: rect(cells[0]),
+      lastOffer: rect(cells[cells.length - 1]),
+      firstText: rows.flatMap((row) => textRects(row.querySelector("td"))),
+      lastText: rows.flatMap((row) =>
+        textRects(row.querySelector("td:last-child")),
+      ),
+      title: rect(title),
+      titleText: textRects(title),
+      titleOutsideScroller: !element.contains(title),
+    };
+  });
+  assert(geometry.titleOutsideScroller);
+  assert(geometry.title.left >= 0 && geometry.title.right <= geometry.viewport);
+  assert(
+    geometry.titleText.every(
+      (rect) => rect.left >= 0 && rect.right <= geometry.viewport + 1,
+    ),
+  );
+  assert(geometry.category.left >= geometry.region.left - 1);
+  assert(geometry.category.width <= geometry.region.width / 2);
+  const cell = edge === "first" ? geometry.firstOffer : geometry.lastOffer,
+    texts = edge === "first" ? geometry.firstText : geometry.lastText;
+  assert(cell.left >= geometry.category.right - 1);
+  assert(cell.right <= geometry.region.right + 1);
+  assert(
+    cell.width >= 90,
+    "An offer needs usable room for complete status text",
+  );
+  assert(
+    texts.length > 0 &&
+      texts.every(
+        (rect) =>
+          rect.left >= geometry.category.right - 1 &&
+          rect.right <= geometry.region.right + 1,
+      ),
+    "Every line of the visible offer status must fit beside the sticky category",
+  );
+  coverageLayouts.push({ edge, ...geometry });
+  return geometry;
+}
+const openedSource =
+  "Calculation source: the opened saved plan inputs. Results remain temporary.";
+const localSource =
+  "Calculation source: local plan inputs. Reopen the saved plan to check its saved revision.";
+const unsavedSource =
+  "Calculation source: unsaved plan inputs. Save the plan to keep these entries.";
 const pilotResult = () =>
   page.getByRole("region", { name: "Pilot evaluation results", exact: true });
 async function test(name, run) {
@@ -221,10 +455,13 @@ async function shot(name) {
     await focus.evaluate((element) =>
       element.scrollIntoView({ block: "start" }),
     );
-  await page.screenshot({ path: path.join(local, filename), fullPage: false });
+  await page.screenshot({
+    path: path.join(captureDirectory, filename),
+    fullPage: false,
+  });
   screenshots.push({
     name,
-    file: path.join(local, filename),
+    file: path.join(captureDirectory, filename),
     synthetic: true,
     realProduct: true,
   });
@@ -291,6 +528,28 @@ async function scan(name) {
   );
 }
 try {
+  qualifiedSources = await sourceHashes();
+  qualifiedAssets = await servedHashes();
+  await test("Actual loopback runtime matches the qualified source and served build", async () => {
+    const response = await fetch(base + "/v1/runtime-manifest", {
+      headers: {
+        Authorization: "Bearer " + process.env[fixture.actors.author.token_env],
+      },
+    });
+    assert.equal(response.status, 200);
+    runtime = await response.json();
+    const version = JSON.parse(
+      await fs.readFile(path.join(root, "VERSION.json"), "utf8"),
+    );
+    assert.equal(runtime.environment, "test");
+    assert.equal(runtime.build_id, "impact-" + version.build);
+    assert.equal(runtime.api_version, version.domain_api);
+    assert.equal(runtime.mutation_tests_allowed, true);
+    const migrations = Object.keys(qualifiedSources).filter((file) =>
+      /^infrastructure\/migrations\/\d{4}_.*\.sql$/.test(file),
+    );
+    assert.equal(runtime.schema_version, String(migrations.length));
+  });
   await login("author");
   await label("Plan name").fill("Synthetic nonprofit planning comparison");
   await label("AI goal").fill(
@@ -343,12 +602,32 @@ try {
     assert.equal(result.offers[1].complete_total, null);
     assert.equal(result.offers[1].missing_line_ids.length, 1);
     assert.deepEqual(result.cheapest_offer_ids, []);
+    await coverage().waitFor();
+    assert.equal(
+      await coverageRow("Training")
+        .getByRole("cell", { name: "Not recorded", exact: true })
+        .count(),
+      2,
+    );
+    assert.equal(
+      await coverageRow("Exit")
+        .getByRole("cell", { name: "Not recorded", exact: true })
+        .count(),
+      2,
+    );
+    assert.equal(
+      await coverageRow("Integration")
+        .getByRole("cell", { name: "Contains an unknown amount", exact: true })
+        .count(),
+      1,
+    );
+    await page.getByText(unsavedSource, { exact: true }).waitFor();
     await costResult()
-      .getByText("Some costs are unknown.", { exact: false })
+      .getByText("Some entered amounts are unknown.", { exact: false })
       .waitFor();
     assert.equal(
       await costResult()
-        .getByText(/lowest supplied total|Lowest supplied complete total/)
+        .getByText(/lowest supplied.*total|Lowest supplied.*total/)
         .count(),
       0,
     );
@@ -370,13 +649,77 @@ try {
       result.offers.map((offer) => offer.id),
     );
     await costResult().waitFor();
+    await costResult()
+      .getByText(
+        "All entered amounts are known. This describes entered lines only; unrecorded cost categories remain unassessed. Totals are not verified quotes or a supplier recommendation.",
+        { exact: true },
+      )
+      .waitFor();
+    assert.equal(
+      await coverageRow("Training")
+        .getByRole("cell", { name: "Not recorded", exact: true })
+        .count(),
+      2,
+    );
     assert.equal(
       await costResult()
-        .getByText("Equal lowest supplied total (tie).", { exact: false })
+        .getByText("Equal lowest supplied entered-line total (tie).", {
+          exact: false,
+        })
         .count(),
       2,
     );
     await shot("cost-desktop");
+  });
+  await test("Actual entered-line totals distinguish explicit category zero from omitted and unknown amounts", async () => {
+    const writes = planWrites;
+    await button("Add line to offer 1").click();
+    await fillLine(1, 2, {
+      description: "Synthetic training explicitly zero",
+      category: "TRAINING",
+      quantity: "1",
+      amount: "0",
+      cadence: "ONE_OFF",
+    });
+    const zero = await responseFor("cost-comparison", () =>
+      button("Calculate supplied costs").click(),
+    );
+    assert.equal(zero.status, "COMPLETE");
+    assert.deepEqual(
+      zero.offers.map((offer) => offer.complete_total),
+      ["60", "60"],
+    );
+    assert.equal(
+      await coverageRow("Training")
+        .getByRole("cell", { name: "Amounts recorded", exact: true })
+        .count(),
+      1,
+    );
+    assert.equal(
+      await coverageRow("Training")
+        .getByRole("cell", { name: "Not recorded", exact: true })
+        .count(),
+      1,
+    );
+    await select("Offer 1, line 2 category").selectOption("EXIT");
+    await label("Offer 1, line 2 quantity").fill("0");
+    await label("Offer 1, line 2 unit amount (USD)").fill("");
+    const unknown = await responseFor("cost-comparison", () =>
+      button("Calculate supplied costs").click(),
+    );
+    assert.equal(unknown.status, "INCOMPLETE");
+    assert.equal(unknown.offers[0].known_subtotal, "60");
+    assert.equal(unknown.offers[0].complete_total, null);
+    assert.deepEqual(unknown.cheapest_offer_ids, []);
+    assert.equal(
+      await coverageRow("Exit")
+        .getByRole("cell", { name: "Contains an unknown amount", exact: true })
+        .count(),
+      1,
+    );
+    await button("Remove offer 1, line 2").click();
+    assert.equal(await costResult().count(), 0);
+    assert.equal(planWrites, writes);
   });
   await test("Editing clears calculated output and invalid decimal notation makes no calculation request", async () => {
     await label("Offer 1, line 1 quantity").fill("1e3");
@@ -560,7 +903,7 @@ try {
       "Invented workshop at a fictional community hall. Registration not supplied.",
     );
     await practiceField("Your manually written draft").fill(
-      "Draft for human review: Join our invented workshop. Registration: Not supplied.",
+      "Draft for human review: Join our invented workshop. Registration: Not supplied.\nCafé टीम — invented facts only.",
     );
     await practiceField("Human review notes and unresolved questions").fill(
       "Communications reviewer must confirm registration and access information.",
@@ -577,7 +920,7 @@ try {
       5,
     );
     await practiceField("Human review notes and unresolved questions").fill(
-      "Updated synthetic review note; confirm registration and access information.",
+      "Updated synthetic review note; confirm registration and access information.\nCafé समुदाय: use supplied facts only.",
     );
     for (const check of checks)
       assert.equal(await label(check.label).isChecked(), false);
@@ -655,14 +998,122 @@ try {
     for (const check of templates.templates[0].review_steps)
       assert(await label(check.label).isChecked());
   });
+  await test("Calculation binds exact opened inputs while a save receipt alone never claims a canonical read", async () => {
+    await button("Procurement brief").click();
+    await page.getByText(openedSource, { exact: true }).waitFor();
+    const requestPromise = page.waitForRequest(
+      (request) =>
+        request.method() === "POST" &&
+        new URL(request.url()).pathname.endsWith(
+          "/ai-enablement/cost-comparison",
+        ),
+    );
+    const beforeWrites = planWrites,
+      beforeReads = planReads;
+    const result = await responseFor("cost-comparison", () =>
+      button("Calculate supplied costs").click(),
+    );
+    const sent = (await requestPromise).postDataJSON();
+    assert.deepEqual(Object.keys(sent).sort(), [
+      "currency",
+      "offers",
+      "period_months",
+    ]);
+    assert.deepEqual(sent, savedPlan.data.planning.cost_comparison);
+    assert.equal(planWrites, beforeWrites);
+    assert.equal(planReads, beforeReads);
+    assert.deepEqual(
+      result.offers.map((offer) => offer.complete_total),
+      ["66", "60"],
+    );
+    const saved = await savedResponse(() =>
+      button("Save plan changes").click(),
+    );
+    assert(saved.ok(), await saved.text());
+    const receipt = await saved.json();
+    assert.notEqual(receipt.revision_id, savedPlan.revision_id);
+    await page.getByText(localSource, { exact: true }).waitFor();
+    assert.equal(await costResult().count(), 0);
+    assert.equal(planReads, beforeReads);
+    const current = await getPlan();
+    assert.equal(current.status, 200);
+    assert.equal(current.body.revision_id, receipt.revision_id);
+    assert.deepEqual(current.body.data.planning.cost_comparison, sent);
+    await page.getByText(localSource, { exact: true }).waitFor();
+    await openSavedPlan();
+    await page.getByText(openedSource, { exact: true }).waitFor();
+    assert.equal(await costResult().count(), 0);
+    savedPlan = current.body;
+  });
+  await test("A delayed real result cannot cross a same-valued new saved revision", async () => {
+    let release, received, finished;
+    const ready = new Promise((resolve) => {
+        received = resolve;
+      }),
+      held = new Promise((resolve) => {
+        release = resolve;
+      }),
+      completed = new Promise((resolve) => {
+        finished = resolve;
+      });
+    const match = (url) =>
+      url.pathname.endsWith("/ai-enablement/cost-comparison");
+    const handler = async (route) => {
+      const response = await route.fetch();
+      assert(response.ok(), await response.text());
+      received();
+      await held;
+      await route.fulfill({ response }).catch((error) => {
+        if (
+          !/closed|abort|Target page|interrupted|already handled/i.test(
+            error.message,
+          )
+        )
+          throw error;
+      });
+      finished();
+    };
+    await page.route(match, handler);
+    await button("Calculate supplied costs").click();
+    await ready;
+    const saved = await savedResponse(() =>
+      button("Save plan changes").click(),
+    );
+    assert(saved.ok(), await saved.text());
+    const receipt = await saved.json();
+    assert.notEqual(receipt.revision_id, savedPlan.revision_id);
+    release();
+    await completed;
+    await page.unroute(match, handler);
+    assert.equal(await costResult().count(), 0);
+    await page.getByText(localSource, { exact: true }).waitFor();
+    const current = (await getPlan()).body;
+    assert.deepEqual(
+      current.data.planning.cost_comparison,
+      savedPlan.data.planning.cost_comparison,
+    );
+    await openSavedPlan();
+    await page.getByText(openedSource, { exact: true }).waitFor();
+    const result = await responseFor("cost-comparison", () =>
+      button("Calculate supplied costs").click(),
+    );
+    assert.deepEqual(
+      result.offers.map((offer) => offer.complete_total),
+      ["66", "60"],
+    );
+    savedPlan = current;
+  });
   await test("Saved guide compatibility names current editions and reading leaves the revision unchanged", async () => {
     await page
       .getByRole("heading", { name: "Saved guide compatibility", exact: true })
       .waitFor();
     await page
-      .getByText("Older guide text and product terms are not archived here.", {
-        exact: false,
-      })
+      .getByText(
+        "Use the saved guidance view to read the text captured with a specific revision.",
+        {
+          exact: false,
+        },
+      )
       .waitFor();
     const before = planWrites;
     const current = await getPlan();
@@ -689,7 +1140,48 @@ try {
     );
     assert.equal(
       current.body.content_compatibility.historical_snapshots_available,
+      true,
+    );
+    const archived = await page.evaluate(
+      async (route) => {
+        const response = await fetch(route);
+        return { status: response.status, body: await response.json() };
+      },
+      planRoute + "/revisions/" + current.body.revision_id + "/guidance",
+    );
+    assert.equal(archived.status, 200);
+    assert.equal(archived.body.object_id, planId);
+    assert.equal(archived.body.revision_id, current.body.revision_id);
+    assert.equal(archived.body.status, "COMPLETE");
+    for (const component of ["catalog", "solutions", "practice"]) {
+      assert.equal(archived.body[component].status, "AVAILABLE");
+      assert.equal(
+        archived.body[component].content_version,
+        current.body.data.content_versions[component],
+      );
+    }
+    assert.deepEqual(
+      archived.body.catalog.payload.provenance,
+      catalogue.provenance,
+    );
+    assert.equal(
+      archived.body.catalog.payload.provenance.validated_demand,
       false,
+    );
+    assert.deepEqual(
+      archived.body.catalog.payload.learning_paths,
+      catalogue.learning_paths,
+    );
+    assert.deepEqual(archived.body.practice.payload, templates);
+    const bundle = {
+      schema_version: archived.body.snapshot_schema_version,
+      catalog: archived.body.catalog.payload,
+      solutions: archived.body.solutions.payload,
+      practice: archived.body.practice.payload,
+    };
+    assert.equal(
+      createHash("sha256").update(canonical(bundle), "utf8").digest("hex"),
+      archived.body.snapshot_sha256,
     );
     assert.equal(current.body.revision_id, savedPlan.revision_id);
     assert.equal(planWrites, before);
@@ -699,6 +1191,176 @@ try {
         "Complete learning step " + catalogue.learning_paths[0].lessons[0].key,
       ).isChecked(),
     );
+  });
+  await test("Foundations handoff and starter preview/cancel preserve saved practice and learning progress", async () => {
+    guidedBefore = structuredClone((await getPlan()).body);
+    const writes = planWrites,
+      advisory = advisoryRequests;
+    await button("Build team capacity").click();
+    const progress = guidedBefore.data.learning_completed;
+    for (const key of progress)
+      assert(await label("Complete learning step " + key).isChecked());
+    const guideResponse = page.waitForResponse((response) =>
+      response.url().endsWith("/ai-enablement/task-templates"),
+    );
+    await button("Open a guided practice worksheet").click();
+    templates = await (await guideResponse).json();
+    await practiceField("Your manually written draft").waitFor();
+    const old = guidedBefore.data.planning.task_practice;
+    assert.equal(
+      await practiceField("Your synthetic or public-text brief").inputValue(),
+      old.brief,
+    );
+    assert.equal(
+      await practiceField("Your manually written draft").inputValue(),
+      old.draft,
+    );
+    assert.equal(
+      await practiceField(
+        "Human review notes and unresolved questions",
+      ).inputValue(),
+      old.review_notes,
+    );
+    await button("Preview the invented brief for this task").click();
+    const preview = page.getByRole("group", {
+      name: "Invented brief starter preview",
+      exact: true,
+    });
+    await preview.waitFor();
+    const template = templates.templates.find(
+      (item) => item.id === old.template_id,
+    );
+    assert(template);
+    await preview.getByText(template.example_brief, { exact: true }).waitFor();
+    await button("Keep my worksheet unchanged").click();
+    assert.equal(await preview.count(), 0);
+    assert.equal(
+      await practiceField("Your synthetic or public-text brief").inputValue(),
+      old.brief,
+    );
+    assert.equal(
+      await practiceField("Your manually written draft").inputValue(),
+      old.draft,
+    );
+    assert.equal(
+      await practiceField(
+        "Human review notes and unresolved questions",
+      ).inputValue(),
+      old.review_notes,
+    );
+    for (const check of template.review_steps)
+      assert.equal(
+        await label(check.label).isChecked(),
+        old.checked_steps.includes(check.id),
+      );
+    const after = (await getPlan()).body;
+    assert.equal(after.revision_id, guidedBefore.revision_id);
+    assert.deepEqual(after.data, guidedBefore.data);
+    assert.equal(planWrites, writes);
+    assert.equal(advisoryRequests, advisory);
+  });
+  await test("Starter confirmation expires after edits and explicit replacement preserves own draft and review bytes", async () => {
+    const old = guidedBefore.data.planning.task_practice,
+      template = templates.templates.find(
+        (item) => item.id === old.template_id,
+      ),
+      writes = planWrites;
+    await button("Preview the invented brief for this task").click();
+    await practiceField("Your manually written draft").fill(
+      old.draft + "\nLater local edit",
+    );
+    assert.equal(
+      await page
+        .getByRole("group", {
+          name: "Invented brief starter preview",
+          exact: true,
+        })
+        .count(),
+      0,
+    );
+    assert.equal(
+      await practiceField("Your manually written draft").inputValue(),
+      old.draft + "\nLater local edit",
+    );
+    await practiceField("Your manually written draft").fill(old.draft);
+    for (const check of template.review_steps) await label(check.label).check();
+    await button("Preview the invented brief for this task").click();
+    await button("Replace only my brief and reset self-checks").click();
+    expectedGuidedPractice = {
+      template_id: template.id,
+      brief: template.example_brief,
+      draft: old.draft,
+      review_notes: old.review_notes,
+      checked_steps: [],
+    };
+    assert.equal(
+      await practiceField("Your synthetic or public-text brief").inputValue(),
+      expectedGuidedPractice.brief,
+    );
+    assert.equal(
+      await practiceField("Your manually written draft").inputValue(),
+      old.draft,
+    );
+    assert.equal(
+      await practiceField(
+        "Human review notes and unresolved questions",
+      ).inputValue(),
+      old.review_notes,
+    );
+    for (const check of template.review_steps)
+      assert.equal(await label(check.label).isChecked(), false);
+    assert.equal(planWrites, writes);
+    const canonical = (await getPlan()).body;
+    assert.deepEqual(canonical.data.planning.task_practice, old);
+    assert.deepEqual(
+      canonical.data.learning_completed,
+      guidedBefore.data.learning_completed,
+    );
+  });
+  await test("Deliberate actual save/reopen retains starter text, original own work and unchanged recorded lessons", async () => {
+    const saved = await savedResponse(() =>
+      button("Save plan changes").click(),
+    );
+    assert(saved.ok(), await saved.text());
+    const receipt = await saved.json();
+    const current = (await getPlan()).body;
+    assert.equal(current.revision_id, receipt.revision_id);
+    assert.notEqual(current.revision_id, guidedBefore.revision_id);
+    assert.deepEqual(
+      current.data.planning.task_practice,
+      expectedGuidedPractice,
+    );
+    assert.deepEqual(
+      current.data.learning_completed,
+      guidedBefore.data.learning_completed,
+    );
+    await openSavedPlan();
+    await button("Practise a useful task").click();
+    assert.equal(
+      await practiceField("Your synthetic or public-text brief").inputValue(),
+      expectedGuidedPractice.brief,
+    );
+    assert.equal(
+      await practiceField("Your manually written draft").inputValue(),
+      expectedGuidedPractice.draft,
+    );
+    assert.equal(
+      await practiceField(
+        "Human review notes and unresolved questions",
+      ).inputValue(),
+      expectedGuidedPractice.review_notes,
+    );
+    await page
+      .getByText("Saved practice edition: Current", { exact: false })
+      .waitFor();
+    await page
+      .getByText(
+        "Using an example does not complete a lesson or a self-check",
+        { exact: false },
+      )
+      .waitFor();
+    assert.equal(advisoryRequests, 0);
+    savedPlan = current;
   });
   await test("Simulated retired-guide projection preserves unavailable progress until explicit removal", async () => {
     // Only this historical compatibility projection is simulated. Its original
@@ -954,12 +1616,39 @@ try {
     await button("Save plan changes").click();
     await button("Retry previous save").waitFor();
     await label("Offer 1, line 1 unit amount (USD)").fill("13");
+    await button("Practise a useful task").click();
+    await button("Preview the invented brief for this task").click();
+    assert(
+      await button("Use this invented brief in my worksheet").isDisabled(),
+    );
+    await page
+      .getByText(
+        "Wait for the pending saved-plan action before changing the brief.",
+        { exact: true },
+      )
+      .waitFor();
     const retry = await savedResponse(() =>
       button("Retry previous save").click(),
     );
     assert(retry.ok(), await retry.text());
     assert.equal(sent.length, 2);
     assert.deepEqual(sent[0], sent[1]);
+    assert.equal(
+      await page
+        .getByRole("group", {
+          name: "Invented brief starter preview",
+          exact: true,
+        })
+        .count(),
+      0,
+    );
+    assert.equal(
+      (await getPlan()).body.data.planning.task_practice,
+      null,
+      "Unblocking a save must not apply a queued starter",
+    );
+    await button("Procurement brief").click();
+    await page.getByText(unsavedSource, { exact: true }).waitFor();
     assert.equal(
       sent[1].data.planning.cost_comparison.offers[0].lines[0].unit_amount,
       "12",
@@ -1030,10 +1719,11 @@ try {
     );
     await costResult().waitFor();
   });
-  await test("New product controls fit desktop and 390 px views with all automated accessibility findings retained", async () => {
+  await test("New product controls fit desktop, 390 and 320 px views with actual keyboard scrolling and all accessibility findings retained", async () => {
     for (const viewport of [
       { width: 1440, height: 1050 },
       { width: 390, height: 844 },
+      { width: 320, height: 844 },
     ]) {
       await page.setViewportSize(viewport);
       for (const name of [
@@ -1043,6 +1733,94 @@ try {
       ]) {
         await button(name).click();
         await assertFits();
+        if (name === "Procurement brief") {
+          if (!(await costResult().count()))
+            await responseFor("cost-comparison", () =>
+              button("Calculate supplied costs").click(),
+            );
+          await coverage().waitFor();
+          await coverage().focus();
+          assert(
+            await coverage().evaluate(
+              (element) => element === document.activeElement,
+            ),
+          );
+          if (viewport.width <= 390) {
+            const initialLayout = await coverageLayout("first");
+            // Chromium can round fractional collapsed borders to a 1px range
+            // while both offers already fit and native arrow keys cannot move.
+            // Use the same 1px tolerance as the full cell/text visibility checks.
+            const overflows = await coverage().evaluate(
+              (element) => element.scrollWidth - element.clientWidth > 1,
+            );
+            if (viewport.width === 320) assert(overflows);
+            if (overflows) {
+              assert(initialLayout.documentHasFocus);
+              assert.equal(initialLayout.visibilityState, "visible");
+              await page.keyboard.press("ArrowRight");
+              await page.waitForFunction(
+                () =>
+                  document.querySelector(".ai-cost-coverage").scrollLeft > 0,
+              );
+              await settleCoverageScroll();
+              const movedRight = await coverage().evaluate(
+                (element) => element.scrollLeft,
+              );
+              assert(movedRight > 0);
+              assert(
+                await coverageRow("Subscription")
+                  .getByRole("rowheader")
+                  .evaluate((element) => {
+                    const cell = element.getBoundingClientRect(),
+                      parent = element
+                        .closest(".ai-cost-coverage")
+                        .getBoundingClientRect();
+                    return (
+                      cell.left >= parent.left - 1 && cell.left < parent.right
+                    );
+                  }),
+              );
+              await page.keyboard.press("ArrowLeft");
+              await page.waitForFunction(
+                (right) =>
+                  document.querySelector(".ai-cost-coverage").scrollLeft <
+                  right,
+                movedRight,
+              );
+              await settleCoverageScroll();
+              assert.equal(
+                await coverage().evaluate((element) => element.scrollLeft),
+                0,
+              );
+              await coverage().evaluate((element) =>
+                element.scrollTo({
+                  left: element.scrollWidth,
+                  behavior: "instant",
+                }),
+              );
+              await settleCoverageScroll();
+              const finalLayout = await coverageLayout("last");
+              assert.equal(finalLayout.title.left, initialLayout.title.left);
+              assert.equal(finalLayout.title.right, initialLayout.title.right);
+              await scan(
+                `Procurement brief: ${viewport.width}px scrolled to last offer`,
+              );
+            } else {
+              const finalLayout = await coverageLayout("last");
+              assert.equal(finalLayout.title.left, initialLayout.title.left);
+              assert.equal(finalLayout.title.right, initialLayout.title.right);
+            }
+            await coverage().evaluate((element) =>
+              element.scrollTo({ left: 0, behavior: "instant" }),
+            );
+            await settleCoverageScroll();
+            assert.equal(
+              await coverage().evaluate((element) => element.scrollLeft),
+              0,
+            );
+            await coverageLayout("first");
+          }
+        }
         await scan(`${name}: ${viewport.width}px`);
         if (viewport.width === 390)
           await shot(
@@ -1052,6 +1830,8 @@ try {
                 ? "pilot-mobile"
                 : "practice-mobile",
           );
+        if (viewport.width === 320 && name === "Procurement brief")
+          await shot("cost-320");
       }
     }
     assert.deepEqual(errors, []);
@@ -1105,7 +1885,7 @@ try {
   await test("Read-only staff can study guides and calculate supplied drafts but cannot save or read another tenant's plan", async () => {
     page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
     page.setDefaultTimeout(15000);
-    observe(page);
+    await observe(page);
     await login("other_tenant");
     const before = planWrites;
     assert.equal(await button("Save adoption plan").count(), 0);
@@ -1122,6 +1902,28 @@ try {
     assert(
       await label(templates.templates[2].review_steps[0].label).isDisabled(),
     );
+    await button("Preview the invented brief for this task").click();
+    await page
+      .getByRole("group", {
+        name: "Invented brief starter preview",
+        exact: true,
+      })
+      .waitFor();
+    assert.equal(
+      await button("Use this invented brief in my worksheet").count(),
+      0,
+    );
+    assert.equal(
+      await button("Replace only my brief and reset self-checks").count(),
+      0,
+    );
+    await page
+      .getByText(
+        "You can study this example. Plan management permission is needed to change the shared worksheet.",
+        { exact: true },
+      )
+      .waitFor();
+    await button("Keep my worksheet unchanged").click();
     const answer = await page.evaluate(
       async ({ cost, pilot, hiddenPlan }) => {
         const me = await (await fetch("/auth/me")).json();
@@ -1159,13 +1961,79 @@ try {
     assert.equal(planWrites, before);
     await scan("Read-only practice worksheet");
   });
+  await test("Actual read-only management refusal creates no plan and leaves preserved canonical work unchanged", async () => {
+    const authorHeaders = {
+      Authorization: "Bearer " + process.env[fixture.actors.author.token_env],
+    };
+    const beforeResponse = await fetch(base + planRoute, {
+      headers: authorHeaders,
+    });
+    assert.equal(beforeResponse.status, 200);
+    const beforePlan = await beforeResponse.json();
+    const beforeWrites = planWrites;
+    const answer = await page.evaluate(async (data) => {
+      const me = await (await fetch("/auth/me")).json(),
+        tenant = me.tenants[0].tenant_id;
+      const route = `/v1/tenants/${tenant}/ai-enablement/plans`;
+      const before = await fetch(route + "?limit=50");
+      const publicData = structuredClone(data);
+      delete publicData.content_versions;
+      const denied = await fetch(route, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": me.csrf_token,
+        },
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: publicData,
+        }),
+      });
+      const after = await fetch(route + "?limit=50");
+      return {
+        path: route,
+        status: denied.status,
+        error: await denied.json(),
+        beforeStatus: before.status,
+        afterStatus: after.status,
+        before: await before.json(),
+        after: await after.json(),
+      };
+    }, beforePlan.data);
+    deliberateRefusals.push({
+      path: answer.path,
+      status: 404,
+      scope:
+        "Deliberate current read-only actor create refusal; no management grant or profile widening",
+    });
+    assert.equal(answer.status, 404);
+    assert.equal(answer.error.code, "RESOURCE_UNAVAILABLE");
+    assert.equal(answer.beforeStatus, 200);
+    assert.equal(answer.afterStatus, 200);
+    assert.deepEqual(answer.after, answer.before);
+    assert.equal(
+      planWrites,
+      beforeWrites + 1,
+      "Exactly one deliberate refusal request; no automatic starter save",
+    );
+    const afterResponse = await fetch(base + planRoute, {
+      headers: authorHeaders,
+    });
+    assert.equal(afterResponse.status, 200);
+    assert.deepEqual(await afterResponse.json(), beforePlan);
+  });
   await test("No advisory/provider request or uncaught browser error occurs across these synthetic workflows", async () => {
     assert.equal(advisoryRequests, 0);
+    assert.deepEqual(externalRequests, []);
     assert.deepEqual(errors, []);
     const unexpected = consoleErrors.filter(
       (record) => !expectedConsoleNetworkEvent(record),
     );
     assert.deepEqual(unexpected, [], "Unexpected browser console errors");
+    currentSources = await sourceHashes();
+    currentAssets = await servedHashes();
+    assert.deepEqual(currentSources, qualifiedSources);
+    assert.deepEqual(currentAssets, qualifiedAssets);
   });
 } catch (error) {
   results.push({
@@ -1174,12 +2042,14 @@ try {
     message: error.message,
   });
   await page.screenshot({
-    path: path.join(local, "ai-planning-browser-failure.png"),
+    path: path.join(captureDirectory, "ai-planning-browser-failure.png"),
     fullPage: true,
   });
   console.error(error.stack);
   process.exitCode = 1;
 } finally {
+  currentSources ??= await sourceHashes().catch(() => null);
+  currentAssets ??= await servedHashes().catch(() => null);
   await fs.writeFile(
     evidenceFile,
     JSON.stringify(
@@ -1194,12 +2064,13 @@ try {
           : "Chromium 153",
         browser_version: browser.version(),
         database:
-          "Disposable in-memory PGlite through the real FastAPI service",
+          "Disposable local database through the real FastAPI service; engine and applied ledger are captured by the owning runner qualification",
         fixture: "Synthetic fixture only",
         results,
         uncaughtErrors: errors,
         consoleErrors,
         accessibilityScans,
+        coverageLayouts,
         screenshots,
         expectedConsoleNetworkEvents: consoleErrors
           .map((record) => ({
@@ -1210,6 +2081,22 @@ try {
         advisoryRequests,
         planWrites,
         costRequests,
+        planReads,
+        blocked_external_requests: externalRequests,
+        deliberate_current_authority_refusals: deliberateRefusals,
+        runtime_manifest: runtime,
+        qualified_sources: qualifiedSources,
+        current_sources: currentSources,
+        sources_unchanged:
+          !!currentSources &&
+          JSON.stringify(qualifiedSources) === JSON.stringify(currentSources),
+        qualified_served_assets: qualifiedAssets,
+        current_served_assets: currentAssets,
+        served_assets_unchanged:
+          !!currentAssets &&
+          JSON.stringify(qualifiedAssets) === JSON.stringify(currentAssets),
+        implementation_scope:
+          "Actual local existing HTTP/login/grant browser workflow; category coverage uses exact entered inputs, arithmetic unchanged; guided starters remain deliberate local manual work with normal save.",
         limits: [
           "Local browser evidence only; no native concurrency, hosted deployment, manual screen-reader review or user acceptance.",
           "No live provider, supplier message, purchase, competence certification or official impact record was exercised.",

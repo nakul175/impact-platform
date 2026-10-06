@@ -1205,6 +1205,23 @@ def create_app():
     if (ROOT / "apps/web/dist/assets").exists():
         app.mount("/assets", StaticFiles(directory=ROOT / "apps/web/dist/assets"), name="assets")
 
+    @app.get("/ai-walkthrough.html", include_in_schema=False)
+    def fictional_ai_walkthrough():
+        # Public static examples only: no identity, tenant, provider or DB access.
+        target = ROOT / "apps/web/dist/ai-walkthrough.html"
+        if not target.exists():
+            return JSONResponse({"message": "Fictional walkthrough unavailable."}, 503)
+        return FileResponse(
+            target,
+            headers={
+                "Content-Security-Policy": (
+                    "default-src 'none'; script-src 'self'; style-src 'self'; "
+                    "style-src-attr 'unsafe-inline'; connect-src 'none'; img-src 'none'; "
+                    "object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+                )
+            },
+        )
+
     @app.get("/")
     def index():
         target = ROOT / "apps/web/dist/index.html"

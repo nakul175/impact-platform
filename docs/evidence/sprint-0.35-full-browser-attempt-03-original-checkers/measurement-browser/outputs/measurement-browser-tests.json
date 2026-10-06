@@ -1,0 +1,74 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Create programme with calendar and geography",
+      "status": "passed"
+    },
+    {
+      "name": "Create and submit a complete indicator definition",
+      "status": "passed"
+    },
+    {
+      "name": "Independent definition review renders the correct candidate",
+      "status": "passed"
+    },
+    {
+      "name": "Create indicator with approved definition and independent assignments",
+      "status": "passed"
+    },
+    {
+      "name": "Create explicit collection obligations and submit the plan",
+      "status": "passed"
+    },
+    {
+      "name": "Plan approval freezes the reviewed obligations",
+      "status": "passed"
+    },
+    {
+      "name": "Activate indicator and pass programme readiness",
+      "status": "passed"
+    },
+    {
+      "name": "Capture a planned observation for the activated indicator",
+      "status": "passed"
+    },
+    {
+      "name": "Assigned reviewer approves the planned observation",
+      "status": "passed"
+    },
+    {
+      "name": "Calculate and inspect approved-versus-missing coverage",
+      "status": "passed"
+    },
+    {
+      "name": "Submit a governed correction without replacing the approved value",
+      "status": "passed"
+    },
+    {
+      "name": "Reviewer sees current and proposed records and approves the correction",
+      "status": "passed"
+    },
+    {
+      "name": "Author submits an obligation exception for independent review",
+      "status": "passed"
+    },
+    {
+      "name": "Independent review activates the exact eligibility exception",
+      "status": "passed"
+    },
+    {
+      "name": "Personal work centre acknowledges notice and recalculates current results",
+      "status": "passed"
+    },
+    {
+      "name": "Correction requests remain usable on mobile",
+      "status": "passed"
+    },
+    {
+      "name": "Setup remains usable on mobile without page overflow",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

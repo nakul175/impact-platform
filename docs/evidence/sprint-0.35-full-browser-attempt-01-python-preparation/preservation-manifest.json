@@ -1,0 +1,8 @@
+{
+  "scope": "Original failed packaged preparation; zero prerequisites and zero browser modes executed",
+  "preservation": "Original report and original wrapper bytes retained unchanged; repository sources and assets unchanged, all historical evidence restored",
+  "files": {
+    "qualification.json": "3af9d3828120d4e0973369e2c8d60020a9badb770297049c2d6ae9e8315f1d87",
+    "wrapper-v3.py": "f434715921d19158804c4cf1ed945b6040e765d8d6ae893a24c4d26699be424f"
+  }
+}

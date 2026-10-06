@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-10-05T20:38:05.231Z",
+  "recorded_at": "2026-10-05T20:38:05.251Z",
+  "scope": "Registered pure checks of the actual clone-only bundled walkthrough adapter. Browser network/storage traps are qualified separately; no API, authentication, database, onboarding or authority acceptance.",
+  "results": [
+    {
+      "name": "Bundled Foundations, criteria and practice match the current public sources",
+      "status": "passed"
+    },
+    {
+      "name": "Both public guides return isolated clones",
+      "status": "passed"
+    },
+    {
+      "name": "Only the two exact bundled guide routes are available",
+      "status": "passed"
+    },
+    {
+      "name": "Mutation methods and HEAD refuse without a fallback",
+      "status": "passed"
+    },
+    {
+      "name": "Bodies and caller authentication context refuse on GET",
+      "status": "passed"
+    },
+    {
+      "name": "Cancelled local guide requests return AbortError",
+      "status": "passed"
+    },
+    {
+      "name": "Adapter source contains no ambient network or storage access",
+      "status": "passed"
+    }
+  ],
+  "qualified_sources": {
+    "apps/web/src/AIFictionalWalkthroughAdapter.ts": "9db03e6009f70f6da315f5843bda463eff3011e30628b8000a806dc12bfc6413",
+    "apps/web/src/walkthrough-guidance.json": "8c7a80413722f8a5a7c7fa99a9ee138703380e7ceee9de2cee9da01cd59f0e47",
+    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
+    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "tools/browser/ai-walkthrough-adapter-check.mjs": "7d29a215d1c60fd46fb6f19960ad21b890a629865bff56b8388ca83d2398041e"
+  },
+  "current_sources": {
+    "apps/web/src/AIFictionalWalkthroughAdapter.ts": "9db03e6009f70f6da315f5843bda463eff3011e30628b8000a806dc12bfc6413",
+    "apps/web/src/walkthrough-guidance.json": "8c7a80413722f8a5a7c7fa99a9ee138703380e7ceee9de2cee9da01cd59f0e47",
+    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
+    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333",
+    "apps/api/impact_api/ai_task_practice.py": "63627d490ed6d571a837017a3ce20f0f752e15bca448498e65662a79fc7d43cb",
+    "tools/browser/ai-walkthrough-adapter-check.mjs": "7d29a215d1c60fd46fb6f19960ad21b890a629865bff56b8388ca83d2398041e"
+  },
+  "sources_unchanged": true
+}

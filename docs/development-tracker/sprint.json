@@ -4,7 +4,7 @@
   "branch": "integration/0.32-tola-ai-sprint",
   "started_at": "2026-10-05T19:17:34Z",
   "deadline": "2026-10-06T03:17:34Z",
-  "updated_at": "2026-10-05T19:58:12.618629Z",
+  "updated_at": "2026-10-05T22:01:54.471861Z",
   "status": "ACTIVE",
   "active_agent_limit": 4,
   "stream_ids": [
@@ -20,12 +20,12 @@
     "demo-deployment"
   ],
   "rollup": {
-    "summary": "JSON downloads and independent historical access upgrade pass focused/native/browser checks; final combined regression runs while capacity, cost coverage and saved-review improvements are reviewed privately.",
+    "summary": "All frozen0.35 local gates pass, including final26browser/281workflow groups and66pure checks. Root is saving that exact tested checkpoint; reviewed0.36 procurement preview and brief-preservation fixes are next. Hosted CI finance approval is still pending.",
     "planned_increments": 10,
-    "integrated_increments": 5,
-    "verified_increments": 4,
+    "integrated_increments": 7,
+    "verified_increments": 5,
     "active_agents": 4,
-    "next_checkpoint": "2026-10-05T20:15:00Z"
+    "next_checkpoint": "2026-10-05T22:30:00Z"
   },
   "limits": [
     "Maximum four concurrent agents including integration; ten workstreams run in waves.",

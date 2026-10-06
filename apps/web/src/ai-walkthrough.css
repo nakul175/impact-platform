@@ -1,0 +1,95 @@
+.ai-walkthrough {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.walkthrough-header {
+  max-width: 800px;
+  margin-bottom: 1.5rem;
+}
+.walkthrough-header h1 {
+  line-height: 1.16;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.walkthrough-eyebrow {
+  font-weight: 700;
+  color: #245c4c;
+}
+.walkthrough-boundary {
+  padding: 1rem 1.2rem;
+  border: 2px solid #245c4c;
+  background: #eef7f2;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+.walkthrough-boundary p {
+  margin-bottom: 0;
+}
+.walkthrough-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.walkthrough-nav button {
+  flex: 1 1 170px;
+  min-height: 44px;
+}
+.walkthrough-nav button[aria-pressed="true"] {
+  background: #123b30;
+  color: #fff;
+  outline: 3px solid #d4e6dc;
+  outline-offset: 2px;
+}
+.walkthrough-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.walkthrough-actions p {
+  margin: 0;
+}
+.walkthrough-content {
+  padding: 1.5rem;
+  overflow: hidden;
+}
+.walkthrough-content > h2 {
+  margin-top: 0;
+}
+.walkthrough-content .ai-cards article {
+  min-width: 0;
+}
+.walkthrough-content fieldset {
+  min-width: 0;
+}
+.walkthrough-content textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.walkthrough-content > button {
+  margin-top: 1rem;
+}
+.walkthrough-content > button {
+  padding: 0.65rem 1rem;
+  background: #245c4c;
+  color: #fff;
+  border: 1px solid #245c4c;
+  border-radius: 6px;
+}
+.ai-walkthrough footer {
+  margin: 1.5rem 0;
+  color: #40584f;
+}
+@media (max-width: 500px) {
+  .ai-walkthrough {
+    padding: 1rem 0.65rem;
+  }
+  .walkthrough-content {
+    padding: 1rem 0.75rem;
+  }
+  .walkthrough-boundary {
+    padding: 0.9rem;
+  }
+}

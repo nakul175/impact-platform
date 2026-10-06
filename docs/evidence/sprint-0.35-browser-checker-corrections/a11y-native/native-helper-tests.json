@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-05T21:19:29.037Z",
+  "scope": "Private exact proposed helper on actual installed Chrome native DOM fixture, no real application/API/save/reviewer qualification",
+  "browser_version": "154.0.8037.97",
+  "platform": "darwin",
+  "results": [
+    {
+      "name": "Exact proposed native helper chooses Indicator using keyboard and exact actual option value",
+      "status": "passed"
+    },
+    {
+      "name": "Exact proposed date helper binds native AX element and types observed order with exact date",
+      "status": "passed"
+    },
+    {
+      "name": "Exact proposed native helper chooses Review template with exact value and retained focus",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown native date part fails before keyboard typing",
+      "status": "passed",
+      "scope": "Validation negative over an observed real native AX tree; not a real alternate system layout"
+    },
+    {
+      "name": "Duplicate native date parts fail instead of a guessed order",
+      "status": "passed",
+      "scope": "Validation negative over an observed real native AX tree; not a real alternate system layout"
+    }
+  ],
+  "keyboard_widget_observations": [
+    {
+      "control": "Indicator",
+      "gesture": "ArrowDown then visible-label keyboard typeahead",
+      "option_label": "Invented first indicator",
+      "selected_value": "invented-first"
+    },
+    {
+      "control": "Event date (UTC)",
+      "gesture": "keyboard digits in observed native AX order",
+      "locale": "en-US",
+      "native_part_order": [
+        "Day",
+        "Month",
+        "Year"
+      ],
+      "chosen_date": "2026-08-15"
+    },
+    {
+      "control": "Review template",
+      "gesture": "ArrowDown then visible-label keyboard typeahead",
+      "option_label": "Invented template",
+      "selected_value": "invented-template"
+    }
+  ],
+  "candidate_sha256": "c185a21118258bc3b5e2703880e73797f646251beac95415ebcf79cc9a69de5d",
+  "sources_unchanged": true,
+  "actual_full_a11y_mode": "NOT_RUN"
+}

@@ -1,0 +1,289 @@
+{
+  "recorded_at": "2026-10-05T20:25:32.500677+00:00",
+  "scope": "Actual owning disposable PGlite browser database metadata through its local fixture connection; not native login/RLS authority proof",
+  "engine": "PGlite",
+  "server_version": "PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "database": "impact_dev",
+  "migrations": [
+    {
+      "version": 1,
+      "name": "0001_roles.sql",
+      "applied_sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+      "current_source_sha256": "5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705f0f39f7",
+      "hash_matches": true
+    },
+    {
+      "version": 2,
+      "name": "0002_domain.sql",
+      "applied_sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+      "current_source_sha256": "7cfcffcd735e7b7a2843cb675c67b2f0eb360a8e634fb1f0d220771367af5aa0",
+      "hash_matches": true
+    },
+    {
+      "version": 3,
+      "name": "0003_security.sql",
+      "applied_sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+      "current_source_sha256": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+      "hash_matches": true
+    },
+    {
+      "version": 4,
+      "name": "0004_application.sql",
+      "applied_sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+      "current_source_sha256": "c3a6f63502127d4b7865f8035c8a7c84d0307323e7744f9c93dd8189825606a4",
+      "hash_matches": true
+    },
+    {
+      "version": 5,
+      "name": "0005_access_administration.sql",
+      "applied_sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+      "current_source_sha256": "3a5509cb2cbacc5473b83f3e0c9d70cd343f416ba49e6a02de38c73b2734260c",
+      "hash_matches": true
+    },
+    {
+      "version": 6,
+      "name": "0006_measurement_configuration.sql",
+      "applied_sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+      "current_source_sha256": "081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce",
+      "hash_matches": true
+    },
+    {
+      "version": 7,
+      "name": "0007_measurement_changes.sql",
+      "applied_sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+      "current_source_sha256": "15d8295c57ecc87fa0e7ab1b2881125bec151c13069f2d6ea6c8cb7465f15db0",
+      "hash_matches": true
+    },
+    {
+      "version": 8,
+      "name": "0008_period_governance.sql",
+      "applied_sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+      "current_source_sha256": "867df4f5da210533648944fbc244b6d35a8cda0aede44e2e95415ee0fb925950",
+      "hash_matches": true
+    },
+    {
+      "version": 9,
+      "name": "0009_reporting_packages.sql",
+      "applied_sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+      "current_source_sha256": "9d29b28d90814ed06cea352a0c35353fcb3f6f34d16e3e3727d40e546248525f",
+      "hash_matches": true
+    },
+    {
+      "version": 10,
+      "name": "0010_work_and_recalculation.sql",
+      "applied_sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+      "current_source_sha256": "ae1179c228a7e5fa4f7ac7f0e4f42377003b76a9924e473981e52a97f72e24e7",
+      "hash_matches": true
+    },
+    {
+      "version": 11,
+      "name": "0011_controlled_publication.sql",
+      "applied_sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+      "current_source_sha256": "c0a97842093f07d621e692e6cbc23923135719bfa751c24fa2c9c32827a14683",
+      "hash_matches": true
+    },
+    {
+      "version": 12,
+      "name": "0012_workspace_administration.sql",
+      "applied_sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+      "current_source_sha256": "5ef1bb4c71af91f7bf19fd3b1606c8354d7d3c640031b90ac78898e6cb032596",
+      "hash_matches": true
+    },
+    {
+      "version": 13,
+      "name": "0013_tenant_lifecycle.sql",
+      "applied_sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+      "current_source_sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+      "hash_matches": true
+    },
+    {
+      "version": 14,
+      "name": "0014_initial_access.sql",
+      "applied_sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+      "current_source_sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+      "hash_matches": true
+    },
+    {
+      "version": 15,
+      "name": "0015_recovery_contacts.sql",
+      "applied_sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+      "current_source_sha256": "2b721bd91480033d9b3c3e18f8d77e5e2bcb0f675dcf1e88cb33c60e6ebf9d42",
+      "hash_matches": true
+    },
+    {
+      "version": 16,
+      "name": "0016_authority_renewal.sql",
+      "applied_sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+      "current_source_sha256": "2c95596d9088fb2ec025266cffed824a787ec8df3d3dd4021fefe19cb09290cc",
+      "hash_matches": true
+    },
+    {
+      "version": 17,
+      "name": "0017_provider_logout.sql",
+      "applied_sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+      "current_source_sha256": "4378cafe2bacbf6266e0d18f5886966a29c0a53b2ba51566b7afc4c04c9c000b",
+      "hash_matches": true
+    },
+    {
+      "version": 18,
+      "name": "0018_worker_delivery.sql",
+      "applied_sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+      "current_source_sha256": "bd2defdfb56f3332f0cdb1706fd330893497cc3eeb8f45f4277922f0eca9e8b7",
+      "hash_matches": true
+    },
+    {
+      "version": 19,
+      "name": "0019_results_framework.sql",
+      "applied_sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+      "current_source_sha256": "e12728cf4bbb2ff544c75183ac9c5371b393f498f7d61ed791d8a08b356c4161",
+      "hash_matches": true
+    },
+    {
+      "version": 20,
+      "name": "0020_calculation_methods.sql",
+      "applied_sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+      "current_source_sha256": "357f7a80ed9b21b618cdf9209d09c00b7683fc69128fc4938c7e27728d51fa31",
+      "hash_matches": true
+    },
+    {
+      "version": 21,
+      "name": "0021_web_forms.sql",
+      "applied_sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+      "current_source_sha256": "afd37bd9e4c5fbaf40d65ad0cb46da1ac8bb7b49adf7bb24ce37493ea11342f2",
+      "hash_matches": true
+    },
+    {
+      "version": 22,
+      "name": "0022_import_quality.sql",
+      "applied_sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+      "current_source_sha256": "7ea2f6f67331f02518ce538528cb06353d686835a5ff7c2849d271096e8002ac",
+      "hash_matches": true
+    },
+    {
+      "version": 23,
+      "name": "0023_evidence_objects.sql",
+      "applied_sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+      "current_source_sha256": "aa6955e3d950925e9a79192d688b9eaed56bec16cd53702225ad5d4c292570fc",
+      "hash_matches": true
+    },
+    {
+      "version": 24,
+      "name": "0024_report_exports.sql",
+      "applied_sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+      "current_source_sha256": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+      "hash_matches": true
+    },
+    {
+      "version": 25,
+      "name": "0025_worker_grants.sql",
+      "applied_sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+      "current_source_sha256": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+      "hash_matches": true
+    },
+    {
+      "version": 26,
+      "name": "0026_worker_job_grants.sql",
+      "applied_sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+      "current_source_sha256": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+      "hash_matches": true
+    },
+    {
+      "version": 27,
+      "name": "0027_privacy_execution.sql",
+      "applied_sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+      "current_source_sha256": "b7fca9754e818ded1e856c66cf4c525aa6049bab924edfbc7e5f050b728e1e9d",
+      "hash_matches": true
+    },
+    {
+      "version": 28,
+      "name": "0028_usable_staging.sql",
+      "applied_sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+      "current_source_sha256": "2a7775799ee960728e21395d3d85c4027b5fe8f7e135853c4197ef3acf6f0c1c",
+      "hash_matches": true
+    },
+    {
+      "version": 29,
+      "name": "0029_operator_lifecycle.sql",
+      "applied_sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+      "current_source_sha256": "de05d78b232cfea0ec5f75479f2f374fbfd8196c0df5a4694d871b73e68d4d41",
+      "hash_matches": true
+    },
+    {
+      "version": 30,
+      "name": "0030_security_privacy.sql",
+      "applied_sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+      "current_source_sha256": "5ea8601b29f10e1bc7d500a8f177a6aa6a95b9fcb9b094867e2c9366f453ec12",
+      "hash_matches": true
+    },
+    {
+      "version": 31,
+      "name": "0031_theory_of_change.sql",
+      "applied_sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+      "current_source_sha256": "2b0f3736515b77fc5657470d1a95fdfd87e560f4a6a5cc758a840ee86b80b4ac",
+      "hash_matches": true
+    },
+    {
+      "version": 32,
+      "name": "0032_forms_languages_rounds.sql",
+      "applied_sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+      "current_source_sha256": "999df25fb357cf91ef227240dfde6e42145e74abc1e4bf2867c0865374389b2b",
+      "hash_matches": true
+    },
+    {
+      "version": 33,
+      "name": "0033_application_executor.sql",
+      "applied_sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+      "current_source_sha256": "a0e86eda72775b6a6f14e488be51bbdbcae31ec8dc41adf8137be9860fe4fc33",
+      "hash_matches": true
+    },
+    {
+      "version": 34,
+      "name": "0034_ai_advisory.sql",
+      "applied_sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+      "current_source_sha256": "5835d7e222cc56211463d006bd2d79411293f48f2424942babbde918cf894415",
+      "hash_matches": true
+    },
+    {
+      "version": 35,
+      "name": "0035_ai_adoption_plans.sql",
+      "applied_sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+      "current_source_sha256": "543e3ac6c3f0317cd4792c7cb86d318baca93efd270584940f1b9e0f88c45be5",
+      "hash_matches": true
+    },
+    {
+      "version": 36,
+      "name": "0036_reviewed_ceiling_widening.sql",
+      "applied_sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+      "current_source_sha256": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
+      "hash_matches": true
+    },
+    {
+      "version": 37,
+      "name": "0037_ai_content_snapshots.sql",
+      "applied_sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+      "current_source_sha256": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e",
+      "hash_matches": true
+    },
+    {
+      "version": 38,
+      "name": "0038_human_advice_cases.sql",
+      "applied_sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+      "current_source_sha256": "ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00",
+      "hash_matches": true
+    },
+    {
+      "version": 39,
+      "name": "0039_human_advice_anchor_availability.sql",
+      "applied_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+      "current_source_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
+      "hash_matches": true
+    },
+    {
+      "version": 40,
+      "name": "0040_ai_plan_portability.sql",
+      "applied_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+      "current_source_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+      "hash_matches": true
+    }
+  ]
+}

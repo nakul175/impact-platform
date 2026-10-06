@@ -522,6 +522,8 @@ try {
               },
             }),
         );
+        // Incomplete results need manual review: retain every entry as reported,
+        // never filter, count or assert them away.
         scans.push({
           width,
           step,
@@ -529,6 +531,15 @@ try {
             id: v.id,
             impact: v.impact,
             nodes: v.nodes.map((n) => n.target),
+          })),
+          incomplete: a.incomplete.map((v) => ({
+            id: v.id,
+            impact: v.impact,
+            help: v.help,
+            nodes: v.nodes.map((n) => ({
+              target: n.target,
+              summary: n.failureSummary,
+            })),
           })),
         });
         assert.deepEqual(scans.at(-1).violations, []);
@@ -620,6 +631,12 @@ try {
         blocked_network_attempts: blocked,
         ambient_calls: calls,
         accessibility_scans: scans,
+        accessibility_incomplete_entries: scans.reduce(
+          (total, scan) => total + scan.incomplete.length,
+          0,
+        ),
+        accessibility_scope:
+          "Automated axe WCAG A/AA scans only; incomplete entries are retained for manual review and do not establish conformance.",
         screenshots: shots,
         qualified_sources: before,
         current_sources: await hashes(),

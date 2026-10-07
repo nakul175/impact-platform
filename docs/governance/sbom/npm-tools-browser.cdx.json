@@ -1,0 +1,903 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "serialNumber": "urn:uuid:0cf102e7-30bd-4fde-af1f-dcaf5fdf8b3a",
+  "metadata": {
+    "timestamp": "2026-10-07T21:58:30.459Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "npm",
+          "version": "10.9.4"
+        },
+        {
+          "type": "application",
+          "name": "cyclonedx-npm",
+          "group": "@cyclonedx",
+          "version": "6.0.1",
+          "author": "Jan Kowalleck",
+          "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-node-npm.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            },
+            {
+              "name": "cdx:npm:package:constraint:engine:npm",
+              "value": ">=9"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "cyclonedx-library",
+          "group": "@cyclonedx",
+          "version": "10.3.0",
+          "author": "Jan Kowalleck",
+          "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-javascript-library.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "impact-browser-qualification",
+      "bom-ref": "impact-browser-qualification",
+      "purl": "pkg:npm/impact-browser-qualification",
+      "properties": [
+        {
+          "name": "cdx:npm:package:private",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": ""
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "chromium",
+      "group": "@sparticuz",
+      "version": "153.0.0",
+      "bom-ref": "impact-browser-qualification|@sparticuz/chromium@153.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40sparticuz/chromium@153.0.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@sparticuz/chromium/-/chromium-153.0.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "8e2196a92bcf31dbb8f8ff538a562a011ef21063c41c8371fa50af13f36a34efc41d8cc5ff1d615222394fa8a8548b7b744cbb9fcf1bcb24f4be4f9d9ec810c0"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@sparticuz/chromium"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "axe-core",
+      "version": "4.13.0",
+      "bom-ref": "impact-browser-qualification|axe-core@4.13.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/axe-core@4.13.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/axe-core/-/axe-core-4.13.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5331adf3383b372f1d8db60c871976cee11ebd56bbaf68098d86392f0af5c4cefe5d4da777a0a421615355c0886c03fadef4b3ef535a572cae4a4f651ca732d0"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/axe-core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "playwright-core",
+      "version": "1.58.0",
+      "bom-ref": "impact-browser-qualification|playwright-core@1.58.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/playwright-core@1.58.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.58.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "69aa01d515ab74d8b7ffface78ab8c892eb9502720395963538e80b7a78570e14f1475ad776c1e1d1468c3acff9fe2de7342efbb493d64f2894a33ee822922af"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/playwright-core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tar-fs",
+      "version": "3.1.3",
+      "bom-ref": "impact-browser-qualification|tar-fs@3.1.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/tar-fs@3.1.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/tar-fs/-/tar-fs-3.1.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fe15380179c8759bbe1af975a64d282397f91f15ac08946d636685689764f55bf22f8f03594ea253958020f1bec088b562f580e9e4c9bc8be23ffb4c01964dc1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/tar-fs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bare-fs",
+      "version": "4.8.1",
+      "bom-ref": "impact-browser-qualification|bare-fs@4.8.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bare-fs@4.8.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/bare-fs/-/bare-fs-4.8.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3759e75dd1d900e4acb73d178878a4192e0718c1f80a74b086a59d19040caaa76fa782726e6f6c1374755959e959577848591cf2bc8f0c12d588d2f0884a840a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bare-fs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bare-path",
+      "version": "3.1.2",
+      "bom-ref": "impact-browser-qualification|bare-path@3.1.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bare-path@3.1.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/bare-path/-/bare-path-3.1.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "67229bb2ebaa2ba020d0af295fa5794f1aba5de251bd8fb05ee7271464638b25583fd6160e9210ba093f6fe7a7458ac460125aa8bce08514295cf311ef7e3537"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bare-path"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "pump",
+      "version": "3.0.4",
+      "bom-ref": "impact-browser-qualification|pump@3.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/pump@3.0.4",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/pump/-/pump-3.0.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "552eec8dce8a47b7b5ba4445850498e4b336b8158050f88e3dafc0de690a9a23304a64455084edd31ba3fbf95eb209c2bfe74f204625933adcc9782ab881cc70"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/pump"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tar-stream",
+      "version": "3.2.1",
+      "bom-ref": "impact-browser-qualification|tar-stream@3.2.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/tar-stream@3.2.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/tar-stream/-/tar-stream-3.2.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "9eab043bcccb649beb38c744c2403441d08b15b7ad1cc9fde59aaee1f2b05fe8646935893d964eaf1c7f3f0b71a0ad0c3064260503515b708fb3c205610cf871"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/tar-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bare-events",
+      "version": "2.9.2",
+      "bom-ref": "impact-browser-qualification|bare-events@2.9.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bare-events@2.9.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/bare-events/-/bare-events-2.9.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "0083ca8a857bfd8ffc29f6770008633c9c4b2db638f52eb8626e436a4665520ef9a90893814abd8442681306b87947b33d4957472fe2e4da6c2afa3d8e02a6a0"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bare-events"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bare-stream",
+      "version": "2.13.4",
+      "bom-ref": "impact-browser-qualification|bare-stream@2.13.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bare-stream@2.13.4",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/bare-stream/-/bare-stream-2.13.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3dcad0f2554b6e226c70d9b529ecfe629e06cb800719c375973c23bdfe4dc9b59e9fb56f12051fc9f9d7609db336a5a7cce7c26f501baba947f2d8b4b3242ccc"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bare-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bare-url",
+      "version": "2.5.4",
+      "bom-ref": "impact-browser-qualification|bare-url@2.5.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bare-url@2.5.4",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/bare-url/-/bare-url-2.5.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "1b16bb515581af4fde754d5bf932619ff019bcc4148fd386b29bd8b1a4d842b01b640e013936462f72e2671bc3f8278c9431f88eec03f38f9e4c0a7f6cb616e6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bare-url"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-fifo",
+      "version": "1.3.2",
+      "bom-ref": "impact-browser-qualification|fast-fifo@1.3.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-fifo@1.3.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fast-fifo/-/fast-fifo-1.3.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fddf6c7e8b38cb1ce9c240e4b8dee4d92a852ad60d9824f381f129cfcdb1df820cf7fcdcf0a1b14285e0d6588d0bf8b3a5133f30176de38366c78d595aa93e15"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-fifo"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "end-of-stream",
+      "version": "1.4.5",
+      "bom-ref": "impact-browser-qualification|end-of-stream@1.4.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/end-of-stream@1.4.5",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.5.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "a2810673a1cfdbac57abf37e18218e4f424a08b0c6aead9b41466b43b832ac989900d27ff180d3c53a5005718c9fe59b2105cd569c96ca69bb2985480909f23a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/end-of-stream"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "once",
+      "version": "1.4.0",
+      "bom-ref": "impact-browser-qualification|once@1.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/once@1.4.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/once/-/once-1.4.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "94d689808fb643951140191c7042874d038f697754c67659125413658d0c15402e684a9ed44f8dcaf81dcff688c8d8ba67d3333b976fd47f27e7cfc610ba77fb"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/once"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "b4a",
+      "version": "1.9.0",
+      "bom-ref": "impact-browser-qualification|b4a@1.9.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/b4a@1.9.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/b4a/-/b4a-1.9.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7697dc17d7c3351ebef9cb615d1ebb8b2860a96cbd081a2e02f2168489edcc11ba72f2bf72720f8994230708bf66a8e30440c67e8343b660749138eba0e277a5"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/b4a"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "streamx",
+      "version": "2.28.1",
+      "bom-ref": "impact-browser-qualification|streamx@2.28.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/streamx@2.28.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/streamx/-/streamx-2.28.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cc4cd76f4b3909db3bb6a307eab859d3995c2727425a240f13088d9e056acecc4273deb6bcb638530fa65bba1df240c7db9f24d94cff26b3a474800085287d54"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/streamx"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "teex",
+      "version": "1.0.1",
+      "bom-ref": "impact-browser-qualification|teex@1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/teex@1.0.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/teex/-/teex-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "79813a88423ad8d8b51fca086bb2a50d4eae401b6aaf811a8e78b7c17eeba5f5c3f32b05c7ccf4f9dae2f8a5843d6a41b315dfc6ee7cc7fd23bd3553d5e90e4a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/teex"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "wrappy",
+      "version": "1.0.2",
+      "bom-ref": "impact-browser-qualification|wrappy@1.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/wrappy@1.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "9784a9fc346c7a8afdc0be84bd5dbe4ee427eb774c90f8d9feca7d5e48214c46d5f4a94f4b5c54b19deeeff2103b8c31b5c141e1b82940f45c477402bdeccf71"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/wrappy"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "events-universal",
+      "version": "1.0.1",
+      "bom-ref": "impact-browser-qualification|events-universal@1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/events-universal@1.0.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/events-universal/-/events-universal-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "2d47797aebdb30ba70385f26ea2bcf09b85079289854d6fc56cd1f43c4235e8d094e4107a73f29c5d41fd204ad96d68fa70d0271af1bdfd2b1bcaf5c7ca46203"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/events-universal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "text-decoder",
+      "version": "1.2.7",
+      "bom-ref": "impact-browser-qualification|text-decoder@1.2.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/text-decoder@1.2.7",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/text-decoder/-/text-decoder-1.2.7.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "be52f2b5791e3f8c6f12ada8b477897d24084725b1a3fa191846d7aed10417d1e79ab765cb9f6c51bcd9fd08325ae2d81dcb421f1145e2d45064d43d93ad04c5"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/text-decoder"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "impact-browser-qualification",
+      "dependsOn": [
+        "impact-browser-qualification|@sparticuz/chromium@153.0.0",
+        "impact-browser-qualification|axe-core@4.13.0",
+        "impact-browser-qualification|playwright-core@1.58.0"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|@sparticuz/chromium@153.0.0",
+      "dependsOn": [
+        "impact-browser-qualification|tar-fs@3.1.3"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|axe-core@4.13.0"
+    },
+    {
+      "ref": "impact-browser-qualification|playwright-core@1.58.0"
+    },
+    {
+      "ref": "impact-browser-qualification|tar-fs@3.1.3",
+      "dependsOn": [
+        "impact-browser-qualification|bare-fs@4.8.1",
+        "impact-browser-qualification|bare-path@3.1.2",
+        "impact-browser-qualification|pump@3.0.4",
+        "impact-browser-qualification|tar-stream@3.2.1"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|bare-fs@4.8.1",
+      "dependsOn": [
+        "impact-browser-qualification|bare-events@2.9.2",
+        "impact-browser-qualification|bare-path@3.1.2",
+        "impact-browser-qualification|bare-stream@2.13.4",
+        "impact-browser-qualification|bare-url@2.5.4",
+        "impact-browser-qualification|fast-fifo@1.3.2"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|bare-path@3.1.2"
+    },
+    {
+      "ref": "impact-browser-qualification|pump@3.0.4",
+      "dependsOn": [
+        "impact-browser-qualification|end-of-stream@1.4.5",
+        "impact-browser-qualification|once@1.4.0"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|tar-stream@3.2.1",
+      "dependsOn": [
+        "impact-browser-qualification|b4a@1.9.0",
+        "impact-browser-qualification|bare-fs@4.8.1",
+        "impact-browser-qualification|fast-fifo@1.3.2",
+        "impact-browser-qualification|streamx@2.28.1"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|bare-events@2.9.2"
+    },
+    {
+      "ref": "impact-browser-qualification|bare-stream@2.13.4",
+      "dependsOn": [
+        "impact-browser-qualification|b4a@1.9.0",
+        "impact-browser-qualification|bare-events@2.9.2",
+        "impact-browser-qualification|streamx@2.28.1",
+        "impact-browser-qualification|teex@1.0.1"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|bare-url@2.5.4",
+      "dependsOn": [
+        "impact-browser-qualification|bare-path@3.1.2"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|fast-fifo@1.3.2"
+    },
+    {
+      "ref": "impact-browser-qualification|end-of-stream@1.4.5",
+      "dependsOn": [
+        "impact-browser-qualification|once@1.4.0"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|once@1.4.0",
+      "dependsOn": [
+        "impact-browser-qualification|wrappy@1.0.2"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|b4a@1.9.0"
+    },
+    {
+      "ref": "impact-browser-qualification|streamx@2.28.1",
+      "dependsOn": [
+        "impact-browser-qualification|events-universal@1.0.1",
+        "impact-browser-qualification|fast-fifo@1.3.2",
+        "impact-browser-qualification|text-decoder@1.2.7"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|teex@1.0.1",
+      "dependsOn": [
+        "impact-browser-qualification|streamx@2.28.1"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|wrappy@1.0.2"
+    },
+    {
+      "ref": "impact-browser-qualification|events-universal@1.0.1",
+      "dependsOn": [
+        "impact-browser-qualification|bare-events@2.9.2"
+      ]
+    },
+    {
+      "ref": "impact-browser-qualification|text-decoder@1.2.7",
+      "dependsOn": [
+        "impact-browser-qualification|b4a@1.9.0"
+      ]
+    }
+  ]
+}

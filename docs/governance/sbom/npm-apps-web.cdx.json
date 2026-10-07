@@ -1,0 +1,2801 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "serialNumber": "urn:uuid:e24e7ac8-be9b-4e8d-a3b3-2535c51fe1a6",
+  "metadata": {
+    "timestamp": "2026-10-07T21:58:28.244Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "npm",
+          "version": "10.9.4"
+        },
+        {
+          "type": "application",
+          "name": "cyclonedx-npm",
+          "group": "@cyclonedx",
+          "version": "6.0.1",
+          "author": "Jan Kowalleck",
+          "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-node-npm.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            },
+            {
+              "name": "cdx:npm:package:constraint:engine:npm",
+              "value": ">=9"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "cyclonedx-library",
+          "group": "@cyclonedx",
+          "version": "10.3.0",
+          "author": "Jan Kowalleck",
+          "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-javascript-library.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "impact-web",
+      "version": "0.36.0",
+      "bom-ref": "impact-web@0.36.0",
+      "purl": "pkg:npm/impact-web@0.36.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=22.12 <25"
+        },
+        {
+          "name": "cdx:npm:package:private",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": ""
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "react-dom",
+      "group": "@types",
+      "version": "19.3.0",
+      "bom-ref": "impact-web@0.36.0|@types/react-dom@19.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40types/react-dom@19.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "648edb538da66575ca1e7fea34b130d88adb888354ed7e7ebdf81d8b10479023696165e32a07d0fcffaec866f90a338b07d51c9d37a0debca542d5768729b8e1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/react-dom"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react",
+      "group": "@types",
+      "version": "19.3.0",
+      "bom-ref": "impact-web@0.36.0|@types/react@19.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40types/react@19.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "374ac50ae1fd628c46f7f9bad65f4c7e924a7e62ce554d1e9bb8a9233e9346049292f45e2c1f6f2fce4607ecabf01b3995eaa9be0f7a252c05e194b5b38be242"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/react"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "plugin-react",
+      "group": "@vitejs",
+      "version": "6.1.1",
+      "bom-ref": "impact-web@0.36.0|@vitejs/plugin-react@6.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40vitejs/plugin-react@6.1.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-6.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cb12da415f609214bc7b326a08cebe9dd53b98363a82a020ef9350fb4223c0423c2183a64028244701ca5527d65d6d3be83b2a328d0393ed052b553e33946017"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@vitejs/plugin-react"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "prettier",
+      "version": "3.6.2",
+      "bom-ref": "impact-web@0.36.0|prettier@3.6.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/prettier@3.6.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/prettier/-/prettier-3.6.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "23b0088396e802be51d0516d27aac27c3f8b16c587a7cd5da25ac50fc4bbf54f6d6fc033da71ab2677273129f2b3e6e94097d1533aacf619c0f35380037842b9"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prettier"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react-dom",
+      "version": "19.3.0",
+      "bom-ref": "impact-web@0.36.0|react-dom@19.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react-dom@19.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "24393c76089fe753a31680c4ef4f8e4fd202c98afeebd1e59a284dc29d7e36c7db9dadede6c22209af59264b43990e3fd5bfeb9f6ea1200476b985c332be6bd1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react-dom"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "react",
+      "version": "19.3.0",
+      "bom-ref": "impact-web@0.36.0|react@19.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/react@19.3.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/react/-/react-19.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "13c2d471bb415addb46db9766281dfc7864305dc554df38ab42667f5c0d227897afe7ba8029729201723e3bb76c19a155fc836647b8c1db892860091d53e52a2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/react"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|typescript@7.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/typescript@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/typescript/-/typescript-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "f0561abbdea8dcd28e85b8ca8bfa8dbc6fd6e63873c646dd9b9b23f406d9ff94f9b16aa7de12602df1b1dbbb11299593bf2cc23fc74b4414dfe6d05349155434"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/typescript"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "vite",
+      "version": "8.3.1",
+      "bom-ref": "impact-web@0.36.0|vite@8.3.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/vite@8.3.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/vite/-/vite-8.3.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fdbbc7f44f6d9825d11a9dae5d8dd66ce95daa94f01646e16bff0035a110e95931847eb42b2a8bc2066aea51b6cbee2e4f9e71f7ef5e50732943bb869ce08a8c"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/vite"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "csstype",
+      "version": "3.2.3",
+      "bom-ref": "impact-web@0.36.0|csstype@3.2.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/csstype@3.2.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cf51c629c632db103c00641fc2b9f43c0cbe3c1ed7fc64a3dd45495bda8aca7e37c566be825e675e6538aaa2cc4735952c50bc2aeb145fc4ffd240a2398a4021"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/csstype"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "pluginutils",
+      "group": "@rolldown",
+      "version": "1.0.1",
+      "bom-ref": "impact-web@0.36.0|@rolldown/pluginutils@1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "da3f5b1ade4987c863faf3ed8333ed97bda3d324711c0cae9a8a3a4cd7c08ec2c1d3852da52bcf6cf703701331cfb9fef42601d1cd46c501716118368e29aa1b"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/pluginutils"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "scheduler",
+      "version": "0.28.0",
+      "bom-ref": "impact-web@0.36.0|scheduler@0.28.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/scheduler@0.28.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "8eea2b7c2988908c3cb53fa9e415d29ba3c98d017fc9c11898acb3511088b7f45a64884bf8fba56d0f58bb6cf51dd3890dda834e5c40d7ec4a0661d726c73303"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/scheduler"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-aix-ppc64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-aix-ppc64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-aix-ppc64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-aix-ppc64/-/typescript-aix-ppc64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "31328a91607ba7fd04f718b5775b47b59e4f88b90610c22af3ca4ad82b9b6633ac2ed6132ea8602208bacdea456bef461d9ea1d3934c0a443118a88f5ccc57b5"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-aix-ppc64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-darwin-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-darwin-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-darwin-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-darwin-arm64/-/typescript-darwin-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "828c336abf4cc12fda456a7a7f76b8294ab34630198ceb2618d08ce8b713817ba6f9d05f82c05530df8082f38209b82e5f289c93a2c986906ccf131e6c9f2cc8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-darwin-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-darwin-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-darwin-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-darwin-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-darwin-x64/-/typescript-darwin-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "499f716489ea02936534673db345b5552b24b5848e7bd705a8d388aa63751acf129a48ca65816dd35ec6e15c0fc404889ce0ee01d6d35bbb1788551ff3ddd180"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-darwin-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-freebsd-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-freebsd-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-freebsd-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-freebsd-arm64/-/typescript-freebsd-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5b9347e32fc9d29948212e5bdb1bd312453b245c72a9d3003a07fe225865d2f1d05ca3b9759a3177e0bf8c4b6ae7a738177c24ef5441e013114365dd23e6f061"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-freebsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-freebsd-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-freebsd-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-freebsd-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-freebsd-x64/-/typescript-freebsd-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "50c183c79b13a73370dd688f79b1fb97dd0859f26080477e7a01edfeaea9eff0a6df3aa857b5719065edfb70f13c8c3c09c9af001d23dec5557db857f8ce13a7"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-freebsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-arm",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-arm@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-arm@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-arm/-/typescript-linux-arm-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "81f7d3df13f3f6c47b8ff6091319323e7b6b2343f610ff576cec96ced876fc6b3446cb4afbdd1105c3b49dc5e85f2fdb798965d525f0f38e8d7f6cdd9c4cf441"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-arm"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-arm64/-/typescript-linux-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "421e1e538ff2df20e39df8e3c8f62284c8f9fce0c8966b7e073bb5ece23e7e24910d6e7b4265394a237addec4f44d24f294cdc73520d6b535776b27e32a1e351"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-loong64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-loong64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-loong64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-loong64/-/typescript-linux-loong64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "b841dc93d8bc8680335cf8984626f53bb9a23a7cf6dd2c4879597a1782d7a31faaa2fd4adf98c77045ba5472af648fa9caf97b7d910fe0c094e4b62f22ad46b9"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-loong64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-mips64el",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-mips64el@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-mips64el@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-mips64el/-/typescript-linux-mips64el-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4782af00c9c4e375b941ea9bd0bcb9e8ede658c588020b0ccb3dfa0c26b271de676e0ffd9339b4962c3726871f46ac8963428f9b31636ecc28cd7c96d039c860"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-mips64el"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-ppc64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-ppc64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-ppc64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-ppc64/-/typescript-linux-ppc64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "0ce471e5bdec77fe12ede6b2c66e0542ff80ec2ae45081916878b023ca221d3008d5f00f5a1178274bc09640bc6e20251d2555c31310ded8d9dbf0d56e742288"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-ppc64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-riscv64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-riscv64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-riscv64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-riscv64/-/typescript-linux-riscv64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c1fd23a840ce8eb3d19cac18472c890d1a35d4a31bbcc16b53eab8cea2b20a1383073be591b84d41f2af2f14027304e974369748765356e8742680ab28250c1d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-riscv64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-s390x",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-s390x@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-s390x@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-s390x/-/typescript-linux-s390x-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "224c097372fbca1cad59dfdec23cb13437ce9acc029bd1963094ffb9efdd53869935bc1979801eb6ae365722e6b264a3be85fbcfbe17e996980adcc0af412e1b"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-s390x"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-linux-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-linux-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-linux-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-linux-x64/-/typescript-linux-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "11875fd9c360eeb8025899f109d27e177577f4ef2285bdfb78702ed4b2bca00162ce04d06cf38aef31c75db3edf2b5f6e023aa3835de237b087f47c25c6ec7fc"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-linux-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-netbsd-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-netbsd-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-netbsd-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-netbsd-arm64/-/typescript-netbsd-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fa9a25605e0c174e1a3e93b9153907ada9fdc94403497ab2e468920caa6c965e63cb7977fa0f502e1a5fdfd4fe78fb5e7e15cb386acb9744088e440fe959de94"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-netbsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-netbsd-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-netbsd-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-netbsd-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-netbsd-x64/-/typescript-netbsd-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "f18213d041ccff776ad7464e545fc0ee973f61232d6dc79c72de2b5ad7b1ae74821ce3dca42d8a4cb5df4c247abc3a674a2635da178d6f51a237fc2ef93fc5c8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-netbsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-openbsd-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-openbsd-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-openbsd-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-openbsd-arm64/-/typescript-openbsd-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "00f4fcf829589ee626d6ef7e920197a0c8f65735b37329b087680d4905724877e444318e4d592858b8c298e41268ef8fa2a439ec1d1f951a7d480fbb1a79e4cd"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-openbsd-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-openbsd-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-openbsd-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-openbsd-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-openbsd-x64/-/typescript-openbsd-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c97eecf90d03967d03b7db44cd9b008d75d1ffecad04cec096095aab278c3f142ccc9d4986525d67a8cb03e23395d1ed7e55fcd5e9bb9436a8d715eef9a45192"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-openbsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-sunos-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-sunos-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-sunos-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-sunos-x64/-/typescript-sunos-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "74b24319a2d9d43e073d09fadaed67f26043909444c0cb00902764c1de087aac3ec774d4c93b2a634622042b44e87e8ecf38069378ae677bc55914be13cfddd6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-sunos-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-win32-arm64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-win32-arm64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-win32-arm64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-win32-arm64/-/typescript-win32-arm64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "1b2975572e8eb167ac2f39aaf843f415bedbe0d89de76df602f700d9215c758ade95da4db58145a1f3e39edeb6cbd850cbb553699a7ae480898ee01045a55c21"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-win32-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "typescript-win32-x64",
+      "group": "@typescript",
+      "version": "7.0.2",
+      "bom-ref": "impact-web@0.36.0|@typescript/typescript-win32-x64@7.0.2",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript/typescript-win32-x64@7.0.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@typescript/typescript-win32-x64/-/typescript-win32-x64-7.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d014371e40071e528b4a9d6a46f7f7494846a46b03ba107f8e0170ef982ecaa6f126a11a4b40b0fd514ef22da71e094953340246d30c47f20100a137113302e2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript/typescript-win32-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fsevents",
+      "version": "2.3.3",
+      "bom-ref": "impact-web@0.36.0|fsevents@2.3.3",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fsevents@2.3.3",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e71a037d7f9f2fb7da0139da82658fa5b16dc21fd1efb5a630caaa1c64bae42defbc1d181eb805f81d58999df8e35b4c8f99fade4d36d765cda09c339617df43"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fsevents"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss@1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss/-/lightningcss-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5a4503ae88ee26cd3192019fdae756c5adf21814713edc54901efd8ba68264b46073b3ccf1f65ef53a2c7cf0dcbc4a5065bb850129c762644b04b51b98b38820"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "picomatch",
+      "version": "4.0.7",
+      "bom-ref": "impact-web@0.36.0|picomatch@4.0.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/picomatch@4.0.7",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/picomatch/-/picomatch-4.0.7.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "a9c26ef3c436216a89b030f9dbd24a31dc069bf76f2275b81ef427470887f49b62849bf318eb1c0ed1c4df1d6904a794393cac43c91598b9c9da426eef285c18"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/picomatch"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "postcss",
+      "version": "8.5.28",
+      "bom-ref": "impact-web@0.36.0|postcss@8.5.28",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/postcss@8.5.28",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "451bb3a83b6de58f61deabb3e615a12be4cf9ec995b3a5b0494e8b90931e6381ecb54103b984c6f1425275ac0c4739b302d57e284a06f0ddd0836a8bcb9bccfc"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/postcss"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|rolldown@1.2.11",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/rolldown@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "aa94b0232cf48c742ae6a5c14cdc45984ebaeb8ac9ecefb84ef3c53a239a052af3f0838773592828a4aa4ccd87eaed541b5f93bdeb82eaf6831ca5c53af6f52b"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/rolldown"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "bom-ref": "impact-web@0.36.0|tinyglobby@0.2.17",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/tinyglobby@0.2.17",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.17.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c1747f758a5ca8a99f5a911d66388a24ec023459dd0f40cc9eb5bf7188d51adb449017d581c2c51e836b963e3b9a339589cf72c8dbbae5a96c805e0d4324dada"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/tinyglobby"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "bom-ref": "impact-web@0.36.0|detect-libc@2.1.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/detect-libc@2.1.2",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "06d8f604e38ef37a375b21f9f5ef0c817b3111055c6ab9143a9118aee6c1d2eaf09cdd74c90dfae2bb22072535d67665a966199b4e62fe87fb8a8e26ce2841b5"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/detect-libc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-android-arm64@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-android-arm64@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-android-arm64/-/lightningcss-android-arm64-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "804a514da94a768b29e016fca96b5cda23a013949e2079694b5ba9f5b16adb003262197551d4ce6d88877bdf3310cf5242f4a8a906752100f424da60dcc979a6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-android-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-darwin-arm64@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "49c89acfc79e9cd4ca9fd6f7b7bfb1af48a94e9f58c4a418e27a704379ab46e2f404054704bc99c687e168a04056dce6b5167fcd3ca8d3fb68e01d6e586fc38e"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-darwin-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-darwin-x64@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-darwin-x64@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-darwin-x64/-/lightningcss-darwin-x64-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "67950f031ceb8e558d3721b2ea2eb9709cf3be02790f74fac0cbecfa05a963d77ba9184036bc6a029e8b871220661584c35f117c94c6711c63b8b201afe9bc5d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-darwin-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-freebsd-x64@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-freebsd-x64/-/lightningcss-freebsd-x64-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "41033f4e2fe141a8c9c0263e4625ae099f6c76d23f5d093b9c32b9bc2f2491dc22c5ecce94382f0f1efe453f908cae857054f8329b2ea019c7228fcedd2b5146"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-freebsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-linux-arm-gnueabihf@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-linux-arm-gnueabihf/-/lightningcss-linux-arm-gnueabihf-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "37b15505eea24b6e0c94ce91ff84414f11a14217991aceed890f54df652d17be4dccfe50ef158f46a2c108ac65450464deb6358c220f2f3c7b5b33a1b942112d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-linux-arm-gnueabihf"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-linux-arm64-gnu@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-linux-arm64-gnu/-/lightningcss-linux-arm64-gnu-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "8f6bff8ad9b2e0794dc6573abe829762006a362d0d8362d2860e33ec6b9fa4482cd393fedacb815728bd23a607ab9ba8545c7d1138a7dde08484b5725c64272a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-linux-arm64-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-linux-arm64-musl@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-linux-arm64-musl/-/lightningcss-linux-arm64-musl-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "ca23b944e32e6108176c2eb4ca3654e4261215918a5cbd071404d7b7d987267d7ecd6e79a02b4c23d35f7158582cc1432fb815ee804fa27fc498c3068363afb5"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-linux-arm64-musl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-linux-x64-gnu@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "6abf89bbb2e670dd09a381692f88691726f0346f7fdc0fc1af9296da7da3c8e0e0dcc1195da0d800375e9a8352f810cd7cc80abf29492e3e12e6dc9101cb6e02"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-linux-x64-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-linux-x64-musl@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4588986e4a24c34b6b7caaaacdf179e658229f010fac3dce2437d3b89cc5b3530aea21670de9dacf57ea2cbb57e084c6dce92d2505ce7936b0d5ac2b0409593f"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-linux-x64-musl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-win32-arm64-msvc@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/-/lightningcss-win32-arm64-msvc-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d4af8c3df2d2155a69873a5d6df92195693ac01ad339b0734b64fa75bd743cd399811f46a15b005b3c0dcae8546186d3a76de3fb846b9dc7ee8d9e2e0335efc0"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-win32-arm64-msvc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "bom-ref": "impact-web@0.36.0|lightningcss-win32-x64-msvc@1.33.0",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MPL-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/lightningcss-win32-x64-msvc/-/lightningcss-win32-x64-msvc-1.33.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3a5108083c7f5e5d05a92a786ebcbccc59c2bc6a628371a5e200aabaf6301eea892840b5fa7f4d8039e216fa871a632fd5992a0c9ac3a8a292ca44c35fe7a1b8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lightningcss-win32-x64-msvc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "nanoid",
+      "version": "3.3.19",
+      "bom-ref": "impact-web@0.36.0|nanoid@3.3.19",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/nanoid@3.3.19",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "636b54372e28bb0eadab9a0348a7906063b286450184d39c195ff4d8a0beea477d7831aa75977efa68cc8880e296b058be3127098bd5b6cb870ae3fea2449fba"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/nanoid"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "picocolors",
+      "version": "1.1.1",
+      "bom-ref": "impact-web@0.36.0|picocolors@1.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ],
+      "purl": "pkg:npm/picocolors@1.1.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c5c787dac9e1b5be4cf658aa0ec984c39ea57b7efa993664117fe311bfd1c4d1727a036e97b78db250973fd1438ff2dcbb45fc284c8c71e3f69eda5a1eb0c454"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/picocolors"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "source-map-js",
+      "version": "1.2.1",
+      "bom-ref": "impact-web@0.36.0|source-map-js@1.2.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:npm/source-map-js@1.2.1",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "51758c2a12cec1529bef6f0852d40f5f17d853ebac7726ed52b2bff2e184f0240cbeb84ea70bf30c1c23d108522fb31073bbc8b084811bc550f3e203431a5f40"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/source-map-js"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "types",
+      "group": "@oxc-project",
+      "version": "0.151.0",
+      "bom-ref": "impact-web@0.36.0|@oxc-project/types@0.151.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40oxc-project/types@0.151.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.151.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "275c97ac894d0d957313769d6b7d74c5e030ee71fcc820322cfb9422c8ca6ad14f99f9f96d2d685be70cf90b063ad5567799e14a96f0656c7faee7beaf967e3c"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@oxc-project/types"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-android-arm-eabi",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-android-arm-eabi@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm-eabi/-/binding-android-arm-eabi-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "0399177c62af2965991344ed3eb7ecbd3faae18e5dd501bc806533a588c6c9d33e7c044cf4cb97f743eb5d85ded176ec0d5832c713731e8ea08828fdd1bb0537"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-android-arm-eabi"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-android-arm64",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-android-arm64@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-android-arm64@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "cfa713c9ccfe889e0f564b8be071d6e037d37e8794ff69ea618b923ab4e61fbc872b96342c23a7034dd5e193716afc95694d683aa520220da494dfecf9448638"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-android-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-darwin-arm64",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-darwin-arm64@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "8d286fa8db4feaf0c2ebf03924e0336d557e0e4807aa197f49c5422446edf93518e90633ed89d772b837b0bb450678aba347ff2dde7467009603a7fb2980f59d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-darwin-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-darwin-x64",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-darwin-x64@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7f68b6c62356ab5675976fbeab67ee85945d2c04f76aac43eaf44d9b5440c6952805c76a341dc2d2cd41b7e2be3db131d85e45e20429ea1a8a92984263fc45f7"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-darwin-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-freebsd-x64",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-freebsd-x64@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e08af915238a20032be2bd24131a6dd6cddb320cc9537ac0e39018387b50a65b34a0d7aa71804aad6325724ad81f82827c62df91f9f5b4dd5d9993cc56c757a3"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-freebsd-x64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-arm-gnueabihf",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-arm-gnueabihf@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fe09d10ccfb7f4144ecc037f9353998c33e70cc719c41ff4114c4a8ce34ee72564344be5b28303af118d2a0662fedb45ae24b683094337307ae69bcd6c539721"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-arm-gnueabihf"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-arm64-gnu",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-arm64-gnu@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3c568af07c2f0076da29b05c0cd42286330a62f16703986210dc7f979b698530f3d44d16169df697403b6aaee5c94c06b11c3fc52acd232fe020ae2d86b482af"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-arm64-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-arm64-musl",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-arm64-musl@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "02c93325420a44b3f192bb91d702ca7b019b3b0f8461f53ff653ab0458f8005ac403c84fa4a16738358dbb658b68db3440d9046fd40826e7e65596482ff6c996"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-arm64-musl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-ppc64-gnu",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-ppc64-gnu@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "aa55060217a1db287c69f1fb401831d0fad11cdf3984a9cd77bf31f0c78c8578afb9ebe077cbe07fafc2b2d3b398d298fe52d31ef353acfcbdf1c2e702e83327"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-ppc64-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-s390x-gnu",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-s390x-gnu@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "b1e72911a77ed2f09b49f9fcba91724a40ec92ff9b18f9374c74834bd63cf72738adbe24cea1e9f039b277d064416e129e13570590a5ffa0ab3bffe165a84d25"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-s390x-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-x64-gnu",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-x64-gnu@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "98e5414f774fa645a6f170563e65386dff94e9d6032de328ffda235268ace0dd0be6ebb5d2aadae6f3b29e067bfcf49da04e06f4abd1b786e5a11c4d8cb6acec"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-x64-gnu"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-linux-x64-musl",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-linux-x64-musl@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "22cefc8bd03c522e12a9cc54c0527db8c9a30e7e7c21b5538c55987507acb451207ae1261cc2c636b8979d524a9301b6622663c3c70fd33093c8331d0c6b4e3a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-linux-x64-musl"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-openharmony-arm64",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-openharmony-arm64@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7540979de67cec83543324340fe0b41eb1013543cd5c768f994e464e3c8a4c9122bacb30f4a6a3e4b9fc533b4f7b87a957f7dfbe034111a764b1d621996eb124"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-openharmony-arm64"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-win32-arm64-msvc",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-win32-arm64-msvc@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "8c1cb16faa9f77e6c7d7151dd2a9df1676f5ee2f6c5813d8dad39abc9d25ded76bdce4eef8abed9bc71dfc95799c5b7ae7b6f556a1a5b7183da253847e87d75b"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-win32-arm64-msvc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "binding-win32-x64-msvc",
+      "group": "@rolldown",
+      "version": "1.2.11",
+      "bom-ref": "impact-web@0.36.0|@rolldown/binding-win32-x64-msvc@1.2.11",
+      "scope": "optional",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.11",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.11.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fcfccaab3009d378b5f68cb622d3efcaf6958ce8c108d9df689b3ccaf51d1812a68844a09eb2524366b077cd50cc56db9c09aeed83bd66726b0c26fd55224f44"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@rolldown/binding-win32-x64-msvc"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fdir",
+      "version": "6.5.0",
+      "bom-ref": "impact-web@0.36.0|fdir@6.5.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fdir@6.5.0",
+      "externalReferences": [
+        {
+          "url": "https://registry.npmjs.org/fdir/-/fdir-6.5.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "b486d8b596ee70eb340511aa3c992c84951874bf920c7edd54cf208f2f84469dd60148cb105244fb4da46a7c87b708d63a7c2b298062c0098cd29e242c90275e"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fdir"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "impact-web@0.36.0",
+      "dependsOn": [
+        "impact-web@0.36.0|@types/react-dom@19.3.0",
+        "impact-web@0.36.0|@types/react@19.3.0",
+        "impact-web@0.36.0|@vitejs/plugin-react@6.1.1",
+        "impact-web@0.36.0|prettier@3.6.2",
+        "impact-web@0.36.0|react-dom@19.3.0",
+        "impact-web@0.36.0|react@19.3.0",
+        "impact-web@0.36.0|typescript@7.0.2",
+        "impact-web@0.36.0|vite@8.3.1"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|@types/react-dom@19.3.0",
+      "dependsOn": [
+        "impact-web@0.36.0|@types/react@19.3.0"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|@types/react@19.3.0",
+      "dependsOn": [
+        "impact-web@0.36.0|csstype@3.2.3"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|@vitejs/plugin-react@6.1.1",
+      "dependsOn": [
+        "impact-web@0.36.0|@rolldown/pluginutils@1.0.1",
+        "impact-web@0.36.0|vite@8.3.1"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|prettier@3.6.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|react-dom@19.3.0",
+      "dependsOn": [
+        "impact-web@0.36.0|react@19.3.0",
+        "impact-web@0.36.0|scheduler@0.28.0"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|react@19.3.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|typescript@7.0.2",
+      "dependsOn": [
+        "impact-web@0.36.0|@typescript/typescript-aix-ppc64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-darwin-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-darwin-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-freebsd-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-freebsd-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-arm@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-loong64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-mips64el@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-ppc64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-riscv64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-s390x@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-linux-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-netbsd-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-netbsd-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-openbsd-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-openbsd-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-sunos-x64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-win32-arm64@7.0.2",
+        "impact-web@0.36.0|@typescript/typescript-win32-x64@7.0.2"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|vite@8.3.1",
+      "dependsOn": [
+        "impact-web@0.36.0|fsevents@2.3.3",
+        "impact-web@0.36.0|lightningcss@1.33.0",
+        "impact-web@0.36.0|picomatch@4.0.7",
+        "impact-web@0.36.0|postcss@8.5.28",
+        "impact-web@0.36.0|rolldown@1.2.11",
+        "impact-web@0.36.0|tinyglobby@0.2.17"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|csstype@3.2.3"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/pluginutils@1.0.1"
+    },
+    {
+      "ref": "impact-web@0.36.0|scheduler@0.28.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-aix-ppc64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-darwin-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-darwin-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-freebsd-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-freebsd-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-arm@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-loong64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-mips64el@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-ppc64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-riscv64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-s390x@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-linux-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-netbsd-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-netbsd-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-openbsd-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-openbsd-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-sunos-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-win32-arm64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|@typescript/typescript-win32-x64@7.0.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|fsevents@2.3.3"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss@1.33.0",
+      "dependsOn": [
+        "impact-web@0.36.0|detect-libc@2.1.2",
+        "impact-web@0.36.0|lightningcss-android-arm64@1.33.0",
+        "impact-web@0.36.0|lightningcss-darwin-arm64@1.33.0",
+        "impact-web@0.36.0|lightningcss-darwin-x64@1.33.0",
+        "impact-web@0.36.0|lightningcss-freebsd-x64@1.33.0",
+        "impact-web@0.36.0|lightningcss-linux-arm-gnueabihf@1.33.0",
+        "impact-web@0.36.0|lightningcss-linux-arm64-gnu@1.33.0",
+        "impact-web@0.36.0|lightningcss-linux-arm64-musl@1.33.0",
+        "impact-web@0.36.0|lightningcss-linux-x64-gnu@1.33.0",
+        "impact-web@0.36.0|lightningcss-linux-x64-musl@1.33.0",
+        "impact-web@0.36.0|lightningcss-win32-arm64-msvc@1.33.0",
+        "impact-web@0.36.0|lightningcss-win32-x64-msvc@1.33.0"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|picomatch@4.0.7"
+    },
+    {
+      "ref": "impact-web@0.36.0|postcss@8.5.28",
+      "dependsOn": [
+        "impact-web@0.36.0|nanoid@3.3.19",
+        "impact-web@0.36.0|picocolors@1.1.1",
+        "impact-web@0.36.0|source-map-js@1.2.1"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|rolldown@1.2.11",
+      "dependsOn": [
+        "impact-web@0.36.0|@oxc-project/types@0.151.0",
+        "impact-web@0.36.0|@rolldown/binding-android-arm-eabi@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-android-arm64@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-darwin-arm64@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-darwin-x64@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-freebsd-x64@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-arm-gnueabihf@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-arm64-gnu@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-arm64-musl@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-ppc64-gnu@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-s390x-gnu@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-x64-gnu@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-linux-x64-musl@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-openharmony-arm64@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-win32-arm64-msvc@1.2.11",
+        "impact-web@0.36.0|@rolldown/binding-win32-x64-msvc@1.2.11",
+        "impact-web@0.36.0|@rolldown/pluginutils@1.0.1"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|tinyglobby@0.2.17",
+      "dependsOn": [
+        "impact-web@0.36.0|fdir@6.5.0",
+        "impact-web@0.36.0|picomatch@4.0.7"
+      ]
+    },
+    {
+      "ref": "impact-web@0.36.0|detect-libc@2.1.2"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-android-arm64@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-darwin-arm64@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-darwin-x64@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-freebsd-x64@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-linux-arm-gnueabihf@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-linux-arm64-gnu@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-linux-arm64-musl@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-linux-x64-gnu@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-linux-x64-musl@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-win32-arm64-msvc@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|lightningcss-win32-x64-msvc@1.33.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|nanoid@3.3.19"
+    },
+    {
+      "ref": "impact-web@0.36.0|picocolors@1.1.1"
+    },
+    {
+      "ref": "impact-web@0.36.0|source-map-js@1.2.1"
+    },
+    {
+      "ref": "impact-web@0.36.0|@oxc-project/types@0.151.0"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-android-arm-eabi@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-android-arm64@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-darwin-arm64@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-darwin-x64@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-freebsd-x64@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-arm-gnueabihf@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-arm64-gnu@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-arm64-musl@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-ppc64-gnu@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-s390x-gnu@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-x64-gnu@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-linux-x64-musl@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-openharmony-arm64@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-win32-arm64-msvc@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|@rolldown/binding-win32-x64-msvc@1.2.11"
+    },
+    {
+      "ref": "impact-web@0.36.0|fdir@6.5.0",
+      "dependsOn": [
+        "impact-web@0.36.0|picomatch@4.0.7"
+      ]
+    }
+  ]
+}

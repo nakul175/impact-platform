@@ -1,0 +1,48 @@
+name: checks
+# A small job that always runs: lint, the database-free unit tests and the web client's type
+# check. It has no path filter, so a documentation-only pull request and a pull request of more
+# than 300 files (GitHub evaluates path filters on the first 300 files of a diff only) still get
+# one check. The paid four-job qualification stays in qualification.yml with its own filter.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+# One in-flight run per pull request, and one per branch for a main push or a manual run; a
+# newer commit cancels the run it replaces (the job is cheap and only the latest result matters).
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    # Local timings on 8 October 2026: pip install 27 s, npm ci 6 s, make lint 17 s, make unit
+    # 39 s, tsc 5 s. 15 stops a hang well short of the 6-hour default.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install the Python toolchain (requirements.lock, as make setup does)
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.lock
+      - name: Install the web client dependencies (prettier for make lint, tsc)
+        run: npm ci --prefix apps/web
+      - name: Lint (ruff check, ruff format --check, prettier --check)
+        run: make lint
+      - name: Unit tests without a database
+        run: make unit
+      - name: Web client type check
+        run: npx tsc --noEmit
+        working-directory: apps/web

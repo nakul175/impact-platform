@@ -1,14 +1,11 @@
 """Versioned roles, independently reviewed groups, units, renewal and custody."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from types import SimpleNamespace
+from .clock import now
 from .contracts import DELEGABLE_CAPABILITIES
 from .domain import DomainError, unavailable
 from .store import context, scopes, load, write
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def timestamp(value):

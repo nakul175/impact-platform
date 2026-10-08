@@ -17,11 +17,12 @@ A hold is released only by a natural person other than the one who placed it (`r
 before this build (no placer) may be released by any holder of the capability.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from uuid import uuid4
 
 from psycopg.types.json import Jsonb
 
+from .clock import now
 from .contracts import validate
 from .domain import DomainError, unavailable
 from .retention import check_policy
@@ -30,10 +31,6 @@ from .store import audit, authorize, context, envelope, hash_data, load, write
 KIND = "RetentionPolicy"
 ROUTE = "retention-policies"
 HOLD_ROUTE = "retention-holds"
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def iso(value):

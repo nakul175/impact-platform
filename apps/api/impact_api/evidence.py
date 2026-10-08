@@ -12,11 +12,12 @@ re-verifies the stored digest and records the access."""
 
 import hashlib
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from uuid import uuid4
 
 from psycopg.types.json import Jsonb
 
+from .clock import now
 from .content_safety import check_declaration, refuse, scanner, sniff
 from .contracts import validate
 from .domain import DomainError, unavailable
@@ -35,10 +36,6 @@ SERVER_FIELDS = (
     "verification_state",
 )
 PENDING = {"QUARANTINED": "PENDING", "SCANNING": "PENDING"}
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def record(c, ctx, action, correlation, outcome="SUCCEEDED", evidence_id=None, upload_id=None):

@@ -1,16 +1,13 @@
 """Explicit control-plane authority, reviewed tenant activation and fail-closed lifecycle."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from uuid import uuid4
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from psycopg.types.json import Jsonb
+from .clock import now
 from .domain import DomainError, unavailable
 from .store import Context, write, hash_data, load
 from .tenant_contracts import ACTIONS, validate_body
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 class TenantLifecycle:

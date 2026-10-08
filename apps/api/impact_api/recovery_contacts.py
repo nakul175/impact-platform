@@ -1,9 +1,10 @@
 """Identity-bound recovery-contact evidence; never a grant or account recovery action."""
 
 import hmac
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from uuid import uuid4
 from psycopg.types.json import Jsonb
+from .clock import now
 from .keyring import ring
 from .delivery import channel_code, channel_code_hash, seal_recipient
 from .domain import DomainError, unavailable
@@ -17,10 +18,6 @@ CHANNEL_CODE_ATTEMPTS = 5
 # At most this many challenges (codes emailed) per contact within CHANNEL_REQUEST_WINDOW.
 CHANNEL_REQUESTS_PER_WINDOW = 3
 CHANNEL_REQUEST_WINDOW = timedelta(hours=1)
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def denied(reason):

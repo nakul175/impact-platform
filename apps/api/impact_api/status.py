@@ -25,6 +25,7 @@ import json
 import os
 from datetime import datetime, timezone
 
+from .clock import now
 from .ops_metrics import operations, storage
 from .version import SCHEMA
 
@@ -89,10 +90,6 @@ ALERT_NOTICES = {
     ("DISK_LOW", None): ("EVIDENCE_STORAGE_LOW",),
     ("SCHEMA_MISMATCH", None): ("UPGRADE_IN_PROGRESS",),
 }
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def parse_time(value):

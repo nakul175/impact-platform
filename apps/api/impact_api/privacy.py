@@ -33,11 +33,12 @@ authorises a privacy operation."""
 
 import hashlib
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from uuid import uuid4
 
 from psycopg.types.json import Jsonb
 
+from .clock import now
 from .contracts import validate
 from .domain import DomainError, unavailable
 from .retention import effective
@@ -59,10 +60,6 @@ SECTIONS = [
     "audit_events",
 ]
 FINAL = {"Completed", "PartiallyCompleted"}
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def iso(value):

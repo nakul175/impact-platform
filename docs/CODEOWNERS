@@ -1,0 +1,6 @@
+# Code owners for review requests (GitHub reads CODEOWNERS from .github/, the root or docs/; it sits in docs/ so that adding it starts no CI run: see docs/governance/README.md). One owner until the owner names more.
+# Last reviewed 2026-10-08 (owner: Nakul Jain). Update when a second maintainer or an area owner is named.
+*                   @nakul175
+/deploy/            @nakul175
+/infrastructure/    @nakul175
+/docs/governance/   @nakul175

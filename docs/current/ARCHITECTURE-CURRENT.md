@@ -1,6 +1,6 @@
 # Current Impact Platform architecture
 
-This view describes application build 0.18.0. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
+This view was drawn at application build 0.18.0 and has not been redrawn since; the current build is named in `VERSION.json` and the status block at the top of [HANDOVER.md](../HANDOVER.md), and the components added after 0.18.0 (the worker job classes, imports executor, evidence store, exports, dashboards, privacy and retention, the AI enablement modules) are described in CLAUDE.md §5 and the release notes. The original HLD and its target deployment diagrams remain in the revised HLD, explicitly distinguished from this implemented development topology.
 
 ```mermaid
 flowchart TD

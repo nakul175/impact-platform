@@ -8,7 +8,7 @@
 
 ## Start here
 
-- **Continuing the engineering (a person or an AI agent)?** Read [AGENTS.md](AGENTS.md) first, then [docs/HANDOVER.md](docs/HANDOVER.md) — the state at handover: versions, `main` versus the staging server, CI, open owner decisions, known issues and next steps — then [CLAUDE.md](CLAUDE.md), the full engineering brief (model-agnostic despite its name), and [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
+- **Continuing the engineering (a person or an AI agent)?** Read [AGENTS.md](AGENTS.md) first, then [docs/HANDOVER.md](docs/HANDOVER.md) — the state at handover: versions, `main` versus the staging server, CI, open owner decisions, known issues and next steps — then [CLAUDE.md](CLAUDE.md) (a one-page entry point) and the full engineering brief [docs/current/ENGINEERING-BRIEF.md](docs/current/ENGINEERING-BRIEF.md), and [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
 - **Planning the next work?** [docs/handover/BACKLOG.md](docs/handover/BACKLOG.md) (ready-to-run slices and the TolaData comparison) and [docs/handover/PARALLEL-WORK.md](docs/handover/PARALLEL-WORK.md) (several builders, one integrator).
 - **Owner or administrator?** [docs/current/DEPLOYMENT-GUIDE.md](docs/current/DEPLOYMENT-GUIDE.md) (the staging server and its console scripts), the [user guide](docs/current/USER-GUIDE.md) and the [administrator guide](docs/current/ADMINISTRATOR-GUIDE.md).
 

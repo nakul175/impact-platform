@@ -19,7 +19,7 @@ When any of these change, change this table and `VERSION.json`; the other docume
 
 The body below is the handover written on 3 October 2026 at build 0.27.0 and is kept as written: §2, §3, §4 and §9 describe that build, and the live-server facts in §3 are the last ones observed.
 
-**Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [CLAUDE.md](../CLAUDE.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
+**Date:** 3 October 2026. **Prepared for:** whoever continues the engineering (human or AI agent — GPT/Codex, Claude or another) and for the owner. Start with [AGENTS.md](../AGENTS.md); the full engineering brief is [ENGINEERING-BRIEF.md](current/ENGINEERING-BRIEF.md) (model-agnostic despite its name). This document holds no password, token, secret or personal contact detail, and must never hold one.
 
 ## 1. In plain words
 
@@ -76,7 +76,7 @@ Pull requests #67–#82 are merged. #82 merged as `6712970` after four green PR 
 
 ## 7. Known issues and fragile spots (top items)
 
-Full list: CLAUDE.md §11. The ones most likely to bite next:
+Full list: ENGINEERING-BRIEF.md §11. The ones most likely to bite next:
 
 1. **Applied tenants' ceilings cannot be widened.** Organisations that applied initial access before a build that adds capabilities (v1 tenants; v2 tenants before 0.27.0) cannot grant the new capabilities. Designed, not built (RELEASE-0.27-operators.md).
 2. **No real e-mail, no paging.** E-mail goes to a capture on the server; alerts reach the status page, the banner and (if configured) a webhook — nobody is paged.

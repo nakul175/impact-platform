@@ -20,13 +20,13 @@ grace window (address, link, code) are still opened or matched until that secret
 
 import hashlib
 import hmac
-from datetime import datetime, timezone
 from json import dumps
 from urllib.parse import quote
 from uuid import uuid4
 
 from psycopg.types.json import Jsonb
 
+from .clock import now
 from .identity_profile import normalize_email
 from .keyring import Keyring
 
@@ -37,10 +37,6 @@ TEMPLATES = {
     "RECOVERY_CHANNEL_VERIFICATION": "EMAIL",
 }
 CODE_DIGITS = 8
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def _key(secret, purpose):

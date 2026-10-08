@@ -3,10 +3,11 @@
 import hashlib
 import hmac
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 from uuid import uuid4
 from psycopg.types.json import Jsonb
+from .clock import now
 from .administration_contracts import ADMIN_READS, COMMANDS
 from .contracts import validate
 from .domain import DomainError, unavailable
@@ -19,10 +20,6 @@ from .workspace_administration import WorkspaceAdministration
 from .reference_contracts import COMMANDS as REFERENCE_COMMANDS
 from .reference_data import ReferenceData
 from .purpose_grants import PURPOSE_CAPABILITIES
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def timestamp(value):

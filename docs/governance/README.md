@@ -11,7 +11,7 @@ Status words: **PRESENT** (existed, mapped only), **EXTENDED** (existed, fixed o
 | # | Item | Canonical path | Status | Last reviewed |
 |---|---|---|---|---|
 | 1 | README | [README.md](../../README.md) | EXTENDED: status line now says build 0.36.0 (was v0.28.0); older 5 October paragraphs kept as history | 2026-10-08 |
-| 2 | LICENSE, CODEOWNERS | [LICENSE.md](../../LICENSE.md) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
+| 2 | LICENSE, CODEOWNERS | [LICENSE](../../LICENSE) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
 | 3 | Contributing, PR template | [CONTRIBUTING.md](../../CONTRIBUTING.md), [.github/PULL_REQUEST_TEMPLATE.md](../../.github/PULL_REQUEST_TEMPLATE.md) | NEW (summarises [AGENTS.md](../../AGENTS.md)) | 2026-10-08 |
 | 4 | Environment / config reference | [env.example](env.example) (names only, from `config.py`, `worker.py`, `deploy/compose.yaml`, `specification/contracts/deployment-inputs.json`) | NEW | 2026-10-08 |
 | 5 | Changelog | [docs/current/CHANGELOG.md](../current/CHANGELOG.md) | PRESENT, STALE for builds 0.34 to 0.36 (entry added pointing to their release notes) | 2026-10-08 |
@@ -60,7 +60,7 @@ Status words: **PRESENT** (existed, mapped only), **EXTENDED** (existed, fixed o
 
 ## 5. File locations chosen to avoid starting CI
 
-`.github/workflows/qualification.yml` ignores a pull request only when **every** changed file is `**.md` or under `docs/`. Files without a `.md` extension elsewhere would start the paid four-job run, and paid CI needs the owner's approval. Therefore: the licence is `LICENSE.md` (GitHub still recognises it), CODEOWNERS is `docs/CODEOWNERS` (a location GitHub reads), and the configuration reference is `docs/governance/env.example`. **Follow-up for the owner's go-ahead on CI:** move to the conventional `LICENSE`, `.github/CODEOWNERS` and root `.env.example`; that change will start CI.
+`.github/workflows/qualification.yml` ignores a pull request only when **every** changed file is `**.md` or under `docs/`. Files without a `.md` extension elsewhere would start the paid four-job run, and paid CI needs the owner's approval. Therefore: the licence is now the conventional `LICENSE` (moved with the shared-helpers code change), CODEOWNERS is `docs/CODEOWNERS` (a location GitHub reads), and the configuration reference is `docs/governance/env.example`. **Follow-up for the owner's go-ahead on CI:** move to `.github/CODEOWNERS` and root `.env.example`; that change will start CI.
 
 ## 6. Verified in this change
 

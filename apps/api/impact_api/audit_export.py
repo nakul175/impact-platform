@@ -31,6 +31,7 @@ import json
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
+from .clock import now
 from .audit_export_contracts import DEFAULT_LIMIT, FORMAT, MAX_WINDOW_DAYS, OPERATION, ROUTE
 from .contracts import validate
 from .domain import DomainError
@@ -73,10 +74,6 @@ QUERY = (
     "FROM impact.access_denial d WHERE d.tenant_id=%s AND d.first_at>=%s AND d.first_at<%s"
     ") a WHERE TRUE"
 )
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def instant(value):

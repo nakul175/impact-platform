@@ -6,7 +6,7 @@ Status: **agent-drafted 2026-10-08 from the files named below; not reviewed by a
 
 ## 1. The repository's own licence
 
-None is chosen. The root [`LICENSE.md`](../../LICENSE.md) is a placeholder: "All rights reserved, Copyright (c) 2026 Nakul Jain; no licence is granted." **Open owner decision:** choose a licence (or keep proprietary). Whether that choice interacts with the Apache-2.0 component below is for the owner and counsel: TBD (owner: Nakul Jain).
+None is chosen. The root [`LICENSE`](../../LICENSE) is a placeholder: "All rights reserved, Copyright (c) 2026 Nakul Jain; no licence is granted." **Open owner decision:** choose a licence (or keep proprietary). Whether that choice interacts with the Apache-2.0 component below is for the owner and counsel: TBD (owner: Nakul Jain).
 
 ## 2. Embedded third-party code: Mercy Corps TolaData
 

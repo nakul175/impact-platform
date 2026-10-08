@@ -6,7 +6,7 @@ read the original bytes after current authority; they never call a renderer.
 """
 
 from copy import deepcopy
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta, timezone
 import hashlib
 import hmac
 import json
@@ -16,6 +16,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 from psycopg.errors import ProgramLimitExceeded, UniqueViolation
 from psycopg.types.json import Jsonb
 
+from .clock import now
 from . import ai_content_archives
 from .ai_plan_export_contracts import (
     DISCLAIMER,
@@ -36,10 +37,6 @@ from .store import EVENT_VALIDATOR, authorize, canonical, context, hash_data, lo
 
 KIND = "AIAdoptionPlan"
 READ_CAP = "ai.enablement.read"
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def observed(c):

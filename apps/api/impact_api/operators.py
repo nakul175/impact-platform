@@ -23,10 +23,11 @@ a `platform_receipt` together, after fresh MFA; an exact retry returns the recei
 under the same operation ID is a conflict, a stale `expected_revision` is a conflict.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 from uuid import uuid4
 from psycopg.types.json import Jsonb
+from .clock import now
 from .domain import DomainError, unavailable
 from .identity_profile import email_hash, masked_email, normalize_email
 from .operator_contracts import (
@@ -47,10 +48,6 @@ from .store import hash_data
 NOMINATION_DAYS = 7
 OPERATOR_MAX_DAYS = 365
 LOCK = "platform:operator-onboarding"
-
-
-def now():
-    return datetime.now(timezone.utc)
 
 
 def denied(reason):

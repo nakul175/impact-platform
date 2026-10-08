@@ -77,7 +77,7 @@ For portable commands and native role preparation use AGENTS.md/CLAUDE.md and `s
 
 ## Git, CI and demo gates
 
-Remote: `https://github.com/nakul175/impact-platform.git`. Branch: `integration/0.32-tola-ai-sprint`. Latest fetched main at handover is `69c2cca618ae8dcde8f981c48ece8a1e60f0ff70` (old build0.29/schema33). No pull request was created, no hosted qualification was triggered and no new main merge/deployment occurred.
+Remote: `https://github.com/nakul175/impact-platform.git`. Branch: `integration/0.32-tola-ai-sprint`. Latest fetched main at handover is `69c2cca618ae8dcde8f981c48ece8a1e60f0ff70` (old build 0.29/schema 33). No pull request was created, no hosted qualification was triggered and no new main merge/deployment occurred.
 
 The owner has authorised merging completed work to main. Separate permission for paid GitHub CI remains pending. A previous question proposed at most 540 nominal runner-minutes: initial run, up to two fix runs and a reserved automatic-main run. This is not an invoice guarantee and never authorises raising a spending limit.
 

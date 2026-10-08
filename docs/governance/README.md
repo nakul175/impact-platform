@@ -11,7 +11,7 @@ Status words: **PRESENT** (existed, mapped only), **EXTENDED** (existed, fixed o
 | # | Item | Canonical path | Status | Last reviewed |
 |---|---|---|---|---|
 | 1 | README | [README.md](../../README.md) | EXTENDED: status line now says build 0.36.0 (was v0.28.0); older 5 October paragraphs kept as history | 2026-10-08 |
-| 2 | LICENSE, CODEOWNERS | [LICENSE](../../LICENSE) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
+| 2 | LICENSE, CODEOWNERS | [LICENSE.md](../../LICENSE.md) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
 | 3 | Contributing, PR template | [CONTRIBUTING.md](../../CONTRIBUTING.md), [.github/PULL_REQUEST_TEMPLATE.md](../../.github/PULL_REQUEST_TEMPLATE.md) | NEW (summarises [AGENTS.md](../../AGENTS.md)) | 2026-10-08 |
 | 4 | Environment / config reference | [env.example](env.example) (names only, from `config.py`, `worker.py`, `deploy/compose.yaml`, `specification/contracts/deployment-inputs.json`) | NEW | 2026-10-08 |
 | 5 | Changelog | [docs/current/CHANGELOG.md](../current/CHANGELOG.md) | PRESENT, STALE for builds 0.34 to 0.36 (entry added pointing to their release notes) | 2026-10-08 |

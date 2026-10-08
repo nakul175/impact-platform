@@ -4,7 +4,7 @@
 
 **Quick start (synthetic data; setup time not measured):** `make setup` (Python 3.12, Node 22.12+, Linux or macOS), then `make dev` and open http://127.0.0.1:8000; generated passwords are in `.local/dev/passwords.json`. Details and the guided workflow follow below.
 
-**Governance and compliance documents (all 27 standard items mapped):** [docs/governance/README.md](docs/governance/README.md). Also: [CONTRIBUTING](CONTRIBUTING.md), [SECURITY](SECURITY.md), [licence placeholder](LICENSE), [deploy/README.md](deploy/README.md).
+**Governance and compliance documents (all 27 standard items mapped):** [docs/governance/README.md](docs/governance/README.md). Also: [CONTRIBUTING](CONTRIBUTING.md), [SECURITY](SECURITY.md), [licence placeholder](LICENSE.md), [deploy/README.md](deploy/README.md).
 
 ## Start here
 

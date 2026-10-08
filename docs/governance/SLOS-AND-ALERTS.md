@@ -20,7 +20,7 @@ Requirement state for all of these is PENDING or PARTIAL in the [completion ledg
 
 ## 2. Alert catalogue (what exists)
 
-Source of truth: `deploy/ops_alerts.py` and [SUPPORT-RUNBOOK](../current/SUPPORT-RUNBOOK.md) section 2. The check runs every 5 minutes (`impact-ops-check.timer`), writes `deploy-status.json` and `ops-status.json`, shows a service-notice banner to signed-in users, and delivers NEW, CLEARED and REMINDER transitions to a signed webhook and/or e-mail only if `ALERT_WEBHOOK_URL` or `ALERT_EMAIL_TO` is set. At handover none was set on staging (CLAUDE.md section 11, "Operations").
+Source of truth: `deploy/ops_alerts.py` and [SUPPORT-RUNBOOK](../current/SUPPORT-RUNBOOK.md) section 2. The check runs every 5 minutes (`impact-ops-check.timer`), writes `deploy-status.json` and `ops-status.json`, shows a service-notice banner to signed-in users, and delivers NEW, CLEARED and REMINDER transitions to a signed webhook and/or e-mail only if `ALERT_WEBHOOK_URL` or `ALERT_EMAIL_TO` is set. At handover none was set on staging (ENGINEERING-BRIEF.md section 11, "Operations").
 
 | Code | Severity | Means | First step |
 |---|---|---|---|

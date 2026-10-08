@@ -8,7 +8,7 @@ stated reason, an audit event, an outbox event and an operation receipt in one t
 
 `reference-defaults` applies one documented, deterministic standard set (DEFAULTS below) through the
 same governed path; it is refused once applied. The control plane never writes these records: its
-role stays inside the object-type lists of migrations 0013/0014 (CLAUDE.md rule 20).
+role stays inside the object-type lists of migrations 0013/0014 (ENGINEERING-BRIEF.md rule 20).
 """
 
 UUID = {"type": "string", "format": "uuid"}

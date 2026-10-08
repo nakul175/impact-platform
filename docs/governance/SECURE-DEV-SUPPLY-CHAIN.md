@@ -16,7 +16,7 @@ Status: **agent-drafted 2026-10-08 from files in the repository at the head of `
 | Security-relevant tests run in CI | Row-level-security fences under real login roles, independence and authorisation negative tests, secret-rotation step that checks no secret is printed, restore drill, upgrade from the deployed schema, accessibility scan ([QUALIFICATION](../QUALIFICATION.md), [QA-A11Y-2026-10](../QA-A11Y-2026-10.md)) |
 | Runtime hardening checks | API refuses superuser/BYPASSRLS/owner database connections in staging and production (`store.py`); closed request DTOs reject unknown fields and duplicate keys; secrets excluded from settings `repr` |
 | Migration integrity | Checksum-ledgered migrations; applied files frozen (0001 to 0040); `qualification/test_version_unit.py` guards numbering and versions |
-| Threat register with evidence status per threat | [Security threat model](../current/Impact-Management-Security-Threat-Model-v1.1.md) (TH01 to TH32); status summary in CLAUDE.md section 9 |
+| Threat register with evidence status per threat | [Security threat model](../current/Impact-Management-Security-Threat-Model-v1.1.md) (TH01 to TH32); status summary in ENGINEERING-BRIEF.md section 9 |
 | Software inventory | [DEPENDENCY-INVENTORY](DEPENDENCY-INVENTORY.md) and CycloneDX files |
 | Reviews | Agent-run code reviews are recorded in release notes and fix slices (for example RELEASE-0.27 integration fixes); the integrator checklist is [PARALLEL-WORK](../handover/PARALLEL-WORK.md). Independent human review of merged code: not recorded |
 
@@ -26,7 +26,7 @@ Status: **agent-drafted 2026-10-08 from files in the repository at the head of `
 - GitHub Actions are referenced by major-version tag (for example `actions/checkout@v6`), not pinned to commit SHAs.
 - Container base images follow tags (`python:3.12-slim-bookworm`, `node:24-bookworm-slim`, `postgres:17`, `caddy:2`); no digest pinning, no image signing, no provenance attestation, no SBOM produced by the build.
 - No penetration test; no threat-model review by a person; no branch-protection or required-review configuration is recorded in the repository (GitHub settings are outside it): TBD (owner: Nakul Jain).
-- No documented secure-coding standard beyond AGENTS.md and CLAUDE.md invariants; no developer security training record.
+- No documented secure-coding standard beyond AGENTS.md and the engineering brief invariants; no developer security training record.
 
 ## 3. Evidence quality caveats
 

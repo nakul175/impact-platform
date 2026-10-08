@@ -11,12 +11,12 @@ Status words: **PRESENT** (existed, mapped only), **EXTENDED** (existed, fixed o
 | # | Item | Canonical path | Status | Last reviewed |
 |---|---|---|---|---|
 | 1 | README | [README.md](../../README.md) | EXTENDED: status line now says build 0.36.0 (was v0.28.0); older 5 October paragraphs kept as history | 2026-10-08 |
-| 2 | LICENSE, CODEOWNERS | [LICENSE.md](../../LICENSE.md) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
+| 2 | LICENSE, CODEOWNERS | [LICENSE](../../LICENSE) (placeholder: no licence granted), [docs/CODEOWNERS](../CODEOWNERS) | NEW (see section 5 for file locations) | 2026-10-08 |
 | 3 | Contributing, PR template | [CONTRIBUTING.md](../../CONTRIBUTING.md), [.github/PULL_REQUEST_TEMPLATE.md](../../.github/PULL_REQUEST_TEMPLATE.md) | NEW (summarises [AGENTS.md](../../AGENTS.md)) | 2026-10-08 |
 | 4 | Environment / config reference | [env.example](env.example) (names only, from `config.py`, `worker.py`, `deploy/compose.yaml`, `specification/contracts/deployment-inputs.json`) | NEW | 2026-10-08 |
 | 5 | Changelog | [docs/current/CHANGELOG.md](../current/CHANGELOG.md) | PRESENT, STALE for builds 0.34 to 0.36 (entry added pointing to their release notes) | 2026-10-08 |
 | 6 | Security policy | [SECURITY.md](../../SECURITY.md) (contact nakul.jain@aplyd.com) | NEW | 2026-10-08 |
-| 7 | Architecture overview | [ARCHITECTURE-CURRENT.md](../current/ARCHITECTURE-CURRENT.md) (**STALE: describes build 0.18.0**), [HLD](../current/Impact-Management-HLD-v1.1.md), [LLD](../current/Impact-Management-LLD-v1.1.md); architecture as built is best read in [CLAUDE.md](../../CLAUDE.md) section 5 | PRESENT, STALE flagged | 2026-10-08 |
+| 7 | Architecture overview | [ARCHITECTURE-CURRENT.md](../current/ARCHITECTURE-CURRENT.md) (**STALE: describes build 0.18.0**), [HLD](../current/Impact-Management-HLD-v1.1.md), [LLD](../current/Impact-Management-LLD-v1.1.md); architecture as built is best read in [engineering brief](../current/ENGINEERING-BRIEF.md) section 5 | PRESENT, STALE flagged | 2026-10-08 |
 | 8 | Design docs / RFC process | [DESIGN-AND-DECISION-PROCESS.md](DESIGN-AND-DECISION-PROCESS.md) (indexes the existing practice, proposes a lightweight route) | NEW | 2026-10-08 |
 | 9 | ADRs | [Architecture Decision Records v1.1](../current/Impact-Management-Architecture-Decision-Records-v1.1.md) (ADR01 to ADR22); AI extension: [13-ARCHITECTURE-DECISIONS](../nonprofit-ai/v1.0/13-ARCHITECTURE-DECISIONS.md) | PRESENT | 2026-10-08 |
 | 10 | API contract | [packages/contracts/openapi-implemented.json](../../packages/contracts/openapi-implemented.json) (domain 1.25.0, 261 operations), [openapi-platform.json](../../packages/contracts/openapi-platform.json) (1.10.0, 52), [API-INVENTORY.md](../API-INVENTORY.md); `openapi.json` is the design contract, never generate clients from it | PRESENT | 2026-10-08 |

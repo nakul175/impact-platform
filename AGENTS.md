@@ -12,16 +12,16 @@ The Impact Platform is a multi-tenant monitoring, evaluation, learning and impac
 
 1. **`AGENTS.md`** (this file): rules, commands, safety, how to work with the owner.
 2. **[`docs/HANDOVER.md`](docs/HANDOVER.md)**: the status block at its top (build, APIs, schema, `main`, CI, staging), then the handover of 3 October 2026 — what is on `main` versus live on staging, CI, open owner decisions, known issues, next steps.
-3. **[`CLAUDE.md`](CLAUDE.md)**: despite its file name, the **full, model-agnostic engineering brief** — status, where to look, domain vocabulary, the rules below with their context, architecture as built, data model and database security, commands, how to change things, the security model, what is next and the verified fragile spots. It is binding and nothing in it is specific to one assistant.
+3. **[`docs/current/ENGINEERING-BRIEF.md`](docs/current/ENGINEERING-BRIEF.md)**: the full, model-agnostic engineering brief — domain vocabulary, the rules below with their context, architecture as built, data model and database security, commands, how to change things, the security model and the verified fragile spots. It is binding and nothing in it is specific to one assistant. Open the section you need. ([`CLAUDE.md`](CLAUDE.md) is a one-page entry point to the same material.)
 4. **[`docs/IMPLEMENTATION.md`](docs/IMPLEMENTATION.md)**: what the current build does and does not do, area by area.
 
 Then as needed: [`docs/RELEASE-0.36-procurement-preview.md`](docs/RELEASE-0.36-procurement-preview.md) (the latest build; every build has a `docs/RELEASE-0.N*.md` note), [`docs/handover/BACKLOG.md`](docs/handover/BACKLOG.md) (TolaData parity map and ready-to-run slices), [`docs/handover/PARALLEL-WORK.md`](docs/handover/PARALLEL-WORK.md) (builder rules and integrator checklist), [`docs/current/DOCUMENTATION-INDEX.md`](docs/current/DOCUMENTATION-INDEX.md) (every document), [`docs/current/DEPLOYMENT-GUIDE.md`](docs/current/DEPLOYMENT-GUIDE.md) (the staging server).
 
 ## Rules that must never be broken
 
-Copied verbatim from CLAUDE.md §4 (which is the source; keep the two identical).
+Copied verbatim from §4 of the [engineering brief](docs/current/ENGINEERING-BRIEF.md) (which is the source; keep the two identical).
 
-<!-- BEGIN CLAUDE.md §4 (verbatim) -->
+<!-- BEGIN ENGINEERING-BRIEF.md §4 (verbatim) -->
 
 Business rules (FSD; RULE01–26):
 1. Deny by default; client-supplied IDs are selectors, never proof; missing and hidden resources both return `RESOURCE_UNAVAILABLE` 404.
@@ -50,7 +50,7 @@ Engineering invariants (HLD/LLD/MIG; verified in code):
 22. Migrations are additive, ordered, checksum-ledgered; never change a byte of 0001–0040; next is 0041 (contiguous numbering); no destructive down migration.
 23. Keep the "current implementation" versus "retained target design" split in every document you touch; a documentation edition is not a product run.
 
-<!-- END CLAUDE.md §4 -->
+<!-- END ENGINEERING-BRIEF.md §4 -->
 
 ## Safety rules for agents
 
@@ -88,14 +88,14 @@ python scripts/build_access_profile.py                                          
 
 A focused run overwrites files in `docs/evidence/`; restore them before committing (`git checkout -- docs/evidence/ && git clean -f docs/evidence/`) unless you are publishing a clean full run. Port 8000 is every runner's default: set `IMPACT_PORT` when anything else runs. Full details, flags and recorded counts: CLAUDE.md §7 and `docs/QUALIFICATION.md`.
 
-## Changing things (summary of CLAUDE.md §8)
+## Changing things (summary of the engineering brief §8)
 
 - **Domain action:** add schemas, path and policy row in the feature's `*_contracts.py` `augment()` (register new modules in `scripts/build_contracts.py`, keeping `augment_reference` last); regenerate the contracts; register the action in `service.py` and implement it; give fixture actors the capability in `scripts/bootstrap.py`; regenerate the onboarding profile; add the capability prefix to `areaCapabilities` in `apps/web/src/main.tsx` if a screen uses it; tests for the positive case, another tenant (404), revoked (401/404), wrong role (403), self-approval (`INDEPENDENCE_REQUIRED`), stale revision (409), exact retry and changed payload under the same operation ID.
 - **Tenant-admin command:** a tuple in `COMMANDS` of `administration_contracts.py` / `workspace_contracts.py` (OWNER/TENANT_ADMIN and 300 s assurance are generated) and a dispatch branch.
 - **Control-plane operation:** closed schemas and paths in a `*_contracts.py` wired into `tenant_contracts.openapi()`, a class on `TenantLifecycle`, explicit routes in `main.py`, tables granted to `impact_platform` only, platform event and receipt in one transaction.
 - **Migration:** next is `infrastructure/migrations/0041_<topic>.sql` — additive, `BEGIN;`/`SET LOCAL ROLE impact_owner;`/`COMMIT;`, `tenant_id` in every key, forced RLS with `tenant_fence`, narrowest grants, never edit an applied migration; append the SQL and SHA-256 to `docs/current/CURRENT-DATA-DICTIONARY.md`; add real-role RLS negative tests.
 - **Versions:** only in `VERSION.json` plus `apps/web/package.json` and its lock (the schema is the migration count); regenerate the contracts after a bump.
-- **Documents together:** a release note per increment (`docs/RELEASE-0.N.md` or `RELEASE-0.N-<topic>.md`, with Delivered, Contract and persistence, Limits, Reproduction and, on a parallel slice, **Integration notes**), then the shared documents listed in CLAUDE.md §8 step 6; promote a requirement in the ledger only with named passing tests.
+- **Documents together:** a release note per increment (`docs/RELEASE-0.N.md` or `RELEASE-0.N-<topic>.md`, with Delivered, Contract and persistence, Limits, Reproduction and, on a parallel slice, **Integration notes**), then the shared documents listed in the engineering brief §8 step 6; promote a requirement in the ledger only with named passing tests.
 
 ## Repository map
 

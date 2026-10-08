@@ -4,11 +4,11 @@
 
 **Quick start (synthetic data; setup time not measured):** `make setup` (Python 3.12, Node 22.12+, Linux or macOS), then `make dev` and open http://127.0.0.1:8000; generated passwords are in `.local/dev/passwords.json`. Details and the guided workflow follow below.
 
-**Governance and compliance documents (all 27 standard items mapped):** [docs/governance/README.md](docs/governance/README.md). Also: [CONTRIBUTING](CONTRIBUTING.md), [SECURITY](SECURITY.md), [licence placeholder](LICENSE.md), [deploy/README.md](deploy/README.md).
+**Governance and compliance documents (all 27 standard items mapped):** [docs/governance/README.md](docs/governance/README.md). Also: [CONTRIBUTING](CONTRIBUTING.md), [SECURITY](SECURITY.md), [licence placeholder](LICENSE), [deploy/README.md](deploy/README.md).
 
 ## Start here
 
-- **Continuing the engineering (a person or an AI agent)?** Read [AGENTS.md](AGENTS.md) first, then [docs/HANDOVER.md](docs/HANDOVER.md) — the state at handover: versions, `main` versus the staging server, CI, open owner decisions, known issues and next steps — then [CLAUDE.md](CLAUDE.md), the full engineering brief (model-agnostic despite its name), and [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
+- **Continuing the engineering (a person or an AI agent)?** Read [AGENTS.md](AGENTS.md) first, then [docs/HANDOVER.md](docs/HANDOVER.md) — the state at handover: versions, `main` versus the staging server, CI, open owner decisions, known issues and next steps — then [CLAUDE.md](CLAUDE.md) (a one-page entry point) and the full engineering brief [docs/current/ENGINEERING-BRIEF.md](docs/current/ENGINEERING-BRIEF.md), and [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md).
 - **Planning the next work?** [docs/handover/BACKLOG.md](docs/handover/BACKLOG.md) (ready-to-run slices and the TolaData comparison) and [docs/handover/PARALLEL-WORK.md](docs/handover/PARALLEL-WORK.md) (several builders, one integrator).
 - **Owner or administrator?** [docs/current/DEPLOYMENT-GUIDE.md](docs/current/DEPLOYMENT-GUIDE.md) (the staging server and its console scripts), the [user guide](docs/current/USER-GUIDE.md) and the [administrator guide](docs/current/ADMINISTRATOR-GUIDE.md).
 

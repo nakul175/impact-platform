@@ -14,8 +14,8 @@ TBD (owner: Nakul Jain; counsel): purposes per tenant, data minimisation by form
 
 | # | Risk to individuals | Existing control (source) | Residual gap | Draft rating |
 |---|---|---|---|---|
-| 1 | Cross-tenant disclosure | Tenant in every key, forced RLS, non-owner runtime roles, 404 for hidden resources ([CLAUDE.md](../../CLAUDE.md) sections 4 and 6) | No penetration test; native tests single-node | High until tested |
-| 2 | Unauthorised access by privileged staff | No self-approval, natural-person independence, custody does not imply data access, denial auditing | Operator account creation asserts the natural-person link (CLAUDE.md section 11) | Medium |
+| 1 | Cross-tenant disclosure | Tenant in every key, forced RLS, non-owner runtime roles, 404 for hidden resources ([engineering brief](../current/ENGINEERING-BRIEF.md) sections 4 and 6) | No penetration test; native tests single-node | High until tested |
+| 2 | Unauthorised access by privileged staff | No self-approval, natural-person independence, custody does not imply data access, denial auditing | Operator account creation asserts the natural-person link (ENGINEERING-BRIEF.md section 11) | Medium |
 | 3 | Disclosure through backups | Verified sets, checksums | Sets and evidence files not encrypted by the application; erased data persists in older sets; no off-server or immutable copy | High |
 | 4 | Disclosure through reports or exports | Separate export capability, independent disclosure review, named recipients, access log | Downloaded copies cannot be recalled; no anonymous publication controls | Medium |
 | 5 | Incomplete erasure | Privacy cases with per-store plan, ledger, holds | Members only; restore does not replay erasures; audit and identifiers retained | High |

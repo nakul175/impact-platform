@@ -681,13 +681,15 @@ Other commands: `.venv/bin/python scripts/run.py test --pytest-path qualificatio
 
 | Workflow / job | Runs when | What | Cap |
 |---|---|---|---|
-| `checks.yml` / `checks` | every pull request, every push to `main`, manual. **No path filter.** | pip + npm install, `make lint`, `make unit`, `npx tsc --noEmit` (working dir `apps/web`). Node 22, Python 3.12. | 15 min |
+| `checks.yml` / `checks` | every pull request, every push to `main`, manual. **No path filter.** | pip + npm install, `make lint`, `scripts/doc_index.py --check`, `make unit`, `scripts/release_review.py --check --base HEAD^1` (checkout `fetch-depth: 2`), `npx tsc --noEmit` (working dir `apps/web`). Node 22, Python 3.12. | 15 min |
 | `qualification.yml` / `local-reference-and-browser` | push to `main`; pull request; manual. **Skipped when every changed file is `*.md` or under `docs/`** (`paths-ignore: "**.md", "docs/**"`) | `make setup`, `make lint test reference`, then `make browser` | 30 min |
 | `qualification.yml` / `live-identity-provider` | same | a pinned Keycloak 26.7.4: `test_live_idp.py` and the identity-provider browser check | 20 min |
 | `qualification.yml` / `native-postgresql-gate` | same | PostgreSQL 17.11: provisioned logins, the suite on them, restart check, restore drill, upgrade from schema 33 (`IMPACT_UPGRADE_BASELINE`), live provider on native logins, an advisory PgBouncer subset | 40 min |
 | `qualification.yml` / `container-stack` | same | the whole deployment path in Docker: `deploy/update.sh`, HTTPS smoke, first sign-in, secret rotation, backup set, restore drill, alert exercise | 45 min |
 
 Facts you need to act correctly:
+
+- **The release security review gate (FR-SEC-001).** `checks` fails when the build in `VERSION.json` has no `docs/release-reviews/release-review-<build>.json` (create it with `.venv/bin/python scripts/release_review.py --init --prepared-by "<name>"`), and when the change set (the pull request: first parent of the test merge commit) touches `infrastructure/migrations/*`, a `*_contracts.py` module, `packages/contracts/access-policy.json` or `apps/api/impact_api/ai_*.py` without modifying that file with a new `impact_reviews` entry naming the path. It also fails when a test referenced by `docs/current/threat-register.json` is renamed or removed, so update the register in the same change. `make unit` runs the same check on the committed files. Run `.venv/bin/python scripts/release_review.py --check` locally before pushing.
 
 - A pull request that touches any file that is not `*.md` and not under `docs/` (including `Makefile`, `.github/**`, `pyproject.toml`, `.editorconfig`, SQL, Python, TSX, shell) starts **all four paid jobs**. A newer push to the same pull request cancels the run in progress. GitHub evaluates path filters on the first 300 changed files only; a pull request larger than that may start the paid run anyway (this is why `checks.yml` has no filter).
 - `docs/CODEOWNERS` sits under `docs/` on purpose, so changing it starts no paid run.

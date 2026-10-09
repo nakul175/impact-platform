@@ -1,34 +1,46 @@
-"""Release security review check (FR-SEC-001): threat register v2, chains, open critical threats, impact reviews.
+"""Release security review check (FR-SEC-001): threat register v2, chains, open threats, impact reviews.
 
     .venv/bin/python scripts/release_review.py --check                 base: merge-base with origin/main (or main)
     .venv/bin/python scripts/release_review.py --check --base HEAD^1   what CI runs (first parent of the merge)
-    .venv/bin/python scripts/release_review.py --open                  print the open threats as review JSON
+    .venv/bin/python scripts/release_review.py --init --prepared-by "<name>"   start the current build's review
+    .venv/bin/python scripts/release_review.py --open                  print the open lists as review JSON
 
-Deterministic and offline: it reads repository files and the local git history only, never the network,
-the clock or a database, and finishes in seconds. It fails (exit 1) when:
+Deterministic and offline for --check: it reads repository files and the local git history only, never
+the network, the clock or a database, and finishes in about a second. It fails (exit 1) when:
 
-- the register (docs/current/threat-register.json) does not match its JSON schema, loses or renames a
-  threat of the preserved version 1 baseline (specification/contracts/threat-register.json, never edited),
-  or references an unknown control, owner role or category;
+- the register (docs/current/threat-register.json) does not match its JSON schema; the preserved version 1
+  baseline (specification/contracts/threat-register.json, never edited) no longer matches its independent
+  hash record (docs/verification/application-v0.12-original-sha256.json) or a baseline threat is not
+  carried over with its title, impact and owner role; a control, owner role or category is unknown;
 - a test reference does not resolve: a pytest node ID must name a test function (or Class::method) in
-  qualification/, a browser check must name a test("...") declared in that tools/browser/*.mjs file;
+  qualification/, with a [suffix] only when the id is derivable from literal parametrize decorators; a
+  browser check must name a test("...") declared in that tools/browser/*.mjs file;
+- an implemented control listed for a threat has no test mapped to it in "coverage", or a TESTED threat
+  lists a control that is not built;
 - a chain lacks two independent implemented controls with resolvable evidence (independent: different
-  layers and no shared control in their depends_on closures);
-- the release review of the current build (docs/evidence/release-review-<build>.json) does not list
-  exactly the unresolved threats, or is marked passed (or gate G11 Pass) while a critical threat is
-  unresolved or a decision or impact review is unconfirmed;
+  layers and no shared control in their depends_on closures), or is less strict than its threats (a chain
+  with a BLOCK threat must be BLOCK);
+- compared with the register at the base of the change set, a threat or chain was removed, an impact was
+  lowered, or a decision or verification status was loosened without confirmed_by;
+- the release review of the current build (docs/release-reviews/release-review-<build>.json) is missing,
+  does not list exactly the unresolved threats and chains, or is marked passed (or gate G11 Pass) while a
+  critical threat or a chain is unresolved or a decision or impact review is unconfirmed;
 - the change set touches a migration, a *_contracts.py module, packages/contracts/access-policy.json or
-  apps/api/impact_api/ai_*.py without an impact-review entry naming that path in the release review;
+  apps/api/impact_api/ai_*.py without modifying the release review with a new impact_reviews entry naming
+  that path (entries already at the base do not count and must not change);
 - the register or the review contains something that looks like a credential.
 
-A threat is resolved only when its residual decision is ACCEPT or MITIGATE and its verification status is
-TESTED (named automated tests exist for every listed control); BLOCK, PARTIAL and PENDING stay open.
+A threat is resolved only when its decision is ACCEPT or MITIGATE and its verification is TESTED (every
+listed control is built and has a mapped test that exists); BLOCK, PARTIAL and PENDING stay open. A chain
+is resolved only when its decision is ACCEPT or MITIGATE and every threat on its path is resolved.
 """
 
 import argparse
 import ast
+import datetime
 import fnmatch
 import hashlib
+import itertools
 import json
 import re
 import subprocess
@@ -42,7 +54,9 @@ REGISTER = "docs/current/threat-register.json"
 REGISTER_SCHEMA = "docs/current/threat-register.schema.json"
 REVIEW_SCHEMA = "docs/current/release-review.schema.json"
 BASELINE = "specification/contracts/threat-register.json"
-REVIEW = "docs/evidence/release-review-{build}.json"
+# The independent hash record of the preserved package, written when the package was received.
+BASELINE_RECORD = "docs/verification/application-v0.12-original-sha256.json"
+REVIEW = "docs/release-reviews/release-review-{build}.json"
 CATEGORIES = (
     "identity",
     "tenant boundary",
@@ -55,7 +69,11 @@ CATEGORIES = (
 )
 REPOSITORY_OWNER = "Nakul Jain (owner)"
 RESOLVED_DECISIONS = {"ACCEPT", "MITIGATE"}
-# Path-to-area map: a change set touching any of these needs an impact-review entry naming the path.
+IMPACT_RANK = {"Medium": 1, "High": 2, "Critical": 3}
+# Larger is looser: further from "open".
+DECISION_RANK = {"BLOCK": 0, "MITIGATE": 1, "ACCEPT": 2}
+VERIFICATION_RANK = {"PENDING": 0, "PARTIAL": 1, "TESTED": 2}
+# Path-to-area map: a change set touching any of these needs a new impact-review entry naming the path.
 # fnmatch semantics: "*" also matches "/".
 MATERIAL_AREAS = (
     ("migration", "infrastructure/migrations/*"),
@@ -70,10 +88,13 @@ SECRET_PATTERNS = (
     re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
     re.compile(r"\bgh[pousr]_[A-Za-z0-9]{30,}"),
     re.compile(r"postgres(?:ql)?://[^\s:/@]+:[^\s@]+@"),
-    re.compile(r"(?i)\b(?:password|passwd|secret|api[_-]?key)\b\s*[=:]\s*['\"]?[A-Za-z0-9+/_\-]{12,}"),
+    re.compile(
+        r"(?i)\b(?:password|passwd|secret|api[_-]?key)\b[\"']?\s*[=:]\s*\\?[\"']?[A-Za-z0-9+/_\-]{12,}"
+    ),
 )
 PYTEST_REF = re.compile(
-    r"^(qualification/test_[a-z0-9_]+\.py)::([A-Za-z_][A-Za-z0-9_]*)(?:::([A-Za-z_][A-Za-z0-9_]*))?(?:\[[^\]]+\])?$"
+    r"^(qualification/test_[a-z0-9_]+\.py)::([A-Za-z_][A-Za-z0-9_]*)(?:::([A-Za-z_][A-Za-z0-9_]*))?"
+    r"(?:\[([^\]]+)\])?$"
 )
 BROWSER_REF = re.compile(r"^(tools/browser/[a-z0-9-]+\.mjs)::(\S.*)$")
 BROWSER_TEST = re.compile(r"\btest\(\s*\"((?:[^\"\\]|\\.)*)\"")
@@ -91,6 +112,128 @@ def schema_errors(document, schema, label):
     ]
 
 
+def _strings(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            yield key
+            yield from _strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _strings(item)
+
+
+def secret_problems(document, label, raw=None):
+    """Credential-like text in the file as written (raw) or in any decoded string of the document."""
+    texts = [raw if raw is not None else json.dumps(document, indent=2, ensure_ascii=False)]
+    texts += list(_strings(document))
+    return [
+        f"{label}: contains text that looks like a credential ({pattern.pattern})"
+        for pattern in SECRET_PATTERNS
+        if any(pattern.search(text) for text in texts)
+    ]
+
+
+def missing_review_message(build):
+    return (
+        f"release review missing: {REVIEW.format(build=build)}. Every build in VERSION.json needs one. Create it "
+        f'with `.venv/bin/python scripts/release_review.py --init --prepared-by "<name>"`, then add an '
+        "impact_reviews entry for each material change (see docs/RELEASE-0.37-threat-register.md)."
+    )
+
+
+# Test references
+
+
+def _literal_id(node, argname, index):
+    """pytest's id for one literal parameter value; None when it cannot be derived statically."""
+    if (
+        isinstance(node, ast.UnaryOp)
+        and isinstance(node.op, ast.USub)
+        and isinstance(node.operand, ast.Constant)
+    ):
+        node = ast.Constant(-node.operand.value) if isinstance(node.operand.value, (int, float)) else node
+    if isinstance(node, ast.Constant):
+        value = node.value
+        if isinstance(value, str):
+            return value if value and value.isascii() else None
+        if value is None or isinstance(value, (bool, int, float)):
+            return str(value)
+        return None
+    if isinstance(node, (ast.Dict, ast.List, ast.Set)):
+        return f"{argname}{index}"
+    return None
+
+
+def _parametrize_ids(call):
+    """The ids one literal @pytest.mark.parametrize decorator generates, or None."""
+    if not call.args or len(call.args) < 2:
+        return None
+    names_node, values_node = call.args[0], call.args[1]
+    # pytest unpacks each value into the names unless the names are one comma-free string.
+    if isinstance(names_node, ast.Constant) and isinstance(names_node.value, str):
+        names = [name.strip() for name in names_node.value.split(",") if name.strip()]
+        unpack = len(names) > 1
+    elif isinstance(names_node, (ast.List, ast.Tuple)) and all(
+        isinstance(item, ast.Constant) and isinstance(item.value, str) for item in names_node.elts
+    ):
+        names = [item.value for item in names_node.elts]
+        unpack = True
+    else:
+        return None
+    if not isinstance(values_node, (ast.List, ast.Tuple)):
+        return None
+    explicit = next((keyword.value for keyword in call.keywords if keyword.arg == "ids"), None)
+    if explicit is not None:
+        if not isinstance(explicit, (ast.List, ast.Tuple)) or not all(
+            isinstance(item, ast.Constant) and isinstance(item.value, str) for item in explicit.elts
+        ):
+            return None
+        return [item.value for item in explicit.elts]
+    ids = []
+    for index, value in enumerate(values_node.elts):
+        if isinstance(value, ast.Call):  # pytest.param(...): only an explicit literal id is derivable
+            given = next((keyword.value for keyword in value.keywords if keyword.arg == "id"), None)
+            if isinstance(given, ast.Constant) and isinstance(given.value, str):
+                ids.append(given.value)
+                continue
+            return None
+        if not unpack:
+            parts = [_literal_id(value, names[0], index)]
+        elif isinstance(value, (ast.Tuple, ast.List)) and len(value.elts) == len(names):
+            parts = [_literal_id(item, name, index) for item, name in zip(value.elts, names)]
+        else:
+            return None
+        if any(part is None for part in parts):
+            return None
+        ids.append("-".join(parts))
+    if len(set(ids)) != len(ids):
+        return None  # pytest disambiguates duplicates with suffixes; do not guess
+    return ids
+
+
+def parametrize_ids(function):
+    """The set of pytest ids of a test function's literal parametrize decorators (empty when it has none);
+    None when any decorator is not statically derivable."""
+    calls = [
+        decorator
+        for decorator in function.decorator_list
+        if isinstance(decorator, ast.Call)
+        and isinstance(decorator.func, ast.Attribute)
+        and decorator.func.attr == "parametrize"
+    ]
+    if not calls:
+        return set()
+    per_decorator = []
+    for call in reversed(calls):  # pytest joins the decorator nearest the function first
+        ids = _parametrize_ids(call)
+        if ids is None:
+            return None
+        per_decorator.append(ids)
+    return {"-".join(combination) for combination in itertools.product(*per_decorator)}
+
+
 class References:
     """Resolves test references against the files in one repository root, parsing each file once."""
 
@@ -98,24 +241,21 @@ class References:
         self.root = Path(root)
         self.pytest, self.browser = {}, {}
 
-    def _pytest_names(self, relative):
+    def _pytest_functions(self, relative):
         if relative not in self.pytest:
-            names = set()
+            functions = {}
             path = self.root / relative
             if path.is_file():
                 tree = ast.parse(path.read_text(encoding="utf-8"), filename=relative)
+                kinds = (ast.FunctionDef, ast.AsyncFunctionDef)
                 for node in tree.body:
-                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith(
-                        "test"
-                    ):
-                        names.add(node.name)
+                    if isinstance(node, kinds) and node.name.startswith("test"):
+                        functions[node.name] = node
                     elif isinstance(node, ast.ClassDef) and node.name.startswith("Test"):
                         for item in node.body:
-                            if isinstance(
-                                item, (ast.FunctionDef, ast.AsyncFunctionDef)
-                            ) and item.name.startswith("test"):
-                                names.add(node.name + "::" + item.name)
-            self.pytest[relative] = names
+                            if isinstance(item, kinds) and item.name.startswith("test"):
+                                functions[node.name + "::" + item.name] = item
+            self.pytest[relative] = functions
         return self.pytest[relative]
 
     def _browser_names(self, relative):
@@ -132,12 +272,22 @@ class References:
         """None when the reference resolves, otherwise why it does not."""
         match = PYTEST_REF.match(ref)
         if match:
-            relative, first, second = match.groups()
+            relative, first, second, suffix = match.groups()
             if not (self.root / relative).is_file():
                 return "no such test file " + relative
             name = first + "::" + second if second else first
-            if name not in self._pytest_names(relative):
+            function = self._pytest_functions(relative).get(name)
+            if function is None:
                 return "no test " + name + " in " + relative
+            if suffix is not None:
+                ids = parametrize_ids(function)
+                if ids is None:
+                    return (
+                        f"the parameter ids of {name} cannot be derived statically; "
+                        "reference the test without a [suffix]"
+                    )
+                if suffix not in ids:
+                    return f"{name} has no parameter id [{suffix}] (ids: {', '.join(sorted(ids)) or 'none'})"
             return None
         match = BROWSER_REF.match(ref)
         if match:
@@ -150,30 +300,37 @@ class References:
         return "not a pytest node ID under qualification/ or a tools/browser/*.mjs check name"
 
 
+# Open threats and chains
+
+
+def _threat_reason(threat):
+    decision = threat["residual_decision"]["decision"]
+    status = threat["verification"]["status"]
+    if decision not in RESOLVED_DECISIONS:
+        return "BLOCKED"
+    if status == "PENDING":
+        return "VERIFICATION_PENDING"
+    if status == "PARTIAL":
+        return "VERIFICATION_PARTIAL"
+    return None
+
+
 def open_threats(register):
     """Threats that are not resolved (ACCEPT or MITIGATE with TESTED verification), in register order."""
     result = []
     for threat in register.get("threats", []):
-        decision = threat["residual_decision"]["decision"]
-        status = threat["verification"]["status"]
-        if decision not in RESOLVED_DECISIONS:
-            reason = "BLOCKED"
-        elif status == "PENDING":
-            reason = "VERIFICATION_PENDING"
-        elif status == "PARTIAL":
-            reason = "VERIFICATION_PARTIAL"
-        else:
-            continue
-        result.append(
-            {
-                "id": threat["id"],
-                "title": threat["title"],
-                "impact": threat["impact"],
-                "decision": decision,
-                "verification": status,
-                "reason": reason,
-            }
-        )
+        reason = _threat_reason(threat)
+        if reason:
+            result.append(
+                {
+                    "id": threat["id"],
+                    "title": threat["title"],
+                    "impact": threat["impact"],
+                    "decision": threat["residual_decision"]["decision"],
+                    "verification": threat["verification"]["status"],
+                    "reason": reason,
+                }
+            )
     return result
 
 
@@ -183,6 +340,27 @@ def split_open(register):
         [item for item in items if item["impact"] == "Critical"],
         [item for item in items if item["impact"] != "Critical"],
     )
+
+
+def open_chains(register):
+    """Chains that are BLOCK or have an unresolved threat on their path, in register order."""
+    unresolved = {item["id"] for item in open_threats(register)}
+    result = []
+    for chain in register.get("chains", []):
+        decision = chain["residual_decision"]["decision"]
+        if decision not in RESOLVED_DECISIONS:
+            reason = "BLOCKED"
+        elif set(chain["path"]) & unresolved:
+            reason = "MEMBER_THREAT_OPEN"
+        else:
+            continue
+        result.append({"id": chain["id"], "title": chain["title"], "decision": decision, "reason": reason})
+    return result
+
+
+def open_lists(register):
+    critical, other = split_open(register)
+    return {"open_critical": critical, "open_other": other, "open_chains": open_chains(register)}
 
 
 def _closure(control_id, controls):
@@ -202,16 +380,34 @@ def independent(first, second, controls):
     return not (({first} | _closure(first, controls)) & ({second} | _closure(second, controls)))
 
 
-def _secrets(document, label):
-    text = json.dumps(document, ensure_ascii=False)
-    return [
-        f"{label}: contains text that looks like a credential ({pattern.pattern})"
-        for pattern in SECRET_PATTERNS
-        if pattern.search(text)
-    ]
+# The register
 
 
-def check_register(register, root=ROOT, references=None, schema=None, baseline=None):
+def _baseline_problems(register, root, baseline):
+    problems = []
+    if baseline is not None:
+        return problems, baseline
+    path = root / BASELINE
+    if not path.is_file():
+        return [f"register: baseline {BASELINE} is missing"], []
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    record_path = root / BASELINE_RECORD
+    recorded = None
+    if record_path.is_file():
+        recorded = json.loads(record_path.read_text(encoding="utf-8")).get(BASELINE)
+    if recorded is None:
+        problems.append(f"register: {BASELINE_RECORD} has no hash for {BASELINE}")
+    elif actual != recorded:
+        problems.append(
+            f"register: {BASELINE} does not match its independent hash record in {BASELINE_RECORD}; "
+            "the version 1 baseline must never be edited"
+        )
+    if register["baseline"]["sha256"] != (recorded or actual):
+        problems.append(f"register: baseline.sha256 differs from the hash recorded in {BASELINE_RECORD}")
+    return problems, json.loads(path.read_text(encoding="utf-8"))
+
+
+def check_register(register, root=ROOT, references=None, schema=None, baseline=None, raw=None):
     """Every problem with the register as a list of messages (empty when it is sound)."""
     root = Path(root)
     references = references or References(root)
@@ -219,7 +415,7 @@ def check_register(register, root=ROOT, references=None, schema=None, baseline=N
     problems = schema_errors(register, schema, "register")
     if problems:
         return problems
-    problems += _secrets(register, "register")
+    problems += secret_problems(register, "register", raw)
     if [category["id"] for category in register["categories"]] != list(CATEGORIES):
         problems.append("register: categories must be exactly, in order: " + ", ".join(CATEGORIES))
 
@@ -256,30 +452,42 @@ def check_register(register, root=ROOT, references=None, schema=None, baseline=N
             reason = references.problem(ref)
             if reason:
                 problems.append(f"threat {tid}: unresolvable test reference {ref} ({reason})")
+        coverage = threat["coverage"]
+        for ref, tests in coverage.items():
+            if ref not in threat["control_refs"]:
+                problems.append(f"threat {tid}: coverage names {ref}, which is not in control_refs")
+            elif not controls.get(ref, {}).get("implemented"):
+                problems.append(f"threat {tid}: coverage names {ref}, which is not built")
+            for test in tests:
+                if test not in threat["test_refs"]:
+                    problems.append(f"threat {tid}: coverage of {ref} uses {test}, which is not in test_refs")
+        for ref in threat["control_refs"]:
+            control = controls.get(ref)
+            if control and control["implemented"] and ref not in coverage:
+                problems.append(
+                    f"threat {tid}: implemented control {ref} has no test mapped to it in coverage"
+                )
+            if control and not control["implemented"] and threat["verification"]["status"] == "TESTED":
+                problems.append(f"threat {tid}: TESTED, but its control {ref} is not built")
         decision = threat["residual_decision"]
         if decision["decision"] == "ACCEPT" and not decision["confirmed_by"]:
             problems.append(f"threat {tid}: ACCEPT is a risk acceptance and needs confirmed_by (a person)")
-        if threat["verification"]["status"] == "TESTED" and not any(
-            controls.get(ref, {}).get("implemented") for ref in threat["control_refs"]
-        ):
-            problems.append(f"threat {tid}: TESTED verification needs at least one implemented control")
 
-    # The preserved version 1 baseline: unchanged, and every threat carried with its title and impact.
-    baseline_path = root / BASELINE
-    if baseline is None and baseline_path.is_file():
-        if hashlib.sha256(baseline_path.read_bytes()).hexdigest() != register["baseline"]["sha256"]:
-            problems.append(f"register: {BASELINE} changed; the version 1 baseline must never be edited")
-        baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
-    if baseline is None:
-        problems.append(f"register: baseline {BASELINE} is missing")
-        baseline = []
+    # The preserved version 1 baseline: unchanged, and every threat carried with title, impact and owner.
+    found, baseline = _baseline_problems(register, root, baseline)
+    problems += found
     for old in baseline:
         new = threats.get(old["id"])
         if not new:
             problems.append(f"threat {old['id']}: baseline threat missing from the register")
-        elif (new["title"], new["impact"], new["origin"]) != (old["title"], old["impact"], "v1"):
+            continue
+        if (new["title"], new["impact"], new["origin"]) != (old["title"], old["impact"], "v1"):
             problems.append(
                 f"threat {old['id']}: title, impact or origin differs from the version 1 baseline"
+            )
+        if "owner_role" in old and new["owner"] != old["owner_role"]:
+            problems.append(
+                f"threat {old['id']}: owner {new['owner']!r} differs from the baseline owner role {old['owner_role']!r}"
             )
     baseline_ids = {old["id"] for old in baseline}
     for tid, threat in threats.items():
@@ -295,6 +503,19 @@ def check_register(register, root=ROOT, references=None, schema=None, baseline=N
         for tid in chain["path"]:
             if tid not in threats:
                 problems.append(f"chain {cid}: unknown threat {tid} in path")
+        blocked = [
+            tid
+            for tid in chain["path"]
+            if threats.get(tid, {}).get("residual_decision", {}).get("decision") == "BLOCK"
+        ]
+        decision = chain["residual_decision"]
+        if blocked and decision["decision"] != "BLOCK":
+            problems.append(
+                f"chain {cid}: decision {decision['decision']} while {', '.join(blocked)} on its path is BLOCK; "
+                "a chain is no looser than its threats"
+            )
+        if decision["decision"] == "ACCEPT" and not decision["confirmed_by"]:
+            problems.append(f"chain {cid}: ACCEPT is a risk acceptance and needs confirmed_by (a person)")
         evidenced = []
         for entry in chain["controls"]:
             ref = entry["control_ref"]
@@ -308,11 +529,10 @@ def check_register(register, root=ROOT, references=None, schema=None, baseline=N
             if not controls[ref]["implemented"]:
                 problems.append(f"chain {cid}: control {ref} is not implemented and cannot count as evidence")
                 continue
-            unresolved = [ref_ for ref_ in entry["evidence"] if references.problem(ref_)]
-            for ref_ in unresolved:
-                problems.append(
-                    f"chain {cid}: unresolvable evidence {ref_} for {ref} ({references.problem(ref_)})"
-                )
+            unresolved = [(item, references.problem(item)) for item in entry["evidence"]]
+            unresolved = [(item, reason) for item, reason in unresolved if reason]
+            for item, reason in unresolved:
+                problems.append(f"chain {cid}: unresolvable evidence {item} for {ref} ({reason})")
             if not unresolved:
                 evidenced.append(ref)
         evidenced = sorted(set(evidenced))
@@ -331,6 +551,53 @@ def check_register(register, root=ROOT, references=None, schema=None, baseline=N
     return problems
 
 
+def _loosened(old, new):
+    """Text describing how the residual state got looser from old to new, or None."""
+    changes = []
+    old_decision, new_decision = old["residual_decision"]["decision"], new["residual_decision"]["decision"]
+    if DECISION_RANK[new_decision] > DECISION_RANK[old_decision]:
+        changes.append(f"decision {old_decision} -> {new_decision}")
+    if "verification" in old and "verification" in new:
+        old_status, new_status = old["verification"]["status"], new["verification"]["status"]
+        if VERIFICATION_RANK[new_status] > VERIFICATION_RANK[old_status]:
+            changes.append(f"verification {old_status} -> {new_status}")
+    return ", ".join(changes) or None
+
+
+def compare_registers(old, new, label):
+    """Problems with the register compared with its earlier version at the base of the change set."""
+    problems = []
+    new_threats = {threat["id"]: threat for threat in new.get("threats", [])}
+    for threat in old.get("threats", []):
+        tid = threat["id"]
+        current = new_threats.get(tid)
+        if current is None:
+            problems.append(
+                f"threat {tid} {threat['title']!r} was removed since {label}; threats are never removed"
+            )
+            continue
+        if IMPACT_RANK.get(current["impact"], 0) < IMPACT_RANK.get(threat["impact"], 0):
+            problems.append(
+                f"threat {tid}: impact lowered from {threat['impact']} to {current['impact']} since {label}"
+            )
+        change = _loosened(threat, current)
+        if change and not current["residual_decision"]["confirmed_by"]:
+            problems.append(f"threat {tid}: {change} since {label} without confirmed_by (a person)")
+    new_chains = {chain["id"]: chain for chain in new.get("chains", [])}
+    for chain in old.get("chains", []):
+        current = new_chains.get(chain["id"])
+        if current is None:
+            problems.append(f"chain {chain['id']} {chain['title']!r} was removed since {label}")
+            continue
+        change = _loosened(chain, current)
+        if change and not current["residual_decision"]["confirmed_by"]:
+            problems.append(f"chain {chain['id']}: {change} since {label} without confirmed_by (a person)")
+    return problems
+
+
+# The release review
+
+
 def material(paths):
     """{path: [areas]} for the paths of a change set that need an impact review."""
     result = {}
@@ -341,53 +608,62 @@ def material(paths):
     return result
 
 
-def check_review(review, register, changed=(), root=ROOT, schema=None, build=None):
-    """Every problem with one release review against the register and the change set."""
+def check_review(
+    review, register, changed=(), root=ROOT, schema=None, build=None, base_review=None, raw=None
+):
+    """Every problem with one release review against the register, the change set and the review at its base."""
     schema = schema if schema is not None else load_json(ROOT, REVIEW_SCHEMA)
     problems = schema_errors(review, schema, "release review")
     if problems:
         return problems
-    problems += _secrets(review, "release review")
+    problems += secret_problems(review, "release review", raw)
     if build and review["release"] != build:
         problems.append(f"release review: release {review['release']} is not the current build {build}")
+    review_path = REVIEW.format(build=review["release"])
     for path in review["evidence"]:
         if not (Path(root) / path).exists():
             problems.append(f"release review: evidence path {path} does not exist")
 
-    critical, other = split_open(register)
-    for label, listed, computed in (
-        ("open_critical", review["open_critical"], critical),
-        ("open_other", review["open_other"], other),
-    ):
+    computed = open_lists(register)
+    for label in ("open_critical", "open_other", "open_chains"):
+        listed, expected = review[label], computed[label]
         listed_by_id = {item["id"]: item for item in listed}
-        computed_by_id = {item["id"]: item for item in computed}
-        for tid, item in computed_by_id.items():
-            if tid not in listed_by_id:
+        expected_by_id = {item["id"]: item for item in expected}
+        for key, item in expected_by_id.items():
+            if key not in listed_by_id:
                 problems.append(
-                    f"release review: {label} hides {tid} {item['title']!r} ({item['reason']}); list every unresolved threat"
+                    f"release review: {label} hides {key} {item['title']!r} ({item['reason']}); list everything unresolved"
                 )
-            elif listed_by_id[tid] != item:
+            elif listed_by_id[key] != item:
                 problems.append(
-                    f"release review: {label} entry {tid} differs from the register: expected {json.dumps(item)}"
+                    f"release review: {label} entry {key} differs from the register: expected {json.dumps(item)}"
                 )
-        for tid in listed_by_id:
-            if tid not in computed_by_id:
+        for key in listed_by_id:
+            if key not in expected_by_id:
                 problems.append(
-                    f"release review: {label} lists {tid}, which the register does not leave open there"
+                    f"release review: {label} lists {key}, which the register does not leave open there"
                 )
         if len(listed_by_id) != len(listed):
-            problems.append(f"release review: {label} lists a threat twice")
+            problems.append(f"release review: {label} lists an entry twice")
 
-    marked_passed = review["passed"] or review["gates"]["G11"]["status"] == "Pass"
-    if marked_passed:
-        for item in critical:
+    if review["passed"] or review["gates"]["G11"]["status"] == "Pass":
+        for item in computed["open_critical"]:
             problems.append(
                 f"release review: marked passed while critical threat {item['id']} {item['title']!r} is open ({item['reason']})"
+            )
+        for item in computed["open_chains"]:
+            problems.append(
+                f"release review: marked passed while chain {item['id']} {item['title']!r} is open ({item['reason']})"
             )
         for threat in register["threats"]:
             if threat["impact"] == "Critical" and not threat["residual_decision"]["confirmed_by"]:
                 problems.append(
                     f"release review: marked passed while the decision on {threat['id']} is unconfirmed"
+                )
+        for chain in register["chains"]:
+            if not chain["residual_decision"]["confirmed_by"]:
+                problems.append(
+                    f"release review: marked passed while the decision on chain {chain['id']} is unconfirmed"
                 )
         for entry in review["impact_reviews"]:
             if not entry["confirmed_by"]:
@@ -396,7 +672,9 @@ def check_review(review, register, changed=(), root=ROOT, schema=None, build=Non
                 )
 
     threat_ids = {threat["id"] for threat in register["threats"]}
-    covered = {}
+    ids = [entry["id"] for entry in review["impact_reviews"]]
+    if len(set(ids)) != len(ids):
+        problems.append("release review: impact_reviews has a duplicate id")
     for entry in review["impact_reviews"]:
         for tid in entry["threats"]:
             if tid not in threat_ids:
@@ -407,67 +685,155 @@ def check_review(review, register, changed=(), root=ROOT, schema=None, build=Non
                 problems.append(
                     f"impact review {entry['id']}: {path} is in area(s) {', '.join(missing)} not listed"
                 )
-        for path in entry["paths"]:
-            covered.setdefault(path, entry["id"])
-    for path, areas in material(changed).items():
-        if path not in covered:
+
+    # Impact reviews are append-only, and only an entry added by this change set covers its material paths.
+    earlier = {entry["id"]: entry for entry in (base_review or {}).get("impact_reviews", [])}
+    current = {entry["id"]: entry for entry in review["impact_reviews"]}
+    for key, entry in earlier.items():
+        if key not in current:
+            problems.append(f"impact review {key} was removed since the base; impact reviews are append-only")
+        elif current[key] != entry:
+            problems.append(f"impact review {key} was changed since the base; add a new entry instead")
+    touched = material(changed)
+    if touched and review_path not in set(changed):
+        problems.append(
+            f"impact review missing: the change set touches {', '.join(touched)} but does not modify {review_path}; "
+            "add an impact_reviews entry for this change"
+        )
+    for path, areas in touched.items():
+        naming = [entry["id"] for entry in review["impact_reviews"] if path in entry["paths"]]
+        fresh = [key for key in naming if key not in earlier]
+        if not naming:
             problems.append(
                 f"impact review missing: the change set touches {path} ({', '.join(areas)}); "
-                f"add an impact_reviews entry naming it to {REVIEW.format(build=review['release'])}"
+                f"add an impact_reviews entry naming it to {review_path}"
+            )
+        elif not fresh:
+            problems.append(
+                f"impact review missing: {path} ({', '.join(areas)}) is named only by {', '.join(naming)}, "
+                f"which predate this change set; add a new impact_reviews entry for this change to {review_path}"
             )
     return problems
+
+
+# Git
 
 
 def _git(root, *args):
     return subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, check=True).stdout
 
 
-def changed_paths(root, base=None):
-    """Paths changed between the merge-base of HEAD with the base ref and HEAD (committed changes only)."""
+def merge_point(root, base=None):
+    """(ref, commit) of the merge-base of HEAD with the base ref (default origin/main, then main)."""
     candidates = [base] if base else ["origin/main", "main"]
     for candidate in candidates:
         try:
-            point = _git(root, "merge-base", "HEAD", candidate).strip()
+            return candidate, _git(root, "merge-base", "HEAD", candidate).strip()
         except (subprocess.CalledProcessError, FileNotFoundError):
             continue
-        output = _git(root, "diff", "--name-only", "--no-renames", point, "HEAD")
-        return candidate, point, sorted(line for line in output.splitlines() if line)
     raise RuntimeError(
         "cannot find a base for the change set (tried " + ", ".join(candidates) + "); pass --base <ref>"
     )
 
 
-def run(root=ROOT, base=None, changed=None):
-    """(problems, report lines) for the whole repository."""
+def changed_paths(root, point):
+    """Paths changed between a commit and HEAD (committed changes only; a rename lists both paths)."""
+    output = _git(root, "diff", "--name-only", "--no-renames", point, "HEAD")
+    return sorted(line for line in output.splitlines() if line)
+
+
+def file_at(root, point, path):
+    """A file's text at a commit, or None when it did not exist there."""
+    try:
+        return _git(root, "show", f"{point}:{path}")
+    except subprocess.CalledProcessError:
+        return None
+
+
+# Running
+
+
+def run(root=ROOT, base=None, changed=None, base_files=None):
+    """(problems, report lines) for a repository. With `changed` given, `base_files` ({path: text}) stands
+    in for the files at the base; otherwise both come from git."""
     root = Path(root)
     lines, problems = [], []
-    references = References(root)
-    register = load_json(root, REGISTER)
-    problems += check_register(register, root, references)
-    register_readable = not schema_errors(register, load_json(ROOT, REGISTER_SCHEMA), "register")
+    register_text = (root / REGISTER).read_text(encoding="utf-8")
+    register = json.loads(register_text)
     build = load_json(root, "VERSION.json")["build"]
     review_path = REVIEW.format(build=build)
+    base_files = dict(base_files or {})
+    label = "the base"
     if changed is None:
         try:
-            ref, point, changed = changed_paths(root, base)
-            lines.append(f"change set: {len(changed)} paths since {ref} ({point[:12]})")
+            ref, point = merge_point(root, base)
+            changed = changed_paths(root, point)
+            label = f"{ref} ({point[:12]})"
+            for path in (REGISTER, review_path):
+                base_files[path] = file_at(root, point, path)
+            lines.append(f"change set: {len(changed)} paths since {label}")
         except RuntimeError as error:
             problems.append(str(error))
             changed = []
     for path, areas in material(changed).items():
         lines.append(f"  material: {path} ({', '.join(areas)})")
+
+    problems += check_register(register, root, References(root), raw=register_text)
+    readable = not schema_errors(register, load_json(ROOT, REGISTER_SCHEMA), "register")
+    if readable and base_files.get(REGISTER):
+        problems += compare_registers(json.loads(base_files[REGISTER]), register, label)
     if not (root / review_path).is_file():
-        problems.append(f"release review missing: {review_path} (one per build in VERSION.json)")
-    elif register_readable:
-        review = load_json(root, review_path)
-        problems += check_review(review, register, changed, root, build=build)
-    critical, other = split_open(register) if register_readable else ([], [])
-    lines.append(
-        f"register: {len(register.get('threats', []))} threats, {len(register.get('controls', []))} controls, "
-        f"{len(register.get('chains', []))} chains; open: {len(critical)} critical, {len(other)} other"
-    )
-    lines.append("open critical: " + (", ".join(item["id"] for item in critical) or "none"))
+        problems.append(missing_review_message(build))
+    elif readable:
+        review_text = (root / review_path).read_text(encoding="utf-8")
+        base_review = json.loads(base_files[review_path]) if base_files.get(review_path) else None
+        problems += check_review(
+            json.loads(review_text),
+            register,
+            changed,
+            root,
+            build=build,
+            base_review=base_review,
+            raw=review_text,
+        )
+    if readable:
+        lists = open_lists(register)
+        lines.append(
+            f"register: {len(register['threats'])} threats, {len(register['controls'])} controls, "
+            f"{len(register['chains'])} chains; open: {len(lists['open_critical'])} critical, "
+            f"{len(lists['open_other'])} other, {len(lists['open_chains'])} chains"
+        )
+        lines.append("open critical: " + (", ".join(item["id"] for item in lists["open_critical"]) or "none"))
     return problems, lines
+
+
+def init_review(root, prepared_by, today=None):
+    """Write the current build's review with the register's open lists and no impact reviews yet."""
+    root = Path(root)
+    build = load_json(root, "VERSION.json")["build"]
+    path = root / REVIEW.format(build=build)
+    if path.exists():
+        raise FileExistsError(f"{path.relative_to(root)} already exists; edit it instead")
+    lists = open_lists(load_json(root, REGISTER))
+    review = {
+        "schema_version": 1,
+        "release": build,
+        "register": REGISTER,
+        "prepared_by": prepared_by,
+        "prepared_on": (today or datetime.date.today()).isoformat(),
+        "passed": False,
+        "gates": {
+            "G11": {"status": "Not passed", "reason": "Review started; no independent assessment recorded."},
+            "G12": {"status": "Not run", "reason": "No AI evaluation recorded for this build."},
+        },
+        **lists,
+        "impact_reviews": [],
+        "evidence": [REGISTER],
+        "notes": [],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(review, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return path
 
 
 def main(argv=None):
@@ -476,11 +842,23 @@ def main(argv=None):
     parser.add_argument(
         "--base", help="git ref the change set is measured from (default origin/main, then main)"
     )
-    parser.add_argument("--open", action="store_true", help="print open_critical and open_other as JSON")
+    parser.add_argument("--open", action="store_true", help="print open_critical, open_other and open_chains")
+    parser.add_argument("--init", action="store_true", help="create the current build's release review")
+    parser.add_argument(
+        "--prepared-by", help="with --init: who prepares the review (a person, or an agent for a person)"
+    )
     args = parser.parse_args(argv)
     if args.open:
-        critical, other = split_open(load_json(ROOT, REGISTER))
-        print(json.dumps({"open_critical": critical, "open_other": other}, indent=2, ensure_ascii=False))
+        print(json.dumps(open_lists(load_json(ROOT, REGISTER)), indent=2, ensure_ascii=False))
+        return 0
+    if args.init:
+        if not args.prepared_by:
+            parser.error("--init needs --prepared-by")
+        try:
+            print("wrote " + str(init_review(ROOT, args.prepared_by).relative_to(ROOT)))
+        except FileExistsError as error:
+            print(error)
+            return 1
         return 0
     problems, lines = run(ROOT, args.base)
     for line in lines:

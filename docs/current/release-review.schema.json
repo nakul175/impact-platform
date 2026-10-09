@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:impact-platform:release-review:1",
   "title": "Release security review, schema version 1 (FR-SEC-001)",
-  "description": "One file per build, docs/evidence/release-review-<build>.json, checked by scripts/release_review.py against the threat register: open_critical and open_other must list exactly the threats the register leaves unresolved, a review cannot be marked passed (or gate G11 Pass) while any critical threat is unresolved or any decision is unconfirmed, and every material path in the change set needs an impact review.",
+  "description": "One file per build, docs/release-reviews/release-review-<build>.json, checked by scripts/release_review.py against the threat register: open_critical, open_other and open_chains must list exactly what the register leaves unresolved; a review cannot be marked passed (or gate G11 Pass) while a critical threat or a chain is unresolved or a decision or impact review is unconfirmed; and a change set touching a material path must modify this file with a new impact_reviews entry naming that path (entries are append-only).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,28 +15,65 @@
     "gates",
     "open_critical",
     "open_other",
+    "open_chains",
     "impact_reviews",
     "evidence",
     "notes"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
-    "release": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
-    "register": { "const": "docs/current/threat-register.json" },
-    "prepared_by": { "$ref": "#/$defs/name" },
-    "prepared_on": { "$ref": "#/$defs/date" },
-    "passed": { "type": "boolean" },
+    "schema_version": {
+      "const": 1
+    },
+    "release": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "register": {
+      "const": "docs/current/threat-register.json"
+    },
+    "prepared_by": {
+      "$ref": "#/$defs/name"
+    },
+    "prepared_on": {
+      "$ref": "#/$defs/date"
+    },
+    "passed": {
+      "type": "boolean"
+    },
     "gates": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["G11", "G12"],
+      "required": [
+        "G11",
+        "G12"
+      ],
       "properties": {
-        "G11": { "$ref": "#/$defs/gate" },
-        "G12": { "$ref": "#/$defs/gate" }
+        "G11": {
+          "$ref": "#/$defs/gate"
+        },
+        "G12": {
+          "$ref": "#/$defs/gate"
+        }
       }
     },
-    "open_critical": { "type": "array", "items": { "$ref": "#/$defs/open_threat" } },
-    "open_other": { "type": "array", "items": { "$ref": "#/$defs/open_threat" } },
+    "open_critical": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_threat"
+      }
+    },
+    "open_other": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_threat"
+      }
+    },
+    "open_chains": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/open_chain"
+      }
+    },
     "impact_reviews": {
       "type": "array",
       "items": {
@@ -44,6 +81,7 @@
         "additionalProperties": false,
         "required": [
           "id",
+          "change_id",
           "change",
           "paths",
           "areas",
@@ -54,30 +92,69 @@
           "confirmed_by"
         ],
         "properties": {
-          "id": { "type": "string", "pattern": "^IR-[0-9]+\\.[0-9]+-[0-9]{2}$" },
-          "change": { "$ref": "#/$defs/text" },
+          "id": {
+            "type": "string",
+            "pattern": "^IR-[0-9]+\\.[0-9]+-[0-9]{2}$"
+          },
+          "change_id": {
+            "description": "The story or change this entry reviews, for example FR-AI-001.",
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(-[A-Za-z0-9]+)+$",
+            "maxLength": 40
+          },
+          "change": {
+            "$ref": "#/$defs/text"
+          },
           "paths": {
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": { "type": "string", "pattern": "^[A-Za-z0-9_.][A-Za-z0-9_./-]*$" }
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.][A-Za-z0-9_./-]*$"
+            }
           },
           "areas": {
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": { "enum": ["migration", "contracts", "access-policy", "ai-module"] }
+            "items": {
+              "enum": [
+                "migration",
+                "contracts",
+                "access-policy",
+                "ai-module"
+              ]
+            }
           },
           "threats": {
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
-            "items": { "type": "string", "pattern": "^TH[0-9]{2}$" }
+            "items": {
+              "type": "string",
+              "pattern": "^TH[0-9]{2}$"
+            }
           },
-          "summary": { "$ref": "#/$defs/text" },
-          "prepared_by": { "$ref": "#/$defs/name" },
-          "prepared_on": { "$ref": "#/$defs/date" },
-          "confirmed_by": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/name" }] }
+          "summary": {
+            "$ref": "#/$defs/text"
+          },
+          "prepared_by": {
+            "$ref": "#/$defs/name"
+          },
+          "prepared_on": {
+            "$ref": "#/$defs/date"
+          },
+          "confirmed_by": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/name"
+              }
+            ]
+          }
         }
       }
     },
@@ -85,34 +162,133 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "type": "string", "pattern": "^[A-Za-z0-9_.][A-Za-z0-9_./-]*$" }
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.][A-Za-z0-9_./-]*$"
+      }
     },
-    "notes": { "type": "array", "items": { "$ref": "#/$defs/text" } }
+    "notes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    }
   },
   "$defs": {
-    "date": { "type": "string", "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" },
-    "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
-    "name": { "type": "string", "minLength": 2, "maxLength": 120, "pattern": "\\S" },
+    "date": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120,
+      "pattern": "\\S"
+    },
     "gate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "reason"],
+      "required": [
+        "status",
+        "reason"
+      ],
       "properties": {
-        "status": { "enum": ["Not run", "Not passed", "Pass"] },
-        "reason": { "$ref": "#/$defs/text" }
+        "status": {
+          "enum": [
+            "Not run",
+            "Not passed",
+            "Pass"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/text"
+        }
       }
     },
     "open_threat": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "impact", "decision", "verification", "reason"],
+      "required": [
+        "id",
+        "title",
+        "impact",
+        "decision",
+        "verification",
+        "reason"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^TH[0-9]{2}$" },
-        "title": { "$ref": "#/$defs/name" },
-        "impact": { "enum": ["Critical", "High", "Medium"] },
-        "decision": { "enum": ["ACCEPT", "MITIGATE", "BLOCK"] },
-        "verification": { "enum": ["TESTED", "PARTIAL", "PENDING"] },
-        "reason": { "enum": ["BLOCKED", "VERIFICATION_PENDING", "VERIFICATION_PARTIAL"] }
+        "id": {
+          "type": "string",
+          "pattern": "^TH[0-9]{2}$"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "impact": {
+          "enum": [
+            "Critical",
+            "High",
+            "Medium"
+          ]
+        },
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "MITIGATE",
+            "BLOCK"
+          ]
+        },
+        "verification": {
+          "enum": [
+            "TESTED",
+            "PARTIAL",
+            "PENDING"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "BLOCKED",
+            "VERIFICATION_PENDING",
+            "VERIFICATION_PARTIAL"
+          ]
+        }
+      }
+    },
+    "open_chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "decision",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CH[0-9]{2}$"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "MITIGATE",
+            "BLOCK"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "BLOCKED",
+            "MEMBER_THREAT_OPEN"
+          ]
+        }
       }
     }
   }

@@ -8,7 +8,7 @@
   "gates": {
     "G11": {
       "status": "Not passed",
-      "reason": "14 critical threats are unresolved (TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34); no independent security assessment has been run (FR-SEC-010); every residual decision and impact review is an agent proposal that no person has confirmed."
+      "reason": "14 critical threats are unresolved (TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34) and both chains are BLOCK (CH01 because TH21 retrieval and tools are blocked, CH02 because support sessions do not exist); no independent security assessment has been run (FR-SEC-010); every residual decision and impact review is an agent proposal that no person has confirmed."
     },
     "G12": {
       "status": "Not run",
@@ -227,9 +227,24 @@
       "reason": "VERIFICATION_PARTIAL"
     }
   ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
   "impact_reviews": [
     {
       "id": "IR-0.37-01",
+      "change_id": "FR-AI-001",
       "change": "FR-AI-001 explicit AI enablement and versioned tenant AI policy (migration 0041, the policy gate, ai.policy.manage)",
       "paths": [
         "apps/api/impact_api/ai_advisory_provider.py",
@@ -269,6 +284,6 @@
   "notes": [
     "Agent-prepared review: no residual decision, chain decision or impact review has been confirmed by a person (confirmed_by is null everywhere), so this review cannot pass even when every critical threat is resolved.",
     "TESTED means named automated tests exist and passed in their latest recorded runs: make unit with this change (docs/RELEASE-0.37-threat-register.md), the PGlite full suite and focused native and browser runs of build 0.37.0 (docs/RELEASE-0.37-ai-policy.md), and the native, live identity-provider and browser jobs of build 0.36.0 on main for the tests these branches did not run. Hosted CI has not run on build 0.37.0.",
-    "Version 1 of the register (specification/contracts/threat-register.json) is preserved unchanged; version 2 is docs/current/threat-register.json."
+    "Version 1 of the register (specification/contracts/threat-register.json) is preserved unchanged and matches its independent hash in docs/verification/application-v0.12-original-sha256.json; version 2 is docs/current/threat-register.json. Release reviews live in docs/release-reviews/, outside docs/evidence/, which agents restore and clean after focused runs."
   ]
 }

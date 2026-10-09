@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "release": "0.37.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+  "prepared_on": "2026-10-09",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "14 critical threats are unresolved (TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34); no independent security assessment has been run (FR-SEC-010); every residual decision and impact review is an agent proposal that no person has confirmed."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No evaluation of grounding, correctness, privacy, injection or budget against a live model exists. CH01 is exercised with a synthetic model that obeys the injection, which tests the platform's controls, not the model."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.37-01",
+      "change": "FR-AI-001 explicit AI enablement and versioned tenant AI policy (migration 0041, the policy gate, ai.policy.manage)",
+      "paths": [
+        "apps/api/impact_api/ai_advisory_provider.py",
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "apps/api/impact_api/ai_policy.py",
+        "infrastructure/migrations/0041_ai_policy.sql",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy",
+        "ai-module"
+      ],
+      "threats": [
+        "TH01",
+        "TH03",
+        "TH10",
+        "TH21",
+        "TH24",
+        "TH33",
+        "TH34",
+        "TH35"
+      ],
+      "summary": "Migration 0041 adds two tenant tables (tenant_id in every key, ENABLE and FORCE RLS with tenant_fence, insert-only trigger, CHECKs on every enum, empty tools, SELECT and INSERT to impact_app only) and a nullable tenant-keyed policy pin on ai_advisory_request; 0001-0040 unchanged (TH01, TH10: native fence and role tests). The contract makes policy_version required on AIAdvisoryRequest (old clients get 422) and closes AIPolicyCommand (TH03). The access policy adds ai.policy.manage for TENANT_ADMIN with 300-second fresh assurance; the initial-access profile hash changes, so existing tenants need the reviewed ceiling widening before holding it (TH35). The gate runs before any reservation or provider call (TH34, TH35); tools are refused in the API and the database (TH21, TH33); attempts stay three per day (TH24). New residuals: no destination is approved, so TH34 is BLOCK (keep the server switch off for real data); a policy change after a reservation does not stop that one in-flight call (TH35).",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/RELEASE-0.37-ai-policy.md",
+    "docs/RELEASE-0.37-threat-register.md",
+    "docs/current/threat-register.json"
+  ],
+  "notes": [
+    "Agent-prepared review: no residual decision, chain decision or impact review has been confirmed by a person (confirmed_by is null everywhere), so this review cannot pass even when every critical threat is resolved.",
+    "TESTED means named automated tests exist and passed in their latest recorded runs: make unit with this change (docs/RELEASE-0.37-threat-register.md), the PGlite full suite and focused native and browser runs of build 0.37.0 (docs/RELEASE-0.37-ai-policy.md), and the native, live identity-provider and browser jobs of build 0.36.0 on main for the tests these branches did not run. Hosted CI has not run on build 0.37.0.",
+    "Version 1 of the register (specification/contracts/threat-register.json) is preserved unchanged; version 2 is docs/current/threat-register.json."
+  ]
+}

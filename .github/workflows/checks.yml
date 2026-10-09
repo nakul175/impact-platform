@@ -1,8 +1,8 @@
 name: checks
-# A small job that always runs: lint, the database-free unit tests and the web client's type
-# check. It has no path filter, so a documentation-only pull request and a pull request of more
-# than 300 files (GitHub evaluates path filters on the first 300 files of a diff only) still get
-# one check. The paid four-job qualification stays in qualification.yml with its own filter.
+# A small job that always runs: lint, the database-free unit tests, the release security review
+# check and the web client's type check. It has no path filter, so a documentation-only pull
+# request and a pull request of more than 300 files (GitHub evaluates path filters on the first
+# 300 files of a diff only) still get one check. The paid four-job qualification stays in qualification.yml with its own filter.
 on:
   pull_request:
   push:
@@ -23,6 +23,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
+        with:
+          # Two commits, so the release review can diff the change set against the first parent:
+          # on a pull request that is the base branch of the test merge commit, on a main push the
+          # previous main commit.
+          fetch-depth: 2
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -45,6 +50,8 @@ jobs:
         run: python3 scripts/doc_index.py --check
       - name: Unit tests without a database
         run: make unit
+      - name: Release security review (threat register, chains, open critical threats, impact reviews)
+        run: .venv/bin/python scripts/release_review.py --check --base HEAD^1
       - name: Web client type check
         run: npx tsc --noEmit
         working-directory: apps/web

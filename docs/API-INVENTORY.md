@@ -43,6 +43,9 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.policy.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy/revisions` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
+| PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |

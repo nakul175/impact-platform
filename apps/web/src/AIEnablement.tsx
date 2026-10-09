@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
 import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
+import { AIOpportunityRanking } from "./AIRanking";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -140,6 +141,8 @@ export function AIEnablementPanel({
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
   const canManagePolicy = capabilities.includes("ai.policy.manage");
+  // US-MP-03: the ranking weights are changed by holders of ai.enablement.manage.
+  const canManageWeights = capabilities.includes("ai.enablement.manage");
   function loadPolicy(signal?: AbortSignal) {
     const current = ++policyGeneration.current;
     setPolicyError("");
@@ -567,6 +570,19 @@ export function AIEnablementPanel({
                 <Items items={assessment.limitations} />
               </section>
             )}
+            <AIOpportunityRanking
+              key={
+                "ranking:" + base + ":" + sessionIdentity + ":" + principalId
+              }
+              base={base}
+              profile={profile}
+              titles={Object.fromEntries(
+                catalog.use_cases.map((item) => [item.id, item.title]),
+              )}
+              canManage={canManageWeights}
+              request={request}
+              explain={explain}
+            />
             {advisory && (
               <section aria-labelledby="ai-advisory">
                 <h3 id="ai-advisory">AI advisory draft</h3>

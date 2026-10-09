@@ -338,3 +338,47 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+/* US-MP-03: the opportunity ranking and the organisation's weights. */
+.ai-enablement .ai-ranking {
+  min-width: 0;
+}
+.ai-enablement .ai-weights-editor fieldset {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  background: var(--ai-panel);
+}
+.ai-enablement .ai-weights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+}
+.ai-enablement .ai-weights-grid label {
+  display: grid;
+  gap: 0.25rem;
+}
+/* Readable columns; narrow screens scroll inside the focusable region, never the page. */
+.ai-enablement .ai-ranking-table {
+  min-width: 40rem;
+}
+.ai-enablement .ai-ranking-table th,
+.ai-enablement .ai-ranking-table td {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.ai-enablement .ai-ranking-table caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+.ai-enablement .ai-ranking-table th,
+.ai-enablement .ai-ranking-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  width: auto;
+}
+.ai-enablement .ai-ranking-table tbody th {
+  color: inherit;
+  font-weight: 600;
+}

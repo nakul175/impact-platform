@@ -8,6 +8,12 @@ SCHEMA_VERSION = "1.0"
 CONTENT_VERSION = "nonprofit-2026-10-05.3"
 SECTORS = {"GENERAL", "EDUCATION", "HEALTH", "LIVELIHOODS", "ENVIRONMENT"}
 PROFILE_FIELDS = {"sector", "team_size", "goal", "data_readiness", "ai_experience", "sensitive_data"}
+# Organisation-wide capacity gaps assess() reports. Named so the opportunity ranking
+# (ai_ranking.py) reads readiness from these findings instead of re-deriving them.
+DATA_FOUNDATION_GAP = "Agree data definitions, ownership and a basic quality routine"
+AI_PRACTICE_GAP = "Practise verification and safe prompting before live use"
+SMALL_TEAM_GAP = "Reserve staff time and name a backup reviewer for a small team"
+SENSITIVE_DATA_GAP = "Complete a data-handling review before any real data enters an AI service"
 
 
 def _use_case(id, title, sectors, description, data, sensitivity, keywords, checks):
@@ -290,15 +296,15 @@ def assess(profile):
         [],
     )
     if profile["data_readiness"] == "NONE":
-        gaps.append("Agree data definitions, ownership and a basic quality routine")
+        gaps.append(DATA_FOUNDATION_GAP)
         reasons.append("No organised data foundation was reported.")
     if profile["ai_experience"] == "NONE":
-        gaps.append("Practise verification and safe prompting before live use")
+        gaps.append(AI_PRACTICE_GAP)
         reasons.append("No prior AI use was reported.")
     if profile["team_size"] < 5:
-        gaps.append("Reserve staff time and name a backup reviewer for a small team")
+        gaps.append(SMALL_TEAM_GAP)
     if profile["sensitive_data"]:
-        gaps.append("Complete a data-handling review before any real data enters an AI service")
+        gaps.append(SENSITIVE_DATA_GAP)
         approvals.append("Data owner approves permitted data, access, retention and provider terms")
         reasons.append("Sensitive data was reported; a synthetic-data pilot needs review before live use.")
     stage = (

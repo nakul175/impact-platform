@@ -129,8 +129,8 @@ const owningMigrationPaths = (
   .map((file) => "infrastructure/migrations/" + file);
 assert.equal(
   owningMigrationPaths.length,
-  41,
-  "The current registered checkpoint has exactly 41 owning migrations",
+  42,
+  "The current registered checkpoint has exactly 42 owning migrations",
 );
 for (const [index, file] of owningMigrationPaths.entries()) {
   assert.match(file, /^infrastructure\/migrations\/\d{4}_[a-z0-9_]+\.sql$/);
@@ -153,7 +153,7 @@ function assertCurrentMigrationLedger(
 ) {
   assert.equal(
     migrationPaths.length,
-    41,
+    42,
     "Current owning file inventory remains exact",
   );
   assert.equal(
@@ -654,7 +654,7 @@ let narrowed;
 let runtimeQualification;
 const adviceTitle = name + " internal member case";
 try {
-  await test("Actual runtime and all 41 owning migration checks match frozen source", async () => {
+  await test("Actual runtime and all 42 owning migration checks match frozen source", async () => {
     const manifest = await api("admin", "/v1/runtime-manifest");
     assert.equal(manifest.environment, "test");
     assert.equal(manifest.schema_version, String(owningMigrationPaths.length));

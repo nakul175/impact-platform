@@ -38,6 +38,7 @@ from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_policy import AIPolicy
+from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
@@ -109,6 +110,7 @@ def create_app():
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
+    ai_ranking = AIRanking(service)
     ai_plans = AIAdoptionPlans(service)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
@@ -610,6 +612,24 @@ def create_app():
         return await run_in_threadpool(
             ai_policy.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/ranking-weights")
+    def ai_ranking_weights_get(request: Request, tenant: str):
+        return ai_ranking.get(auth.resolve(request), uuid(tenant))
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/ranking-weights")
+    async def ai_ranking_weights_update(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIRankingWeightsCommand", body)
+        return await run_in_threadpool(
+            ai_ranking.save, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/ranking")
+    async def ai_ranking_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIRankingRequest", body)
+        return await run_in_threadpool(ai_ranking.rank, auth.resolve(request), uuid(tenant), body["profile"])
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/solutions")
     def ai_solutions(request: Request, tenant: str):

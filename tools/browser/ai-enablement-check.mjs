@@ -482,11 +482,11 @@ try {
   assert.equal(runtime.api_version, version.domain_api);
   assert.equal(runtime.mutation_tests_allowed, true);
   appliedMigrations = setup("runtime").migrations;
-  assert.equal(appliedMigrations.length, 41);
-  assert.equal(runtime.schema_version, "41");
+  assert.equal(appliedMigrations.length, 42);
+  assert.equal(runtime.schema_version, "42");
   assert.deepEqual(
     appliedMigrations.map((row) => row.version),
-    Array.from({ length: 41 }, (_, index) => index + 1),
+    Array.from({ length: 42 }, (_, index) => index + 1),
   );
   for (const row of appliedMigrations) {
     const files = Object.keys(qualifiedSources).filter(

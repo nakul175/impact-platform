@@ -7,6 +7,8 @@ from .measurement_contracts import closed
 VERSION = "1.20.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.26.0"
+# US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
+RANKING_VERSION = "1.27.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/catalog"),
     ("post", "ai-enablement/assessment"),
@@ -15,12 +17,20 @@ IMPLEMENTED = [
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
     ("get", "ai-enablement/policy/revisions"),
+    ("get", "ai-enablement/ranking-weights"),
+    ("put", "ai-enablement/ranking-weights"),
+    ("post", "ai-enablement/ranking"),
 ]
 ROLES = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD"]
 # Changing the policy is an administrative, sensitive action: TENANT_ADMIN only, with authentication
 # within the previous 300 seconds plus the configured assurance (store.authorize), always audited.
 POLICY_MANAGERS = ["TENANT_ADMIN"]
 POLICY_CAPABILITY = "ai.policy.manage"
+# Ranking weights are a preference, not an approval: the existing ai.enablement.manage holders change
+# them with expected_revision, no independent review and no fresh sign-in (US-MP-03).
+RANKING_MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
+# The four criteria: each has a weight and, per ranked opportunity, a score.
+WEIGHT_FIELDS = ["impact", "effort", "cost", "readiness"]
 USE_CASES = ["ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT"]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -69,6 +79,7 @@ def augment(spec, policy):
         ["operation_id", "profile", "consent", "policy_version"],
     )
     policy_schemas(schemas)
+    ranking_schemas(schemas)
     # This increment publishes versioned editorial content, not an authored domain object.
     schemas["AIEnablementCatalog"] = {
         "type": "object",
@@ -185,6 +196,7 @@ def augment(spec, policy):
             }
         )
     policy_paths(spec, policy)
+    ranking_paths(spec, policy)
 
 
 def _strings(enum=None, pattern=None, maximum=10, length=None):
@@ -357,5 +369,155 @@ def policy_paths(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": fresh,
                 "audit": op == "update_ai_policy",
+            }
+        )
+
+
+def ranking_schemas(schemas):
+    """Closed schemas of the ranking weights and the weighted opportunity ranking (US-MP-03).
+
+    The total of 100 cannot be expressed in JSON Schema; the server refuses any other total with
+    422 AI_RANKING_WEIGHTS_TOTAL and keeps the weights in force."""
+    weight = {"type": "integer", "minimum": 0, "maximum": 100}
+    schemas["AIRankingWeightsData"] = closed({field: dict(weight) for field in WEIGHT_FIELDS}, WEIGHT_FIELDS)
+    nullable_uuid = {"type": ["string", "null"], "format": "uuid"}
+    command = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        # null while the organisation has never saved weights; otherwise the revision the editor showed.
+        "expected_revision": deepcopy(nullable_uuid),
+        "data": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+    }
+    schemas["AIRankingWeightsCommand"] = closed(command, list(command))
+    view = {
+        "source": {"enum": ["DEFAULT", "SAVED"]},
+        "revision_id": deepcopy(nullable_uuid),
+        "weights": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+        "saved_at": {"type": ["string", "null"], "format": "date-time"},
+        "saved_by": deepcopy(nullable_uuid),
+    }
+    schemas["AIRankingWeights"] = closed(view, list(view))
+    receipt = {
+        "object_id": {"type": "string", "format": "uuid"},
+        "revision_id": {"type": "string", "format": "uuid"},
+        "business_state": {"const": "Active"},
+        "saved_at": {"type": "string", "format": "date-time"},
+        "operation_id": {"type": "string", "format": "uuid"},
+        "correlation_id": {"type": "string", "format": "uuid"},
+    }
+    schemas["AIRankingWeightsReceipt"] = closed(receipt, list(receipt))
+    schemas["AIRankingRequest"] = closed(
+        {"profile": {"$ref": "#/components/schemas/AIEnablementProfile"}}, ["profile"]
+    )
+    score = {"type": "integer", "minimum": 1, "maximum": 5}
+    schemas["AIOpportunityScores"] = closed({field: dict(score) for field in WEIGHT_FIELDS}, WEIGHT_FIELDS)
+    item = {
+        "rank": {"type": "integer", "minimum": 1},
+        "use_case_id": {"type": "string"},
+        "scores": {"$ref": "#/components/schemas/AIOpportunityScores"},
+        # Exact decimal string, 0.00 to 100.00.
+        "weighted_total": {"type": "string", "pattern": "^(100\\.00|[0-9]{1,2}\\.[0-9]{2})$"},
+        "readiness_gaps": {"type": "array", "items": {"type": "string"}},
+    }
+    schemas["AIRankedOpportunity"] = closed(item, list(item))
+    unranked = {
+        "use_case_id": {"type": "string"},
+        "missing_scores": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": True,
+            "items": {"enum": ["impact", "effort", "cost"]},
+        },
+    }
+    schemas["AIUnrankedOpportunity"] = closed(unranked, list(unranked))
+    ranking = {
+        "method": {"const": "WEIGHTED_EDITORIAL_SCORES"},
+        "content_version": {"type": "string"},
+        "score_version": {"type": "string"},
+        "score_status": {"type": "string"},
+        "weights": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+        "weights_source": {"enum": ["DEFAULT", "SAVED"]},
+        "weights_revision_id": deepcopy(nullable_uuid),
+        "items": {"type": "array", "items": {"$ref": "#/components/schemas/AIRankedOpportunity"}},
+        "unranked": {"type": "array", "items": {"$ref": "#/components/schemas/AIUnrankedOpportunity"}},
+    }
+    schemas["AIOpportunityRanking"] = closed(ranking, list(ranking))
+
+
+def ranking_paths(spec, policy):
+    """GET and PUT .../ai-enablement/ranking-weights and POST .../ai-enablement/ranking."""
+    for method, route, op, cap, request, response, roles, audited in [
+        (
+            "get",
+            "ai-enablement/ranking-weights",
+            "get_ai_ranking_weights",
+            "ai.enablement.read",
+            None,
+            "AIRankingWeights",
+            ROLES,
+            False,
+        ),
+        (
+            "put",
+            "ai-enablement/ranking-weights",
+            "update_ai_ranking_weights",
+            "ai.enablement.manage",
+            "AIRankingWeightsCommand",
+            "AIRankingWeightsReceipt",
+            RANKING_MANAGERS,
+            True,
+        ),
+        (
+            "post",
+            "ai-enablement/ranking",
+            "rank_ai_opportunities",
+            "ai.enablement.read",
+            "AIRankingRequest",
+            "AIOpportunityRanking",
+            ROLES,
+            False,
+        ),
+    ]:
+        path = "/v1/tenants/{tenant_id}/" + route
+        entry = {
+            "operationId": op,
+            "summary": op.replace("_", " "),
+            "x-capability": cap,
+            "x-contract-version": RANKING_VERSION,
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "The weights in force, the new revision's receipt or the ranking",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"].setdefault(path, {})[method] = entry
+        policy["operations"].append(
+            {
+                "operation_id": op,
+                "method": method.upper(),
+                "path": path,
+                "capability": cap,
+                "role_templates": deepcopy(roles),
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": audited,
             }
         )

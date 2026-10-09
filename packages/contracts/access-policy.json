@@ -1,5 +1,5 @@
 {
-  "version": "1.26.0",
+  "version": "1.27.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6066,6 +6066,56 @@
       "operation_id": "list_ai_policy_revisions",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/policy/revisions",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_ranking_weights",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/ranking-weights",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_ranking_weights",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/ranking-weights",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "rank_ai_opportunities",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/ranking",
       "capability": "ai.enablement.read",
       "role_templates": [
         "TENANT_ADMIN",

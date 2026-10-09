@@ -442,6 +442,8 @@ function explain(e: unknown) {
       return "This report revision has no active controlled publication to withdraw.";
     if (e.reason === "AI_POLICY_CHANGED")
       return "Your organisation's AI policy changed. Review the policy now in force before trying again.";
+    if (e.reason === "AI_RANKING_WEIGHTS_CHANGED")
+      return "The ranking weights changed since you opened them. The weights now in force are shown; nothing was overwritten. Review them and save again if needed.";
     if (e.code === "CONFLICT_VERSION")
       return "Someone changed this record. Close it and refresh before saving again.";
     return (

@@ -754,7 +754,7 @@ Scenario: Reject a ranking that ignores the organisation's weights
   Given the organisation has adjusted the weights
   When the ranking is shown
   Then it does not use any weights other than the organisation's
-  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,5,Sprint 1,Ready
+  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,5,Sprint 1,In review
 US-MP-04,Explain each recommendation,R1 Pilot,Adoption: Map,Functional,Must,Exists,Executive Director,"As an Executive Director, I want to see why each opportunity is recommended, so that I can trust and explain it.","Scenario: Show why an opportunity is recommended
   Given a recommended opportunity
   When the Executive Director views it

@@ -115,7 +115,7 @@ Scenario: Reject transmission that fails policy
 Scenario: Reject implicit enablement of tools
   Given a chat interface has been enabled
   When a user attempts to use a tool that was not separately enabled
-  Then the tool is not available","Reject if a disabled capability makes a provider call, enabling chat enables every tool, sensitive content leaves the authorised boundary without an approved destination and purpose, or core workflows cannot be completed with AI disabled.",Impact Platform ledger,,,"The administrator enables named use cases with allowed data classes, destinations, language coverage, budget and required review. The UI shows the active policy before a request. Disabled capabilities make no provider call and preserve the manual path. Enabling a chat interface does not enable every tool. Sensitive processing requires approved destination and purpose; policy failure blocks transmission before content leaves the authorised boundary.","Disable AI for a tenant and complete programme setup, period close and report generation using deterministic and manual workflows.",,,Backlog
+  Then the tool is not available","Reject if a disabled capability makes a provider call, enabling chat enables every tool, sensitive content leaves the authorised boundary without an approved destination and purpose, or core workflows cannot be completed with AI disabled.",Impact Platform ledger,,,"The administrator enables named use cases with allowed data classes, destinations, language coverage, budget and required review. The UI shows the active policy before a request. Disabled capabilities make no provider call and preserve the manual path. Enabling a chat interface does not enable every tool. Sensitive processing requires approved destination and purpose; policy failure blocks transmission before content leaves the authorised boundary.","Disable AI for a tenant and complete programme setup, period close and report generation using deterministic and manual workflows.",8,Sprint 1,Ready
 FR-AI-007,Report drafting,R1 Pilot,AI capabilities,Functional,Should,Absent,MEL Manager,"As a MEL Manager, I want AI to draft report sections from an approved snapshot and template with evidence references and metric bindings, so that drafting is faster while official numbers, caveats, evidence gaps and human edits stay intact.","Scenario: Draft binds snapshot and template
   Given an approved snapshot and report template
   When the MEL Manager requests a draft
@@ -254,7 +254,33 @@ Scenario: Reject lost input and uncontrolled continuation
   When the user submits or cancels an AI request
   Then a clear limit state is returned without losing user input
   And cancellation stops new model and tool calls where controllable
-  And provider work already accepted is accounted separately","Reject if budget exhaustion loses user input or blocks approving data, calculating results or generating a non-AI report, partial drafts are not labelled incomplete, or cancellation lets new controllable model and tool calls continue.",Impact Platform ledger,,,"AI requests estimate job class and usage, reserve permitted budget and expose progress, timeout and cancellation. Proposed defaults: standard extraction timeout 15 minutes and report draft timeout 20 minutes; partial drafts remain labelled incomplete. Ordinary QA follows the BRD latency target. Budget exhaustion returns a clear limit state without losing user input. Cancellation stops new model and tool calls where controllable; provider work already accepted is accounted separately.","Exhaust the AI budget during close; the user can still approve data, calculate results and generate a non-AI report.",,,Backlog
+  And provider work already accepted is accounted separately","Reject if budget exhaustion loses user input or blocks approving data, calculating results or generating a non-AI report, partial drafts are not labelled incomplete, or cancellation lets new controllable model and tool calls continue.",Impact Platform ledger,,,"AI requests estimate job class and usage, reserve permitted budget and expose progress, timeout and cancellation. Proposed defaults: standard extraction timeout 15 minutes and report draft timeout 20 minutes; partial drafts remain labelled incomplete. Ordinary QA follows the BRD latency target. Budget exhaustion returns a clear limit state without losing user input. Cancellation stops new model and tool calls where controllable; provider work already accepted is accounted separately.","Exhaust the AI budget during close; the user can still approve data, calculate results and generate a non-AI report.",,,Split
+FR-AI-016a,AI jobs with budget reservation and cancellation,R1 Pilot,AI capabilities,Functional,Must,Absent,MEL Manager,"As a MEL Manager, I want each AI request to run as a job that reserves budget, shows progress and can be cancelled, so that AI work stays within its limits and never blocks close or reporting.","Scenario: Request reserves budget and runs as a job
+  Given an enabled use case with budget remaining
+  When a request is submitted
+  Then the response is 202 with a job ID
+  And the estimated units are reserved in the budget ledger
+  And progress and a Cancel action are shown
+
+Scenario: Budget exhausted during close
+  Given the AI budget is exhausted
+  When the MEL Manager approves data, calculates results and generates a report
+  Then each completes without AI
+
+Scenario: Reject a request beyond the budget
+  Given the remaining budget is smaller than the estimate
+  When a request is submitted
+  Then the response is 429 ""AI_BUDGET_EXHAUSTED"" and the user's input is kept","Reject if a request runs without a reservation, exceeds the budget, or blocks close or reporting.",Refinement split of FR-AI-016 (Sprint 1 planning),,FR-AI-016,,,8,,Backlog
+FR-AI-016b,Timeouts and labelled partial drafts,R1 Pilot,AI capabilities,Functional,Must,Absent,MEL Manager,"As a MEL Manager, I want AI jobs to stop at their time limit and keep any partial draft clearly labelled incomplete, so that unfinished AI output is never mistaken for a finished draft.","Scenario: Long job times out with a labelled partial draft
+  Given a report-draft job with a 20-minute limit
+  When it runs past 20 minutes
+  Then it stops with outcome TIMED_OUT
+  And any partial draft is kept and labelled ""Incomplete draft""
+
+Scenario: Reject an incomplete draft shown as complete
+  Given a job that timed out or was cancelled
+  When its output is shown or exported
+  Then it is labelled incomplete and cannot be published as a final draft",Reject if a timed-out or cancelled job's output appears without an incomplete label.,Refinement split of FR-AI-016 (Sprint 1 planning),,FR-AI-016,,,5,,Backlog
 FR-AI-018,Safety feedback and shutdown,R1 Pilot,AI capabilities,Functional,Must,Absent,Organisation Administrator,"As an Organisation Administrator, I want to capture AI safety feedback and immediately disable a use case, configuration or destination, so that harmful output is contained and affected artifacts are reviewed while core workflows continue.","Scenario: Capture safety feedback
   Given an AI output with a safety concern
   When a user submits feedback
@@ -519,7 +545,27 @@ Scenario: Output lists prioritised problems with evidence
 Scenario: Reject an overlong or unsupported discovery
   Given a problem-discovery conversation
   When it takes 60 minutes or more, or a listed problem has no priority or no supporting evidence
-  Then the discovery is not accepted as complete","Reject if discovery takes 60 minutes or more, or any listed problem lacks a priority or supporting evidence.",Imprana BRD,,,,Completes in under 60 minutes; output lists prioritised problems with supporting evidence,,,Backlog
+  Then the discovery is not accepted as complete","Reject if discovery takes 60 minutes or more, or any listed problem lacks a priority or supporting evidence.",Imprana BRD,,,,Completes in under 60 minutes; output lists prioritised problems with supporting evidence,,,Split
+US-DX-01a,Record and prioritise the organisation's problems,R1 Pilot,Adoption: Diagnose,Functional,Must,Partial,Executive Director,"As an Executive Director, I want to record our organisation's problems in a structured, plain-language form and put them in priority order, so that the rest of the adoption journey starts from agreed priorities.","Scenario: Record and prioritise problems
+  Given an Executive Director starting a diagnosis
+  When they record problems with a short description, the area affected and supporting evidence
+  And put them in priority order
+  Then the problems are saved in that order with their evidence
+
+Scenario: Reject a problem without evidence or priority
+  Given a recorded problem with no supporting evidence or no priority
+  When the diagnosis is marked complete
+  Then completion is refused and the incomplete problem is named",Reject if a diagnosis is completed with a problem that has no evidence or no priority.,Refinement split of US-DX-01 (Sprint 1 planning),,US-DX-01,,,5,,Backlog
+US-DX-01b,Conversational intake agent,R1 Pilot,Adoption: Diagnose,Functional,Must,Partial,Executive Director,"As an Executive Director, I want a guided, plain-language conversation that helps me find and describe our problems, so that we can define them without hiring a consultant.","Scenario: Conversation produces prioritised problems
+  Given AI use case CHAT is enabled by policy
+  When the Executive Director completes the guided conversation
+  Then it finishes in under 60 minutes
+  And proposes problems in priority order, each with the evidence quoted from the conversation, for the Executive Director to accept or edit
+
+Scenario: Reject AI output accepted without review
+  Given the agent proposes problems
+  When nobody has accepted or edited them
+  Then they are not saved as the organisation's problems","Reject if AI-proposed problems are saved without the Executive Director accepting them, or the conversation runs without an enabled policy.",Refinement split of US-DX-01 (Sprint 1 planning),,US-DX-01,,,8,,Backlog
 US-DX-02,Digital maturity and data readiness assessment,R1 Pilot,Adoption: Diagnose,Functional,Must,Partial,MEL Manager,"As a MEL Manager, I want to assess our digital maturity and data readiness, so that recommendations match what we can handle.","Scenario: Score digital maturity and data readiness
   Given a MEL Manager completing the digital maturity and data readiness assessment
   When the assessment is submitted
@@ -552,7 +598,7 @@ Scenario: Reject changes to a locked baseline
 Scenario: Reject locking an incomplete baseline
   Given a priority problem missing any of time, cost, quality or reach
   When the Executive Director tries to lock its baseline
-  Then the lock is refused","Reject if a locked baseline can be changed, or a baseline is locked without time, cost, quality, reach and a lock date.",Imprana BRD,,,,"Time, cost, quality and reach captured per problem; baseline locked with a date",,,Backlog
+  Then the lock is refused","Reject if a locked baseline can be changed, or a baseline is locked without time, cost, quality, reach and a lock date.",Imprana BRD,,,,"Time, cost, quality and reach captured per problem; baseline locked with a date",8,,Backlog
 US-DX-04,Several staff contribute to one diagnosis,R1 Pilot,Adoption: Diagnose,Functional,Should,Partial,Executive Director,"As an Executive Director, I want to invite colleagues to contribute, so that the diagnosis reflects the whole organisation.","Scenario: Invite colleagues by email
   Given an Executive Director running a diagnosis
   When they invite a colleague by email
@@ -634,7 +680,7 @@ US-DC-04,Disclose commercial relationships,R1 Pilot,Adoption: Discover,Functiona
 Scenario: Reject a listing without a disclosure label
   Given a solution listing with no disclosure label
   When it is published to the catalogue
-  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,,,Backlog
+  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,5,Sprint 1,Ready
 US-IM-01,Track usage and outcomes against baseline,R1 Pilot,Adoption: Improve,Functional,Must,Partial,Executive Director,"As an Executive Director, I want usage and outcomes tracked against our baseline, so that we know whether it is working.","Scenario: Compare current metrics with the locked baseline
   Given an opportunity with a locked baseline and a deployed solution
   When the Executive Director opens the dashboard
@@ -708,7 +754,7 @@ Scenario: Reject a ranking that ignores the organisation's weights
   Given the organisation has adjusted the weights
   When the ranking is shown
   Then it does not use any weights other than the organisation's
-  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,,,Backlog
+  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,5,Sprint 1,Ready
 US-MP-04,Explain each recommendation,R1 Pilot,Adoption: Map,Functional,Must,Exists,Executive Director,"As an Executive Director, I want to see why each opportunity is recommended, so that I can trust and explain it.","Scenario: Show why an opportunity is recommended
   Given a recommended opportunity
   When the Executive Director views it
@@ -990,7 +1036,7 @@ Scenario: Alerts at 80% and 100% of the limit
 Scenario: Reject a threshold crossed without an alert
   Given an organisation's AI usage has reached 80% or 100% of its limit
   When the Operations Head has received no alert for that threshold
-  Then the usage alerting counts as failed","Reject if balance or per-user usage is not visible, or usage reaches 80% or 100% of the limit without an alert.",Imprana BRD,,FR-AI-016; FR-OPS-002,,Balance and usage by user visible; alerts at 80% and 100%,,,Backlog
+  Then the usage alerting counts as failed","Reject if balance or per-user usage is not visible, or usage reaches 80% or 100% of the limit without an alert.",Imprana BRD,,FR-AI-016; FR-OPS-002,,Balance and usage by user visible; alerts at 80% and 100%,5,,Backlog
 US-CM-09,One contract and DPA for all deployed solutions,R1 Pilot,Commercial and billing,Functional,Must,Absent,Operations Head,"As an Operations Head, I want one contract and data processing agreement for every solution deployed through the platform, so that we avoid separate procurement.","Scenario: Partner terms flow down under the master agreement
   Given an organisation that has signed the master agreement
   When it deploys a partner's solution through the platform
@@ -2630,7 +2676,7 @@ Scenario: Reject hidden critical paths
   Given an unresolved critical threat path
   When a general security signoff is given
   Then the critical path is not hidden or treated as resolved
-  And tests that cover only isolated input checks without chained abuse across modules are insufficient","Reject if an unresolved critical path is hidden by a general security sign-off, a threat lacks a linked control, owner, test and residual decision, or tests omit chained abuse across modules.",Impact Platform ledger,,,"The release review records threat scenarios for identity, tenant boundaries, source data, files, offline devices, publication, AI and support. Each threat links to a functional control, owner, test and residual decision. Material feature changes trigger an impact review. An unresolved critical path cannot be hidden by a general security signoff. Tests must include chained abuse across modules, not only isolated input checks.",Review a document injection leading to export and a support access escalation; identify the independent controls and verification evidence for both paths.,,,Backlog
+  And tests that cover only isolated input checks without chained abuse across modules are insufficient","Reject if an unresolved critical path is hidden by a general security sign-off, a threat lacks a linked control, owner, test and residual decision, or tests omit chained abuse across modules.",Impact Platform ledger,,,"The release review records threat scenarios for identity, tenant boundaries, source data, files, offline devices, publication, AI and support. Each threat links to a functional control, owner, test and residual decision. Material feature changes trigger an impact review. An unresolved critical path cannot be hidden by a general security signoff. Tests must include chained abuse across modules, not only isolated input checks.",Review a document injection leading to export and a support access escalation; identify the independent controls and verification evidence for both paths.,8,Sprint 1,Ready
 FR-SEC-002,Encryption and key governance,R1 Pilot,Security,Functional,Must,Partial,Platform Operator,"As a Platform Operator, I want an encryption inventory covering every data location and transport, with visible key ownership, status, expiry and rotation evidence, so that keys can be governed and rotated without exposing key material or losing authorised access.","Scenario: Inventory covers every location
   Given the security inventory
   When it is reviewed

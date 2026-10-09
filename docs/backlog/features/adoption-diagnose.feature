@@ -121,3 +121,37 @@ Feature: Adoption: Diagnose
       Given a diagnosis that has not been reviewed by an Imprana Advisor
       When a member of the organisation tries to mark it validated
       Then the validated status is not recorded
+
+  Rule: US-DX-01a Record and prioritise the organisation's problems
+    As an Executive Director, I want to record our organisation's problems in a structured, plain-language form and put them in priority order, so that the rest of the adoption journey starts from agreed priorities.
+    Release: R1 Pilot · Priority: Must · Built today: Partial
+
+    @US-DX-01a @R1-Pilot @Must
+    Scenario: Record and prioritise problems
+      Given an Executive Director starting a diagnosis
+      When they record problems with a short description, the area affected and supporting evidence
+      And put them in priority order
+      Then the problems are saved in that order with their evidence
+
+    @US-DX-01a @R1-Pilot @Must
+    Scenario: Reject a problem without evidence or priority
+      Given a recorded problem with no supporting evidence or no priority
+      When the diagnosis is marked complete
+      Then completion is refused and the incomplete problem is named
+
+  Rule: US-DX-01b Conversational intake agent
+    As an Executive Director, I want a guided, plain-language conversation that helps me find and describe our problems, so that we can define them without hiring a consultant.
+    Release: R1 Pilot · Priority: Must · Built today: Partial
+
+    @US-DX-01b @R1-Pilot @Must
+    Scenario: Conversation produces prioritised problems
+      Given AI use case CHAT is enabled by policy
+      When the Executive Director completes the guided conversation
+      Then it finishes in under 60 minutes
+      And proposes problems in priority order, each with the evidence quoted from the conversation, for the Executive Director to accept or edit
+
+    @US-DX-01b @R1-Pilot @Must
+    Scenario: Reject AI output accepted without review
+      Given the agent proposes problems
+      When nobody has accepted or edited them
+      Then they are not saved as the organisation's problems

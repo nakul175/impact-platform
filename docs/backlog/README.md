@@ -4,6 +4,8 @@ Owner: Nakul Jain · Generated 9 October 2026 · Update trigger: any change to s
 
 This folder is the single product backlog for Imprana Commons: Impact Platform's 307 requirements and the Imprana Commons BRD's 83 stories, deduplicated into **366 user stories** (24 BRD stories were merged into existing requirements). Every story has a persona, a "so that", Gherkin acceptance criteria and at least one rejection scenario.
 
+Since Sprint 1 planning the file holds 370 rows: two stories were split during refinement (US-DX-01 into 01a/01b, FR-AI-016 into 016a/016b); the parents stay with status `Split`. Sprint plans are in [`docs/sprints/`](../sprints/).
+
 | File | What it is |
 | --- | --- |
 | `backlog.csv` | All 366 stories: ID, release, epic, priority, persona, user story, Gherkin acceptance and rejection criteria, rejection summary, build status today, source, merged duplicates, the original requirement text, and empty Story points / Sprint / Status columns |

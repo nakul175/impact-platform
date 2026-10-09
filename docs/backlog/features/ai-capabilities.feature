@@ -522,3 +522,44 @@ Feature: AI capabilities
       Given insufficient evidence for a forecast
       When a forecast is requested
       Then the forecast is withheld or returned only as explicitly bounded exploratory output
+
+  Rule: FR-AI-016a AI jobs with budget reservation and cancellation
+    As a MEL Manager, I want each AI request to run as a job that reserves budget, shows progress and can be cancelled, so that AI work stays within its limits and never blocks close or reporting.
+    Release: R1 Pilot · Priority: Must · Built today: Absent
+
+    @FR-AI-016a @R1-Pilot @Must
+    Scenario: Request reserves budget and runs as a job
+      Given an enabled use case with budget remaining
+      When a request is submitted
+      Then the response is 202 with a job ID
+      And the estimated units are reserved in the budget ledger
+      And progress and a Cancel action are shown
+
+    @FR-AI-016a @R1-Pilot @Must
+    Scenario: Budget exhausted during close
+      Given the AI budget is exhausted
+      When the MEL Manager approves data, calculates results and generates a report
+      Then each completes without AI
+
+    @FR-AI-016a @R1-Pilot @Must
+    Scenario: Reject a request beyond the budget
+      Given the remaining budget is smaller than the estimate
+      When a request is submitted
+      Then the response is 429 "AI_BUDGET_EXHAUSTED" and the user's input is kept
+
+  Rule: FR-AI-016b Timeouts and labelled partial drafts
+    As a MEL Manager, I want AI jobs to stop at their time limit and keep any partial draft clearly labelled incomplete, so that unfinished AI output is never mistaken for a finished draft.
+    Release: R1 Pilot · Priority: Must · Built today: Absent
+
+    @FR-AI-016b @R1-Pilot @Must
+    Scenario: Long job times out with a labelled partial draft
+      Given a report-draft job with a 20-minute limit
+      When it runs past 20 minutes
+      Then it stops with outcome TIMED_OUT
+      And any partial draft is kept and labelled "Incomplete draft"
+
+    @FR-AI-016b @R1-Pilot @Must
+    Scenario: Reject an incomplete draft shown as complete
+      Given a job that timed out or was cancelled
+      When its output is shown or exported
+      Then it is labelled incomplete and cannot be published as a final draft

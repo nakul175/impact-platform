@@ -90,6 +90,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 
 ### agile
 
+- [Persona to role map](agile/PERSONA-ROLE-MAP.md)
 - [Imprana Commons working agreement](agile/WORKING-AGREEMENT.md)
 
 ### backlog
@@ -221,5 +222,9 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### nonprofit-ai/v1.0/drafts/0.36/procurement-prototype
 
 - [Private procurement preview proposal](nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/INTEGRATION-PLAN.md)
+
+### sprints
+
+- [Sprint 1: governed AI and a trustworthy shortlist](sprints/SPRINT-01.md)
 
 <!-- END GENERATED INDEX -->

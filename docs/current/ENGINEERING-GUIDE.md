@@ -204,7 +204,7 @@ make unit          # about 1 minute. Ends with: N passed, M skipped  (no failure
 cd apps/web && npx tsc --noEmit && cd ..    # about 6 s. Prints nothing when clean
 ```
 
-Watch out: `make unit` includes `qualification/test_golden.py`, which **rewrites the tracked file `docs/evidence/golden-reconciliation.json`**. Run `git status`, then restore it:
+Since 9 October 2026 `make unit` no longer rewrites `docs/evidence/golden-reconciliation.json` (`qualification/test_golden.py` writes it only when the live API path ran). Other runners still write tracked evidence files, so run `git status` after any test run and restore them:
 
 ```
 git checkout -- docs/evidence/ && git clean -f docs/evidence/
@@ -264,7 +264,7 @@ Edit a typo in a document under `docs/`, run the link check (section 7.4), `git 
 | `VERSION.json` | The one source of the build, domain API and platform API versions. | Anything else. The schema version is *not* here: it is the count of migration files. |
 | `pyproject.toml` | pytest settings (`pythonpath`, `testpaths`) and ruff (line length 110, target py312). | Dependencies. |
 | `requirements.txt`, `requirements.lock` | Direct pins, and the full pinned set that `make setup` installs. | Unpinned versions. |
-| `SHA256SUMS.json` | A manifest written by `make package` (`scripts/package_source.py`). | Hand edits. It is stale: 143 of its 315 hashes no longer match (verified), because nothing refreshes it on each change. |
+| `SHA256SUMS.json` | Not tracked since 9 October 2026 (listed in `.gitignore`). `make package` writes it next to the source archive. | Committing it. |
 | `.editorconfig`, `.gitignore`, `.dockerignore` | Editor and ignore rules. `.gitignore` covers `.venv/`, `.local/`, `node_modules/`, `dist/`, `*.pem`, `*.key`, `*.log`, `.env`. | |
 | `.github/workflows/` | `checks.yml` (cheap, always runs) and `qualification.yml` (paid, four jobs). `.github/PULL_REQUEST_TEMPLATE.md` is the PR form. | A third workflow without the owner's approval (it spends money). |
 | `apps/` | `api/impact_api` (the service) and `web` (the client). | |
@@ -954,10 +954,9 @@ None of this should get worse. Fix items in dedicated, reviewed pull requests, n
   - `AGENTS.md` says the browser run has "19 groups"; the Makefile lists 26.
   - `CONTRIBUTING.md` calls `CLAUDE.md` "the full engineering brief"; the brief moved to `docs/current/ENGINEERING-BRIEF.md` on 8 October 2026.
   - `infrastructure/migrations/0040_ai_plan_portability.sql` opens with the comment "Unregistered 0040 draft, outside repository; not project-applied". It is in the repository and applied. The file is frozen, so the comment stays; treat it as stale.
-  - `SHA256SUMS.json` no longer matches the tree (143 of 315 entries differ).
   - The governance map ([../governance/README.md](../governance/README.md)) flags `CHANGELOG`, `ARCHITECTURE-CURRENT`, `USER-GUIDE` and `ADMINISTRATOR-GUIDE` as stale.
 - **Binary and log files in git.** 88 `.log`, 382 `.png` and 2 `.zip` files are tracked (almost all under `docs/evidence`, `docs/nonprofit-ai` and `docs/history`), against the standard's "no screenshots, logs, zips". Do not add more.
-- **Tracked-file side effects.** `make unit` and any `scripts/run.py test` rewrite tracked evidence files (7.3). A runner that writes tracked files is a trap; the fix (write to an ignored path) is a code change nobody has made.
+- **Tracked-file side effects.** `scripts/run.py test` and the browser runners still rewrite tracked evidence files (7.3); `make unit` no longer does. A runner that writes tracked files is a trap; the fix (write to an ignored path) is not made for the others.
 - **`qualification/drafts/`** holds SQL and Python drafts (for example `0039_human_advice_anchor_availability.sql`) that are not migrations and not run. Do not copy from them as if they were applied.
 - **Lint is lenient.** `ruff check` selects only `E4, E7, E9, F`; there is no import-order, naming, complexity or unused-argument rule, and Python is mostly unannotated.
 - **`any` in the web client** (existing uses of `Record<string, any>`).

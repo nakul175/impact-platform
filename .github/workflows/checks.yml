@@ -41,6 +41,8 @@ jobs:
         run: npm ci --prefix apps/web
       - name: Lint (ruff check, ruff format --check, prettier --check)
         run: make lint
+      - name: Documentation index is current
+        run: python3 scripts/doc_index.py --check
       - name: Unit tests without a database
         run: make unit
       - name: Web client type check

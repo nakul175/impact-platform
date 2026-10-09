@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 9 October 2026 — repository hygiene (code and CI)
+
+Branch `refactor/hygiene-2026-10-09` from `main`. `qualification/test_golden.py` writes `docs/evidence/golden-reconciliation.json` only when the live API path ran, so `make unit` leaves the tree clean. `SHA256SUMS.json` (143 of 315 hashes stale, written by `make package`) is untracked and ignored. `scripts/doc_index.py` generates the "every document" list in `docs/DOCUMENTATION-INDEX.md`, and the `checks` workflow fails when it is out of date (`make docs-index` regenerates it). README says forty migrations and AGENTS says 26 browser groups (`make browser` runs 26 groups plus five adapter checks). No runtime, API, schema or migration change; no requirement status changed.
+
 ## 9 October 2026 — engineering guide
 
 Docs-only branch `docs/engineering-guide-2026-10-09` from `main` (`4d4f14c`). Adds [ENGINEERING-GUIDE.md](ENGINEERING-GUIDE.md), the practical newcomer manual (first hour with timings, folder map, naming, how to write code, how to find things, commands and gates, step-by-step tasks, do and don't, a monthly hygiene checklist and an honest list of leftover mess). It links to the engineering brief for depth and holds no status. One-line links were added to `README.md`, `AGENTS.md`, `CLAUDE.md`, `docs/DOCUMENTATION-INDEX.md` and `docs/current/DOCUMENTATION-INDEX.md`. No code, contract, migration or evidence file changed.

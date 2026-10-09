@@ -225,6 +225,9 @@ def record(vector, path, outcome):
 def evidence():
     started = time.monotonic()
     yield
+    if not any("live" in outcome for outcome in OUTCOMES.values()):
+        # A run without the live API (make unit) must not overwrite the tracked evidence with a partial one.
+        return
     rows = [{"id": v["id"], **OUTCOMES.get(v["id"], {})} for v in VECTORS]
     summary = {
         path: {

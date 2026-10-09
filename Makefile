@@ -1,4 +1,4 @@
-.PHONY: setup dev worker test native idp unit reference browser lint build package ledger perf
+.PHONY: setup dev worker test native idp unit reference browser lint build package ledger perf docs-index
 PYTHON ?= python3
 PY = .venv/bin/python
 setup:
@@ -77,6 +77,8 @@ lint:
 	.venv/bin/ruff check apps/api scripts qualification deploy
 	.venv/bin/ruff format --check apps/api scripts qualification deploy
 	apps/web/node_modules/.bin/prettier --check apps/web/src apps/web/index.html apps/web/ai-walkthrough.html apps/web/vite.config.ts tools/dev-db/server.mjs tools/browser/*.mjs
+docs-index:
+	$(PY) scripts/doc_index.py
 package:
 	$(PY) scripts/package_source.py
 ledger:

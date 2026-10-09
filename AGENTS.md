@@ -78,7 +78,7 @@ make lint             # ruff + ruff format --check + prettier --check
 make unit             # pure tests, no database
 IMPACT_PORT=8123 make test     # full suite on fresh in-memory PGlite; writes docs/evidence/application-tests.xml
 make reference        # preserved design-reference assertions
-make browser          # Chromium checks of the real UI (19 groups); one group: .venv/bin/python scripts/run.py tenant-browser
+make browser          # Chromium checks of the real UI (26 groups); one group: .venv/bin/python scripts/run.py tenant-browser
 make idp              # live Keycloak suite (Java 21)
 IMPACT_FIXTURE_DSN=postgresql://postgres:<pw>@127.0.0.1:<port>/impact_test_<x> IMPACT_UPGRADE_BASELINE=33 make native
                       # full suite on provisioned login roles + API restart + restore drill + populated upgrade from deployed schema 33

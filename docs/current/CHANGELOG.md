@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 9 October 2026 — duplicate evidence copies removed
+
+Docs-only branch `chore/dedupe-evidence-2026-10-09` from `main` at `4d4f14c`. 525 byte-identical copies under `docs/evidence/sprint-0.36/` (the per-group browser run folders repeat one results file many times) are removed; the first copy in each group stays. A copy was kept whenever any tracked text file names its path, and every file still written by a test or script is untouched. Recoverable from history. The other 113 duplicate groups under `docs/evidence/` each have a referenced copy and were not changed. No code, contract or migration change.
+
 ## 8 October 2026 — shared clock helper, licence file name
 
 Code branch `refactor/shared-helpers-2026-10-08` from `main` (`b224c50`), not yet a pull request because it starts the paid qualification run. The twelve identical `now()` definitions in `apps/api/impact_api` are replaced by one in `clock.py` (modules still import the name `now`, so tests that replace `module.now` work unchanged); `LICENSE.md` is renamed `LICENSE`; a comment that cited the old `CLAUDE.md` rule 20 now cites the engineering brief. No contract, migration, version or behaviour change. Local evidence: `make unit` 1,242 passed / 62 skipped, `make lint` clean, 173 passed / 2 skipped in the eleven DB-backed test files that use the helper, contracts regenerate unchanged. Not run: the full suite, native, browser and container jobs.

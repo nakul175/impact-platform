@@ -1,7 +1,15 @@
 <!-- main deploys itself to staging. Open a DRAFT pull request from a branch; never push to main. -->
 
+## Story
+<!-- Story ID(s) from docs/backlog (e.g. FR-IND-004) and the GitHub issue. Title the PR "[ID] Short title". -->
+
 ## What and why
 <!-- One paragraph, plain language. Link the release note or issue. -->
+
+## Definition of Done (docs/agile/WORKING-AGREEMENT.md)
+- [ ] Every acceptance and rejection scenario of the story passes as an automated test (or a named manual check the product owner accepted)
+- [ ] Reviewed and approved by a person other than the author
+- [ ] Product owner accepted at sprint review
 
 ## Kind of change
 - [ ] Documentation only (`docs/**` or `**.md`; starts no CI)

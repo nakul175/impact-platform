@@ -1,4 +1,14 @@
-# Impact Platform
+# Imprana Commons (formerly Impact Platform)
+
+*The operating system for impact organisations.*
+
+This repository is becoming **Imprana Commons**: one platform that takes NGOs and impact organisations from a problem to a working, measured AI or tech solution, on top of the monitoring, evaluation and reporting core already built here as Impact Platform. The transition started in Sprint 0 (October 2026); until it completes, most documents, screens and code still say "Impact Platform".
+
+- **Backlog:** [docs/backlog/](docs/backlog/README.md): 366 user stories with Gherkin acceptance and rejection criteria, in five releases (Foundation, R1 Pilot, R2 Scale, R3 Ecosystem, Later).
+- **How we work:** [docs/agile/WORKING-AGREEMENT.md](docs/agile/WORKING-AGREEMENT.md): two-week sprints, Definition of Ready and Done, story cards.
+- **Licence:** still a placeholder (see [LICENSE](LICENSE)); a written licence to Athena Infonomics is story US-RT-01.
+
+The rest of this page describes the Impact Platform build as it stands.
 
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [docs/HANDOVER.md](docs/HANDOVER.md); `VERSION.json` is the source for the version numbers. It is a **development build**: no requirement is accepted, it is not production-ready, and only synthetic data may be used. `main` deploys itself to the staging server. Every build has a release note under `docs/` (`RELEASE-0.N*.md`; the latest is [RELEASE-0.36-procurement-preview.md](docs/RELEASE-0.36-procurement-preview.md)); the build narrative further down this page stops at 0.27.0 and is historical.
 

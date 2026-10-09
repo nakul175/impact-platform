@@ -1,4 +1,0 @@
-{
-  "status": "setup-failed",
-  "reason": "Installed TypeScript7 compiler package has no lib/typescript.js JS API. No pure cases executed. Switch private harness to installed Vite Oxc transformer."
-}

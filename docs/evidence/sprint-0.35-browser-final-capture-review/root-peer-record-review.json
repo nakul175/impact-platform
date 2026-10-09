@@ -1,6 +1,0 @@
-{
-  "status": "REVIEWED_EXACT_BYTES_AND_SCOPE_APPROVED",
-  "record": "peer-bounded-manual-review.json",
-  "sha256": "19ac6b141959c5f662b68c76f5e450fc7c8e110d565ed5e96912d5772ab39167",
-  "scope": "Eight exact files and actual final qualification hash checked; original private publication-pending body retained unmodified; publication approval is this separate root record. All96 visual/WCAG/privacy conformance notclaimed."
-}

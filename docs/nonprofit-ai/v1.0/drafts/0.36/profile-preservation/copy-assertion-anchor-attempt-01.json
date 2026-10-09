@@ -1,5 +1,0 @@
-{
-  "status": "PRIVATE_EDITOR_ANCHOR_REFUSED",
-  "reason": "Initial assertion insertion expected a multiline checker label after Prettier had retained a single line; candidate copy was prepared, but no tests ran and checker was not changed until correction.",
-  "candidate_logic_changed": false
-}

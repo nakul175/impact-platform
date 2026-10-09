@@ -1,6 +1,0 @@
-{
-  "recorded_at": "2026-10-05T20:43:00.780164+00:00",
-  "exit_code": 2,
-  "scope": "Initial exact Makefile lint attempt: Ruff checks and232format checks passed; Prettier never ran because installed Node was absent from login:false PATH. No product/checker changes to fix the environment.",
-  "correction": "Rerun exact make lint with the known installed Node directory prepended to task process PATH."
-}

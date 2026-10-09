@@ -88,6 +88,14 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)
 
+### agile
+
+- [Imprana Commons working agreement](agile/WORKING-AGREEMENT.md)
+
+### backlog
+
+- [Imprana Commons backlog](backlog/README.md)
+
 ### current
 
 - [Accessibility statement — Impact Platform web client](current/ACCESSIBILITY-STATEMENT.md)

@@ -15,6 +15,8 @@ The Impact Platform is a multi-tenant monitoring, evaluation, learning and impac
 3. **[`docs/current/ENGINEERING-BRIEF.md`](docs/current/ENGINEERING-BRIEF.md)**: the full, model-agnostic engineering brief — domain vocabulary, the rules below with their context, architecture as built, data model and database security, commands, how to change things, the security model and the verified fragile spots. It is binding and nothing in it is specific to one assistant. Open the section you need. ([`CLAUDE.md`](CLAUDE.md) is a one-page entry point to the same material.)
 4. **[`docs/IMPLEMENTATION.md`](docs/IMPLEMENTATION.md)**: what the current build does and does not do, area by area.
 
+New here? [`docs/current/ENGINEERING-GUIDE.md`](docs/current/ENGINEERING-GUIDE.md) is the practical manual (first hour, folder map, naming, how to write code, do and don't, keeping the repository clean); it links to the brief for depth.
+
 Then as needed: [`docs/RELEASE-0.36-procurement-preview.md`](docs/RELEASE-0.36-procurement-preview.md) (the latest build; every build has a `docs/RELEASE-0.N*.md` note), [`docs/handover/BACKLOG.md`](docs/handover/BACKLOG.md) (TolaData parity map and ready-to-run slices), [`docs/handover/PARALLEL-WORK.md`](docs/handover/PARALLEL-WORK.md) (builder rules and integrator checklist), [`docs/current/DOCUMENTATION-INDEX.md`](docs/current/DOCUMENTATION-INDEX.md) (every document), [`docs/current/DEPLOYMENT-GUIDE.md`](docs/current/DEPLOYMENT-GUIDE.md) (the staging server).
 
 ## Rules that must never be broken

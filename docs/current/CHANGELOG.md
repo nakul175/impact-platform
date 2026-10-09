@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 9 October 2026 — engineering guide
+
+Docs-only branch `docs/engineering-guide-2026-10-09` from `main` (`4d4f14c`). Adds [ENGINEERING-GUIDE.md](ENGINEERING-GUIDE.md), the practical newcomer manual (first hour with timings, folder map, naming, how to write code, how to find things, commands and gates, step-by-step tasks, do and don't, a monthly hygiene checklist and an honest list of leftover mess). It links to the engineering brief for depth and holds no status. One-line links were added to `README.md`, `AGENTS.md`, `CLAUDE.md`, `docs/DOCUMENTATION-INDEX.md` and `docs/current/DOCUMENTATION-INDEX.md`. No code, contract, migration or evidence file changed.
+
 ## 8 October 2026 — shared clock helper, licence file name
 
 Code branch `refactor/shared-helpers-2026-10-08` from `main` (`b224c50`), not yet a pull request because it starts the paid qualification run. The twelve identical `now()` definitions in `apps/api/impact_api` are replaced by one in `clock.py` (modules still import the name `now`, so tests that replace `module.now` work unchanged); `LICENSE.md` is renamed `LICENSE`; a comment that cited the old `CLAUDE.md` rule 20 now cites the engineering brief. No contract, migration, version or behaviour change. Local evidence: `make unit` 1,242 passed / 62 skipped, `make lint` clean, 173 passed / 2 skipped in the eleven DB-backed test files that use the helper, contracts regenerate unchanged. Not run: the full suite, native, browser and container jobs.

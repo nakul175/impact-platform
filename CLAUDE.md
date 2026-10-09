@@ -9,6 +9,7 @@ This file is short on purpose. The rules, commands and safety limits are in [AGE
 3. [docs/current/ENGINEERING-BRIEF.md](docs/current/ENGINEERING-BRIEF.md): open the section you need, not the whole file (it is long). §3 vocabulary, §5 architecture, §6 data model and database security, §8 how to change things, §11 fragile spots.
 4. [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md): what the current build does and does not do. [docs/NEXT-DELIVERY.md](docs/NEXT-DELIVERY.md): what is next.
 5. [docs/DOCUMENTATION-INDEX.md](docs/DOCUMENTATION-INDEX.md): every other document.
+6. [docs/current/ENGINEERING-GUIDE.md](docs/current/ENGINEERING-GUIDE.md): the practical manual (first hour, map, naming, do and don't).
 
 ## What this is
 

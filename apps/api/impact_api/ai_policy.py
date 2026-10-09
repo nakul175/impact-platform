@@ -41,6 +41,11 @@ OPERATION = "update_ai_policy"
 ACTIVE_USE_CASES = ("ADVISORY_DRAFT",)
 RESERVED_USE_CASES = tuple(case for case in USE_CASES if case not in ACTIVE_USE_CASES)
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}
+# Allowed data classes are a ceiling: a request passes when its class is at or below the highest
+# class the rule lists (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED). An advisory brief is at least
+# INTERNAL, so an enabled ADVISORY_DRAFT rule whose ceiling is below INTERNAL could never run.
+CLASS_RANK = {name: rank for rank, name in enumerate(DATA_CLASSES)}
+MINIMUM_CLASS = {"ADVISORY_DRAFT": "INTERNAL"}
 FIELDS = {
     "use_case",
     "enabled",
@@ -157,8 +162,20 @@ def validate_policy(data):
                 "AI_POLICY_INCOMPLETE",
                 "An enabled use case needs at least one data class, destination, purpose and language.",
             )
+        minimum = MINIMUM_CLASS.get(use_case)
+        if rule["enabled"] and minimum and ceiling(rule["data_classes"]) < CLASS_RANK[minimum]:
+            _invalid(
+                "AI_DATA_CLASS_TOO_LOW",
+                "AI advisory drafts send an organisation brief, which is internal data. Allow at least "
+                "internal data or turn the use case off.",
+            )
         rules.append(rule)
     return sorted(rules, key=lambda rule: USE_CASES.index(rule["use_case"]))
+
+
+def ceiling(data_classes):
+    """The rank of the highest allowed data class, or -1 when none is allowed."""
+    return max((CLASS_RANK[name] for name in data_classes if name in CLASS_RANK), default=-1)
 
 
 def _rule(row):
@@ -237,8 +254,8 @@ def require(policy, use_case, version, data_class, destination, language, tools=
             reason="AI_USE_CASE_DISABLED",
         )
     problems = []
-    if data_class not in rule["data_classes"]:
-        problems.append(data_class.lower() + " data is not an allowed data class")
+    if data_class not in CLASS_RANK or CLASS_RANK[data_class] > ceiling(rule["data_classes"]):
+        problems.append(data_class.lower() + " data is above the highest allowed data class")
     if destination not in rule["destinations"]:
         problems.append("the configured AI provider is not an allowed destination")
     if not rule["purposes"]:

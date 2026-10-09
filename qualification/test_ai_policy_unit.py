@@ -202,6 +202,7 @@ def test_valid_policy_is_normalised_in_closed_list_order():
         ({"data_classes": []}, "AI_POLICY_INCOMPLETE"),
         ({"purposes": []}, "AI_POLICY_INCOMPLETE"),
         ({"languages": []}, "AI_POLICY_INCOMPLETE"),
+        ({"data_classes": ["PUBLIC"]}, "AI_DATA_CLASS_TOO_LOW"),
         ({"destinations": ["openai-eu"]}, "AI_POLICY_INVALID"),
         ({"data_classes": ["SECRET"]}, "AI_POLICY_INVALID"),
         ({"data_classes": ["INTERNAL", "INTERNAL"]}, "AI_POLICY_INVALID"),
@@ -256,7 +257,36 @@ def test_reserved_use_cases_and_zero_budget_may_be_recorded_disabled():
     assert not any(r["enabled"] for r in rules)
 
 
+def test_advisory_ceiling_below_internal_is_refused_only_when_enabled():
+    assert (
+        validate_policy({"use_cases": [rule(enabled=False, data_classes=["PUBLIC"])]})[0]["enabled"] is False
+    )
+    for allowed in (["INTERNAL"], ["CONFIDENTIAL"], ["RESTRICTED"], ["PUBLIC", "CONFIDENTIAL"]):
+        assert validate_policy({"use_cases": [rule(data_classes=allowed)]})[0]["data_classes"] == allowed
+
+
 # The gate
+
+
+@pytest.mark.parametrize(
+    "allowed,passes",
+    [
+        (["PUBLIC"], ["PUBLIC"]),
+        (["INTERNAL"], ["PUBLIC", "INTERNAL"]),
+        (["PUBLIC", "INTERNAL"], ["PUBLIC", "INTERNAL"]),
+        (["CONFIDENTIAL"], ["PUBLIC", "INTERNAL", "CONFIDENTIAL"]),
+        (["RESTRICTED"], ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]),
+    ],
+)
+def test_allowed_classes_are_a_ceiling_in_the_gate(allowed, passes):
+    for data_class in contracts.DATA_CLASSES:
+        if data_class in passes:
+            require(policy(1, data_classes=allowed), "ADVISORY_DRAFT", 1, data_class, "openai-us", "en")
+            continue
+        with pytest.raises(DomainError) as blocked:
+            require(policy(1, data_classes=allowed), "ADVISORY_DRAFT", 1, data_class, "openai-us", "en")
+        assert blocked.value.reason == "AI_POLICY_BLOCKED"
+        assert data_class.lower() + " data is above the highest allowed data class" in blocked.value.message
 
 
 def test_gate_order_version_then_enablement_then_rules():

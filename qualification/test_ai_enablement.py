@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from types import SimpleNamespace
 from uuid import uuid4
 
+import psycopg
 import pytest
 from cryptography.exceptions import InvalidTag
 
@@ -72,9 +73,16 @@ class Database:
         self.policy_rules = [advisory_rule()]
         self.policy_reads = 0
         self.policy_failure = None
+        self.savepoints = 0
 
     @contextmanager
-    def transaction(self, tenant):
+    def transaction(self, tenant=None):
+        if tenant is None:
+            # A savepoint inside the open transaction (psycopg Connection.transaction()).
+            assert self.active
+            self.savepoints += 1
+            yield self
+            return
         assert not self.active
         self.active = True
         try:
@@ -430,7 +438,7 @@ def test_sensitive_request_outside_policy_is_blocked_before_reservation(engine):
         "VALIDATION_FAILED",
         "AI_POLICY_BLOCKED",
     )
-    assert "confidential data is not an allowed data class" in exc.value.message
+    assert "confidential data is above the highest allowed data class" in exc.value.message
     assert db.policy_reads == 1
     assert_nothing_reserved_or_sent(db, provider, events)
 
@@ -589,3 +597,42 @@ def test_exact_replay_after_a_policy_change_returns_the_original_draft_only(engi
     with pytest.raises(DomainError) as exc:
         api.advisory(None, "tenant", body(), "c")
     assert exc.value.reason == "AI_POLICY_CHANGED"
+
+
+@pytest.mark.parametrize(
+    "allowed,ordinary,sensitive",
+    [
+        (["CONFIDENTIAL"], True, True),
+        (["RESTRICTED"], True, True),
+        (["PUBLIC", "INTERNAL"], True, False),
+        (["INTERNAL"], True, False),
+        (["PUBLIC"], False, False),
+    ],
+)
+def test_allowed_data_classes_are_a_ceiling(engine, allowed, ordinary, sensitive):
+    api, db, provider, events = engine
+    # A PUBLIC-only rule cannot be saved for ADVISORY_DRAFT; the gate still refuses it if stored.
+    db.policy_rules = [advisory_rule(data_classes=allowed)]
+    for request, expected in ((body(), ordinary), (sensitive_body(), sensitive)):
+        if expected:
+            assert api.advisory(None, "tenant", request, "c")["status"] == "DRAFT"
+        else:
+            calls, reserved = provider.calls, len(db.requests)
+            with pytest.raises(DomainError) as exc:
+                api.advisory(None, "tenant", request, "c")
+            assert (exc.value.status, exc.value.reason) == (422, "AI_POLICY_BLOCKED")
+            assert "above the highest allowed data class" in exc.value.message
+            assert (provider.calls, len(db.requests)) == (calls, reserved)
+
+
+def test_unreadable_policy_leaves_the_catalogue_readable_and_advisory_off(engine):
+    api, db, provider, events = engine
+    db.policy_failure = psycopg.OperationalError("synthetic policy read failure")
+    catalog = api.catalog(None, "tenant")
+    assert catalog["advisory_available"] is False
+    assert catalog["use_cases"] and catalog["learning_paths"]
+    assert db.savepoints == 1
+    # The advisory request itself still fails closed on its own read.
+    with pytest.raises(psycopg.OperationalError):
+        api.advisory(None, "tenant", body(), "c")
+    assert_nothing_reserved_or_sent(db, provider, events)

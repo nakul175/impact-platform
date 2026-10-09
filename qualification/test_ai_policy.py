@@ -320,7 +320,7 @@ def test_sensitive_request_outside_the_policy_is_refused_before_reservation(live
     api, identity, provider = gate(live)
     error = refused(api, identity, live, advisory_body(receipt["policy_version"], sensitive=True))
     assert (error.status, error.code, error.reason) == (422, "VALIDATION_FAILED", "AI_POLICY_BLOCKED")
-    assert "confidential data is not an allowed data class" in error.message
+    assert "confidential data is above the highest allowed data class" in error.message
     assert provider.calls == 0
     assert counts(live) == before
     # With the switch on and ADVISORY_DRAFT enabled, the catalogue reports advisory as available.
@@ -338,6 +338,24 @@ def test_destination_language_and_budget_rules_refuse_before_reservation(live):
         error = refused(api, identity, live, advisory_body(receipt["policy_version"]))
         assert (error.status, error.reason) == (422, "AI_POLICY_BLOCKED") and fragment in error.message
         assert provider.calls == 0 and counts(live) == before
+
+
+def test_allowed_classes_are_a_ceiling_and_an_advisory_ceiling_below_internal_is_refused(live):
+    before = counts(live)
+    refusal = expect(put(live, command(live, [advisory_rule(data_classes=["PUBLIC"])])), 422)
+    assert refusal["reason_code"] == "AI_DATA_CLASS_TOO_LOW"
+    assert counts(live)["versions"] == before["versions"]
+    # CONFIDENTIAL allows the sensitive (CONFIDENTIAL) and ordinary (INTERNAL) brief. An unmet
+    # language rule keeps the request from being reserved, and the refusal names only that rule.
+    receipt = enact(live, [advisory_rule(data_classes=["CONFIDENTIAL"], languages=["hi"])])
+    assert current(live, actor="author")["use_cases"][0]["data_classes"] == ["CONFIDENTIAL"]
+    before = counts(live)
+    api, identity, provider = gate(live)
+    for sensitive in (True, False):
+        error = refused(api, identity, live, advisory_body(receipt["policy_version"], sensitive=sensitive))
+        assert error.reason == "AI_POLICY_BLOCKED" and "language (en)" in error.message
+        assert "data class" not in error.message
+    assert provider.calls == 0 and counts(live) == before
 
 
 # Scenario: Reject a request made against an old policy

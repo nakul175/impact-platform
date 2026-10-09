@@ -4,10 +4,12 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import logging
 import re
 from uuid import UUID
 
 from cryptography.exceptions import InvalidTag
+import psycopg
 
 from . import ai_policy
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
@@ -23,6 +25,7 @@ USE_CASE = "ADVISORY_DRAFT"
 DRAFT_LANGUAGE = "en"
 REQUEST_FIELDS = {"operation_id", "profile", "consent", "policy_version"}
 TOOL = re.compile(TOOL_PATTERN)
+LOG = logging.getLogger("impact")
 
 
 def _key(secret):
@@ -67,8 +70,16 @@ class AIEnablement:
     def catalog(self, identity, tenant):
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "get_ai_enablement_catalog")
-            # Server switch, tenant policy and use case must all be on (FR-AI-001).
-            available = self._available() and ai_policy.enabled(ai_policy.in_force(c, tenant), USE_CASE)
+            # Server switch, tenant policy and use case must all be on (FR-AI-001). The editorial guide
+            # never depends on the policy: an unreadable policy only reports advisory as unavailable
+            # (the advisory request itself still fails closed on its own read).
+            available = False
+            if self._available():
+                try:
+                    with c.transaction():
+                        available = ai_policy.enabled(ai_policy.in_force(c, tenant), USE_CASE)
+                except psycopg.Error as error:
+                    LOG.warning("AI policy unreadable for the catalogue sqlstate=%s", error.sqlstate)
             return {**catalog(), "advisory_available": available}
 
     def assessment(self, identity, tenant, profile):

@@ -65,6 +65,13 @@ const blankRule = (): UseCasePolicy => ({
   budget_units: 0,
   tools: [],
 });
+// Allowed data classes are a ceiling (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED).
+function ceilingText(classes: string[]) {
+  const highest = [...DATA_CLASSES]
+    .reverse()
+    .find((item) => classes.includes(item));
+  return highest ? "Up to " + lower(highest) + " data" : "None";
+}
 function when(value: string | null) {
   if (!value) return "";
   const date = new Date(value);
@@ -93,9 +100,14 @@ export function AIPolicyInForce({
   const [editing, setEditing] = useState(false);
   const [history, setHistory] = useState<Revision[] | null>(null);
   const [historyError, setHistoryError] = useState("");
+  const [historyLoading, setHistoryLoading] = useState(false);
+  // The outcome of the last change: a saved version (status) or a refusal (alert).
+  const [saved, setSaved] = useState("");
+  const [notice, setNotice] = useState("");
   const rule = advisoryRule(policy);
   async function loadHistory() {
     setHistoryError("");
+    setHistoryLoading(true);
     try {
       const page = await request(
         base + "ai-enablement/policy/revisions?limit=20",
@@ -103,6 +115,8 @@ export function AIPolicyInForce({
       setHistory(page.items);
     } catch (e) {
       setHistoryError(explain(e));
+    } finally {
+      setHistoryLoading(false);
     }
   }
   return (
@@ -116,11 +130,21 @@ export function AIPolicyInForce({
         <p role="status">Loading your organisation&apos;s AI policy…</p>
       )}
       {loadError && (
-        <p className="ai-policy-warning">
-          The AI policy could not be loaded, so AI requests stay off.{" "}
-          {loadError}
-        </p>
+        <>
+          <div className="error" role="alert">
+            The AI policy could not be loaded. {loadError}
+          </div>
+          <p className="ai-policy-warning" role="status">
+            AI requests stay off until the policy can be read.
+          </p>
+        </>
       )}
+      {notice && (
+        <div className="error" role="alert">
+          {notice}
+        </div>
+      )}
+      {saved && <p role="status">{saved}</p>}
       {policy && (
         <>
           <p>
@@ -139,7 +163,7 @@ export function AIPolicyInForce({
             {rule?.enabled && (
               <>
                 <dt>Data allowed</dt>
-                <dd>{list(rule.data_classes.map(lower))}</dd>
+                <dd>{ceilingText(rule.data_classes)}</dd>
                 <dt>Destinations</dt>
                 <dd>
                   {list(
@@ -197,8 +221,11 @@ export function AIPolicyInForce({
               }}
             >
               <summary>Policy history</summary>
+              {historyLoading && <p role="status">Loading policy history…</p>}
               {historyError && (
-                <p className="ai-policy-warning">{historyError}</p>
+                <div className="error" role="alert">
+                  {historyError}
+                </div>
               )}
               {history && (
                 <ol className="ai-policy-history">
@@ -229,9 +256,19 @@ export function AIPolicyInForce({
           explain={explain}
           Dialog={Dialog}
           close={() => setEditing(false)}
-          saved={() => {
+          saved={(version) => {
             setEditing(false);
             setHistory(null);
+            setNotice("");
+            setSaved("AI policy version " + version + " saved.");
+            onChanged();
+          }}
+          stale={(message) => {
+            // Saved against an older version: show the refusal and reload the policy in force.
+            setEditing(false);
+            setHistory(null);
+            setSaved("");
+            setNotice(message);
             onChanged();
           }}
         />
@@ -248,6 +285,7 @@ function AIPolicyEditor({
   Dialog,
   close,
   saved,
+  stale,
 }: {
   base: string;
   policy: AIPolicyView;
@@ -255,7 +293,8 @@ function AIPolicyEditor({
   explain: (e: unknown) => string;
   Dialog: DialogType;
   close: () => void;
-  saved: () => void;
+  saved: (version: number) => void;
+  stale: (message: string) => void;
 }) {
   const current = advisoryRule(policy) || blankRule();
   const [enabled, setEnabled] = useState(current.enabled);
@@ -315,7 +354,7 @@ function AIPolicyEditor({
     setBusy(true);
     setError("");
     try {
-      await request(base + "ai-enablement/policy", {
+      const receipt = await request(base + "ai-enablement/policy", {
         method: "PUT",
         body: JSON.stringify({
           operation_id: attempt.current.id,
@@ -323,9 +362,11 @@ function AIPolicyEditor({
           data: { use_cases: [rule] },
         }),
       });
-      saved();
+      saved(receipt.policy_version);
     } catch (e) {
-      setError(explain(e));
+      if ((e as { reason?: string }).reason === "AI_POLICY_CHANGED")
+        stale(explain(e));
+      else setError(explain(e));
     } finally {
       setBusy(false);
     }
@@ -356,6 +397,10 @@ function AIPolicyEditor({
           </label>
           <fieldset>
             <legend>Data classes that may be sent</legend>
+            <p className="muted">
+              The highest class you tick is the ceiling: data at or below it may
+              be sent. Advisory drafts need at least internal data.
+            </p>
             {DATA_CLASSES.map((item) => (
               <label key={item} className="ai-checkbox">
                 <input

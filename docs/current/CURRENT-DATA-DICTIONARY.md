@@ -6155,7 +6155,7 @@ Source: infrastructure/migrations/0041_ai_policy.sql. SHA-256: `46da4315e5bd13fe
 | ai_policy_version.created_at | timestamptz, required | Time of the change. |
 | ai_use_case_policy.use_case | varchar(32) | ADVISORY_DRAFT, EXTRACTION, REPORT_DRAFT or CHAT; only ADVISORY_DRAFT may be enabled (`ai_use_case_reserved`). |
 | ai_use_case_policy.enabled | boolean | Use case on or off; an enabled rule needs at least one data class, destination, purpose and language (`ai_use_case_complete`). |
-| ai_use_case_policy.data_classes | text[] ⊆ PUBLIC/INTERNAL/CONFIDENTIAL/RESTRICTED | Classes that may be sent; an advisory brief marked sensitive is CONFIDENTIAL, otherwise INTERNAL. |
+| ai_use_case_policy.data_classes | text[] ⊆ PUBLIC/INTERNAL/CONFIDENTIAL/RESTRICTED | Read as a ceiling: a request passes at or below the highest listed class (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED). An advisory brief marked sensitive is CONFIDENTIAL, otherwise INTERNAL; the API refuses an enabled ADVISORY_DRAFT whose ceiling is below INTERNAL. |
 | ai_use_case_policy.destinations | text[] ⊆ `openai-us` | Closed provider-and-region labels; widening is a reviewed migration. |
 | ai_use_case_policy.purposes | text[], ≤ 10, no NULL or empty, ≤ 2,000 characters in all | Approved purposes in the administrator's words. |
 | ai_use_case_policy.languages | text[] of BCP 47 tags, ≤ 20 | Language coverage; the English advisory draft needs an `en` tag. |

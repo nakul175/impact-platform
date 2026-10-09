@@ -58,6 +58,7 @@ browser:
 	$(PY) scripts/run.py tola-ai-sprint-browser
 	$(PY) scripts/run.py tola-ai-extension-browser
 	$(PY) scripts/run.py ai-plan-export-browser
+	$(PY) scripts/run.py ai-policy-browser
 	$(PY) scripts/run.py dashboard-browser
 	$(PY) scripts/run.py forms-browser
 	$(PY) scripts/run.py reporting-browser

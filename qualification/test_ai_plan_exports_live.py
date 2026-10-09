@@ -75,7 +75,7 @@ def export_migration_ledger(live):
     }
     path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
     path.write_text(json.dumps(report, indent=2) + "\n")
-    assert len(applied) == 42
+    assert len(applied) == 43
     assert all(row["applied_sha256"] == row["current_source_sha256"] for row in applied)
 
 
@@ -792,3 +792,51 @@ def test_actual_app_login_cannot_read_private_pointers_without_current_export_co
                 ).fetchone()[0]
                 == 0
             )
+
+
+def test_plans_archived_under_guidance_v1_and_v2_both_export_valid_documents(
+    live, export_tenant, monkeypatch
+):
+    """US-DC-04: exports stay valid for a plan saved under each archive edition."""
+    from impact_api.ai_adoption_plans import AIAdoptionPlans
+    from impact_api.ai_plan_export_contracts import DOCUMENT_VALIDATOR
+    from test_ai_content_archives import V1_SOLUTIONS_SHA256, under_guidance_v1
+
+    settings = Settings(**live.config)
+    db = Database(settings)
+    identity = Auth(settings, db).resolve(
+        Request(
+            {
+                "type": "http",
+                "method": "POST",
+                "headers": [(b"authorization", ("Bearer " + live.token("reviewer")).encode())],
+            }
+        )
+    )
+    with under_guidance_v1(monkeypatch):
+        old = AIAdoptionPlans(Service(settings, db)).save(
+            identity, export_tenant["tenant_id"], command(plan()), str(uuid4())
+        )
+    new = saved(live, export_tenant)
+    documents = {}
+    for name, row in (("v1", old), ("v2", new)):
+        result = issue(live, export_tenant, row)
+        document = json.loads(result["content"])
+        assert DOCUMENT_VALIDATOR.is_valid(document)
+        assert result["manifest"]["guidance_status"] == "COMPLETE"
+        documents[name] = document
+    assert documents["v1"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V1
+    assert documents["v2"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V2
+    v1_listings = documents["v1"]["guidance"]["solutions"]["payload"]
+    assert (
+        hashlib.sha256(
+            json.dumps(v1_listings, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        ).hexdigest()
+        == V1_SOLUTIONS_SHA256
+    )
+    assert not any("commercial_disclosure" in item for item in v1_listings["solutions"])
+    assert documents["v2"]["guidance"]["solutions"]["payload"] == archives.solutions_catalog()
+    assert all(
+        item["commercial_disclosure"]["status"] == "NONE_KNOWN"
+        for item in documents["v2"]["guidance"]["solutions"]["payload"]["solutions"]
+    )

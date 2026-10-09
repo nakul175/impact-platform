@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 
+from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
 VERSION = "1.20.0"
@@ -107,10 +108,9 @@ def augment(spec, policy):
         ],
     }
     schemas["AIEnablementAssessment"] = closed({"assessment": {"type": "object"}}, ["assessment"])
-    schemas["AISolutionsCatalog"] = {
-        "type": "object",
-        "required": ["content_version", "checked_on", "explanation", "solutions", "comparison_criteria"],
-    }
+    # US-DC-04 (build 0.39.0): closed, and every listing carries a valid commercial disclosure
+    # (NONE_KNOWN with no relationship type, or DISCLOSED with at least one and a statement).
+    schemas["AISolutionsCatalog"] = catalog_schema()
     schemas["AIAdvisoryDraft"] = closed(
         {
             "status": {"const": "DRAFT"},

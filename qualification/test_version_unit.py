@@ -70,3 +70,20 @@ def test_runtime_code_carries_no_version_literal():
     ]:
         text = (ROOT / script).read_text()
         assert '"' + version.BUILD + '"' not in text and "-v" + version.BUILD not in text, script
+
+
+def test_data_dictionary_ledgers_every_migration_file_with_its_checksum():
+    """The register the restore drill and the upgrade check read must name every migration file,
+    including names with digits (0043_ai_guidance_v2.sql), with its current SHA-256."""
+    import hashlib
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from native_upgrade_check import ledgered_checksums
+
+    files = {
+        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in (ROOT / "infrastructure/migrations").glob("*.sql")
+    }
+    assert ledgered_checksums() == files
+    assert len(files) == version.SCHEMA

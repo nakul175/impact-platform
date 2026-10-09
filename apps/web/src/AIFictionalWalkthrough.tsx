@@ -56,6 +56,13 @@ const tools: PublicToolSolution[] = [
       "Who can review drafts?",
       "How would the organisation leave?",
     ],
+    commercial_disclosure: {
+      status: "NONE_KNOWN",
+      relationship_types: [],
+      statement:
+        "Invented example: this provider does not exist, so no commercial relationship with it exists.",
+      declared_on: "2026-10-09",
+    },
   },
   {
     id: "fictional-public-notebook",
@@ -78,6 +85,13 @@ const tools: PublicToolSolution[] = [
       "What review time is needed?",
       "How are outputs checked?",
     ],
+    commercial_disclosure: {
+      status: "NONE_KNOWN",
+      relationship_types: [],
+      statement:
+        "Invented example: this provider does not exist, so no commercial relationship with it exists.",
+      declared_on: "2026-10-09",
+    },
   },
 ];
 

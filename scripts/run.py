@@ -78,6 +78,7 @@ BROWSER_MODES = {
     "ai-plan-export-browser": "ai-plan-export-check.mjs",
     "ai-policy-browser": "ai-policy-check.mjs",
     "ai-ranking-browser": "ai-ranking-check.mjs",
+    "ai-disclosure-browser": "ai-disclosure-check.mjs",
     "dashboard-browser": "dashboard-check.mjs",
     "forms-browser": "forms-check.mjs",
     "reporting-browser": "reporting-check.mjs",

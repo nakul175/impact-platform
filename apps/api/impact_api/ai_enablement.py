@@ -14,7 +14,7 @@ import psycopg
 from . import ai_policy
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
-from .ai_solutions_catalog import solutions_catalog
+from .ai_solutions_catalog import SolutionsCatalogInvalid, solutions_catalog
 from .domain import DomainError
 from .keyring import ring
 from .store import audit, authorize, context, write
@@ -91,7 +91,13 @@ class AIEnablement:
     def solutions(self, identity, tenant):
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "get_ai_solutions")
-            return solutions_catalog()
+            try:
+                return solutions_catalog()
+            except SolutionsCatalogInvalid as error:
+                # Fail closed (US-DC-04): a listing without a valid commercial disclosure means the
+                # catalogue is not served at all, never served with that listing unlabelled.
+                LOG.error("AI solutions catalogue refused: %s", error)
+                raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
 
     def cost_comparison(self, identity, tenant, body):
         from .ai_procurement_costs import compare_costs

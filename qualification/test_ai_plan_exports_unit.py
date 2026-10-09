@@ -753,3 +753,72 @@ def test_deadline_crossed_during_byte_query_returns_expired_instead_of_source_un
     with pytest.raises(DomainError) as caught:
         service.create(None, TENANT, PLAN, REVISION, body, str(uuid4()))
     assert (caught.value.status, caught.value.code) == (409, "IDEMPOTENCY_EXPIRED")
+
+
+# US-DC-04: the export carries archived guidance of either edition, labelled by its snapshot
+
+
+def edition_guidance(version, status="COMPLETE"):
+    """Archived guidance as the read returns it, for a snapshot of `version`."""
+    from impact_api.ai_content_archives import SCHEMA_V1
+    from test_ai_content_archives import v1_solutions
+
+    guide = guidance(status)
+    if version == SCHEMA_V1:
+        guide["solutions"] = {
+            "status": "AVAILABLE",
+            "content_version": v1_solutions()["content_version"],
+            "payload": v1_solutions(),
+        }
+    guide["snapshot_schema_version"] = version
+    bundle = {
+        "schema_version": version,
+        **{name: guide[name]["payload"] for name in ("catalog", "solutions", "practice")},
+    }
+    guide["snapshot_sha256"] = store.hash_data(bundle).hex()
+    return guide
+
+
+@pytest.mark.parametrize("version", ["nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2"])
+@pytest.mark.parametrize("status", ["COMPLETE", "PARTIAL"])
+def test_plans_archived_under_either_edition_export_and_replay_as_valid_documents(version, status):
+    guide = edition_guidance(version, status)
+    raw = exports.render_document(TENANT, ISSUANCE, AT, PLAN, REVISION, source(), guide)
+    document = json.loads(raw)
+    assert contracts.DOCUMENT_VALIDATOR.is_valid(document)
+    assert document["schema_version"] == contracts.PACKAGE_VERSION == "nonprofit-ai-plan-export-v1"
+    assert document["guidance"]["snapshot_schema_version"] == version
+    listings = document["guidance"]["solutions"]["payload"]["solutions"]
+    disclosed = ["commercial_disclosure" in item for item in listings]
+    assert disclosed == [version.endswith("v2")] * 8
+    metadata, _ = retained(status)
+    metadata.update(
+        guidance_schema_version=version,
+        guidance_sha256=bytes.fromhex(guide["snapshot_sha256"]),
+        byte_count=len(raw),
+        content_sha256=hashlib.sha256(raw).digest(),
+    )
+    response = exports.original_response(metadata, raw, AT + timedelta(hours=1))
+    assert response["content"].encode() == raw
+
+
+@pytest.mark.parametrize(
+    "label,payload",
+    [
+        ("nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2"),
+        ("nonprofit-ai-guidance-v2", "nonprofit-ai-guidance-v1"),
+        ("nonprofit-ai-guidance-v3", "nonprofit-ai-guidance-v2"),
+    ],
+)
+def test_guidance_labelled_with_another_edition_than_its_shape_is_refused(label, payload):
+    guide = edition_guidance(payload)
+    guide["snapshot_schema_version"] = label
+    bundle = {
+        "schema_version": label,
+        **{name: guide[name]["payload"] for name in ("catalog", "solutions", "practice")},
+    }
+    # Validly hashed under the wrong label: only the edition-bound document schema can refuse it.
+    guide["snapshot_sha256"] = store.hash_data(bundle).hex()
+    with pytest.raises(DomainError) as caught:
+        exports.render_document(TENANT, ISSUANCE, AT, PLAN, REVISION, source(), guide)
+    assert (caught.value.status, caught.value.reason) == (503, "AI_PLAN_EXPORT_SOURCE_UNREADABLE")

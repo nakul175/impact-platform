@@ -516,10 +516,10 @@ try {
       assert.equal(observed.api_version, version.domain_api);
       assert.equal(observed.mutation_tests_allowed, true);
       const applied = setup("runtime").migrations;
-      assert.equal(applied.at(-1).version, 42);
+      assert.equal(applied.at(-1).version, 43);
       assert.equal(observed.schema_version, String(applied.length));
       const migration = Object.keys(qualifiedSources).find((file) =>
-        /^infrastructure\/migrations\/0042_.*\.sql$/.test(file),
+        /^infrastructure\/migrations\/0043_.*\.sql$/.test(file),
       );
       assert(migration);
       assert.equal(applied.at(-1).sha256, qualifiedSources[migration]);

@@ -1,6 +1,7 @@
 """Offline advisory claim/replay/authority qualification; provider is always synthetic."""
 
 from contextlib import contextmanager
+from copy import deepcopy
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from uuid import uuid4
@@ -636,3 +637,27 @@ def test_unreadable_policy_leaves_the_catalogue_readable_and_advisory_off(engine
     with pytest.raises(psycopg.OperationalError):
         api.advisory(None, "tenant", body(), "c")
     assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_catalogue_with_a_listing_lacking_a_valid_disclosure_is_not_served(engine, monkeypatch):
+    """US-DC-04: the solutions read fails closed; it never serves a listing without its disclosure."""
+    import impact_api.ai_solutions_catalog as solutions_module
+
+    api, db, provider, events = engine
+    served = api.solutions(None, "tenant")
+    assert all(item["commercial_disclosure"]["status"] == "NONE_KNOWN" for item in served["solutions"])
+    original = deepcopy(solutions_module._SOLUTIONS)
+    for change in (
+        lambda listing: listing.pop("commercial_disclosure"),
+        lambda listing: listing["commercial_disclosure"].update(status="DISCLOSED"),
+        lambda listing: listing.update(
+            commercial_disclosure={**listing["commercial_disclosure"], "status": "DISCLOSED", "statement": ""}
+        ),
+    ):
+        listings = deepcopy(original)
+        change(listings[5])
+        monkeypatch.setattr(solutions_module, "_SOLUTIONS", listings)
+        with pytest.raises(DomainError) as refused:
+            api.solutions(None, "tenant")
+        assert (refused.value.status, refused.value.reason) == (503, "AI_SOLUTIONS_CATALOG_INVALID")
+    assert provider.calls == 0 and not db.requests

@@ -7,7 +7,8 @@ from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 
 from impact_api.ai_adoption_contracts import MANAGERS
-from impact_api.ai_content_archives import CONTENT_SCHEMAS, SCHEMA_VERSION as GUIDANCE_VERSION
+from impact_api.ai_content_archives import EDITIONS as GUIDANCE_EDITIONS
+from impact_api.ai_content_contracts import guidance_variants
 from impact_api.measurement_contracts import UUID, closed
 
 VERSION = "1.25.0"
@@ -105,39 +106,10 @@ MANIFEST_SCHEMA = closed(
 
 
 def guidance_schema():
-    components = {}
-    for name in ("catalog", "solutions", "practice"):
-        components[name] = {
-            "oneOf": [
-                closed(
-                    {
-                        "status": {"const": "AVAILABLE"},
-                        "content_version": {"type": "string", "minLength": 1, "maxLength": 100},
-                        "payload": deepcopy(CONTENT_SCHEMAS[name]),
-                    },
-                    ["status", "content_version", "payload"],
-                ),
-                closed(
-                    {
-                        "status": {"const": "UNAVAILABLE"},
-                        "content_version": {"type": ["string", "null"], "maxLength": 100},
-                        "payload": {"type": "null"},
-                    },
-                    ["status", "content_version", "payload"],
-                ),
-            ]
-        }
-    result = {
-        "object_id": deepcopy(UUID),
-        "revision_id": deepcopy(UUID),
-        "status": deepcopy(GUIDANCE_STATUS),
-        "snapshot_schema_version": {"enum": [GUIDANCE_VERSION, None]},
-        "captured_at": {"type": ["string", "null"], "format": "date-time"},
-        "snapshot_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
-        **components,
-        "disclaimer": {"type": "string", "maxLength": 1000},
-    }
-    return closed(result, list(result))
+    """The archived guidance exactly as the guidance read returns it: one variant per archive edition
+    (v1, and v2 with commercial disclosures since build 0.39.0), labelled by snapshot_schema_version,
+    or the unavailable variant. Exports issued before 0.39.0 carry v1 guidance and still validate."""
+    return {"oneOf": guidance_variants(lambda version, name: deepcopy(GUIDANCE_EDITIONS[version][name]))}
 
 
 def document_schema():

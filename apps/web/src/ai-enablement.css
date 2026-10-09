@@ -382,3 +382,25 @@
   color: inherit;
   font-weight: 600;
 }
+/* US-DC-04: the commercial disclosure on every tool card, comparison column and archived listing. */
+.ai-enablement .ai-disclosure {
+  margin: 0.5rem 0;
+  padding: 0.45rem 0.65rem;
+  border-left: 3px solid var(--ai-accent);
+  background: var(--ai-notice);
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-disclosure.ai-disclosed {
+  border-left-color: var(--status-warning-text);
+  background: var(--status-warning-bg);
+}
+.ai-enablement .ai-disclosure p {
+  margin: 0.15rem 0;
+}
+.ai-enablement .ai-disclosure-statement,
+.ai-enablement .ai-disclosure-date {
+  color: var(--text-muted);
+}
+.ai-enablement .ai-disclosed .ai-disclosure-statement {
+  color: var(--status-warning-text);
+}

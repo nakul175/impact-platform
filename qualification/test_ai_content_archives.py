@@ -1,6 +1,9 @@
 """Immutable guidance and preservation regressions; synthetic transaction model, no provider."""
 
+from contextlib import contextmanager
 from copy import deepcopy
+import hashlib
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
@@ -8,6 +11,7 @@ import pytest
 import impact_api.ai_adoption_plans as plans
 import impact_api.ai_content_archives as archives
 import impact_api.ai_task_practice as practice
+from impact_api.ai_solutions_catalog import catalog_schema, solutions_catalog as published_solutions
 from impact_api.domain import DomainError
 from impact_api.store import hash_data
 from test_ai_adoption_plans import engine as engine
@@ -259,3 +263,203 @@ def test_revision_history_bounds_fail_before_database_read(engine, limit):
     with pytest.raises(DomainError) as denied:
         api.history(None, "synthetic-tenant", str(uuid4()), limit)
     assert denied.value.status == 422 and not db.objects
+
+
+# US-DC-04: archive edition v2 (commercial disclosures) beside the retained v1 reader
+
+V1_SCHEMA_FILE_SHA256 = "248434d7ddb31bdb76508b673ffc26c517f68a3fc46565856d556bc9f458994c"
+# The solutions edition that build 0.38.0 archived under guidance v1, as recorded before US-DC-04.
+V1_SOLUTIONS_EDITION = "nonprofit-solutions-2026-10-05.1"
+V1_SOLUTIONS_SHA256 = "7c1b378329293735afb45d1cdf4b33df5fe8346d9545299dc5718ecdad0e38e4"
+V1_SOLUTIONS_EXPLANATION = (
+    "A source-backed starting list checked on the stated date, not an endorsement, live price feed "
+    "or guarantee of eligibility. Use-case mappings are editorial pilot ideas. "
+    "Compare evidence and obtain a current quote before choosing a solution."
+)
+
+
+def v1_solutions():
+    """Byte-for-byte the solutions component build 0.38.0 archived: today's listings without
+    disclosures under the previous edition and explanation (checked against the recorded digest)."""
+    edition = published_solutions()
+    edition["content_version"] = V1_SOLUTIONS_EDITION
+    edition["explanation"] = V1_SOLUTIONS_EXPLANATION
+    for listing in edition["solutions"]:
+        del listing["commercial_disclosure"]
+    assert hash_data(edition).hex() == V1_SOLUTIONS_SHA256
+    return edition
+
+
+@contextmanager
+def under_guidance_v1(monkeypatch):
+    """Save as build 0.38.0 did: the v1 edition label and the v1 solutions edition, through the real
+    capture path. Nothing is fabricated: the archive is written by capture() itself."""
+    with monkeypatch.context() as patch:
+        patch.setattr(archives, "SCHEMA_VERSION", archives.SCHEMA_V1)
+        patch.setattr(archives, "solutions_catalog", v1_solutions)
+        patch.setattr(plans, "SOLUTIONS_VERSION", V1_SOLUTIONS_EDITION)
+        yield
+
+
+def test_v1_schema_file_is_frozen_and_v2_adds_only_the_commercial_disclosure():
+    v1_file = Path(archives.__file__).with_name("ai_content_schema_v1.json")
+    assert hashlib.sha256(v1_file.read_bytes()).hexdigest() == V1_SCHEMA_FILE_SHA256
+    assert archives.SCHEMA_VERSION == archives.SCHEMA_V2 == "nonprofit-ai-guidance-v2"
+    assert list(archives.EDITIONS) == list(archives.READERS) == [archives.SCHEMA_V1, archives.SCHEMA_V2]
+    v1, v2 = archives.EDITIONS[archives.SCHEMA_V1], archives.EDITIONS[archives.SCHEMA_V2]
+    assert v2["catalog"] == v1["catalog"] and v2["practice"] == v1["practice"]
+    # The current published catalogue contract is exactly the archived v2 solutions component.
+    assert v2["solutions"] == catalog_schema()
+    listing = deepcopy(v2["solutions"]["properties"]["solutions"]["items"])
+    del listing["properties"]["commercial_disclosure"]
+    listing["required"].remove("commercial_disclosure")
+    reduced = deepcopy(v2["solutions"])
+    reduced["properties"]["solutions"]["items"] = listing
+    assert reduced == v1["solutions"]
+
+
+def test_new_revision_is_captured_in_guidance_v2_with_every_listing_disclosure(engine):
+    api, db = engine
+    receipt = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    row = next(iter(db.content_snapshots.values()))
+    assert row["schema_version"] == row["payload"]["schema_version"] == archives.SCHEMA_V2
+    result = guidance(api, receipt)
+    assert result["status"] == "COMPLETE" and result["snapshot_schema_version"] == archives.SCHEMA_V2
+    archived = result["solutions"]["payload"]
+    assert archived == archives.solutions_catalog()
+    assert archived["content_version"] == "nonprofit-solutions-2026-10-05.2"
+    assert len(archived["solutions"]) == 8
+    assert all(item["commercial_disclosure"]["status"] == "NONE_KNOWN" for item in archived["solutions"])
+    saved = api.get(None, "synthetic-tenant", receipt["object_id"])
+    assert saved["data"]["content_versions"]["solutions"] == archived["content_version"]
+
+
+def test_revisions_saved_under_v1_and_v2_both_load_and_v1_keeps_its_original_words(engine, monkeypatch):
+    api, db = engine
+    with under_guidance_v1(monkeypatch):
+        old = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    new = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    assert sorted(row["schema_version"] for row in db.content_snapshots.values()) == [
+        archives.SCHEMA_V1,
+        archives.SCHEMA_V2,
+    ]
+    before = deepcopy(db.content_snapshots)
+    first, second = guidance(api, old), guidance(api, new)
+    assert first["status"] == second["status"] == "COMPLETE"
+    assert first["snapshot_schema_version"] == archives.SCHEMA_V1
+    assert second["snapshot_schema_version"] == archives.SCHEMA_V2
+    assert hash_data(first["solutions"]["payload"]).hex() == V1_SOLUTIONS_SHA256
+    assert not any("commercial_disclosure" in item for item in first["solutions"]["payload"]["solutions"])
+    assert all("commercial_disclosure" in item for item in second["solutions"]["payload"]["solutions"])
+    assert first["catalog"] == second["catalog"] and first["practice"] == second["practice"]
+    # Plans, history and listing read both editions; nothing is rewritten or relabelled.
+    for receipt in (old, new):
+        assert api.get(None, "synthetic-tenant", receipt["object_id"])["content_compatibility"][
+            "historical_snapshots_available"
+        ]
+        assert api.history(None, "synthetic-tenant", receipt["object_id"])["items"][0][
+            "historical_snapshots_available"
+        ]
+    assert all(
+        item["content_compatibility"]["historical_snapshots_available"]
+        for item in api.listing(None, "synthetic-tenant")["items"]
+    )
+    stale = api.get(None, "synthetic-tenant", old["object_id"])["content_compatibility"]
+    assert stale["solutions_version_status"] == "STALE"
+    assert db.content_snapshots == before
+
+
+def test_a_saved_revision_keeps_the_disclosure_that_was_current_when_it_was_saved(engine, monkeypatch):
+    api, db = engine
+    first = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    original = guidance(api, first)
+    later = archives.solutions_catalog()
+    later["content_version"] = "synthetic-solutions-disclosed-next"
+    later["solutions"][0]["commercial_disclosure"] = {
+        "status": "DISCLOSED",
+        "relationship_types": ["referral_fee"],
+        "statement": "Synthetic later edition: a referral fee relationship.",
+        "declared_on": "2026-11-01",
+    }
+    monkeypatch.setattr(archives, "solutions_catalog", lambda: deepcopy(later))
+    monkeypatch.setattr(plans, "SOLUTIONS_VERSION", later["content_version"])
+    second = api.save(
+        None, "synthetic-tenant", request(plan(), first["revision_id"]), str(uuid4()), first["object_id"]
+    )
+    assert guidance(api, first) == original
+    kept = original["solutions"]["payload"]["solutions"][0]["commercial_disclosure"]
+    assert kept["status"] == "NONE_KNOWN" and kept["relationship_types"] == []
+    current = guidance(api, second)["solutions"]["payload"]["solutions"][0]["commercial_disclosure"]
+    assert current == later["solutions"][0]["commercial_disclosure"]
+    assert len(db.content_snapshots) == 2
+
+
+@pytest.mark.parametrize("change", ["missing", "disclosed_without_statement", "disclosed_without_type"])
+def test_a_listing_without_a_valid_disclosure_refuses_the_save_atomically(engine, monkeypatch, change):
+    import impact_api.ai_solutions_catalog as solutions_module
+
+    api, db = engine
+    listings = deepcopy(solutions_module._SOLUTIONS)
+    disclosure = listings[1]["commercial_disclosure"]
+    if change == "missing":
+        del listings[1]["commercial_disclosure"]
+    elif change == "disclosed_without_statement":
+        disclosure.update(status="DISCLOSED", relationship_types=["reseller"])
+        del disclosure["statement"]
+    else:
+        disclosure.update(status="DISCLOSED")
+    monkeypatch.setattr(solutions_module, "_SOLUTIONS", listings)
+    with pytest.raises(DomainError) as refused:
+        api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    assert (refused.value.status, refused.value.reason) == (503, "AI_SOLUTIONS_CATALOG_INVALID")
+    assert not db.objects and not db.revisions and not db.events and not db.receipts
+    assert not db.content_snapshots and not db.content_bindings
+
+
+@pytest.mark.parametrize(
+    "change",
+    ["v2_without_disclosure", "row_v1_payload_v2", "row_v2_payload_v1", "unknown_edition"],
+)
+def test_an_edition_label_and_its_payload_shape_must_agree_or_the_archive_is_unreadable(
+    engine, monkeypatch, change
+):
+    api, db = engine
+    if change == "row_v2_payload_v1":
+        with under_guidance_v1(monkeypatch):
+            receipt = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    else:
+        receipt = api.save(None, "synthetic-tenant", request(), str(uuid4()))
+    row = next(iter(db.content_snapshots.values()))
+    payload = row["payload"]
+    if change == "v2_without_disclosure":
+        del payload["solutions"]["solutions"][0]["commercial_disclosure"]
+    elif change == "row_v1_payload_v2":
+        row["schema_version"] = archives.SCHEMA_V1
+    elif change == "row_v2_payload_v1":
+        row["schema_version"] = archives.SCHEMA_V2
+    else:
+        payload["schema_version"] = row["schema_version"] = "nonprofit-ai-guidance-v3"
+    # A validly hashed payload: only the edition rules can refuse it.
+    row["payload_sha256"] = hash_data(payload)
+    with pytest.raises(DomainError) as denied:
+        guidance(api, receipt)
+    assert (denied.value.status, denied.value.reason) == (503, "AI_GUIDANCE_UNREADABLE")
+
+
+def test_practice_archived_under_v1_is_reused_in_a_v2_bundle_only_when_identical(engine, monkeypatch):
+    api, db = engine
+    with under_guidance_v1(monkeypatch):
+        first = api.save(None, "synthetic-tenant", request(planning_plan()), str(uuid4()))
+    original = guidance(api, first)
+    later = archives.task_templates()
+    later["content_version"] = "synthetic-practice-v-next"
+    later["templates"][0]["title"] = "Changed synthetic task wording"
+    monkeypatch.setattr(archives, "task_templates", lambda: deepcopy(later))
+    monkeypatch.setattr(practice, "CONTENT_VERSION", later["content_version"])
+    second = api.save(
+        None, "synthetic-tenant", request(plan(), first["revision_id"]), str(uuid4()), first["object_id"]
+    )
+    result = guidance(api, second)
+    assert result["snapshot_schema_version"] == archives.SCHEMA_V2
+    assert result["status"] == "COMPLETE" and result["practice"] == original["practice"]
+    assert guidance(api, first) == original

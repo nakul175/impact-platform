@@ -20,9 +20,12 @@ docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the
 0017, 0018 and 0019 add exist, and that the tenant, revision, session and outbox counts loaded at
 the baseline are unchanged, with the pre-existing session's new columns NULL, the pre-existing
 delivery row left undispatchable (no channel, PENDING, lease generation 0) and the pre-existing
-framework and target projections present with their new columns NULL (`data_preserved`); any of
-these failing fails the check. The result is merged into the JSON report named by --report under
-`upgrade_check`.
+framework and target projections present with their new columns NULL (`data_preserved`); since
+0.39.0, when the baseline already has 0037 (BASELINE >= 37), one archived guidance snapshot labelled
+`nonprofit-ai-guidance-v1` is inserted at the baseline so that 0043's re-created edition check
+validates a populated table, and it must read back unchanged afterwards with the check admitting
+exactly v1 and v2 (`guidance_archive_preserved`); any of these failing fails the check. The result
+is merged into the JSON report named by --report under `upgrade_check`.
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
@@ -88,6 +91,16 @@ PROGRAMME = "67bdb368-3aa8-5924-8275-52460bd936f2"
 PERIOD = "13f1e2c4-1faa-55d3-b904-ed90e67406f5"
 FRAMEWORK = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a01", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a02")
 TARGET = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a03", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a04")
+# The archived guidance snapshot inserted at a baseline with 0037 (fixture tenant A); synthetic payload.
+SNAPSHOT = "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a05"
+SNAPSHOT_PAYLOAD = {"schema_version": "nonprofit-ai-guidance-v1", "synthetic_upgrade_check": True}
+GUIDANCE_EDITIONS = ("nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2")
+
+
+def snapshot_digest():
+    return hashlib.sha256(
+        json.dumps(SNAPSHOT_PAYLOAD, sort_keys=True, separators=(",", ":")).encode()
+    ).digest()
 
 
 def insert_planning_rows(c):
@@ -126,7 +139,7 @@ def ledgered_checksums():
     """The migration register table of the data dictionary: file name -> SHA-256."""
     register = {}
     for line in DICTIONARY.read_text().splitlines():
-        match = re.fullmatch(r"\|\s*(\d{4}_[a-z_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
+        match = re.fullmatch(r"\|\s*(\d{4}_[a-z0-9_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
         if match:
             register[match.group(1)] = match.group(2)
     if len(register) != LATEST:
@@ -198,6 +211,11 @@ def run(admin_dsn, fixture_dsn, passwords):
         result["baseline"]["platform_operators"] = c.execute(
             "SELECT count(*) FROM impact.platform_operator"
         ).fetchone()[0]
+        if BASELINE >= 37:
+            c.execute(
+                "INSERT INTO impact.ai_content_snapshot(tenant_id,snapshot_id,schema_version,payload,payload_sha256,captured_at) VALUES(%s,%s,%s,%s,%s,now())",
+                (OUTBOX_TENANT, SNAPSHOT, GUIDANCE_EDITIONS[0], Jsonb(SNAPSHOT_PAYLOAD), snapshot_digest()),
+            )
         result["baseline"]["assignment_rows"] = c.execute(
             "SELECT count(*) FROM impact.assignment_current"
         ).fetchone()[0]
@@ -312,6 +330,19 @@ def run(admin_dsn, fixture_dsn, passwords):
         assignments = c.execute(
             "SELECT count(*) FROM impact.assignment_current WHERE unit_key IS NULL AND previous_assignee_id IS NULL AND reason IS NULL"
         ).fetchone()[0]
+        # 0043 (build 0.39.0): the archive edition check admits v1 and v2; a v1 row is untouched.
+        edition_check = c.execute(
+            "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='impact.ai_content_snapshot'::regclass AND conname='ai_content_snapshot_schema_version_check'"
+        ).fetchone()
+        edition_check = edition_check[0] if edition_check else ""
+        archived = c.execute(
+            "SELECT count(*) FROM impact.ai_content_snapshot WHERE tenant_id=%s AND snapshot_id=%s AND schema_version=%s AND payload=%s AND payload_sha256=%s",
+            (OUTBOX_TENANT, SNAPSHOT, GUIDANCE_EDITIONS[0], Jsonb(SNAPSHOT_PAYLOAD), snapshot_digest()),
+        ).fetchone()[0]
+    editions_admitted = all("'" + edition + "'" in edition_check for edition in GUIDANCE_EDITIONS)
+    guidance_archive_preserved = (
+        editions_admitted and (archived == 1 if BASELINE >= 37 else True) if LATEST >= 43 else True
+    )
     ledger = {int(name[:4]): sha for name, sha in register.items()}
     recorded = {int(v): s for v, s in rows}
     mismatches = [v for v in sorted(set(ledger) | set(recorded)) if ledger.get(v) != recorded.get(v)]
@@ -341,6 +372,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         "operator_rows_preserved": legacy_operator == 1
         and operators == result["baseline"]["platform_operators"],
         "assignment_rows_preserved": assignments == result["baseline"]["assignment_rows"],
+        "guidance_archive_preserved": guidance_archive_preserved,
+        "guidance_archive_row_at_baseline": BASELINE >= 37,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -373,6 +406,7 @@ def run(admin_dsn, fixture_dsn, passwords):
         or not all(v027_tables)
         or not result["verification"]["operator_rows_preserved"]
         or not result["verification"]["assignment_rows_preserved"]
+        or not result["verification"]["guidance_archive_preserved"]
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

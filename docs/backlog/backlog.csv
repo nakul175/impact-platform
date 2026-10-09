@@ -680,7 +680,7 @@ US-DC-04,Disclose commercial relationships,R1 Pilot,Adoption: Discover,Functiona
 Scenario: Reject a listing without a disclosure label
   Given a solution listing with no disclosure label
   When it is published to the catalogue
-  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,5,Sprint 1,Ready
+  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,5,Sprint 1,In review
 US-IM-01,Track usage and outcomes against baseline,R1 Pilot,Adoption: Improve,Functional,Must,Partial,Executive Director,"As an Executive Director, I want usage and outcomes tracked against our baseline, so that we know whether it is working.","Scenario: Compare current metrics with the locked baseline
   Given an opportunity with a locked baseline and a deployed solution
   When the Executive Director opens the dashboard

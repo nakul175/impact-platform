@@ -60,6 +60,7 @@ browser:
 	$(PY) scripts/run.py ai-plan-export-browser
 	$(PY) scripts/run.py ai-policy-browser
 	$(PY) scripts/run.py ai-ranking-browser
+	$(PY) scripts/run.py ai-disclosure-browser
 	$(PY) scripts/run.py dashboard-browser
 	$(PY) scripts/run.py forms-browser
 	$(PY) scripts/run.py reporting-browser

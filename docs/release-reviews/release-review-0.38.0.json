@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "release": "0.38.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+  "prepared_on": "2026-10-09",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "14 critical threats are unresolved (TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34) and both chains are BLOCK (CH01 because TH21 retrieval and tools are blocked, CH02 because support sessions do not exist); no independent security assessment has been run (FR-SEC-010); every residual decision and impact review is an agent proposal that no person has confirmed. US-MP-03 changes no threat's decision, impact or verification status."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No evaluation of grounding, correctness, privacy, injection or budget against a live model exists. The opportunity ranking added in this build makes no model call; its scores are editorial content and deterministic arithmetic."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.38-01",
+      "change_id": "US-MP-03",
+      "change": "US-MP-03 rank opportunities with the organisation's weights: registry kind AIRankingWeights and its one-per-tenant index (migration 0042), GET/PUT ai-enablement/ranking-weights and POST ai-enablement/ranking, editorial opportunity scores outside the archived catalogue",
+      "paths": [
+        "infrastructure/migrations/0042_ai_ranking_weights.sql",
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "packages/contracts/access-policy.json",
+        "apps/api/impact_api/ai_ranking.py",
+        "apps/api/impact_api/ai_opportunity_scores.py",
+        "apps/api/impact_api/ai_enablement_catalog.py"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy",
+        "ai-module"
+      ],
+      "threats": [
+        "TH01",
+        "TH03",
+        "TH08",
+        "TH09",
+        "TH10",
+        "TH22",
+        "TH32"
+      ],
+      "summary": "Migration 0042 only appends AIRankingWeights to the registry kind check (every earlier kind kept, compared in test_ai_ranking.py) and adds a partial unique index per tenant; no table, grant, role, policy or function, and 0001-0041 are unchanged (TH32). Weights live in the existing forced-RLS registry and revisions; the native test on impact_app shows each tenant sees only its own weights, nothing without a tenant, and no cross-tenant insert (TH01, TH10). The three routes reuse ai.enablement.read and ai.enablement.manage; PUT takes the tenant lock, expected_revision (409 when stale, TH09), an operation receipt (exact retry, changed payload 409, TH08) and a closed DTO whose total of 100 and whole numbers are checked by the server; forged fields are refused (TH03); audited ai_ranking_weights.changed. Weights are a preference changed by any manage holder without review, so a manager can steer which opportunity ranks first; this needs no new threat because it changes no official number, access or data flow and is audited. Weights that do not read back are reported UNREADABLE and block ranking (fail closed). The ranking makes no model or provider call. Scores are editorial draft content in code, labelled pending advisor review; totals are planning aids, never official results (TH22: no number enters a report). ai_enablement_catalog.py only names its gap texts; assess() output and the archived catalogue are unchanged.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.38-02",
+      "change_id": "US-MP-03",
+      "change": "US-MP-03 review: the Operations Head persona (FINANCE) reads AI enablement, read-only (owner decision); onboarding profile with a FINANCE bundle registered by migration 0042; platform API 1.11.0",
+      "paths": [
+        "infrastructure/migrations/0042_ai_ranking_weights.sql",
+        "packages/contracts/access-policy.json",
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "apps/api/impact_api/bootstrap_contracts.py"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy",
+        "ai-module"
+      ],
+      "threats": [
+        "TH01",
+        "TH02"
+      ],
+      "summary": "A deliberate widening of read access within a tenant (TH02): FINANCE is added to the reader list of every ai.enablement.read policy row and to no manage, export, advisory or policy-change row. The generated FINANCE bundle is exactly ai.enablement.read, notifications.read and uploads.read (unit test: no write capability); with it a member reads the catalogue, saved plans, the policy, human-advice cases it takes part in and the ranking, and is refused every weights change (403, recorded denial; test_operations_head_reads_the_ranking_but_cannot_change_the_weights). The initial-access manifest accepts the FINANCE role (platform contract, additive). The registered profile differs from 0041's only by that bundle (unit test), so it is a widening the 0036 compatibility rule admits; existing tenants keep their ceilings and get the FINANCE role template only through the reviewed access upgrade, and initial-access requests pending at deployment fail ACCESS_PROFILE_CHANGED and must be proposed again. Tenant isolation is unchanged (TH01). Residual: FINANCE now sees AI planning content (plans, advice it is party to) beyond the ranking, because capabilities are not per screen; the owner accepted read-only access.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/RELEASE-0.38-ai-ranking.md",
+    "docs/current/threat-register.json"
+  ],
+  "notes": [
+    "Agent-prepared review: no residual decision, chain decision or impact review has been confirmed by a person (confirmed_by is null everywhere), so this review cannot pass even when every critical threat is resolved.",
+    "US-MP-03 adds test references to TH01, TH02, TH03, TH08, TH09 and TH10 as further evidence for controls already listed; no threat, control, impact, decision or verification status changed. TESTED statuses rest on the latest recorded runs (docs/RELEASE-0.38-ai-ranking.md, docs/RELEASE-0.37-threat-register.md, docs/RELEASE-0.37-ai-policy.md). Hosted CI has not run on build 0.38.0."
+  ]
+}

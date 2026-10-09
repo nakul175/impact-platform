@@ -944,18 +944,22 @@
         "qualification/test_changes.py::test_change_cross_tenant_and_scope_hidden_and_effect_rls",
         "qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue",
         "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant",
-        "tools/browser/evidence-check.mjs::Another tenant's session sees nothing of this evidence"
+        "tools/browser/evidence-check.mjs::Another tenant's session sees nothing of this evidence",
+        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
+        "qualification/test_ai_ranking.py::test_reads_need_ai_enablement_read_and_are_tenant_fenced"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
           "qualification/test_live_application.py::test_cross_tenant_reference_is_atomic",
-          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant"
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_ai_ranking.py::test_reads_need_ai_enablement_read_and_are_tenant_fenced"
         ],
         "C-TENANT-RLS": [
           "qualification/test_live_application.py::test_database_tenant_fence_and_immutable_revisions",
           "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
           "qualification/test_changes.py::test_change_cross_tenant_and_scope_hidden_and_effect_rls",
-          "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant"
+          "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
         ],
         "C-SCOPED-GRANTS": [
           "qualification/test_live_application.py::test_cross_tenant_reference_is_atomic",
@@ -1008,7 +1012,9 @@
         "qualification/test_live_application.py::test_purpose_restricted_grant_does_not_authorize_general_reads",
         "qualification/test_administration.py::test_object_scoped_invitation_cannot_read_other_objects",
         "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan",
-        "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators"
+        "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators",
+        "qualification/test_ai_ranking.py::test_operations_head_reads_the_ranking_but_cannot_change_the_weights",
+        "qualification/test_ai_ranking.py::test_changing_weights_needs_ai_enablement_manage"
       ],
       "coverage": {
         "C-SCOPED-GRANTS": [
@@ -1017,7 +1023,9 @@
           "qualification/test_live_application.py::test_purpose_restricted_grant_does_not_authorize_general_reads",
           "qualification/test_administration.py::test_object_scoped_invitation_cannot_read_other_objects",
           "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan",
-          "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators"
+          "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators",
+          "qualification/test_ai_ranking.py::test_operations_head_reads_the_ranking_but_cannot_change_the_weights",
+          "qualification/test_ai_ranking.py::test_changing_weights_needs_ai_enablement_manage"
         ],
         "C-CURRENT-AUTHORITY": [
           "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan"
@@ -1025,7 +1033,7 @@
       },
       "verification": {
         "status": "TESTED",
-        "summary": "Object-scoped grants filter reads, lists, exports and portfolio totals; claimed roles and purpose-bound grants authorise nothing more.",
+        "summary": "Object-scoped grants filter reads, lists, exports and portfolio totals; claimed roles and purpose-bound grants authorise nothing more. A read-only role bundle (FINANCE, the Operations Head) reads AI enablement and every change of ranking weights it attempts is refused.",
         "gaps": [
           "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
         ]
@@ -1064,7 +1072,8 @@
         "qualification/test_access_upgrade_unit.py::test_server_owned_authority_and_waivers_are_rejected",
         "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
         "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
-        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+        "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
       ],
       "coverage": {
         "C-CLOSED-DTO": [
@@ -1072,13 +1081,15 @@
           "qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed",
           "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
           "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
-          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
         ],
         "C-SERVER-OWNED-FIELDS": [
           "qualification/test_unit.py::test_server_owned_fields",
           "qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed",
           "qualification/test_access_upgrade_unit.py::test_server_owned_authority_and_waivers_are_rejected",
-          "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers"
+          "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
+          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
         ]
       },
       "verification": {
@@ -1351,14 +1362,16 @@
         "qualification/test_live_application.py::test_duplicate_source_key",
         "qualification/test_native_concurrency.py::test_same_operation_from_two_threads_returns_the_one_receipt",
         "qualification/test_native_concurrency.py::test_same_operation_with_different_payloads_admits_exactly_one",
-        "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once"
+        "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once",
+        "qualification/test_ai_ranking.py::test_exact_retry_returns_the_receipt_and_a_changed_payload_conflicts"
       ],
       "coverage": {
         "C-OPERATION-RECEIPTS": [
           "qualification/test_live_application.py::test_retry_has_one_revision_audit_outbox_receipt",
           "qualification/test_native_concurrency.py::test_same_operation_from_two_threads_returns_the_one_receipt",
           "qualification/test_native_concurrency.py::test_same_operation_with_different_payloads_admits_exactly_one",
-          "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once"
+          "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once",
+          "qualification/test_ai_ranking.py::test_exact_retry_returns_the_receipt_and_a_changed_payload_conflicts"
         ],
         "C-SOURCE-IDENTITY": [
           "qualification/test_live_application.py::test_duplicate_source_key"
@@ -1405,12 +1418,14 @@
         "qualification/test_native_nonfunctional.py::test_native_close_new_source_and_restatement_released_together_never_deadlock",
         "qualification/test_native_nonfunctional.py::test_native_opposite_order_writers_on_two_objects_serialise_on_the_tenant_lock",
         "qualification/test_period_governance.py::test_source_change_after_preview_requires_new_preview",
-        "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back"
+        "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back",
+        "qualification/test_ai_ranking.py::test_second_of_two_editors_from_the_same_revision_is_refused_without_overwriting"
       ],
       "coverage": {
         "C-EXPECTED-REVISION": [
           "qualification/test_native_concurrency.py::test_renewal_approval_raced_with_pinned_grant_revocation",
-          "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back"
+          "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back",
+          "qualification/test_ai_ranking.py::test_second_of_two_editors_from_the_same_revision_is_refused_without_overwriting"
         ],
         "C-TENANT-LOCK": [
           "qualification/test_native_concurrency.py::test_simultaneous_period_close_reviews_lock_the_period_once",
@@ -1466,14 +1481,16 @@
         "qualification/test_native_roles.py::test_each_login_is_unprivileged_and_assumes_exactly_its_own_role",
         "qualification/test_native_nonfunctional.py::test_native_pooler_many_clients_share_few_server_connections_with_tenant_context_kept",
         "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
-        "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context"
+        "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
           "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
           "qualification/test_native_nonfunctional.py::test_native_pooler_many_clients_share_few_server_connections_with_tenant_context_kept",
           "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
-          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context"
+          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
         ],
         "C-RUNTIME-ROLES": [
           "qualification/test_native_roles.py::test_runtime_guard_refuses_privileged_and_shared_connections",
@@ -1481,7 +1498,8 @@
         ],
         "C-TENANT-RLS": [
           "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
-          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context"
+          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
         ]
       },
       "verification": {

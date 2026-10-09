@@ -12,3 +12,6 @@ __pycache__/
 dist/
 .env
 .env.local
+
+# Written by `make package`; never tracked.
+SHA256SUMS.json

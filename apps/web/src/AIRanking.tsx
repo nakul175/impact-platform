@@ -6,10 +6,12 @@ import type { Profile } from "./AIEnablement";
 // them. Hidden controls are never security: changing weights needs ai.enablement.manage on the server.
 type Criterion = "impact" | "effort" | "cost" | "readiness";
 export type RankingWeights = Record<Criterion, number>;
+// UNREADABLE: saved weights that do not read back exactly. The server names their revision (so a
+// manager can replace them) and refuses every ranking until they are replaced.
 type WeightsView = {
-  source: "DEFAULT" | "SAVED";
+  source: "DEFAULT" | "SAVED" | "UNREADABLE";
   revision_id: string | null;
-  weights: RankingWeights;
+  weights: RankingWeights | null;
   saved_at: string | null;
   saved_by: string | null;
 };
@@ -39,6 +41,12 @@ const CRITERIA: { key: Criterion; label: string; direction: string }[] = [
   { key: "readiness", label: "Readiness", direction: "higher is better" },
 ];
 const WHOLE = /^(0|[1-9][0-9]?|100)$/;
+const DEFAULT_WEIGHTS: RankingWeights = {
+  impact: 25,
+  effort: 25,
+  cost: 25,
+  readiness: 25,
+};
 
 function when(value: string | null) {
   if (!value) return "";
@@ -104,7 +112,12 @@ export function AIOpportunityRanking({
       if (result.weights_revision_id !== (weights?.revision_id ?? null))
         void loadWeights();
     } catch (e) {
-      if (current === ranks.current) setRankError(explain(e));
+      if (current !== ranks.current) return;
+      setRankError(explain(e));
+      // The saved weights became unreadable since they were loaded: show that state (and, for
+      // managers, the editor that replaces them).
+      if ((e as { reason?: string }).reason === "AI_RANKING_WEIGHTS_UNREADABLE")
+        void loadWeights();
     } finally {
       if (current === ranks.current) setRankingBusy(false);
     }
@@ -143,7 +156,16 @@ export function AIOpportunityRanking({
         </div>
       )}
       {!weights && !loadError && <p role="status">Loading ranking weights…</p>}
-      {weights && (
+      {weights?.source === "UNREADABLE" && (
+        <div className="error" role="alert">
+          Your organisation&apos;s saved ranking weights cannot be read, so no
+          ranking can be made.{" "}
+          {canManage
+            ? "Save new weights below to replace them; the defaults are filled in."
+            : "Ask someone who manages AI enablement to save new weights."}
+        </div>
+      )}
+      {weights && weights.weights && (
         <p className="ai-ranking-weights">
           {weights.source === "DEFAULT"
             ? "Weights in force: the defaults (" +
@@ -191,7 +213,9 @@ export function AIOpportunityRanking({
         <button
           type="button"
           className="primary"
-          disabled={!briefReady || rankingBusy}
+          disabled={
+            !briefReady || rankingBusy || weights?.source === "UNREADABLE"
+          }
           onClick={() => void rank()}
         >
           Rank opportunities
@@ -317,11 +341,13 @@ function WeightsEditor({
   saved: () => void;
   stale: (message: string) => void;
 }) {
+  // Unreadable saved weights are replaced starting from the defaults.
+  const seed = current.weights ?? DEFAULT_WEIGHTS;
   const [values, setValues] = useState<Record<Criterion, string>>({
-    impact: String(current.weights.impact),
-    effort: String(current.weights.effort),
-    cost: String(current.weights.cost),
-    readiness: String(current.weights.readiness),
+    impact: String(seed.impact),
+    effort: String(seed.effort),
+    cost: String(seed.cost),
+    readiness: String(seed.readiness),
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");

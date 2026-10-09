@@ -17,7 +17,9 @@ import pytest
 from impact_api import ai_enablement_contracts as contracts
 from impact_api import ai_opportunity_scores as editorial
 from impact_api import ai_ranking as module
-from impact_api.access_bootstrap import PROFILE_HASH
+from impact_api.access_bootstrap import PROFILE, PROFILE_HASH
+from impact_api.access_upgrade import compatible
+from impact_api.bootstrap_contracts import ROLE_NAMES
 from impact_api.ai_enablement_catalog import (
     AI_PRACTICE_GAP,
     DATA_FOUNDATION_GAP,
@@ -28,6 +30,7 @@ from impact_api.ai_enablement_catalog import (
 )
 from impact_api.ai_ranking import points, rank, readiness, validate_weights, weighted_total
 from impact_api.domain import DomainError
+from impact_api.store import hash_data
 
 ROOT = Path(__file__).resolve().parents[1]
 MIGRATION = ROOT / "infrastructure/migrations/0042_ai_ranking_weights.sql"
@@ -371,7 +374,7 @@ def test_ranking_schemas_are_closed():
     assert command["properties"]["expected_revision"]["type"] == ["string", "null"]
 
 
-def test_generated_contracts_carry_the_ranking_routes_and_the_profile_is_unchanged():
+def test_generated_contracts_carry_the_ranking_routes():
     access = json.loads((ROOT / "packages/contracts/access-policy.json").read_text())
     rows = {row["operation_id"]: row for row in access["operations"]}
     _, expected = generated()
@@ -383,14 +386,78 @@ def test_generated_contracts_carry_the_ranking_routes_and_the_profile_is_unchang
         "put",
     }
     assert "/v1/tenants/{tenant_id}/ai-enablement/ranking" in implemented["paths"]
-    # No capability changed: the onboarding profile is the one migration 0041 registered.
-    assert PROFILE_HASH == "14997060d0b7d8a95c820674a5b1ad38c029eeed5d113e674a6ca04ec28ce133"
+
+
+# The Operations Head persona (FINANCE) reads AI enablement and changes nothing (owner decision)
+
+FINANCE_BUNDLE = {"ai.enablement.read", "notifications.read", "uploads.read"}
+
+
+def registered_profile(migration):
+    sql = (ROOT / "infrastructure/migrations" / migration).read_text()
+    tag = "$profile_" + migration[:4] + "$"
+    match = re.search(
+        r"VALUES\('([a-f0-9]{64})'," + re.escape(tag) + "(.*?)" + re.escape(tag), sql, re.DOTALL
+    )
+    return match.group(1), json.loads(match.group(2))
+
+
+def test_finance_gets_a_read_only_bundle_and_no_write_capability():
+    assert set(PROFILE["roles"]["FINANCE"]) == FINANCE_BUNDLE
+    assert "FINANCE" in ROLE_NAMES
+    access = json.loads((ROOT / "packages/contracts/access-policy.json").read_text())
+    implemented = json.loads((ROOT / "packages/contracts/openapi-implemented.json").read_text())
+    served = {
+        operation["operationId"]
+        for node in implemented["paths"].values()
+        for operation in node.values()
+        if isinstance(operation, dict) and "operationId" in operation
+    }
+    finance_rows = [
+        r for r in access["operations"] if r["operation_id"] in served and "FINANCE" in r["role_templates"]
+    ]
+    assert {row["capability"] for row in finance_rows} == FINANCE_BUNDLE
+    # Every row FINANCE is named on is a read: none is audited (every governed write is), and the POSTs
+    # among them (assessment, ranking, cost and pilot calculations) compute without storing anything.
+    assert all(row["audit"] is False for row in finance_rows)
+    assert {row["operation_id"] for row in finance_rows if row["method"] != "GET"} == {
+        "assess_ai_enablement",
+        "rank_ai_opportunities",
+        "compare_ai_procurement_costs",
+        "evaluate_ai_pilot",
+    }
+    for row in access["operations"]:
+        if row["capability"] in {
+            "ai.enablement.manage",
+            "ai.policy.manage",
+            "ai.advisory.request",
+            "ai.enablement.export",
+        }:
+            assert "FINANCE" not in row["role_templates"], row["operation_id"]
+    # Every AI enablement read names FINANCE, so the policy says what the capability grants.
+    assert all(
+        "FINANCE" in r["role_templates"]
+        for r in access["operations"]
+        if r["capability"] == "ai.enablement.read"
+    )
+
+
+def test_migration_0042_registers_the_current_profile_and_only_adds_the_finance_bundle():
+    fingerprint, manifest = registered_profile("0042_ai_ranking_weights.sql")
+    assert fingerprint == PROFILE_HASH and manifest == PROFILE
+    assert hash_data(manifest).hex() == fingerprint
+    _, previous = registered_profile("0041_ai_policy.sql")
+    assert set(manifest["roles"]) - set(previous["roles"]) == {"FINANCE"}
+    assert {name: caps for name, caps in manifest["roles"].items() if name != "FINANCE"} == previous["roles"]
+    assert manifest["purpose_bound"] == previous["purpose_bound"]
+    # A widening, never a removal: existing tenants may reach it through the reviewed access upgrade.
+    assert compatible(previous, manifest)
 
 
 # Migration 0042
 
 
-def test_migration_0042_only_widens_the_kind_check_and_adds_the_singleton_index():
+def test_migration_0042_widens_the_kind_check_adds_the_singleton_index_and_grants_nothing():
     sql = MIGRATION.read_text()
     assert sql.startswith("BEGIN;\nSET LOCAL ROLE impact_owner;\n") and sql.rstrip().endswith("COMMIT;")
     assert "OR object_type = ''AIRankingWeights''" in sql
@@ -401,8 +468,22 @@ def test_migration_0042_only_widens_the_kind_check_and_adds_the_singleton_index(
         sql,
     )
     code = "\n".join(line for line in sql.splitlines() if not line.lstrip().startswith("--"))
-    for forbidden in ("GRANT", "REVOKE", "CREATE TABLE", "POLICY", "SECURITY DEFINER", "DROP TABLE"):
+    for statement in (
+        r"^\s*GRANT\b",
+        r"^\s*REVOKE\b",
+        r"\bCREATE TABLE\b",
+        r"\bCREATE POLICY\b",
+        r"\bALTER POLICY\b",
+    ):
+        assert not re.search(statement, code, re.MULTILINE | re.IGNORECASE), statement
+    for forbidden in ("SECURITY DEFINER", "DROP TABLE", "ALTER ROLE", "CREATE ROLE"):
         assert forbidden not in code.upper(), forbidden
+    # Statements: the kind check, the index and the profile registration; nothing else.
+    assert re.findall(r"^(INSERT INTO \S+|CREATE \w+ \w+|DO \$\$)", code, re.MULTILINE) == [
+        "DO $$",
+        "CREATE UNIQUE INDEX",
+        "INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)",
+    ]
 
 
 def test_migration_0042_is_ledgered_in_the_data_dictionary():
@@ -422,10 +503,15 @@ def test_migration_0042_is_ledgered_in_the_data_dictionary():
         {"restriction_state": "REMOVED", "payload": DEFAULT},
     ],
 )
-def test_unreadable_saved_weights_fail_closed(row):
-    with pytest.raises(DomainError) as caught:
-        module.AIRanking._view({"head_revision": "r", "saved_at": None, "author_id": "a", **row})
-    assert (caught.value.status, caught.value.reason) == (503, "AI_RANKING_WEIGHTS_UNREADABLE")
+def test_unreadable_saved_weights_are_reported_with_their_revision_and_never_used(row):
+    view = module.AIRanking._view({"head_revision": "r", "saved_at": None, "author_id": "a", **row})
+    assert view == {
+        "source": "UNREADABLE",
+        "revision_id": "r",
+        "weights": None,
+        "saved_at": None,
+        "saved_by": "a",
+    }
 
 
 def test_no_saved_weights_means_the_defaults_and_no_revision():

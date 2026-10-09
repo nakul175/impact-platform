@@ -18,7 +18,8 @@ import pytest
 import impact_api.ai_policy as module
 from impact_api import ai_enablement_contracts as contracts
 from impact_api import store
-from impact_api.access_bootstrap import PROFILE, PROFILE_HASH
+from impact_api.store import hash_data
+from impact_api.access_bootstrap import PROFILE
 from impact_api.ai_policy import AIPolicy, require, validate_policy
 from impact_api.domain import DomainError
 
@@ -581,5 +582,14 @@ def test_advisory_reservation_gains_a_nullable_tenant_keyed_policy_pin():
     assert "CHECK(policy_version_id IS NOT NULL) NOT VALID;" in text
 
 
+# The profile generated at build 0.37.0. Build 0.38.0's profile (the read-only FINANCE bundle, US-MP-03)
+# is registered by migration 0042; test_access_upgrade_unit.py checks that the current profile is
+# registered exactly once.
+PROFILE_0041 = "14997060d0b7d8a95c820674a5b1ad38c029eeed5d113e674a6ca04ec28ce133"
+
+
 def test_migration_registers_the_generated_profile():
-    assert "VALUES('" + PROFILE_HASH + "',$profile_0041$" in sql()
+    assert "VALUES('" + PROFILE_0041 + "',$profile_0041$" in sql()
+    registered = re.search(r"\$profile_0041\$(.*?)\$profile_0041\$", sql(), re.DOTALL).group(1)
+    assert hash_data(json.loads(registered)).hex() == PROFILE_0041
+    assert "ai.policy.manage" in json.loads(registered)["roles"]["TENANT_ADMIN"]

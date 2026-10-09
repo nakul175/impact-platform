@@ -72732,7 +72732,8 @@
           "source": {
             "enum": [
               "DEFAULT",
-              "SAVED"
+              "SAVED",
+              "UNREADABLE"
             ]
           },
           "revision_id": {
@@ -72743,7 +72744,14 @@
             "format": "uuid"
           },
           "weights": {
-            "$ref": "#/components/schemas/AIRankingWeightsData"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIRankingWeightsData"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "saved_at": {
             "type": [

@@ -371,6 +371,62 @@ await finish(async () => {
     });
   });
 
+  await test("Unreadable saved weights: managers get the editor seeded with the defaults and replace them", async () => {
+    // The server reports weights that do not read back exactly as UNREADABLE with their revision
+    // (test_ai_ranking.py qualifies that and the 503 on ranking); here the client's handling is
+    // checked by answering the next weights read that way for the revision really in force.
+    const admin = await as("admin");
+    const inForce = await weightsNow();
+    await admin.route(
+      (url) => url.pathname === weightsPath,
+      async (route) => {
+        if (route.request().method() !== "GET") return route.fallback();
+        await route.fulfill({
+          json: { ...inForce, source: "UNREADABLE", weights: null },
+        });
+      },
+      { times: 1 },
+    );
+    await nav(admin, "My account");
+    await nav(admin, "AI enablement");
+    await panel(admin)
+      .getByRole("alert")
+      .filter({ hasText: "saved ranking weights cannot be read" })
+      .waitFor();
+    assert(await rankButton(admin).isDisabled());
+    for (const label of LABELS)
+      assert.equal(
+        await panel(admin).getByLabel(label, { exact: true }).inputValue(),
+        "25",
+      );
+    const answered = admin.waitForResponse(
+      (r) =>
+        r.request().method() === "PUT" &&
+        new URL(r.url()).pathname === weightsPath,
+    );
+    await saveButton(admin).click();
+    const response = await answered;
+    assert.equal(response.status(), 200, await response.text());
+    assert.equal(
+      JSON.parse(response.request().postData()).expected_revision,
+      inForce.revision_id,
+    );
+    const replaced = await response.json();
+    await admin
+      .locator(
+        'section.ai-ranking[data-weights-revision="' +
+          replaced.revision_id +
+          '"]',
+      )
+      .waitFor();
+    assert.match(
+      await panel(admin).locator(".ai-ranking-weights").innerText(),
+      /Impact 25, Effort 25, Cost 25, Readiness 25/,
+    );
+    assert.deepEqual((await weightsNow()).weights, DEFAULT);
+    assert.deepEqual(await scanPanel(admin), []);
+  });
+
   await test("A reader without ai.enablement.manage ranks with the defaults and has no editor", async () => {
     const reader = await as("other_tenant");
     await nav(reader, "AI enablement");

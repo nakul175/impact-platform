@@ -17,7 +17,9 @@ immutable revision with audit event, outbox intent and operation receipt in one 
 the tenant write lock. Changing weights is a preference, not an approval: it needs
 `ai.enablement.manage` and `expected_revision`, no independent review and no fresh sign-in. Until
 weights are saved the defaults 25/25/25/25 apply and no revision exists. Every ranking names the
-weights and the revision (or DEFAULT) that produced it.
+weights and the revision (or DEFAULT) that produced it. Saved weights that do not read back exactly
+are reported as UNREADABLE (with their revision, so a manager can replace them) and no ranking is
+made until they are replaced.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -210,15 +212,16 @@ class AIRanking:
                 "saved_at": None,
                 "saved_by": None,
             }
-        try:
-            if row["restriction_state"] != "AVAILABLE":
-                raise DomainError("VALIDATION_FAILED")
-            weights = validate_weights(row["payload"])
-        except DomainError:
-            # Never rank with weights that cannot be read exactly as saved (fail closed).
-            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_RANKING_WEIGHTS_UNREADABLE") from None
+        weights = None
+        if row["restriction_state"] == "AVAILABLE":
+            try:
+                weights = validate_weights(row["payload"])
+            except DomainError:
+                weights = None
+        # Weights that do not read back exactly as saved are reported as UNREADABLE with the revision
+        # in force, so a manager can replace them against that revision; no ranking uses them.
         return {
-            "source": "SAVED",
+            "source": "SAVED" if weights else "UNREADABLE",
             "revision_id": str(row["head_revision"]),
             "weights": weights,
             "saved_at": _iso(row["saved_at"]),
@@ -241,6 +244,9 @@ class AIRanking:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, RANK_OPERATION, hidden=True)
             view = self._view(self._current(c, tenant))
+        if view["source"] == "UNREADABLE":
+            # Never rank with weights that cannot be read exactly as saved (fail closed).
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_RANKING_WEIGHTS_UNREADABLE")
         result = rank(profile, view["weights"], self.table)
         return {
             "method": METHOD,

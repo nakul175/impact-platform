@@ -8,7 +8,7 @@ Backlog stories are written for 21 personas. The platform's permissions use the 
 | --- | --- | --- |
 | Executive Director | OWNER | TENANT_ADMIN where the owner delegates administration |
 | Organisation Administrator | TENANT_ADMIN | |
-| Operations Head | FINANCE | Plus read of AI usage (`ai.usage.read`) once that capability exists |
+| Operations Head | FINANCE | Reads AI enablement (`ai.enablement.read`, read-only, never `ai.enablement.manage`): owner decision of 9 October 2026 for US-MP-03, in the onboarding profile registered by migration 0042; existing tenants get the FINANCE role template only through the reviewed access upgrade. Plus read of AI usage (`ai.usage.read`) once that capability exists |
 | MEL Manager | MEL_ADMIN | |
 | Programme Manager | PROGRAMME_MANAGER | |
 | Data Author | AUTHOR | |

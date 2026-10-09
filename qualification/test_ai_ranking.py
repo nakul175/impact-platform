@@ -12,20 +12,27 @@ test_ai_ranking_unit.py.
 from contextlib import contextmanager
 from decimal import Decimal
 import json
+from pathlib import Path
+import re
 import time
 from uuid import uuid4
 
 import psycopg
+from psycopg.types.json import Jsonb
 import pytest
 from starlette.requests import Request
 
 from impact_api import ai_opportunity_scores as editorial
+from impact_api.access_bootstrap import PROFILE as ACCESS_PROFILE
 from impact_api.ai_ranking import AIRanking
 from impact_api.auth import Auth
 from impact_api.config import Settings
 from impact_api.service import Service
-from impact_api.store import Database
+from impact_api.store import Database, hash_data
 from test_live_application import expect
+from test_privacy_requests import as_member, grant, member
+
+ROOT = Path(__file__).resolve().parents[1]
 
 WEIGHTS = "ai-enablement/ranking-weights"
 RANKING = "ai-enablement/ranking"
@@ -520,11 +527,138 @@ def test_one_weights_object_per_tenant_and_the_kind_check_keeps_every_earlier_ki
             "SELECT pg_get_constraintdef(oid) AS d FROM pg_constraint "
             "WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check'"
         ).fetchone()["d"]
-    for kind in (
-        "AIConfiguration",
-        "AIAdvisoryRequest",
-        "AIAdoptionPlan",
-        "HumanAdviceCase",
-        "AIRankingWeights",
-    ):
-        assert "'" + kind + "'" in definition, kind
+    # The full list: exactly the kinds of the definition before 0042 plus AIRankingWeights.
+    before = kinds_before_0042()
+    assert "AIRankingWeights" not in before and len(before) == len(set(before))
+    assert sorted(re.findall(r"'(\w+)'::text", definition)) == sorted(before + ["AIRankingWeights"])
+
+
+def kinds_before_0042():
+    """Every registry kind the migrations before 0042 allow: the 0002 list plus each kind appended to
+    object_registry_object_type_check by a later migration (0006, 0007, 0008, 0012, 0034, 0035, 0038)."""
+    kinds = []
+    for source in sorted((ROOT / "infrastructure/migrations").glob("*.sql")):
+        if int(source.name[:4]) >= 42:
+            break
+        sql = source.read_text()
+        if source.name.startswith("0002_"):
+            kinds += re.findall(r"'(\w+)'", re.search(r"CHECK\(object_type IN \(([^)]*)\)\)", sql).group(1))
+        elif "object_registry_object_type_check" in sql:
+            appended = [
+                line for line in sql.splitlines() if "regexp_replace(" in line and "object_type" in line
+            ]
+            assert len(appended) == 1, source.name
+            kinds += re.findall(r"''(\w+)''", appended[0])
+    assert len(kinds) > 80
+    return kinds
+
+
+# The Operations Head persona (FINANCE): reads the ranking, never changes weights (owner decision)
+
+
+def finance_member(live):
+    """A new tenant A member holding exactly the onboarding profile's FINANCE bundle: invited and
+    accepted, its invitation role's grants made inert, then the bundle granted (synthetic set-up)."""
+    person = member(live)
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        c.execute(
+            "UPDATE impact.grant_current SET purpose='SYNTHETIC_NOT_FINANCE' "
+            "WHERE tenant_id=%s AND subject_id=%s AND purpose IS NULL",
+            (tenant, person.principal),
+        )
+    grant(live, person, *ACCESS_PROFILE["roles"]["FINANCE"])
+    access = expect(as_member(live, person, live.path("me/access")), 200)
+    assert (
+        set(access["capabilities"])
+        == set(ACCESS_PROFILE["roles"]["FINANCE"])
+        == {
+            "ai.enablement.read",
+            "notifications.read",
+            "uploads.read",
+        }
+    )
+    return person
+
+
+def test_operations_head_reads_the_ranking_but_cannot_change_the_weights(live):
+    in_force = read_weights(live)
+    person = finance_member(live)
+    # The AI enablement area opens (catalogue) and the ranking and the weights in force are readable.
+    expect(as_member(live, person, live.path("ai-enablement/catalog")), 200)
+    assert expect(as_member(live, person, live.path(WEIGHTS)), 200) == in_force
+    result = expect(
+        as_member(live, person, live.path(RANKING), method="POST", body={"profile": PROFILE}), 200
+    )
+    assert result["weights_revision_id"] == in_force["revision_id"] and result["items"]
+    before = counts(live)
+    refusal = expect(
+        as_member(live, person, live.path(WEIGHTS), method="PUT", body=command(live, DEFAULT)), 403
+    )
+    assert refusal["code"] == "POLICY_DENIED"
+    assert counts(live) == before
+    assert read_weights(live)["revision_id"] == in_force["revision_id"]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+        assert c.execute(
+            "SELECT 1 FROM impact.access_denial WHERE tenant_id=%s AND principal_id=%s "
+            "AND operation_id='update_ai_ranking_weights'",
+            (live.fixture["tenant_a"], person.principal),
+        ).fetchone()
+
+
+# Saved weights that cannot be read exactly: reported, never used, replaceable by a manager
+
+
+def test_unreadable_saved_weights_block_ranking_until_a_manager_replaces_them(live):
+    saved = save(live, IMPACT_FIRST)
+    tenant = live.fixture["tenant_a"]
+    admin = live.fixture["actors"]["admin"]["principal_id"]
+    broken = str(uuid4())
+    payload = {"impact": 101, "effort": 0, "cost": 0, "readiness": -1}
+    # Simulated defect (synthetic set-up through the fixture connection): a head revision whose payload
+    # is not a valid set of weights.
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        number = c.execute(
+            "SELECT revision_number FROM impact.object_revision WHERE tenant_id=%s AND revision_id=%s",
+            (tenant, saved["revision_id"]),
+        ).fetchone()["revision_number"]
+        c.execute(
+            "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,predecessor_revision,"
+            "schema_version,payload,payload_sha256,author_id,created_at,revision_number) "
+            "VALUES(%s,%s,%s,'AIRankingWeights',%s,'1.2',%s,%s,%s,now(),%s)",
+            (
+                tenant,
+                saved["object_id"],
+                broken,
+                saved["revision_id"],
+                Jsonb(payload),
+                hash_data(payload),
+                admin,
+                number + 1,
+            ),
+        )
+        c.execute(
+            "UPDATE impact.object_registry SET head_revision=%s WHERE tenant_id=%s AND object_id=%s",
+            (broken, tenant, saved["object_id"]),
+        )
+    seen = read_weights(live, actor="reviewer")
+    assert (seen["source"], seen["revision_id"], seen["weights"]) == ("UNREADABLE", broken, None)
+    refused = expect(
+        live.request(live.path(RANKING), actor="author", method="POST", body={"profile": PROFILE}), 503
+    )
+    assert (refused["code"], refused["reason_code"]) == (
+        "SERVICE_UNAVAILABLE",
+        "AI_RANKING_WEIGHTS_UNREADABLE",
+    )
+    # A manager replaces them against the unreadable revision in force; rankings work again.
+    repaired = expect(put(live, command(live, DEFAULT, expected=broken)), 200)
+    replaced = read_weights(live)
+    assert (replaced["source"], replaced["revision_id"], replaced["weights"]) == (
+        "SAVED",
+        repaired["revision_id"],
+        DEFAULT,
+    )
+    assert ranking(live)["weights_revision_id"] == repaired["revision_id"]

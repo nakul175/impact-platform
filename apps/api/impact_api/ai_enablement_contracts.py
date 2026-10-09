@@ -21,7 +21,18 @@ IMPLEMENTED = [
     ("put", "ai-enablement/ranking-weights"),
     ("post", "ai-enablement/ranking"),
 ]
-ROLES = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD"]
+# Every reader of AI enablement. FINANCE (the Operations Head persona) reads only: the owner decided on
+# 9 October 2026 (US-MP-03 review) that it holds ai.enablement.read and never ai.enablement.manage.
+ROLES = [
+    "TENANT_ADMIN",
+    "MEL_ADMIN",
+    "PROGRAMME_MANAGER",
+    "AUTHOR",
+    "REVIEWER",
+    "ANALYST",
+    "DATA_STEWARD",
+    "FINANCE",
+]
 # Changing the policy is an administrative, sensitive action: TENANT_ADMIN only, with authentication
 # within the previous 300 seconds plus the configured assurance (store.authorize), always audited.
 POLICY_MANAGERS = ["TENANT_ADMIN"]
@@ -389,9 +400,11 @@ def ranking_schemas(schemas):
     }
     schemas["AIRankingWeightsCommand"] = closed(command, list(command))
     view = {
-        "source": {"enum": ["DEFAULT", "SAVED"]},
+        # UNREADABLE: saved weights that do not read back exactly; revision_id names them so that a
+        # manager can replace them, weights is null and every ranking answers 503 until then.
+        "source": {"enum": ["DEFAULT", "SAVED", "UNREADABLE"]},
         "revision_id": deepcopy(nullable_uuid),
-        "weights": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+        "weights": {"anyOf": [{"$ref": "#/components/schemas/AIRankingWeightsData"}, {"type": "null"}]},
         "saved_at": {"type": ["string", "null"], "format": "date-time"},
         "saved_by": deepcopy(nullable_uuid),
     }

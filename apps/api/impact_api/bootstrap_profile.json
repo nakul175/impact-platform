@@ -440,6 +440,11 @@
       "uploads.read",
       "work-items.read",
       "workflows.read"
+    ],
+    "FINANCE": [
+      "ai.enablement.read",
+      "notifications.read",
+      "uploads.read"
     ]
   },
   "purpose_bound": [

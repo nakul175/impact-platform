@@ -229,6 +229,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 
 ### sprints
 
+- [Sprint 1 review](sprints/SPRINT-01-REVIEW.md)
 - [Sprint 1: governed AI and a trustworthy shortlist](sprints/SPRINT-01.md)
 
 <!-- END GENERATED INDEX -->

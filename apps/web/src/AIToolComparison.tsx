@@ -12,6 +12,9 @@ export type CommercialDisclosure = {
   relationship_types: RelationshipType[];
   statement: string;
   declared_on: string;
+  // PENDING: a draft prepared for Imprana editorial review, not yet confirmed. Absent only on the
+  // invented tools of the public walkthrough, which make no editorial claim.
+  editorial_confirmation?: "PENDING" | "CONFIRMED";
 };
 
 export type PublicToolSolution = {
@@ -73,6 +76,12 @@ export function AIDisclosureLabel({
     >
       <p className="ai-disclosure-headline">
         <strong>{disclosureHeadline(disclosure)}</strong>
+        {disclosure?.editorial_confirmation === "PENDING" && (
+          <span className="ai-disclosure-pending">
+            {" "}
+            · pending editorial confirmation
+          </span>
+        )}
       </p>
       {disclosure ? (
         <p className="ai-disclosure-statement">

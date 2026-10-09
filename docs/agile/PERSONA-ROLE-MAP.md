@@ -6,7 +6,7 @@ Backlog stories are written for 21 personas. The platform's permissions use the 
 
 | Persona | Role template | Note |
 | --- | --- | --- |
-| Executive Director | OWNER | TENANT_ADMIN where the owner delegates administration |
+| Executive Director | TENANT_ADMIN | For working in the platform (owner decision of 9 October 2026, US-DC-04 review): OWNER holds custody without data access in this platform, so stories written for the Executive Director are exercised as TENANT_ADMIN. OWNER applies only to custody actions (accepting custody, ownership transfer, recovery) |
 | Organisation Administrator | TENANT_ADMIN | |
 | Operations Head | FINANCE | Reads AI enablement (`ai.enablement.read`, read-only, never `ai.enablement.manage`): owner decision of 9 October 2026 for US-MP-03, in the onboarding profile registered by migration 0042; existing tenants get the FINANCE role template only through the reviewed access upgrade. Plus read of AI usage (`ai.usage.read`) once that capability exists |
 | MEL Manager | MEL_ADMIN | |

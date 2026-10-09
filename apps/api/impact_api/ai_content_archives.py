@@ -3,6 +3,7 @@
 from copy import deepcopy
 import hmac
 import json
+import logging
 from pathlib import Path
 from uuid import uuid4
 
@@ -23,6 +24,7 @@ SCHEMA_V2 = "nonprofit-ai-guidance-v2"
 SCHEMA_VERSION = SCHEMA_V2
 MAX_SNAPSHOT_BYTES = 262144
 COMPONENTS = ("catalog", "solutions", "practice")
+LOG = logging.getLogger("impact")
 DISCLAIMER = (
     "Editorial guidance captured for this saved revision, including self-checks and manual practice. "
     "It is not a supplier quote, competency certification, procurement approval or official impact result. "
@@ -95,8 +97,9 @@ def capture(c, ctx, receipt, saved_data, previous=None, retained_planning=False)
     """Called after the governed revision write, inside that same locked transaction."""
     try:
         solutions = solutions_catalog()
-    except SolutionsCatalogInvalid:
+    except SolutionsCatalogInvalid as error:
         # A listing without a valid commercial disclosure is never archived: the save rolls back.
+        LOG.error("AI solutions catalogue refused at archive capture: %s", error)
         raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
     payload = {
         "schema_version": SCHEMA_VERSION,

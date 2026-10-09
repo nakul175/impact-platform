@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 from uuid import uuid4
 
 import psycopg
@@ -820,11 +821,41 @@ def test_plans_archived_under_guidance_v1_and_v2_both_export_valid_documents(
     new = saved(live, export_tenant)
     documents = {}
     for name, row in (("v1", old), ("v2", new)):
-        result = issue(live, export_tenant, row)
+        body = request_body()
+        result = issue(live, export_tenant, row, body)
         document = json.loads(result["content"])
         assert DOCUMENT_VALIDATOR.is_valid(document)
         assert result["manifest"]["guidance_status"] == "COMPLETE"
+        # Owner decision (US-DC-04 review): the package label follows the archived guidance edition,
+        # and each document validates against its own published schema only.
+        package = "nonprofit-ai-plan-export-" + name
+        assert result["manifest"]["schema"] == document["schema_version"] == package
+        validate("AIPlanExportDocument" + name.upper(), document)
+        with pytest.raises(DomainError):
+            validate("AIPlanExportDocument" + ("V2" if name == "v1" else "V1"), document)
+        # The exact replay returns the same bytes and label.
+        assert issue(live, export_tenant, row, body) == result
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (export_tenant["tenant_id"],))
+            stored = c.execute(
+                "SELECT package_schema_version,guidance_schema_version FROM impact.ai_plan_export_issuance "
+                "WHERE tenant_id=%s AND operation_id=%s",
+                (export_tenant["tenant_id"], body["operation_id"]),
+            ).fetchone()
+        assert dict(stored) == {
+            "package_schema_version": package,
+            "guidance_schema_version": "nonprofit-ai-guidance-" + name,
+        }
         documents[name] = document
+    with live.db() as c:
+        definition = c.execute(
+            "SELECT pg_get_constraintdef(oid) AS d FROM pg_constraint WHERE conrelid="
+            "'impact.ai_plan_export_issuance'::regclass AND conname='ai_plan_export_issuance_package_schema_version_check'"
+        ).fetchone()["d"]
+    assert sorted(set(re.findall(r"'([^']*)'", definition))) == [
+        "nonprofit-ai-plan-export-v1",
+        "nonprofit-ai-plan-export-v2",
+    ]
     assert documents["v1"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V1
     assert documents["v2"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V2
     v1_listings = documents["v1"]["guidance"]["solutions"]["payload"]

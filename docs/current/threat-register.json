@@ -2634,7 +2634,8 @@
         "qualification/test_ai_adoption_plans.py::test_legacy_revision_reads_and_lists_interpret_progress_without_rewriting_history",
         "qualification/test_ai_content_archives_live.py::test_applied_migration_ledger_is_recorded_as_actual_database_evidence",
         "qualification/test_ai_content_archives.py::test_revisions_saved_under_v1_and_v2_both_load_and_v1_keeps_its_original_words",
-        "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures"
+        "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures",
+        "qualification/test_ai_plan_exports_unit.py::test_a_v1_guidance_export_is_byte_identical_to_build_0_38_and_valid_only_as_v1"
       ],
       "coverage": {
         "C-FROZEN-MIGRATIONS": [
@@ -2645,7 +2646,8 @@
         "C-VERSIONED-READERS": [
           "qualification/test_ai_adoption_plans.py::test_legacy_revision_reads_and_lists_interpret_progress_without_rewriting_history",
           "qualification/test_ai_content_archives.py::test_revisions_saved_under_v1_and_v2_both_load_and_v1_keeps_its_original_words",
-          "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures"
+          "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures",
+          "qualification/test_ai_plan_exports_unit.py::test_a_v1_guidance_export_is_byte_identical_to_build_0_38_and_valid_only_as_v1"
         ]
       },
       "verification": {

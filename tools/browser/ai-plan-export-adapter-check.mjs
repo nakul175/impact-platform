@@ -7,6 +7,7 @@ import {
   planCopyAdapter as adapter,
   verifyCopy,
   COPY_SCHEMA,
+  COPY_SCHEMA_V2,
   COPY_RENDERER,
 } from "../../apps/web/src/AIPlanExportAdapter.ts";
 if (!globalThis.crypto)
@@ -83,9 +84,14 @@ const OP = "33333333-3333-4333-8333-333333333333";
 const AUDIT = "44444444-4444-4444-8444-444444444444";
 const AUDIT_REV = "55555555-5555-4555-8555-555555555555";
 const CORR = "66666666-6666-4666-8666-666666666666";
-function response(
-  content = '{\n  "title": "Café — समुदाय",\n  "record_status": "Draft"\n}\n',
-) {
+// A package names its own edition and carries guidance of the matching archive edition.
+const packageContent = (
+  title = "Café — समुदाय",
+  schema = COPY_SCHEMA,
+  edition = "nonprofit-ai-guidance-v1",
+) =>
+  `{\n  "title": ${JSON.stringify(title)},\n  "record_status": "Draft",\n  "schema_version": ${JSON.stringify(schema)},\n  "guidance": {"status": "PARTIAL", "snapshot_schema_version": ${JSON.stringify(edition)}}\n}\n`;
+function response(content = packageContent(), schema = COPY_SCHEMA) {
   const digest = createHash("sha256").update(content, "utf8").digest("hex");
   const size = Buffer.byteLength(content, "utf8");
   return {
@@ -96,7 +102,7 @@ function response(
       title: "Café — समुदाय",
       saved_at: "2026-10-05T09:00:00Z",
       generated_at: "2026-10-05T11:00:00Z",
-      schema: COPY_SCHEMA,
+      schema,
       renderer: COPY_RENDERER,
       filename: `impact-ai-plan-${PLAN}.json`,
       media_type: "application/json",
@@ -200,9 +206,59 @@ test("replay pins exact manifest and issuance receipt after lost-response retry"
 test("even valid reissued bytes with the same operation cannot replace a pinned copy", async () => {
   const prior = adapter.decode(response());
   const next = adapter.decode(
-    response('{"title":"A different exact package"}\n'),
+    response(packageContent("A different exact package")),
   );
   await assert.rejects(
     verifyCopy(next, PLAN, REV, prior.manifest, OP, prior.receipt),
   );
 });
+test("both package editions are accepted only with their own guidance edition", async () => {
+  const v1 = adapter.decode(response());
+  assert.equal(v1.manifest.schema, "nonprofit-ai-plan-export-v1");
+  const unarchived = adapter.decode(
+    response(packageContent("Café", COPY_SCHEMA, null)),
+  );
+  assert.equal(unarchived.manifest.schema, COPY_SCHEMA);
+  const v2 = adapter.decode(
+    response(
+      packageContent("Café", COPY_SCHEMA_V2, "nonprofit-ai-guidance-v2"),
+      COPY_SCHEMA_V2,
+    ),
+  );
+  assert.equal(v2.manifest.schema, "nonprofit-ai-plan-export-v2");
+  await verifyCopy(v2, PLAN, REV, undefined, OP);
+});
+for (const [name, content, schema] of [
+  [
+    "a v1 label on v2 guidance",
+    packageContent("Café", COPY_SCHEMA, "nonprofit-ai-guidance-v2"),
+    COPY_SCHEMA,
+  ],
+  [
+    "a v2 label on v1 guidance",
+    packageContent("Café", COPY_SCHEMA_V2, "nonprofit-ai-guidance-v1"),
+    COPY_SCHEMA_V2,
+  ],
+  [
+    "a v2 label on unarchived guidance",
+    packageContent("Café", COPY_SCHEMA_V2, null),
+    COPY_SCHEMA_V2,
+  ],
+  [
+    "a manifest label other than the document's",
+    packageContent("Café", COPY_SCHEMA, "nonprofit-ai-guidance-v1"),
+    COPY_SCHEMA_V2,
+  ],
+  [
+    "an unknown package edition",
+    packageContent(
+      "Café",
+      "nonprofit-ai-plan-export-v3",
+      "nonprofit-ai-guidance-v2",
+    ),
+    "nonprofit-ai-plan-export-v3",
+  ],
+])
+  test(`closed decoder refuses ${name}`, () => {
+    assert.throws(() => adapter.decode(response(content, schema)));
+  });

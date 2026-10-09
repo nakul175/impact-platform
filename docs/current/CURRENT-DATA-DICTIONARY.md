@@ -1,6 +1,6 @@
 # Current data dictionary and schema evolution
 
-Local proposed build 0.39.0, schema 43 (branch `sprint-1/us-dc-04`, US-DC-04; not merged or deployed): migration 0043 replaces the `ai_content_snapshot_schema_version_check` of 0037 (same name) so that archived guidance snapshots may be labelled `nonprofit-ai-guidance-v1` or `nonprofit-ai-guidance-v2`. Edition v2 (`apps/api/impact_api/ai_content_schema_v2.json`) adds a required `commercial_disclosure` to every tool listing of the archived solutions component; v1 rows are unchanged and stay readable by the retained v1 reader. New saved plan revisions are captured in v2. No table, column, grant, role, policy, trigger or function is added or changed; snapshots stay insert-only and tenant-fenced.
+Local proposed build 0.39.0, schema 43 (branch `sprint-1/us-dc-04`, US-DC-04; not merged or deployed): migration 0043 replaces the `ai_content_snapshot_schema_version_check` of 0037 (same name) so that archived guidance snapshots may be labelled `nonprofit-ai-guidance-v1` or `nonprofit-ai-guidance-v2`. Edition v2 (`apps/api/impact_api/ai_content_schema_v2.json`) adds a required `commercial_disclosure` to every tool listing of the archived solutions component; v1 rows are unchanged and stay readable by the retained v1 reader. New saved plan revisions are captured in v2. No table, column, grant, role, policy, trigger or function is added or changed; snapshots stay insert-only and tenant-fenced. It also replaces 0040's `ai_plan_export_issuance_package_schema_version_check` (same name) with `IN ('nonprofit-ai-plan-export-v1', 'nonprofit-ai-plan-export-v2')`: an internal plan copy whose archived guidance is v2 is issued as package v2; copies of v1 or unarchived guidance keep package v1 and its published shape.
 
 Local proposed build 0.38.0, schema 42 (branch `sprint-1/us-mp-03`, US-MP-03; not merged or deployed): migration 0042 adds the registry kind `AIRankingWeights` (the `object_registry_object_type_check` is widened by appending the kind, preserving every earlier kind, as 0034, 0035 and 0038 did) and the partial unique index `ai_ranking_weights_one_per_tenant`, so each tenant has at most one weights object; every change of weights is its next immutable revision in the existing forced-RLS `object_registry`/`object_revision` with audit event, outbox intent and receipt. It also registers the generated onboarding profile `8664a1b707cb…` with a read-only FINANCE bundle (`ai.enablement.read`, `notifications.read`, `uploads.read`; the Operations Head persona). No projection table, grant, role, policy or function is added; existing tenant ceilings are unchanged and an existing tenant obtains the FINANCE role template only through the reviewed access upgrade.
 
@@ -75,7 +75,7 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0040_ai_plan_portability.sql | a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89 |
 | 0041_ai_policy.sql | 46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2 |
 | 0042_ai_ranking_weights.sql | 67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636 |
-| 0043_ai_guidance_v2.sql | e6477be6b87b706af649ed63e93173c9ba870d8d48b970c0d356c0584ed5531b |
+| 0043_ai_guidance_v2.sql | b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095 |
 
 ## Executable schema definitions
 
@@ -6310,15 +6310,16 @@ COMMIT;
 
 ## 0043_ai_guidance_v2.sql
 
-Source: infrastructure/migrations/0043_ai_guidance_v2.sql. SHA-256: `e6477be6b87b706af649ed63e93173c9ba870d8d48b970c0d356c0584ed5531b`. Local build 0.39.0 candidate on branch `sprint-1/us-dc-04` (US-DC-04), not merged or deployed. Additive in effect: it widens one CHECK; migrations 0001–0042 are byte-identical.
+Source: infrastructure/migrations/0043_ai_guidance_v2.sql. SHA-256: `b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095`. Local build 0.39.0 candidate on branch `sprint-1/us-dc-04` (US-DC-04), not merged or deployed. Additive in effect: it widens two CHECKs; migrations 0001–0042 are byte-identical.
 
-`ai_content_snapshot.schema_version` (0037) now admits exactly two archive editions. The constraint is dropped and re-created under the name PostgreSQL gave the 0037 column check, `ai_content_snapshot_schema_version_check`; re-creating it validates every existing row (all `nonprofit-ai-guidance-v1`).
+Each constraint is dropped and re-created under the name PostgreSQL gave the original column check, which validates every existing row.
 
-| Column | Allowed values | Meaning |
-| --- | --- | --- |
-| schema_version | `nonprofit-ai-guidance-v1`, `nonprofit-ai-guidance-v2` | The archive edition of `payload`. v1: guidance captured up to build 0.38.0 (`ai_content_schema_v1.json`). v2: captured from build 0.39.0 (`ai_content_schema_v2.json`); identical to v1 except that every listing of `payload.solutions.solutions[]` carries a required `commercial_disclosure`. |
+| Table.column | Constraint | Allowed values | Meaning |
+| --- | --- | --- | --- |
+| ai_content_snapshot.schema_version (0037) | `ai_content_snapshot_schema_version_check` | `nonprofit-ai-guidance-v1`, `nonprofit-ai-guidance-v2` | The archive edition of `payload`. v1: guidance captured up to build 0.38.0 (`ai_content_schema_v1.json`). v2: captured from build 0.39.0 (`ai_content_schema_v2.json`); identical to v1 except that every listing of `payload.solutions.solutions[]` carries a required `commercial_disclosure` and its `category` is one of the published categories. |
+| ai_plan_export_issuance.package_schema_version (0040) | `ai_plan_export_issuance_package_schema_version_check` | `nonprofit-ai-plan-export-v1`, `nonprofit-ai-plan-export-v2` | The package edition of the retained copy. v1: guidance archived under v1 or no archive, exactly the document shape published before 0.39.0. v2: guidance archived under v2 (with disclosures). The server derives it from `guidance_schema_version`; existing issuances keep their label and bytes. |
 
-`commercial_disclosure` inside a v2 payload (JSON, not a column): `status` `NONE_KNOWN` or `DISCLOSED`; `relationship_types` from the closed list `referral_fee`, `revenue_share`, `reseller`, `sponsorship`, `ownership` (empty for `NONE_KNOWN`, at least one and no repeats for `DISCLOSED`); `statement` (1–1,000 characters, not blank); `declared_on` (calendar date). The API reads a snapshot only with the reader of the edition named by both the row and the hashed payload, and verifies `payload_sha256`; a mismatch answers 503 `AI_GUIDANCE_UNREADABLE`. Saved plan revisions keep the snapshot bound at save time (`ai_plan_content_binding`, unchanged), so a v2 revision shows the disclosure that was current when it was saved, and a v1 revision shows none (it was saved before disclosures existed). No row is backfilled or relabelled.
+`commercial_disclosure` inside a v2 payload (JSON, not a column): `status` `NONE_KNOWN` or `DISCLOSED`; `relationship_types` from the closed list `referral_fee`, `revenue_share`, `reseller`, `sponsorship`, `ownership` (empty for `NONE_KNOWN`, at least one and no repeats for `DISCLOSED`); `statement` (1–1,000 characters, not blank); `declared_on` (calendar date the disclosure was prepared); `editorial_confirmation` `PENDING` (a draft prepared for Imprana editorial review) or `CONFIRMED`. The API reads a snapshot only with the reader of the edition named by both the row and the hashed payload, and verifies `payload_sha256`; a mismatch answers 503 `AI_GUIDANCE_UNREADABLE`. Saved plan revisions keep the snapshot bound at save time (`ai_plan_content_binding`, unchanged), so a v2 revision shows the disclosure that was current when it was saved, and a v1 revision shows none (it was saved before disclosures existed). No row is backfilled or relabelled.
 
 ```sql
 BEGIN;
@@ -6326,10 +6327,16 @@ SET LOCAL ROLE impact_owner;
 -- US-DC-04 disclose commercial relationships on every listing. Archived guidance gains edition
 -- nonprofit-ai-guidance-v2 (each tool listing carries its commercial disclosure). Saved revisions
 -- captured under v1 keep their rows and remain readable by the retained v1 reader, so the check now
--- admits exactly both editions. It keeps the name PostgreSQL gave 0037's column check. No table,
--- column, grant, role, policy, trigger or function change; snapshots stay insert-only.
+-- admits exactly both editions. It keeps the name PostgreSQL gave 0037's column check.
 ALTER TABLE impact.ai_content_snapshot DROP CONSTRAINT ai_content_snapshot_schema_version_check;
 ALTER TABLE impact.ai_content_snapshot ADD CONSTRAINT ai_content_snapshot_schema_version_check
  CHECK(schema_version IN ('nonprofit-ai-guidance-v1','nonprofit-ai-guidance-v2'));
+-- An internal plan copy whose archived guidance is v2 is issued as package nonprofit-ai-plan-export-v2;
+-- copies of v1 or unarchived guidance stay nonprofit-ai-plan-export-v1 with the published v1 shape.
+-- Existing issuances keep their label and bytes. Same name as 0040's column check.
+ALTER TABLE impact.ai_plan_export_issuance DROP CONSTRAINT ai_plan_export_issuance_package_schema_version_check;
+ALTER TABLE impact.ai_plan_export_issuance ADD CONSTRAINT ai_plan_export_issuance_package_schema_version_check
+ CHECK(package_schema_version IN ('nonprofit-ai-plan-export-v1','nonprofit-ai-plan-export-v2'));
+-- No table, column, grant, role, policy, trigger or function change; both tables stay insert-only.
 COMMIT;
 ```

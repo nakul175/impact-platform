@@ -404,3 +404,6 @@
 .ai-enablement .ai-disclosed .ai-disclosure-statement {
   color: var(--status-warning-text);
 }
+.ai-enablement .ai-disclosure-pending {
+  color: var(--text-muted);
+}

@@ -13,10 +13,13 @@ from jsonschema import Draft202012Validator, FormatChecker
 # Edition .2 adds the commercial disclosures; the source facts were last checked on CHECKED_ON.
 CONTENT_VERSION = "nonprofit-solutions-2026-10-05.2"
 CHECKED_ON = "2026-10-05"
-# The date Imprana editorial declared the disclosures of this edition (Sprint 1 default decision:
-# disclosures are Imprana editorial content, reviewed by an advisor; no advisor has reviewed them yet).
+# The date the disclosures of this edition were prepared. They are drafts for Imprana editorial review
+# (Sprint 1 default decision: disclosures are Imprana editorial content, reviewed by an advisor);
+# nobody has confirmed them yet, and each disclosure says so in `editorial_confirmation`.
 DISCLOSURES_DECLARED_ON = "2026-10-09"
 DISCLOSURE_STATUSES = ("NONE_KNOWN", "DISCLOSED")
+# PENDING: a draft prepared for Imprana editorial review; CONFIRMED: confirmed by Imprana editorial.
+EDITORIAL_CONFIRMATIONS = ("PENDING", "CONFIRMED")
 # The closed set of relationship types a DISCLOSED listing names (at least one).
 RELATIONSHIP_TYPES = ("referral_fee", "revenue_share", "reseller", "sponsorship", "ownership")
 STATEMENT_MAX = 1000
@@ -44,20 +47,22 @@ class SolutionsCatalogInvalid(ValueError):
 
 
 def _none_known(provider):
-    """Imprana editorial declaration that no commercial relationship with the provider is known.
+    """A draft disclosure that no commercial relationship with the provider is known.
 
-    Never a claim that none exists: it records what Imprana editorial knows on the declaration date.
+    Never a claim that none exists, and not an Imprana editorial declaration: it was prepared for
+    Imprana editorial review and stays PENDING until editorial confirms it.
     """
     return {
         "status": "NONE_KNOWN",
         "relationship_types": [],
         "statement": (
-            "Imprana editorial declaration, pending advisor review: no referral fee, revenue share, "
-            "reseller, sponsorship or ownership relationship between Imprana and "
+            "Draft declaration prepared for Imprana editorial review; not yet confirmed. No referral fee, "
+            "revenue share, reseller, sponsorship or ownership relationship between Imprana and "
             + provider
             + " is known. The platform has no registered marketplace vendors."
         ),
         "declared_on": DISCLOSURES_DECLARED_ON,
+        "editorial_confirmation": "PENDING",
     }
 
 
@@ -363,9 +368,11 @@ def _texts():
 
 
 def disclosure_schema():
-    """NONE_KNOWN names no relationship type; DISCLOSED names at least one; both carry a statement."""
+    """NONE_KNOWN names no relationship type; DISCLOSED names at least one; both carry a statement,
+    the preparation date and whether Imprana editorial has confirmed the disclosure."""
     statement = {"type": "string", "minLength": 1, "maxLength": STATEMENT_MAX, "pattern": "\\S"}
     declared_on = {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+    confirmation = {"enum": list(EDITORIAL_CONFIRMATIONS)}
     return {
         "oneOf": [
             _closed(
@@ -374,6 +381,7 @@ def disclosure_schema():
                     "relationship_types": {"type": "array", "maxItems": 0},
                     "statement": deepcopy(statement),
                     "declared_on": deepcopy(declared_on),
+                    "editorial_confirmation": deepcopy(confirmation),
                 }
             ),
             _closed(
@@ -388,6 +396,7 @@ def disclosure_schema():
                     },
                     "statement": deepcopy(statement),
                     "declared_on": deepcopy(declared_on),
+                    "editorial_confirmation": deepcopy(confirmation),
                 }
             ),
         ]
@@ -398,15 +407,16 @@ def catalog_schema():
     """The closed published catalogue (the AISolutionsCatalog contract).
 
     It is the solutions component of the current archive edition (nonprofit-ai-guidance-v2, frozen in
-    ai_content_schema_v2.json): the edition-1 listing shape plus a required commercial_disclosure. A
-    change here needs a new archive edition with a retained reader (test_ai_content_archives.py).
+    ai_content_schema_v2.json): the edition-1 listing shape with `category` closed to CATEGORIES, plus
+    a required commercial_disclosure. A change here needs a new archive edition with a retained reader
+    (test_ai_content_archives.py).
     """
     listing = _closed(
         {
             "id": _text(),
             "name": _text(),
             "provider": _text(),
-            "category": _text(),
+            "category": {"enum": sorted(CATEGORIES)},
             "use_case_ids": _texts(),
             "description": _text(),
             "deployment": _text(),
@@ -445,8 +455,10 @@ def validate_disclosure(value):
     """The disclosure rules in plain terms; raises SolutionsCatalogInvalid naming the first breach."""
     if not isinstance(value, dict):
         raise SolutionsCatalogInvalid("commercial_disclosure is missing")
-    if set(value) != {"status", "relationship_types", "statement", "declared_on"}:
-        raise SolutionsCatalogInvalid("commercial_disclosure must have exactly its four fields")
+    if set(value) != {"status", "relationship_types", "statement", "declared_on", "editorial_confirmation"}:
+        raise SolutionsCatalogInvalid("commercial_disclosure must have exactly its five fields")
+    if value["editorial_confirmation"] not in EDITORIAL_CONFIRMATIONS:
+        raise SolutionsCatalogInvalid("editorial_confirmation must be PENDING or CONFIRMED")
     status, types, statement = value["status"], value["relationship_types"], value["statement"]
     if status not in DISCLOSURE_STATUSES:
         raise SolutionsCatalogInvalid("commercial_disclosure status must be NONE_KNOWN or DISCLOSED")
@@ -500,8 +512,8 @@ def solutions_catalog():
             "explanation": (
                 "A source-backed starting list checked on the stated date, not an endorsement, live price "
                 "feed or guarantee of eligibility. Use-case mappings are editorial pilot ideas. "
-                "Each listing states any commercial relationship between Imprana and its provider that "
-                "Imprana editorial knows of. "
+                "Each listing states any known commercial relationship between Imprana and its provider; "
+                "these disclosures are drafts pending Imprana editorial confirmation. "
                 "Compare evidence and obtain a current quote before choosing a solution."
             ),
             "solutions": deepcopy(_SOLUTIONS),

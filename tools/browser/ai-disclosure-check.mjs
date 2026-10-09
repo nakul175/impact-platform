@@ -20,12 +20,15 @@ const axeSource = await fs.readFile(
 );
 const { as, test, finish } = await harness("ai-disclosure-browser");
 const NONE_KNOWN = "No commercial relationship known";
+// Every real disclosure is a draft prepared for Imprana editorial review (editorial_confirmation PENDING).
+const PENDING = "pending editorial confirmation";
 const SYNTHETIC = {
   status: "DISCLOSED",
   relationship_types: ["referral_fee", "sponsorship"],
   statement:
     "Synthetic browser check: Imprana receives a referral fee and a sponsorship from this provider.",
   declared_on: "2026-10-09",
+  editorial_confirmation: "CONFIRMED",
 };
 const solutionsRoute = (url) =>
   url.pathname.endsWith("/ai-enablement/solutions");
@@ -109,6 +112,11 @@ await finish(async () => {
       assert.equal(await label.count(), 1, item.name);
       const text = await label.innerText();
       assert(text.includes(NONE_KNOWN), item.name + ": " + text);
+      assert(text.includes(PENDING), item.name + ": " + text);
+      assert.equal(
+        item.commercial_disclosure.editorial_confirmation,
+        "PENDING",
+      );
       assert(text.includes(item.commercial_disclosure.statement), item.name);
       assert(text.includes("Declared 2026-10-09."), item.name);
       assert.equal(
@@ -124,49 +132,56 @@ await finish(async () => {
   });
 
   await test("Every comparison column carries the disclosure label", async () => {
-    const chosen = listings.slice(0, 4);
-    for (const item of chosen) await compare(admin, item.name);
-    await comparison(admin)
-      .getByRole("rowheader", { name: "Commercial disclosure", exact: true })
-      .waitFor();
-    assert.equal(
-      await comparison(admin).locator(".ai-disclosure").count(),
-      chosen.length,
-    );
-    const headers = await comparison(admin)
-      .locator("thead th:not(:first-child)")
-      .count();
-    assert.equal(headers, chosen.length);
-    for (const item of chosen) {
-      const cell = note(comparison(admin), item.name);
-      assert.equal(await cell.count(), 1, item.name);
-      assert((await cell.innerText()).includes(NONE_KNOWN), item.name);
+    // The comparison holds at most four tools, so all eight are compared in two batches.
+    const batches = [listings.slice(0, 4), listings.slice(4, 8)];
+    assert.equal(batches.flat().length, listings.length);
+    for (const chosen of batches) {
+      for (const item of chosen) await compare(admin, item.name);
+      await comparison(admin)
+        .getByRole("rowheader", { name: "Commercial disclosure", exact: true })
+        .waitFor();
+      assert.equal(
+        await comparison(admin).locator(".ai-disclosure").count(),
+        chosen.length,
+      );
+      const headers = await comparison(admin)
+        .locator("thead th:not(:first-child)")
+        .count();
+      assert.equal(headers, chosen.length);
+      for (const item of chosen) {
+        const cell = note(comparison(admin), item.name);
+        assert.equal(await cell.count(), 1, item.name);
+        const text = await cell.innerText();
+        assert(text.includes(NONE_KNOWN), item.name);
+        assert(text.includes(PENDING), item.name);
+        assert(text.includes(item.commercial_disclosure.statement), item.name);
+      }
+      // Columns follow the header order: the n-th disclosure belongs to the n-th tool.
+      const names = await comparison(admin)
+        .locator(".ai-disclosure")
+        .evaluateAll((nodes) => nodes.map((n) => n.getAttribute("aria-label")));
+      assert.deepEqual(
+        names,
+        chosen.map((item) => "Commercial disclosure for " + item.name),
+      );
+      assert.deepEqual(
+        await scan(admin, 'section[aria-labelledby="ai-solutions"]'),
+        [],
+      );
+      await admin.setViewportSize({ width: 390, height: 844 });
+      assert(await noHorizontalScroll(admin), "390 px page overflows");
+      assert.deepEqual(
+        await scan(admin, 'section[aria-labelledby="ai-solutions"]'),
+        [],
+      );
+      await admin.setViewportSize({ width: 1440, height: 900 });
+      for (const item of chosen)
+        await tools(admin)
+          .getByRole("button", { name: "Remove " + item.name, exact: true })
+          .first()
+          .click();
+      await comparison(admin).waitFor({ state: "detached" });
     }
-    // Columns follow the header order: the n-th disclosure belongs to the n-th tool.
-    const names = await comparison(admin)
-      .locator(".ai-disclosure")
-      .evaluateAll((nodes) => nodes.map((n) => n.getAttribute("aria-label")));
-    assert.deepEqual(
-      names,
-      chosen.map((item) => "Commercial disclosure for " + item.name),
-    );
-    assert.deepEqual(
-      await scan(admin, 'section[aria-labelledby="ai-solutions"]'),
-      [],
-    );
-    await admin.setViewportSize({ width: 390, height: 844 });
-    assert(await noHorizontalScroll(admin), "390 px page overflows");
-    assert.deepEqual(
-      await scan(admin, 'section[aria-labelledby="ai-solutions"]'),
-      [],
-    );
-    await admin.setViewportSize({ width: 1440, height: 900 });
-    for (const item of chosen)
-      await tools(admin)
-        .getByRole("button", { name: "Remove " + item.name, exact: true })
-        .first()
-        .click();
-    await comparison(admin).waitFor({ state: "detached" });
   });
 
   await test("A disclosed relationship shows its types and statement on the card and in the comparison (client rendering of a modified real response)", async () => {
@@ -194,6 +209,8 @@ await finish(async () => {
         )
         .waitFor();
       assert((await label.innerText()).includes(SYNTHETIC.statement));
+      // A confirmed disclosure carries no pending note.
+      assert(!(await label.innerText()).includes(PENDING));
       assert.equal(
         await label.getAttribute("data-disclosure-status"),
         "DISCLOSED",
@@ -326,6 +343,7 @@ await finish(async () => {
       assert.equal(await label.count(), 1, item.name);
       const text = await label.innerText();
       assert(text.includes(NONE_KNOWN), item.name);
+      assert(text.includes(PENDING), item.name);
       assert(text.includes(item.commercial_disclosure.statement), item.name);
     }
     assert.deepEqual(await scan(admin, ".ai-guidance-archive"), []);

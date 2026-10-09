@@ -184,6 +184,7 @@ def disclosed(**changes):
         "relationship_types": ["referral_fee", "sponsorship"],
         "statement": "Synthetic example: Imprana receives a referral fee and sponsorship from this provider.",
         "declared_on": "2026-10-09",
+        "editorial_confirmation": "PENDING",
         **changes,
     }
 
@@ -198,14 +199,23 @@ def contract_validator():
 @pytest.mark.parametrize("solution", solutions_catalog()["solutions"], ids=lambda item: item["id"])
 def test_every_listing_carries_a_valid_commercial_disclosure(solution):
     disclosure = solution["commercial_disclosure"]
-    assert set(disclosure) == {"status", "relationship_types", "statement", "declared_on"}
+    assert set(disclosure) == {
+        "status",
+        "relationship_types",
+        "statement",
+        "declared_on",
+        "editorial_confirmation",
+    }
     # Today no commercial relationship is known for any listing; nothing is invented.
     assert disclosure["status"] == "NONE_KNOWN"
     assert disclosure["relationship_types"] == []
     assert disclosure["declared_on"] == DISCLOSURES_DECLARED_ON == "2026-10-09"
     assert date.fromisoformat(disclosure["declared_on"]) >= date.fromisoformat(CHECKED_ON)
+    # A draft prepared for editorial review: it never claims an Imprana editorial declaration was made.
+    assert disclosure["editorial_confirmation"] == "PENDING"
     statement = disclosure["statement"]
-    assert statement.startswith("Imprana editorial declaration, pending advisor review:")
+    assert statement.startswith("Draft declaration prepared for Imprana editorial review; not yet confirmed.")
+    assert "Imprana editorial declaration" not in statement
     assert solution["provider"] in statement and "is known" in statement
     assert all(kind.replace("_", " ") in statement for kind in ("referral_fee", "revenue_share", "reseller"))
     assert 1 <= len(statement) <= 1000
@@ -275,6 +285,8 @@ INVALID_DISCLOSURES = {
     "impossible_date": disclosed(declared_on="2026-02-30"),
     "not_a_calendar_date": disclosed(declared_on="9 October 2026"),
     "extra_field": disclosed(verified=True),
+    "unknown_editorial_confirmation": disclosed(editorial_confirmation="APPROVED"),
+    "no_editorial_confirmation": {k: v for k, v in disclosed().items() if k != "editorial_confirmation"},
 }
 
 
@@ -312,7 +324,7 @@ def test_disclosed_without_a_statement_fails_validation(monkeypatch, statement):
         del disclosure["statement"]
     else:
         disclosure["statement"] = statement
-    with pytest.raises(SolutionsCatalogInvalid, match="statement|four fields"):
+    with pytest.raises(SolutionsCatalogInvalid, match="statement|five fields"):
         validate_disclosure(disclosure)
     listings = deepcopy(module._SOLUTIONS)
     listings[0]["commercial_disclosure"] = disclosure
@@ -348,3 +360,21 @@ def test_duplicate_listing_ids_fail_validation(monkeypatch):
     monkeypatch.setattr(module, "_SOLUTIONS", listings)
     with pytest.raises(SolutionsCatalogInvalid, match="unique"):
         solutions_catalog()
+
+
+def test_category_is_closed_to_the_published_categories(monkeypatch):
+    listing = catalog_schema()["properties"]["solutions"]["items"]
+    assert listing["properties"]["category"] == {"enum": sorted(CATEGORIES)}
+    listings = deepcopy(module._SOLUTIONS)
+    listings[4]["category"] = "ROBOTICS"
+    monkeypatch.setattr(module, "_SOLUTIONS", listings)
+    with pytest.raises(SolutionsCatalogInvalid, match="category"):
+        solutions_catalog()
+
+
+def test_every_disclosure_is_pending_editorial_confirmation_until_confirmed():
+    assert module.EDITORIAL_CONFIRMATIONS == ("PENDING", "CONFIRMED")
+    listings = solutions_catalog()["solutions"]
+    assert {item["commercial_disclosure"]["editorial_confirmation"] for item in listings} == {"PENDING"}
+    assert "pending Imprana editorial confirmation" in solutions_catalog()["explanation"]
+    validate_disclosure(disclosed(editorial_confirmation="CONFIRMED"))

@@ -2,6 +2,14 @@
 // string only after current-authority replay and immutable receipt verification.
 export const MAX_COPY_BYTES = 1_048_576;
 export const COPY_SCHEMA = "nonprofit-ai-plan-export-v1";
+// Build 0.39.0 (US-DC-04): a copy whose archived guidance is edition v2 (listings with commercial
+// disclosures) is package v2; v1 keeps the shape published before. Each package admits only its
+// own guidance editions (null: no archive).
+export const COPY_SCHEMA_V2 = "nonprofit-ai-plan-export-v2";
+export const COPY_SCHEMAS: Record<string, readonly (string | null)[]> = {
+  [COPY_SCHEMA]: ["nonprofit-ai-guidance-v1", null],
+  [COPY_SCHEMA_V2]: ["nonprofit-ai-guidance-v2"],
+};
 export const COPY_RENDERER = "nonprofit-ai-plan-json-v1";
 export type CopyManifest = {
   plan_id: string;
@@ -151,7 +159,7 @@ export const planCopyAdapter: CopyAdapter = {
       !uuid.test(manifest.plan_id) ||
       !uuid.test(manifest.revision_id) ||
       source.media_type !== "application/json" ||
-      manifest.schema !== COPY_SCHEMA ||
+      !Object.hasOwn(COPY_SCHEMAS, manifest.schema) ||
       manifest.renderer !== COPY_RENDERER ||
       !/^[a-f0-9]{64}$/.test(manifest.content_sha256) ||
       !/^impact-ai-plan-[a-f0-9-]+\.json$/.test(manifest.filename) ||
@@ -174,6 +182,19 @@ export const planCopyAdapter: CopyAdapter = {
     const parsed = JSON.parse(response.content);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed))
       throw new Error("The issued copy is not a JSON package.");
+    // The package label must be the document's own and match its archived guidance edition.
+    const guidance = parsed.guidance;
+    if (
+      parsed.schema_version !== manifest.schema ||
+      !guidance ||
+      typeof guidance !== "object" ||
+      Array.isArray(guidance) ||
+      guidance.status !== manifest.guidance_status ||
+      !COPY_SCHEMAS[manifest.schema].includes(
+        guidance.snapshot_schema_version ?? null,
+      )
+    )
+      throw new Error("The issued copy does not match its package edition.");
     const receiptSource = record(response.receipt);
     exactKeys(receiptSource, receiptKeys);
     const receipt: CopyReceipt = {

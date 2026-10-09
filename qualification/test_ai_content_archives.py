@@ -11,7 +11,11 @@ import pytest
 import impact_api.ai_adoption_plans as plans
 import impact_api.ai_content_archives as archives
 import impact_api.ai_task_practice as practice
-from impact_api.ai_solutions_catalog import catalog_schema, solutions_catalog as published_solutions
+from impact_api.ai_solutions_catalog import (
+    CATEGORIES,
+    catalog_schema,
+    solutions_catalog as published_solutions,
+)
 from impact_api.domain import DomainError
 from impact_api.store import hash_data
 from test_ai_adoption_plans import engine as engine
@@ -301,7 +305,7 @@ def under_guidance_v1(monkeypatch):
         yield
 
 
-def test_v1_schema_file_is_frozen_and_v2_adds_only_the_commercial_disclosure():
+def test_v1_schema_file_is_frozen_and_v2_adds_only_the_disclosure_and_closed_categories():
     v1_file = Path(archives.__file__).with_name("ai_content_schema_v1.json")
     assert hashlib.sha256(v1_file.read_bytes()).hexdigest() == V1_SCHEMA_FILE_SHA256
     assert archives.SCHEMA_VERSION == archives.SCHEMA_V2 == "nonprofit-ai-guidance-v2"
@@ -313,6 +317,9 @@ def test_v1_schema_file_is_frozen_and_v2_adds_only_the_commercial_disclosure():
     listing = deepcopy(v2["solutions"]["properties"]["solutions"]["items"])
     del listing["properties"]["commercial_disclosure"]
     listing["required"].remove("commercial_disclosure")
+    # v2 closes `category` to the published categories; v1 accepted any text.
+    assert listing["properties"]["category"] == {"enum": sorted(CATEGORIES)}
+    listing["properties"]["category"] = {"type": "string", "maxLength": 12000}
     reduced = deepcopy(v2["solutions"])
     reduced["properties"]["solutions"]["items"] = listing
     assert reduced == v1["solutions"]
@@ -380,6 +387,7 @@ def test_a_saved_revision_keeps_the_disclosure_that_was_current_when_it_was_save
         "relationship_types": ["referral_fee"],
         "statement": "Synthetic later edition: a referral fee relationship.",
         "declared_on": "2026-11-01",
+        "editorial_confirmation": "CONFIRMED",
     }
     monkeypatch.setattr(archives, "solutions_catalog", lambda: deepcopy(later))
     monkeypatch.setattr(plans, "SOLUTIONS_VERSION", later["content_version"])
@@ -389,6 +397,7 @@ def test_a_saved_revision_keeps_the_disclosure_that_was_current_when_it_was_save
     assert guidance(api, first) == original
     kept = original["solutions"]["payload"]["solutions"][0]["commercial_disclosure"]
     assert kept["status"] == "NONE_KNOWN" and kept["relationship_types"] == []
+    assert kept["editorial_confirmation"] == "PENDING"
     current = guidance(api, second)["solutions"]["payload"]["solutions"][0]["commercial_disclosure"]
     assert current == later["solutions"][0]["commercial_disclosure"]
     assert len(db.content_snapshots) == 2

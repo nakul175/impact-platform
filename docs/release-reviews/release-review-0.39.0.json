@@ -300,6 +300,36 @@
       "prepared_by": "Claude (agent), for Nakul Jain (owner)",
       "prepared_on": "2026-10-09",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.39-03",
+      "change_id": "US-DC-04",
+      "change": "US-DC-04 independent review fixes: plan exports carrying v2 guidance are labelled nonprofit-ai-plan-export-v2 (owner decision) with migration 0043 also widening 0040's package check; disclosures reworded as drafts with editorial_confirmation PENDING; category closed; capture logs the refusal cause; the upgrade check populates and compares both checks exactly",
+      "paths": [
+        "infrastructure/migrations/0043_ai_guidance_v2.sql",
+        "apps/api/impact_api/ai_plan_exports.py",
+        "apps/api/impact_api/ai_plan_export_contracts.py",
+        "apps/api/impact_api/ai_solutions_catalog.py",
+        "apps/api/impact_api/ai_content_archives.py",
+        "apps/api/impact_api/ai_content_schema_v2.json",
+        "apps/web/src/AIPlanExportAdapter.ts",
+        "scripts/native_upgrade_check.py"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "ai-module"
+      ],
+      "threats": [
+        "TH15",
+        "TH32",
+        "TH36",
+        "TH03"
+      ],
+      "summary": "Supersedes the export residual of IR-0.39-02 (entries are append-only). The server derives the package label from the archived guidance edition, never from a request: v1 or no archive gives nonprofit-ai-plan-export-v1, whose AIPlanExportDocumentV1 is exactly the schema published at 0.38.0 (digest pinned; a v1-guidance copy renders byte-identical to 0.38.0's renderer); v2 gives nonprofit-ai-plan-export-v2 (new AIPlanExportDocumentV2, v2 guidance only). Issue and replay validate with the schema of the named label and refuse a label that does not match the guidance edition, even with matching metadata (TH03, TH15); authority, mediation, receipts and replay are otherwise unchanged. Migration 0043 also re-creates 0040's ai_plan_export_issuance_package_schema_version_check as IN (v1, v2) under the same name, validating existing rows; no other database change (TH32). The web adapter accepts each label only with its own guidance edition. Disclosures no longer claim an Imprana editorial declaration: each is a draft 'prepared for Imprana editorial review; not yet confirmed' with editorial_confirmation PENDING, shown as 'pending editorial confirmation' (TH36 gap unchanged: the truth of a declaration is unverified). category is closed. The unreleased v2 archive schema was regenerated for these two changes. Capture logs why a catalogue was refused. The native upgrade check inserts the v1 snapshot as soon as 0037 exists (stopping at 37 from an older baseline such as 33) and compares both re-created checks with the definitions the same server renders for exactly v1 and v2.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
     }
   ],
   "evidence": [

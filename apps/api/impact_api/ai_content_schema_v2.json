@@ -366,8 +366,14 @@
               "maxLength": 12000
             },
             "category": {
-              "type": "string",
-              "maxLength": 12000
+              "enum": [
+                "DESIGN",
+                "DEVELOPER_PLATFORM",
+                "GENERAL_ASSISTANT",
+                "KNOWLEDGE_ASSISTANT",
+                "TRANSLATION",
+                "WORKSPACE_ASSISTANT"
+              ]
             },
             "use_case_ids": {
               "type": "array",
@@ -458,13 +464,20 @@
                       "type": "string",
                       "format": "date",
                       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "editorial_confirmation": {
+                      "enum": [
+                        "PENDING",
+                        "CONFIRMED"
+                      ]
                     }
                   },
                   "required": [
                     "status",
                     "relationship_types",
                     "statement",
-                    "declared_on"
+                    "declared_on",
+                    "editorial_confirmation"
                   ]
                 },
                 {
@@ -499,13 +512,20 @@
                       "type": "string",
                       "format": "date",
                       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    },
+                    "editorial_confirmation": {
+                      "enum": [
+                        "PENDING",
+                        "CONFIRMED"
+                      ]
                     }
                   },
                   "required": [
                     "status",
                     "relationship_types",
                     "statement",
-                    "declared_on"
+                    "declared_on",
+                    "editorial_confirmation"
                   ]
                 }
               ]

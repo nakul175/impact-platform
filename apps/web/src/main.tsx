@@ -112,7 +112,7 @@ const nav = [
 // match on the capability name; an empty list means always). Hidden entries are never
 // security: the server authorises every request. "My account" needs no grant.
 const areaCapabilities: Record<string, string[]> = {
-  "ai-enablement": ["ai.enablement.read"],
+  "ai-enablement": ["ai.enablement.read", "ai.policy."],
   programmes: ["programmes.", "programme."],
   observations: ["observations.", "observation."],
   configuration: [
@@ -440,6 +440,8 @@ function explain(e: unknown) {
       return "Choose an independently approved disclosure for this exact report revision.";
     if (e.reason === "ACTIVE_PUBLICATION_REQUIRED")
       return "This report revision has no active controlled publication to withdraw.";
+    if (e.reason === "AI_POLICY_CHANGED")
+      return "Your organisation's AI policy changed. Review the policy now in force before trying again.";
     if (e.code === "CONFLICT_VERSION")
       return "Someone changed this record. Close it and refresh before saving again.";
     return (

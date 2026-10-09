@@ -1,5 +1,5 @@
 {
-  "version": "1.25.0",
+  "version": "1.26.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6031,6 +6031,54 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "get_ai_policy",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/policy",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_policy",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/policy",
+      "capability": "ai.policy.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_policy_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/policy/revisions",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "compare_ai_procurement_costs",

@@ -298,3 +298,43 @@
 .ai-human-advice fieldset {
   min-width: 0;
 }
+/* FR-AI-001: the "Policy in force" card shown before the advisory request button. */
+.ai-enablement .ai-policy-card {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  background: var(--ai-panel);
+  min-width: 0;
+}
+.ai-enablement .ai-policy-terms {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.75rem;
+}
+.ai-enablement .ai-policy-terms dt {
+  font-weight: 600;
+}
+.ai-enablement .ai-policy-terms dd {
+  margin: 0;
+}
+.ai-enablement .ai-policy-warning {
+  color: var(--status-warning-text);
+  background: var(--status-warning-bg);
+  border: 1px solid var(--status-warning-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+.ai-enablement .ai-policy-editor fieldset fieldset {
+  margin: 0.75rem 0;
+}
+.ai-enablement .ai-policy-editor label {
+  display: block;
+  margin: 0.5rem 0;
+}
+@media (max-width: 480px) {
+  .ai-enablement .ai-policy-terms {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

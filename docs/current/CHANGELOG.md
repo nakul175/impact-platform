@@ -1,5 +1,9 @@
 # Documentation change record
 
+## 9 October 2026 — build 0.37.0 candidate: explicit AI enablement and policy (FR-AI-001)
+
+Code branch `sprint-1/fr-ai-001` from `sprint-0/foundation`, committed locally only. Adds the versioned tenant AI policy (migration 0041: insert-only, tenant-fenced `ai_policy_version` and `ai_use_case_policy`, a policy pin on `ai_advisory_request`, the registered profile with `ai.policy.manage` for TENANT_ADMIN), GET/PUT `…/ai-enablement/policy` and GET `…/policy/revisions`, the policy gate before any advisory reservation or provider call, and the "Policy in force" card and editor in AI enablement. Build 0.37.0, domain API 1.26.0, platform API 1.10.0, schema 41. FR-AI-001 is "In review" in the backlog; no ledger promotion. Details, test evidence and what was not run: [RELEASE-0.37-ai-policy](../RELEASE-0.37-ai-policy.md).
+
 ## 9 October 2026 — repository hygiene (code and CI)
 
 Branch `refactor/hygiene-2026-10-09` from `main`. `qualification/test_golden.py` writes `docs/evidence/golden-reconciliation.json` only when the live API path ran, so `make unit` leaves the tree clean. `SHA256SUMS.json` (143 of 315 hashes stale, written by `make package`) is untracked and ignored. `scripts/doc_index.py` generates the "every document" list in `docs/DOCUMENTATION-INDEX.md`, and the `checks` workflow fails when it is out of date (`make docs-index` regenerates it). README says forty migrations and AGENTS says 26 browser groups (`make browser` runs 26 groups plus five adapter checks). No runtime, API, schema or migration change; no requirement status changed.

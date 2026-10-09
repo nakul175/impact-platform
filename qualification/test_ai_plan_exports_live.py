@@ -75,7 +75,7 @@ def export_migration_ledger(live):
     }
     path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
     path.write_text(json.dumps(report, indent=2) + "\n")
-    assert len(applied) == 40
+    assert len(applied) == 41
     assert all(row["applied_sha256"] == row["current_source_sha256"] for row in applied)
 
 

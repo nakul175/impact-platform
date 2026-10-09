@@ -110,7 +110,7 @@ function applicationSnapshot() {
   return JSON.parse(result.stdout);
 }
 const applicationBefore = applicationSnapshot();
-assert.equal(applicationBefore.applied_migrations.length, 40);
+assert.equal(applicationBefore.applied_migrations.length, 41);
 for (const row of applicationBefore.applied_migrations) {
   const migration = (
     await fs.readdir(path.join(repository, "infrastructure/migrations"))

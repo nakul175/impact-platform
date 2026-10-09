@@ -78,6 +78,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Build 0.34 saved AI plan copies](RELEASE-0.34-plan-portability.md)
 - [Build 0.35 practical AI workspace](RELEASE-0.35-practical-ai-workspace.md)
 - [Build 0.36 procurement preview and unsaved-brief protection](RELEASE-0.36-procurement-preview.md)
+- [Build 0.37 explicit AI enablement and policy (FR-AI-001)](RELEASE-0.37-ai-policy.md)
 - [Release 0.4.0 — governed measurement changes](RELEASE-0.4.md)
 - [Release 0.5.0 — programme-period close and restatement](RELEASE-0.5.md)
 - [Release 0.6.0 — frozen internal reporting packages](RELEASE-0.6.md)

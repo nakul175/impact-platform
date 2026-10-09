@@ -10,6 +10,7 @@
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",
+      "ai.policy.manage",
       "connections.read",
       "grant.approve",
       "grant.request",

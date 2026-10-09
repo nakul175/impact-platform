@@ -4,10 +4,13 @@ from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
+import re
 from uuid import UUID
 
 from cryptography.exceptions import InvalidTag
 
+from . import ai_policy
+from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
 from .ai_solutions_catalog import solutions_catalog
 from .domain import DomainError
@@ -15,6 +18,11 @@ from .keyring import ring
 from .store import audit, authorize, context, write
 
 DISCLAIMER = "AI advisory draft: staff must verify claims and approve decisions. This does not authorise spending, data disclosure or official impact calculations."
+USE_CASE = "ADVISORY_DRAFT"
+# The advisory instructions and the workspace are English; the policy must cover this language.
+DRAFT_LANGUAGE = "en"
+REQUEST_FIELDS = {"operation_id", "profile", "consent", "policy_version"}
+TOOL = re.compile(TOOL_PATTERN)
 
 
 def _key(secret):
@@ -45,6 +53,10 @@ class AIEnablement:
     def _available(self):
         return bool(self.enabled and self.provider and self.provider.configured and self._keys())
 
+    def server_ready(self):
+        """The server switch: AI enabled, a configured provider and sealing keys (no tenant policy)."""
+        return self._available()
+
     def _authority(self, c, identity, tenant, operation, write_access=False):
         ctx = context(c, identity, tenant, write=write_access)
         authorize(c, ctx, "get_ai_enablement_catalog", hidden=True)
@@ -55,7 +67,9 @@ class AIEnablement:
     def catalog(self, identity, tenant):
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "get_ai_enablement_catalog")
-            return {**catalog(), "advisory_available": self._available()}
+            # Server switch, tenant policy and use case must all be on (FR-AI-001).
+            available = self._available() and ai_policy.enabled(ai_policy.in_force(c, tenant), USE_CASE)
+            return {**catalog(), "advisory_available": available}
 
     def assessment(self, identity, tenant, profile):
         self._validate(profile)
@@ -99,10 +113,22 @@ class AIEnablement:
     def advisory(self, identity, tenant, body, correlation):
         if (
             not isinstance(body, dict)
-            or set(body) != {"operation_id", "profile", "consent"}
+            or not REQUEST_FIELDS - {"policy_version"} <= set(body)
+            or set(body) - REQUEST_FIELDS - {"tools"}
             or body["consent"] is not True
         ):
             raise DomainError("VALIDATION_FAILED", reason="AI_CONSENT_REQUIRED")
+        version = body.get("policy_version")
+        if type(version) is not int or not 0 <= version <= MAX_POLICY_VERSION:
+            raise DomainError("VALIDATION_FAILED", reason="AI_POLICY_VERSION_REQUIRED")
+        tools = body.get("tools", [])
+        if (
+            not isinstance(tools, list)
+            or len(tools) > 10
+            or any(not isinstance(tool, str) or not TOOL.fullmatch(tool) for tool in tools)
+            or len(set(tools)) != len(tools)
+        ):
+            raise DomainError("VALIDATION_FAILED", reason="AI_TOOLS_INVALID")
         self._validate(body["profile"])
         try:
             request = str(UUID(body["operation_id"]))
@@ -139,6 +165,18 @@ class AIEnablement:
                     raise _error("AI_RESULT_UNREADABLE") from None
             if not self._available():
                 raise _error("AI_NOT_CONFIGURED")
+            # FR-AI-001: the tenant policy in force is read under the tenant lock and checked before
+            # any reservation or provider call. An unreadable policy fails the transaction (closed).
+            policy = ai_policy.in_force(c, tenant)
+            ai_policy.require(
+                policy,
+                USE_CASE,
+                version,
+                "CONFIDENTIAL" if body["profile"]["sensitive_data"] else "INTERNAL",
+                getattr(self.provider, "destination", None),
+                DRAFT_LANGUAGE,
+                tools,
+            )
             count = c.execute(
                 "SELECT count(*) AS n FROM impact.ai_advisory_request WHERE tenant_id=%s AND reserved_at > statement_timestamp()-interval '24 hours'",
                 (tenant,),
@@ -149,12 +187,25 @@ class AIEnablement:
                 c,
                 ctx,
                 "AIAdvisoryRequest",
-                {"content_version": assessment["content_version"], "status": "RESERVED"},
+                {
+                    "content_version": assessment["content_version"],
+                    "status": "RESERVED",
+                    "use_case": USE_CASE,
+                    "policy_version": policy["version"],
+                },
                 "Recorded",
             )
+            # The reservation records the exact policy version that allowed it (migration 0041).
             c.execute(
-                "INSERT INTO impact.ai_advisory_request(tenant_id,request_id,object_id,principal_id,fingerprint,reserved_at) VALUES(%s,%s,%s,%s,%s,statement_timestamp())",
-                (tenant, request, receipt["object_id"], ctx.principal_id, fingerprint),
+                "INSERT INTO impact.ai_advisory_request(tenant_id,request_id,object_id,principal_id,fingerprint,reserved_at,policy_version_id) VALUES(%s,%s,%s,%s,%s,statement_timestamp(),%s)",
+                (
+                    tenant,
+                    request,
+                    receipt["object_id"],
+                    ctx.principal_id,
+                    fingerprint,
+                    policy["policy_version_id"],
+                ),
             )
             audit(c, ctx, "create_ai_advisory", receipt, correlation)
         # The claim has committed. Never call the provider while holding a database transaction.

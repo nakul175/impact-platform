@@ -711,44 +711,78 @@ def test_a_stacked_change_set_counts_new_entries_in_the_earlier_builds_it_releas
 
 def test_an_earlier_review_in_the_change_set_is_checked_on_its_own(repo):
     reg = register(repo)
+
+    def earlier(path, document, base, build, base_build=None):
+        return check.check_earlier_review(path, document, base, reg, build, base_build, root=repo)
+
     first = review(reg, impact_reviews=[impact([AI], ["ai-module"])])
-    assert check.check_earlier_review(REVIEW_PATH, first, None, reg, "0.38.0") == []
+    assert earlier(REVIEW_PATH, first, None, "0.38.0") == []
     # Its open lists are a record of the register at its build, not of today's register.
-    dated = review(reg, open_critical=[], impact_reviews=[impact([AI], ["ai-module"])])
-    assert check.check_earlier_review(REVIEW_PATH, dated, None, reg, "0.38.0") == []
-    assert check.check_earlier_review(REVIEW_0_38, first, None, reg, "0.38.0") == [
+    stale = register(repo)
+    stale["threats"][0] = threat(BASELINE[0], status="PARTIAL")
+    assert check.open_lists(stale)["open_critical"] and check.open_lists(stale) != check.open_lists(reg)
+    dated = review(stale, impact_reviews=[impact([AI], ["ai-module"])])
+    assert earlier(REVIEW_PATH, dated, None, "0.38.0") == []
+    # ... but it cannot be marked passed while it lists an open critical threat or holds an unconfirmed entry.
+    assert earlier(REVIEW_PATH, {**dated, "passed": True}, None, "0.38.0") == [
+        f"release review {REVIEW_PATH}: marked passed while it lists TH01 in open_critical",
+        f"release review {REVIEW_PATH}: marked passed while it lists CH01 in open_chains",
+        f"release review {REVIEW_PATH}: marked passed while impact review IR-0.37-01 is unconfirmed",
+    ]
+    assert earlier(REVIEW_0_38, first, None, "0.38.0") == [
         f"release review {REVIEW_0_38}: release 0.37.0 does not match its file name"
     ]
-    assert check.check_earlier_review(REVIEW_PATH, first, None, reg, "0.36.0") == [
+    assert earlier(REVIEW_PATH, first, None, "0.36.0") == [
         f"release review {REVIEW_PATH}: build 0.37.0 is newer than the current build 0.36.0"
     ]
-    wrong = impact([MIGRATION], ["ai-module"], entry_id="IR-0.37-02")
+    assert earlier(REVIEW_PATH, review(reg, evidence=["docs/missing.md"]), None, "0.38.0") == [
+        f"release review {REVIEW_PATH}: evidence path docs/missing.md does not exist"
+    ]
+    wrong = impact([MIGRATION], ["ai-module"], entry_id="IR-0.38-02")
     wrong["threats"] = ["TH99"]
     broken = review(reg, impact_reviews=[impact([AI], ["ai-module"]), wrong, wrong])
-    assert check.check_earlier_review(REVIEW_PATH, broken, None, reg, "0.38.0") == [
+    where = f" in {REVIEW_PATH}"
+    assert earlier(REVIEW_PATH, broken, None, "0.38.0") == [
         f"release review {REVIEW_PATH}: impact_reviews has a duplicate id",
-        "impact review IR-0.37-02: unknown threat TH99",
-        f"impact review IR-0.37-02: {MIGRATION} is in area(s) migration not listed",
-        "impact review IR-0.37-02: unknown threat TH99",
-        f"impact review IR-0.37-02: {MIGRATION} is in area(s) migration not listed",
+    ] + 2 * [
+        f"impact review IR-0.38-02{where}: an entry of release 0.37.0 is numbered IR-0.37-NN",
+        f"impact review IR-0.38-02{where}: unknown threat TH99",
+        f"impact review IR-0.38-02{where}: {MIGRATION} is in area(s) migration not listed",
     ]
-    [problem] = check.check_earlier_review(
-        REVIEW_PATH, review(reg, notes=["api_key = abcdefghijklmnop1234"]), None, reg, "0.38.0"
-    )
+    [problem] = earlier(REVIEW_PATH, review(reg, notes=["api_key = abcdefghijklmnop1234"]), None, "0.38.0")
     assert problem.startswith(f"release review {REVIEW_PATH}: contains text that looks like a credential")
+    # A review the change set adds must be for a build it releases (newer than the base's build).
+    assert earlier(REVIEW_PATH, first, None, "0.38.0", "0.36.0") == []
+    assert earlier(REVIEW_PATH, first, None, "0.38.0", "0.37.0") == [
+        f"release review {REVIEW_PATH}: added for build 0.37.0, which is not newer than the build at the base "
+        "(0.37.0); a change set adds reviews only for the builds it releases"
+    ]
     # A review that existed at the base is append-only ...
     later = impact([AI], ["ai-module"], entry_id="IR-0.37-02")
-    assert check.check_earlier_review(REVIEW_PATH, review(reg), first, reg, "0.38.0", "0.37.0") == [
-        "impact review IR-0.37-01 was removed since the base; impact reviews are append-only"
+    assert earlier(REVIEW_PATH, review(reg), first, "0.38.0", "0.37.0") == [
+        f"impact review IR-0.37-01{where} was removed since the base; impact reviews are append-only"
     ]
     # ... takes a new entry while its build is still the build at the base ...
     grown = review(reg, impact_reviews=[impact([AI], ["ai-module"]), later])
-    assert check.check_earlier_review(REVIEW_PATH, grown, first, reg, "0.38.0", "0.37.0") == []
-    # ... and none once a later build superseded it at the base.
-    assert check.check_earlier_review(REVIEW_PATH, grown, first, reg, "0.39.0", "0.38.0") == [
+    assert earlier(REVIEW_PATH, grown, first, "0.38.0", "0.37.0") == []
+    # ... and none once a later build superseded it at the base, where nothing else may change either
+    # except a person filling in an empty confirmed_by.
+    assert earlier(REVIEW_PATH, grown, first, "0.39.0", "0.38.0") == [
         f"impact review IR-0.37-02 was added to {REVIEW_PATH}, the review of build 0.37.0, which was already "
         "superseded at the base; add it to docs/release-reviews/release-review-0.39.0.json instead"
     ]
+    rewritten = {
+        **first,
+        "notes": ["Rewritten."],
+        "gates": {**first["gates"], "G11": {"status": "Pass", "reason": "x"}},
+    }
+    assert earlier(REVIEW_PATH, rewritten, first, "0.39.0", "0.38.0") == [
+        f"release review {REVIEW_PATH}: marked passed while impact review IR-0.37-01 is unconfirmed",
+        f"release review {REVIEW_PATH}: the review of build 0.37.0, already superseded at the base, was changed; "
+        "only an empty confirmed_by may be filled in",
+    ]
+    confirmed = review(reg, impact_reviews=[impact([AI], ["ai-module"], confirmed_by="Nakul Jain (owner)")])
+    assert earlier(REVIEW_PATH, confirmed, first, "0.39.0", "0.38.0") == []
 
 
 def stacked_repository(repo):
@@ -801,6 +835,22 @@ def test_a_stacked_pull_request_cannot_review_in_a_superseded_build_or_drop_a_re
         f"impact review missing: the change set touches {policy} but does not modify {REVIEW_0_38}; "
         "add an impact_reviews entry for this change",
     ]
+    # Nor can it file the entry in a made-up review of a build it does not release, even when it also
+    # touches the current build's review.
+    git(repo, "reset", "-q", "--hard", "feature")
+    (repo / policy).write_text("RULES = 3\n")
+    invented = "docs/release-reviews/release-review-0.37.5.json"
+    entry = impact([policy], ["ai-module"], entry_id="IR-0.37-05")
+    write(repo, invented, review(reg, release="0.37.5", impact_reviews=[entry]))
+    current = json.loads((repo / REVIEW_0_38).read_text())
+    current["notes"] = ["Touched."]
+    write(repo, REVIEW_0_38, current)
+    commit(repo, "story 3 with an invented review")
+    problems, _ = check.run(repo, base="feature")
+    assert problems == [
+        f"release review {invented}: added for build 0.37.5, which is not newer than the build at the base "
+        "(0.38.0); a change set adds reviews only for the builds it releases"
+    ]
     git(repo, "reset", "-q", "--hard", "feature")
     (repo / REVIEW_PATH).unlink()
     commit(repo, "drop the 0.37.0 review")
@@ -808,6 +858,71 @@ def test_a_stacked_pull_request_cannot_review_in_a_superseded_build_or_drop_a_re
     assert [problem.split(" since ")[0] for problem in problems] == [
         f"release review {REVIEW_PATH} was deleted"
     ]
+
+
+def test_a_passed_review_needs_the_stacked_entries_confirmed_too(repo):
+    reg = register(repo)
+    first = review(reg, impact_reviews=[impact([AI], ["ai-module"])])
+    second = review(reg, release="0.38.0", passed=True)
+    changed = [AI, REVIEW_PATH, REVIEW_0_38]
+    unconfirmed = (
+        f"release review: marked passed while impact review IR-0.37-01 in {REVIEW_PATH} is unconfirmed"
+    )
+    stacked = [(REVIEW_PATH, first, None)]
+    assert unconfirmed in check.check_review(
+        second, reg, changed, repo, build="0.38.0", earlier_reviews=stacked
+    )
+    first["impact_reviews"][0]["confirmed_by"] = "Nakul Jain (owner)"
+    assert unconfirmed not in check.check_review(
+        second, reg, changed, repo, build="0.38.0", earlier_reviews=stacked
+    )
+
+
+def test_copied_entries_odd_files_lowered_builds_and_bad_input_are_refused(repo):
+    reg, policy = stacked_repository(repo)
+    git(repo, "checkout", "-q", "-b", "attempt")
+    # An entry copied from another review keeps its id, which existed at the base: it is not new.
+    (repo / policy).write_text("RULES = 3\n")
+    copied = json.loads((repo / REVIEW_PATH).read_text())["impact_reviews"][1]
+    current = json.loads((repo / REVIEW_0_38).read_text())
+    current["impact_reviews"].append(copied)
+    write(repo, REVIEW_0_38, current)
+    commit(repo, "copy an entry")
+    problems, _ = check.run(repo, base="feature")
+    assert problems == [
+        f"impact review IR-0.37-02 appears in more than one release review: {REVIEW_PATH}, {REVIEW_0_38}",
+        "impact review IR-0.37-02: an entry of release 0.38.0 is numbered IR-0.38-NN",
+        f"impact review missing: {policy} (ai-module) is named only by IR-0.37-02, which predate this change "
+        f"set; add a new impact_reviews entry for this change to {REVIEW_0_38}",
+    ]
+    # A file in the review folder that is not named like a review is reported, never read.
+    git(repo, "reset", "-q", "--hard", "feature")
+    odd = "docs/release-reviews/release-review-0.038.0.json"
+    write(repo, odd, review(reg, release="0.038.0"))
+    commit(repo, "odd file")
+    [problem] = check.run(repo, base="feature")[0]
+    assert problem.startswith(f"{odd}: not a release review file name")
+    # Builds only go up: lowering the build does not reopen a superseded review.
+    git(repo, "reset", "-q", "--hard", "feature")
+    (repo / "VERSION.json").write_text(json.dumps({"build": "0.37.0"}))
+    commit(repo, "lower the build")
+    [problem] = check.run(repo, base="feature")[0]
+    assert problem.startswith("VERSION.json: build 0.37.0 is lower than 0.38.0 at feature (")
+    # Malformed JSON is a reported problem, not a crash.
+    git(repo, "reset", "-q", "--hard", "feature")
+    (repo / REVIEW_PATH).write_text("{not json")
+    commit(repo, "break the 0.37.0 review")
+    [problem] = check.run(repo, base="feature")[0]
+    assert problem.startswith(f"release review {REVIEW_PATH}: not valid JSON (")
+    # Without VERSION.json at the base the builds the change set releases are unknown.
+    git(repo, "checkout", "-q", "-b", "no-version", "main")
+    (repo / "VERSION.json").unlink()
+    commit(repo, "no version")
+    git(repo, "checkout", "-q", "-b", "child")
+    (repo / "VERSION.json").write_text(json.dumps({"build": "0.37.0"}))
+    commit(repo, "version again")
+    [problem] = check.run(repo, base="no-version")[0]
+    assert problem.startswith("VERSION.json is missing at no-version (")
 
 
 def test_the_review_must_be_for_the_current_build_and_cite_existing_evidence(repo):
@@ -956,6 +1071,7 @@ def test_the_change_set_and_base_files_come_from_git(tmp_path):
     git(tmp_path, "mv", "docs/old.md", "docs/new.md")
     (tmp_path / "infrastructure/migrations").mkdir(parents=True)
     (tmp_path / "infrastructure/migrations/0042_x.sql").write_text("SELECT 1;\n")
+    (tmp_path / "infrastructure/migrations/0043_é.sql").write_text("SELECT 1;\n")
     commit(tmp_path, "change")
     (tmp_path / "docs/keep.md").write_text("uncommitted\n")
     # Default base: origin/main is absent here, so main is used; a rename lists both paths; uncommitted
@@ -966,7 +1082,10 @@ def test_the_change_set_and_base_files_come_from_git(tmp_path):
         "docs/new.md",
         "docs/old.md",
         "infrastructure/migrations/0042_x.sql",
+        "infrastructure/migrations/0043_é.sql",
     ]
+    # A non-ASCII name arrives unquoted, so the material-path rule still sees it.
+    assert "infrastructure/migrations/0043_é.sql" in check.material(check.changed_paths(tmp_path, point))
     assert check.merge_point(tmp_path, "HEAD^1") == ("HEAD^1", point)
     assert check.file_at(tmp_path, point, "docs/old.md") == "old\n"
     assert check.file_at(tmp_path, point, "docs/new.md") is None
@@ -1098,7 +1217,9 @@ def test_the_repository_register_and_release_review_pass_the_check():
     build, _ = current_review()
     problems, lines = check.run(ROOT, changed=material_paths_of_build_0_37() if build == "0.37.0" else [])
     assert problems == [], problems
-    problems, lines = check.run(ROOT, changed=every_review_as_one_change_set())
+    problems, lines = check.run(
+        ROOT, changed=every_review_as_one_change_set(), base_files={"VERSION.json": '{"build": "0.36.0"}'}
+    )
     assert problems == [], problems
     register_data = check.load_json(ROOT, check.REGISTER)
     assert {threat["category"] for threat in register_data["threats"]} == set(check.CATEGORIES)

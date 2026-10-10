@@ -120,7 +120,18 @@ Fix (`scripts/release_review.py`):
 - a review that existed at the base stays append-only, and the review of a build already superseded at the base takes no new entries (the message names the current review instead); deleting a review is refused;
 - an entry at the base may gain `confirmed_by` (a person confirming it); before, any change to an entry was refused, so G11 could never pass.
 
-Tests: `test_a_person_may_confirm_an_earlier_entry_but_not_change_or_unconfirm_it`, `test_a_stacked_change_set_counts_new_entries_in_the_earlier_builds_it_releases`, `test_an_earlier_review_in_the_change_set_is_checked_on_its_own`, `test_a_stacked_pull_request_passes_against_its_base_and_each_story_against_its_own` (includes a test merge commit checked with `HEAD^1`, as CI does), `test_a_stacked_pull_request_cannot_review_in_a_superseded_build_or_drop_a_review`, and the repository test now also checks every review as one change set from before 0.37.0. The five new tests fail against the previous script.
+An independent adversarial review of the fix then reproduced holes that are closed in the same change:
+
+- an entry is new only when its id is in no release review at the base, ids are unique across all reviews, and an entry's id must carry its review's release (`IR-0.39-NN` in the 0.39.x review), so a copied entry never counts;
+- a review marked passed (or G11 "Pass") needs every new entry of the stacked reviews confirmed, and an earlier review cannot be marked passed while it lists an open critical threat or chain or holds an unconfirmed entry;
+- the review of a build superseded at the base cannot change at all, except a person filling in an empty `confirmed_by`; earlier reviews must cite existing evidence;
+- build numbers are plain (ASCII digits, no leading zeros); a file in `docs/release-reviews/` with another name is reported and never read; the build cannot go lower than at the base; a missing `VERSION.json` at the base is reported;
+- changed paths are read with `git diff -z`, so a file name with non-ASCII characters is no longer quoted past the material-path rule (this hole predates FR-SEC-001's stacked fix);
+- malformed JSON is reported as a problem instead of a traceback.
+
+Known limit: with `fetch-depth: 2` the check cannot see the intermediate builds of a stacked pull request, so a review added for a build between the base and the current one (say 0.38.5) is accepted although `VERSION.json` never held it. Its entries are still real, new impact reviews in the diff; a reviewer should check that every added review matches a version bump in the pull request.
+
+Tests: `test_a_person_may_confirm_an_earlier_entry_but_not_change_or_unconfirm_it`, `test_a_stacked_change_set_counts_new_entries_in_the_earlier_builds_it_releases`, `test_an_earlier_review_in_the_change_set_is_checked_on_its_own`, `test_a_stacked_pull_request_passes_against_its_base_and_each_story_against_its_own` (includes a test merge commit checked with `HEAD^1`, as CI does), `test_a_stacked_pull_request_cannot_review_in_a_superseded_build_or_drop_a_review`, `test_a_passed_review_needs_the_stacked_entries_confirmed_too`, `test_copied_entries_odd_files_lowered_builds_and_bad_input_are_refused`, a non-ASCII path in `test_the_change_set_and_base_files_come_from_git`, and the repository test now also checks every review as one change set from build 0.36.0. The new tests fail against the previous script.
 
 ## Integration notes
 

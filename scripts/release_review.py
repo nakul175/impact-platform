@@ -57,6 +57,7 @@ BASELINE = "specification/contracts/threat-register.json"
 # The independent hash record of the preserved package, written when the package was received.
 BASELINE_RECORD = "docs/verification/application-v0.12-original-sha256.json"
 REVIEW = "docs/release-reviews/release-review-{build}.json"
+REVIEW_FILE = re.compile(r"^docs/release-reviews/release-review-(\d+\.\d+\.\d+)\.json$")
 CATEGORIES = (
     "identity",
     "tenant boundary",
@@ -608,10 +609,105 @@ def material(paths):
     return result
 
 
+def build_key(build):
+    """A build such as 0.39.0 as a comparable tuple."""
+    return tuple(int(part) for part in build.split("."))
+
+
+def reviews_in(paths):
+    """{path: build} for the release review files among a change set's paths."""
+    return {path: match.group(1) for path in paths if (match := REVIEW_FILE.match(path))}
+
+
+def _entry_problems(review, threat_ids, label="release review"):
+    """Problems with the impact_reviews entries of one review on their own: duplicates, threats, areas."""
+    problems = []
+    ids = [entry["id"] for entry in review["impact_reviews"]]
+    if len(set(ids)) != len(ids):
+        problems.append(f"{label}: impact_reviews has a duplicate id")
+    for entry in review["impact_reviews"]:
+        for tid in entry["threats"]:
+            if tid not in threat_ids:
+                problems.append(f"impact review {entry['id']}: unknown threat {tid}")
+        for path, areas in material(entry["paths"]).items():
+            missing = sorted(set(areas) - set(entry["areas"]))
+            if missing:
+                problems.append(
+                    f"impact review {entry['id']}: {path} is in area(s) {', '.join(missing)} not listed"
+                )
+    return problems
+
+
+def _append_only_problems(earlier, current):
+    """Entries at the base may only gain confirmed_by (a person confirming them); nothing else changes."""
+    problems = []
+    for key, entry in earlier.items():
+        if key not in current:
+            problems.append(f"impact review {key} was removed since the base; impact reviews are append-only")
+            continue
+        now = current[key]
+        before, after = entry.get("confirmed_by"), now.get("confirmed_by")
+        confirming = before is None and bool(after)
+        if {**now, "confirmed_by": None} != {**entry, "confirmed_by": None} or (
+            after != before and not confirming
+        ):
+            problems.append(f"impact review {key} was changed since the base; add a new entry instead")
+    return problems
+
+
+def check_earlier_review(path, review, base_review, register, build, base_build=None, schema=None, raw=None):
+    """Problems with the review of an earlier build that the change set adds or edits.
+
+    A stacked change set can release several builds at once (0.37.0, 0.38.0 and 0.39.0 in one pull
+    request); the review of each earlier build is part of it. Its open lists are a record of the
+    register at that build and are not compared with today's register. A review that already existed
+    at the base is append-only. It takes new entries only while its build is still the build at the
+    base (`base_build`): a change set may review a change in that build's review and bump the build
+    later. The review of a build already superseded at the base is closed, because a new change is
+    reviewed in a build that has not shipped."""
+    schema = schema if schema is not None else load_json(ROOT, REVIEW_SCHEMA)
+    label = f"release review {path}"
+    problems = schema_errors(review, schema, label)
+    if problems:
+        return problems
+    problems += secret_problems(review, label, raw)
+    named = reviews_in([path]).get(path)
+    if review["release"] != named:
+        problems.append(f"{label}: release {review['release']} does not match its file name")
+    if named and build_key(named) > build_key(build):
+        problems.append(f"{label}: build {named} is newer than the current build {build}")
+    problems += _entry_problems(review, {threat["id"] for threat in register["threats"]}, label)
+    if base_review is not None:
+        earlier = {entry["id"]: entry for entry in base_review.get("impact_reviews", [])}
+        current = {entry["id"]: entry for entry in review["impact_reviews"]}
+        problems += _append_only_problems(earlier, current)
+        if named != base_build:
+            current_path = REVIEW.format(build=build)
+            for key in current:
+                if key not in earlier:
+                    problems.append(
+                        f"impact review {key} was added to {path}, the review of build {named}, which was "
+                        f"already superseded at the base; add it to {current_path} instead"
+                    )
+    return problems
+
+
 def check_review(
-    review, register, changed=(), root=ROOT, schema=None, build=None, base_review=None, raw=None
+    review,
+    register,
+    changed=(),
+    root=ROOT,
+    schema=None,
+    build=None,
+    base_review=None,
+    raw=None,
+    earlier_reviews=(),
 ):
-    """Every problem with one release review against the register, the change set and the review at its base."""
+    """Every problem with one release review against the register, the change set and the review at its base.
+
+    `earlier_reviews` is [(path, review, review at the base or None)] for the reviews of earlier builds
+    that the same change set adds or edits (a stacked pull request); their new entries count as impact
+    reviews of this change set too. Check them on their own with check_earlier_review."""
     schema = schema if schema is not None else load_json(ROOT, REVIEW_SCHEMA)
     problems = schema_errors(review, schema, "release review")
     if problems:
@@ -671,29 +767,21 @@ def check_review(
                     f"release review: marked passed while impact review {entry['id']} is unconfirmed"
                 )
 
-    threat_ids = {threat["id"] for threat in register["threats"]}
-    ids = [entry["id"] for entry in review["impact_reviews"]]
-    if len(set(ids)) != len(ids):
-        problems.append("release review: impact_reviews has a duplicate id")
-    for entry in review["impact_reviews"]:
-        for tid in entry["threats"]:
-            if tid not in threat_ids:
-                problems.append(f"impact review {entry['id']}: unknown threat {tid}")
-        for path, areas in material(entry["paths"]).items():
-            missing = sorted(set(areas) - set(entry["areas"]))
-            if missing:
-                problems.append(
-                    f"impact review {entry['id']}: {path} is in area(s) {', '.join(missing)} not listed"
-                )
+    problems += _entry_problems(review, {threat["id"] for threat in register["threats"]})
 
-    # Impact reviews are append-only, and only an entry added by this change set covers its material paths.
+    # Impact reviews are append-only, and only an entry added by this change set covers its material
+    # paths: an entry new in this build's review, or in the review of an earlier build released by the
+    # same (stacked) change set.
     earlier = {entry["id"]: entry for entry in (base_review or {}).get("impact_reviews", [])}
     current = {entry["id"]: entry for entry in review["impact_reviews"]}
-    for key, entry in earlier.items():
-        if key not in current:
-            problems.append(f"impact review {key} was removed since the base; impact reviews are append-only")
-        elif current[key] != entry:
-            problems.append(f"impact review {key} was changed since the base; add a new entry instead")
+    problems += _append_only_problems(earlier, current)
+    sources = [(review, earlier)] + [
+        (
+            other,
+            {entry["id"]: entry for entry in (other_base or {}).get("impact_reviews", [])},
+        )
+        for _, other, other_base in earlier_reviews
+    ]
     touched = material(changed)
     if touched and review_path not in set(changed):
         problems.append(
@@ -701,8 +789,13 @@ def check_review(
             "add an impact_reviews entry for this change"
         )
     for path, areas in touched.items():
-        naming = [entry["id"] for entry in review["impact_reviews"] if path in entry["paths"]]
-        fresh = [key for key in naming if key not in earlier]
+        naming, fresh = [], []
+        for document, before in sources:
+            for entry in document["impact_reviews"]:
+                if path in entry["paths"]:
+                    naming.append(entry["id"])
+                    if entry["id"] not in before:
+                        fresh.append(entry["id"])
         if not naming:
             problems.append(
                 f"impact review missing: the change set touches {path} ({', '.join(areas)}); "
@@ -769,7 +862,7 @@ def run(root=ROOT, base=None, changed=None, base_files=None):
             ref, point = merge_point(root, base)
             changed = changed_paths(root, point)
             label = f"{ref} ({point[:12]})"
-            for path in (REGISTER, review_path):
+            for path in (REGISTER, "VERSION.json", review_path, *reviews_in(changed)):
                 base_files[path] = file_at(root, point, path)
             lines.append(f"change set: {len(changed)} paths since {label}")
         except RuntimeError as error:
@@ -782,6 +875,27 @@ def run(root=ROOT, base=None, changed=None, base_files=None):
     readable = not schema_errors(register, load_json(ROOT, REGISTER_SCHEMA), "register")
     if readable and base_files.get(REGISTER):
         problems += compare_registers(json.loads(base_files[REGISTER]), register, label)
+    # Reviews of earlier builds released by the same change set (a stacked pull request).
+    base_build = json.loads(base_files["VERSION.json"])["build"] if base_files.get("VERSION.json") else None
+    earlier_reviews = []
+    for path in sorted(reviews_in(changed)):
+        if path == review_path:
+            continue
+        if not (root / path).is_file():
+            problems.append(
+                f"release review {path} was deleted since {label}; the review of every build is kept"
+            )
+            continue
+        if not readable:
+            continue
+        text = (root / path).read_text(encoding="utf-8")
+        document = json.loads(text)
+        before = json.loads(base_files[path]) if base_files.get(path) else None
+        found = check_earlier_review(path, document, before, register, build, base_build, raw=text)
+        problems += found
+        if not schema_errors(document, load_json(ROOT, REVIEW_SCHEMA), path):
+            earlier_reviews.append((path, document, before))
+            lines.append(f"  earlier review in the change set: {path}" + ("" if before else " (added)"))
     if not (root / review_path).is_file():
         problems.append(missing_review_message(build))
     elif readable:
@@ -795,6 +909,7 @@ def run(root=ROOT, base=None, changed=None, base_files=None):
             build=build,
             base_review=base_review,
             raw=review_text,
+            earlier_reviews=earlier_reviews,
         )
     if readable:
         lists = open_lists(register)

@@ -18,7 +18,7 @@ Every release now has a security review that a script checks instead of a genera
    - a chain lacks two independent implemented controls with resolvable evidence (different layers and no shared control in their dependency closures), or is looser than its threats (a chain with a BLOCK threat must be BLOCK);
    - compared with the register at the base of the change set, a threat or chain was removed, an impact lowered, or a decision or verification loosened without `confirmed_by`;
    - the current build's review is missing (the message names the file and how to create it), hides an open threat or chain, or is marked passed (or G11 "Pass") while a critical threat or a chain is open or a decision or impact review is unconfirmed;
-   - the change set touches `infrastructure/migrations/*`, a `*_contracts.py` under `apps/` or `scripts/`, `packages/contracts/access-policy.json` or `apps/api/impact_api/ai_*.py` without modifying the review with a **new** `impact_reviews` entry naming the path. Entries are append-only: one already in the review at the base neither covers a later edit nor may be changed or removed.
+   - the change set touches `infrastructure/migrations/*`, a `*_contracts.py` under `apps/` or `scripts/`, `packages/contracts/access-policy.json` or `apps/api/impact_api/ai_*.py` without modifying the review with a **new** `impact_reviews` entry naming the path. Entries are append-only: one already in the review at the base neither covers a later edit nor may be changed or removed (a person may only fill in an empty `confirmed_by`). A change set that carries several builds counts new entries in every review it adds (see the correction below).
 
    `--init --prepared-by "<name>"` creates the current build's review with the open lists and no impact reviews; `--open` prints the open lists.
 6. **CI.** The `checks` workflow runs `release_review.py --check --base HEAD^1` after `make unit`, with `fetch-depth: 2` so the change set (and the base register and review) are the pull request's first parent, that is its base branch, or on `main` the previous commit.
@@ -108,6 +108,19 @@ The independent review approved with fixes; all were applied.
 4. **The CH01 test is database-free**: the export's HTTP authority checks are not re-run there; they are the existing live tests cited in the chain's evidence.
 5. **Change set**: committed changes only (`git diff` from the merge-base); uncommitted edits are not seen. The base comparison needs the base commit locally (CI fetches two commits). `specification/contracts/release-gates.json` is not edited; the G11 and G12 status lives in each release review.
 6. **Parameter ids**: only literal `parametrize` decorators are derivable; a `[suffix]` on any other test is refused, so reference such tests without one.
+
+## Correction after hosted CI (10 October 2026, PR #94)
+
+The first hosted run of `checks` on PR #94, which carries builds 0.37.0, 0.38.0 and 0.39.0 at once, failed at `release_review.py --check --base HEAD^1` with eight "impact review missing" problems. The check looked for new entries only in the current build's review (0.39.0), but the entries for FR-AI-001 and US-MP-03 are, correctly, in the 0.37.0 and 0.38.0 reviews that the same pull request adds. Each story had passed the check against its own base; the stacked change set had not been checked as one before the push. The earlier statement that the check was clean for the pull request was wrong.
+
+Fix (`scripts/release_review.py`):
+
+- the change set's own release reviews of earlier builds count: a material path is covered by a new entry in the current review or in any review the change set adds, or in the review of the base's build if the change set extends it before bumping;
+- each such earlier review is checked on its own: schema, `release` matching the file name, not newer than the current build, known threats, listed areas, duplicate ids, no credentials; its open lists are a record of its build and are not compared with today's register;
+- a review that existed at the base stays append-only, and the review of a build already superseded at the base takes no new entries (the message names the current review instead); deleting a review is refused;
+- an entry at the base may gain `confirmed_by` (a person confirming it); before, any change to an entry was refused, so G11 could never pass.
+
+Tests: `test_a_person_may_confirm_an_earlier_entry_but_not_change_or_unconfirm_it`, `test_a_stacked_change_set_counts_new_entries_in_the_earlier_builds_it_releases`, `test_an_earlier_review_in_the_change_set_is_checked_on_its_own`, `test_a_stacked_pull_request_passes_against_its_base_and_each_story_against_its_own` (includes a test merge commit checked with `HEAD^1`, as CI does), `test_a_stacked_pull_request_cannot_review_in_a_superseded_build_or_drop_a_review`, and the repository test now also checks every review as one change set from before 0.37.0. The five new tests fail against the previous script.
 
 ## Integration notes
 

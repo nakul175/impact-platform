@@ -1,0 +1,400 @@
+{
+  "schema_version": "imprana-refinement-story-import/v1",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "story_offsets": [
+    210,
+    248
+  ],
+  "before_snapshot": "/private/tmp/imprana-refinement-resume-before.json",
+  "status": "COMPLETE_VERIFIED",
+  "stories": {
+    "FR-DAT-006": {
+      "id": "APL-619",
+      "uuid": "3aee1da3-1b76-4a64-9277-6324e5033ab0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-619/fr-dat-006-governed-transformations",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-006 -->",
+      "planned_append_sha256": "5da228930e2d1b58ebcbe60fb591152f794a499d868536ff2569c22b271ed924",
+      "original_description_sha256": "a656dc03baaef1b871c6fa77a9123ab290171b14a15f7ec1ad3635599ab4c270",
+      "source_gherkin_sha256": "89ffdd65036fbd0d6a8eb472fe3f5493327a405b8b0bf6eb6418eb888ccb9b48",
+      "reconciled": false
+    },
+    "FR-DAT-007": {
+      "id": "APL-621",
+      "uuid": "266a7068-70e4-4c66-a15b-1882a145bafe",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-621/fr-dat-007-schema-drift",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-007 -->",
+      "planned_append_sha256": "858082f42d61d52c20635652de078c72d1b5aa1763161012d3fe5bb682c5e754",
+      "original_description_sha256": "a4d283fb2d09758aa94d7705e98453ed691582c5aae56da39fe22120cf26dc1d",
+      "source_gherkin_sha256": "cbdad74ab23599555e48d99e59ffaf932958e292768aa6fd966bba136dfb56d4",
+      "reconciled": false
+    },
+    "FR-DAT-008": {
+      "id": "APL-622",
+      "uuid": "e6698b84-da6c-43b3-9eb6-7bb7fbeb05f7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-622/fr-dat-008-data-catalogue-and-lineage",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-008 -->",
+      "planned_append_sha256": "8ff5e31d57af3749d36f777e65e122a32abc9f10542a933c84ec6729f3ab75c8",
+      "original_description_sha256": "effb39f53752620df031e6f1ffec818bdb731982e3b10c4fb9d5da75ce52c6d1",
+      "source_gherkin_sha256": "d3c751fd92fcd096cc754662ac0d25b1aa24aff90aeb6d8301ec6825d1359b7e",
+      "reconciled": false
+    },
+    "FR-DAT-010": {
+      "id": "APL-624",
+      "uuid": "ed45726b-debe-444c-bafa-54d05111fbf8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-624/fr-dat-010-refresh-scheduling-and-freshness",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-010 -->",
+      "planned_append_sha256": "7c5c7e8923ba8aa84b50d5e7c913f19fa519a9c2539c7f6645b9ba4876451791",
+      "original_description_sha256": "2c5829adcd9f04b6ebfabc546ea83b45c865a5f5ff4719c8dca04b429bff9652",
+      "source_gherkin_sha256": "dd13ab46793d2df2af532c7a5c90881b54d9828f8bd972dac3f4aeda6893adb0",
+      "reconciled": false
+    },
+    "FR-DAT-011": {
+      "id": "APL-626",
+      "uuid": "1ec2d4d3-d98a-4912-aa02-dbceae815b77",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-626/fr-dat-011-data-exports-and-portability",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-011 -->",
+      "planned_append_sha256": "02d250ef8e233665352d1d21f943400d429f20dd09f8626c0fec0e5321578a60",
+      "original_description_sha256": "df7a4df37eb046f1e09c72d51d646909a2a43ced36fd0099345d15bc9b21cea1",
+      "source_gherkin_sha256": "7a0ab892d23383367d0f2bc9143f28d80399ab699ec56f3ace9ff1a6767b80b9",
+      "reconciled": false
+    },
+    "FR-DAT-012": {
+      "id": "APL-627",
+      "uuid": "f2e06553-3205-4cfc-881b-468e89bd5176",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-627/fr-dat-012-data-retention-and-dependency-review",
+      "marker": "<!-- imprana:refinement:v1:FR-DAT-012 -->",
+      "planned_append_sha256": "10eec10a7ddf55f1c41ef38a2fd02c86606024818e0fd44f5f724a46b626019e",
+      "original_description_sha256": "418f0d0155cc9b2285e33afd6a0e8c72b3073f942ee5582c7fa2105167116e68",
+      "source_gherkin_sha256": "49ba4a07a1106a68d606c48b39fe7a4f70a7dab01c636f24fd71eed5e2f4c248",
+      "reconciled": false
+    },
+    "FR-DQ-001": {
+      "id": "APL-628",
+      "uuid": "5aa0f048-c516-42f9-8ef2-d9b5419ac822",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-628/fr-dq-001-quality-rule-catalogue",
+      "marker": "<!-- imprana:refinement:v1:FR-DQ-001 -->",
+      "planned_append_sha256": "bc229b2d1928eeb297d794e618ba0e1796f9bcda7fd55f6bd7cc12f49ec4bb0d",
+      "original_description_sha256": "f685e3ee4c76584242e10da5e98cefaec26a8544012cb520c4b5ef540f0c6fd3",
+      "source_gherkin_sha256": "5e72fb9f4fd099c1befde6b9f6ae921ee5b76fff73ec685d893bd92f5040dc94",
+      "reconciled": false
+    },
+    "FR-DQ-002": {
+      "id": "APL-629",
+      "uuid": "f4c5378d-c3ea-4c4c-80ff-60183f516746",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-629/fr-dq-002-blocking-and-warning-behaviour",
+      "marker": "<!-- imprana:refinement:v1:FR-DQ-002 -->",
+      "planned_append_sha256": "fbd5a644dbf2b03f90305d3be28661319c4b10a4e073fb74f0b69b17e5f3cc2e",
+      "original_description_sha256": "22146f74e1c755feec537658ce55ea1748754101604912570d4a501f676add2f",
+      "source_gherkin_sha256": "6682928efca3fb321adfbe72f2455e8357153447bcaaad64a0d544f24a1eab35",
+      "reconciled": false
+    },
+    "FR-DQ-004": {
+      "id": "APL-631",
+      "uuid": "b8fd597c-319d-4317-8452-f697ba4ba3a5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-631/fr-dq-004-reconciliation-checks",
+      "marker": "<!-- imprana:refinement:v1:FR-DQ-004 -->",
+      "planned_append_sha256": "b9d2175f0a7c90885510b8144959754f06d236bdebd45846afe3a0810b228fe3",
+      "original_description_sha256": "f7744550657064a6e01ccc5f1a16f264f08e335ab90fbfa0738cf2f901f412db",
+      "source_gherkin_sha256": "c0ec1ed701975c7c76ea32d50ceba5cb273c39f9add612b13f5dab7ac0479cde",
+      "reconciled": false
+    },
+    "FR-DQ-008": {
+      "id": "APL-635",
+      "uuid": "9997c824-9a16-40ed-b515-2dbb053f4889",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-635/fr-dq-008-quality-disclosure",
+      "marker": "<!-- imprana:refinement:v1:FR-DQ-008 -->",
+      "planned_append_sha256": "b2e2c7aeb1388f04155fd5685e3ace5e3b83c663559dd7613603cfcb6365c00d",
+      "original_description_sha256": "44d7bb80d50c9c0fd24a79aa30dff050531ebdf6276c2b96d54368668bade987",
+      "source_gherkin_sha256": "39509cdb478ec9090b597d69334ccec132667921633ccdc1f3a95e9b14fa2ef1",
+      "reconciled": false
+    },
+    "FR-DQ-005": {
+      "id": "APL-633",
+      "uuid": "086842d5-b1eb-468b-b9c2-b817cd159c8e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-633/fr-dq-005-quality-issue-workflow",
+      "marker": "<!-- imprana:refinement:v1:FR-DQ-005 -->",
+      "planned_append_sha256": "0b8f6c8d7dcd1e65b68aa32f53dda6ed24e39747682ff9b1d3dcaf44b0ca650a",
+      "original_description_sha256": "13c0f8e037b426ef71fc21f0d5caec516c0a73053fa65ab008b1187ac99b2a25",
+      "source_gherkin_sha256": "15018439e8ce20818723e642460701b4a13fc090f5b9780b6afbf5d22b974e24",
+      "reconciled": false
+    },
+    "FR-EVA-004": {
+      "id": "APL-636",
+      "uuid": "c336da90-6834-49b6-be57-f4e9465740e7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-636/fr-eva-004-causal-claims-and-uncertainty",
+      "marker": "<!-- imprana:refinement:v1:FR-EVA-004 -->",
+      "planned_append_sha256": "675208556b125336ca2266579e2c12e8b2d148c08d7a9d1c9399ddd2e0e3a92f",
+      "original_description_sha256": "08127f08a5d49c1a1182f66aa93cb3f1a44299878ebe4b15d4c1527af4fbe2de",
+      "source_gherkin_sha256": "6946b5377375dbe7c5a61c2d27118fec6d371076adaa5661d3ee7184faf31482",
+      "reconciled": false
+    },
+    "FR-EVD-002": {
+      "id": "APL-637",
+      "uuid": "bf979749-1f8c-4907-bc40-817b58b22f47",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-637/fr-evd-002-evidence-verification-and-provenance",
+      "marker": "<!-- imprana:refinement:v1:FR-EVD-002 -->",
+      "planned_append_sha256": "1c06f11f36be2d0aa4dc5bc964e43b4a6ebc13a06fdd07a22f199ab00050da1e",
+      "original_description_sha256": "3315067727a1556b8d53ebe183173cd5ee7881f4f5ec6a3d55442d849aad9b7e",
+      "source_gherkin_sha256": "61114b5a8450cb8c19fe3de0abc6f1ad725c46576a3a25f42885fc823b17cac9",
+      "reconciled": false
+    },
+    "FR-EVD-003": {
+      "id": "APL-638",
+      "uuid": "87be19f8-ed7d-4c36-8a14-81537cb79190",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-638/fr-evd-003-search-and-knowledge-retrieval",
+      "marker": "<!-- imprana:refinement:v1:FR-EVD-003 -->",
+      "planned_append_sha256": "0853182f3e12a22d34c0645b07df547efd45f42eee77811cb19d0321730fb4bc",
+      "original_description_sha256": "feabf7c9cbd475e2596c0e668b6d28d028b3b4a7258e30ab15d44f72ca174b72",
+      "source_gherkin_sha256": "e53413f986b9f0e9c8b65fe2a3fa638dcaa7e7f2107de419b328ce6942c311e9",
+      "reconciled": false
+    },
+    "FR-EVD-004": {
+      "id": "APL-640",
+      "uuid": "401f7d49-1b26-49f9-a033-18ef50433365",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-640/fr-evd-004-document-versioning-and-annotations",
+      "marker": "<!-- imprana:refinement:v1:FR-EVD-004 -->",
+      "planned_append_sha256": "aece4719206f9121fedc4fa63063dd2af075c468c3505a97e53d78e2db72fae0",
+      "original_description_sha256": "1b53ccc2e8ed037ce4719457029954857bd1df0ca3b20a729cba23cf96dadab2",
+      "source_gherkin_sha256": "fe0a4ec99795bcfe6cb51f8055c2ebb3d0c69ca75791f4b9911d66f25e1aa541",
+      "reconciled": false
+    },
+    "FR-FIN-001": {
+      "id": "APL-643",
+      "uuid": "754ddfb2-b44d-423a-aadb-4f59a4c7969a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-643/fr-fin-001-funding-and-grant-context",
+      "marker": "<!-- imprana:refinement:v1:FR-FIN-001 -->",
+      "planned_append_sha256": "bae8639436d11001f95bfb793944f252e32456a3a29ea4b3e8357a47200c7666",
+      "original_description_sha256": "0bb098d82a803f166329cb10966ebe4397c9000fb50df666f934f07e46a2389b",
+      "source_gherkin_sha256": "4cd28b072d65a7a9aecd7757ab719c910fc4cbdcd0a603eba421ee91ded3c9d8",
+      "reconciled": false
+    },
+    "FR-EVD-007": {
+      "id": "APL-642",
+      "uuid": "208f4417-fdd5-4423-9f27-11635c3f45bd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-642/fr-evd-007-quotations-and-disclosure",
+      "marker": "<!-- imprana:refinement:v1:FR-EVD-007 -->",
+      "planned_append_sha256": "12bb925efb3117973fd740e8684661e30d809fc75df623f67f32dc48e51e3a1c",
+      "original_description_sha256": "128fff99fb722088adca7be16c392791483631f97992068fb9b54fea75ae643f",
+      "source_gherkin_sha256": "56325b121778ec76e9863735960c1a51f6e5208abc8fabfa91aef492ff56c9b0",
+      "reconciled": false
+    },
+    "FR-FIN-004": {
+      "id": "APL-645",
+      "uuid": "416c58f0-f75f-46b3-8b20-51c8d11ef032",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-645/fr-fin-004-currency-treatment",
+      "marker": "<!-- imprana:refinement:v1:FR-FIN-004 -->",
+      "planned_append_sha256": "020684d4d80cb447b62c0cac501cabe9a7af3b88553a56e1526b9e16c8dd64d5",
+      "original_description_sha256": "aea63f41f68bb0926c63b93753166c0089952e9a7ca7b530a115427538a331b3",
+      "source_gherkin_sha256": "9ddcf0424b850ff7937d3b5df2cbc6ed29f5ec6ed39a6f151ca1d78117fa5dc8",
+      "reconciled": false
+    },
+    "FR-FIN-008": {
+      "id": "APL-647",
+      "uuid": "ba8f84a0-a599-4718-9d72-b89bbfc66832",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-647/fr-fin-008-finance-permissions-and-audit",
+      "marker": "<!-- imprana:refinement:v1:FR-FIN-008 -->",
+      "planned_append_sha256": "d2e6fd78daae466e28d41dfe559745da6f586dbf1d6fa61310036cc4e773e34e",
+      "original_description_sha256": "4c31440ee9601bdd65bf77213ca81ec42ced032c499c90d551f38bdf654f4331",
+      "source_gherkin_sha256": "579a51cffaa34ac97b87eaa971b365ca1e14a0f94e3252161888010faa5ca9a7",
+      "reconciled": false
+    },
+    "FR-FRM-004": {
+      "id": "APL-649",
+      "uuid": "c6383d06-d384-43af-bc84-7181a28606de",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-649/fr-frm-004-multilingual-instruments",
+      "marker": "<!-- imprana:refinement:v1:FR-FRM-004 -->",
+      "planned_append_sha256": "ea7ec029ea79fb7b40a7987245671ec82e07e697c3f041f69c3abdd251209723",
+      "original_description_sha256": "7b0b6dbb0c9f8dc6556bba92954cb1c6719b85f8d6fd1b595ae393a9af4f38ad",
+      "source_gherkin_sha256": "671f433cdd61f917c3e121ec9ad5e54b571745decf2d09a3247b979714f4f270",
+      "reconciled": false
+    },
+    "FR-FRM-007": {
+      "id": "APL-651",
+      "uuid": "b4cd9bd5-0de9-4d27-a5e2-5315ca77fe22",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-651/fr-frm-007-media-and-location-evidence",
+      "marker": "<!-- imprana:refinement:v1:FR-FRM-007 -->",
+      "planned_append_sha256": "1711f35b1ac6fec16bfb25adcc1ff5c894a292ef75c349964fa5d133ff1a2575",
+      "original_description_sha256": "5fa9773724b786198d7d1882e566cc435d1d9d6d0e4c6aa3761bf9464e7c845e",
+      "source_gherkin_sha256": "60ad2149700c8c995b4a49b5756d2ee82de4f95448eec82c3dd45a0439ddecb6",
+      "reconciled": false
+    },
+    "FR-FRM-010": {
+      "id": "APL-653",
+      "uuid": "29034c6c-98af-4952-b9bc-ecac3d0cf557",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-653/fr-frm-010-instrument-testing-and-reuse",
+      "marker": "<!-- imprana:refinement:v1:FR-FRM-010 -->",
+      "planned_append_sha256": "8a010ca1d41747dcfe0e3bae41e4885af49dd75b7b961d65f7a52113d0a4daea",
+      "original_description_sha256": "4bd150ee90b5fcef6efb2b8b0a6aa24e165582ed69fa8e13fbb9bcdda485ccfc",
+      "source_gherkin_sha256": "6f148c6c12fecfbef7cebdc8db532cd9386ec1e969e5597b03aa64d7887ef5ea",
+      "reconciled": false
+    },
+    "US-FP-02": {
+      "id": "APL-655",
+      "uuid": "ba7bf47e-4a24-40b3-aae3-c6d3964348e7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-655/us-fp-02-portfolio-progress-adoption-and-roi-across-grantees",
+      "marker": "<!-- imprana:refinement:v1:US-FP-02 -->",
+      "planned_append_sha256": "56fcae2ebada95ef301c88c9ee2f20b4ef8eb1146fa783e1f39fd36260cff5b5",
+      "original_description_sha256": "59db059750aeee7581b78116aa859385c47fb49dfae1a877f0682275188c9831",
+      "source_gherkin_sha256": "f0d978887c9babb4427aea1e9ebad9c16c562127ab9d67629661867dc2a6c0c7",
+      "reconciled": false
+    },
+    "US-FP-04": {
+      "id": "APL-656",
+      "uuid": "ae179988-3829-49ff-bdb5-4a0e23839c89",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-656/us-fp-04-grantee-controls-what-the-funder-sees",
+      "marker": "<!-- imprana:refinement:v1:US-FP-04 -->",
+      "planned_append_sha256": "5a6d0d777a45bd81690a1582d19b7bef7bb5263e88db62261b5e68cafff68bf2",
+      "original_description_sha256": "06b8fdbb844d530aa624ae7e9393d57e3804f9f188f8e6b634202a1e373ec7c1",
+      "source_gherkin_sha256": "60ee10685895425b9087798d9992a0349a34a7603930e4a326a2392a473eef33",
+      "reconciled": false
+    },
+    "FR-IAM-004": {
+      "id": "APL-658",
+      "uuid": "ea2c7b0f-babf-4db0-9888-b444806397bf",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-658/fr-iam-004-local-account-security",
+      "marker": "<!-- imprana:refinement:v1:FR-IAM-004 -->",
+      "planned_append_sha256": "e2065178593192b57881d1e4ce0a867e3c08ceb51e7acafc42f209e9a11da97e",
+      "original_description_sha256": "83d1956a43a13ab51d9d9e6a89453d41f9732630cf227167b7cee79fdcf2799a",
+      "source_gherkin_sha256": "821d8946cd129efbd0d2dbb855cec8ebdc71eaa8dee77c96175c57e0a5fb1bbd",
+      "reconciled": false
+    },
+    "FR-IAM-007": {
+      "id": "APL-660",
+      "uuid": "a10804d7-3ac8-4fd1-a714-05c9f12d9f2f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-660/fr-iam-007-recovery-and-identity-changes",
+      "marker": "<!-- imprana:refinement:v1:FR-IAM-007 -->",
+      "planned_append_sha256": "01cfedb3745f2fece24fc57cb3f79bd61859f73f8558eeca4dd3c917f1c18c7d",
+      "original_description_sha256": "b36c35bd996c291ad7002be87cec6ffd2b89265b218606df69046b4b7ad86d45",
+      "source_gherkin_sha256": "8130c7daa967fee261afb12989875794021e033b0578ea1826107f709eff08ec",
+      "reconciled": false
+    },
+    "FR-IAM-010": {
+      "id": "APL-662",
+      "uuid": "8ba4b710-86df-45e1-a49c-7cfd525c5750",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-662/fr-iam-010-group-management",
+      "marker": "<!-- imprana:refinement:v1:FR-IAM-010 -->",
+      "planned_append_sha256": "d8b3bbd7d0abc19858ad0011f90f07ba77a3205ffe4897f9bcb1476a76bccc00",
+      "original_description_sha256": "c7fbfed1ebb2bd8a0597727ad7d2eea97f4e911553432eff7aca59c5f6d12dd5",
+      "source_gherkin_sha256": "2a53b786e572a665bd9e04519c5d44f6ffb3c74ada99b241e5627e03450594fb",
+      "reconciled": false
+    },
+    "FR-IAM-012": {
+      "id": "APL-664",
+      "uuid": "7f2c6875-4b0f-4b49-80a5-8ead96bb0a14",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-664/fr-iam-012-service-identities",
+      "marker": "<!-- imprana:refinement:v1:FR-IAM-012 -->",
+      "planned_append_sha256": "0e092fb0d2f20d07fc456eeae23680ddfdfc8f58bcc5676fe8d951f2aec101c3",
+      "original_description_sha256": "b5933e39ada8f66fee518dfe4edf6851a73aa2ecefac9f4578c66f8ad240f0f9",
+      "source_gherkin_sha256": "2e132bc576b1aaf9e20e9bc10661eff152f19a25fdab38d6381c013e6318d935",
+      "reconciled": false
+    },
+    "FR-IAM-013": {
+      "id": "APL-667",
+      "uuid": "0882283a-9229-476e-a13b-9385da5e9b61",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-667/fr-iam-013-user-profile-and-preferences",
+      "marker": "<!-- imprana:refinement:v1:FR-IAM-013 -->",
+      "planned_append_sha256": "8aa6b8b896832f96e5a491c7d1ef82d134a120a546f39515b92ecd10e7f280ec",
+      "original_description_sha256": "9c6568ca680b724a3a685f9e4fd6d5296988cb9f404459652b1caac5ba446ac5",
+      "source_gherkin_sha256": "782d562fccfd9140e0a79b2b08f8b65472b40f4649fd88a79ad84a63b3f8c09a",
+      "reconciled": false
+    },
+    "FR-IND-009": {
+      "id": "APL-670",
+      "uuid": "974f33f2-2d0a-4965-ad99-bf6f6a4c41b0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-670/fr-ind-009-indicator-library-reuse",
+      "marker": "<!-- imprana:refinement:v1:FR-IND-009 -->",
+      "planned_append_sha256": "d646ec86060c2983958166b7732c572bf56c073e0c15775cd1591b4f88d8ac29",
+      "original_description_sha256": "d000755db7590ef73f65d848c9335843f4d0133fb208048ad2e6f7cd679e618a",
+      "source_gherkin_sha256": "c4c21176f507362e1ab9a4ec94f28746654b24ac5f3933cb915496735aa949c0",
+      "reconciled": false
+    },
+    "FR-IND-011": {
+      "id": "APL-672",
+      "uuid": "8686dcea-f1b3-4c85-b61c-70d9d47e19ae",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-672/fr-ind-011-evidence-requirements",
+      "marker": "<!-- imprana:refinement:v1:FR-IND-011 -->",
+      "planned_append_sha256": "04336321d8165e42c2da6b02e21e3e3cc7e57ec6628e04afa6632d0b01210454",
+      "original_description_sha256": "e9e8a4943d7f571dca331fa38cdabe7fa0613c8a40d8e3c4c400aba5588cefbe",
+      "source_gherkin_sha256": "14dd00b7795b99672a9f376e2b4efd730405f9da8d2de38dc9ca234bd098dbf1",
+      "reconciled": false
+    },
+    "FR-IND-013": {
+      "id": "APL-674",
+      "uuid": "6252db23-20de-445d-84f1-06b06fd77ad8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-674/fr-ind-013-status-and-thresholds",
+      "marker": "<!-- imprana:refinement:v1:FR-IND-013 -->",
+      "planned_append_sha256": "46089e04c48b894f2e435c7696b1780e3826278b7b21b1bd0ba2c78d1596aed9",
+      "original_description_sha256": "b32b94cd6b254fb5e0c618e55a84c849f722eca61c47185545c19fd86ccf8972",
+      "source_gherkin_sha256": "416095dafb27db049409b89728882e9aa94434931a259fc1ccf38c55dbe9c111",
+      "reconciled": false
+    },
+    "FR-IND-014": {
+      "id": "APL-677",
+      "uuid": "e320d393-d7b5-43b9-926d-79fea8a1885c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-677/fr-ind-014-retirement-and-replacement",
+      "marker": "<!-- imprana:refinement:v1:FR-IND-014 -->",
+      "planned_append_sha256": "820144608e9bcca97770f0f50b139f54026928914d9d489792dc4efe248b5356",
+      "original_description_sha256": "5826a57a4d22f6e8b30a7282505b8c3e9db4fb776b4db1a50001f37f5fdc0527",
+      "source_gherkin_sha256": "e721ef6906412e465ae42f12692e0b6b325fa2e2711e3f9d59c2c37acaa3f3cb",
+      "reconciled": false
+    },
+    "FR-IND-015": {
+      "id": "APL-680",
+      "uuid": "3060f52c-8486-48b1-9b5a-9a0d9c05334e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-680/fr-ind-015-reference-sheets-and-dictionary-export",
+      "marker": "<!-- imprana:refinement:v1:FR-IND-015 -->",
+      "planned_append_sha256": "e7ab83308e0062d4645d308ade682818616e1302096da8e4357ef84c6f9bfe5b",
+      "original_description_sha256": "250548905b95c93c370a653d0113913c145c9ea77642a405fb671eed2fa37003",
+      "source_gherkin_sha256": "d57e726372c2f9064926e74c8ec5eb3ec01ad2bcadd3e5907872217c5eca2613",
+      "reconciled": false
+    },
+    "FR-INT-004": {
+      "id": "APL-684",
+      "uuid": "a97ccd77-c0ec-4184-b3de-3a22b585a611",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-684/fr-int-004-api-completeness-and-consistency",
+      "marker": "<!-- imprana:refinement:v1:FR-INT-004 -->",
+      "planned_append_sha256": "6b3f962dcef41b255055be378f294fa22e540ae6a97012311320b5a1b7a6afa6",
+      "original_description_sha256": "0a4fc3498fee8a6ad1cc127dc939d318449439207328bc0669087f3dbf41cb6e",
+      "source_gherkin_sha256": "e99db1faa32bde483d4bfd2fd16d7349870d824394e1dda687ac865c89fbc0ee",
+      "reconciled": false
+    },
+    "FR-INT-005": {
+      "id": "APL-685",
+      "uuid": "a0e7e9b0-1cda-4400-b2ac-b6f93494c2c0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-685/fr-int-005-api-version-and-compatibility",
+      "marker": "<!-- imprana:refinement:v1:FR-INT-005 -->",
+      "planned_append_sha256": "53ac4228f7868d4780e6a5ac2b5988baa22b843a433416d31ea494b4f5762ab6",
+      "original_description_sha256": "8da4cdd1bac2d0a69424cefa6fb7a4ab5f0494098d9cc314466d0ccc4f7d36ba",
+      "source_gherkin_sha256": "bc526819c4e97f5b061f37c7946fadd349da5ce0085962cab086f310787e6309",
+      "reconciled": false
+    },
+    "FR-INT-007": {
+      "id": "APL-687",
+      "uuid": "2367340f-db45-43ce-96c1-de8b9dcb73d8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-687/fr-int-007-limits-and-tenant-fairness",
+      "marker": "<!-- imprana:refinement:v1:FR-INT-007 -->",
+      "planned_append_sha256": "c68c8acce503dda6c01f615d6036efa1b3486182c3b77f53ddc7b29b2e0c5e9d",
+      "original_description_sha256": "6822d7b3dd4aa0eca4233d60eedea88d1586e30fd9536fde89394b181647f2a1",
+      "source_gherkin_sha256": "f9f698f01bd45b319462f174415d24e78bb397bf2511199042c263facc6bd093",
+      "reconciled": false
+    },
+    "FR-INT-009": {
+      "id": "APL-689",
+      "uuid": "805e52c8-7645-4e6b-9dc3-8476b314d916",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-689/fr-int-009-integration-diagnostics",
+      "marker": "<!-- imprana:refinement:v1:FR-INT-009 -->",
+      "planned_append_sha256": "9dfcfeeef6aed04081f743ef4f6444a340aea92c9d641bf20ed551644add577d",
+      "original_description_sha256": "149b1a87b986c039be95a1bcf3453c76b8c0907e1e8234d8d9cef96d9270b082",
+      "source_gherkin_sha256": "4976c63c97ca9f55f6ab21ed12696559b84b7d181ca063c6b3e59961ecb1c08c",
+      "reconciled": false
+    }
+  },
+  "last_errors": [],
+  "complete": true,
+  "count": 38,
+  "integrated_readback": {
+    "path": "readback-verification.json",
+    "sha256": "87429ad970ace7baac3414016e9f6efe276c2359d55dc71558f18df7d2acf2ed",
+    "result": "PASS"
+  }
+}

@@ -42,7 +42,8 @@
     "ruff_lint": "PASS",
     "ruff_format": "PASS",
     "receipt_refresh_task_payloads_unchanged": "PASS",
-    "receipt_refresh_story_sections_changed": 14
+    "receipt_refresh_story_sections_changed": 364,
+    "final_local_checks": "final-local-checks.json"
   },
   "source_hashes": {
     "docs/backlog/backlog.csv": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
@@ -54,10 +55,10 @@
     "scripts/linear/test_refinement_verifier_guards.py": "0630a830bd2c9f6554219320da3ea1f59b92f4c480e6095543a06ef44fade0fc"
   },
   "limits": [
-    "Native expansion paused pending direct human approval of repo-derived content and exact Linear destination",
-    "No product scenario execution, Ready decision, sprint commitment or release acceptance implied"
+    "No product scenario execution, Ready decision, sprint commitment or release acceptance implied",
+    "Only optional additional overview document upload awaits separate human approval; approved native tasks/story updates are complete"
   ],
-  "native_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+  "native_payload_sha256": "1c2d6e9a994402a547d6bb6702b569cf87fa3b0bde50c3424dadd3269e920c5f",
   "initial_native_payload": {
     "path": "docs/product/refinement/native-payloads-pre-import.json",
     "sha256": "35eafa53699427f88fbedc5f919880936481b3812fe1ca3e8985a0b37c42beb0",

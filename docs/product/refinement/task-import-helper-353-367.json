@@ -1,0 +1,787 @@
+{
+  "schema_version": "imprana-refinement-task-import/v1",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "story_offsets": [
+    353,
+    368
+  ],
+  "native_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+  "status": "COMPLETE_VERIFIED",
+  "owner_approval": {
+    "message": "karde bhai",
+    "scope": "Remaining native technical tasks and additive story refinements in existing Imprana Commons project"
+  },
+  "tasks": {
+    "TASK-FR-RPT-011-01": {
+      "id": "APL-1840",
+      "uuid": "482d9070-ce5b-4a93-a757-6e7e8efffcb7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1840/task-fr-rpt-011-01-qualified-iati-profile-and-organisation-publication",
+      "title": "[TASK-FR-RPT-011-01] Qualified IATI profile and organisation publication manifest",
+      "source_story_id": "FR-RPT-011",
+      "parent_uuid": "fec03bc1-426b-4d93-bb4c-e51bbe273f67",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "7f5519f0382dad973fb88e4f98c7247b35d9c5ccba2f55c7b41bd2e1fa0f9282",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-002-01": {
+      "id": "APL-1843",
+      "uuid": "2c26c23e-12bd-48fa-b226-f574bf323bb4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1843/task-fr-pln-002-01-directed-contribution-and-containment-relationship",
+      "title": "[TASK-FR-PLN-002-01] Directed contribution and containment relationship model",
+      "source_story_id": "FR-PLN-002",
+      "parent_uuid": "b9058a88-48c4-475b-873a-9e00c041eec1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "6e8f8b2d51a94ed98d4bcbce5afeabe010a471e2ab2b994c36063be361c9a4e9",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-RPT-011-02": {
+      "id": "APL-1845",
+      "uuid": "607af189-f070-4026-a735-af64f19cde40",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1845/task-fr-rpt-011-02-validated-external-publication-and-acknowledgement",
+      "title": "[TASK-FR-RPT-011-02] Validated external publication and acknowledgement ledger",
+      "source_story_id": "FR-RPT-011",
+      "parent_uuid": "fec03bc1-426b-4d93-bb4c-e51bbe273f67",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-RPT-011-01"
+      ],
+      "blocked_by": [
+        "482d9070-ce5b-4a93-a757-6e7e8efffcb7"
+      ],
+      "planned_description_sha256": "e80c47770cc73f72a596f1638855c08d471094ff2cc4c99f89f4750d46203673",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-002-02": {
+      "id": "APL-1846",
+      "uuid": "adf772f2-a5aa-4212-b48d-b51dbaff07b7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1846/task-fr-pln-002-02-permitted-theory-relationship-authoring-and-review",
+      "title": "[TASK-FR-PLN-002-02] Permitted theory relationship authoring and review",
+      "source_story_id": "FR-PLN-002",
+      "parent_uuid": "b9058a88-48c4-475b-873a-9e00c041eec1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-PLN-002-01"
+      ],
+      "blocked_by": [
+        "2c26c23e-12bd-48fa-b226-f574bf323bb4"
+      ],
+      "planned_description_sha256": "3fe3753587aa5df01c6180120f12e2668489ad8a6345fe7199ebfd83b8f8dfe8",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-RPT-011-03": {
+      "id": "APL-1848",
+      "uuid": "db5b247a-7271-4f2f-bca5-6350742c03d1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1848/task-fr-rpt-011-03-schemarejectionremoval-external-adapter-probes",
+      "title": "[TASK-FR-RPT-011-03] Schema/rejection/removal external-adapter probes",
+      "source_story_id": "FR-RPT-011",
+      "parent_uuid": "fec03bc1-426b-4d93-bb4c-e51bbe273f67",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-RPT-011-02"
+      ],
+      "blocked_by": [
+        "607af189-f070-4026-a735-af64f19cde40"
+      ],
+      "planned_description_sha256": "0b4affe61957f9e05c403141613fbd4c659a3e909e0e39feb036b0fc74e7e0a6",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-002-03": {
+      "id": "APL-1850",
+      "uuid": "b6e58a8a-2c36-49c1-9b89-6c62d18a3852",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1850/task-fr-pln-002-03-cross-programme-endpoint-and-containment-cycle",
+      "title": "[TASK-FR-PLN-002-03] Cross-programme endpoint and containment-cycle cases",
+      "source_story_id": "FR-PLN-002",
+      "parent_uuid": "b9058a88-48c4-475b-873a-9e00c041eec1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-PLN-002-02"
+      ],
+      "blocked_by": [
+        "adf772f2-a5aa-4212-b48d-b51dbaff07b7"
+      ],
+      "planned_description_sha256": "d32d65b1bf2d61e3159eb37452bf75ad69aa7b552590b8b848cf5e7b3dbee03d",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-005-01": {
+      "id": "APL-1856",
+      "uuid": "dfffbe27-8d91-43f8-b19c-a6493eb44eed",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1856/task-fr-pln-005-01-versioned-external-standard-relation-taxonomy",
+      "title": "[TASK-FR-PLN-005-01] Versioned external-standard relation taxonomy",
+      "source_story_id": "FR-PLN-005",
+      "parent_uuid": "2617c188-b73f-49a5-9cf1-004b0f98e387",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "4c407ec6e235de0016ccabaa9c8b96b29d8960bd3a7bcb188f0e3bf5a934ee41",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-009-01": {
+      "id": "APL-1858",
+      "uuid": "eebd2f65-5a4b-4e35-ae65-8a8ff200dda7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1858/task-fr-ops-009-01-owned-scheduled-job-checkpoint-and-stop-manifest",
+      "title": "[TASK-FR-OPS-009-01] Owned scheduled-job checkpoint and stop manifest",
+      "source_story_id": "FR-OPS-009",
+      "parent_uuid": "20237b9d-132b-4b2a-91f8-9f5a8c1a93d1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "257ee2d9e25b0e44dca8c48c19ce8c65f5415e40722c8a7f98ed38cb677c9964",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-005-02": {
+      "id": "APL-1860",
+      "uuid": "9af280ec-9670-4f54-8627-8b21a87cbbca",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1860/task-fr-pln-005-02-many-to-many-reporting-classification-without",
+      "title": "[TASK-FR-PLN-005-02] Many-to-many reporting classification without arithmetic",
+      "source_story_id": "FR-PLN-005",
+      "parent_uuid": "2617c188-b73f-49a5-9cf1-004b0f98e387",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-PLN-005-01"
+      ],
+      "blocked_by": [
+        "dfffbe27-8d91-43f8-b19c-a6493eb44eed"
+      ],
+      "planned_description_sha256": "a9608d799b552c4052f95811da9a54df1f8675a239bd12036ee4c427620020cf",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-009-02": {
+      "id": "APL-1863",
+      "uuid": "e2d9b363-102c-4eb2-81fd-8dd78daa5820",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1863/task-fr-ops-009-02-current-policy-resume-and-execution-time-hold-fence",
+      "title": "[TASK-FR-OPS-009-02] Current-policy resume and execution-time hold fence",
+      "source_story_id": "FR-OPS-009",
+      "parent_uuid": "20237b9d-132b-4b2a-91f8-9f5a8c1a93d1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-OPS-009-01"
+      ],
+      "blocked_by": [
+        "eebd2f65-5a4b-4e35-ae65-8a8ff200dda7"
+      ],
+      "planned_description_sha256": "b29133c55a051b6917ef43c46f878e98db73ba4f4ef9b4bf10a50aa0990311d5",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-005-03": {
+      "id": "APL-1865",
+      "uuid": "a0788452-07ea-4145-a88a-cc2f32e0852a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1865/task-fr-pln-005-03-two-sdg-mapping-and-retired-standard-oracle",
+      "title": "[TASK-FR-PLN-005-03] Two-SDG mapping and retired-standard oracle",
+      "source_story_id": "FR-PLN-005",
+      "parent_uuid": "2617c188-b73f-49a5-9cf1-004b0f98e387",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-PLN-005-02"
+      ],
+      "blocked_by": [
+        "9af280ec-9670-4f54-8627-8b21a87cbbca"
+      ],
+      "planned_description_sha256": "0aacc008368d45f2d977c495aeec6f4d597dec8a015e08432a4b255ca76b8897",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-009-03": {
+      "id": "APL-1867",
+      "uuid": "e8ffb874-532a-4e7f-97fe-9ec46c5515f8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1867/task-fr-ops-009-03-partial-retention-run-retry-and-stop-control-drill",
+      "title": "[TASK-FR-OPS-009-03] Partial retention-run retry and stop-control drill",
+      "source_story_id": "FR-OPS-009",
+      "parent_uuid": "20237b9d-132b-4b2a-91f8-9f5a8c1a93d1",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-OPS-009-02"
+      ],
+      "blocked_by": [
+        "e2d9b363-102c-4eb2-81fd-8dd78daa5820"
+      ],
+      "planned_description_sha256": "1e528216d875781582dfe3005ce8dd858fcdbd68255e281ab7df8514abb4aafe",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-010-01": {
+      "id": "APL-1873",
+      "uuid": "6b353685-108e-42ca-9a40-8c116a29709b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1873/task-fr-ops-010-01-deployment-specific-approved-trust-statement",
+      "title": "[TASK-FR-OPS-010-01] Deployment-specific approved trust statement package",
+      "source_story_id": "FR-OPS-010",
+      "parent_uuid": "e033708e-4d00-4df2-8f0b-19fc8a9d9bb5",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "0735af2cea5d4acacc176e436dfee1454053201fa9cd5f674fecdb1aa878a624",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-008-01": {
+      "id": "APL-1876",
+      "uuid": "14f1e96d-55d2-4c72-a644-bc054efc05f8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1876/task-fr-ten-008-01-isolated-configuration-promotion-package-and-diff",
+      "title": "[TASK-FR-TEN-008-01] Isolated configuration promotion package and diff",
+      "source_story_id": "FR-TEN-008",
+      "parent_uuid": "0dfc1b17-34db-476c-82da-b4efe0d8b5c8",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "76b6d2c414ffddcc04935b3c9d421d1f7be0a0836c7f62402f2173f250da4807",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-010-02": {
+      "id": "APL-1878",
+      "uuid": "a6fbe9e4-4f00-41df-a4a9-2074e2bc7383",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1878/task-fr-ops-010-02-applicable-assurance-package-and-stale-claim",
+      "title": "[TASK-FR-OPS-010-02] Applicable assurance package and stale-claim display",
+      "source_story_id": "FR-OPS-010",
+      "parent_uuid": "e033708e-4d00-4df2-8f0b-19fc8a9d9bb5",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-OPS-010-01"
+      ],
+      "blocked_by": [
+        "6b353685-108e-42ca-9a40-8c116a29709b"
+      ],
+      "planned_description_sha256": "c311472d9910fabda16ad7fc639d43a50aa7b0a888fc60589ba8907711ca4ce7",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-008-02": {
+      "id": "APL-1880",
+      "uuid": "b2def0fa-16d5-4980-a78d-cfcf74f946e6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1880/task-fr-ten-008-02-reviewed-version-application-and-compatible",
+      "title": "[TASK-FR-TEN-008-02] Reviewed version application and compatible rollback",
+      "source_story_id": "FR-TEN-008",
+      "parent_uuid": "0dfc1b17-34db-476c-82da-b4efe0d8b5c8",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-TEN-008-01"
+      ],
+      "blocked_by": [
+        "14f1e96d-55d2-4c72-a644-bc054efc05f8"
+      ],
+      "planned_description_sha256": "91e55826b86120f927b03fb2d39e794541828b77c2d975f28874adef758641cd",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-OPS-010-03": {
+      "id": "APL-1881",
+      "uuid": "22fb4647-179b-4907-84b6-d2dba51f7638",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1881/task-fr-ops-010-03-expiredunqualified-variant-and-evidence-sharing",
+      "title": "[TASK-FR-OPS-010-03] Expired/unqualified variant and evidence-sharing review",
+      "source_story_id": "FR-OPS-010",
+      "parent_uuid": "e033708e-4d00-4df2-8f0b-19fc8a9d9bb5",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-OPS-010-02"
+      ],
+      "blocked_by": [
+        "a6fbe9e4-4f00-41df-a4a9-2074e2bc7383"
+      ],
+      "planned_description_sha256": "89758dc55fc1c07c18ed5e07faeae4feacd25ef5bbe191054b60292b63f7748f",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-008-03": {
+      "id": "APL-1883",
+      "uuid": "7908e23d-fadd-47be-9d85-d41498f664c9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1883/task-fr-ten-008-03-synthetic-copy-and-post-promotion-submission-oracle",
+      "title": "[TASK-FR-TEN-008-03] Synthetic-copy and post-promotion submission oracle",
+      "source_story_id": "FR-TEN-008",
+      "parent_uuid": "0dfc1b17-34db-476c-82da-b4efe0d8b5c8",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-TEN-008-02"
+      ],
+      "blocked_by": [
+        "b2def0fa-16d5-4980-a78d-cfcf74f946e6"
+      ],
+      "planned_description_sha256": "bcd6eb65c24967d162e3f033c45ccbe80b7e4f13e90778d8655d3880ff54a669",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-009-01": {
+      "id": "APL-1888",
+      "uuid": "1ff6db05-e432-495b-ac78-c4af0d413606",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1888/task-fr-ten-009-01-accessible-theme-and-verified-domain-lifecycle",
+      "title": "[TASK-FR-TEN-009-01] Accessible theme and verified domain lifecycle",
+      "source_story_id": "FR-TEN-009",
+      "parent_uuid": "bb6ae4ad-a377-4f21-ad29-db319cea0847",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "2bf54e634ecc574c9488ad3140e46da343dbed88be9c5796cc23fd66815d3ce6",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-UX-007-01": {
+      "id": "APL-1890",
+      "uuid": "6fd9e1a4-a52f-4bb0-9719-501c514fa9e1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1890/task-fr-ux-007-01-professionally-reviewed-language-release-inventory",
+      "title": "[TASK-FR-UX-007-01] Professionally reviewed language release inventory",
+      "source_story_id": "FR-UX-007",
+      "parent_uuid": "d00286a7-f8bc-4b46-af04-ffecd8013694",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "7ecda2dd7ef1096ce7148c0c3e92e8599c01b0061183dfddf6ee70ccac533db9",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-009-02": {
+      "id": "APL-1893",
+      "uuid": "198050bb-d52b-4edb-b57d-0aafdb883142",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1893/task-fr-ten-009-02-safe-theme-preview-and-presentation-only-publishing",
+      "title": "[TASK-FR-TEN-009-02] Safe theme preview and presentation-only publishing",
+      "source_story_id": "FR-TEN-009",
+      "parent_uuid": "bb6ae4ad-a377-4f21-ad29-db319cea0847",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-TEN-009-01"
+      ],
+      "blocked_by": [
+        "1ff6db05-e432-495b-ac78-c4af0d413606"
+      ],
+      "planned_description_sha256": "66fbf52ef21a9ca781ffe4a7135fe77ea702e4bbf19c4e900471dd46a20eb48a",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-UX-007-02": {
+      "id": "APL-1895",
+      "uuid": "7e3844d4-87f3-4d2a-966b-dbdccd2c7b6f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1895/task-fr-ux-007-02-rtlcore-workflow-language-presentation",
+      "title": "[TASK-FR-UX-007-02] RTL/core-workflow language presentation",
+      "source_story_id": "FR-UX-007",
+      "parent_uuid": "d00286a7-f8bc-4b46-af04-ffecd8013694",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-UX-007-01"
+      ],
+      "blocked_by": [
+        "6fd9e1a4-a52f-4bb0-9719-501c514fa9e1"
+      ],
+      "planned_description_sha256": "d639fdc6bac22bd794e4f4de3c45c29ae73fad43e4f91b4c5b59d111fc21ec0d",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-TEN-009-03": {
+      "id": "APL-1896",
+      "uuid": "605771e0-082b-49ad-9d4f-e855feb0002c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1896/task-fr-ten-009-03-unsafe-asset-and-expired-domain-refusal",
+      "title": "[TASK-FR-TEN-009-03] Unsafe-asset and expired-domain refusal",
+      "source_story_id": "FR-TEN-009",
+      "parent_uuid": "bb6ae4ad-a377-4f21-ad29-db319cea0847",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-TEN-009-02"
+      ],
+      "blocked_by": [
+        "198050bb-d52b-4edb-b57d-0aafdb883142"
+      ],
+      "planned_description_sha256": "0fe75369a328230ed90e55c9b35ebaa33d65e3a133c37f98050738d3361fffb4",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-UX-007-03": {
+      "id": "APL-1897",
+      "uuid": "ff84ef81-b38b-4260-a3f6-1dcf781763da",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1897/task-fr-ux-007-03-translation-completeness-and-fallback-semantics",
+      "title": "[TASK-FR-UX-007-03] Translation completeness and fallback semantics matrix",
+      "source_story_id": "FR-UX-007",
+      "parent_uuid": "d00286a7-f8bc-4b46-af04-ffecd8013694",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-UX-007-02"
+      ],
+      "blocked_by": [
+        "7e3844d4-87f3-4d2a-966b-dbdccd2c7b6f"
+      ],
+      "planned_description_sha256": "0808112c02ca1936ff36865cf2c50293825d7619cdd5422d047d75621e165c5d",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-WFL-009-01": {
+      "id": "APL-1900",
+      "uuid": "f84e3d4c-b18d-4e1f-8aa3-af386ef62172",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1900/task-fr-wfl-009-01-bounded-eventaction-automation-contract",
+      "title": "[TASK-FR-WFL-009-01] Bounded event/action automation contract",
+      "source_story_id": "FR-WFL-009",
+      "parent_uuid": "81b05a84-6c7d-4f87-a73c-d9cf6fa63a3f",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "793ebe7aca27d4f29c1528417a453da6910a72fa739eeb20ee30012b9d8fddcc",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-AI-017-01": {
+      "id": "APL-1902",
+      "uuid": "51529619-309e-4f23-8c77-c7be2d9fb17c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1902/task-fr-ai-017-01-forecast-scenario-basis-and-sufficiency-contract",
+      "title": "[TASK-FR-AI-017-01] Forecast scenario basis and sufficiency contract",
+      "source_story_id": "FR-AI-017",
+      "parent_uuid": "5f14bdb0-6dea-4a30-b854-b61d4e702774",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "2c3a5b6fe51624cacdecdcdf1c15aa90c5b344cad87eb04cb988965c8f65e952",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-WFL-009-02": {
+      "id": "APL-1903",
+      "uuid": "d26c2463-7b82-4137-90fd-c7b09bfcfa84",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1903/task-fr-wfl-009-02-idempotent-action-receipts-and-disable-boundary",
+      "title": "[TASK-FR-WFL-009-02] Idempotent action receipts and disable boundary",
+      "source_story_id": "FR-WFL-009",
+      "parent_uuid": "81b05a84-6c7d-4f87-a73c-d9cf6fa63a3f",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-WFL-009-01"
+      ],
+      "blocked_by": [
+        "f84e3d4c-b18d-4e1f-8aa3-af386ef62172"
+      ],
+      "planned_description_sha256": "2b93b1df52274cf40227090b33913d97bdc3798c7c04ba355f22dec576896a73",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-AI-017-02": {
+      "id": "APL-1905",
+      "uuid": "7e097b88-7ed6-4d66-94e6-132d511a61a1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1905/task-fr-ai-017-02-versioned-projection-and-reviewed-assumption",
+      "title": "[TASK-FR-AI-017-02] Versioned projection and reviewed assumption adoption",
+      "source_story_id": "FR-AI-017",
+      "parent_uuid": "5f14bdb0-6dea-4a30-b854-b61d4e702774",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-AI-017-01"
+      ],
+      "blocked_by": [
+        "51529619-309e-4f23-8c77-c7be2d9fb17c"
+      ],
+      "planned_description_sha256": "010274ad625bb0a8574d8551096ad9a1b580357bc7c3798f9b0d9468c9b4c34a",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-WFL-009-03": {
+      "id": "APL-1907",
+      "uuid": "c6df7d4f-9a15-4792-be13-4c8292a301d0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1907/task-fr-wfl-009-03-recursive-reminder-and-unauthorized-action-probes",
+      "title": "[TASK-FR-WFL-009-03] Recursive reminder and unauthorized action probes",
+      "source_story_id": "FR-WFL-009",
+      "parent_uuid": "81b05a84-6c7d-4f87-a73c-d9cf6fa63a3f",
+      "milestone_id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "depends_on": [
+        "TASK-FR-WFL-009-02"
+      ],
+      "blocked_by": [
+        "d26c2463-7b82-4137-90fd-c7b09bfcfa84"
+      ],
+      "planned_description_sha256": "ba31e5868f74528074151b7cde36ebbe927dcad368ce408008907cc9dbbd8833",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-AI-017-03": {
+      "id": "APL-1909",
+      "uuid": "d316bc47-54c1-4d91-bf42-4305a83f1bbe",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1909/task-fr-ai-017-03-insufficient-evidence-and-actualprojection",
+      "title": "[TASK-FR-AI-017-03] Insufficient-evidence and actual/projection separation",
+      "source_story_id": "FR-AI-017",
+      "parent_uuid": "5f14bdb0-6dea-4a30-b854-b61d4e702774",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-AI-017-02"
+      ],
+      "blocked_by": [
+        "7e097b88-7ed6-4d66-94e6-132d511a61a1"
+      ],
+      "planned_description_sha256": "6678cccd8dc2a6cbc5adc197fe694fa1fe67172cb6d09617f9339bdd49a673cd",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-005-01": {
+      "id": "APL-1910",
+      "uuid": "ebe8162b-627a-4186-b166-7832d0540897",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1910/task-fr-eva-005-01-observed-outcome-and-contributor",
+      "title": "[TASK-FR-EVA-005-01] Observed outcome and contributor claim/substantiation model",
+      "source_story_id": "FR-EVA-005",
+      "parent_uuid": "be1b07b9-43e7-4bd3-bb44-58a38faa2641",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "4e53310f892f0f7d95b008f3c458dcf8de70a262182c235901d12504e7d814d1",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-008-01": {
+      "id": "APL-1913",
+      "uuid": "42e4e529-963b-4f26-8058-994da6b2a0ff",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1913/task-fr-eva-008-01-contextual-lesson-licenceapplicability-version",
+      "title": "[TASK-FR-EVA-008-01] Contextual lesson licence/applicability version record",
+      "source_story_id": "FR-EVA-008",
+      "parent_uuid": "09f67259-d9d0-47c3-8584-d221530e7f6a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "43692e1debc16c21c877450d3de7a2a467e1019be8d51fe79c6a194cdd8928ae",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-005-02": {
+      "id": "APL-1915",
+      "uuid": "a89c1bed-214c-4ca3-a85a-071911f57062",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1915/task-fr-eva-005-02-separate-outcome-and-contribution-review-narrative",
+      "title": "[TASK-FR-EVA-005-02] Separate outcome and contribution review narrative",
+      "source_story_id": "FR-EVA-005",
+      "parent_uuid": "be1b07b9-43e7-4bd3-bb44-58a38faa2641",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-EVA-005-01"
+      ],
+      "blocked_by": [
+        "ebe8162b-627a-4186-b166-7832d0540897"
+      ],
+      "planned_description_sha256": "b6d2edf07ef58235bacfcb19364322924d46421c5348bc45b6d4ae0421df42df",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-008-02": {
+      "id": "APL-1917",
+      "uuid": "fb583097-3f90-4180-aa27-00498646d6f7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1917/task-fr-eva-008-02-lesson-adaptation-and-permitted-reference-workflow",
+      "title": "[TASK-FR-EVA-008-02] Lesson adaptation and permitted-reference workflow",
+      "source_story_id": "FR-EVA-008",
+      "parent_uuid": "09f67259-d9d0-47c3-8584-d221530e7f6a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-EVA-008-01"
+      ],
+      "blocked_by": [
+        "42e4e529-963b-4f26-8058-994da6b2a0ff"
+      ],
+      "planned_description_sha256": "94d785f6cb166e7dc6e3d108db5ebe49a090b4d818f6ddfedd6797a3682d3a0c",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-005-03": {
+      "id": "APL-1919",
+      "uuid": "766fce89-6ab6-4b85-b156-7586817956ef",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1919/task-fr-eva-005-03-two-contributor-and-unsubstantiated-causation",
+      "title": "[TASK-FR-EVA-005-03] Two-contributor and unsubstantiated causation oracle",
+      "source_story_id": "FR-EVA-005",
+      "parent_uuid": "be1b07b9-43e7-4bd3-bb44-58a38faa2641",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-EVA-005-02"
+      ],
+      "blocked_by": [
+        "a89c1bed-214c-4ca3-a85a-071911f57062"
+      ],
+      "planned_description_sha256": "47929f270129ec70b4e6e999bdfdf7f9df95c5eff538963c9617839175f7dded",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-EVA-008-03": {
+      "id": "APL-1921",
+      "uuid": "008fa3b7-95b4-4031-8b05-98ae15fcc4aa",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1921/task-fr-eva-008-03-cross-tenant-licence-and-confidential-transcript",
+      "title": "[TASK-FR-EVA-008-03] Cross-tenant licence and confidential-transcript refusal",
+      "source_story_id": "FR-EVA-008",
+      "parent_uuid": "09f67259-d9d0-47c3-8584-d221530e7f6a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-EVA-008-02"
+      ],
+      "blocked_by": [
+        "fb583097-3f90-4180-aa27-00498646d6f7"
+      ],
+      "planned_description_sha256": "6d2593626552367dac1b6da0fba77a22c3a78d504938ca31283398e3c6582923",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-FIN-007-01": {
+      "id": "APL-1922",
+      "uuid": "062a7a21-aa2f-49ed-ad5b-47549c42cd4b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1922/task-fr-fin-007-01-cost-effectiveness-ratio-sourcedenominator-contract",
+      "title": "[TASK-FR-FIN-007-01] Cost-effectiveness ratio source/denominator contract",
+      "source_story_id": "FR-FIN-007",
+      "parent_uuid": "c7b0b5a3-8c61-4f7d-9827-67acfaabd2fa",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "fd87d0ea7267ce5c6aca20bafaf515446362f4c83a5ba30501515a329dba99b4",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-008-01": {
+      "id": "APL-1924",
+      "uuid": "1898064b-efad-4bb8-ab67-3791c33cb434",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1924/task-fr-pln-008-01-pinned-baseline-scenario-and-projection-difference",
+      "title": "[TASK-FR-PLN-008-01] Pinned-baseline scenario and projection difference schema",
+      "source_story_id": "FR-PLN-008",
+      "parent_uuid": "7b7586a1-eda6-4618-a2d7-96d6c00c443a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "1d966c387613bf3217580315fe673331b2cbb7ccdcf65bb2db9167bd78bdac34",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-FIN-007-02": {
+      "id": "APL-1926",
+      "uuid": "89b7899e-c9ef-4b51-8b55-514ae9296bbc",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1926/task-fr-fin-007-02-deterministic-ratio-and-source-lineage-calculation",
+      "title": "[TASK-FR-FIN-007-02] Deterministic ratio and source-lineage calculation",
+      "source_story_id": "FR-FIN-007",
+      "parent_uuid": "c7b0b5a3-8c61-4f7d-9827-67acfaabd2fa",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-FIN-007-01"
+      ],
+      "blocked_by": [
+        "062a7a21-aa2f-49ed-ad5b-47549c42cd4b"
+      ],
+      "planned_description_sha256": "0a5eec9873ac8b9cb39a235e908f5019798ebd797d3890376e686f6002d500d4",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-008-02": {
+      "id": "APL-1928",
+      "uuid": "08d89ef2-cac9-4c66-bf75-4511d75ac2df",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1928/task-fr-pln-008-02-scenario-adoption-through-ordinary-amendment",
+      "title": "[TASK-FR-PLN-008-02] Scenario adoption through ordinary amendment proposals",
+      "source_story_id": "FR-PLN-008",
+      "parent_uuid": "7b7586a1-eda6-4618-a2d7-96d6c00c443a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-PLN-008-01"
+      ],
+      "blocked_by": [
+        "1898064b-efad-4bb8-ab67-3791c33cb434"
+      ],
+      "planned_description_sha256": "b91b78e48d7d68f2446a06257f927c17cfd9fb52bc26a02f91f5bdc8fa6b4a19",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-FIN-007-03": {
+      "id": "APL-1929",
+      "uuid": "5a25352c-bcf4-42b0-a6e5-92347138af22",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1929/task-fr-fin-007-03-five-per-participant-and-undefined-denominator",
+      "title": "[TASK-FR-FIN-007-03] Five-per-participant and undefined-denominator cases",
+      "source_story_id": "FR-FIN-007",
+      "parent_uuid": "c7b0b5a3-8c61-4f7d-9827-67acfaabd2fa",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-FIN-007-02"
+      ],
+      "blocked_by": [
+        "89b7899e-c9ef-4b51-8b55-514ae9296bbc"
+      ],
+      "planned_description_sha256": "f25f066f5913f42dd0b839dc18a879c30328375418ff1297443f08c96896bfa4",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-PLN-008-03": {
+      "id": "APL-1930",
+      "uuid": "c5545e4a-e0c2-4666-a61e-23d192919245",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1930/task-fr-pln-008-03-direct-promotion-and-abandoned-portfolio-refusal",
+      "title": "[TASK-FR-PLN-008-03] Direct-promotion and abandoned-portfolio refusal",
+      "source_story_id": "FR-PLN-008",
+      "parent_uuid": "7b7586a1-eda6-4618-a2d7-96d6c00c443a",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-PLN-008-02"
+      ],
+      "blocked_by": [
+        "08d89ef2-cac9-4c66-bf75-4511d75ac2df"
+      ],
+      "planned_description_sha256": "8550131232c40dcfcccb9310d0ca84c6060047939c6175df2e51312b0440aa0c",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-SEC-015-01": {
+      "id": "APL-1931",
+      "uuid": "5ac1813b-ec5f-411a-ba6d-08d65991c4a2",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1931/task-fr-sec-015-01-named-enterprise-variant-capabilityresponsibility",
+      "title": "[TASK-FR-SEC-015-01] Named enterprise variant capability/responsibility profile",
+      "source_story_id": "FR-SEC-015",
+      "parent_uuid": "975ede31-4df9-4ea3-89fb-7a46c4e9dad1",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [],
+      "blocked_by": [],
+      "planned_description_sha256": "da97f5376f5065d9406f95587f4eeb56ba141b5c9c1b40bca873103448e0a036",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-SEC-015-02": {
+      "id": "APL-1932",
+      "uuid": "b96ae064-a577-4fdf-abf7-a67467bbc3f6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1932/task-fr-sec-015-02-variant-functionalisolationrecovery-evidence-pack",
+      "title": "[TASK-FR-SEC-015-02] Variant functional/isolation/recovery evidence pack",
+      "source_story_id": "FR-SEC-015",
+      "parent_uuid": "975ede31-4df9-4ea3-89fb-7a46c4e9dad1",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-SEC-015-01"
+      ],
+      "blocked_by": [
+        "5ac1813b-ec5f-411a-ba6d-08d65991c4a2"
+      ],
+      "planned_description_sha256": "d9f06b223dca45ace7c8fc5882fae2be2811d88434917e5b679f7e7bc2c12308",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    },
+    "TASK-FR-SEC-015-03": {
+      "id": "APL-1933",
+      "uuid": "bcb74099-412a-442e-9e41-0f335dce0f7e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1933/task-fr-sec-015-03-qualified-variant-eligibility-and-capability",
+      "title": "[TASK-FR-SEC-015-03] Qualified-variant eligibility and capability display",
+      "source_story_id": "FR-SEC-015",
+      "parent_uuid": "975ede31-4df9-4ea3-89fb-7a46c4e9dad1",
+      "milestone_id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "depends_on": [
+        "TASK-FR-SEC-015-02"
+      ],
+      "blocked_by": [
+        "b96ae064-a577-4fdf-abf7-a67467bbc3f6"
+      ],
+      "planned_description_sha256": "ba3348d347b654dcb52d612b8f2a895a4b991577238669883f32677d9fb994b4",
+      "resumed_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+      "reconciled": false
+    }
+  },
+  "last_error": null,
+  "preflight": {
+    "at": "2026-10-10T13:12:40.026Z",
+    "projectRows": 1446,
+    "complete": true,
+    "hits": []
+  },
+  "complete": true,
+  "verification": {
+    "result": "PASS",
+    "scope": "Native planning-record read-back only; no product tests executed",
+    "snapshot_sha256": "709d4a450489a0a853737e2a8315118eefb5933d87e98c85ed6a23439154ed1a",
+    "assigned_records": 60,
+    "failure_count": 0
+  },
+  "count": 45,
+  "integrated_readback": {
+    "path": "readback-verification.json",
+    "sha256": "87429ad970ace7baac3414016e9f6efe276c2359d55dc71558f18df7d2acf2ed",
+    "result": "PASS"
+  }
+}

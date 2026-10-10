@@ -1,0 +1,41 @@
+{
+  "schema_version": "imprana-refinement-final-local-checks/v1",
+  "scope": "Planning/import tooling only; no product tests executed",
+  "checks": [
+    {
+      "check": "proposal-build",
+      "exit_code": 0,
+      "output": "{\"status\": \"PASS\", \"stories\": 368, \"epics\": 54, \"original_scenarios_covered\": 1328, \"test_plan_entries\": 1328, \"test_entries_by_level\": {\"manual\": 66, \"integration\": 939, \"browser\": 135, \"native\": 156, \"unit\": 25, \"regression\": 7}, \"existing_tasks_preserved\": 24, \"new_tasks\": 1107, \"total_technical_tasks\": 1131, \"task_dependency_edges\": 779}\n"
+    },
+    {
+      "check": "source-import",
+      "exit_code": 0,
+      "output": "Verified docs/product/linear/import-plan.json: 370 source records, 368 stories, 54 epics, 2 historical documents, 24 proposed technical tasks; all original field and Gherkin bytes preserved. Verification: docs/product/linear/manifest-verification.json.\n"
+    },
+    {
+      "check": "payload-render",
+      "exit_code": 0,
+      "output": "{\"mode\": \"check\", \"counts\": {\"stories\": 368, \"epics\": 54, \"original_scenarios_covered\": 1328, \"test_plan_entries\": 1328, \"test_entries_by_level\": {\"manual\": 66, \"integration\": 939, \"browser\": 135, \"native\": 156, \"unit\": 25, \"regression\": 7}, \"existing_tasks_preserved\": 24, \"new_tasks\": 1107, \"total_technical_tasks\": 1131, \"task_dependency_edges\": 779}}\n"
+    },
+    {
+      "check": "proposal-guards",
+      "exit_code": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.942s\n\nOK\n"
+    },
+    {
+      "check": "verifier-guards",
+      "exit_code": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 4.744s\n\nOK\n"
+    },
+    {
+      "check": "planning-lint",
+      "exit_code": 0,
+      "output": "All checks passed!\n"
+    },
+    {
+      "check": "planning-format",
+      "exit_code": 0,
+      "output": "5 files already formatted\n"
+    }
+  ]
+}

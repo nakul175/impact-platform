@@ -1,5 +1,7 @@
 # Impact Platform documentation index
 
+**Native planning refinement — 10 October 2026:** [Complete refinement](../product/10-COMPLETE-BACKLOG-REFINEMENT.md), [Linear continuation](../product/07-LINEAR-IMPORT-STATUS.md) and [full read-back evidence](../product/refinement/readback-verification.json) record 1,553 unique native project issues, 1,131 proposed tasks and 368 additive story plans covering all 1,328 original scenarios. Original criteria and historical checkpoints remain preserved; this is completed planning integration, not product execution or acceptance. The optional additional overview document upload remains separately pending.
+
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](../HANDOVER.md); `VERSION.json` is the source for the version numbers. The dated paragraphs below record earlier candidates with the figures of their time; the index tables that follow name the build each document was last reconciled to.
 
 **Checkpoint 0.33 (5 October 2026, superseded):** [unified release and evidence](../RELEASE-0.33-tola-ai-extension.md), [support/data/UI appendage](../nonprofit-ai/v1.0/DEVELOPMENT-0.33.md), [programme evidence](../RELEASE-0.33-impact-references.md), [internal member advice](../RELEASE-0.33-human-advice.md). Build 0.33/domain 1.24/platform 1.10/schema 39; 260 domain and 52 platform operations. Application/native/browser/full qualification is in progress. Saved checkpoint 0.32 is `91de7cbc`; earlier records retain their dates.

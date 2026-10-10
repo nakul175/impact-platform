@@ -1,0 +1,6224 @@
+{
+  "result": "PASS",
+  "scope": "Only assigned stories248:338,90stories/275newtasks. Planning readback, no product tests executed.",
+  "counts": {
+    "stories": 90,
+    "tasks": 275,
+    "native_records": 365,
+    "task_dependency_edges": 185
+  },
+  "snapshot_sha256": "df294c98ace93fdb7d4f462a98ab89b92c4eb0db4cb43e1aba6d8b7628763d93",
+  "failures": [],
+  "records": [
+    {
+      "canonical_id": "FR-MIG-001",
+      "native_id": "APL-375",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-001-01",
+      "native_id": "APL-824",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-001-02",
+      "native_id": "APL-826",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-001-03",
+      "native_id": "APL-828",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-002",
+      "native_id": "APL-377",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-002-01",
+      "native_id": "APL-830",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-002-02",
+      "native_id": "APL-832",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-002-03",
+      "native_id": "APL-834",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-003",
+      "native_id": "APL-379",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-003-01",
+      "native_id": "APL-835",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-003-02",
+      "native_id": "APL-837",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-003-03",
+      "native_id": "APL-839",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-004",
+      "native_id": "APL-380",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-004-01",
+      "native_id": "APL-843",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-004-02",
+      "native_id": "APL-845",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-004-03",
+      "native_id": "APL-847",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-005",
+      "native_id": "APL-382",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-005-01",
+      "native_id": "APL-849",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-005-02",
+      "native_id": "APL-851",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-005-03",
+      "native_id": "APL-853",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-005-04",
+      "native_id": "APL-855",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-006",
+      "native_id": "APL-394",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-006-01",
+      "native_id": "APL-856",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-006-02",
+      "native_id": "APL-859",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-006-03",
+      "native_id": "APL-861",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-MIG-008",
+      "native_id": "APL-397",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-008-01",
+      "native_id": "APL-863",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-008-02",
+      "native_id": "APL-865",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-008-03",
+      "native_id": "APL-867",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-MIG-008-04",
+      "native_id": "APL-869",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-AIQ-003",
+      "native_id": "APL-401",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-003-01",
+      "native_id": "APL-870",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-003-02",
+      "native_id": "APL-884",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-003-03",
+      "native_id": "APL-891",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-003-04",
+      "native_id": "APL-902",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-AIQ-005",
+      "native_id": "APL-404",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-005-01",
+      "native_id": "APL-879",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-005-02",
+      "native_id": "APL-895",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-005-03",
+      "native_id": "APL-905",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-AIQ-005-04",
+      "native_id": "APL-913",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-CAP-001",
+      "native_id": "APL-407",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-001-01",
+      "native_id": "APL-880",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-001-02",
+      "native_id": "APL-898",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-001-03",
+      "native_id": "APL-909",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-001-04",
+      "native_id": "APL-916",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-CAP-002",
+      "native_id": "APL-412",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-002-01",
+      "native_id": "APL-919",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-002-02",
+      "native_id": "APL-921",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CAP-002-03",
+      "native_id": "APL-931",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-CMP-001",
+      "native_id": "APL-414",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CMP-001-01",
+      "native_id": "APL-925",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CMP-001-02",
+      "native_id": "APL-934",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-CMP-001-03",
+      "native_id": "APL-941",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-L10-001",
+      "native_id": "APL-417",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-L10-001-01",
+      "native_id": "APL-927",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-L10-001-02",
+      "native_id": "APL-937",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-L10-001-03",
+      "native_id": "APL-943",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-MNT-001",
+      "native_id": "APL-419",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-MNT-001-01",
+      "native_id": "APL-946",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-MNT-001-02",
+      "native_id": "APL-949",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-MNT-001-03",
+      "native_id": "APL-958",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-PER-002",
+      "native_id": "APL-423",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-002-01",
+      "native_id": "APL-952",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-002-02",
+      "native_id": "APL-961",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-002-03",
+      "native_id": "APL-967",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-PER-003",
+      "native_id": "APL-427",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-003-01",
+      "native_id": "APL-955",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-003-02",
+      "native_id": "APL-964",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-003-03",
+      "native_id": "APL-970",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-PER-004",
+      "native_id": "APL-428",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-004-01",
+      "native_id": "APL-973",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-004-02",
+      "native_id": "APL-976",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-004-03",
+      "native_id": "APL-984",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-PER-005",
+      "native_id": "APL-430",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-005-01",
+      "native_id": "APL-979",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-005-02",
+      "native_id": "APL-986",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-005-03",
+      "native_id": "APL-990",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-PER-007",
+      "native_id": "APL-432",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-007-01",
+      "native_id": "APL-982",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-007-02",
+      "native_id": "APL-988",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-PER-007-03",
+      "native_id": "APL-992",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-001",
+      "native_id": "APL-433",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-001-01",
+      "native_id": "APL-994",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-001-02",
+      "native_id": "APL-1017",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-001-03",
+      "native_id": "APL-1024",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-002",
+      "native_id": "APL-436",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-002-01",
+      "native_id": "APL-1020",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-002-02",
+      "native_id": "APL-1026",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-002-03",
+      "native_id": "APL-1029",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-003",
+      "native_id": "APL-438",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-003-01",
+      "native_id": "APL-1022",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-003-02",
+      "native_id": "APL-1027",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-003-03",
+      "native_id": "APL-1030",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-004",
+      "native_id": "APL-440",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-004-01",
+      "native_id": "APL-1031",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-004-02",
+      "native_id": "APL-1033",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-004-03",
+      "native_id": "APL-1045",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-005",
+      "native_id": "APL-444",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-005-01",
+      "native_id": "APL-1034",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-005-02",
+      "native_id": "APL-1049",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-005-03",
+      "native_id": "APL-1060",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-006",
+      "native_id": "APL-447",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-006-01",
+      "native_id": "APL-1035",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-006-02",
+      "native_id": "APL-1055",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-006-03",
+      "native_id": "APL-1064",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-007",
+      "native_id": "APL-451",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-007-01",
+      "native_id": "APL-1067",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-007-02",
+      "native_id": "APL-1070",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-007-03",
+      "native_id": "APL-1077",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OFF-008",
+      "native_id": "APL-455",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-008-01",
+      "native_id": "APL-1072",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-008-02",
+      "native_id": "APL-1080",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OFF-008-03",
+      "native_id": "APL-1090",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-OFF-001",
+      "native_id": "APL-458",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-OFF-001-01",
+      "native_id": "APL-1074",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-OFF-001-02",
+      "native_id": "APL-1083",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-OFF-001-03",
+      "native_id": "APL-1093",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-001",
+      "native_id": "APL-461",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-001-01",
+      "native_id": "APL-1097",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-001-02",
+      "native_id": "APL-1100",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-001-03",
+      "native_id": "APL-1104",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-002",
+      "native_id": "APL-464",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-002-01",
+      "native_id": "APL-1101",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-002-02",
+      "native_id": "APL-1105",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-002-03",
+      "native_id": "APL-1111",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-003",
+      "native_id": "APL-467",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-003-01",
+      "native_id": "APL-1103",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-003-02",
+      "native_id": "APL-1108",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-003-03",
+      "native_id": "APL-1114",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-004",
+      "native_id": "APL-470",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-004-01",
+      "native_id": "APL-1118",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-004-02",
+      "native_id": "APL-1139",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-004-03",
+      "native_id": "APL-1150",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-007",
+      "native_id": "APL-472",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-007-01",
+      "native_id": "APL-1144",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-007-02",
+      "native_id": "APL-1153",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-007-03",
+      "native_id": "APL-1162",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PAR-008",
+      "native_id": "APL-475",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-008-01",
+      "native_id": "APL-1147",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-008-02",
+      "native_id": "APL-1157",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PAR-008-03",
+      "native_id": "APL-1168",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "US-PT-01",
+      "native_id": "APL-478",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-01-01",
+      "native_id": "APL-1170",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-01-02",
+      "native_id": "APL-1180",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-01-03",
+      "native_id": "APL-1189",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "US-PT-02",
+      "native_id": "APL-486",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-02-01",
+      "native_id": "APL-1182",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-02-02",
+      "native_id": "APL-1200",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-02-03",
+      "native_id": "APL-1204",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "US-PT-03",
+      "native_id": "APL-489",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-03-01",
+      "native_id": "APL-1185",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-03-02",
+      "native_id": "APL-1194",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-03-03",
+      "native_id": "APL-1207",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "US-PT-06",
+      "native_id": "APL-493",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-06-01",
+      "native_id": "APL-1211",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-06-02",
+      "native_id": "APL-1219",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-US-PT-06-03",
+      "native_id": "APL-1231",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRV-008",
+      "native_id": "APL-496",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRV-008-01",
+      "native_id": "APL-1223",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRV-008-02",
+      "native_id": "APL-1235",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRV-008-03",
+      "native_id": "APL-1244",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-002",
+      "native_id": "APL-498",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-002-01",
+      "native_id": "APL-1226",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-002-02",
+      "native_id": "APL-1239",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-002-03",
+      "native_id": "APL-1251",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-003",
+      "native_id": "APL-504",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-003-01",
+      "native_id": "APL-1248",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-003-02",
+      "native_id": "APL-1266",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-003-03",
+      "native_id": "APL-1282",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-004",
+      "native_id": "APL-506",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-004-01",
+      "native_id": "APL-1271",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-004-02",
+      "native_id": "APL-1286",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-004-03",
+      "native_id": "APL-1307",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-005",
+      "native_id": "APL-510",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-005-01",
+      "native_id": "APL-1278",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-005-02",
+      "native_id": "APL-1289",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-005-03",
+      "native_id": "APL-1292",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-007",
+      "native_id": "APL-513",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-007-01",
+      "native_id": "APL-1313",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-007-02",
+      "native_id": "APL-1324",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-007-03",
+      "native_id": "APL-1334",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PRG-008",
+      "native_id": "APL-517",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-008-01",
+      "native_id": "APL-1327",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-008-02",
+      "native_id": "APL-1340",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PRG-008-03",
+      "native_id": "APL-1348",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-001",
+      "native_id": "APL-520",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-001-01",
+      "native_id": "APL-1330",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-001-02",
+      "native_id": "APL-1343",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-001-03",
+      "native_id": "APL-1353",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-002",
+      "native_id": "APL-522",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-002-01",
+      "native_id": "APL-1358",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-002-02",
+      "native_id": "APL-1367",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-002-03",
+      "native_id": "APL-1380",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-004",
+      "native_id": "APL-525",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-004-01",
+      "native_id": "APL-1370",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-004-02",
+      "native_id": "APL-1388",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-004-03",
+      "native_id": "APL-1395",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-005",
+      "native_id": "APL-527",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-005-01",
+      "native_id": "APL-1374",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-005-02",
+      "native_id": "APL-1392",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-005-03",
+      "native_id": "APL-1399",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-008",
+      "native_id": "APL-530",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-008-01",
+      "native_id": "APL-1402",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-008-02",
+      "native_id": "APL-1444",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-008-03",
+      "native_id": "APL-1450",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-RPT-012",
+      "native_id": "APL-540",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-012-01",
+      "native_id": "APL-1437",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-012-02",
+      "native_id": "APL-1456",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-RPT-012-03",
+      "native_id": "APL-1470",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PLN-004",
+      "native_id": "APL-542",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-004-01",
+      "native_id": "APL-1440",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-004-02",
+      "native_id": "APL-1461",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-004-03",
+      "native_id": "APL-1466",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PLN-007",
+      "native_id": "APL-544",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-007-01",
+      "native_id": "APL-1473",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-007-02",
+      "native_id": "APL-1490",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-007-03",
+      "native_id": "APL-1506",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-PLN-009",
+      "native_id": "APL-546",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-009-01",
+      "native_id": "APL-1496",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-009-02",
+      "native_id": "APL-1511",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-PLN-009-03",
+      "native_id": "APL-1519",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OPS-002",
+      "native_id": "APL-549",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-002-01",
+      "native_id": "APL-1500",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-002-02",
+      "native_id": "APL-1514",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-002-03",
+      "native_id": "APL-1523",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OPS-003",
+      "native_id": "APL-553",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-003-01",
+      "native_id": "APL-1528",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-003-02",
+      "native_id": "APL-1545",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-003-03",
+      "native_id": "APL-1566",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OPS-004",
+      "native_id": "APL-555",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-004-01",
+      "native_id": "APL-1548",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-004-02",
+      "native_id": "APL-1569",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-004-03",
+      "native_id": "APL-1572",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-OPS-008",
+      "native_id": "APL-557",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-008-01",
+      "native_id": "APL-1552",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-008-02",
+      "native_id": "APL-1571",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-OPS-008-03",
+      "native_id": "APL-1574",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-TEN-004",
+      "native_id": "APL-559",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-004-01",
+      "native_id": "APL-1577",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-004-02",
+      "native_id": "APL-1584",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-004-03",
+      "native_id": "APL-1587",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-TEN-005",
+      "native_id": "APL-560",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-005-01",
+      "native_id": "APL-1585",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-005-02",
+      "native_id": "APL-1589",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-005-03",
+      "native_id": "APL-1595",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-TEN-006",
+      "native_id": "APL-564",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-006-01",
+      "native_id": "APL-1586",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-006-02",
+      "native_id": "APL-1591",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-006-03",
+      "native_id": "APL-1593",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-TEN-007",
+      "native_id": "APL-567",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-007-01",
+      "native_id": "APL-1598",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-007-02",
+      "native_id": "APL-1602",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-TEN-007-03",
+      "native_id": "APL-1606",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-UX-002",
+      "native_id": "APL-570",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-002-01",
+      "native_id": "APL-1603",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-002-02",
+      "native_id": "APL-1608",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-002-03",
+      "native_id": "APL-1611",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-UX-008",
+      "native_id": "APL-573",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-008-01",
+      "native_id": "APL-1604",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-008-02",
+      "native_id": "APL-1609",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-008-03",
+      "native_id": "APL-1613",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-UX-010",
+      "native_id": "APL-577",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-010-01",
+      "native_id": "APL-1615",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-010-02",
+      "native_id": "APL-1620",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-UX-010-03",
+      "native_id": "APL-1627",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "VF-UX-002",
+      "native_id": "APL-585",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-UX-002-01",
+      "native_id": "APL-1622",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-UX-002-02",
+      "native_id": "APL-1630",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-VF-UX-002-03",
+      "native_id": "APL-1635",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-WFL-004",
+      "native_id": "APL-588",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-004-01",
+      "native_id": "APL-1625",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-004-02",
+      "native_id": "APL-1633",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-004-03",
+      "native_id": "APL-1636",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-WFL-005",
+      "native_id": "APL-591",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-005-01",
+      "native_id": "APL-1637",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-005-02",
+      "native_id": "APL-1638",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-005-03",
+      "native_id": "APL-1641",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-WFL-006",
+      "native_id": "APL-594",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-006-01",
+      "native_id": "APL-1639",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-006-02",
+      "native_id": "APL-1643",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-WFL-006-03",
+      "native_id": "APL-1649",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-AI-008",
+      "native_id": "APL-597",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-008-01",
+      "native_id": "APL-1640",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-008-02",
+      "native_id": "APL-1647",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-008-03",
+      "native_id": "APL-1651",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-AI-009",
+      "native_id": "APL-601",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-009-01",
+      "native_id": "APL-1654",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-009-02",
+      "native_id": "APL-1667",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-AI-009-03",
+      "native_id": "APL-1676",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-ACC-012",
+      "native_id": "APL-603",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ACC-012-01",
+      "native_id": "APL-1671",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ACC-012-02",
+      "native_id": "APL-1678",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ACC-012-03",
+      "native_id": "APL-1684",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-CAL-013",
+      "native_id": "APL-607",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-013-01",
+      "native_id": "APL-1674",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-013-02",
+      "native_id": "APL-1679",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-013-03",
+      "native_id": "APL-1681",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-CAL-016",
+      "native_id": "APL-611",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-016-01",
+      "native_id": "APL-1688",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-016-02",
+      "native_id": "APL-1695",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-016-03",
+      "native_id": "APL-1696",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-ANA-005",
+      "native_id": "APL-613",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-005-01",
+      "native_id": "APL-1693",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-005-02",
+      "native_id": "APL-1697",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-005-03",
+      "native_id": "APL-1699",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-ANA-006",
+      "native_id": "APL-616",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-006-01",
+      "native_id": "APL-1694",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-006-02",
+      "native_id": "APL-1698",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-006-03",
+      "native_id": "APL-1700",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-ANA-009",
+      "native_id": "APL-618",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-009-01",
+      "native_id": "APL-1701",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-009-02",
+      "native_id": "APL-1702",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-009-03",
+      "native_id": "APL-1705",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-ANA-010",
+      "native_id": "APL-620",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-010-01",
+      "native_id": "APL-1704",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-010-02",
+      "native_id": "APL-1706",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-010-03",
+      "native_id": "APL-1708",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-DQ-007",
+      "native_id": "APL-623",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-DQ-007-01",
+      "native_id": "APL-1703",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-DQ-007-02",
+      "native_id": "APL-1707",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-DQ-007-03",
+      "native_id": "APL-1709",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVA-001",
+      "native_id": "APL-625",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-001-01",
+      "native_id": "APL-1710",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-001-02",
+      "native_id": "APL-1711",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-001-03",
+      "native_id": "APL-1714",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVA-002",
+      "native_id": "APL-630",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-002-01",
+      "native_id": "APL-1712",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-002-02",
+      "native_id": "APL-1776",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-002-03",
+      "native_id": "APL-1778",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVA-003",
+      "native_id": "APL-632",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-003-01",
+      "native_id": "APL-1713",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-003-02",
+      "native_id": "APL-1777",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-003-03",
+      "native_id": "APL-1779",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVA-006",
+      "native_id": "APL-634",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-006-01",
+      "native_id": "APL-1781",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-006-02",
+      "native_id": "APL-1782",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-006-03",
+      "native_id": "APL-1784",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVA-007",
+      "native_id": "APL-639",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-007-01",
+      "native_id": "APL-1780",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-007-02",
+      "native_id": "APL-1783",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVA-007-03",
+      "native_id": "APL-1785",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVD-005",
+      "native_id": "APL-641",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-005-01",
+      "native_id": "APL-1787",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-005-02",
+      "native_id": "APL-1789",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-005-03",
+      "native_id": "APL-1791",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVD-006",
+      "native_id": "APL-644",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-006-01",
+      "native_id": "APL-1788",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-006-02",
+      "native_id": "APL-1790",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-006-03",
+      "native_id": "APL-1792",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-EVD-008",
+      "native_id": "APL-646",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-008-01",
+      "native_id": "APL-1794",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-008-02",
+      "native_id": "APL-1796",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-EVD-008-03",
+      "native_id": "APL-1799",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-FIN-002",
+      "native_id": "APL-648",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-002-01",
+      "native_id": "APL-1793",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-002-02",
+      "native_id": "APL-1795",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-002-03",
+      "native_id": "APL-1801",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-FIN-003",
+      "native_id": "APL-650",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-003-01",
+      "native_id": "APL-1803",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-003-02",
+      "native_id": "APL-1807",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-003-03",
+      "native_id": "APL-1809",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "FR-FIN-005",
+      "native_id": "APL-652",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "original_description_preserved": true,
+        "marker_once": true,
+        "refinement_exact": true,
+        "gherkin_source_hash": true,
+        "receipt_identity": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-005-01",
+      "native_id": "APL-1805",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-005-02",
+      "native_id": "APL-1808",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    },
+    {
+      "canonical_id": "TASK-FR-FIN-005-03",
+      "native_id": "APL-1811",
+      "checks": {
+        "required_fields": true,
+        "receipt_identity": true,
+        "title_exact": true,
+        "description_exact": true,
+        "criteria_exact": true,
+        "parent_exact": true,
+        "release_exact": true,
+        "project_team_exact": true,
+        "backlog": true,
+        "labels": true,
+        "unset_fields": true,
+        "prerequisites_exact": true
+      }
+    }
+  ]
+}

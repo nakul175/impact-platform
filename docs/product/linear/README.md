@@ -1,6 +1,6 @@
 # Imprana Commons Linear integration
 
-The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in the connected Aplyd Sandbox workspace contains the product documents, five release milestones and product-specific labels. All 446 native issues are saved and read-back verified: 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. The complete import plan, identities and verification receipts are preserved in Git; see [current status and continuation](../07-LINEAR-IMPORT-STATUS.md). It uses the existing APL team. Other products in that workspace are outside this integration.
+The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in the connected Aplyd Sandbox workspace contains the product documents, five release milestones and product-specific labels. All 1,553 native project issues are saved and read-back verified: 54 epics, 368 stories and 1,131 proposed technical tasks, with 779 prerequisites. Every story includes its additive refinement and scenario-test proposal. The complete import plan, identities and verification receipts are preserved in Git; see [current status and continuation](../07-LINEAR-IMPORT-STATUS.md). It uses the existing APL team. Other products in that workspace are outside this integration.
 
 ## Native structure
 
@@ -27,6 +27,8 @@ Release membership belongs to the story. Epic parents spanning releases have no 
 ## Import and recovery
 
 `scripts/linear/build_imprana_import.py` creates [import-plan.json](import-plan.json) from the unchanged source CSV and [technical-tasks.json](../technical-tasks.json). It performs no external writes. The plan records the source commit and checksum, stable canonical IDs and exact descriptions. [checkpoint.json](checkpoint.json) records real Linear IDs and URLs as each object is saved. [verification.json](verification.json) records the final project/document/milestone result. [issue-readback-verification.json](issue-readback-verification.json) records all 446 issue checks and exact original Gherkin hashes. The two story-import shards preserve parallel creation receipts.
+
+The original 446-issue import and its 24-task/36-edge reports remain unchanged baseline history. The [complete expansion report](../refinement/readback-verification.json) covers all 1,553 current native project issues, 1,107 new tasks, 368 exact additive sections and 743 new prerequisite edges. Read both the original checkpoint and all `refinement/task-import-*.json` / `story-import-*.json` receipts before a continuation; root/helper mirrors must contain identical objects. Three erroneous duplicates are now linked to their original tasks outside active project scope; [cleanup evidence](../refinement/duplicate-cleanup-248-367.json) preserves that history. Only the optional new overview document awaits separate approval.
 
 Before a continuation, read the checkpoint and list the project's existing objects. Match canonical IDs and content markers before creating anything. After an uncertain response, fetch the known identifier or search the exact canonical title and marker; do not blindly repeat a create call. Do not overwrite a person's changed status, estimate or description during a later sync without reconciling the difference.
 

@@ -1,38 +1,35 @@
 # Imprana Commons Linear import status and handover
 
-<!-- BEGIN COMPLETE REFINEMENT CHECKPOINT -->
-## Complete refinement proposal; native expansion paused
+## Complete native refinement — 10 October 2026
 
-Nakul's requested [368-story refinement](10-COMPLETE-BACKLOG-REFINEMENT.md) is complete locally: 1,131 proposed tasks, all 1,328 original source scenarios planned, 779 proposed prerequisite edges and 12 executed planning/import guard tests passing. Original CSV, import plan, initial 24 task cores and original Gherkin remain unchanged.
+Nakul directly approved the remaining task/story expansion in the existing [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d). All **1,553 unique native project issues** are saved and fully read-back verified: **54 epics, 368 stories and 1,131 proposed technical tasks**, with **779 task prerequisite relationships**. All 368 stories have additive scope, inspected reuse, decisions, dependencies, tasks and test plans for all **1,328 original scenarios**. [Full native verification](refinement/readback-verification.json) passes with zero failures. Eleven existing product documents and five release milestones remain in the same project.
 
-The native delta is **not complete**. Automatic approval review rejected the first task in one slice twice, requiring direct human approval of the repo-derived payload and exact existing Imprana Commons Linear destination. All new native writes are paused; an approval question is pending with Nakul. The three `refinement/task-import-*.json` receipts record real acknowledged IDs and the precise blocker. [Current partial read-back](refinement/partial-readback-verification.json) validates 493 unique native records: the original 446 plus 47 new tasks and 33 new prerequisite edges, with zero check failures and `complete: false`; 1,060 new tasks and all 368 story sections remain pending. Reconcile these with the original checkpoint before resuming; do not recreate saved tasks or infer product acceptance. The counts below describe the initial completed 446-issue baseline only.
-<!-- END COMPLETE REFINEMENT CHECKPOINT -->
+This completes planning integration. The scenario plans are unrun; Ready, sprint commitments, implementation evidence, release qualification and owner acceptance remain separate. Twelve executed guard checks validate the planning/import tools. Four source stories remain In Review and ten existing estimates are preserved; no new estimates, assignments, due dates or cycles were added.
 
-Nakul authorised creating the product planning hierarchy and integrating it into Linear on 10 October 2026. The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in Aplyd Sandbox, team APL, now contains **11 documents, five release milestones and all 446 read-back-verified native issues**: 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. The planning import is complete. This does not declare an accepted release or completed development.
+Only the optional additional overview document is awaiting its separate upload approval. Automatic approval review rejected creating that new document because the human approval covered tasks and story updates. The [complete overview](10-COMPLETE-BACKLOG-REFINEMENT.md) is preserved in Git and all approved native task/story changes are complete; [document-import.json](refinement/document-import.json) records the precise pending scope.
 
 ## Preserved planning
 
 | Layer | Saved result |
 | --- | --- |
 | Vision | VISION-IMPRANA-01: impact management and nonprofit technology adoption in one governed platform |
-| Strategy | STR-01 through STR-05, with explicit priorities and proposed outcome measures |
+| Strategy | STR-01 through STR-05, priorities and proposed outcome measures |
 | Roadmap | Foundation → R1 Pilot → R2 Scale → R3 Ecosystem; Later remains outside committed scope |
 | Release goals | Five RG-* milestones, scope, exit conditions and owner decisions |
-| Epics | 54 native parent issues, mapped to strategy objectives |
-| Stories | 368 native story children, preserving source IDs, personas, benefits, requirements and original acceptance/rejection criteria |
-| Technical tasks | 24 proposed native child tasks beneath US-DX-01a, US-DX-03, FR-AI-016a and US-CM-05; six per story |
-| Dependencies | All 36 proposed task blocking relationships; graph is acyclic |
-| History | US-DX-01 and FR-AI-016 remain retained Split parents in the history document, not duplicate active scope |
+| Epics | 54 native parent issues mapped to strategy objectives |
+| Stories and criteria | 368 native story children; source IDs, personas, benefits, requirements and original Gherkin preserved |
+| Technical tasks | 1,131 proposed native children: 24 original cores plus 1,107 new tasks |
+| Scenario plans | 1,328 proposed entries in the 368 additive story sections; no product-test execution claimed |
+| Prerequisites | 779 exact native task relationships: 36 original plus 743 new; graph acyclic |
+| History | Two Split parents retained in the history document; no duplicate active scope |
 
-The [backlog catalogue](08-BACKLOG-CATALOGUE.md) links all 446 source IDs to their native issues. The [import plan](linear/import-plan.json) contains complete descriptions and source mappings. The [local manifest verification](linear/manifest-verification.json) checks preservation and structure; the [native issue read-back report](linear/issue-readback-verification.json) checks the actual saved issues.
+## Verified evidence and history
 
-## Verified external result
+The final project listing was fully paginated. Every one of its 1,553 issues has a full native GET description and relation read-back merged with explicit selected metadata; truncated list bodies were not used as proof. The verifier preserves the original 446-object baseline, every original Gherkin UTF-8 block, all 96 original task criteria, the original 36 edges and protected workflow fields. It also validates every new task body, native parent, milestone, identity and prerequisite, and every once-only additive story section with its actual task links.
 
-The initial baseline listing contained exactly 446 unique issues before refinement expansion. Every issue was fetched with its complete description because list responses truncate text. The read-back verifier passes with zero failures: all canonical IDs, parents, release milestones, strategy text, labels, statuses and estimates match. All **368 original Gherkin blocks match UTF-8 bytes exactly**; all **96 proposed task criteria** and **36 dependency edges** match. Four source stories remain In Review and ten existing estimates are preserved; other stories and tasks remain Backlog. No new estimates, assignments, due dates or sprint cycles were added.
+[Full proposal](refinement/backlog-refinement.json), [native task plan](refinement/native-task-plan.json), [refreshed payloads](refinement/native-payloads.json), [local validation](refinement/local-validation.json), [full native read-back](refinement/readback-verification.json) and [project/document/milestone verification](refinement/native-metadata-verification.json) are separate records. The initial [checkpoint](linear/checkpoint.json), [446-issue verification](linear/issue-readback-verification.json), [initial document/project verification](linear/verification.json), [493-issue partial report](refinement/partial-readback-verification.json) and [pre-import payload](refinement/native-payloads-pre-import.json) remain unchanged historical evidence. Initial counts in those records are historical, not the current expanded count.
 
-[checkpoint.json](linear/checkpoint.json) contains real project, document, milestone, label, epic, story and task IDs. [verification.json](linear/verification.json) records the final project/document/milestone result; [issue-readback-verification.json](linear/issue-readback-verification.json) records per-issue checks and source hashes. The two parallel story shards retain creation receipts. Verification establishes planning-object preservation; it is not a product acceptance or execution of the story scenarios.
-
-Linear's Markdown parser initially turned the literal technical names ai.usage.read and delivery.py in three proposed task descriptions into website links. Escaped input removed those unintended links; full native read-back now preserves the original literal wording. The original task source and manifest hashes remain unchanged.
+Three erroneous duplicate task creations were discovered during interruption recovery. Each is marked Duplicate of its unchanged original, detached from the active project/parent/prerequisite graph, and retained without deletion. [Duplicate-cleanup evidence](refinement/duplicate-cleanup-248-367.json) records the original milestones, automatic Linear status/milestone changes and successful original-object checks. Native errors and uncertainty history remain in the relevant slice receipts.
 
 ## Resolved quota history
 
@@ -42,14 +39,14 @@ This confirms issue creation is allowed. It does not establish that a subscripti
 
 ## Continue one step at a time
 
-1. Read the product documents, source manifest, checkpoint and final reports. Run `python3 scripts/linear/build_imprana_import.py --check` to confirm the preserved source.
-2. Continue in the existing project and APL team. **Do not rerun creation:** all 446 objects and dependencies already exist. Match canonical IDs and native UUIDs, and reconcile any human changes before future updates. After an uncertain response, read before retrying.
-3. Use Linear for day-to-day planning status and Git for baselines, decisions and evidence. Keep both Split parents as history. Preserve the four In Review stories until Nakul records acceptance; merged code is not product acceptance.
-4. Review the next proposed story with Nakul one decision at a time. Product scope, pilot targets, new estimates, delivery dates, AI destination, permitted data and paid services remain open decisions. The four proposed Sprint 2 stories and their tasks are not committed or Ready solely because they were imported.
-5. Before building, satisfy the Definition of Ready and the existing engineering/security gates. Official arithmetic, tenant isolation, current authority, natural-person independence and immutable approved history remain binding.
+1. Start with [README](README.md), the [complete refinement](10-COMPLETE-BACKLOG-REFINEMENT.md) and the full read-back report. Review the proposed slice against current code and capacity before choosing it.
+2. Reconcile the original checkpoint and all original/root/helper task and story receipts before any sync. The three original task slices cover 360 + 382 + 365 new tasks; the original story slices cover 124 + 124 + 120 stories. Mirror receipt objects are identical. Do not count mirrors as additional issues or recreate any saved canonical ID.
+3. Resolve the next story's owner/engineer decisions and Definition of Ready. Pilot targets, estimates, dates, external AI destination, permitted data and paid services remain explicit choices. A saved proposal is not Ready or committed.
+4. After an interrupted or uncertain native write, reload durable receipts, fully paginate exact canonical titles and fetch complete content before retrying. Source criteria and human status/estimate/assignment changes are never reset by a sync.
+5. Preserve deterministic arithmetic, current authority, tenant isolation, natural-person independence and immutable approved history. Qualification, merge, deployment and owner acceptance require their existing separate gates.
 
 ## Git and engineering handover
 
-This planning work is preserved on branch `docs/imprana-linear-planning-2026-10-10`, based on source commit `8a1e405f0086033dfb25ad834689a08bfe9f1eea`. The original integration checkout and historical drafts remain intact. Start at [AGENTS.md](../../AGENTS.md), [CLAUDE.md](../../CLAUDE.md) and the engineering evidence. Resolve runtime versions and migration numbers from VERSION.json and the actual frozen migration ledger before engineering; older handover header counts are retained history.
+The planning branch is `docs/imprana-linear-planning-2026-10-10`, based on product source commit `8a1e405f0086033dfb25ad834689a08bfe9f1eea`. Source CSV, initial import plan, original task manifest, historical drafts, applied migrations and runtime code are unchanged. Complete native receipts and evidence are preserved on this branch. Start at [AGENTS.md](../../AGENTS.md), [CLAUDE.md](../../CLAUDE.md) and [HANDOVER](../HANDOVER.md); resolve runtime versions and migration numbers from VERSION.json and the actual frozen migration ledger before engineering. Older header counts retain their original observation dates.
 
-Do not push directly to main. A pull request for this change runs CI because the branch adds Python planning/verification tools; obtain the repository's required financial permission before opening it. Merge and deployment require the current gates and owner confirmation. The product source baseline is not a fresh verification of live staging. No runtime feature, version bump, migration or acceptance promotion is part of this planning change.
+No runtime feature, version bump, migration, acceptance promotion, main merge, deployment or paid CI/provider action is part of this planning change. Do not push directly to main. Opening a PR for the branch's Python planning/verification tools runs CI and requires the repository's financial permission; merging and deployment also retain their qualification and owner gates.

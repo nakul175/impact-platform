@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 from uuid import uuid4
 
 import psycopg
@@ -75,7 +76,7 @@ def export_migration_ledger(live):
     }
     path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
     path.write_text(json.dumps(report, indent=2) + "\n")
-    assert len(applied) == 40
+    assert len(applied) == 43
     assert all(row["applied_sha256"] == row["current_source_sha256"] for row in applied)
 
 
@@ -792,3 +793,81 @@ def test_actual_app_login_cannot_read_private_pointers_without_current_export_co
                 ).fetchone()[0]
                 == 0
             )
+
+
+def test_plans_archived_under_guidance_v1_and_v2_both_export_valid_documents(
+    live, export_tenant, monkeypatch
+):
+    """US-DC-04: exports stay valid for a plan saved under each archive edition."""
+    from impact_api.ai_adoption_plans import AIAdoptionPlans
+    from impact_api.ai_plan_export_contracts import DOCUMENT_VALIDATOR
+    from test_ai_content_archives import V1_SOLUTIONS_SHA256, under_guidance_v1
+
+    settings = Settings(**live.config)
+    db = Database(settings)
+    identity = Auth(settings, db).resolve(
+        Request(
+            {
+                "type": "http",
+                "method": "POST",
+                "headers": [(b"authorization", ("Bearer " + live.token("reviewer")).encode())],
+            }
+        )
+    )
+    with under_guidance_v1(monkeypatch):
+        old = AIAdoptionPlans(Service(settings, db)).save(
+            identity, export_tenant["tenant_id"], command(plan()), str(uuid4())
+        )
+    new = saved(live, export_tenant)
+    documents = {}
+    for name, row in (("v1", old), ("v2", new)):
+        body = request_body()
+        result = issue(live, export_tenant, row, body)
+        document = json.loads(result["content"])
+        assert DOCUMENT_VALIDATOR.is_valid(document)
+        assert result["manifest"]["guidance_status"] == "COMPLETE"
+        # Owner decision (US-DC-04 review): the package label follows the archived guidance edition,
+        # and each document validates against its own published schema only.
+        package = "nonprofit-ai-plan-export-" + name
+        assert result["manifest"]["schema"] == document["schema_version"] == package
+        validate("AIPlanExportDocument" + name.upper(), document)
+        with pytest.raises(DomainError):
+            validate("AIPlanExportDocument" + ("V2" if name == "v1" else "V1"), document)
+        # The exact replay returns the same bytes and label.
+        assert issue(live, export_tenant, row, body) == result
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (export_tenant["tenant_id"],))
+            stored = c.execute(
+                "SELECT package_schema_version,guidance_schema_version FROM impact.ai_plan_export_issuance "
+                "WHERE tenant_id=%s AND operation_id=%s",
+                (export_tenant["tenant_id"], body["operation_id"]),
+            ).fetchone()
+        assert dict(stored) == {
+            "package_schema_version": package,
+            "guidance_schema_version": "nonprofit-ai-guidance-" + name,
+        }
+        documents[name] = document
+    with live.db() as c:
+        definition = c.execute(
+            "SELECT pg_get_constraintdef(oid) AS d FROM pg_constraint WHERE conrelid="
+            "'impact.ai_plan_export_issuance'::regclass AND conname='ai_plan_export_issuance_package_schema_version_check'"
+        ).fetchone()["d"]
+    assert sorted(set(re.findall(r"'([^']*)'", definition))) == [
+        "nonprofit-ai-plan-export-v1",
+        "nonprofit-ai-plan-export-v2",
+    ]
+    assert documents["v1"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V1
+    assert documents["v2"]["guidance"]["snapshot_schema_version"] == archives.SCHEMA_V2
+    v1_listings = documents["v1"]["guidance"]["solutions"]["payload"]
+    assert (
+        hashlib.sha256(
+            json.dumps(v1_listings, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        ).hexdigest()
+        == V1_SOLUTIONS_SHA256
+    )
+    assert not any("commercial_disclosure" in item for item in v1_listings["solutions"])
+    assert documents["v2"]["guidance"]["solutions"]["payload"] == archives.solutions_catalog()
+    assert all(
+        item["commercial_disclosure"]["status"] == "NONE_KNOWN"
+        for item in documents["v2"]["guidance"]["solutions"]["payload"]["solutions"]
+    )

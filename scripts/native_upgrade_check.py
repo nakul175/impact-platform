@@ -20,9 +20,14 @@ docs/current/CURRENT-DATA-DICTIONARY.md, that `max(version)` is LATEST, that the
 0017, 0018 and 0019 add exist, and that the tenant, revision, session and outbox counts loaded at
 the baseline are unchanged, with the pre-existing session's new columns NULL, the pre-existing
 delivery row left undispatchable (no channel, PENDING, lease generation 0) and the pre-existing
-framework and target projections present with their new columns NULL (`data_preserved`); any of
-these failing fails the check. The result is merged into the JSON report named by --report under
-`upgrade_check`.
+framework and target projections present with their new columns NULL (`data_preserved`). Since
+0.39.0 one archived guidance snapshot labelled `nonprofit-ai-guidance-v1` is inserted as soon as the
+schema has 0037: at the baseline when BASELINE >= 37, otherwise the upgrade stops at 37, inserts it
+and continues (`upgrade_plan`), so 0043's re-created edition check validates a populated table from
+any baseline. The row must read back unchanged, and the full definitions of 0043's two checks must
+equal the definitions the same server renders for exactly v1 and v2 (`guidance_archive_preserved`,
+`edition_checks_exact`); any of these failing fails the check. The result is merged into the JSON
+report named by --report under `upgrade_check`.
 
     IMPACT_ADMIN_DSN (or IMPACT_FIXTURE_DSN)   superuser connection; creates and drops the database
     IMPACT_LOGIN_PASSWORD_*                     the provisioned login passwords (see provision_logins.py)
@@ -88,6 +93,63 @@ PROGRAMME = "67bdb368-3aa8-5924-8275-52460bd936f2"
 PERIOD = "13f1e2c4-1faa-55d3-b904-ed90e67406f5"
 FRAMEWORK = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a01", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a02")
 TARGET = ("0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a03", "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a04")
+# The archived guidance snapshot inserted at a baseline with 0037 (fixture tenant A); synthetic payload.
+SNAPSHOT = "0b9f3f5e-6f0e-4d1c-9c52-1a0f5d7c1a05"
+SNAPSHOT_PAYLOAD = {"schema_version": "nonprofit-ai-guidance-v1", "synthetic_upgrade_check": True}
+GUIDANCE_EDITIONS = ("nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2")
+EXPORT_PACKAGES = ("nonprofit-ai-plan-export-v1", "nonprofit-ai-plan-export-v2")
+# 0037 creates impact.ai_content_snapshot; 0043 re-creates the two checks below as IN (v1, v2).
+SNAPSHOT_SCHEMA = 37
+EDITION_CHECKS_SCHEMA = 43
+EDITION_CHECKS = {
+    "ai_content_snapshot_schema_version_check": (
+        "impact.ai_content_snapshot",
+        "schema_version",
+        GUIDANCE_EDITIONS,
+    ),
+    "ai_plan_export_issuance_package_schema_version_check": (
+        "impact.ai_plan_export_issuance",
+        "package_schema_version",
+        EXPORT_PACKAGES,
+    ),
+}
+
+
+def upgrade_plan(baseline, latest):
+    """([schema to migrate up to, in order], schema at which the v1 snapshot is inserted or None)."""
+    if latest < SNAPSHOT_SCHEMA:
+        return [latest], None
+    if baseline >= SNAPSHOT_SCHEMA:
+        return [latest], baseline
+    return [SNAPSHOT_SCHEMA, latest], SNAPSHOT_SCHEMA
+
+
+def expected_check_table():
+    """A temporary table whose checks are exactly the expected ones, so the server renders the
+    expected definitions in its own format for a full-text comparison."""
+    columns = [
+        sql.SQL("{} varchar(64) CONSTRAINT {} CHECK({} IN ({}))").format(
+            sql.Identifier(column),
+            sql.Identifier(name),
+            sql.Identifier(column),
+            sql.SQL(",").join(sql.Literal(value) for value in values),
+        )
+        for name, (_, column, values) in EDITION_CHECKS.items()
+    ]
+    return sql.SQL("CREATE TEMP TABLE upgrade_expected_checks({})").format(sql.SQL(",").join(columns))
+
+
+def insert_snapshot(c):
+    c.execute(
+        "INSERT INTO impact.ai_content_snapshot(tenant_id,snapshot_id,schema_version,payload,payload_sha256,captured_at) VALUES(%s,%s,%s,%s,%s,now())",
+        (OUTBOX_TENANT, SNAPSHOT, GUIDANCE_EDITIONS[0], Jsonb(SNAPSHOT_PAYLOAD), snapshot_digest()),
+    )
+
+
+def snapshot_digest():
+    return hashlib.sha256(
+        json.dumps(SNAPSHOT_PAYLOAD, sort_keys=True, separators=(",", ":")).encode()
+    ).digest()
 
 
 def insert_planning_rows(c):
@@ -126,7 +188,7 @@ def ledgered_checksums():
     """The migration register table of the data dictionary: file name -> SHA-256."""
     register = {}
     for line in DICTIONARY.read_text().splitlines():
-        match = re.fullmatch(r"\|\s*(\d{4}_[a-z_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
+        match = re.fullmatch(r"\|\s*(\d{4}_[a-z0-9_]+\.sql)\s*\|\s*([0-9a-f]{64})\s*\|", line.strip())
         if match:
             register[match.group(1)] = match.group(2)
     if len(register) != LATEST:
@@ -198,6 +260,9 @@ def run(admin_dsn, fixture_dsn, passwords):
         result["baseline"]["platform_operators"] = c.execute(
             "SELECT count(*) FROM impact.platform_operator"
         ).fetchone()[0]
+        stops, snapshot_at = upgrade_plan(BASELINE, LATEST)
+        if snapshot_at == BASELINE:
+            insert_snapshot(c)
         result["baseline"]["assignment_rows"] = c.execute(
             "SELECT count(*) FROM impact.assignment_current"
         ).fetchone()[0]
@@ -210,11 +275,19 @@ def run(admin_dsn, fixture_dsn, passwords):
         result["baseline"]["outbox_deliveries"] = c.execute(
             "SELECT count(*) FROM impact.outbox_delivery"
         ).fetchone()[0]
-    second = migrate.run(migrator, superuser)
+    applied = []
+    for stop in stops:
+        second = migrate.run(migrator, superuser, until=stop)
+        applied += second["applied"]
+        if stop == snapshot_at and snapshot_at != BASELINE:
+            with psycopg.connect(superuser, prepare_threshold=None) as c:
+                insert_snapshot(c)
     result["upgrade"] = {
-        "applied": second["applied"],
+        "applied": applied,
         "session_user": second["session_user"],
         "migration_role": second["migration_role"],
+        "stops": stops,
+        "v1_snapshot_inserted_at_schema": snapshot_at,
     }
     register = ledgered_checksums()
     files = {
@@ -312,6 +385,31 @@ def run(admin_dsn, fixture_dsn, passwords):
         assignments = c.execute(
             "SELECT count(*) FROM impact.assignment_current WHERE unit_key IS NULL AND previous_assignee_id IS NULL AND reason IS NULL"
         ).fetchone()[0]
+        # 0043 (build 0.39.0): each re-created check is exactly IN (v1, v2), compared as full text with
+        # the definition this server renders for that exact check; the v1 snapshot row is untouched.
+        definitions = {}
+        if LATEST >= EDITION_CHECKS_SCHEMA:
+            c.execute(expected_check_table())
+            for name, (table, _, _) in EDITION_CHECKS.items():
+                actual = c.execute(
+                    "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid=%s::regclass AND conname=%s",
+                    (table, name),
+                ).fetchone()
+                expected = c.execute(
+                    "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='pg_temp.upgrade_expected_checks'::regclass AND conname=%s",
+                    (name,),
+                ).fetchone()[0]
+                definitions[name] = {"actual": actual[0] if actual else None, "expected": expected}
+        archived = (
+            c.execute(
+                "SELECT count(*) FROM impact.ai_content_snapshot WHERE tenant_id=%s AND snapshot_id=%s AND schema_version=%s AND payload=%s AND payload_sha256=%s",
+                (OUTBOX_TENANT, SNAPSHOT, GUIDANCE_EDITIONS[0], Jsonb(SNAPSHOT_PAYLOAD), snapshot_digest()),
+            ).fetchone()[0]
+            if snapshot_at is not None
+            else None
+        )
+    edition_checks_exact = all(item["actual"] == item["expected"] for item in definitions.values())
+    guidance_archive_preserved = snapshot_at is None or archived == 1
     ledger = {int(name[:4]): sha for name, sha in register.items()}
     recorded = {int(v): s for v, s in rows}
     mismatches = [v for v in sorted(set(ledger) | set(recorded)) if ledger.get(v) != recorded.get(v)]
@@ -341,6 +439,10 @@ def run(admin_dsn, fixture_dsn, passwords):
         "operator_rows_preserved": legacy_operator == 1
         and operators == result["baseline"]["platform_operators"],
         "assignment_rows_preserved": assignments == result["baseline"]["assignment_rows"],
+        "guidance_archive_preserved": guidance_archive_preserved,
+        "v1_snapshot_inserted_at_schema": snapshot_at,
+        "edition_checks_exact": edition_checks_exact,
+        "edition_check_definitions": definitions,
         "data_preserved": tenants == result["baseline"]["tenants"]
         and revisions == result["baseline"]["revisions"]
         and sessions == result["baseline"]["sessions"]
@@ -373,6 +475,8 @@ def run(admin_dsn, fixture_dsn, passwords):
         or not all(v027_tables)
         or not result["verification"]["operator_rows_preserved"]
         or not result["verification"]["assignment_rows_preserved"]
+        or not result["verification"]["guidance_archive_preserved"]
+        or not result["verification"]["edition_checks_exact"]
         or not result["verification"]["data_preserved"]
     ):
         raise RuntimeError("Upgrade verification failed: " + json.dumps(result["verification"]))

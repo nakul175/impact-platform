@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import type { Catalog } from "./AIEnablement";
+import {
+  AIDisclosureLabel,
+  type CommercialDisclosure,
+} from "./AIToolComparison";
 
 type Revision = {
   revision_id: string;
@@ -44,6 +48,8 @@ type Solution = {
   source_urls: { label: string; url: string }[];
   verification_notes: string[];
   data_review_questions: string[];
+  // Captured with each revision saved since guidance edition v2 (build 0.39.0); absent in v1.
+  commercial_disclosure?: CommercialDisclosure;
 };
 type Practice = {
   content_version: string;
@@ -64,6 +70,7 @@ type Guidance = {
   object_id: string;
   revision_id: string;
   status: "COMPLETE" | "PARTIAL" | "UNAVAILABLE";
+  snapshot_schema_version: string | null;
   captured_at: string | null;
   snapshot_sha256: string | null;
   catalog: Archived<ArchivedCatalog>;
@@ -262,7 +269,13 @@ export function AIGuidanceArchive({
                     : "No guidance archive exists for this revision. Older guide text cannot be reconstructed from today’s guide."}
               </p>
               {guidance.captured_at && (
-                <p>Captured {when(guidance.captured_at)}.</p>
+                <p>
+                  Captured {when(guidance.captured_at)}
+                  {guidance.snapshot_schema_version
+                    ? " · archive edition " + guidance.snapshot_schema_version
+                    : ""}
+                  .
+                </p>
               )}
               <details>
                 <summary>
@@ -370,6 +383,11 @@ export function AIGuidanceArchive({
                         <h5>
                           {item.name} · {item.provider}
                         </h5>
+                        <AIDisclosureLabel
+                          name={item.name}
+                          disclosure={item.commercial_disclosure}
+                          missing="This revision was saved before the directory recorded commercial disclosures, so none was captured with it."
+                        />
                         <p>{item.description}</p>
                         <p>
                           Category: {item.category.replaceAll("_", " ")}.

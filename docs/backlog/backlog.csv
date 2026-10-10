@@ -115,7 +115,7 @@ Scenario: Reject transmission that fails policy
 Scenario: Reject implicit enablement of tools
   Given a chat interface has been enabled
   When a user attempts to use a tool that was not separately enabled
-  Then the tool is not available","Reject if a disabled capability makes a provider call, enabling chat enables every tool, sensitive content leaves the authorised boundary without an approved destination and purpose, or core workflows cannot be completed with AI disabled.",Impact Platform ledger,,,"The administrator enables named use cases with allowed data classes, destinations, language coverage, budget and required review. The UI shows the active policy before a request. Disabled capabilities make no provider call and preserve the manual path. Enabling a chat interface does not enable every tool. Sensitive processing requires approved destination and purpose; policy failure blocks transmission before content leaves the authorised boundary.","Disable AI for a tenant and complete programme setup, period close and report generation using deterministic and manual workflows.",8,Sprint 1,Ready
+  Then the tool is not available","Reject if a disabled capability makes a provider call, enabling chat enables every tool, sensitive content leaves the authorised boundary without an approved destination and purpose, or core workflows cannot be completed with AI disabled.",Impact Platform ledger,,,"The administrator enables named use cases with allowed data classes, destinations, language coverage, budget and required review. The UI shows the active policy before a request. Disabled capabilities make no provider call and preserve the manual path. Enabling a chat interface does not enable every tool. Sensitive processing requires approved destination and purpose; policy failure blocks transmission before content leaves the authorised boundary.","Disable AI for a tenant and complete programme setup, period close and report generation using deterministic and manual workflows.",8,Sprint 1,In review
 FR-AI-007,Report drafting,R1 Pilot,AI capabilities,Functional,Should,Absent,MEL Manager,"As a MEL Manager, I want AI to draft report sections from an approved snapshot and template with evidence references and metric bindings, so that drafting is faster while official numbers, caveats, evidence gaps and human edits stay intact.","Scenario: Draft binds snapshot and template
   Given an approved snapshot and report template
   When the MEL Manager requests a draft
@@ -680,7 +680,7 @@ US-DC-04,Disclose commercial relationships,R1 Pilot,Adoption: Discover,Functiona
 Scenario: Reject a listing without a disclosure label
   Given a solution listing with no disclosure label
   When it is published to the catalogue
-  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,5,Sprint 1,Ready
+  Then publication is refused",Reject if any listing lacks a disclosure label or hides a commercial relationship.,Imprana BRD,,,,Disclosure label on each listing,5,Sprint 1,In review
 US-IM-01,Track usage and outcomes against baseline,R1 Pilot,Adoption: Improve,Functional,Must,Partial,Executive Director,"As an Executive Director, I want usage and outcomes tracked against our baseline, so that we know whether it is working.","Scenario: Compare current metrics with the locked baseline
   Given an opportunity with a locked baseline and a deployed solution
   When the Executive Director opens the dashboard
@@ -754,7 +754,7 @@ Scenario: Reject a ranking that ignores the organisation's weights
   Given the organisation has adjusted the weights
   When the ranking is shown
   Then it does not use any weights other than the organisation's
-  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,5,Sprint 1,Ready
+  And no opportunity is ranked without its scores shown",Reject if the ranking hides scores or does not reflect the weights the organisation set.,Imprana BRD,,,,Ranked list with scores; weights adjustable by the organisation,5,Sprint 1,In review
 US-MP-04,Explain each recommendation,R1 Pilot,Adoption: Map,Functional,Must,Exists,Executive Director,"As an Executive Director, I want to see why each opportunity is recommended, so that I can trust and explain it.","Scenario: Show why an opportunity is recommended
   Given a recommended opportunity
   When the Executive Director views it
@@ -2676,7 +2676,7 @@ Scenario: Reject hidden critical paths
   Given an unresolved critical threat path
   When a general security signoff is given
   Then the critical path is not hidden or treated as resolved
-  And tests that cover only isolated input checks without chained abuse across modules are insufficient","Reject if an unresolved critical path is hidden by a general security sign-off, a threat lacks a linked control, owner, test and residual decision, or tests omit chained abuse across modules.",Impact Platform ledger,,,"The release review records threat scenarios for identity, tenant boundaries, source data, files, offline devices, publication, AI and support. Each threat links to a functional control, owner, test and residual decision. Material feature changes trigger an impact review. An unresolved critical path cannot be hidden by a general security signoff. Tests must include chained abuse across modules, not only isolated input checks.",Review a document injection leading to export and a support access escalation; identify the independent controls and verification evidence for both paths.,8,Sprint 1,Ready
+  And tests that cover only isolated input checks without chained abuse across modules are insufficient","Reject if an unresolved critical path is hidden by a general security sign-off, a threat lacks a linked control, owner, test and residual decision, or tests omit chained abuse across modules.",Impact Platform ledger,,,"The release review records threat scenarios for identity, tenant boundaries, source data, files, offline devices, publication, AI and support. Each threat links to a functional control, owner, test and residual decision. Material feature changes trigger an impact review. An unresolved critical path cannot be hidden by a general security signoff. Tests must include chained abuse across modules, not only isolated input checks.",Review a document injection leading to export and a support access escalation; identify the independent controls and verification evidence for both paths.,8,Sprint 1,In review
 FR-SEC-002,Encryption and key governance,R1 Pilot,Security,Functional,Must,Partial,Platform Operator,"As a Platform Operator, I want an encryption inventory covering every data location and transport, with visible key ownership, status, expiry and rotation evidence, so that keys can be governed and rotated without exposing key material or losing authorised access.","Scenario: Inventory covers every location
   Given the security inventory
   When it is reviewed

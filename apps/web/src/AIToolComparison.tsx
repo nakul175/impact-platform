@@ -1,5 +1,22 @@
 import React from "react";
 
+// US-DC-04: whether Imprana has a known commercial relationship with a listing's provider.
+export type RelationshipType =
+  | "referral_fee"
+  | "revenue_share"
+  | "reseller"
+  | "sponsorship"
+  | "ownership";
+export type CommercialDisclosure = {
+  status: "NONE_KNOWN" | "DISCLOSED";
+  relationship_types: RelationshipType[];
+  statement: string;
+  declared_on: string;
+  // PENDING: a draft prepared for Imprana editorial review, not yet confirmed. Absent only on the
+  // invented tools of the public walkthrough, which make no editorial claim.
+  editorial_confirmation?: "PENDING" | "CONFIRMED";
+};
+
 export type PublicToolSolution = {
   id: string;
   name: string;
@@ -14,7 +31,71 @@ export type PublicToolSolution = {
   source_urls: { label: string; url: string }[];
   verification_notes: string[];
   data_review_questions: string[];
+  // Always present in the current directory (the server refuses to serve a listing without one);
+  // absent only in guidance archived before disclosures existed (edition v1).
+  commercial_disclosure?: CommercialDisclosure;
 };
+
+const relationshipLabels: Record<RelationshipType, string> = {
+  referral_fee: "Referral fee",
+  revenue_share: "Revenue share",
+  reseller: "Reseller",
+  sponsorship: "Sponsorship",
+  ownership: "Ownership",
+};
+
+export function disclosureHeadline(disclosure?: CommercialDisclosure | null) {
+  if (!disclosure) return "Commercial disclosure not recorded";
+  if (disclosure.status === "NONE_KNOWN")
+    return "No commercial relationship known";
+  const types = disclosure.relationship_types
+    .map((type) => relationshipLabels[type] ?? type)
+    .join(", ");
+  return "Commercial relationship disclosed: " + (types || "type not stated");
+}
+
+// A labelled note, so a screen reader announces "Commercial disclosure for <tool>" with its text.
+export function AIDisclosureLabel({
+  name,
+  disclosure,
+  missing = "No disclosure was recorded for this listing.",
+}: {
+  name: string;
+  disclosure?: CommercialDisclosure | null;
+  missing?: string;
+}) {
+  const status = disclosure?.status ?? "NOT_RECORDED";
+  return (
+    <div
+      className={
+        "ai-disclosure" + (status === "DISCLOSED" ? " ai-disclosed" : "")
+      }
+      role="note"
+      aria-label={"Commercial disclosure for " + name}
+      data-disclosure-status={status}
+    >
+      <p className="ai-disclosure-headline">
+        <strong>{disclosureHeadline(disclosure)}</strong>
+        {disclosure?.editorial_confirmation === "PENDING" && (
+          <span className="ai-disclosure-pending">
+            {" "}
+            · pending editorial confirmation
+          </span>
+        )}
+      </p>
+      {disclosure ? (
+        <p className="ai-disclosure-statement">
+          {disclosure.statement}{" "}
+          <span className="ai-disclosure-date">
+            Declared {disclosure.declared_on}.
+          </span>
+        </p>
+      ) : (
+        <p className="ai-disclosure-statement">{missing}</p>
+      )}
+    </div>
+  );
+}
 
 export function AIToolSources({ solution }: { solution: PublicToolSolution }) {
   return (
@@ -98,6 +179,17 @@ export function AIToolComparison({
               ))}
             </tr>
           ))}
+          <tr>
+            <th scope="row">Commercial disclosure</th>
+            {selected.map((solution) => (
+              <td key={solution.id}>
+                <AIDisclosureLabel
+                  name={solution.name}
+                  disclosure={solution.commercial_disclosure}
+                />
+              </td>
+            ))}
+          </tr>
           <tr>
             <th scope="row">Published sources</th>
             {selected.map((solution) => (

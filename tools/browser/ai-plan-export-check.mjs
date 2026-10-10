@@ -232,6 +232,15 @@ function verifyReply(reply, operation, revision) {
   assert.equal(doc.plan.object_id, plan.object_id);
   assert.equal(doc.plan.revision_id, revision);
   assert.equal(doc.guidance.status, reply.manifest.guidance_status);
+  // US-DC-04 (owner decision): the package label is the document's own and follows the archived
+  // guidance edition (v2 archives, with commercial disclosures, are package v2).
+  assert.equal(doc.schema_version, reply.manifest.schema);
+  assert.equal(
+    reply.manifest.schema,
+    doc.guidance.snapshot_schema_version === "nonprofit-ai-guidance-v2"
+      ? "nonprofit-ai-plan-export-v2"
+      : "nonprofit-ai-plan-export-v1",
+  );
   for (const forbidden of [
     "impact_reference",
     "human_advice",
@@ -265,6 +274,25 @@ try:
     if op=='plan-input':
         answer=plan();answer['title']=args['title'];answer['procurement']['requirements']='=Preserve exact synthetic wording — Café समुदाय'
         if args.get('complete'):answer['planning']={'cost_comparison':None,'pilot_evaluation':None,'task_practice':practice()}
+    elif op=='v1-plan':
+        # A plan saved as build 0.38.0 did (guidance edition v1), through the real capture path of the
+        # actual in-process service on the run's database; nothing is written by hand.
+        import uuid,pytest
+        from starlette.requests import Request
+        from impact_api.ai_adoption_plans import AIAdoptionPlans
+        from impact_api.auth import Auth
+        from impact_api.config import Settings
+        from impact_api.service import Service
+        from impact_api.store import Database
+        from test_ai_content_archives import under_guidance_v1
+        settings=Settings(**client.config); database=Database(settings)
+        identity=Auth(settings,database).resolve(Request({'type':'http','method':'POST','headers':[(b'authorization',('Bearer '+client.token(args['actor'])).encode())]}))
+        data=plan(); data['title']=args['title']; patch=pytest.MonkeyPatch()
+        try:
+            with under_guidance_v1(patch):
+                saved=AIAdoptionPlans(Service(settings,database)).save(identity,args['tenant'],{'operation_id':str(uuid.uuid4()),'data':data},str(uuid.uuid4()))
+        finally:patch.undo()
+        answer={'object_id':saved['object_id'],'revision_id':saved['revision_id']}
     else:
         with client.db() as c:
             if op=='runtime':answer={'migrations':c.execute('SELECT version,sha256 FROM impact.schema_migration ORDER BY version').fetchall()}
@@ -333,7 +361,9 @@ function setup(operation, args = {}) {
         ? "Disposable negative fixture narrows/restores only the exact expected synthetic identity browser session auth_time; no capability, immutable data, RLS or ceiling changes; no cookie/hash/token is recorded"
         : operation === "plan-input"
           ? "Pure synthetic input from existing qualification helpers; product writes use actual HTTP"
-          : "Read-only observation of actual disposable application database",
+          : operation === "v1-plan"
+            ? "Plan saved through the actual in-process service with the build 0.38.0 guidance edition (v1) to qualify package v1; no row written by hand"
+            : "Read-only observation of actual disposable application database",
   });
   return JSON.parse(result.stdout);
 }
@@ -610,10 +640,10 @@ try {
       assert.equal(observed.api_version, version.domain_api);
       assert.equal(observed.mutation_tests_allowed, true);
       const applied = setup("runtime").migrations;
-      assert.equal(applied.at(-1).version, 40);
+      assert.equal(applied.at(-1).version, 43);
       assert.equal(observed.schema_version, String(applied.length));
       const migration = Object.keys(qualifiedSources).find((file) =>
-        /^infrastructure\/migrations\/0040_.*\.sql$/.test(file),
+        /^infrastructure\/migrations\/0043_.*\.sql$/.test(file),
       );
       assert(migration);
       assert.equal(applied.at(-1).sha256, qualifiedSources[migration]);
@@ -1122,6 +1152,46 @@ try {
     const reply = await issue(reader);
     await download(reader, reply);
     restoreLatest(narrowed);
+  });
+  await test("A plan archived under guidance v1 is issued as package v1 and a v2 archive as package v2", async () => {
+    assert.equal(firstCopy.manifest.schema, "nonprofit-ai-plan-export-v2");
+    assert.equal(
+      JSON.parse(firstCopy.content).guidance.snapshot_schema_version,
+      "nonprofit-ai-guidance-v2",
+    );
+    const current = plan;
+    const legacy = setup("v1-plan", {
+      tenant: tenant.tenant_id,
+      actor: "reviewer",
+      title: name + " guidance v1 — Café समुदाय",
+    });
+    plan = legacy;
+    try {
+      const reader = await user("reviewer");
+      activePage = reader;
+      await openPlan(reader);
+      const copy = await issue(reader);
+      assert.equal(copy.manifest.schema, "nonprofit-ai-plan-export-v1");
+      const doc = JSON.parse(copy.content);
+      assert.equal(doc.schema_version, "nonprofit-ai-plan-export-v1");
+      assert.equal(
+        doc.guidance.snapshot_schema_version,
+        "nonprofit-ai-guidance-v1",
+      );
+      assert(
+        doc.guidance.solutions.payload.solutions.every(
+          (item) => !("commercial_disclosure" in item),
+        ),
+      );
+      await download(reader, copy);
+      const proof = setup("issuance", {
+        tenant: tenant.tenant_id,
+        operation_id: copy.receipt.operation_id,
+      });
+      assert.equal(proof.body_sha256, copy.manifest.content_sha256);
+    } finally {
+      plan = current;
+    }
   });
   activePage = await user("reviewer");
   await openPlan(activePage);

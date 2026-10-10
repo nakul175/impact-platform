@@ -1,0 +1,497 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:impact-platform:threat-register:2",
+  "title": "Threat register, schema version 2 (FR-SEC-001)",
+  "description": "Machine-readable threat register read by scripts/release_review.py. Version 1 (specification/contracts/threat-register.json) is the preserved baseline and is never edited; version 2 carries every baseline threat with its title and impact and adds categories, control references, owners, test references, verification status, residual decisions and chained abuse paths. Rules that a schema cannot express (references resolve, every implemented control has a test, chains have independent controls and no looser decision than their threats, the baseline is unchanged and carried over, nothing is removed or loosened against the previous register without a confirmation) are enforced by scripts/release_review.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "register_id",
+    "updated_on",
+    "baseline",
+    "role_assignment",
+    "owner_roles",
+    "categories",
+    "verification_statuses",
+    "controls",
+    "threats",
+    "chains"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "register_id": {
+      "const": "impact-platform-threat-register"
+    },
+    "updated_on": {
+      "$ref": "#/$defs/date"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "schema_version",
+        "sha256",
+        "note"
+      ],
+      "properties": {
+        "path": {
+          "const": "specification/contracts/threat-register.json"
+        },
+        "schema_version": {
+          "const": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "note": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "role_assignment": {
+      "$ref": "#/$defs/text"
+    },
+    "owner_roles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/name"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "covers"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/category"
+          },
+          "covers": {
+            "$ref": "#/$defs/text"
+          }
+        }
+      }
+    },
+    "verification_statuses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "TESTED",
+        "PARTIAL",
+        "PENDING"
+      ],
+      "properties": {
+        "TESTED": {
+          "$ref": "#/$defs/text"
+        },
+        "PARTIAL": {
+          "$ref": "#/$defs/text"
+        },
+        "PENDING": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/control"
+      }
+    },
+    "threats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/threat"
+      }
+    },
+    "chains": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/chain"
+      }
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120,
+      "pattern": "\\S"
+    },
+    "threat_id": {
+      "type": "string",
+      "pattern": "^TH[0-9]{2}$"
+    },
+    "control_id": {
+      "type": "string",
+      "pattern": "^C-[A-Z0-9]+(-[A-Z0-9]+)*$"
+    },
+    "category": {
+      "enum": [
+        "identity",
+        "tenant boundary",
+        "source data",
+        "files",
+        "offline devices",
+        "publication",
+        "AI",
+        "support"
+      ]
+    },
+    "test_ref": {
+      "description": "A pytest node ID under qualification/ (file::function or file::Class::method, optionally with a [parameter] suffix) or a browser check, written as tools/browser/<file>.mjs::<exact name passed to test(...)>.",
+      "type": "string",
+      "pattern": "^(qualification/test_[a-z0-9_]+\\.py::[A-Za-z_][A-Za-z0-9_]*(::[A-Za-z_][A-Za-z0-9_]*)?(\\[[^\\]]+\\])?|tools/browser/[a-z0-9-]+\\.mjs::\\S.*)$"
+    },
+    "test_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/test_ref"
+      }
+    },
+    "residual_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "decided_by",
+        "decided_on",
+        "confirmed_by",
+        "rationale"
+      ],
+      "properties": {
+        "decision": {
+          "enum": [
+            "ACCEPT",
+            "MITIGATE",
+            "BLOCK"
+          ]
+        },
+        "decided_by": {
+          "$ref": "#/$defs/name"
+        },
+        "decided_on": {
+          "$ref": "#/$defs/date"
+        },
+        "confirmed_by": {
+          "description": "The person who confirmed the decision, or null while it is a proposal.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/name"
+            }
+          ]
+        },
+        "rationale": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "layer",
+        "implemented",
+        "implemented_in",
+        "depends_on",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/control_id"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "layer": {
+          "description": "Where the control is enforced. Two chain controls are independent only when their layers differ and they share no control in their depends_on closures.",
+          "enum": [
+            "identity",
+            "authorization",
+            "contract",
+            "application",
+            "export",
+            "database",
+            "provider-adapter",
+            "worker",
+            "deployment",
+            "device",
+            "process"
+          ]
+        },
+        "implemented": {
+          "type": "boolean"
+        },
+        "implemented_in": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.][A-Za-z0-9_./-]*$"
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/control_id"
+          }
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "if": {
+        "properties": {
+          "implemented": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "implemented_in": {
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "implemented_in": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "origin",
+        "title",
+        "impact",
+        "category",
+        "asset",
+        "attack",
+        "requirements",
+        "owner",
+        "target_control",
+        "required_verification",
+        "control_refs",
+        "test_refs",
+        "coverage",
+        "verification",
+        "residual_decision"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/threat_id"
+        },
+        "origin": {
+          "enum": [
+            "v1",
+            "v2"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "impact": {
+          "enum": [
+            "Critical",
+            "High",
+            "Medium"
+          ]
+        },
+        "category": {
+          "$ref": "#/$defs/category"
+        },
+        "asset": {
+          "$ref": "#/$defs/text"
+        },
+        "attack": {
+          "$ref": "#/$defs/text"
+        },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,4}-[A-Z]{2,4}-[0-9]{3}$"
+          }
+        },
+        "owner": {
+          "$ref": "#/$defs/name"
+        },
+        "target_control": {
+          "$ref": "#/$defs/text"
+        },
+        "required_verification": {
+          "$ref": "#/$defs/text"
+        },
+        "control_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/control_id"
+          }
+        },
+        "test_refs": {
+          "$ref": "#/$defs/test_refs"
+        },
+        "coverage": {
+          "description": "Which tests exercise which listed control: {control id: [test references from test_refs]}. Every implemented control in control_refs needs at least one; a TESTED threat lists only implemented controls.",
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/control_id"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/test_refs"
+          }
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "summary",
+            "gaps"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "TESTED",
+                "PARTIAL",
+                "PENDING"
+              ]
+            },
+            "summary": {
+              "$ref": "#/$defs/text"
+            },
+            "gaps": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "PARTIAL",
+                  "PENDING"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "gaps": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        "residual_decision": {
+          "$ref": "#/$defs/residual_decision"
+        }
+      }
+    },
+    "chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "path",
+        "narrative",
+        "controls",
+        "residual_decision"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CH[0-9]{2}$"
+        },
+        "title": {
+          "$ref": "#/$defs/name"
+        },
+        "path": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/threat_id"
+          }
+        },
+        "narrative": {
+          "$ref": "#/$defs/text"
+        },
+        "controls": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "control_ref",
+              "breaks",
+              "evidence"
+            ],
+            "properties": {
+              "control_ref": {
+                "$ref": "#/$defs/control_id"
+              },
+              "breaks": {
+                "$ref": "#/$defs/threat_id"
+              },
+              "evidence": {
+                "$ref": "#/$defs/test_refs"
+              }
+            }
+          }
+        },
+        "residual_decision": {
+          "$ref": "#/$defs/residual_decision"
+        }
+      }
+    }
+  }
+}

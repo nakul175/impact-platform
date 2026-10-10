@@ -1,0 +1,3116 @@
+{
+  "schema_version": 2,
+  "register_id": "impact-platform-threat-register",
+  "updated_on": "2026-10-09",
+  "baseline": {
+    "path": "specification/contracts/threat-register.json",
+    "schema_version": 1,
+    "sha256": "6b654f1ad583883afb94108553c60a32de43c81e697ee382adec5d412639d6e5",
+    "note": "The 32 threats of the preserved engineering package (version 1, never edited). Every one is carried here with its title, impact, asset, attack, requirements, owner role, control (target_control) and verification (required_verification)."
+  },
+  "role_assignment": "Owners are engineering roles from the threat model; no role is appointed to a named person yet. Until one is, Nakul Jain (owner) is accountable for every role. Residual decisions are proposals by the drafting agent (confirmed_by null) until a person confirms them.",
+  "owner_roles": [
+    "AI lead",
+    "AI security lead",
+    "API lead",
+    "Access lead",
+    "Backend lead",
+    "Collection lead",
+    "Data lead",
+    "Database lead",
+    "Evidence lead",
+    "Frontend security lead",
+    "Identity lead",
+    "Implementation lead",
+    "Integration lead",
+    "Measurement lead",
+    "Mobile lead",
+    "Mobile security lead",
+    "Platform lead",
+    "Platform privacy leads",
+    "Platform security lead",
+    "Privacy lead",
+    "Reporting lead",
+    "Security lead",
+    "Workflow lead"
+  ],
+  "categories": [
+    {
+      "id": "identity",
+      "covers": "Sign-in, tokens, sessions, invitations, recovery, grants and scope, natural-person independence and browser sessions."
+    },
+    {
+      "id": "tenant boundary",
+      "covers": "Isolation between organisations: tenant context, row-level security, database roles, outbound requests and one tenant starving others."
+    },
+    {
+      "id": "source data",
+      "covers": "Integrity of records and official results: server-owned fields, replays, races, imports, worker outputs, privacy erasure and migrations."
+    },
+    {
+      "id": "files",
+      "covers": "Evidence uploads, scanning, previews and upload integrity."
+    },
+    {
+      "id": "offline devices",
+      "covers": "Offline packages, device storage and offline leases (no client exists yet)."
+    },
+    {
+      "id": "publication",
+      "covers": "Exports, downloads, disclosure to recipients and aggregate inference."
+    },
+    {
+      "id": "AI",
+      "covers": "Model input and output, tools, retrieval, AI policy, provider destinations and AI spend."
+    },
+    {
+      "id": "support",
+      "covers": "Platform operations: operator and support access, diagnostics and secrets, backups and restores, audit integrity and the release supply chain."
+    }
+  ],
+  "verification_statuses": {
+    "TESTED": "Every listed control is built and has at least one mapped test in coverage that exists; those tests passed in their latest recorded runs (listed in the release review's notes). Not an independent assessment.",
+    "PARTIAL": "Named tests cover part of the control or part of the required verification; the gaps are listed. The threat stays open.",
+    "PENDING": "The control or its verification does not exist yet; any test listed checks only a blocking condition or a related partial control. The threat stays open."
+  },
+  "controls": [
+    {
+      "id": "C-TOKEN-VALIDATION",
+      "name": "Token and session validation",
+      "layer": "identity",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/auth.py"
+      ],
+      "depends_on": [],
+      "description": "Bearer tokens are verified for issuer, audience, signature (provider JWKS or the development key by kid), expiry and token type; conflicting cookie and bearer identities are refused."
+    },
+    {
+      "id": "C-SESSION-REVOCATION",
+      "name": "Session revocation and idle limit",
+      "layer": "identity",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/auth.py",
+        "apps/api/impact_api/workspace_administration.py"
+      ],
+      "depends_on": [],
+      "description": "Platform sessions end on logout, verified back-channel logout, administrator revocation and the idle limit; a revoked session is refused on the next request."
+    },
+    {
+      "id": "C-SCOPED-GRANTS",
+      "name": "Deny-by-default scoped grants",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "depends_on": [
+        "C-TOKEN-VALIDATION"
+      ],
+      "description": "Every operation needs an exact capability grant with a scope (and purpose where required); role claims, templates and client IDs grant nothing; missing and hidden resources both answer RESOURCE_UNAVAILABLE 404."
+    },
+    {
+      "id": "C-FRESH-ASSURANCE",
+      "name": "Fresh authentication for sensitive actions",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "depends_on": [
+        "C-TOKEN-VALIDATION"
+      ],
+      "description": "Sensitive operations need auth_time within the previous 300 seconds plus the configured assurance (ACR); token issuance time does not count."
+    },
+    {
+      "id": "C-CURRENT-AUTHORITY",
+      "name": "Current authority at every effect and replay",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [
+        "C-SCOPED-GRANTS"
+      ],
+      "description": "Membership, grants and tenant state are re-read inside the transaction of every write, export and replay; an operation receipt never bypasses current authority."
+    },
+    {
+      "id": "C-NATURAL-PERSON-INDEPENDENCE",
+      "name": "Natural-person independence",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py",
+        "apps/api/impact_api/operators.py"
+      ],
+      "depends_on": [
+        "C-TOKEN-VALIDATION"
+      ],
+      "description": "An approver must be a different natural person (natural_identity_id) from every material author of the exact candidate revision; aliases, second logins, groups and delegation never create independence."
+    },
+    {
+      "id": "C-CUSTODY-NO-DATA-ACCESS",
+      "name": "Custody and operator roles carry no tenant data access",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/tenant_lifecycle.py",
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [
+        "C-SCOPED-GRANTS"
+      ],
+      "description": "Tenant custody and platform-operator roles never imply access to tenant business data; tenant data access needs an ordinary grant through the governed flows."
+    },
+    {
+      "id": "C-EXPORT-CAPABILITY",
+      "name": "Export is a separate capability",
+      "layer": "authorization",
+      "implemented": true,
+      "implemented_in": [
+        "packages/contracts/access-policy.json",
+        "apps/api/impact_api/ai_plan_exports.py"
+      ],
+      "depends_on": [
+        "C-SCOPED-GRANTS",
+        "C-FRESH-ASSURANCE"
+      ],
+      "description": "Read, export, approve and publish are separate capabilities; export is never implied by read and its issue and replay need fresh authentication and current authority."
+    },
+    {
+      "id": "C-SUPPORT-SESSION-CONTROLS",
+      "name": "Support session controls (target design)",
+      "layer": "authorization",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Distinct approver, exact scope and capabilities, a 60-minute limit and audited assurance for any support access. Not built: support sessions do not exist."
+    },
+    {
+      "id": "C-CLOSED-DTO",
+      "name": "Closed request bodies",
+      "layer": "contract",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/contracts.py",
+        "apps/api/impact_api/service.py"
+      ],
+      "depends_on": [],
+      "description": "Every write body is a closed schema (additionalProperties false); unknown fields, duplicate JSON keys and oversized bodies are refused before any database work."
+    },
+    {
+      "id": "C-NO-CONNECTORS",
+      "name": "No tenant-configured outbound requests",
+      "layer": "contract",
+      "implemented": true,
+      "implemented_in": [
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "depends_on": [],
+      "description": "The implemented API has no connector, webhook or URL-fetch operation, so no tenant can make the server request an address it chooses."
+    },
+    {
+      "id": "C-NO-OFFLINE-SURFACE",
+      "name": "No offline package or device operation",
+      "layer": "contract",
+      "implemented": true,
+      "implemented_in": [
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "depends_on": [],
+      "description": "The implemented API exposes no offline-sync, device or offline package operation and there is no Android client; routes outside the implemented contract answer 404."
+    },
+    {
+      "id": "C-NO-SUPPORT-SESSIONS",
+      "name": "No support-session operation",
+      "layer": "contract",
+      "implemented": true,
+      "implemented_in": [
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "depends_on": [],
+      "description": "The implemented domain and platform APIs expose no support request, approval or session operation; routes outside the implemented contract answer 404."
+    },
+    {
+      "id": "C-NO-AI-APPLY",
+      "name": "No operation applies AI output",
+      "layer": "contract",
+      "implemented": true,
+      "implemented_in": [
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "depends_on": [],
+      "description": "No implemented operation applies an AI proposal or writes model output into a record; AI enablement routes only read guidance, save human-authored plans and request a sealed draft."
+    },
+    {
+      "id": "C-TENANT-CONTEXT",
+      "name": "Transaction-local tenant context",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "set_config('impact.tenant_id', ..., true) is set per transaction before any tenant-table access, queries are tenant-keyed and connections of uncertain state are never reused."
+    },
+    {
+      "id": "C-SERVER-OWNED-FIELDS",
+      "name": "Server-owned fields",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "Issuer, approver, author, scan state, epochs and lifecycle are set by the server and explicit domain commands, never taken from request bodies."
+    },
+    {
+      "id": "C-OPERATION-RECEIPTS",
+      "name": "Insert-once operation receipts",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "Head, revision, projection, audit, outbox and receipt commit together; an exact retry returns the original receipt and a changed payload under the same operation ID conflicts."
+    },
+    {
+      "id": "C-EXPECTED-REVISION",
+      "name": "Expected revisions",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "Updates name the revision they were made against; a stale revision answers 409 and nothing is overwritten."
+    },
+    {
+      "id": "C-CLOSE-MANIFEST",
+      "name": "Fixed close manifest",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/period_governance.py"
+      ],
+      "depends_on": [],
+      "description": "A period closes only from an unchanged preview with every obligation approved and an independent decision; late data stays outside the snapshot."
+    },
+    {
+      "id": "C-IMPORT-BOUNDS",
+      "name": "Bounded imports",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/imports.py"
+      ],
+      "depends_on": [],
+      "description": "CSV and XLSX imports have size, row and cell bounds, a preview, quarantine of invalid rows and independent review of the commit."
+    },
+    {
+      "id": "C-EVIDENCE-QUARANTINE",
+      "name": "Evidence quarantine and scanning",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/evidence.py"
+      ],
+      "depends_on": [],
+      "description": "Uploads pass an allow-list of names and declared sizes, magic-byte type checks and a scan; nothing infected, unscanned or changed is ever served, and downloads are sandboxed attachments."
+    },
+    {
+      "id": "C-EVIDENCE-DIGEST",
+      "name": "Whole-file size and digest",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/evidence.py",
+        "apps/api/impact_api/object_store.py"
+      ],
+      "depends_on": [],
+      "description": "An evidence object is accepted only with its exact declared size and SHA-256; the store is content-addressed and verified on read."
+    },
+    {
+      "id": "C-SECRET-REDACTION",
+      "name": "Secrets kept out of output",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/config.py",
+        "apps/api/impact_api/keyring.py",
+        "apps/api/impact_api/worker.py"
+      ],
+      "depends_on": [],
+      "description": "Errors carry reason codes, settings and workers never print secrets or connection strings, and the outbox, audit export and logs hold no token, code or credential."
+    },
+    {
+      "id": "C-MEDIATED-DOWNLOAD",
+      "name": "Mediated downloads",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/evidence.py",
+        "apps/api/impact_api/exports.py",
+        "apps/api/impact_api/reporting.py"
+      ],
+      "depends_on": [],
+      "description": "Files and exports are served only through the API after current authority and restriction checks; no storage URL is ever handed out."
+    },
+    {
+      "id": "C-PUBLICATION-RECIPIENTS",
+      "name": "Named-recipient publication",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/reporting.py"
+      ],
+      "depends_on": [],
+      "description": "Disclosure is independently reviewed, limited to named active recipients with an expiring download right and can be withdrawn; public disclosure is refused."
+    },
+    {
+      "id": "C-NUMERIC-BINDINGS",
+      "name": "Numbers only from bindings",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/reporting.py",
+        "apps/api/impact_api/ai_impact_references.py"
+      ],
+      "depends_on": [],
+      "description": "Report narrative numbers must be exact {{binding}} placeholders over the locked snapshot; AI plan references cannot supply snapshot pins or numbers."
+    },
+    {
+      "id": "C-CSRF-ORIGIN",
+      "name": "Origin and CSRF checks",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/auth.py",
+        "apps/api/impact_api/main.py"
+      ],
+      "depends_on": [],
+      "description": "Cookie-session writes need a matching Origin and CSRF token; the session cookie is HttpOnly and SameSite."
+    },
+    {
+      "id": "C-PRIVACY-STORE-INVENTORY",
+      "name": "Privacy store inventory",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/privacy.py"
+      ],
+      "depends_on": [],
+      "description": "Erasure plans list every store, need an independent approval, honour holds, report partial status and retry without losing attribution."
+    },
+    {
+      "id": "C-VERSIONED-READERS",
+      "name": "Versioned readers for retained content",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_content_archives.py",
+        "apps/api/impact_api/ai_adoption_plans.py"
+      ],
+      "depends_on": [],
+      "description": "Saved revisions keep the content edition they were made with; older payloads are read with their original meaning and never rewritten."
+    },
+    {
+      "id": "C-DISCLOSURE-FAIL-CLOSED",
+      "name": "Commercial disclosure on every listing, fail closed",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_solutions_catalog.py",
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/ai_content_archives.py",
+        "apps/api/impact_api/ai_content_schema_v2.json",
+        "apps/web/src/AIToolComparison.tsx"
+      ],
+      "depends_on": [],
+      "description": "Every tool listing carries a commercial_disclosure: NONE_KNOWN with no relationship type, or DISCLOSED naming at least one of referral fee, revenue share, reseller, sponsorship and ownership; both with a statement and a declaration date. A missing or invalid disclosure makes the catalogue read answer 503 AI_SOLUTIONS_CATALOG_INVALID and refuses every plan save, so no listing is shown or archived without its label; every tool card and comparison column shows the label as a named note."
+    },
+    {
+      "id": "C-DISCLOSURE-EDITORIAL-REVIEW",
+      "name": "Independent review of commercial declarations (target design)",
+      "layer": "process",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "An advisor independent of Imprana editorial reviews each commercial declaration and its evidence before publication and re-confirms it on a schedule. Not built: the eight NONE_KNOWN declarations of build 0.39.0 are an editorial draft awaiting advisor review, and a code change to a disclosure relies on repository review alone."
+    },
+    {
+      "id": "C-TENANT-QUOTAS",
+      "name": "Per-tenant admission and quotas (target design)",
+      "layer": "application",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Per-tenant admission, quotas and separate work classes. Not built."
+    },
+    {
+      "id": "C-INVITATION-BINDING",
+      "name": "Identity-bound single-use invitations and recovery codes",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/administration.py",
+        "apps/api/impact_api/worker.py"
+      ],
+      "depends_on": [],
+      "description": "Invitations bind the intended identity and tenant, are single-use, superseded on resend and revoke and never stored as tokens; recovery-channel codes are derived, keyed-hash stored, single-use, 15-minute and five-attempt."
+    },
+    {
+      "id": "C-AUDIT-CHAIN",
+      "name": "Chained, sealed audit export",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/audit_export.py"
+      ],
+      "depends_on": [],
+      "description": "The audit export links every page by digest and seals it, so a changed, reordered or missing record is detected by whoever holds an earlier export."
+    },
+    {
+      "id": "C-AI-THREE-SWITCHES",
+      "name": "AI only when server, policy and use case are on",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/ai_policy.py",
+        "apps/api/impact_api/config.py"
+      ],
+      "depends_on": [],
+      "description": "An advisory request runs only when the server switch (ai_enabled with a configured provider and sealing keys), the tenant policy in force and its ADVISORY_DRAFT use case are all on."
+    },
+    {
+      "id": "C-AI-GATE-BEFORE-RESERVATION",
+      "name": "Policy gate before any reservation or provider call",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/ai_policy.py"
+      ],
+      "depends_on": [
+        "C-TENANT-LOCK"
+      ],
+      "description": "The policy in force is read under the tenant lock after the replay lookup and before the attempt count, any reservation or provider call; an unreadable policy fails closed."
+    },
+    {
+      "id": "C-AI-POLICY-VERSION-PIN",
+      "name": "Requests pinned to the policy version",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_policy.py",
+        "apps/api/impact_api/ai_enablement.py"
+      ],
+      "depends_on": [],
+      "description": "Every advisory request names the policy version it was made against; another version answers 409 AI_POLICY_CHANGED and the reservation records the version that allowed it."
+    },
+    {
+      "id": "C-AI-DATA-CLASS-CEILING",
+      "name": "Data-class ceiling",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_policy.py"
+      ],
+      "depends_on": [],
+      "description": "A request passes only at or below the highest data class the use case allows; a brief marked sensitive is CONFIDENTIAL."
+    },
+    {
+      "id": "C-AI-DESTINATION-LIST",
+      "name": "Closed destination list",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "apps/api/impact_api/ai_policy.py",
+        "infrastructure/migrations/0041_ai_policy.sql"
+      ],
+      "depends_on": [],
+      "description": "Destinations come from a closed provider-and-region list; the adapter's declared destination must be listed by the policy or the request is refused."
+    },
+    {
+      "id": "C-AI-CONSENT",
+      "name": "Explicit consent per request",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement.py"
+      ],
+      "depends_on": [],
+      "description": "Every advisory request carries explicit consent for sending that brief; the request body is closed."
+    },
+    {
+      "id": "C-AI-ATTEMPT-LIMIT",
+      "name": "Bounded attempts",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement.py"
+      ],
+      "depends_on": [
+        "C-TENANT-LOCK"
+      ],
+      "description": "Three attempts per tenant per rolling 24 hours, failures included, reserved under the tenant lock; exact replay returns the stored result without a new call."
+    },
+    {
+      "id": "C-AI-NO-TOOLS-GATE",
+      "name": "No tools in policy or request",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_policy.py",
+        "apps/api/impact_api/ai_enablement.py"
+      ],
+      "depends_on": [],
+      "description": "A policy that grants any tool is refused (AI_TOOLS_NOT_ALLOWED) and a request asking for a tool is refused before reservation (AI_POLICY_BLOCKED)."
+    },
+    {
+      "id": "C-AI-DRAFT-ONLY",
+      "name": "AI output is a sealed draft, never a record",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_enablement.py"
+      ],
+      "depends_on": [],
+      "description": "The server builds the advisory result (status DRAFT, its own disclaimer, the adapter's model name), seals it to the tenant and request and returns it; nothing writes model output into a plan, observation, result or report."
+    },
+    {
+      "id": "C-AI-UNTRUSTED-INPUT",
+      "name": "Brief sent as untrusted data",
+      "layer": "provider-adapter",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_advisory_provider.py"
+      ],
+      "depends_on": [],
+      "description": "The adapter sends fixed instructions that treat the brief and assessment as untrusted reference data; the brief travels only inside the input JSON."
+    },
+    {
+      "id": "C-AI-MINIMAL-PAYLOAD",
+      "name": "Minimal provider payload",
+      "layer": "provider-adapter",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_advisory_provider.py"
+      ],
+      "depends_on": [],
+      "description": "Only the submitted brief and the deterministic assessment are sent, with store false and bounded output; no platform record is fetched or sent."
+    },
+    {
+      "id": "C-AI-ADAPTER-TEXT-ONLY",
+      "name": "Only assistant text comes back",
+      "layer": "provider-adapter",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_advisory_provider.py"
+      ],
+      "depends_on": [],
+      "description": "The adapter sends no tools and keeps only completed assistant output text within a size bound; tool calls, refusals and provider metadata are dropped or refused."
+    },
+    {
+      "id": "C-PROVIDER-FIXED-ENDPOINT",
+      "name": "Fixed provider endpoint",
+      "layer": "provider-adapter",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_advisory_provider.py"
+      ],
+      "depends_on": [],
+      "description": "One fixed HTTPS endpoint, no redirects followed, environment proxies ignored, one deadline for request and body, no retry."
+    },
+    {
+      "id": "C-RETRIEVAL-SCOPING",
+      "name": "Scoped retrieval and untrusted-content separation (target design)",
+      "layer": "application",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Retrieval of documents, evidence or metadata into model context with tenant scoping and content separation. Not built: no retrieval exists."
+    },
+    {
+      "id": "C-AI-EVALUATION",
+      "name": "Systematic AI output and injection evaluation (target design)",
+      "layer": "process",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "An evaluation set, thresholds and red-team record for model output, injection resilience and unsupported claims. Not built."
+    },
+    {
+      "id": "C-AI-DESTINATION-APPROVAL",
+      "name": "Approved provider destination (target design)",
+      "layer": "process",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Product-owner approval of a provider, region and retention terms with the DPIA before non-synthetic data is sent. Not decided."
+    },
+    {
+      "id": "C-EXPORT-PROJECTION",
+      "name": "Export projects frozen public fields only",
+      "layer": "export",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/ai_plan_exports.py",
+        "apps/api/impact_api/ai_plan_public_export_schema_v1.json"
+      ],
+      "depends_on": [],
+      "description": "The plan export copies only the fields of the frozen public schema, recursively; the server sets restriction INTERNAL_SELF, record status Draft and the disclaimer, and the closed request cannot widen them."
+    },
+    {
+      "id": "C-SPREADSHEET-FORMULA-GUARD",
+      "name": "Spreadsheet formula guard",
+      "layer": "export",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/export_render.py",
+        "apps/api/impact_api/logframe.py"
+      ],
+      "depends_on": [],
+      "description": "Cells that a spreadsheet would read as a formula are written as text in CSV and XLSX output."
+    },
+    {
+      "id": "C-TENANT-RLS",
+      "name": "Forced row-level security",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0003_security.sql"
+      ],
+      "depends_on": [],
+      "description": "Every tenant table carries tenant_id in its keys and has ENABLE and FORCE ROW LEVEL SECURITY with the tenant_fence policy."
+    },
+    {
+      "id": "C-RUNTIME-ROLES",
+      "name": "Unprivileged runtime roles",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0001_roles.sql",
+        "scripts/provision_logins.py",
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "Runtime roles are NOLOGIN-derived, non-owner and NOBYPASSRLS; the API refuses superuser, BYPASSRLS, owner and shared connections in staging and production."
+    },
+    {
+      "id": "C-CONTROL-PLANE-SEPARATION",
+      "name": "Control plane separated from tenant data",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0013_tenant_lifecycle.sql",
+        "infrastructure/migrations/0014_initial_access.sql"
+      ],
+      "depends_on": [],
+      "description": "The application and identity roles cannot read control-plane tables or create custody, delegation ceilings or recovery evidence; impact_platform writes only its RESTRICTIVE object types."
+    },
+    {
+      "id": "C-TENANT-LOCK",
+      "name": "Tenant advisory lock",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/store.py"
+      ],
+      "depends_on": [],
+      "description": "Every tenant write takes pg_advisory_xact_lock on the tenant before resolving authority, in the documented lock order."
+    },
+    {
+      "id": "C-SOURCE-IDENTITY",
+      "name": "Permanent source identity",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0002_domain.sql"
+      ],
+      "depends_on": [],
+      "description": "Observations carry a unique source namespace and key, so a replayed source record cannot create a second observation."
+    },
+    {
+      "id": "C-AUDIT-APPEND-ONLY",
+      "name": "Append-only audit",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0003_security.sql"
+      ],
+      "depends_on": [],
+      "description": "Runtime roles hold only SELECT and INSERT on audit records; revisions are insert-only under a trigger."
+    },
+    {
+      "id": "C-AI-NO-TOOLS-DB",
+      "name": "Database refuses any AI tool",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0041_ai_policy.sql"
+      ],
+      "depends_on": [],
+      "description": "ai_use_case_policy.tools has CHECK(cardinality(tools)=0), so no policy row can grant a tool whatever the application does."
+    },
+    {
+      "id": "C-AI-POLICY-INSERT-ONLY",
+      "name": "Insert-only, fenced AI policy tables",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "infrastructure/migrations/0041_ai_policy.sql"
+      ],
+      "depends_on": [],
+      "description": "ai_policy_version and ai_use_case_policy are insert-only, forced-RLS with tenant_fence, CHECK-constrained and granted SELECT, INSERT to impact_app only."
+    },
+    {
+      "id": "C-FROZEN-MIGRATIONS",
+      "name": "Frozen, checksum-ledgered migrations",
+      "layer": "database",
+      "implemented": true,
+      "implemented_in": [
+        "scripts/migrate.py"
+      ],
+      "depends_on": [],
+      "description": "Migrations are additive, contiguous and checksum-ledgered; applied migrations never change."
+    },
+    {
+      "id": "C-LEASE-GENERATION",
+      "name": "Lease owner and generation fence",
+      "layer": "worker",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/worker.py"
+      ],
+      "depends_on": [],
+      "description": "Every worker outcome is fenced on lease owner and generation; a stale holder's completion is refused."
+    },
+    {
+      "id": "C-SMTP-LOOPBACK",
+      "name": "Mail relay restricted outside staging",
+      "layer": "worker",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/worker.py",
+        "apps/api/impact_api/config.py"
+      ],
+      "depends_on": [],
+      "description": "Outside staging the worker refuses a non-loopback SMTP host (configuration and adapter both refuse)."
+    },
+    {
+      "id": "C-WORKER-TENANT-ISOLATION",
+      "name": "One tenant cannot stop the worker",
+      "layer": "worker",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/worker.py"
+      ],
+      "depends_on": [],
+      "description": "A failing tenant pass or template is recorded and the loop continues with the other tenants."
+    },
+    {
+      "id": "C-API-PROCESS-ENVIRONMENT",
+      "name": "No privileged credential in the API process",
+      "layer": "deployment",
+      "implemented": true,
+      "implemented_in": [
+        "scripts/run.py",
+        "deploy/compose.yaml"
+      ],
+      "depends_on": [],
+      "description": "The API process holds no migration DSN, login password or PG* variable; topology refusals carry reason codes, not login names."
+    },
+    {
+      "id": "C-CSP-HEADERS",
+      "name": "Content security policy",
+      "layer": "application",
+      "implemented": true,
+      "implemented_in": [
+        "apps/api/impact_api/main.py",
+        "scripts/smoke.py"
+      ],
+      "depends_on": [],
+      "description": "Every API response carries a restrictive content security policy unless its route sets a stricter one (downloads are sandboxed, reports have their own policy); the deployment smoke test refuses a relaxed, missing or overridden walkthrough policy."
+    },
+    {
+      "id": "C-BACKUP-VERIFIED",
+      "name": "Verified backups and restore drill",
+      "layer": "deployment",
+      "implemented": true,
+      "implemented_in": [
+        "deploy/backup.sh",
+        "deploy/restore-drill.sh",
+        "deploy/restore_check.py"
+      ],
+      "depends_on": [],
+      "description": "Nightly verified backup sets with a manifest and a weekly restore drill into throwaway containers on the staging server."
+    },
+    {
+      "id": "C-RESTORE-REPLAY",
+      "name": "Deletion and revocation replay before reopening (target design)",
+      "layer": "deployment",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "A restored environment stays closed until current deletions and revocations are replayed. Not built."
+    },
+    {
+      "id": "C-AUDIT-EXTERNAL-CHECKPOINT",
+      "name": "Independently retained audit checkpoints (target design)",
+      "layer": "deployment",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Audit batch digests retained outside the platform's control. Not built."
+    },
+    {
+      "id": "C-LOCKED-DEPENDENCIES",
+      "name": "Locked dependency hashes",
+      "layer": "deployment",
+      "implemented": true,
+      "implemented_in": [
+        "requirements.lock",
+        "deploy/hash_requirements.py",
+        "apps/web/package-lock.json"
+      ],
+      "depends_on": [],
+      "description": "Python dependencies install from a hashed lock and the runtime requirements must match it; npm installs from lock files."
+    },
+    {
+      "id": "C-SBOM-PROVENANCE",
+      "name": "SBOM verification, provenance and immutable promotion (target design)",
+      "layer": "deployment",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Build provenance, SBOM verification against the built artifact and immutable artifact promotion. Not built: CycloneDX files exist in docs/governance/sbom but nothing verifies a build against them, and staging builds from main."
+    },
+    {
+      "id": "C-SSRF-POLICY",
+      "name": "Outbound address policy (target design)",
+      "layer": "application",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Scheme, host and address policy, redirect revalidation and no cross-host credential forwarding for any tenant-supplied URL. Not built."
+    },
+    {
+      "id": "C-SMALL-CELL-SUPPRESSION",
+      "name": "Small-cell suppression (target design)",
+      "layer": "application",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Minimum cell rules, complementary suppression and release-history review for public aggregates. Not built."
+    },
+    {
+      "id": "C-OFFLINE-ENCRYPTED-STORAGE",
+      "name": "Encrypted per-account device storage (target design)",
+      "layer": "device",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Encrypted per-account storage, managed profile, key separation and a bounded package lease on the device. Not built: no Android client."
+    },
+    {
+      "id": "C-OFFLINE-TIME-ANCHOR",
+      "name": "Server time anchor on the device (target design)",
+      "layer": "device",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Server time anchor, monotonic continuity and lock on lost trust. Not built: no Android client."
+    },
+    {
+      "id": "C-CHUNKED-UPLOAD-RECEIPTS",
+      "name": "Immutable part receipts (target design)",
+      "layer": "application",
+      "implemented": false,
+      "implemented_in": [],
+      "depends_on": [],
+      "description": "Owner checks, immutable part receipts and an exact sealed manifest for resumable uploads. Not built: uploads are whole files."
+    }
+  ],
+  "threats": [
+    {
+      "id": "TH01",
+      "origin": "v1",
+      "title": "Cross tenant object access",
+      "impact": "Critical",
+      "category": "tenant boundary",
+      "asset": "API IDs and cached responses",
+      "attack": "A valid tenant A account substitutes a tenant B ID in a route, nested reference or export.",
+      "requirements": [
+        "FR-SEC-003",
+        "FR-ACC-002"
+      ],
+      "owner": "Security lead",
+      "target_control": "Tenant-keyed queries and FKs, forced RLS, current membership and output filtering.",
+      "required_verification": "Exercise nested reads, mutations, lists, exports and jobs with A/B identities; deny without hidden metadata.",
+      "control_refs": [
+        "C-TENANT-CONTEXT",
+        "C-TENANT-RLS",
+        "C-SCOPED-GRANTS",
+        "C-RUNTIME-ROLES"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_cross_tenant_reference_is_atomic",
+        "qualification/test_live_application.py::test_database_tenant_fence_and_immutable_revisions",
+        "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+        "qualification/test_changes.py::test_change_cross_tenant_and_scope_hidden_and_effect_rls",
+        "qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue",
+        "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant",
+        "tools/browser/evidence-check.mjs::Another tenant's session sees nothing of this evidence",
+        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
+        "qualification/test_ai_ranking.py::test_reads_need_ai_enablement_read_and_are_tenant_fenced"
+      ],
+      "coverage": {
+        "C-TENANT-CONTEXT": [
+          "qualification/test_live_application.py::test_cross_tenant_reference_is_atomic",
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_ai_ranking.py::test_reads_need_ai_enablement_read_and_are_tenant_fenced"
+        ],
+        "C-TENANT-RLS": [
+          "qualification/test_live_application.py::test_database_tenant_fence_and_immutable_revisions",
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_changes.py::test_change_cross_tenant_and_scope_hidden_and_effect_rls",
+          "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+        ],
+        "C-SCOPED-GRANTS": [
+          "qualification/test_live_application.py::test_cross_tenant_reference_is_atomic",
+          "qualification/test_changes.py::test_change_cross_tenant_and_scope_hidden_and_effect_rls",
+          "qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue",
+          "tools/browser/evidence-check.mjs::Another tenant's session sees nothing of this evidence"
+        ],
+        "C-RUNTIME-ROLES": [
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_ai_policy_live.py::test_native_policy_registers_are_fenced_forced_and_visible_only_to_their_tenant"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Another tenant's identifiers are refused or hidden in reads, writes, lists, exports and evidence, on PGlite and under the real runtime roles natively.",
+        "gaps": [
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH02",
+      "origin": "v1",
+      "title": "Scope escalation within a tenant",
+      "impact": "High",
+      "category": "identity",
+      "asset": "Programme and assignment records",
+      "attack": "A partner uses a tenant-wide list or inherited hierarchy to see another programme.",
+      "requirements": [
+        "FR-ACC-002",
+        "FR-ACC-010"
+      ],
+      "owner": "Access lead",
+      "target_control": "Explicit scope predicates and field policies on every resolver and derived output.",
+      "required_verification": "Compare positive assigned records with unassigned records and aggregate drill-down.",
+      "control_refs": [
+        "C-SCOPED-GRANTS",
+        "C-CURRENT-AUTHORITY"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_explicit_object_scope_filters_read_and_list",
+        "qualification/test_live_application.py::test_claimed_roles_do_not_grant_access",
+        "qualification/test_live_application.py::test_purpose_restricted_grant_does_not_authorize_general_reads",
+        "qualification/test_administration.py::test_object_scoped_invitation_cannot_read_other_objects",
+        "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan",
+        "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators",
+        "qualification/test_ai_ranking.py::test_operations_head_reads_the_ranking_but_cannot_change_the_weights",
+        "qualification/test_ai_ranking.py::test_changing_weights_needs_ai_enablement_manage"
+      ],
+      "coverage": {
+        "C-SCOPED-GRANTS": [
+          "qualification/test_live_application.py::test_explicit_object_scope_filters_read_and_list",
+          "qualification/test_live_application.py::test_claimed_roles_do_not_grant_access",
+          "qualification/test_live_application.py::test_purpose_restricted_grant_does_not_authorize_general_reads",
+          "qualification/test_administration.py::test_object_scoped_invitation_cannot_read_other_objects",
+          "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan",
+          "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators",
+          "qualification/test_ai_ranking.py::test_operations_head_reads_the_ranking_but_cannot_change_the_weights",
+          "qualification/test_ai_ranking.py::test_changing_weights_needs_ai_enablement_manage"
+        ],
+        "C-CURRENT-AUTHORITY": [
+          "qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Object-scoped grants filter reads, lists, exports and portfolio totals; claimed roles and purpose-bound grants authorise nothing more. A read-only role bundle (FINANCE, the Operations Head) reads AI enablement and every change of ranking weights it attempts is refused.",
+        "gaps": [
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH03",
+      "origin": "v1",
+      "title": "Forged processing or authority fields",
+      "impact": "Critical",
+      "category": "source data",
+      "asset": "Approval and scan state",
+      "attack": "A caller places approved, issuer or clean-scan fields in a draft body.",
+      "requirements": [
+        "FR-SEC-004",
+        "FR-ACC-004"
+      ],
+      "owner": "API lead",
+      "target_control": "Closed DTOs exclude server-owned fields; explicit domain commands validate transitions.",
+      "required_verification": "Reject protected top-level and nested properties; check no state or audit mutation.",
+      "control_refs": [
+        "C-CLOSED-DTO",
+        "C-SERVER-OWNED-FIELDS"
+      ],
+      "test_refs": [
+        "qualification/test_unit.py::test_server_owned_fields",
+        "qualification/test_live_application.py::test_duplicate_json_and_body_limit",
+        "qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed",
+        "qualification/test_access_upgrade_unit.py::test_server_owned_authority_and_waivers_are_rejected",
+        "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
+        "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
+        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+        "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
+      ],
+      "coverage": {
+        "C-CLOSED-DTO": [
+          "qualification/test_live_application.py::test_duplicate_json_and_body_limit",
+          "qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed",
+          "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
+          "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
+        ],
+        "C-SERVER-OWNED-FIELDS": [
+          "qualification/test_unit.py::test_server_owned_fields",
+          "qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed",
+          "qualification/test_access_upgrade_unit.py::test_server_owned_authority_and_waivers_are_rejected",
+          "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
+          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Protected top-level and nested fields, unknown fields and duplicate keys are refused without state or audit change; model output cannot carry them into a plan.",
+        "gaps": [
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH04",
+      "origin": "v1",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "category": "identity",
+      "asset": "Identity and sessions",
+      "attack": "An attacker presents a token for another issuer, audience, client or credential channel.",
+      "requirements": [
+        "FR-IAM-002",
+        "FR-IAM-006"
+      ],
+      "owner": "Identity lead",
+      "target_control": "Validate issuer, audience, signature and expiry; reject conflicting cookie and bearer identity.",
+      "required_verification": "Test wrong audience, stale signing key, unsigned token, dual credentials and token substitution.",
+      "control_refs": [
+        "C-TOKEN-VALIDATION"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_invalid_signed_tokens",
+        "qualification/test_live_application.py::test_unsigned_jwt",
+        "qualification/test_live_idp.py::test_bearer_tokens_are_validated_through_the_provider_jwks",
+        "qualification/test_live_idp.py::test_expired_provider_token_is_refused",
+        "qualification/test_live_idp.py::test_nonce_mismatch_is_refused",
+        "qualification/test_live_idp.py::test_pkce_verifier_mismatch_is_refused",
+        "qualification/test_live_idp.py::test_state_replay_and_browser_binding_are_refused",
+        "qualification/test_key_rotation.py::test_development_tokens_verify_by_kid"
+      ],
+      "coverage": {
+        "C-TOKEN-VALIDATION": [
+          "qualification/test_live_application.py::test_invalid_signed_tokens",
+          "qualification/test_live_application.py::test_unsigned_jwt",
+          "qualification/test_live_idp.py::test_bearer_tokens_are_validated_through_the_provider_jwks",
+          "qualification/test_live_idp.py::test_expired_provider_token_is_refused",
+          "qualification/test_live_idp.py::test_nonce_mismatch_is_refused",
+          "qualification/test_live_idp.py::test_pkce_verifier_mismatch_is_refused",
+          "qualification/test_live_idp.py::test_state_replay_and_browser_binding_are_refused",
+          "qualification/test_key_rotation.py::test_development_tokens_verify_by_kid"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Foreign issuer, tampered and foreign-key signatures, expired and unsigned tokens, ID tokens as bearer, nonce, state and PKCE substitution are refused against live Keycloak.",
+        "gaps": [
+          "Identity-provider signing-key rotation (stale signing key) is untested; only development keys by kid are.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; key rotation needs a live-provider test before this is resolved."
+      }
+    },
+    {
+      "id": "TH05",
+      "origin": "v1",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "category": "identity",
+      "asset": "Membership custody",
+      "attack": "Reused invitation, email change or weak recovery yields administrator access.",
+      "requirements": [
+        "FR-IAM-001",
+        "FR-IAM-007"
+      ],
+      "owner": "Identity lead",
+      "target_control": "Hashed single-use tokens, intended identity binding, current inviter authority and fresh assurance.",
+      "required_verification": "Test expiry, resend, replay, other identity, departed inviter and changed email.",
+      "control_refs": [
+        "C-INVITATION-BINDING",
+        "C-CURRENT-AUTHORITY",
+        "C-FRESH-ASSURANCE",
+        "C-NATURAL-PERSON-INDEPENDENCE"
+      ],
+      "test_refs": [
+        "qualification/test_administration.py::test_invitation_identity_single_use_exact_retry_and_no_token_storage",
+        "qualification/test_administration.py::test_expired_invitation_and_wrong_tenant_are_denied",
+        "qualification/test_administration.py::test_invitation_checks_current_inviter_authority",
+        "qualification/test_administration.py::test_reissue_invalidates_old_link_and_revoke_disables_new_link",
+        "qualification/test_worker.py::test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts",
+        "qualification/test_recovery_contacts.py::test_owner_alias_cannot_be_recovery_contact",
+        "qualification/test_administration.py::test_recent_token_without_authentication_time_cannot_authorize_admin_changes"
+      ],
+      "coverage": {
+        "C-INVITATION-BINDING": [
+          "qualification/test_administration.py::test_invitation_identity_single_use_exact_retry_and_no_token_storage",
+          "qualification/test_administration.py::test_expired_invitation_and_wrong_tenant_are_denied",
+          "qualification/test_administration.py::test_reissue_invalidates_old_link_and_revoke_disables_new_link",
+          "qualification/test_worker.py::test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts"
+        ],
+        "C-CURRENT-AUTHORITY": [
+          "qualification/test_administration.py::test_invitation_checks_current_inviter_authority"
+        ],
+        "C-FRESH-ASSURANCE": [
+          "qualification/test_administration.py::test_recent_token_without_authentication_time_cannot_authorize_admin_changes"
+        ],
+        "C-NATURAL-PERSON-INDEPENDENCE": [
+          "qualification/test_recovery_contacts.py::test_owner_alias_cannot_be_recovery_contact"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Invitations are identity-bound and single-use, superseded on resend and revoke, and check the inviter's current authority; recovery-channel codes are keyed-hash, single-use, 15-minute and five-attempt.",
+        "gaps": [
+          "Live MFA enrolment, factor reset, mailbox challenge and changed-email cases are not qualified.",
+          "A compromised worker or its configuration can still mint links for existing invitations.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; account recovery and MFA reset are not qualified, so this stays open."
+      }
+    },
+    {
+      "id": "TH06",
+      "origin": "v1",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "category": "identity",
+      "asset": "Consequential actions",
+      "attack": "A cached grant or queued job publishes after the user was revoked.",
+      "requirements": [
+        "FR-ACC-011",
+        "FR-IAM-008"
+      ],
+      "owner": "Access lead",
+      "target_control": "Bounded positive cache, epochs and fresh checks at side-effect boundaries.",
+      "required_verification": "Race revocation against approval, export, webhook and chunk download within the 60-second target.",
+      "control_refs": [
+        "C-CURRENT-AUTHORITY",
+        "C-SESSION-REVOCATION"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_revocation_prevents_receipt_replay",
+        "qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay",
+        "qualification/test_import.py::test_queued_commit_fails_when_requester_loses_authority",
+        "qualification/test_native_sessions.py::test_revoked_session_is_refused_in_parallel",
+        "qualification/test_live_idp.py::test_logout_revokes_the_session_and_ends_the_provider_session",
+        "qualification/test_ai_enablement.py::test_revoked_authority_after_call_never_returns_draft_or_regenerates"
+      ],
+      "coverage": {
+        "C-CURRENT-AUTHORITY": [
+          "qualification/test_live_application.py::test_revocation_prevents_receipt_replay",
+          "qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay",
+          "qualification/test_import.py::test_queued_commit_fails_when_requester_loses_authority",
+          "qualification/test_ai_enablement.py::test_revoked_authority_after_call_never_returns_draft_or_regenerates"
+        ],
+        "C-SESSION-REVOCATION": [
+          "qualification/test_native_sessions.py::test_revoked_session_is_refused_in_parallel",
+          "qualification/test_live_idp.py::test_logout_revokes_the_session_and_ends_the_provider_session"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Revocation is re-read at every write, export, replay and queued job; cookie sessions end at once on logout and back-channel logout.",
+        "gaps": [
+          "A bearer access token stays valid until it expires (120 s in the realm), beyond the 60-second target.",
+          "No distributed revocation race (webhook, chunk download) is tested; neither exists yet.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; the bearer-token window exceeds the target, so this stays open."
+      }
+    },
+    {
+      "id": "TH07",
+      "origin": "v1",
+      "title": "Self approval through aliases",
+      "impact": "Critical",
+      "category": "identity",
+      "asset": "Review integrity",
+      "attack": "The same person reviews their own material using another membership or delegation.",
+      "requirements": [
+        "FR-ACC-004"
+      ],
+      "owner": "Workflow lead",
+      "target_control": "Verified natural-person identity and immutable candidate author set.",
+      "required_verification": "Attempt self-approval across accounts, delegated roles and changed candidate versions.",
+      "control_refs": [
+        "C-NATURAL-PERSON-INDEPENDENCE",
+        "C-EXPECTED-REVISION"
+      ],
+      "test_refs": [
+        "qualification/test_administration.py::test_second_login_same_natural_person_is_not_independent",
+        "qualification/test_access_bootstrap.py::test_approval_independence_applies_across_identity_aliases",
+        "qualification/test_access_upgrade.py::test_operator_aliases_of_either_administrator_cannot_approve",
+        "qualification/test_operator_lifecycle.py::test_a_second_identity_of_the_subject_is_not_independent_and_the_database_refuses_too",
+        "qualification/test_measurement.py::test_plan_independence_typed_review_and_immutable_approval",
+        "qualification/test_native_concurrency.py::test_simultaneous_independent_approvals_admit_exactly_one",
+        "tools/browser/check.mjs::Author cannot approve their submitted record"
+      ],
+      "coverage": {
+        "C-NATURAL-PERSON-INDEPENDENCE": [
+          "qualification/test_administration.py::test_second_login_same_natural_person_is_not_independent",
+          "qualification/test_access_bootstrap.py::test_approval_independence_applies_across_identity_aliases",
+          "qualification/test_access_upgrade.py::test_operator_aliases_of_either_administrator_cannot_approve",
+          "qualification/test_operator_lifecycle.py::test_a_second_identity_of_the_subject_is_not_independent_and_the_database_refuses_too",
+          "qualification/test_measurement.py::test_plan_independence_typed_review_and_immutable_approval",
+          "tools/browser/check.mjs::Author cannot approve their submitted record"
+        ],
+        "C-EXPECTED-REVISION": [
+          "qualification/test_native_concurrency.py::test_simultaneous_independent_approvals_admit_exactly_one"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Self-approval through second logins, aliases, operator identities and changed candidates is refused in the API and the database; raced approvals admit one.",
+        "gaps": [
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH08",
+      "origin": "v1",
+      "title": "Replay and duplicate source effects",
+      "impact": "High",
+      "category": "source data",
+      "asset": "Results and source records",
+      "attack": "Lost responses or retries create duplicate observations, transactions or notifications.",
+      "requirements": [
+        "FR-OFF-003",
+        "FR-DAT-001"
+      ],
+      "owner": "Backend lead",
+      "target_control": "Durable operation receipts plus permanent source business and revision identities.",
+      "required_verification": "Interrupt commit and acknowledgement; replay identical and changed payloads and compare counts.",
+      "control_refs": [
+        "C-OPERATION-RECEIPTS",
+        "C-SOURCE-IDENTITY"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_retry_has_one_revision_audit_outbox_receipt",
+        "qualification/test_live_application.py::test_duplicate_source_key",
+        "qualification/test_native_concurrency.py::test_same_operation_from_two_threads_returns_the_one_receipt",
+        "qualification/test_native_concurrency.py::test_same_operation_with_different_payloads_admits_exactly_one",
+        "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once",
+        "qualification/test_ai_ranking.py::test_exact_retry_returns_the_receipt_and_a_changed_payload_conflicts"
+      ],
+      "coverage": {
+        "C-OPERATION-RECEIPTS": [
+          "qualification/test_live_application.py::test_retry_has_one_revision_audit_outbox_receipt",
+          "qualification/test_native_concurrency.py::test_same_operation_from_two_threads_returns_the_one_receipt",
+          "qualification/test_native_concurrency.py::test_same_operation_with_different_payloads_admits_exactly_one",
+          "qualification/test_native_degradation.py::test_native_connection_lost_mid_write_commits_nothing_and_the_retry_commits_once",
+          "qualification/test_ai_ranking.py::test_exact_retry_returns_the_receipt_and_a_changed_payload_conflicts"
+        ],
+        "C-SOURCE-IDENTITY": [
+          "qualification/test_live_application.py::test_duplicate_source_key"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Exact retries return one receipt, changed payloads conflict, duplicate source keys are refused and a lost connection commits nothing.",
+        "gaps": [
+          "Offline-device replay does not exist yet (TH17, TH18)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH09",
+      "origin": "v1",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "category": "source data",
+      "asset": "Official snapshots",
+      "attack": "Competing edits or a late source correction changes the value being approved or closed.",
+      "requirements": [
+        "FR-WFL-001",
+        "FR-CAL-001"
+      ],
+      "owner": "Workflow lead",
+      "target_control": "Expected revisions, fixed candidate and input manifest, ordered locks and new restatement.",
+      "required_verification": "Race edit/edit, correction/close and approval/candidate edit; require one consistent outcome.",
+      "control_refs": [
+        "C-EXPECTED-REVISION",
+        "C-TENANT-LOCK",
+        "C-CLOSE-MANIFEST"
+      ],
+      "test_refs": [
+        "qualification/test_native_concurrency.py::test_simultaneous_period_close_reviews_lock_the_period_once",
+        "qualification/test_native_concurrency.py::test_renewal_approval_raced_with_pinned_grant_revocation",
+        "qualification/test_native_nonfunctional.py::test_native_close_new_source_and_restatement_released_together_never_deadlock",
+        "qualification/test_native_nonfunctional.py::test_native_opposite_order_writers_on_two_objects_serialise_on_the_tenant_lock",
+        "qualification/test_period_governance.py::test_source_change_after_preview_requires_new_preview",
+        "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back",
+        "qualification/test_ai_ranking.py::test_second_of_two_editors_from_the_same_revision_is_refused_without_overwriting"
+      ],
+      "coverage": {
+        "C-EXPECTED-REVISION": [
+          "qualification/test_native_concurrency.py::test_renewal_approval_raced_with_pinned_grant_revocation",
+          "qualification/test_live_application.py::test_source_key_patch_conflict_rolls_back",
+          "qualification/test_ai_ranking.py::test_second_of_two_editors_from_the_same_revision_is_refused_without_overwriting"
+        ],
+        "C-TENANT-LOCK": [
+          "qualification/test_native_concurrency.py::test_simultaneous_period_close_reviews_lock_the_period_once",
+          "qualification/test_native_concurrency.py::test_renewal_approval_raced_with_pinned_grant_revocation",
+          "qualification/test_native_nonfunctional.py::test_native_close_new_source_and_restatement_released_together_never_deadlock",
+          "qualification/test_native_nonfunctional.py::test_native_opposite_order_writers_on_two_objects_serialise_on_the_tenant_lock"
+        ],
+        "C-CLOSE-MANIFEST": [
+          "qualification/test_native_concurrency.py::test_simultaneous_period_close_reviews_lock_the_period_once",
+          "qualification/test_native_nonfunctional.py::test_native_close_new_source_and_restatement_released_together_never_deadlock",
+          "qualification/test_period_governance.py::test_source_change_after_preview_requires_new_preview"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Raced approvals, close reviews, renewal against revocation and the three-writer close, source and restatement race resolve to one consistent outcome natively.",
+        "gaps": [
+          "Edit/edit and approval/candidate-edit races are not run natively.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; two of the required races are not run, so this stays open."
+      }
+    },
+    {
+      "id": "TH10",
+      "origin": "v1",
+      "title": "Database role or context leakage",
+      "impact": "Critical",
+      "category": "tenant boundary",
+      "asset": "Tenant database",
+      "attack": "A pooled connection retains another tenant or runtime owns tables and bypasses RLS.",
+      "requirements": [
+        "FR-SEC-003",
+        "FR-SEC-013"
+      ],
+      "owner": "Database lead",
+      "target_control": "Transaction-local context, nonowner roles, FORCE RLS and uncertain-pool discard.",
+      "required_verification": "Run real-role context reset, owner/BYPASSRLS audit, direct partition and TRUNCATE tests.",
+      "control_refs": [
+        "C-TENANT-CONTEXT",
+        "C-RUNTIME-ROLES",
+        "C-TENANT-RLS"
+      ],
+      "test_refs": [
+        "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+        "qualification/test_native_roles.py::test_runtime_guard_refuses_privileged_and_shared_connections",
+        "qualification/test_native_roles.py::test_each_login_is_unprivileged_and_assumes_exactly_its_own_role",
+        "qualification/test_native_nonfunctional.py::test_native_pooler_many_clients_share_few_server_connections_with_tenant_context_kept",
+        "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
+        "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+      ],
+      "coverage": {
+        "C-TENANT-CONTEXT": [
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_native_nonfunctional.py::test_native_pooler_many_clients_share_few_server_connections_with_tenant_context_kept",
+          "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
+          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+        ],
+        "C-RUNTIME-ROLES": [
+          "qualification/test_native_roles.py::test_runtime_guard_refuses_privileged_and_shared_connections",
+          "qualification/test_native_roles.py::test_each_login_is_unprivileged_and_assumes_exactly_its_own_role"
+        ],
+        "C-TENANT-RLS": [
+          "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
+          "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Real login roles assume only their own role, privileged and shared connections are refused, the fence needs a transaction-local tenant and a transaction pooler keeps tenant context.",
+        "gaps": [
+          "No partitioned tenant tables exist yet, so the direct-partition case does not apply.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH11",
+      "origin": "v1",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "category": "source data",
+      "asset": "Parser and worker process",
+      "attack": "A formula, transformation, archive or spreadsheet invokes code or exhausts resources.",
+      "requirements": [
+        "FR-SEC-005",
+        "FR-FRM-001"
+      ],
+      "owner": "Data lead",
+      "target_control": "Typed AST, allowlisted functions, bounded parsing and isolated workers.",
+      "required_verification": "Submit recursive expressions, formula payloads, huge cells, archive bombs and malformed encodings.",
+      "control_refs": [
+        "C-IMPORT-BOUNDS",
+        "C-SPREADSHEET-FORMULA-GUARD"
+      ],
+      "test_refs": [
+        "qualification/test_import.py::test_bounds_are_enforced",
+        "qualification/test_import.py::test_quarantine_duplicates_and_atomic_mode",
+        "qualification/test_logframe.py::test_formula_guard",
+        "qualification/test_logframe.py::test_workbook_preserves_unicode_context_and_formula_safety"
+      ],
+      "coverage": {
+        "C-IMPORT-BOUNDS": [
+          "qualification/test_import.py::test_bounds_are_enforced",
+          "qualification/test_import.py::test_quarantine_duplicates_and_atomic_mode"
+        ],
+        "C-SPREADSHEET-FORMULA-GUARD": [
+          "qualification/test_logframe.py::test_formula_guard",
+          "qualification/test_logframe.py::test_workbook_preserves_unicode_context_and_formula_safety"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Imports are bounded and quarantine invalid rows; exported spreadsheet cells are formula-safe. No user expression language exists.",
+        "gaps": [
+          "Archive bombs (XLSX is a zip), malformed encodings and recursive expressions are not tested.",
+          "Parsing runs in the API process, not an isolated worker.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Partial controls exist; hostile-file parsing is not qualified, so this stays open."
+      }
+    },
+    {
+      "id": "TH12",
+      "origin": "v1",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "category": "files",
+      "asset": "Evidence store and browser",
+      "attack": "An executable upload or document preview runs active content or is marked clean prematurely.",
+      "requirements": [
+        "FR-SEC-005"
+      ],
+      "owner": "Evidence lead",
+      "target_control": "Quarantine, actual-type checking, resource-bounded scanning and isolated preview delivery.",
+      "required_verification": "Upload active, mismatched, infected and scanner-failed content; verify all download paths deny.",
+      "control_refs": [
+        "C-EVIDENCE-QUARANTINE",
+        "C-MEDIATED-DOWNLOAD"
+      ],
+      "test_refs": [
+        "qualification/test_evidence.py::test_eicar_is_infected_rejected_and_never_downloadable",
+        "qualification/test_evidence.py::test_magic_bytes_size_and_digest_are_checked",
+        "qualification/test_evidence.py::test_failed_scan_and_changed_bytes_are_never_served",
+        "qualification/test_evidence.py::test_allow_list_names_and_declared_size_are_refused_before_any_byte",
+        "qualification/test_evidence_unit.py::test_sniffing_identifies_actual_content",
+        "tools/browser/evidence-check.mjs::The EICAR test file is INFECTED, refused and never downloadable"
+      ],
+      "coverage": {
+        "C-EVIDENCE-QUARANTINE": [
+          "qualification/test_evidence.py::test_eicar_is_infected_rejected_and_never_downloadable",
+          "qualification/test_evidence.py::test_magic_bytes_size_and_digest_are_checked",
+          "qualification/test_evidence.py::test_failed_scan_and_changed_bytes_are_never_served",
+          "qualification/test_evidence.py::test_allow_list_names_and_declared_size_are_refused_before_any_byte",
+          "qualification/test_evidence_unit.py::test_sniffing_identifies_actual_content",
+          "tools/browser/evidence-check.mjs::The EICAR test file is INFECTED, refused and never downloadable"
+        ],
+        "C-MEDIATED-DOWNLOAD": [
+          "qualification/test_evidence.py::test_eicar_is_infected_rejected_and_never_downloadable",
+          "qualification/test_evidence.py::test_failed_scan_and_changed_bytes_are_never_served"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Mismatched, executable, active-PDF, infected and scanner-failed uploads are refused and never served on any download path.",
+        "gaps": [
+          "The scanner is deterministic and named; no real scanning engine is qualified.",
+          "No document preview exists to isolate."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; a real scanning engine is not qualified."
+      }
+    },
+    {
+      "id": "TH13",
+      "origin": "v1",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "category": "tenant boundary",
+      "asset": "Private network and credentials",
+      "attack": "A connector or evidence URL redirects to metadata, localhost or a private network.",
+      "requirements": [
+        "FR-SEC-004",
+        "FR-INT-001"
+      ],
+      "owner": "Integration lead",
+      "target_control": "Scheme/host/address policy, redirect revalidation, no cross-host credential forwarding.",
+      "required_verification": "Test IPv4, IPv6, encoded hosts, DNS rebinding and multi-step redirects.",
+      "control_refs": [
+        "C-NO-CONNECTORS",
+        "C-PROVIDER-FIXED-ENDPOINT",
+        "C-SMTP-LOOPBACK",
+        "C-SSRF-POLICY"
+      ],
+      "test_refs": [
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+        "qualification/test_ai_advisory_provider.py::test_owned_async_client_is_closed_and_environment_proxies_disabled",
+        "qualification/test_ai_advisory_provider.py::test_provider_failures_are_closed_and_never_retried",
+        "qualification/test_worker.py::test_smtp_refuses_non_loopback_hosts_outside_staging"
+      ],
+      "coverage": {
+        "C-NO-CONNECTORS": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api"
+        ],
+        "C-PROVIDER-FIXED-ENDPOINT": [
+          "qualification/test_ai_advisory_provider.py::test_owned_async_client_is_closed_and_environment_proxies_disabled",
+          "qualification/test_ai_advisory_provider.py::test_provider_failures_are_closed_and_never_retried"
+        ],
+        "C-SMTP-LOOPBACK": [
+          "qualification/test_worker.py::test_smtp_refuses_non_loopback_hosts_outside_staging"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "No tenant-supplied URL is ever fetched: there is no connector, webhook or evidence-URL operation. The fixed outbound calls (identity provider, AI provider, SMTP, the operator's alert webhook) do not follow redirects or take tenant input.",
+        "gaps": [
+          "The address policy itself (IPv4, IPv6, encoded hosts, DNS rebinding, redirects) is not built or tested."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "No connector, webhook or URL-fetch feature may ship until the outbound address policy exists and its tests pass."
+      }
+    },
+    {
+      "id": "TH14",
+      "origin": "v1",
+      "title": "Secret leakage through diagnostics",
+      "impact": "Critical",
+      "category": "support",
+      "asset": "Service credentials",
+      "attack": "Connection metadata, error text, logs or support bundles expose a token or key.",
+      "requirements": [
+        "FR-SEC-006"
+      ],
+      "owner": "Platform security lead",
+      "target_control": "Secret references, redaction at source, safe errors and scoped diagnostic bundles.",
+      "required_verification": "Search logs, exports, traces, retries and failed connection responses using synthetic canary secrets.",
+      "control_refs": [
+        "C-SECRET-REDACTION",
+        "C-API-PROCESS-ENVIRONMENT"
+      ],
+      "test_refs": [
+        "qualification/test_audit_export.py::test_owner_may_export_and_the_content_holds_no_secret",
+        "qualification/test_key_rotation.py::test_settings_validate_keyrings_and_never_print_secrets",
+        "qualification/test_worker.py::test_worker_settings_never_print_secrets_or_the_connection_string",
+        "qualification/test_native_degradation.py::test_smtp_refusing_connections_backs_off_then_dead_without_secrets_in_logs",
+        "qualification/test_email_readiness_unit.py::test_redaction_covers_login_exchanges_and_literal_forms",
+        "qualification/test_ai_advisory_provider.py::test_timeout_has_no_sensitive_exception_chain",
+        "qualification/test_native_restart.py::test_phase_1"
+      ],
+      "coverage": {
+        "C-SECRET-REDACTION": [
+          "qualification/test_audit_export.py::test_owner_may_export_and_the_content_holds_no_secret",
+          "qualification/test_key_rotation.py::test_settings_validate_keyrings_and_never_print_secrets",
+          "qualification/test_worker.py::test_worker_settings_never_print_secrets_or_the_connection_string",
+          "qualification/test_native_degradation.py::test_smtp_refusing_connections_backs_off_then_dead_without_secrets_in_logs",
+          "qualification/test_email_readiness_unit.py::test_redaction_covers_login_exchanges_and_literal_forms",
+          "qualification/test_ai_advisory_provider.py::test_timeout_has_no_sensitive_exception_chain"
+        ],
+        "C-API-PROCESS-ENVIRONMENT": [
+          "qualification/test_native_restart.py::test_phase_1"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Audit exports, settings, worker output, degraded-service logs, mail transcripts and provider failures carry no secret; the API process holds no privileged credential.",
+        "gaps": [
+          "Support bundles do not exist yet.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH15",
+      "origin": "v1",
+      "title": "Export or storage URL bypass",
+      "impact": "Critical",
+      "category": "publication",
+      "asset": "Restricted artifacts",
+      "attack": "A user retains a long-lived URL or cached report after grant removal.",
+      "requirements": [
+        "FR-ACC-007",
+        "FR-ACC-011"
+      ],
+      "owner": "Reporting lead",
+      "target_control": "Mediated download, current restriction overlay and bounded reauthorisation.",
+      "required_verification": "Revoke during range download and retry a prior URL using another principal.",
+      "control_refs": [
+        "C-MEDIATED-DOWNLOAD",
+        "C-EXPORT-CAPABILITY",
+        "C-PUBLICATION-RECIPIENTS",
+        "C-EXPORT-PROJECTION"
+      ],
+      "test_refs": [
+        "qualification/test_publication.py::test_download_right_expiry_recipient_state_and_withdrawal_are_enforced",
+        "qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download",
+        "qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay",
+        "qualification/test_ai_plan_exports_live.py::test_fresh_signed_authentication_is_checked_again_on_replay",
+        "qualification/test_logframe.py::test_export_requires_separate_authority_and_current_source_visibility",
+        "qualification/test_report_exports.py::test_export_request_needs_an_approved_package_the_capability_and_the_tenant",
+        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+        "tools/browser/ai-plan-export-check.mjs::Current server export authority loss clears earlier issued metadata despite the prior positive client hint"
+      ],
+      "coverage": {
+        "C-MEDIATED-DOWNLOAD": [
+          "qualification/test_publication.py::test_download_right_expiry_recipient_state_and_withdrawal_are_enforced",
+          "qualification/test_evidence.py::test_upload_scan_evidence_version_citation_and_mediated_download",
+          "tools/browser/ai-plan-export-check.mjs::Current server export authority loss clears earlier issued metadata despite the prior positive client hint"
+        ],
+        "C-EXPORT-CAPABILITY": [
+          "qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay",
+          "qualification/test_ai_plan_exports_live.py::test_fresh_signed_authentication_is_checked_again_on_replay",
+          "qualification/test_logframe.py::test_export_requires_separate_authority_and_current_source_visibility",
+          "qualification/test_report_exports.py::test_export_request_needs_an_approved_package_the_capability_and_the_tenant"
+        ],
+        "C-PUBLICATION-RECIPIENTS": [
+          "qualification/test_publication.py::test_download_right_expiry_recipient_state_and_withdrawal_are_enforced"
+        ],
+        "C-EXPORT-PROJECTION": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "No storage URL exists: every download is mediated by current authority, export is a separate capability rechecked on replay, and disclosures expire and can be withdrawn.",
+        "gaps": [
+          "Bytes already downloaded cannot be recalled (by design, stated to users).",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH16",
+      "origin": "v1",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "category": "publication",
+      "asset": "Public aggregates",
+      "attack": "Several individually allowed slices reveal a suppressed participant category.",
+      "requirements": [
+        "FR-ACC-009"
+      ],
+      "owner": "Privacy lead",
+      "target_control": "Minimum cell rules, complementary suppression, release-history review and query bounds.",
+      "required_verification": "Combine totals, overlapping geography and repeated slices; verify raw values absent everywhere.",
+      "control_refs": [
+        "C-PUBLICATION-RECIPIENTS",
+        "C-SMALL-CELL-SUPPRESSION"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_disaggregation_is_explicitly_refused",
+        "qualification/test_publication.py::test_disclosure_rejects_public_expired_duplicate_and_inactive_recipients",
+        "qualification/test_dashboards.py::test_portfolio_withholds_totals_for_partial_scope_non_poolable_methods_and_zero_denominators"
+      ],
+      "coverage": {
+        "C-PUBLICATION-RECIPIENTS": [
+          "qualification/test_publication.py::test_disclosure_rejects_public_expired_duplicate_and_inactive_recipients"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "Public disclosure and ad-hoc disaggregation are refused; disclosure goes only to named recipients.",
+        "gaps": [
+          "Minimum-cell rules, complementary suppression and release-history review are not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Public aggregate release must not ship until small-cell suppression exists and is tested."
+      }
+    },
+    {
+      "id": "TH17",
+      "origin": "v1",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "category": "offline devices",
+      "asset": "Offline restricted records",
+      "attack": "A lost or shared device exposes cached identifiers or another account database.",
+      "requirements": [
+        "FR-OFF-005",
+        "FR-OFF-006"
+      ],
+      "owner": "Mobile security lead",
+      "target_control": "Encrypted per-account storage, managed profile, key separation and bounded package lease.",
+      "required_verification": "Inspect storage, backups, account switching and device custody on the supported matrix.",
+      "control_refs": [
+        "C-NO-OFFLINE-SURFACE",
+        "C-OFFLINE-ENCRYPTED-STORAGE"
+      ],
+      "test_refs": [
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+        "qualification/test_unit.py::test_route_missing_from_contract_is_not_found"
+      ],
+      "coverage": {
+        "C-NO-OFFLINE-SURFACE": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+          "qualification/test_unit.py::test_route_missing_from_contract_is_not_found"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "There is no Android client or offline package; the tests show the offline and device operations stay outside the implemented API and such routes answer 404.",
+        "gaps": [
+          "Encrypted device storage, account isolation and device custody are not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "No offline package or device client may ship until encrypted per-account storage is built and qualified on the device matrix."
+      }
+    },
+    {
+      "id": "TH18",
+      "origin": "v1",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "category": "offline devices",
+      "asset": "Offline lease",
+      "attack": "A user changes wall time or reboots to keep an expired package open.",
+      "requirements": [
+        "FR-OFF-005"
+      ],
+      "owner": "Mobile lead",
+      "target_control": "Server time anchor, monotonic continuity and lock on lost trust.",
+      "required_verification": "Move time backward/forward, reboot offline and restore an old local backup.",
+      "control_refs": [
+        "C-NO-OFFLINE-SURFACE",
+        "C-OFFLINE-TIME-ANCHOR"
+      ],
+      "test_refs": [
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+        "qualification/test_unit.py::test_route_missing_from_contract_is_not_found"
+      ],
+      "coverage": {
+        "C-NO-OFFLINE-SURFACE": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+          "qualification/test_unit.py::test_route_missing_from_contract_is_not_found"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "There is no offline lease to extend; the tests show offline operations stay outside the implemented API.",
+        "gaps": [
+          "Server time anchor and monotonic continuity are not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "No offline lease may ship until the time anchor is built and tested."
+      }
+    },
+    {
+      "id": "TH19",
+      "origin": "v1",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "category": "files",
+      "asset": "Evidence integrity",
+      "attack": "A stale client overwrites a numbered chunk or completes another user upload.",
+      "requirements": [
+        "FR-OFF-008",
+        "FR-SEC-005"
+      ],
+      "owner": "Collection lead",
+      "target_control": "Owner checks, immutable part receipt, exact sealed manifest and whole-file digest.",
+      "required_verification": "Replay same and different bytes, change part order, cancel during assembly and swap owner.",
+      "control_refs": [
+        "C-EVIDENCE-DIGEST",
+        "C-CHUNKED-UPLOAD-RECEIPTS"
+      ],
+      "test_refs": [
+        "qualification/test_evidence.py::test_magic_bytes_size_and_digest_are_checked",
+        "qualification/test_evidence.py::test_finalize_and_content_retries_are_idempotent",
+        "qualification/test_evidence.py::test_failed_scan_and_changed_bytes_are_never_served"
+      ],
+      "coverage": {
+        "C-EVIDENCE-DIGEST": [
+          "qualification/test_evidence.py::test_magic_bytes_size_and_digest_are_checked",
+          "qualification/test_evidence.py::test_finalize_and_content_retries_are_idempotent",
+          "qualification/test_evidence.py::test_failed_scan_and_changed_bytes_are_never_served"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Whole-file uploads are bound to owner, exact size and digest; changed bytes are never served.",
+        "gaps": [
+          "Chunked or resumable uploads do not exist; part receipts and manifests are not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "The whole-file path is controlled; chunked upload must not ship without part receipts."
+      }
+    },
+    {
+      "id": "TH20",
+      "origin": "v1",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "category": "source data",
+      "asset": "Async outputs",
+      "attack": "A delayed worker writes after its lease expired and another worker took over.",
+      "requirements": [
+        "FR-OPS-009",
+        "FR-DAT-001"
+      ],
+      "owner": "Platform lead",
+      "target_control": "Generation predicates on every state/output commit and deduplicated external effects.",
+      "required_verification": "Pause a worker after effect preparation, take over lease, then resume the original.",
+      "control_refs": [
+        "C-LEASE-GENERATION"
+      ],
+      "test_refs": [
+        "qualification/test_worker.py::test_lease_takeover_refuses_the_stale_holders_completion",
+        "qualification/test_native_worker.py::test_native_lease_takeover_while_the_first_holder_is_sending",
+        "qualification/test_native_worker.py::test_native_batch_outliving_its_lease_sends_every_row_once",
+        "qualification/test_report_exports.py::test_a_stale_lease_holder_cannot_complete_and_one_artifact_exists",
+        "qualification/test_retention.py::test_a_stale_lease_holder_neither_deletes_nor_proves"
+      ],
+      "coverage": {
+        "C-LEASE-GENERATION": [
+          "qualification/test_worker.py::test_lease_takeover_refuses_the_stale_holders_completion",
+          "qualification/test_native_worker.py::test_native_lease_takeover_while_the_first_holder_is_sending",
+          "qualification/test_native_worker.py::test_native_batch_outliving_its_lease_sends_every_row_once",
+          "qualification/test_report_exports.py::test_a_stale_lease_holder_cannot_complete_and_one_artifact_exists",
+          "qualification/test_retention.py::test_a_stale_lease_holder_neither_deletes_nor_proves"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Stale lease holders cannot complete deliveries, exports or retention sweeps; two workers never deliver one row.",
+        "gaps": [
+          "One email send that outlives a whole lease can be repeated; only the stable Message-ID lets a receiver discard it."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; external-effect deduplication is partial."
+      }
+    },
+    {
+      "id": "TH21",
+      "origin": "v1",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "category": "AI",
+      "asset": "AI tools and data scope",
+      "attack": "An uploaded document tells the model to reveal another tenant or execute a privileged tool.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-SEC-004"
+      ],
+      "owner": "AI security lead",
+      "target_control": "Scoped retrieval, untrusted content separation, typed tools and ordinary command policy.",
+      "required_verification": "Inject instructions in evidence, metadata and tool results; inspect model context and attempted calls.",
+      "control_refs": [
+        "C-AI-NO-TOOLS-GATE",
+        "C-AI-NO-TOOLS-DB",
+        "C-AI-UNTRUSTED-INPUT",
+        "C-AI-DRAFT-ONLY",
+        "C-NO-AI-APPLY",
+        "C-RETRIEVAL-SCOPING"
+      ],
+      "test_refs": [
+        "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+        "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
+        "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database",
+        "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
+        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api"
+      ],
+      "coverage": {
+        "C-AI-NO-TOOLS-GATE": [
+          "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+          "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation"
+        ],
+        "C-AI-NO-TOOLS-DB": [
+          "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database"
+        ],
+        "C-AI-UNTRUSTED-INPUT": [
+          "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions"
+        ],
+        "C-AI-DRAFT-ONLY": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        ],
+        "C-NO-AI-APPLY": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "No retrieval exists: no uploaded document, evidence, metadata or tool result ever reaches a model, and no tool can be enabled (API and database). The advisory-brief variant is TH33.",
+        "gaps": [
+          "Scoped retrieval and untrusted-content separation are not built; injection through evidence, metadata and tool results cannot be exercised."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Model retrieval of documents, evidence or metadata and any AI tool must not ship until scoped retrieval exists and injection is evaluated."
+      }
+    },
+    {
+      "id": "TH22",
+      "origin": "v1",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "category": "AI",
+      "asset": "Reports and evaluations",
+      "attack": "Generated prose invents a number or presents correlation as approved causality.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-EVA-001"
+      ],
+      "owner": "Measurement lead",
+      "target_control": "Deterministic numeric bindings, citations and use-case consequential-claim gates.",
+      "required_verification": "Compare every numeric occurrence with result references and challenge unsupported causal claims.",
+      "control_refs": [
+        "C-AI-DRAFT-ONLY",
+        "C-NUMERIC-BINDINGS",
+        "C-AI-EVALUATION"
+      ],
+      "test_refs": [
+        "qualification/test_publication.py::test_narrative_numbers_require_exact_bindings_and_csv_is_deterministic",
+        "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
+        "qualification/test_ai_pilot_outcomes.py::test_comparison_includes_human_review_time_and_never_claims_accepted_impact",
+        "qualification/test_ai_advisory_provider.py::test_invalid_incomplete_or_sensitive_outputs_are_refused"
+      ],
+      "coverage": {
+        "C-AI-DRAFT-ONLY": [
+          "qualification/test_ai_advisory_provider.py::test_invalid_incomplete_or_sensitive_outputs_are_refused"
+        ],
+        "C-NUMERIC-BINDINGS": [
+          "qualification/test_publication.py::test_narrative_numbers_require_exact_bindings_and_csv_is_deterministic",
+          "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Official numbers in reports come only from bindings and AI plan references cannot supply numbers; advisory output is a labelled draft.",
+        "gaps": [
+          "Advisory text is not checked for invented numbers or causal claims; no evaluation set exists."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Generated text cannot become an official number; its content is unevaluated."
+      }
+    },
+    {
+      "id": "TH23",
+      "origin": "v1",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "category": "AI",
+      "asset": "Draft integrity",
+      "attack": "A proposal based on an old source overwrites a corrected object or changed permission.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-ACC-011"
+      ],
+      "owner": "AI lead",
+      "target_control": "Exact diff, source revisions, expiry, proposal digest and fresh policy at confirmation.",
+      "required_verification": "Change each source, target, purpose and policy after preview; confirmation must reject.",
+      "control_refs": [
+        "C-NO-AI-APPLY",
+        "C-AI-POLICY-VERSION-PIN"
+      ],
+      "test_refs": [
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+        "qualification/test_ai_enablement.py::test_request_against_an_old_policy_version_conflicts_before_reservation",
+        "qualification/test_ai_enablement.py::test_exact_replay_after_a_policy_change_returns_the_original_draft_only"
+      ],
+      "coverage": {
+        "C-NO-AI-APPLY": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api"
+        ],
+        "C-AI-POLICY-VERSION-PIN": [
+          "qualification/test_ai_enablement.py::test_request_against_an_old_policy_version_conflicts_before_reservation",
+          "qualification/test_ai_enablement.py::test_exact_replay_after_a_policy_change_returns_the_original_draft_only"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "No AI proposal is ever applied to a record, so there is nothing stale to apply; requests are pinned to the policy version.",
+        "gaps": [
+          "Exact diff, source revisions, expiry, proposal digest and confirmation are not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "AI proposal application must not ship until confirmation rechecks source, target, purpose and policy."
+      }
+    },
+    {
+      "id": "TH24",
+      "origin": "v1",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "category": "AI",
+      "asset": "Service continuity and cost",
+      "attack": "Repeated requests exhaust the tenant or platform provider budget.",
+      "requirements": [
+        "FR-OPS-008",
+        "FR-SEC-014"
+      ],
+      "owner": "Platform lead",
+      "target_control": "Atomic reservation, quotas, admission limits, cancellation reconciliation and provider circuit control.",
+      "required_verification": "Race admissions near quota, interrupt provider responses and compare reserved versus used budget.",
+      "control_refs": [
+        "C-AI-ATTEMPT-LIMIT",
+        "C-AI-GATE-BEFORE-RESERVATION",
+        "C-PROVIDER-FIXED-ENDPOINT",
+        "C-TENANT-QUOTAS"
+      ],
+      "test_refs": [
+        "qualification/test_ai_enablement.py::test_budget_counts_failed_reserved_attempts_and_is_per_tenant",
+        "qualification/test_ai_enablement_live.py::test_durable_sealed_replay_and_daily_budget_on_real_database",
+        "qualification/test_ai_policy.py::test_destination_language_and_budget_rules_refuse_before_reservation",
+        "qualification/test_ai_advisory_provider.py::test_request_and_body_share_one_deadline"
+      ],
+      "coverage": {
+        "C-AI-ATTEMPT-LIMIT": [
+          "qualification/test_ai_enablement.py::test_budget_counts_failed_reserved_attempts_and_is_per_tenant",
+          "qualification/test_ai_enablement_live.py::test_durable_sealed_replay_and_daily_budget_on_real_database"
+        ],
+        "C-AI-GATE-BEFORE-RESERVATION": [
+          "qualification/test_ai_policy.py::test_destination_language_and_budget_rules_refuse_before_reservation"
+        ],
+        "C-PROVIDER-FIXED-ENDPOINT": [
+          "qualification/test_ai_advisory_provider.py::test_request_and_body_share_one_deadline"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Three reserved attempts per tenant per 24 hours (failures count), a zero policy budget blocks, one bounded deadline per call.",
+        "gaps": [
+          "No currency budget, metering or usage reconciliation (FR-AI-016a); no platform-wide quota or circuit breaker."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Attempts are bounded per tenant; budget metering is a later story."
+      }
+    },
+    {
+      "id": "TH25",
+      "origin": "v1",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "category": "support",
+      "asset": "Tenant content and administration",
+      "attack": "An operator grants themselves broad support access or continues after expiry.",
+      "requirements": [
+        "FR-ACC-008",
+        "FR-SEC-013"
+      ],
+      "owner": "Security lead",
+      "target_control": "Distinct approver, exact scope/capabilities, 60-minute limit and audited assurance.",
+      "required_verification": "Self-approve, request wildcard scope, extend expiry and use a cached support session.",
+      "control_refs": [
+        "C-NO-SUPPORT-SESSIONS",
+        "C-CUSTODY-NO-DATA-ACCESS",
+        "C-CONTROL-PLANE-SEPARATION",
+        "C-SUPPORT-SESSION-CONTROLS"
+      ],
+      "test_refs": [
+        "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+        "qualification/test_tenant_lifecycle.py::test_owner_acceptance_activation_independence_and_no_implied_access",
+        "qualification/test_native_roles.py::test_platform_role_writes_only_its_restrictive_object_types",
+        "tools/browser/tenant-check.mjs::Nominated owner accepts without receiving automatic data access"
+      ],
+      "coverage": {
+        "C-NO-SUPPORT-SESSIONS": [
+          "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api"
+        ],
+        "C-CUSTODY-NO-DATA-ACCESS": [
+          "qualification/test_tenant_lifecycle.py::test_owner_acceptance_activation_independence_and_no_implied_access",
+          "tools/browser/tenant-check.mjs::Nominated owner accepts without receiving automatic data access"
+        ],
+        "C-CONTROL-PLANE-SEPARATION": [
+          "qualification/test_native_roles.py::test_platform_role_writes_only_its_restrictive_object_types"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "Support sessions do not exist: no support operation is implemented, custody gives no data access and the platform role cannot write tenant content.",
+        "gaps": [
+          "Distinct approver, exact scope, 60-minute limit and audited assurance for support access are not built or tested."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Support sessions do not exist; none may ship until FR-ACC-008's controls are built and tested."
+      }
+    },
+    {
+      "id": "TH26",
+      "origin": "v1",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "category": "source data",
+      "asset": "Personal data across stores",
+      "attack": "A case closes after deleting one table while blobs, caches or exports retain data.",
+      "requirements": [
+        "FR-PRV-001"
+      ],
+      "owner": "Privacy lead",
+      "target_control": "Store inventory, approved actions, holds, restriction, independent ledger and reconciled outcomes.",
+      "required_verification": "Fail each store and verify partial status; search residual copies and retry without losing attribution.",
+      "control_refs": [
+        "C-PRIVACY-STORE-INVENTORY",
+        "C-NATURAL-PERSON-INDEPENDENCE"
+      ],
+      "test_refs": [
+        "qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers",
+        "qualification/test_privacy_requests.py::test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried",
+        "qualification/test_privacy_requests.py::test_case_approval_requires_an_independent_natural_person",
+        "qualification/test_privacy_requests.py::test_erasure_of_a_named_import_batch_removes_its_raw_content"
+      ],
+      "coverage": {
+        "C-PRIVACY-STORE-INVENTORY": [
+          "qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers",
+          "qualification/test_privacy_requests.py::test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried",
+          "qualification/test_privacy_requests.py::test_erasure_of_a_named_import_batch_removes_its_raw_content"
+        ],
+        "C-NATURAL-PERSON-INDEPENDENCE": [
+          "qualification/test_privacy_requests.py::test_case_approval_requires_an_independent_natural_person"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Erasure reaches the inventoried stores, reports partial status on a failed object-store deletion, honours holds and needs an independent approval.",
+        "gaps": [
+          "Backups keep erased data until they age out (TH27).",
+          "The erasure plan covers member profiles, invitations, approvals, outbox intents, evidence, object-store bytes and imports; AI plans, retained plan export bytes and sealed advisory results are not in it, and downloaded copies cannot be recalled."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; residual copies remain, so this stays open."
+      }
+    },
+    {
+      "id": "TH27",
+      "origin": "v1",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "category": "support",
+      "asset": "Restored environment",
+      "attack": "A restore reintroduces a deleted participant or revoked administrator.",
+      "requirements": [
+        "FR-OPS-006",
+        "FR-PRV-001"
+      ],
+      "owner": "Platform privacy leads",
+      "target_control": "Closed restore, current deletion/revocation replay and worker admission gate.",
+      "required_verification": "Restore a backup predating deletion and verify the current restrictions before opening traffic.",
+      "control_refs": [
+        "C-BACKUP-VERIFIED",
+        "C-RESTORE-REPLAY"
+      ],
+      "test_refs": [
+        "qualification/test_ops_unit.py::test_drill_restores_the_newest_set_and_skips_the_bootstrap_superuser",
+        "qualification/test_ops_unit.py::test_verification_catches_a_changed_file"
+      ],
+      "coverage": {
+        "C-BACKUP-VERIFIED": [
+          "qualification/test_ops_unit.py::test_drill_restores_the_newest_set_and_skips_the_bootstrap_superuser",
+          "qualification/test_ops_unit.py::test_verification_catches_a_changed_file"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "Backups are verified and a restore drill runs, but nothing replays deletions or revocations before a restored copy is opened.",
+        "gaps": [
+          "Deletion and revocation replay before reopening is not built."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "A restored environment must not be opened to users with non-synthetic data until replay exists."
+      }
+    },
+    {
+      "id": "TH28",
+      "origin": "v1",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "category": "support",
+      "asset": "Accountability",
+      "attack": "A privileged actor alters history or deletes the newest signed batch.",
+      "requirements": [
+        "FR-SEC-007"
+      ],
+      "owner": "Security lead",
+      "target_control": "Append-only privileges, linked digests and independently retained checkpoints.",
+      "required_verification": "Mutate, reorder, omit and truncate batches relative to an external checkpoint.",
+      "control_refs": [
+        "C-AUDIT-APPEND-ONLY",
+        "C-AUDIT-CHAIN",
+        "C-AUDIT-EXTERNAL-CHECKPOINT"
+      ],
+      "test_refs": [
+        "qualification/test_audit_export.py::test_chain_digest_and_seal_verify_and_detect_tampering",
+        "qualification/test_recovery_contacts.py::test_runtime_roles_cannot_read_contact_evidence_or_rewrite_audit",
+        "qualification/test_security_privacy.py::test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept",
+        "qualification/test_live_application.py::test_database_tenant_fence_and_immutable_revisions"
+      ],
+      "coverage": {
+        "C-AUDIT-APPEND-ONLY": [
+          "qualification/test_recovery_contacts.py::test_runtime_roles_cannot_read_contact_evidence_or_rewrite_audit",
+          "qualification/test_security_privacy.py::test_the_audit_window_is_never_crossed_and_audit_events_are_never_swept",
+          "qualification/test_live_application.py::test_database_tenant_fence_and_immutable_revisions"
+        ],
+        "C-AUDIT-CHAIN": [
+          "qualification/test_audit_export.py::test_chain_digest_and_seal_verify_and_detect_tampering"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Runtime roles cannot alter audit, sweeps never delete it and the audit export's chain digest and seal detect tampering.",
+        "gaps": [
+          "No independently retained checkpoint: a database owner can still alter or truncate history undetected by the platform."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Runtime controls are built; external checkpoints are not, so this stays open."
+      }
+    },
+    {
+      "id": "TH29",
+      "origin": "v1",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "category": "support",
+      "asset": "Release supply chain",
+      "attack": "A dependency, CI token or mutable tag injects code into production.",
+      "requirements": [
+        "FR-SEC-008",
+        "FR-SEC-009"
+      ],
+      "owner": "Platform security lead",
+      "target_control": "Locked hashes, secret separation, SBOM, provenance and immutable artifact promotion.",
+      "required_verification": "Verify origin and digest, scan secrets and simulate a changed lock or substituted build.",
+      "control_refs": [
+        "C-LOCKED-DEPENDENCIES",
+        "C-SBOM-PROVENANCE"
+      ],
+      "test_refs": [
+        "qualification/test_deploy_unit.py::test_hashed_runtime_requirements_match_the_lock",
+        "qualification/test_deploy_unit.py::test_dockerfile_copies_only_existing_runtime_files"
+      ],
+      "coverage": {
+        "C-LOCKED-DEPENDENCIES": [
+          "qualification/test_deploy_unit.py::test_hashed_runtime_requirements_match_the_lock",
+          "qualification/test_deploy_unit.py::test_dockerfile_copies_only_existing_runtime_files"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Python dependencies install from a hashed lock that the runtime requirements must match.",
+        "gaps": [
+          "No build provenance, SBOM verification or immutable artifact promotion; staging builds from main.",
+          "Branch protection and required review are GitHub settings outside the repository (FR-SEC-008)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Locked hashes exist; provenance and promotion are not built, so this stays open."
+      }
+    },
+    {
+      "id": "TH30",
+      "origin": "v1",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "category": "identity",
+      "asset": "Web sessions and content",
+      "attack": "XSS, CSRF or persistent browser storage exposes sessions or triggers commands.",
+      "requirements": [
+        "FR-SEC-004"
+      ],
+      "owner": "Frontend security lead",
+      "target_control": "Escaping, sanitisation, CSP, secure cookies, Origin/CSRF validation and restricted caches.",
+      "required_verification": "Exercise rich text, report previews, cross-origin mutations and access loss on browser history.",
+      "control_refs": [
+        "C-CSRF-ORIGIN",
+        "C-CSP-HEADERS",
+        "C-SESSION-REVOCATION"
+      ],
+      "test_refs": [
+        "qualification/test_live_application.py::test_browser_session_csrf_logout",
+        "qualification/test_workspace_administration.py::test_fifteen_minute_idle_and_csrf_revocation",
+        "qualification/test_deploy_unit.py::test_smoke_refuses_relaxed_walkthrough_csp",
+        "qualification/test_deploy_unit.py::test_smoke_refuses_missing_wrong_type_or_cookie_setting_built_asset",
+        "tools/browser/check.mjs::Logout invalidates the browser session"
+      ],
+      "coverage": {
+        "C-CSRF-ORIGIN": [
+          "qualification/test_live_application.py::test_browser_session_csrf_logout",
+          "qualification/test_workspace_administration.py::test_fifteen_minute_idle_and_csrf_revocation"
+        ],
+        "C-CSP-HEADERS": [
+          "qualification/test_deploy_unit.py::test_smoke_refuses_relaxed_walkthrough_csp",
+          "qualification/test_deploy_unit.py::test_smoke_refuses_missing_wrong_type_or_cookie_setting_built_asset"
+        ],
+        "C-SESSION-REVOCATION": [
+          "qualification/test_live_application.py::test_browser_session_csrf_logout",
+          "qualification/test_workspace_administration.py::test_fifteen_minute_idle_and_csrf_revocation",
+          "tools/browser/check.mjs::Logout invalidates the browser session"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Cross-origin and CSRF-less cookie writes are refused, sessions end on logout and idle, every API response carries a content security policy and the smoke test refuses a relaxed walkthrough policy or a built asset that sets cookies.",
+        "gaps": [
+          "No XSS testing of rich text or report previews; browser-history access loss is not tested."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built; script-injection testing is not done."
+      }
+    },
+    {
+      "id": "TH31",
+      "origin": "v1",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "category": "tenant boundary",
+      "asset": "Core service availability",
+      "attack": "One tenant exports, imports or queries monopolise database or workers.",
+      "requirements": [
+        "FR-SEC-014",
+        "FR-OPS-008"
+      ],
+      "owner": "Platform lead",
+      "target_control": "Per-tenant admission and quotas, bounded query shapes and separate work classes.",
+      "required_verification": "Run the largest tenant and hostile bulk work alongside ordinary saves and approvals.",
+      "control_refs": [
+        "C-WORKER-TENANT-ISOLATION",
+        "C-TENANT-QUOTAS"
+      ],
+      "test_refs": [
+        "qualification/test_worker.py::test_a_failing_tenant_or_template_does_not_stop_the_worker",
+        "qualification/test_email_readiness_unit.py::test_rate_limiter_windows_global_and_per_tenant_and_never_below_zero"
+      ],
+      "coverage": {
+        "C-WORKER-TENANT-ISOLATION": [
+          "qualification/test_worker.py::test_a_failing_tenant_or_template_does_not_stop_the_worker"
+        ]
+      },
+      "verification": {
+        "status": "PENDING",
+        "summary": "A failing tenant pass does not stop the worker and mail is rate-limited per tenant; one measurement showed quiet tenants at 2.4 to 2.5 times their idle p95 under a noisy tenant.",
+        "gaps": [
+          "No per-tenant admission, quota or fairness mechanism exists."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Verification pending: fairness is not built."
+      }
+    },
+    {
+      "id": "TH32",
+      "origin": "v1",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "category": "source data",
+      "asset": "Retained forms and indicators",
+      "attack": "A schema or code-list upgrade reinterprets old answers, units or approved results.",
+      "requirements": [
+        "FR-MIG-001",
+        "FR-OPS-007"
+      ],
+      "owner": "Implementation lead",
+      "target_control": "Versioned schemas and definitions, semantic migration comparison and retained readers.",
+      "required_verification": "Compare old/new periods, missingness, codes, units, approvals and exports under rollback.",
+      "control_refs": [
+        "C-FROZEN-MIGRATIONS",
+        "C-VERSIONED-READERS"
+      ],
+      "test_refs": [
+        "qualification/test_version_unit.py::test_migrations_are_numbered_contiguously_so_their_count_is_the_schema_version",
+        "qualification/test_access_upgrade_unit.py::test_original_profile_seed_and_frozen_migration_remain_immutable",
+        "qualification/test_ai_adoption_plans.py::test_legacy_revision_reads_and_lists_interpret_progress_without_rewriting_history",
+        "qualification/test_ai_content_archives_live.py::test_applied_migration_ledger_is_recorded_as_actual_database_evidence",
+        "qualification/test_ai_content_archives.py::test_revisions_saved_under_v1_and_v2_both_load_and_v1_keeps_its_original_words",
+        "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures",
+        "qualification/test_ai_plan_exports_unit.py::test_a_v1_guidance_export_is_byte_identical_to_build_0_38_and_valid_only_as_v1"
+      ],
+      "coverage": {
+        "C-FROZEN-MIGRATIONS": [
+          "qualification/test_version_unit.py::test_migrations_are_numbered_contiguously_so_their_count_is_the_schema_version",
+          "qualification/test_access_upgrade_unit.py::test_original_profile_seed_and_frozen_migration_remain_immutable",
+          "qualification/test_ai_content_archives_live.py::test_applied_migration_ledger_is_recorded_as_actual_database_evidence"
+        ],
+        "C-VERSIONED-READERS": [
+          "qualification/test_ai_adoption_plans.py::test_legacy_revision_reads_and_lists_interpret_progress_without_rewriting_history",
+          "qualification/test_ai_content_archives.py::test_revisions_saved_under_v1_and_v2_both_load_and_v1_keeps_its_original_words",
+          "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures",
+          "qualification/test_ai_plan_exports_unit.py::test_a_v1_guidance_export_is_byte_identical_to_build_0_38_and_valid_only_as_v1"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Migrations are contiguous and frozen; saved AI plans keep their original content meaning.",
+        "gaps": [
+          "No semantic comparison of old and new periods, codes, units and exports under rollback."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Structural controls are built; semantic comparison is not."
+      }
+    },
+    {
+      "id": "TH33",
+      "origin": "v2",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "category": "AI",
+      "asset": "Advisory drafts, plans and plan exports",
+      "attack": "A member writes instructions into the advisory brief (or pastes hostile text into it) so the model ignores its instructions, asks for a tool, or emits approval, official or restriction fields that are then saved or exported as if the platform had produced them.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-SEC-004",
+        "FR-NPA-010"
+      ],
+      "owner": "AI security lead",
+      "target_control": "Untrusted-input separation, no tools, output reduced to labelled draft text, closed plan bodies and a server-labelled export; human review before any use.",
+      "required_verification": "Inject override, tool and forged-field instructions into the brief and show the request carries them only as data, no tool runs, the draft is never a record and nothing forged reaches a plan or export.",
+      "control_refs": [
+        "C-AI-UNTRUSTED-INPUT",
+        "C-AI-ADAPTER-TEXT-ONLY",
+        "C-AI-NO-TOOLS-GATE",
+        "C-AI-NO-TOOLS-DB",
+        "C-AI-DRAFT-ONLY",
+        "C-CLOSED-DTO",
+        "C-EXPORT-PROJECTION",
+        "C-AI-EVALUATION"
+      ],
+      "test_refs": [
+        "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+        "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
+        "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
+        "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+        "qualification/test_ai_policy_unit.py::test_invalid_reserved_or_tool_granting_policies_are_refused",
+        "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database"
+      ],
+      "coverage": {
+        "C-AI-UNTRUSTED-INPUT": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+          "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions"
+        ],
+        "C-AI-ADAPTER-TEXT-ONLY": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+          "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions"
+        ],
+        "C-AI-NO-TOOLS-GATE": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+          "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
+          "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+          "qualification/test_ai_policy_unit.py::test_invalid_reserved_or_tool_granting_policies_are_refused"
+        ],
+        "C-AI-NO-TOOLS-DB": [
+          "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database"
+        ],
+        "C-AI-DRAFT-ONLY": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        ],
+        "C-CLOSED-DTO": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        ],
+        "C-EXPORT-PROJECTION": [
+          "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "With a synthetic model that obeys the injection, the brief travels only as data, the tool call and forged fields are dropped or refused, the output stays a sealed draft and the export carries only server labels.",
+        "gaps": [
+          "The real model's resilience to injection is not evaluated and no live generation has succeeded.",
+          "A person can copy the draft into a plan's free text; it is exported verbatim as their own words, labelled an internal draft. No review step exists before a plan export."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Machine paths are closed; misleading draft text remains possible and is labelled for human review."
+      }
+    },
+    {
+      "id": "TH34",
+      "origin": "v2",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "category": "AI",
+      "asset": "Organisation briefs and any personal or confidential data in them",
+      "attack": "Data of a class, purpose or destination the organisation has not approved is sent to an AI provider: a confidential brief under an internal-only policy, a provider or region not on the list, AI used while switched off, or sensitive text typed into a brief marked non-sensitive.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-NPA-026",
+        "FR-NPA-035"
+      ],
+      "owner": "Privacy lead",
+      "target_control": "Three switches, data-class ceiling, closed destination list, explicit consent, minimal payload and an approved destination with a completed DPIA.",
+      "required_verification": "Request with each unmet rule and with AI off and show no reservation and no provider call; show the payload holds only the brief and assessment.",
+      "control_refs": [
+        "C-AI-THREE-SWITCHES",
+        "C-AI-GATE-BEFORE-RESERVATION",
+        "C-AI-DATA-CLASS-CEILING",
+        "C-AI-DESTINATION-LIST",
+        "C-AI-CONSENT",
+        "C-AI-MINIMAL-PAYLOAD",
+        "C-AI-DESTINATION-APPROVAL"
+      ],
+      "test_refs": [
+        "qualification/test_ai_enablement.py::test_sensitive_request_outside_policy_is_blocked_before_reservation",
+        "qualification/test_ai_enablement.py::test_provider_without_a_declared_destination_is_blocked",
+        "qualification/test_ai_enablement.py::test_disabled_policy_never_reserves_or_spends",
+        "qualification/test_ai_enablement.py::test_every_unmet_rule_blocks_before_reservation",
+        "qualification/test_ai_policy.py::test_sensitive_request_outside_the_policy_is_refused_before_reservation",
+        "qualification/test_ai_policy.py::test_core_workflows_complete_with_every_ai_use_case_off",
+        "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
+        "tools/browser/ai-enablement-check.mjs::Disabled advisory sends no requests, and the product fits desktop and 390 px mobile views",
+        "qualification/test_ai_enablement.py::test_consent_closed_body_and_profile_are_independently_validated"
+      ],
+      "coverage": {
+        "C-AI-THREE-SWITCHES": [
+          "qualification/test_ai_enablement.py::test_disabled_policy_never_reserves_or_spends",
+          "qualification/test_ai_policy.py::test_core_workflows_complete_with_every_ai_use_case_off",
+          "tools/browser/ai-enablement-check.mjs::Disabled advisory sends no requests, and the product fits desktop and 390 px mobile views"
+        ],
+        "C-AI-GATE-BEFORE-RESERVATION": [
+          "qualification/test_ai_enablement.py::test_sensitive_request_outside_policy_is_blocked_before_reservation",
+          "qualification/test_ai_enablement.py::test_every_unmet_rule_blocks_before_reservation"
+        ],
+        "C-AI-DATA-CLASS-CEILING": [
+          "qualification/test_ai_enablement.py::test_sensitive_request_outside_policy_is_blocked_before_reservation",
+          "qualification/test_ai_policy.py::test_sensitive_request_outside_the_policy_is_refused_before_reservation"
+        ],
+        "C-AI-DESTINATION-LIST": [
+          "qualification/test_ai_enablement.py::test_provider_without_a_declared_destination_is_blocked",
+          "qualification/test_ai_enablement.py::test_every_unmet_rule_blocks_before_reservation"
+        ],
+        "C-AI-CONSENT": [
+          "qualification/test_ai_enablement.py::test_consent_closed_body_and_profile_are_independently_validated"
+        ],
+        "C-AI-MINIMAL-PAYLOAD": [
+          "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Every unmet policy rule and every switch that is off refuses before any reservation or provider call; the payload holds only the brief and the deterministic assessment.",
+        "gaps": [
+          "The sensitive-data flag is self-reported; nothing detects personal or confidential text in a brief.",
+          "openai-us is the adapter's label, not an approved destination: provider region, retention and the DPIA are open; store false is not proof of zero retention."
+        ]
+      },
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Keep the server AI switch off for any non-synthetic data until the product owner approves a destination and region and the DPIA is complete."
+      }
+    },
+    {
+      "id": "TH35",
+      "origin": "v2",
+      "title": "AI policy bypass",
+      "impact": "Critical",
+      "category": "AI",
+      "asset": "The tenant AI policy and the advisory gate",
+      "attack": "A request reaches the provider without the policy in force allowing it: made against an older policy version, after a failed policy read, through a policy changed by a non-administrator or without fresh sign-in, or by a runtime role writing the policy tables directly.",
+      "requirements": [
+        "FR-AI-001",
+        "FR-ACC-004",
+        "FR-SEC-003"
+      ],
+      "owner": "AI security lead",
+      "target_control": "Gate before reservation under the tenant lock, version pin, fail closed, TENANT_ADMIN with fresh assurance for changes, insert-only fenced policy tables.",
+      "required_verification": "Request against an old version, with an unreadable policy and with each rule unmet; change the policy as other roles and with stale sign-in; write the tables as each runtime role.",
+      "control_refs": [
+        "C-AI-GATE-BEFORE-RESERVATION",
+        "C-AI-POLICY-VERSION-PIN",
+        "C-AI-POLICY-INSERT-ONLY",
+        "C-FRESH-ASSURANCE",
+        "C-SCOPED-GRANTS",
+        "C-TENANT-RLS"
+      ],
+      "test_refs": [
+        "qualification/test_ai_enablement.py::test_request_against_an_old_policy_version_conflicts_before_reservation",
+        "qualification/test_ai_enablement.py::test_unreadable_policy_fails_closed_without_reservation",
+        "qualification/test_ai_enablement.py::test_every_unmet_rule_blocks_before_reservation",
+        "qualification/test_ai_policy_unit.py::test_gate_order_version_then_enablement_then_rules",
+        "qualification/test_ai_policy.py::test_policy_change_refused_without_administration_or_fresh_sign_in",
+        "qualification/test_ai_policy_unit.py::test_real_authorizer_requires_mfa_and_sign_in_within_300_seconds",
+        "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database",
+        "qualification/test_ai_policy_live.py::test_native_application_role_cannot_rewrite_delete_or_cross_the_fence",
+        "qualification/test_ai_policy_live.py::test_native_other_runtime_roles_cannot_read_or_write_the_policy",
+        "tools/browser/ai-policy-check.mjs::A save against a version that changed meanwhile is refused and the policy reloads"
+      ],
+      "coverage": {
+        "C-AI-GATE-BEFORE-RESERVATION": [
+          "qualification/test_ai_enablement.py::test_unreadable_policy_fails_closed_without_reservation",
+          "qualification/test_ai_enablement.py::test_every_unmet_rule_blocks_before_reservation",
+          "qualification/test_ai_policy_unit.py::test_gate_order_version_then_enablement_then_rules"
+        ],
+        "C-AI-POLICY-VERSION-PIN": [
+          "qualification/test_ai_enablement.py::test_request_against_an_old_policy_version_conflicts_before_reservation",
+          "qualification/test_ai_policy_unit.py::test_gate_order_version_then_enablement_then_rules",
+          "tools/browser/ai-policy-check.mjs::A save against a version that changed meanwhile is refused and the policy reloads"
+        ],
+        "C-AI-POLICY-INSERT-ONLY": [
+          "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database",
+          "qualification/test_ai_policy_live.py::test_native_application_role_cannot_rewrite_delete_or_cross_the_fence",
+          "qualification/test_ai_policy_live.py::test_native_other_runtime_roles_cannot_read_or_write_the_policy"
+        ],
+        "C-FRESH-ASSURANCE": [
+          "qualification/test_ai_policy.py::test_policy_change_refused_without_administration_or_fresh_sign_in",
+          "qualification/test_ai_policy_unit.py::test_real_authorizer_requires_mfa_and_sign_in_within_300_seconds"
+        ],
+        "C-SCOPED-GRANTS": [
+          "qualification/test_ai_policy.py::test_policy_change_refused_without_administration_or_fresh_sign_in"
+        ],
+        "C-TENANT-RLS": [
+          "qualification/test_ai_policy_live.py::test_native_application_role_cannot_rewrite_delete_or_cross_the_fence"
+        ]
+      },
+      "verification": {
+        "status": "TESTED",
+        "summary": "Stale versions, unreadable policies and unmet rules refuse before reservation; only a freshly signed-in administrator can change the policy; runtime roles cannot rewrite or bypass the fenced, insert-only tables (native).",
+        "gaps": [
+          "A policy change that commits after a request's reservation does not stop that one in-flight call (it was allowed by the policy in force when reserved).",
+          "The live identity-provider MFA path was not run on this build; it is covered by the authorizer unit test and the earlier live suite.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Controls are built and covered by the named tests; the residual is limited to the gaps listed. Proposal: keep mitigated, confirm after the independent assessment."
+      }
+    },
+    {
+      "id": "TH36",
+      "origin": "v2",
+      "title": "Undisclosed commercial influence on tool listings",
+      "impact": "High",
+      "category": "AI",
+      "asset": "Neutrality of the AI tool directory and of the saved plans that archive it",
+      "attack": "A listed provider pays a referral fee, revenue share or sponsorship to the operator, resells through it or is partly owned by it, and the listing omits the relationship, states it wrongly, or a later edit changes a disclosure without trace, so an organisation shortlists or buys a tool believing the directory is neutral.",
+      "requirements": [
+        "FR-NPA-018"
+      ],
+      "owner": "AI lead",
+      "target_control": "A disclosure on every listing from a closed relationship list, refused when missing or invalid (fail closed), captured with each saved plan revision and never rewritten, and declared by Imprana editorial with an independent advisor review of each declaration and its evidence.",
+      "required_verification": "Serve and save with a listing whose disclosure is missing or invalid (including DISCLOSED without a type or a statement); read revisions saved before and after a disclosure change and a tampered archive; check every card and comparison column shows the label; review the declaration process against evidence.",
+      "control_refs": [
+        "C-DISCLOSURE-FAIL-CLOSED",
+        "C-VERSIONED-READERS",
+        "C-DISCLOSURE-EDITORIAL-REVIEW"
+      ],
+      "test_refs": [
+        "qualification/test_ai_solutions_catalog.py::test_every_listing_carries_a_valid_commercial_disclosure",
+        "qualification/test_ai_solutions_catalog.py::test_a_listing_without_a_valid_disclosure_fails_validation_and_the_catalogue_is_not_served",
+        "qualification/test_ai_solutions_catalog.py::test_disclosed_without_a_statement_fails_validation",
+        "qualification/test_ai_enablement.py::test_catalogue_with_a_listing_lacking_a_valid_disclosure_is_not_served",
+        "qualification/test_ai_content_archives.py::test_a_listing_without_a_valid_disclosure_refuses_the_save_atomically",
+        "tools/browser/ai-disclosure-check.mjs::Every tool card carries its commercial disclosure label",
+        "tools/browser/ai-disclosure-check.mjs::Every comparison column carries the disclosure label",
+        "qualification/test_ai_content_archives.py::test_a_saved_revision_keeps_the_disclosure_that_was_current_when_it_was_saved",
+        "qualification/test_ai_content_archives.py::test_an_edition_label_and_its_payload_shape_must_agree_or_the_archive_is_unreadable",
+        "qualification/test_ai_content_archives.py::test_corrupt_or_unknown_archive_fails_closed_without_reconstructing_current_content",
+        "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures",
+        "qualification/test_ai_solutions_catalog.py::test_no_relationship_is_invented_while_no_vendor_is_registered"
+      ],
+      "coverage": {
+        "C-DISCLOSURE-FAIL-CLOSED": [
+          "qualification/test_ai_solutions_catalog.py::test_every_listing_carries_a_valid_commercial_disclosure",
+          "qualification/test_ai_solutions_catalog.py::test_a_listing_without_a_valid_disclosure_fails_validation_and_the_catalogue_is_not_served",
+          "qualification/test_ai_solutions_catalog.py::test_disclosed_without_a_statement_fails_validation",
+          "qualification/test_ai_enablement.py::test_catalogue_with_a_listing_lacking_a_valid_disclosure_is_not_served",
+          "qualification/test_ai_content_archives.py::test_a_listing_without_a_valid_disclosure_refuses_the_save_atomically",
+          "tools/browser/ai-disclosure-check.mjs::Every tool card carries its commercial disclosure label",
+          "tools/browser/ai-disclosure-check.mjs::Every comparison column carries the disclosure label"
+        ],
+        "C-VERSIONED-READERS": [
+          "qualification/test_ai_content_archives.py::test_a_saved_revision_keeps_the_disclosure_that_was_current_when_it_was_saved",
+          "qualification/test_ai_content_archives.py::test_an_edition_label_and_its_payload_shape_must_agree_or_the_archive_is_unreadable",
+          "qualification/test_ai_content_archives.py::test_corrupt_or_unknown_archive_fails_closed_without_reconstructing_current_content",
+          "qualification/test_ai_content_archives_live.py::test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures"
+        ]
+      },
+      "verification": {
+        "status": "PARTIAL",
+        "summary": "Every listing carries a validated disclosure; a missing or invalid one stops the catalogue read and every plan save; a saved revision keeps the disclosure captured when it was saved and a tampered or mislabelled archive is refused; every tool card and comparison column shows the label.",
+        "gaps": [
+          "Whether a declaration is true is not verified: the eight NONE_KNOWN declarations are an editorial draft for Imprana editorial, no advisor has reviewed them and no evidence is recorded beyond the declaration date (C-DISCLOSURE-EDITORIAL-REVIEW is not built).",
+          "A disclosure changes only through a code change, reviewed only by repository review (branch protection and required review are GitHub settings outside the repository, FR-SEC-008); nothing checks a declaration against contracts or payments.",
+          "Listing order and use-case mappings are editorial and not governed by an approved placement policy (FR-NPA-018 target); no paid placement exists today.",
+          "No independent security assessment or penetration test has been run (FR-SEC-010, gate G11)."
+        ]
+      },
+      "residual_decision": {
+        "decision": "MITIGATE",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "The label, fail-closed validation and archive controls are built and tested; the truth of each declaration rests on an editorial and advisor process that does not exist yet. Proposal: mitigate with the gaps listed and confirm once the advisor review is in place."
+      }
+    }
+  ],
+  "chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "path": [
+        "TH21",
+        "TH03",
+        "TH15"
+      ],
+      "narrative": "Hostile instructions in content a model reads (today only the advisory brief: no retrieval exists) make the model call a tool or emit forged approval, official or restriction fields (TH21), which are saved as if server-owned (TH03) and leave the platform in an export with a wider restriction or without current authority (TH15).",
+      "controls": [
+        {
+          "control_ref": "C-AI-NO-TOOLS-GATE",
+          "breaks": "TH21",
+          "evidence": [
+            "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
+            "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+            "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+          ]
+        },
+        {
+          "control_ref": "C-AI-NO-TOOLS-DB",
+          "breaks": "TH21",
+          "evidence": [
+            "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database",
+            "qualification/test_ai_policy_unit.py::test_migration_checks_match_the_closed_contract_lists"
+          ]
+        },
+        {
+          "control_ref": "C-AI-ADAPTER-TEXT-ONLY",
+          "breaks": "TH21",
+          "evidence": [
+            "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
+            "qualification/test_ai_advisory_provider.py::test_body_at_byte_limit_is_accepted_without_returning_extra_metadata",
+            "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+          ]
+        },
+        {
+          "control_ref": "C-AI-DRAFT-ONLY",
+          "breaks": "TH03",
+          "evidence": [
+            "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+            "qualification/test_ai_enablement.py::test_claim_commits_before_provider_and_exact_replay_does_not_call_again"
+          ]
+        },
+        {
+          "control_ref": "C-CLOSED-DTO",
+          "breaks": "TH03",
+          "evidence": [
+            "qualification/test_ai_adoption_plans.py::test_closed_draft_refuses_unknown_ids_duplicate_actions_and_unbounded_notes",
+            "qualification/test_unit.py::test_server_owned_fields",
+            "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+          ]
+        },
+        {
+          "control_ref": "C-EXPORT-PROJECTION",
+          "breaks": "TH15",
+          "evidence": [
+            "qualification/test_ai_plan_exports_unit.py::test_metadata_cannot_relabel_export_restriction_or_unavailable_guidance",
+            "qualification/test_ai_plan_exports_unit.py::test_projection_recursive_allowlist_preserves_exact_strings_and_decimal_lexemes",
+            "qualification/test_ai_plan_exports_live.py::test_legacy_unknown_fields_are_excluded_and_saved_strings_preserved_without_reconstruction",
+            "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
+          ]
+        },
+        {
+          "control_ref": "C-EXPORT-CAPABILITY",
+          "breaks": "TH15",
+          "evidence": [
+            "qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay",
+            "qualification/test_ai_plan_exports_live.py::test_fresh_signed_authentication_is_checked_again_on_replay",
+            "qualification/test_ai_plan_exports_unit.py::test_real_authorizer_requires_verified_fresh_assurance_for_export"
+          ]
+        }
+      ],
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "TH21 is BLOCK, so the chain is: no retrieval of documents, evidence or metadata and no AI tool may ship. For the one model input that exists, the advisory brief, seven implemented controls on six layers break every link (exercised end to end by the CH01 test). Residual: a person can paste draft text into a plan's free text and export it as their own words, labelled an internal draft (TH33)."
+      }
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "path": [
+        "TH25",
+        "TH02",
+        "TH07"
+      ],
+      "narrative": "An operator gives themselves support access (TH25), uses it to reach programmes outside any grant (TH02) and approves material as if independent (TH07).",
+      "controls": [
+        {
+          "control_ref": "C-NO-SUPPORT-SESSIONS",
+          "breaks": "TH25",
+          "evidence": [
+            "qualification/test_release_review_unit.py::test_blocked_attack_surfaces_are_absent_from_the_implemented_api",
+            "qualification/test_unit.py::test_route_missing_from_contract_is_not_found"
+          ]
+        },
+        {
+          "control_ref": "C-CONTROL-PLANE-SEPARATION",
+          "breaks": "TH25",
+          "evidence": [
+            "qualification/test_native_roles.py::test_platform_role_writes_only_its_restrictive_object_types",
+            "qualification/test_native_roles.py::test_app_role_cannot_read_control_plane_tables",
+            "qualification/test_administration.py::test_app_role_cannot_manufacture_delegation_or_owner_custody"
+          ]
+        },
+        {
+          "control_ref": "C-CUSTODY-NO-DATA-ACCESS",
+          "breaks": "TH25",
+          "evidence": [
+            "qualification/test_tenant_lifecycle.py::test_owner_acceptance_activation_independence_and_no_implied_access",
+            "qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue",
+            "tools/browser/tenant-check.mjs::Nominated owner accepts without receiving automatic data access"
+          ]
+        },
+        {
+          "control_ref": "C-SCOPED-GRANTS",
+          "breaks": "TH02",
+          "evidence": [
+            "qualification/test_live_application.py::test_explicit_object_scope_filters_read_and_list",
+            "qualification/test_administration.py::test_invitation_cannot_grant_administrative_role"
+          ]
+        },
+        {
+          "control_ref": "C-NATURAL-PERSON-INDEPENDENCE",
+          "breaks": "TH07",
+          "evidence": [
+            "qualification/test_administration.py::test_second_login_same_natural_person_is_not_independent",
+            "qualification/test_operator_lifecycle.py::test_a_second_identity_of_the_subject_is_not_independent_and_the_database_refuses_too"
+          ]
+        }
+      ],
+      "residual_decision": {
+        "decision": "BLOCK",
+        "decided_by": "Claude (agent), proposal for Nakul Jain (owner)",
+        "decided_on": "2026-10-09",
+        "confirmed_by": null,
+        "rationale": "Support sessions do not exist (TH25 BLOCK). Today the path is closed by the absence of any support operation and by the database's control-plane separation, with grants and natural-person independence behind them; support access must not ship without FR-ACC-008's controls and a test of this chain."
+      }
+    }
+  ]
+}

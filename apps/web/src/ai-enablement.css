@@ -298,3 +298,112 @@
 .ai-human-advice fieldset {
   min-width: 0;
 }
+/* FR-AI-001: the "Policy in force" card shown before the advisory request button. */
+.ai-enablement .ai-policy-card {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  background: var(--ai-panel);
+  min-width: 0;
+}
+.ai-enablement .ai-policy-terms {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.75rem;
+}
+.ai-enablement .ai-policy-terms dt {
+  font-weight: 600;
+}
+.ai-enablement .ai-policy-terms dd {
+  margin: 0;
+}
+.ai-enablement .ai-policy-warning {
+  color: var(--status-warning-text);
+  background: var(--status-warning-bg);
+  border: 1px solid var(--status-warning-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+.ai-enablement .ai-policy-editor fieldset fieldset {
+  margin: 0.75rem 0;
+}
+.ai-enablement .ai-policy-editor label {
+  display: block;
+  margin: 0.5rem 0;
+}
+@media (max-width: 480px) {
+  .ai-enablement .ai-policy-terms {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* US-MP-03: the opportunity ranking and the organisation's weights. */
+.ai-enablement .ai-ranking {
+  min-width: 0;
+}
+.ai-enablement .ai-weights-editor fieldset {
+  border: 1px solid var(--ai-panel-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  background: var(--ai-panel);
+}
+.ai-enablement .ai-weights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+}
+.ai-enablement .ai-weights-grid label {
+  display: grid;
+  gap: 0.25rem;
+}
+/* Readable columns; narrow screens scroll inside the focusable region, never the page. */
+.ai-enablement .ai-ranking-table {
+  min-width: 40rem;
+}
+.ai-enablement .ai-ranking-table th,
+.ai-enablement .ai-ranking-table td {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.ai-enablement .ai-ranking-table caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+.ai-enablement .ai-ranking-table th,
+.ai-enablement .ai-ranking-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  width: auto;
+}
+.ai-enablement .ai-ranking-table tbody th {
+  color: inherit;
+  font-weight: 600;
+}
+/* US-DC-04: the commercial disclosure on every tool card, comparison column and archived listing. */
+.ai-enablement .ai-disclosure {
+  margin: 0.5rem 0;
+  padding: 0.45rem 0.65rem;
+  border-left: 3px solid var(--ai-accent);
+  background: var(--ai-notice);
+  font-size: 0.9rem;
+}
+.ai-enablement .ai-disclosure.ai-disclosed {
+  border-left-color: var(--status-warning-text);
+  background: var(--status-warning-bg);
+}
+.ai-enablement .ai-disclosure p {
+  margin: 0.15rem 0;
+}
+.ai-enablement .ai-disclosure-statement,
+.ai-enablement .ai-disclosure-date {
+  color: var(--text-muted);
+}
+.ai-enablement .ai-disclosed .ai-disclosure-statement {
+  color: var(--status-warning-text);
+}
+.ai-enablement .ai-disclosure-pending {
+  color: var(--text-muted);
+}

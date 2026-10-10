@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 
-from .ai_content_archives import CONTENT_SCHEMAS, SCHEMA_VERSION
+from .ai_content_archives import COMPONENTS, EDITIONS
 from .ai_enablement_contracts import ROLES
 from .measurement_contracts import UUID, closed
 
@@ -13,40 +13,85 @@ IMPLEMENTED = [
 ]
 
 
-def augment(spec, policy):
-    schemas = spec["components"]["schemas"]
-    components = {}
-    for name in ("catalog", "solutions", "practice"):
-        payload_name = "AIArchived" + name.capitalize() + "V1"
-        schemas[payload_name] = deepcopy(CONTENT_SCHEMAS[name])
-        available = closed(
-            {
-                "status": {"const": "AVAILABLE"},
-                "content_version": {"type": "string", "minLength": 1, "maxLength": 100},
-                "payload": {"$ref": "#/components/schemas/" + payload_name},
-            },
-            ["status", "content_version", "payload"],
-        )
-        unavailable = closed(
-            {
-                "status": {"const": "UNAVAILABLE"},
-                "content_version": {"type": ["string", "null"], "maxLength": 100},
-                "payload": {"type": "null"},
-            },
-            ["status", "content_version", "payload"],
-        )
-        components[name] = {"oneOf": [available, unavailable]}
-    result = {
+def unavailable_component():
+    return closed(
+        {
+            "status": {"const": "UNAVAILABLE"},
+            "content_version": {"type": ["string", "null"], "maxLength": 100},
+            "payload": {"type": "null"},
+        },
+        ["status", "content_version", "payload"],
+    )
+
+
+def guidance_variants(payload_schema):
+    """One closed variant per archive edition, binding its label to its own payload shapes, plus the
+    unavailable variant. `payload_schema(version, name)` gives a component's payload schema."""
+    common = {
         "object_id": deepcopy(UUID),
         "revision_id": deepcopy(UUID),
-        "status": {"enum": ["COMPLETE", "PARTIAL", "UNAVAILABLE"]},
-        "snapshot_schema_version": {"enum": [SCHEMA_VERSION, None]},
-        "captured_at": {"type": ["string", "null"], "format": "date-time"},
-        "snapshot_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
-        **components,
+    }
+    variants = []
+    for version in EDITIONS:
+        components = {}
+        for name in COMPONENTS:
+            available = closed(
+                {
+                    "status": {"const": "AVAILABLE"},
+                    "content_version": {"type": "string", "minLength": 1, "maxLength": 100},
+                    "payload": payload_schema(version, name),
+                },
+                ["status", "content_version", "payload"],
+            )
+            components[name] = {"oneOf": [available, unavailable_component()]}
+        result = {
+            **deepcopy(common),
+            "status": {"enum": ["COMPLETE", "PARTIAL"]},
+            "snapshot_schema_version": {"const": version},
+            "captured_at": {"type": "string", "format": "date-time"},
+            "snapshot_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            **components,
+            "disclaimer": {"type": "string", "maxLength": 1000},
+        }
+        variants.append(closed(result, list(result)))
+    result = {
+        **deepcopy(common),
+        "status": {"const": "UNAVAILABLE"},
+        "snapshot_schema_version": {"type": "null"},
+        "captured_at": {"type": "null"},
+        "snapshot_sha256": {"type": "null"},
+        **{name: unavailable_component() for name in COMPONENTS},
         "disclaimer": {"type": "string", "maxLength": 1000},
     }
-    schemas["AIAdoptionPlanGuidance"] = closed(result, list(result))
+    variants.append(closed(result, list(result)))
+    return variants
+
+
+def archived_component_names(schemas):
+    """Register AIArchived<Component>V<n> per edition; an identical component reuses the earlier name."""
+    names, registered = {}, []
+    for version, components in EDITIONS.items():
+        suffix = "V" + version.rsplit("-v", 1)[-1]
+        for name in COMPONENTS:
+            schema = components[name]
+            prefix = "AIArchived" + name.capitalize()
+            ref = next((ref for kept, ref in registered if ref.startswith(prefix) and kept == schema), None)
+            if ref is None:
+                ref = prefix + suffix
+                schemas[ref] = deepcopy(schema)
+                registered.append((schema, ref))
+            names[version, name] = ref
+    return names
+
+
+def augment(spec, policy):
+    schemas = spec["components"]["schemas"]
+    names = archived_component_names(schemas)
+    schemas["AIAdoptionPlanGuidance"] = {
+        "oneOf": guidance_variants(
+            lambda version, name: {"$ref": "#/components/schemas/" + names[version, name]}
+        )
+    }
     schemas["AIAdoptionPlanCompatibility"]["properties"]["historical_snapshots_available"] = {
         "type": "boolean"
     }

@@ -1,10 +1,12 @@
 """Offline advisory claim/replay/authority qualification; provider is always synthetic."""
 
 from contextlib import contextmanager
+from copy import deepcopy
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from uuid import uuid4
 
+import psycopg
 import pytest
 from cryptography.exceptions import InvalidTag
 
@@ -14,10 +16,30 @@ from impact_api.domain import DomainError
 from impact_api.keyring import Keyring
 
 
+POLICY_VERSION_ID = "11111111-1111-4111-8111-111111111111"
+
+
+def advisory_rule(**changes):
+    """The synthetic ADVISORY_DRAFT rule of the policy in force (FR-AI-001)."""
+    return {
+        "use_case": "ADVISORY_DRAFT",
+        "enabled": True,
+        "data_classes": ["INTERNAL"],
+        "destinations": ["openai-us"],
+        "purposes": ["planning advice"],
+        "languages": ["en"],
+        "review_mode": "HUMAN_REVIEW",
+        "budget_units": 100,
+        "tools": [],
+        **changes,
+    }
+
+
 def body():
     return {
         "operation_id": str(uuid4()),
         "consent": True,
+        "policy_version": 1,
         "profile": {
             "sector": "GENERAL",
             "team_size": 8,
@@ -30,11 +52,15 @@ def body():
 
 
 class Cursor:
-    def __init__(self, row):
+    def __init__(self, row, rows=None):
         self.row = row
+        self.rows = rows if rows is not None else []
 
     def fetchone(self):
         return self.row
+
+    def fetchall(self):
+        return self.rows
 
 
 class Database:
@@ -43,9 +69,21 @@ class Database:
         self.principal = "principal-one"
         self.registry_queries = 0
         self.authority = True
+        # The tenant AI policy in force (FR-AI-001): version 1 enabling ADVISORY_DRAFT.
+        self.policy_version = 1
+        self.policy_rules = [advisory_rule()]
+        self.policy_reads = 0
+        self.policy_failure = None
+        self.savepoints = 0
 
     @contextmanager
-    def transaction(self, tenant):
+    def transaction(self, tenant=None):
+        if tenant is None:
+            # A savepoint inside the open transaction (psycopg Connection.transaction()).
+            assert self.active
+            self.savepoints += 1
+            yield self
+            return
         assert not self.active
         self.active = True
         try:
@@ -56,6 +94,24 @@ class Database:
     def execute(self, sql, values):
         if sql.startswith("SELECT pg_advisory"):
             return Cursor(None)
+        if "FROM impact.ai_policy_version" in sql:
+            self.policy_reads += 1
+            if self.policy_failure:
+                raise self.policy_failure
+            if not self.policy_version:
+                return Cursor(None)
+            return Cursor(
+                {
+                    "policy_version_id": POLICY_VERSION_ID,
+                    "object_id": "policy-object",
+                    "version_no": self.policy_version,
+                    "created_by": "administrator",
+                    "created_at": datetime.now(timezone.utc),
+                }
+            )
+        if "FROM impact.ai_use_case_policy" in sql:
+            assert values == (values[0], POLICY_VERSION_ID)
+            return Cursor(None, [dict(rule) for rule in self.policy_rules])
         if "SELECT count" in sql:
             return Cursor({"n": sum(t == values[0] for t, _ in self.requests)})
         if "SELECT object_id FROM impact.object_registry" in sql:
@@ -75,11 +131,12 @@ class Database:
         if "SELECT * FROM impact.ai_advisory_result" in sql:
             return Cursor(self.results.get(tuple(values)))
         if "INSERT INTO impact.ai_advisory_request" in sql:
-            tenant, request, object_id, principal, fingerprint = values
+            tenant, request, object_id, principal, fingerprint, policy_version_id = values
             self.requests[tenant, request] = {
                 "principal_id": principal,
                 "object_id": object_id,
                 "fingerprint": fingerprint,
+                "policy_version_id": policy_version_id,
             }
             return Cursor(None)
         if "INSERT INTO impact.ai_advisory_result" in sql:
@@ -92,6 +149,7 @@ class Database:
 
 class Provider:
     configured = True
+    destination = "openai-us"
 
     def __init__(self, db):
         self.db, self.calls, self.fail, self.revoke = db, 0, False, False
@@ -354,3 +412,252 @@ def test_client_operation_id_is_never_used_as_a_registry_selector(engine):
     assert provider.calls == 1 and result["status"] == "DRAFT"
     receipts = [event[1] for event in events if isinstance(event, tuple)]
     assert all(receipt["object_id"] == stored["object_id"] for receipt in receipts)
+
+
+# FR-AI-001: the tenant policy gate runs before any reservation or provider call.
+
+
+def assert_nothing_reserved_or_sent(db, provider, events):
+    assert not db.requests and not db.results
+    assert provider.calls == 0
+    # No AIAdvisoryRequest revision, audit event or receipt was written.
+    assert not [event for event in events if isinstance(event, tuple)]
+
+
+def sensitive_body():
+    request = body()
+    request["profile"]["sensitive_data"] = True
+    return request
+
+
+def test_sensitive_request_outside_policy_is_blocked_before_reservation(engine):
+    api, db, provider, events = engine
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", sensitive_body(), "c")
+    assert (exc.value.status, exc.value.code, exc.value.reason) == (
+        422,
+        "VALIDATION_FAILED",
+        "AI_POLICY_BLOCKED",
+    )
+    assert "confidential data is above the highest allowed data class" in exc.value.message
+    assert db.policy_reads == 1
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_sensitive_request_runs_when_the_policy_allows_its_class(engine):
+    api, db, provider, _ = engine
+    db.policy_rules = [advisory_rule(data_classes=["INTERNAL", "CONFIDENTIAL"])]
+    assert api.advisory(None, "tenant", sensitive_body(), "c")["status"] == "DRAFT"
+    assert provider.calls == 1
+
+
+def test_request_against_an_old_policy_version_conflicts_before_reservation(engine):
+    api, db, provider, events = engine
+    db.policy_version = 2
+    for version in (1, 0, 3):
+        request = body()
+        request["policy_version"] = version
+        with pytest.raises(DomainError) as exc:
+            api.advisory(None, "tenant", request, "c")
+        assert (exc.value.status, exc.value.reason) == (409, "AI_POLICY_CHANGED")
+    assert_nothing_reserved_or_sent(db, provider, events)
+    request = body()
+    request["policy_version"] = 2
+    assert api.advisory(None, "tenant", request, "c")["status"] == "DRAFT"
+
+
+@pytest.mark.parametrize("state", ["no-policy", "disabled", "absent-use-case"])
+def test_disabled_policy_never_reserves_or_spends(engine, state):
+    api, db, provider, events = engine
+    request = body()
+    if state == "no-policy":
+        db.policy_version, db.policy_rules, request["policy_version"] = 0, [], 0
+    elif state == "disabled":
+        db.policy_rules = [advisory_rule(enabled=False)]
+    else:
+        db.policy_rules = []
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", request, "c")
+    assert (exc.value.status, exc.value.code, exc.value.reason) == (
+        503,
+        "SERVICE_UNAVAILABLE",
+        "AI_USE_CASE_DISABLED",
+    )
+    assert_nothing_reserved_or_sent(db, provider, events)
+    # Server switch on, tenant policy off: the catalogue reports advisory as unavailable.
+    assert api.catalog(None, "tenant")["advisory_available"] is False
+
+
+def test_catalog_reports_available_only_when_server_policy_and_use_case_are_on(engine):
+    api, db, _, _ = engine
+    assert api.catalog(None, "tenant")["advisory_available"] is True
+    api.enabled = False
+    reads = db.policy_reads
+    assert api.catalog(None, "tenant")["advisory_available"] is False
+    assert db.policy_reads == reads
+
+
+@pytest.mark.parametrize(
+    "rule,fragment",
+    [
+        ({"destinations": []}, "not an allowed destination"),
+        ({"languages": ["hi"]}, "language (en) is not covered"),
+        ({"budget_units": 0}, "no budget is approved"),
+        ({"purposes": []}, "no approved purpose"),
+    ],
+)
+def test_every_unmet_rule_blocks_before_reservation(engine, rule, fragment):
+    api, db, provider, events = engine
+    db.policy_rules = [advisory_rule(**rule)]
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", body(), "c")
+    assert (exc.value.status, exc.value.reason) == (422, "AI_POLICY_BLOCKED")
+    assert fragment in exc.value.message
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_regional_language_tag_covers_the_english_draft(engine):
+    api, db, provider, _ = engine
+    db.policy_rules = [advisory_rule(languages=["hi", "en-IN"])]
+    assert api.advisory(None, "tenant", body(), "c")["status"] == "DRAFT"
+
+
+def test_provider_without_a_declared_destination_is_blocked(engine):
+    api, db, provider, events = engine
+    provider.destination = None
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", body(), "c")
+    assert exc.value.reason == "AI_POLICY_BLOCKED"
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_requested_tool_is_refused_before_reservation(engine):
+    api, db, provider, events = engine
+    request = body()
+    request["tools"] = ["web_search"]
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", request, "c")
+    assert (exc.value.status, exc.value.reason) == (422, "AI_POLICY_BLOCKED")
+    assert "tools are not allowed" in exc.value.message
+    assert_nothing_reserved_or_sent(db, provider, events)
+    request = body()
+    request["tools"] = []
+    assert api.advisory(None, "tenant", request, "c")["status"] == "DRAFT"
+
+
+@pytest.mark.parametrize(
+    "change,reason",
+    [
+        (lambda b: b.pop("policy_version"), "AI_POLICY_VERSION_REQUIRED"),
+        (lambda b: b.update(policy_version="1"), "AI_POLICY_VERSION_REQUIRED"),
+        (lambda b: b.update(policy_version=True), "AI_POLICY_VERSION_REQUIRED"),
+        (lambda b: b.update(policy_version=-1), "AI_POLICY_VERSION_REQUIRED"),
+        (lambda b: b.update(tools="web_search"), "AI_TOOLS_INVALID"),
+        (lambda b: b.update(tools=["Web Search"]), "AI_TOOLS_INVALID"),
+        (lambda b: b.update(tools=["a", "a"]), "AI_TOOLS_INVALID"),
+    ],
+)
+def test_policy_version_and_tools_are_validated_before_any_read(engine, change, reason):
+    api, db, provider, events = engine
+    request = body()
+    change(request)
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", request, "c")
+    assert (exc.value.status, exc.value.reason) == (422, reason)
+    assert db.policy_reads == 0
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_unreadable_policy_fails_closed_without_reservation(engine):
+    api, db, provider, events = engine
+    db.policy_failure = RuntimeError("synthetic policy read failure")
+    with pytest.raises(RuntimeError):
+        api.advisory(None, "tenant", body(), "c")
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_reservation_records_the_policy_version_that_allowed_it(engine):
+    api, db, provider, events = engine
+    request = body()
+    api.advisory(None, "tenant", request, "c")
+    stored = db.requests["tenant", request["operation_id"]]
+    assert stored["policy_version_id"] == POLICY_VERSION_ID
+    receipt = next(event[1] for event in events if isinstance(event, tuple))
+    assert receipt["data"]["policy_version"] == 1
+    assert receipt["data"]["use_case"] == "ADVISORY_DRAFT"
+
+
+def test_exact_replay_after_a_policy_change_returns_the_original_draft_only(engine):
+    api, db, provider, _ = engine
+    request = body()
+    original = api.advisory(None, "tenant", request, "c")
+    db.policy_version, db.policy_rules = 2, [advisory_rule(enabled=False)]
+    # A replay makes no reservation and no provider call; it returns what was produced under v1.
+    assert api.advisory(None, "tenant", request, "c") == original
+    assert provider.calls == 1
+    with pytest.raises(DomainError) as exc:
+        api.advisory(None, "tenant", body(), "c")
+    assert exc.value.reason == "AI_POLICY_CHANGED"
+
+
+@pytest.mark.parametrize(
+    "allowed,ordinary,sensitive",
+    [
+        (["CONFIDENTIAL"], True, True),
+        (["RESTRICTED"], True, True),
+        (["PUBLIC", "INTERNAL"], True, False),
+        (["INTERNAL"], True, False),
+        (["PUBLIC"], False, False),
+    ],
+)
+def test_allowed_data_classes_are_a_ceiling(engine, allowed, ordinary, sensitive):
+    api, db, provider, events = engine
+    # A PUBLIC-only rule cannot be saved for ADVISORY_DRAFT; the gate still refuses it if stored.
+    db.policy_rules = [advisory_rule(data_classes=allowed)]
+    for request, expected in ((body(), ordinary), (sensitive_body(), sensitive)):
+        if expected:
+            assert api.advisory(None, "tenant", request, "c")["status"] == "DRAFT"
+        else:
+            calls, reserved = provider.calls, len(db.requests)
+            with pytest.raises(DomainError) as exc:
+                api.advisory(None, "tenant", request, "c")
+            assert (exc.value.status, exc.value.reason) == (422, "AI_POLICY_BLOCKED")
+            assert "above the highest allowed data class" in exc.value.message
+            assert (provider.calls, len(db.requests)) == (calls, reserved)
+
+
+def test_unreadable_policy_leaves_the_catalogue_readable_and_advisory_off(engine):
+    api, db, provider, events = engine
+    db.policy_failure = psycopg.OperationalError("synthetic policy read failure")
+    catalog = api.catalog(None, "tenant")
+    assert catalog["advisory_available"] is False
+    assert catalog["use_cases"] and catalog["learning_paths"]
+    assert db.savepoints == 1
+    # The advisory request itself still fails closed on its own read.
+    with pytest.raises(psycopg.OperationalError):
+        api.advisory(None, "tenant", body(), "c")
+    assert_nothing_reserved_or_sent(db, provider, events)
+
+
+def test_catalogue_with_a_listing_lacking_a_valid_disclosure_is_not_served(engine, monkeypatch):
+    """US-DC-04: the solutions read fails closed; it never serves a listing without its disclosure."""
+    import impact_api.ai_solutions_catalog as solutions_module
+
+    api, db, provider, events = engine
+    served = api.solutions(None, "tenant")
+    assert all(item["commercial_disclosure"]["status"] == "NONE_KNOWN" for item in served["solutions"])
+    original = deepcopy(solutions_module._SOLUTIONS)
+    for change in (
+        lambda listing: listing.pop("commercial_disclosure"),
+        lambda listing: listing["commercial_disclosure"].update(status="DISCLOSED"),
+        lambda listing: listing.update(
+            commercial_disclosure={**listing["commercial_disclosure"], "status": "DISCLOSED", "statement": ""}
+        ),
+    ):
+        listings = deepcopy(original)
+        change(listings[5])
+        monkeypatch.setattr(solutions_module, "_SOLUTIONS", listings)
+        with pytest.raises(DomainError) as refused:
+            api.solutions(None, "tenant")
+        assert (refused.value.status, refused.value.reason) == (503, "AI_SOLUTIONS_CATALOG_INVALID")
+    assert provider.calls == 0 and not db.requests

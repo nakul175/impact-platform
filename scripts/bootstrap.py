@@ -114,6 +114,8 @@ def bootstrap(local, idp=None):
                 "ai.enablement.read",
                 "ai.enablement.manage",
                 "ai.advisory.request",
+                # FR-AI-001 (0.37.0): the tenant AI policy; TENANT_ADMIN only, fresh assurance.
+                "ai.policy.manage",
                 # v0.25 part A: purpose-required audit export (OWNER and TENANT_ADMIN templates).
                 "audit.export",
                 "retention.read",

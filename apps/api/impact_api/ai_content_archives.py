@@ -3,30 +3,47 @@
 from copy import deepcopy
 import hmac
 import json
+import logging
 from pathlib import Path
 from uuid import uuid4
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 from psycopg.types.json import Jsonb
 
 from .ai_enablement_catalog import catalog
-from .ai_solutions_catalog import solutions_catalog
+from .ai_solutions_catalog import SolutionsCatalogInvalid, solutions_catalog
 from .ai_task_practice import task_templates
 from .domain import DomainError
 from .store import canonical, hash_data
 
-SCHEMA_VERSION = "nonprofit-ai-guidance-v1"
+SCHEMA_V1 = "nonprofit-ai-guidance-v1"
+# US-DC-04 (build 0.39.0): every tool listing carries its commercial disclosure.
+SCHEMA_V2 = "nonprofit-ai-guidance-v2"
+# New revisions are captured in the current edition; every earlier edition keeps its reader, so a
+# revision saved under v1 stays readable exactly as captured (migration 0043 admits both labels).
+SCHEMA_VERSION = SCHEMA_V2
 MAX_SNAPSHOT_BYTES = 262144
 COMPONENTS = ("catalog", "solutions", "practice")
+LOG = logging.getLogger("impact")
 DISCLAIMER = (
     "Editorial guidance captured for this saved revision, including self-checks and manual practice. "
     "It is not a supplier quote, competency certification, procurement approval or official impact result. "
     "Unavailable historical wording is not reconstructed from current content."
 )
-# This frozen shape is an archive format. A structural editorial change needs a new
-# schema edition with a retained reader, never a regeneration of this v1 file.
-CONTENT_SCHEMAS = json.loads(Path(__file__).with_name("ai_content_schema_v1.json").read_text())
-VALIDATORS = {name: Draft202012Validator(schema) for name, schema in CONTENT_SCHEMAS.items()}
+# Each file is a frozen archive format. A structural editorial change needs a new schema edition
+# with a retained reader, never a regeneration of an existing file. v2 differs from v1 only by the
+# required commercial_disclosure of each solutions listing (catalog and practice are identical).
+SCHEMA_FILES = {SCHEMA_V1: "ai_content_schema_v1.json", SCHEMA_V2: "ai_content_schema_v2.json"}
+EDITIONS = {
+    version: json.loads(Path(__file__).with_name(name).read_text()) for version, name in SCHEMA_FILES.items()
+}
+READERS = {
+    version: {
+        name: Draft202012Validator(schema, format_checker=FormatChecker())
+        for name, schema in components.items()
+    }
+    for version, components in EDITIONS.items()
+}
 
 
 def _unreadable():
@@ -34,9 +51,11 @@ def _unreadable():
 
 
 def _validate_bundle(payload):
+    """A bundle is readable only under the reader of the edition it names."""
     if not isinstance(payload, dict) or set(payload) != {"schema_version", *COMPONENTS}:
         _unreadable()
-    if payload["schema_version"] != SCHEMA_VERSION:
+    version = payload["schema_version"]
+    if not isinstance(version, str) or version not in READERS:
         _unreadable()
     for name in COMPONENTS:
         value = payload[name]
@@ -44,7 +63,7 @@ def _validate_bundle(payload):
             if name != "practice":
                 _unreadable()
             continue
-        if not VALIDATORS[name].is_valid(value):
+        if not READERS[version][name].is_valid(value):
             _unreadable()
         if not isinstance(value.get("content_version"), str) or not 1 <= len(value["content_version"]) <= 100:
             _unreadable()
@@ -62,10 +81,13 @@ def _bound(c, tenant, object_id, revision_id):
 
 
 def _verified(row):
-    if not row or row["schema_version"] != SCHEMA_VERSION:
+    if not row or row["schema_version"] not in EDITIONS:
         _unreadable()
     payload = row["payload"]
     _validate_bundle(payload)
+    # The row's edition label and the hashed payload's own label must agree.
+    if payload["schema_version"] != row["schema_version"]:
+        _unreadable()
     if not hmac.compare_digest(bytes(row["payload_sha256"]), hash_data(payload)):
         _unreadable()
     return deepcopy(payload)
@@ -73,10 +95,16 @@ def _verified(row):
 
 def capture(c, ctx, receipt, saved_data, previous=None, retained_planning=False):
     """Called after the governed revision write, inside that same locked transaction."""
+    try:
+        solutions = solutions_catalog()
+    except SolutionsCatalogInvalid as error:
+        # A listing without a valid commercial disclosure is never archived: the save rolls back.
+        LOG.error("AI solutions catalogue refused at archive capture: %s", error)
+        raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
     payload = {
         "schema_version": SCHEMA_VERSION,
         "catalog": catalog(),
-        "solutions": solutions_catalog(),
+        "solutions": solutions,
         "practice": task_templates(),
     }
     # The catalogue already includes the exact learning paths and their self-checks.
@@ -124,7 +152,7 @@ def capture(c, ctx, receipt, saved_data, previous=None, retained_planning=False)
             "INSERT INTO impact.ai_content_snapshot "
             "(tenant_id,snapshot_id,schema_version,payload,payload_sha256,captured_at) "
             "VALUES(%s,%s,%s,%s,%s,statement_timestamp())",
-            (ctx.tenant_id, snapshot_id, SCHEMA_VERSION, Jsonb(payload), digest),
+            (ctx.tenant_id, snapshot_id, payload["schema_version"], Jsonb(payload), digest),
         )
     c.execute(
         "INSERT INTO impact.ai_plan_content_binding(tenant_id,object_id,revision_id,snapshot_id) "

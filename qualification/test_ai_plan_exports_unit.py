@@ -5,6 +5,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+from pathlib import Path
 from types import SimpleNamespace
 from uuid import uuid4
 
@@ -146,7 +147,7 @@ def retained(status="UNAVAILABLE", data=None):
         "request_sha256": b"x" * 32,
         "format": "JSON",
         "restriction": "INTERNAL_SELF",
-        "package_schema_version": contracts.PACKAGE_VERSION,
+        "package_schema_version": contracts.package_for(guide),
         "renderer_version": contracts.RENDERER_VERSION,
         "guidance_status": status,
         "guidance_snapshot_id": str(uuid4()) if status != "UNAVAILABLE" else None,
@@ -753,3 +754,207 @@ def test_deadline_crossed_during_byte_query_returns_expired_instead_of_source_un
     with pytest.raises(DomainError) as caught:
         service.create(None, TENANT, PLAN, REVISION, body, str(uuid4()))
     assert (caught.value.status, caught.value.code) == (409, "IDEMPOTENCY_EXPIRED")
+
+
+# US-DC-04: the export carries archived guidance of either edition, labelled by its snapshot
+
+
+def edition_guidance(version, status="COMPLETE"):
+    """Archived guidance as the read returns it, for a snapshot of `version`."""
+    from impact_api.ai_content_archives import SCHEMA_V1
+    from test_ai_content_archives import v1_solutions
+
+    guide = guidance(status)
+    if version == SCHEMA_V1:
+        guide["solutions"] = {
+            "status": "AVAILABLE",
+            "content_version": v1_solutions()["content_version"],
+            "payload": v1_solutions(),
+        }
+    guide["snapshot_schema_version"] = version
+    bundle = {
+        "schema_version": version,
+        **{name: guide[name]["payload"] for name in ("catalog", "solutions", "practice")},
+    }
+    guide["snapshot_sha256"] = store.hash_data(bundle).hex()
+    return guide
+
+
+@pytest.mark.parametrize("version", ["nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2"])
+@pytest.mark.parametrize("status", ["COMPLETE", "PARTIAL"])
+def test_plans_archived_under_either_edition_export_and_replay_as_valid_documents(version, status):
+    guide = edition_guidance(version, status)
+    raw = exports.render_document(TENANT, ISSUANCE, AT, PLAN, REVISION, source(), guide)
+    document = json.loads(raw)
+    assert contracts.DOCUMENT_VALIDATOR.is_valid(document)
+    # Owner decision (US-DC-04 review): the package label follows the archived guidance edition.
+    expected = {
+        "nonprofit-ai-guidance-v1": "nonprofit-ai-plan-export-v1",
+        "nonprofit-ai-guidance-v2": "nonprofit-ai-plan-export-v2",
+    }[version]
+    assert document["schema_version"] == expected
+    assert contracts.DOCUMENT_VALIDATORS[expected].is_valid(document)
+    assert not contracts.DOCUMENT_VALIDATORS[({*contracts.PACKAGE_VERSIONS} - {expected}).pop()].is_valid(
+        document
+    )
+    assert document["guidance"]["snapshot_schema_version"] == version
+    listings = document["guidance"]["solutions"]["payload"]["solutions"]
+    disclosed = ["commercial_disclosure" in item for item in listings]
+    assert disclosed == [version.endswith("v2")] * 8
+    metadata, _ = retained(status)
+    metadata.update(
+        package_schema_version=expected,
+        guidance_schema_version=version,
+        guidance_sha256=bytes.fromhex(guide["snapshot_sha256"]),
+        byte_count=len(raw),
+        content_sha256=hashlib.sha256(raw).digest(),
+    )
+    response = exports.original_response(metadata, raw, AT + timedelta(hours=1))
+    assert response["content"].encode() == raw
+    assert response["manifest"]["schema"] == expected
+    # The retained metadata must name the same package edition as the bytes.
+    metadata["package_schema_version"] = ({*contracts.PACKAGE_VERSIONS} - {expected}).pop()
+    with pytest.raises(DomainError) as caught:
+        exports.original_response(metadata, raw, AT + timedelta(hours=1))
+    assert caught.value.status == 503
+
+
+@pytest.mark.parametrize(
+    "label,payload",
+    [
+        ("nonprofit-ai-guidance-v1", "nonprofit-ai-guidance-v2"),
+        ("nonprofit-ai-guidance-v2", "nonprofit-ai-guidance-v1"),
+        ("nonprofit-ai-guidance-v3", "nonprofit-ai-guidance-v2"),
+    ],
+)
+def test_guidance_labelled_with_another_edition_than_its_shape_is_refused(label, payload):
+    guide = edition_guidance(payload)
+    guide["snapshot_schema_version"] = label
+    bundle = {
+        "schema_version": label,
+        **{name: guide[name]["payload"] for name in ("catalog", "solutions", "practice")},
+    }
+    # Validly hashed under the wrong label: only the edition-bound document schema can refuse it.
+    guide["snapshot_sha256"] = store.hash_data(bundle).hex()
+    with pytest.raises(DomainError) as caught:
+        exports.render_document(TENANT, ISSUANCE, AT, PLAN, REVISION, source(), guide)
+    assert (caught.value.status, caught.value.reason) == (503, "AI_PLAN_EXPORT_SOURCE_UNREADABLE")
+
+
+# The published v1 package is unchanged; v2 is a separate document (owner decision, US-DC-04 review)
+
+# Canonical SHA-256 (sorted keys) of AIPlanExportDocumentV1 in packages/contracts/openapi-implemented.json
+# and of the in-code DOCUMENT_SCHEMA, both at build 0.38.0 (e40f6d9), recorded before this change.
+PUBLISHED_DOCUMENT_V1_SHA256 = "a58ed02a747a5f6d1789c9dd2a052e8a8f9d96ea9bf9138e13b99e07c307cc0c"
+DOCUMENT_SCHEMA_0_38_SHA256 = "7296076775c63cca8bb14977c4a30af4cc847fe751255c022d1e4c38db039d78"
+# SHA-256 of the bytes build 0.38.0's render_document produced for the fixed v1-guidance input below.
+RENDERED_0_38_SHA256 = {
+    "COMPLETE": "e6efb40edc412130ec3401ea1ca38d81223264b11da05b7e43747c683396a1bc",
+    "PARTIAL": "c880f1cf9dedfa83e6fa62ae892167ac812cde05ff31a9b7d6e1a2ecdcb3b7a3",
+    "UNAVAILABLE": "9efe322d3a84251a293965002c3d3032ab305963da9b0ccd5308a8532f0a5ffe",
+}
+
+
+def canonical_sha256(value):
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+    ).hexdigest()
+
+
+def published_components():
+    root = Path(__file__).resolve().parents[1]
+    return json.loads((root / "packages/contracts/openapi-implemented.json").read_text())["components"][
+        "schemas"
+    ]
+
+
+def test_published_document_v1_is_exactly_the_build_0_38_schema_and_v2_is_separate():
+    components = published_components()
+    assert canonical_sha256(components["AIPlanExportDocumentV1"]) == PUBLISHED_DOCUMENT_V1_SHA256
+    assert canonical_sha256(contracts.DOCUMENT_SCHEMAS[contracts.PACKAGE_V1]) == DOCUMENT_SCHEMA_0_38_SHA256
+    v2 = components["AIPlanExportDocumentV2"]
+    assert v2["properties"]["schema_version"] == {"const": "nonprofit-ai-plan-export-v2"}
+    assert v2["properties"]["guidance"]["properties"]["snapshot_schema_version"] == {
+        "const": "nonprofit-ai-guidance-v2"
+    }
+    assert components["AIPlanExportManifest"]["properties"]["schema"] == {
+        "enum": ["nonprofit-ai-plan-export-v1", "nonprofit-ai-plan-export-v2"]
+    }
+
+
+@pytest.mark.parametrize("status", ["COMPLETE", "PARTIAL", "UNAVAILABLE"])
+def test_a_v1_guidance_export_is_byte_identical_to_build_0_38_and_valid_only_as_v1(status):
+    from impact_api.ai_content_archives import SCHEMA_V1
+    from impact_api.contracts import validate
+    from test_ai_content_archives import v1_solutions
+
+    at = datetime(2026, 10, 5, 11, 0, tzinfo=timezone.utc)
+    tenant, plan_id, revision, issuance = (
+        "11111111-1111-4111-8111-11111111111" + str(n) for n in range(1, 5)
+    )
+    components = {"catalog": catalog(), "solutions": v1_solutions(), "practice": task_templates()}
+    available, complete = status != "UNAVAILABLE", status == "COMPLETE"
+    bundle = {
+        "schema_version": SCHEMA_V1,
+        **{n: v if n != "practice" or complete else None for n, v in components.items()},
+    }
+    guide = {
+        "object_id": plan_id,
+        "revision_id": revision,
+        "status": status,
+        "snapshot_schema_version": SCHEMA_V1 if available else None,
+        "captured_at": exports.stamp(at) if available else None,
+        "snapshot_sha256": store.hash_data(bundle).hex() if available else None,
+        **{
+            n: {"status": "AVAILABLE", "content_version": v["content_version"], "payload": v}
+            if available and (n != "practice" or complete)
+            else {"status": "UNAVAILABLE", "content_version": "saved-old-edition", "payload": None}
+            for n, v in components.items()
+        },
+        "disclaimer": GUIDANCE_DISCLAIMER,
+    }
+    stored = {
+        "payload": plan(),
+        "payload_sha256": store.hash_data(plan()),
+        "schema_version": "1.2",
+        "created_at": at,
+    }
+    raw = exports.render_document(tenant, issuance, at, plan_id, revision, stored, guide)
+    assert hashlib.sha256(raw).hexdigest() == RENDERED_0_38_SHA256[status]
+    document = json.loads(raw)
+    assert document["schema_version"] == "nonprofit-ai-plan-export-v1"
+    validate("AIPlanExportDocumentV1", document)
+    with pytest.raises(DomainError):
+        validate("AIPlanExportDocumentV2", document)
+
+
+@pytest.mark.parametrize("status", ["COMPLETE", "PARTIAL"])
+def test_a_v2_guidance_export_validates_only_against_document_v2(status):
+    from impact_api.contracts import validate
+
+    raw = exports.render_document(TENANT, ISSUANCE, AT, PLAN, REVISION, source(), guidance(status))
+    document = json.loads(raw)
+    assert document["schema_version"] == "nonprofit-ai-plan-export-v2"
+    assert document["guidance"]["snapshot_schema_version"] == "nonprofit-ai-guidance-v2"
+    validate("AIPlanExportDocumentV2", document)
+    with pytest.raises(DomainError):
+        validate("AIPlanExportDocumentV1", document)
+    # Relabelled as v1 (and re-serialised), the same document is refused by every validator.
+    relabelled = {**document, "schema_version": "nonprofit-ai-plan-export-v1"}
+    assert not contracts.DOCUMENT_VALIDATOR.is_valid(relabelled)
+    assert not exports.valid_document(relabelled)
+
+
+def test_a_v1_label_on_v2_guidance_is_refused_on_replay_even_with_matching_metadata():
+    metadata, raw = retained("COMPLETE")
+    document = json.loads(raw)
+    assert document["schema_version"] == "nonprofit-ai-plan-export-v2"
+    forged = store.canonical({**document, "schema_version": "nonprofit-ai-plan-export-v1"})
+    metadata.update(
+        package_schema_version="nonprofit-ai-plan-export-v1",
+        byte_count=len(forged),
+        content_sha256=hashlib.sha256(forged).digest(),
+    )
+    with pytest.raises(DomainError) as caught:
+        exports.original_response(metadata, forged, AT + timedelta(hours=1))
+    assert (caught.value.status, caught.value.reason) == (503, "AI_PLAN_EXPORT_SOURCE_UNREADABLE")

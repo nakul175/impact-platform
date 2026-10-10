@@ -36,6 +36,8 @@ ROLES = {
     "PRIVACY": "PRIVACY",
     "AUDIT_READER": "OPERATOR",
     "EXTERNAL": "EXTERNAL",
+    # US-MP-03 (0.38.0): the Operations Head persona; read-only capabilities of implemented operations.
+    "FINANCE": "FINANCE",
 }
 
 

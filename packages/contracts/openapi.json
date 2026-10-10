@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.25.0",
+    "version": "1.28.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -41839,6 +41839,655 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/policy": {
+      "get": {
+        "operationId": "get_ai_policy",
+        "summary": "get ai policy",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.26.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The policy in force, its history or the new version's receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update_ai_policy",
+        "summary": "update ai policy",
+        "x-capability": "ai.policy.manage",
+        "x-contract-version": "1.26.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The policy in force, its history or the new version's receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIPolicyReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIPolicyCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/policy/revisions": {
+      "get": {
+        "operationId": "list_ai_policy_revisions",
+        "summary": "list ai policy revisions",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.26.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The policy in force, its history or the new version's receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIPolicyRevisionList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/ranking-weights": {
+      "get": {
+        "operationId": "get_ai_ranking_weights",
+        "summary": "get ai ranking weights",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.27.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The weights in force, the new revision's receipt or the ranking",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRankingWeights"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update_ai_ranking_weights",
+        "summary": "update ai ranking weights",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.27.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The weights in force, the new revision's receipt or the ranking",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRankingWeightsReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIRankingWeightsCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/ranking": {
+      "post": {
+        "operationId": "rank_ai_opportunities",
+        "summary": "rank ai opportunities",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.27.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The weights in force, the new revision's receipt or the ranking",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOpportunityRanking"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIRankingRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/cost-comparison": {
       "post": {
         "operationId": "compare_ai_procurement_costs",
@@ -71657,12 +72306,670 @@
           },
           "consent": {
             "const": true
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "tools": {
+            "type": "array",
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]{0,63}$"
+            }
           }
         },
         "required": [
           "operation_id",
           "profile",
-          "consent"
+          "consent",
+          "policy_version"
+        ]
+      },
+      "AIUseCasePolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "use_case": {
+            "enum": [
+              "ADVISORY_DRAFT",
+              "EXTRACTION",
+              "REPORT_DRAFT",
+              "CHAT"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "data_classes": {
+            "type": "array",
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "PUBLIC",
+                "INTERNAL",
+                "CONFIDENTIAL",
+                "RESTRICTED"
+              ]
+            }
+          },
+          "destinations": {
+            "type": "array",
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "openai-us"
+              ]
+            }
+          },
+          "purposes": {
+            "type": "array",
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "languages": {
+            "type": "array",
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+            }
+          },
+          "review_mode": {
+            "enum": [
+              "HUMAN_REVIEW"
+            ]
+          },
+          "budget_units": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          },
+          "tools": {
+            "type": "array",
+            "maxItems": 0,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]{0,63}$"
+            }
+          }
+        },
+        "required": [
+          "use_case",
+          "enabled",
+          "data_classes",
+          "destinations",
+          "purposes",
+          "languages",
+          "review_mode",
+          "budget_units",
+          "tools"
+        ]
+      },
+      "AIPolicyData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "use_cases": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/AIUseCasePolicy"
+            }
+          }
+        },
+        "required": [
+          "use_cases"
+        ]
+      },
+      "AIPolicyCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "data": {
+            "$ref": "#/components/schemas/AIPolicyData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_version",
+          "data"
+        ]
+      },
+      "AIPolicyDestination": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "openai-us"
+            ]
+          },
+          "provider": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "provider",
+          "region"
+        ]
+      },
+      "AIPolicyRevision": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "policy_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "policy_version_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "use_cases": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/AIUseCasePolicy"
+            }
+          }
+        },
+        "required": [
+          "policy_version",
+          "policy_version_id",
+          "created_at",
+          "created_by",
+          "use_cases"
+        ]
+      },
+      "AIPolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "policy_version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "policy_version_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "use_cases": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/components/schemas/AIUseCasePolicy"
+            }
+          },
+          "server_enabled": {
+            "type": "boolean"
+          },
+          "advisory_available": {
+            "type": "boolean"
+          },
+          "destinations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIPolicyDestination"
+            }
+          },
+          "reserved_use_cases": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "ADVISORY_DRAFT",
+                "EXTRACTION",
+                "REPORT_DRAFT",
+                "CHAT"
+              ]
+            }
+          }
+        },
+        "required": [
+          "policy_version",
+          "policy_version_id",
+          "created_at",
+          "created_by",
+          "use_cases",
+          "server_enabled",
+          "advisory_available",
+          "destinations",
+          "reserved_use_cases"
+        ]
+      },
+      "AIPolicyRevisionList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIPolicyRevision"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ]
+      },
+      "AIPolicyReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "policy_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Active"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "policy_version",
+          "policy_version_id",
+          "business_state",
+          "saved_at",
+          "operation_id",
+          "correlation_id"
+        ]
+      },
+      "AIRankingWeightsData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "impact": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "effort": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "cost": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "readiness": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "impact",
+          "effort",
+          "cost",
+          "readiness"
+        ]
+      },
+      "AIRankingWeightsCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AIRankingWeightsData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "data"
+        ]
+      },
+      "AIRankingWeights": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "enum": [
+              "DEFAULT",
+              "SAVED",
+              "UNREADABLE"
+            ]
+          },
+          "revision_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "weights": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIRankingWeightsData"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "saved_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "saved_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "source",
+          "revision_id",
+          "weights",
+          "saved_at",
+          "saved_by"
+        ]
+      },
+      "AIRankingWeightsReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Active"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "saved_at",
+          "operation_id",
+          "correlation_id"
+        ]
+      },
+      "AIRankingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          }
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "AIOpportunityScores": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "impact": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "effort": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "cost": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "readiness": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "impact",
+          "effort",
+          "cost",
+          "readiness"
+        ]
+      },
+      "AIRankedOpportunity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "use_case_id": {
+            "type": "string"
+          },
+          "scores": {
+            "$ref": "#/components/schemas/AIOpportunityScores"
+          },
+          "weighted_total": {
+            "type": "string",
+            "pattern": "^(100\\.00|[0-9]{1,2}\\.[0-9]{2})$"
+          },
+          "readiness_gaps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "rank",
+          "use_case_id",
+          "scores",
+          "weighted_total",
+          "readiness_gaps"
+        ]
+      },
+      "AIUnrankedOpportunity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "use_case_id": {
+            "type": "string"
+          },
+          "missing_scores": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "impact",
+                "effort",
+                "cost"
+              ]
+            }
+          }
+        },
+        "required": [
+          "use_case_id",
+          "missing_scores"
+        ]
+      },
+      "AIOpportunityRanking": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "const": "WEIGHTED_EDITORIAL_SCORES"
+          },
+          "content_version": {
+            "type": "string"
+          },
+          "score_version": {
+            "type": "string"
+          },
+          "score_status": {
+            "type": "string"
+          },
+          "weights": {
+            "$ref": "#/components/schemas/AIRankingWeightsData"
+          },
+          "weights_source": {
+            "enum": [
+              "DEFAULT",
+              "SAVED"
+            ]
+          },
+          "weights_revision_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIRankedOpportunity"
+            }
+          },
+          "unranked": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIUnrankedOpportunity"
+            }
+          }
+        },
+        "required": [
+          "method",
+          "content_version",
+          "score_version",
+          "score_status",
+          "weights",
+          "weights_source",
+          "weights_revision_id",
+          "items",
+          "unranked"
         ]
       },
       "AIEnablementCatalog": {
@@ -71693,6 +73000,251 @@
       },
       "AISolutionsCatalog": {
         "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "checked_on": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 12000
+          },
+          "solutions": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "provider": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "category": {
+                  "enum": [
+                    "DESIGN",
+                    "DEVELOPER_PLATFORM",
+                    "GENERAL_ASSISTANT",
+                    "KNOWLEDGE_ASSISTANT",
+                    "TRANSLATION",
+                    "WORKSPACE_ASSISTANT"
+                  ]
+                },
+                "use_case_ids": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "deployment": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "commercial_model": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "nonprofit_offer": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "api_available": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "source_urls": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "url": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "url"
+                    ]
+                  }
+                },
+                "verification_notes": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "data_review_questions": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "commercial_disclosure": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "const": "NONE_KNOWN"
+                        },
+                        "relationship_types": {
+                          "type": "array",
+                          "maxItems": 0
+                        },
+                        "statement": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "declared_on": {
+                          "type": "string",
+                          "format": "date",
+                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                        },
+                        "editorial_confirmation": {
+                          "enum": [
+                            "PENDING",
+                            "CONFIRMED"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "relationship_types",
+                        "statement",
+                        "declared_on",
+                        "editorial_confirmation"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "const": "DISCLOSED"
+                        },
+                        "relationship_types": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 5,
+                          "uniqueItems": true,
+                          "items": {
+                            "enum": [
+                              "referral_fee",
+                              "revenue_share",
+                              "reseller",
+                              "sponsorship",
+                              "ownership"
+                            ]
+                          }
+                        },
+                        "statement": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "declared_on": {
+                          "type": "string",
+                          "format": "date",
+                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                        },
+                        "editorial_confirmation": {
+                          "enum": [
+                            "PENDING",
+                            "CONFIRMED"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "relationship_types",
+                        "statement",
+                        "declared_on",
+                        "editorial_confirmation"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "provider",
+                "category",
+                "use_case_ids",
+                "description",
+                "deployment",
+                "commercial_model",
+                "nonprofit_offer",
+                "api_available",
+                "source_urls",
+                "verification_notes",
+                "data_review_questions",
+                "commercial_disclosure"
+              ]
+            }
+          },
+          "comparison_criteria": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "prompt": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "prompt"
+              ]
+            }
+          }
+        },
         "required": [
           "content_version",
           "checked_on",
@@ -73308,211 +74860,771 @@
           "disclaimer"
         ]
       },
-      "AIAdoptionPlanGuidance": {
+      "AIArchivedSolutionsV2": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "object_id": {
+          "content_version": {
             "type": "string",
-            "format": "uuid"
+            "maxLength": 12000
           },
-          "revision_id": {
+          "checked_on": {
             "type": "string",
-            "format": "uuid"
+            "maxLength": 12000
           },
-          "status": {
-            "enum": [
-              "COMPLETE",
-              "PARTIAL",
-              "UNAVAILABLE"
-            ]
-          },
-          "snapshot_schema_version": {
-            "enum": [
-              "nonprofit-ai-guidance-v1",
-              null
-            ]
-          },
-          "captured_at": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time"
-          },
-          "snapshot_sha256": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "pattern": "^[a-f0-9]{64}$"
-          },
-          "catalog": {
-            "oneOf": [
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "AVAILABLE"
-                  },
-                  "content_version": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "$ref": "#/components/schemas/AIArchivedCatalogV1"
-                  }
-                },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "UNAVAILABLE"
-                  },
-                  "content_version": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "type": "null"
-                  }
-                },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
-              }
-            ]
+          "explanation": {
+            "type": "string",
+            "maxLength": 12000
           },
           "solutions": {
-            "oneOf": [
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "AVAILABLE"
-                  },
-                  "content_version": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "provider": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "category": {
+                  "enum": [
+                    "DESIGN",
+                    "DEVELOPER_PLATFORM",
+                    "GENERAL_ASSISTANT",
+                    "KNOWLEDGE_ASSISTANT",
+                    "TRANSLATION",
+                    "WORKSPACE_ASSISTANT"
+                  ]
+                },
+                "use_case_ids": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
                     "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "$ref": "#/components/schemas/AIArchivedSolutionsV1"
+                    "maxLength": 12000
                   }
                 },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
-              },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "UNAVAILABLE"
-                  },
-                  "content_version": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "type": "null"
+                "description": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "deployment": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "commercial_model": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "nonprofit_offer": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "api_available": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "source_urls": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "maxLength": 12000
+                      },
+                      "url": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "url"
+                    ]
                   }
                 },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
-              }
-            ]
-          },
-          "practice": {
-            "oneOf": [
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "AVAILABLE"
-                  },
-                  "content_version": {
+                "verification_notes": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
                     "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "$ref": "#/components/schemas/AIArchivedPracticeV1"
+                    "maxLength": 12000
                   }
                 },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
+                "data_review_questions": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 12000
+                  }
+                },
+                "commercial_disclosure": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "const": "NONE_KNOWN"
+                        },
+                        "relationship_types": {
+                          "type": "array",
+                          "maxItems": 0
+                        },
+                        "statement": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "declared_on": {
+                          "type": "string",
+                          "format": "date",
+                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                        },
+                        "editorial_confirmation": {
+                          "enum": [
+                            "PENDING",
+                            "CONFIRMED"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "relationship_types",
+                        "statement",
+                        "declared_on",
+                        "editorial_confirmation"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "const": "DISCLOSED"
+                        },
+                        "relationship_types": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 5,
+                          "uniqueItems": true,
+                          "items": {
+                            "enum": [
+                              "referral_fee",
+                              "revenue_share",
+                              "reseller",
+                              "sponsorship",
+                              "ownership"
+                            ]
+                          }
+                        },
+                        "statement": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1000,
+                          "pattern": "\\S"
+                        },
+                        "declared_on": {
+                          "type": "string",
+                          "format": "date",
+                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                        },
+                        "editorial_confirmation": {
+                          "enum": [
+                            "PENDING",
+                            "CONFIRMED"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "relationship_types",
+                        "statement",
+                        "declared_on",
+                        "editorial_confirmation"
+                      ]
+                    }
+                  ]
+                }
               },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "status": {
-                    "const": "UNAVAILABLE"
-                  },
-                  "content_version": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
-                    "maxLength": 100
-                  },
-                  "payload": {
-                    "type": "null"
-                  }
-                },
-                "required": [
-                  "status",
-                  "content_version",
-                  "payload"
-                ]
-              }
-            ]
+              "required": [
+                "id",
+                "name",
+                "provider",
+                "category",
+                "use_case_ids",
+                "description",
+                "deployment",
+                "commercial_model",
+                "nonprofit_offer",
+                "api_available",
+                "source_urls",
+                "verification_notes",
+                "data_review_questions",
+                "commercial_disclosure"
+              ]
+            }
           },
-          "disclaimer": {
-            "type": "string",
-            "maxLength": 1000
+          "comparison_criteria": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 12000
+                },
+                "prompt": {
+                  "type": "string",
+                  "maxLength": 12000
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "prompt"
+              ]
+            }
           }
         },
         "required": [
-          "object_id",
-          "revision_id",
-          "status",
-          "snapshot_schema_version",
-          "captured_at",
-          "snapshot_sha256",
-          "catalog",
+          "content_version",
+          "checked_on",
+          "explanation",
           "solutions",
-          "practice",
-          "disclaimer"
+          "comparison_criteria"
+        ]
+      },
+      "AIAdoptionPlanGuidance": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "enum": [
+                  "COMPLETE",
+                  "PARTIAL"
+                ]
+              },
+              "snapshot_schema_version": {
+                "const": "nonprofit-ai-guidance-v1"
+              },
+              "captured_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "snapshot_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "catalog": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedCatalogV1"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "solutions": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedSolutionsV1"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "practice": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedPracticeV1"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "disclaimer": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "object_id",
+              "revision_id",
+              "status",
+              "snapshot_schema_version",
+              "captured_at",
+              "snapshot_sha256",
+              "catalog",
+              "solutions",
+              "practice",
+              "disclaimer"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "enum": [
+                  "COMPLETE",
+                  "PARTIAL"
+                ]
+              },
+              "snapshot_schema_version": {
+                "const": "nonprofit-ai-guidance-v2"
+              },
+              "captured_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "snapshot_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "catalog": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedCatalogV1"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "solutions": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedSolutionsV2"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "practice": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "$ref": "#/components/schemas/AIArchivedPracticeV1"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "disclaimer": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "object_id",
+              "revision_id",
+              "status",
+              "snapshot_schema_version",
+              "captured_at",
+              "snapshot_sha256",
+              "catalog",
+              "solutions",
+              "practice",
+              "disclaimer"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "const": "UNAVAILABLE"
+              },
+              "snapshot_schema_version": {
+                "type": "null"
+              },
+              "captured_at": {
+                "type": "null"
+              },
+              "snapshot_sha256": {
+                "type": "null"
+              },
+              "catalog": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              "solutions": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              "practice": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "const": "UNAVAILABLE"
+                  },
+                  "content_version": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 100
+                  },
+                  "payload": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "status",
+                  "content_version",
+                  "payload"
+                ]
+              },
+              "disclaimer": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "object_id",
+              "revision_id",
+              "status",
+              "snapshot_schema_version",
+              "captured_at",
+              "snapshot_sha256",
+              "catalog",
+              "solutions",
+              "practice",
+              "disclaimer"
+            ]
+          }
         ]
       },
       "AIAdoptionRevision": {
@@ -75889,7 +78001,10 @@
             "format": "date-time"
           },
           "schema": {
-            "const": "nonprofit-ai-plan-export-v1"
+            "enum": [
+              "nonprofit-ai-plan-export-v1",
+              "nonprofit-ai-plan-export-v2"
+            ]
           },
           "renderer": {
             "const": "nonprofit-ai-plan-json-v1"
@@ -76557,6 +78672,975 @@
                                 "source_urls",
                                 "verification_notes",
                                 "data_review_questions"
+                              ]
+                            }
+                          },
+                          "comparison_criteria": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "prompt": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "label",
+                                "prompt"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "content_version",
+                          "checked_on",
+                          "explanation",
+                          "solutions",
+                          "comparison_criteria"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "practice": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "content_version": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "templates": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "purpose": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "input_guidance": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "example_brief": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "allowed_inputs": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "prompt_framework": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "prohibited_inputs": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "review_steps": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "label"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "purpose",
+                                "input_guidance",
+                                "example_brief",
+                                "allowed_inputs",
+                                "prompt_framework",
+                                "prohibited_inputs",
+                                "review_steps"
+                              ]
+                            }
+                          },
+                          "disclaimer": {
+                            "type": "string",
+                            "maxLength": 12000
+                          }
+                        },
+                        "required": [
+                          "content_version",
+                          "templates",
+                          "disclaimer"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "disclaimer": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "object_id",
+              "revision_id",
+              "status",
+              "snapshot_schema_version",
+              "captured_at",
+              "snapshot_sha256",
+              "catalog",
+              "solutions",
+              "practice",
+              "disclaimer"
+            ]
+          },
+          "disclaimer": {
+            "const": "This is a saved draft planning record for internal use. It is not procurement approval, a competency certification or official programme impact. Unavailable historical guidance is not reconstructed. This download cannot be recalled after it is saved locally."
+          }
+        },
+        "required": [
+          "schema_version",
+          "renderer_version",
+          "tenant_id",
+          "issuance_id",
+          "generated_at",
+          "restriction",
+          "record_status",
+          "declared_components",
+          "plan",
+          "guidance",
+          "disclaimer"
+        ]
+      },
+      "AIPlanExportDocumentV2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "const": "nonprofit-ai-plan-export-v2"
+          },
+          "renderer_version": {
+            "const": "nonprofit-ai-plan-json-v1"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuance_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "restriction": {
+            "const": "INTERNAL_SELF"
+          },
+          "record_status": {
+            "const": "Draft"
+          },
+          "declared_components": {
+            "const": [
+              "PUBLIC_PLAN",
+              "ARCHIVED_GUIDANCE"
+            ]
+          },
+          "plan": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "saved_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "schema_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "data": {
+                "$ref": "#/components/schemas/AIPlanExportV1AIAdoptionPlanStoredData"
+              }
+            },
+            "required": [
+              "object_id",
+              "revision_id",
+              "saved_at",
+              "schema_version",
+              "data"
+            ]
+          },
+          "guidance": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "enum": [
+                  "COMPLETE",
+                  "PARTIAL"
+                ]
+              },
+              "snapshot_schema_version": {
+                "const": "nonprofit-ai-guidance-v2"
+              },
+              "captured_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "snapshot_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "catalog": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "schema_version": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "content_version": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "provenance": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "maxLength": 12000
+                              },
+                              "validated_demand": {
+                                "type": "boolean"
+                              },
+                              "source_concept": {
+                                "type": "string",
+                                "maxLength": 12000
+                              },
+                              "note": {
+                                "type": "string",
+                                "maxLength": 12000
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "validated_demand",
+                              "source_concept",
+                              "note"
+                            ]
+                          },
+                          "journey": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "purpose": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "human_owner": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "purpose",
+                                "human_owner"
+                              ]
+                            }
+                          },
+                          "use_cases": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "sectors": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "kind": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "data_requirement": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "sensitivity": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "goal_keywords": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "prerequisites": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "acceptance_checks": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "human_approval_needs": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "content_status": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "sectors",
+                                "description",
+                                "kind",
+                                "data_requirement",
+                                "sensitivity",
+                                "goal_keywords",
+                                "prerequisites",
+                                "acceptance_checks",
+                                "human_approval_needs",
+                                "content_status"
+                              ]
+                            }
+                          },
+                          "learning_paths": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "steps": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "lessons": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "title": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "lesson": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "exercise": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "check": {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "question": {
+                                            "type": "string",
+                                            "maxLength": 12000
+                                          },
+                                          "options": {
+                                            "type": "array",
+                                            "maxItems": 100,
+                                            "items": {
+                                              "type": "string",
+                                              "maxLength": 12000
+                                            }
+                                          },
+                                          "answer": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 1000000
+                                          },
+                                          "explanation": {
+                                            "type": "string",
+                                            "maxLength": 12000
+                                          }
+                                        },
+                                        "required": [
+                                          "question",
+                                          "options",
+                                          "answer",
+                                          "explanation"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "title",
+                                      "lesson",
+                                      "exercise",
+                                      "check"
+                                    ]
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "steps",
+                                "lessons"
+                              ]
+                            }
+                          },
+                          "procurement_criteria": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "questions": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title",
+                                "questions"
+                              ]
+                            }
+                          },
+                          "marketplace_status": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "maxLength": 12000
+                              },
+                              "vendors": {
+                                "type": "array",
+                                "maxItems": 100,
+                                "items": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                }
+                              },
+                              "explanation": {
+                                "type": "string",
+                                "maxLength": 12000
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "vendors",
+                              "explanation"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "schema_version",
+                          "content_version",
+                          "provenance",
+                          "journey",
+                          "use_cases",
+                          "learning_paths",
+                          "procurement_criteria",
+                          "marketplace_status"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "UNAVAILABLE"
+                      },
+                      "content_version": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "content_version",
+                      "payload"
+                    ]
+                  }
+                ]
+              },
+              "solutions": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "const": "AVAILABLE"
+                      },
+                      "content_version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "payload": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "content_version": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "checked_on": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "explanation": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "solutions": {
+                            "type": "array",
+                            "maxItems": 100,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "provider": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "category": {
+                                  "enum": [
+                                    "DESIGN",
+                                    "DEVELOPER_PLATFORM",
+                                    "GENERAL_ASSISTANT",
+                                    "KNOWLEDGE_ASSISTANT",
+                                    "TRANSLATION",
+                                    "WORKSPACE_ASSISTANT"
+                                  ]
+                                },
+                                "use_case_ids": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "deployment": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "commercial_model": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "nonprofit_offer": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "api_available": {
+                                  "type": "string",
+                                  "maxLength": 12000
+                                },
+                                "source_urls": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "label": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      },
+                                      "url": {
+                                        "type": "string",
+                                        "maxLength": 12000
+                                      }
+                                    },
+                                    "required": [
+                                      "label",
+                                      "url"
+                                    ]
+                                  }
+                                },
+                                "verification_notes": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "data_review_questions": {
+                                  "type": "array",
+                                  "maxItems": 100,
+                                  "items": {
+                                    "type": "string",
+                                    "maxLength": 12000
+                                  }
+                                },
+                                "commercial_disclosure": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "status": {
+                                          "const": "NONE_KNOWN"
+                                        },
+                                        "relationship_types": {
+                                          "type": "array",
+                                          "maxItems": 0
+                                        },
+                                        "statement": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 1000,
+                                          "pattern": "\\S"
+                                        },
+                                        "declared_on": {
+                                          "type": "string",
+                                          "format": "date",
+                                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                                        },
+                                        "editorial_confirmation": {
+                                          "enum": [
+                                            "PENDING",
+                                            "CONFIRMED"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "status",
+                                        "relationship_types",
+                                        "statement",
+                                        "declared_on",
+                                        "editorial_confirmation"
+                                      ]
+                                    },
+                                    {
+                                      "type": "object",
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "status": {
+                                          "const": "DISCLOSED"
+                                        },
+                                        "relationship_types": {
+                                          "type": "array",
+                                          "minItems": 1,
+                                          "maxItems": 5,
+                                          "uniqueItems": true,
+                                          "items": {
+                                            "enum": [
+                                              "referral_fee",
+                                              "revenue_share",
+                                              "reseller",
+                                              "sponsorship",
+                                              "ownership"
+                                            ]
+                                          }
+                                        },
+                                        "statement": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 1000,
+                                          "pattern": "\\S"
+                                        },
+                                        "declared_on": {
+                                          "type": "string",
+                                          "format": "date",
+                                          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                                        },
+                                        "editorial_confirmation": {
+                                          "enum": [
+                                            "PENDING",
+                                            "CONFIRMED"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "status",
+                                        "relationship_types",
+                                        "statement",
+                                        "declared_on",
+                                        "editorial_confirmation"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "name",
+                                "provider",
+                                "category",
+                                "use_case_ids",
+                                "description",
+                                "deployment",
+                                "commercial_model",
+                                "nonprofit_offer",
+                                "api_available",
+                                "source_urls",
+                                "verification_notes",
+                                "data_review_questions",
+                                "commercial_disclosure"
                               ]
                             }
                           },

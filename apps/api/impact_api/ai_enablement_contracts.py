@@ -2,16 +2,57 @@
 
 from copy import deepcopy
 
+from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
 VERSION = "1.20.0"
+# FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
+POLICY_VERSION = "1.26.0"
+# US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
+RANKING_VERSION = "1.27.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/catalog"),
     ("post", "ai-enablement/assessment"),
     ("post", "ai-enablement/advisory"),
     ("get", "ai-enablement/solutions"),
+    ("get", "ai-enablement/policy"),
+    ("put", "ai-enablement/policy"),
+    ("get", "ai-enablement/policy/revisions"),
+    ("get", "ai-enablement/ranking-weights"),
+    ("put", "ai-enablement/ranking-weights"),
+    ("post", "ai-enablement/ranking"),
 ]
-ROLES = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD"]
+# Every reader of AI enablement. FINANCE (the Operations Head persona) reads only: the owner decided on
+# 9 October 2026 (US-MP-03 review) that it holds ai.enablement.read and never ai.enablement.manage.
+ROLES = [
+    "TENANT_ADMIN",
+    "MEL_ADMIN",
+    "PROGRAMME_MANAGER",
+    "AUTHOR",
+    "REVIEWER",
+    "ANALYST",
+    "DATA_STEWARD",
+    "FINANCE",
+]
+# Changing the policy is an administrative, sensitive action: TENANT_ADMIN only, with authentication
+# within the previous 300 seconds plus the configured assurance (store.authorize), always audited.
+POLICY_MANAGERS = ["TENANT_ADMIN"]
+POLICY_CAPABILITY = "ai.policy.manage"
+# Ranking weights are a preference, not an approval: the existing ai.enablement.manage holders change
+# them with expected_revision, no independent review and no fresh sign-in (US-MP-03).
+RANKING_MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
+# The four criteria: each has a weight and, per ranked opportunity, a score.
+WEIGHT_FIELDS = ["impact", "effort", "cost", "readiness"]
+USE_CASES = ["ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT"]
+DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
+# The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
+# the CHECK constraint of migration 0041; a tenant policy starts with no destination selected.
+DESTINATIONS = ["openai-us"]
+REVIEW_MODES = ["HUMAN_REVIEW"]
+LANGUAGE_PATTERN = "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+TOOL_PATTERN = "^[a-z][a-z0-9_.-]{0,63}$"
+MAX_BUDGET_UNITS = 1000000
+MAX_POLICY_VERSION = 2147483647
 
 
 def augment(spec, policy):
@@ -35,9 +76,22 @@ def augment(spec, policy):
             "operation_id": {"type": "string", "format": "uuid"},
             "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
             "consent": {"const": True},
+            # The policy version shown to the requester ("Policy in force"); a request made against
+            # any other version is refused with 409 AI_POLICY_CHANGED before any reservation.
+            "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
+            # Tools are never implicit: a tool the use case's policy does not list is refused with
+            # 422 AI_POLICY_BLOCKED. No policy can list a tool in this build.
+            "tools": {
+                "type": "array",
+                "maxItems": 10,
+                "uniqueItems": True,
+                "items": {"type": "string", "pattern": TOOL_PATTERN},
+            },
         },
-        ["operation_id", "profile", "consent"],
+        ["operation_id", "profile", "consent", "policy_version"],
     )
+    policy_schemas(schemas)
+    ranking_schemas(schemas)
     # This increment publishes versioned editorial content, not an authored domain object.
     schemas["AIEnablementCatalog"] = {
         "type": "object",
@@ -54,10 +108,9 @@ def augment(spec, policy):
         ],
     }
     schemas["AIEnablementAssessment"] = closed({"assessment": {"type": "object"}}, ["assessment"])
-    schemas["AISolutionsCatalog"] = {
-        "type": "object",
-        "required": ["content_version", "checked_on", "explanation", "solutions", "comparison_criteria"],
-    }
+    # US-DC-04 (build 0.39.0): closed, and every listing carries a valid commercial disclosure
+    # (NONE_KNOWN with no relationship type, or DISCLOSED with at least one and a statement).
+    schemas["AISolutionsCatalog"] = catalog_schema()
     schemas["AIAdvisoryDraft"] = closed(
         {
             "status": {"const": "DRAFT"},
@@ -151,5 +204,333 @@ def augment(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": op == "create_ai_advisory",
+            }
+        )
+    policy_paths(spec, policy)
+    ranking_paths(spec, policy)
+
+
+def _strings(enum=None, pattern=None, maximum=10, length=None):
+    items = {"type": "string"}
+    if enum is not None:
+        items = {"enum": list(enum)}
+    if pattern:
+        items["pattern"] = pattern
+    if length:
+        items.update(minLength=1, maxLength=length)
+    return {"type": "array", "maxItems": maximum, "uniqueItems": True, "items": items}
+
+
+def policy_schemas(schemas):
+    """Closed schemas of the versioned tenant AI policy (FR-AI-001, migration 0041)."""
+    rule = {
+        "use_case": {"enum": list(USE_CASES)},
+        "enabled": {"type": "boolean"},
+        "data_classes": _strings(DATA_CLASSES, maximum=len(DATA_CLASSES)),
+        "destinations": _strings(DESTINATIONS, maximum=10),
+        "purposes": _strings(maximum=10, length=200),
+        "languages": _strings(pattern=LANGUAGE_PATTERN, maximum=20),
+        "review_mode": {"enum": list(REVIEW_MODES)},
+        "budget_units": {"type": "integer", "minimum": 0, "maximum": MAX_BUDGET_UNITS},
+        # Empty by default and, in this build, always: no tool catalogue exists yet.
+        "tools": {"type": "array", "maxItems": 0, "items": {"type": "string", "pattern": TOOL_PATTERN}},
+    }
+    schemas["AIUseCasePolicy"] = closed(rule, list(rule))
+    schemas["AIPolicyData"] = closed(
+        {
+            "use_cases": {
+                "type": "array",
+                "maxItems": len(USE_CASES),
+                "items": {"$ref": "#/components/schemas/AIUseCasePolicy"},
+            }
+        },
+        ["use_cases"],
+    )
+    command = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        # 0 when the tenant has no policy yet; otherwise the version the editor was opened on.
+        "expected_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
+        "data": {"$ref": "#/components/schemas/AIPolicyData"},
+    }
+    schemas["AIPolicyCommand"] = closed(command, list(command))
+    destination = {
+        "id": {"enum": list(DESTINATIONS)},
+        "provider": {"type": "string"},
+        "region": {"type": "string"},
+    }
+    schemas["AIPolicyDestination"] = closed(destination, list(destination))
+    nullable_uuid = {"type": ["string", "null"], "format": "uuid"}
+    version = {
+        "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
+        "policy_version_id": deepcopy(nullable_uuid),
+        "created_at": {"type": ["string", "null"], "format": "date-time"},
+        "created_by": deepcopy(nullable_uuid),
+        "use_cases": {
+            "type": "array",
+            "maxItems": len(USE_CASES),
+            "items": {"$ref": "#/components/schemas/AIUseCasePolicy"},
+        },
+    }
+    schemas["AIPolicyRevision"] = closed(version, list(version))
+    view = {
+        **deepcopy(version),
+        "server_enabled": {"type": "boolean"},
+        "advisory_available": {"type": "boolean"},
+        "destinations": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/AIPolicyDestination"},
+        },
+        "reserved_use_cases": {"type": "array", "items": {"enum": list(USE_CASES)}},
+    }
+    schemas["AIPolicy"] = closed(view, list(view))
+    schemas["AIPolicyRevisionList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AIPolicyRevision"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+        },
+        ["items", "next_cursor"],
+    )
+    receipt = {
+        "object_id": {"type": "string", "format": "uuid"},
+        "revision_id": {"type": "string", "format": "uuid"},
+        "policy_version": {"type": "integer", "minimum": 1, "maximum": MAX_POLICY_VERSION},
+        "policy_version_id": {"type": "string", "format": "uuid"},
+        "business_state": {"const": "Active"},
+        "saved_at": {"type": "string", "format": "date-time"},
+        "operation_id": {"type": "string", "format": "uuid"},
+        "correlation_id": {"type": "string", "format": "uuid"},
+    }
+    schemas["AIPolicyReceipt"] = closed(receipt, list(receipt))
+
+
+def policy_paths(spec, policy):
+    """GET and PUT .../ai-enablement/policy and GET .../policy/revisions."""
+    for method, suffix, op, cap, request, response, roles, fresh in [
+        ("get", "", "get_ai_policy", "ai.enablement.read", None, "AIPolicy", ROLES, None),
+        (
+            "put",
+            "",
+            "update_ai_policy",
+            POLICY_CAPABILITY,
+            "AIPolicyCommand",
+            "AIPolicyReceipt",
+            POLICY_MANAGERS,
+            300,
+        ),
+        (
+            "get",
+            "/revisions",
+            "list_ai_policy_revisions",
+            "ai.enablement.read",
+            None,
+            "AIPolicyRevisionList",
+            ROLES,
+            None,
+        ),
+    ]:
+        path = "/v1/tenants/{tenant_id}/ai-enablement/policy" + suffix
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if op == "list_ai_policy_revisions":
+            parameters += [
+                {"name": "limit", "in": "query", "schema": {"type": "integer", "minimum": 1, "maximum": 100}},
+                {"name": "cursor", "in": "query", "schema": {"type": "string", "maxLength": 4096}},
+            ]
+        entry = {
+            "operationId": op,
+            "summary": op.replace("_", " "),
+            "x-capability": cap,
+            "x-contract-version": POLICY_VERSION,
+            "parameters": parameters,
+            "responses": {
+                "200": {
+                    "description": "The policy in force, its history or the new version's receipt",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"].setdefault(path, {})[method] = entry
+        policy["operations"].append(
+            {
+                "operation_id": op,
+                "method": method.upper(),
+                "path": path,
+                "capability": cap,
+                "role_templates": deepcopy(roles),
+                "purpose_required": False,
+                "fresh_assurance_seconds": fresh,
+                "audit": op == "update_ai_policy",
+            }
+        )
+
+
+def ranking_schemas(schemas):
+    """Closed schemas of the ranking weights and the weighted opportunity ranking (US-MP-03).
+
+    The total of 100 cannot be expressed in JSON Schema; the server refuses any other total with
+    422 AI_RANKING_WEIGHTS_TOTAL and keeps the weights in force."""
+    weight = {"type": "integer", "minimum": 0, "maximum": 100}
+    schemas["AIRankingWeightsData"] = closed({field: dict(weight) for field in WEIGHT_FIELDS}, WEIGHT_FIELDS)
+    nullable_uuid = {"type": ["string", "null"], "format": "uuid"}
+    command = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        # null while the organisation has never saved weights; otherwise the revision the editor showed.
+        "expected_revision": deepcopy(nullable_uuid),
+        "data": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+    }
+    schemas["AIRankingWeightsCommand"] = closed(command, list(command))
+    view = {
+        # UNREADABLE: saved weights that do not read back exactly; revision_id names them so that a
+        # manager can replace them, weights is null and every ranking answers 503 until then.
+        "source": {"enum": ["DEFAULT", "SAVED", "UNREADABLE"]},
+        "revision_id": deepcopy(nullable_uuid),
+        "weights": {"anyOf": [{"$ref": "#/components/schemas/AIRankingWeightsData"}, {"type": "null"}]},
+        "saved_at": {"type": ["string", "null"], "format": "date-time"},
+        "saved_by": deepcopy(nullable_uuid),
+    }
+    schemas["AIRankingWeights"] = closed(view, list(view))
+    receipt = {
+        "object_id": {"type": "string", "format": "uuid"},
+        "revision_id": {"type": "string", "format": "uuid"},
+        "business_state": {"const": "Active"},
+        "saved_at": {"type": "string", "format": "date-time"},
+        "operation_id": {"type": "string", "format": "uuid"},
+        "correlation_id": {"type": "string", "format": "uuid"},
+    }
+    schemas["AIRankingWeightsReceipt"] = closed(receipt, list(receipt))
+    schemas["AIRankingRequest"] = closed(
+        {"profile": {"$ref": "#/components/schemas/AIEnablementProfile"}}, ["profile"]
+    )
+    score = {"type": "integer", "minimum": 1, "maximum": 5}
+    schemas["AIOpportunityScores"] = closed({field: dict(score) for field in WEIGHT_FIELDS}, WEIGHT_FIELDS)
+    item = {
+        "rank": {"type": "integer", "minimum": 1},
+        "use_case_id": {"type": "string"},
+        "scores": {"$ref": "#/components/schemas/AIOpportunityScores"},
+        # Exact decimal string, 0.00 to 100.00.
+        "weighted_total": {"type": "string", "pattern": "^(100\\.00|[0-9]{1,2}\\.[0-9]{2})$"},
+        "readiness_gaps": {"type": "array", "items": {"type": "string"}},
+    }
+    schemas["AIRankedOpportunity"] = closed(item, list(item))
+    unranked = {
+        "use_case_id": {"type": "string"},
+        "missing_scores": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": True,
+            "items": {"enum": ["impact", "effort", "cost"]},
+        },
+    }
+    schemas["AIUnrankedOpportunity"] = closed(unranked, list(unranked))
+    ranking = {
+        "method": {"const": "WEIGHTED_EDITORIAL_SCORES"},
+        "content_version": {"type": "string"},
+        "score_version": {"type": "string"},
+        "score_status": {"type": "string"},
+        "weights": {"$ref": "#/components/schemas/AIRankingWeightsData"},
+        "weights_source": {"enum": ["DEFAULT", "SAVED"]},
+        "weights_revision_id": deepcopy(nullable_uuid),
+        "items": {"type": "array", "items": {"$ref": "#/components/schemas/AIRankedOpportunity"}},
+        "unranked": {"type": "array", "items": {"$ref": "#/components/schemas/AIUnrankedOpportunity"}},
+    }
+    schemas["AIOpportunityRanking"] = closed(ranking, list(ranking))
+
+
+def ranking_paths(spec, policy):
+    """GET and PUT .../ai-enablement/ranking-weights and POST .../ai-enablement/ranking."""
+    for method, route, op, cap, request, response, roles, audited in [
+        (
+            "get",
+            "ai-enablement/ranking-weights",
+            "get_ai_ranking_weights",
+            "ai.enablement.read",
+            None,
+            "AIRankingWeights",
+            ROLES,
+            False,
+        ),
+        (
+            "put",
+            "ai-enablement/ranking-weights",
+            "update_ai_ranking_weights",
+            "ai.enablement.manage",
+            "AIRankingWeightsCommand",
+            "AIRankingWeightsReceipt",
+            RANKING_MANAGERS,
+            True,
+        ),
+        (
+            "post",
+            "ai-enablement/ranking",
+            "rank_ai_opportunities",
+            "ai.enablement.read",
+            "AIRankingRequest",
+            "AIOpportunityRanking",
+            ROLES,
+            False,
+        ),
+    ]:
+        path = "/v1/tenants/{tenant_id}/" + route
+        entry = {
+            "operationId": op,
+            "summary": op.replace("_", " "),
+            "x-capability": cap,
+            "x-contract-version": RANKING_VERSION,
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "The weights in force, the new revision's receipt or the ranking",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"].setdefault(path, {})[method] = entry
+        policy["operations"].append(
+            {
+                "operation_id": op,
+                "method": method.upper(),
+                "path": path,
+                "capability": cap,
+                "role_templates": deepcopy(roles),
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": audited,
             }
         )

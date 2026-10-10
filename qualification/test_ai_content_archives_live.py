@@ -30,6 +30,7 @@ from impact_api.service import Service
 from impact_api.store import Database, audit, authorize, context, hash_data, write
 from test_ai_adoption_plans import plan
 from test_ai_adoption_plans_live import management_disabled, save
+from test_ai_content_archives import V1_SOLUTIONS_SHA256, under_guidance_v1
 from test_ai_planning_inputs import planning_plan
 from test_ai_planning_live import read_disabled
 from test_live_application import cmd, expect
@@ -631,3 +632,96 @@ def test_native_competing_exact_saves_create_one_revision_binding_and_receipt(li
             == 1
         )
     assert expect(live.request(path(live, first), actor="admin"), 200)["status"] == "COMPLETE"
+
+
+# US-DC-04: guidance edition v2 (commercial disclosures) beside plans saved under v1
+
+
+def bound_edition(live, receipt):
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        return c.execute(
+            "SELECT s.schema_version,s.payload->>'schema_version' AS payload_version "
+            "FROM impact.ai_plan_content_binding b JOIN impact.ai_content_snapshot s USING(tenant_id,snapshot_id) "
+            "WHERE b.tenant_id=%s AND b.object_id=%s AND b.revision_id=%s",
+            (tenant, receipt["object_id"], receipt["revision_id"]),
+        ).fetchone()
+
+
+def test_plans_saved_under_guidance_v1_and_v2_both_load_and_v2_keeps_its_disclosures(live, monkeypatch):
+    api, _, identity = local_engine(live)
+    # Saved as build 0.38.0 did (guidance v1, the v1 solutions edition) by the real capture path.
+    with under_guidance_v1(monkeypatch):
+        old = api.save(identity, live.fixture["tenant_a"], cmd(plan()), str(uuid4()))
+    new = save(live)
+    assert dict(bound_edition(live, old)) == {
+        "schema_version": archives.SCHEMA_V1,
+        "payload_version": archives.SCHEMA_V1,
+    }
+    assert dict(bound_edition(live, new)) == {
+        "schema_version": archives.SCHEMA_V2,
+        "payload_version": archives.SCHEMA_V2,
+    }
+    before = counts(live)
+    first = expect(live.request(path(live, old), actor="reviewer"), 200)
+    second = expect(live.request(path(live, new), actor="reviewer"), 200)
+    validate("AIAdoptionPlanGuidance", first)
+    validate("AIAdoptionPlanGuidance", second)
+    assert first["status"] == second["status"] == "COMPLETE"
+    assert first["snapshot_schema_version"] == archives.SCHEMA_V1
+    assert second["snapshot_schema_version"] == archives.SCHEMA_V2
+    assert hash_data(first["solutions"]["payload"]).hex() == V1_SOLUTIONS_SHA256
+    assert not any("commercial_disclosure" in item for item in first["solutions"]["payload"]["solutions"])
+    assert second["solutions"]["payload"] == archives.solutions_catalog()
+    assert [
+        item["commercial_disclosure"]["status"] for item in second["solutions"]["payload"]["solutions"]
+    ] == ["NONE_KNOWN"] * 8
+    for receipt in (old, new):
+        current = expect(
+            live.request(live.path("ai-enablement/plans", receipt["object_id"]), actor="reviewer"), 200
+        )
+        validate("AIAdoptionPlan", current)
+        assert current["content_compatibility"]["historical_snapshots_available"] is True
+        history = expect(live.request(path(live, receipt, "history"), actor="reviewer"), 200)
+        assert history["items"][0]["historical_snapshots_available"] is True
+    old_plan = expect(live.request(live.path("ai-enablement/plans", old["object_id"]), actor="reviewer"), 200)
+    assert old_plan["content_compatibility"]["solutions_version_status"] == "STALE"
+    assert counts(live) == before, "Reading either edition writes nothing and relabels nothing"
+
+
+class _Rollback(Exception):
+    pass
+
+
+def test_snapshot_edition_check_admits_exactly_guidance_v1_and_v2(live):
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        rows = c.execute(
+            "SELECT conname,pg_get_constraintdef(oid) AS definition FROM pg_constraint "
+            "WHERE conrelid='impact.ai_content_snapshot'::regclass AND contype='c' "
+            "AND pg_get_constraintdef(oid) LIKE '%%schema_version%%'"
+        ).fetchall()
+    assert [row["conname"] for row in rows] == ["ai_content_snapshot_schema_version_check"]
+    assert "nonprofit-ai-guidance-v1" in rows[0]["definition"]
+    assert "nonprofit-ai-guidance-v2" in rows[0]["definition"]
+
+    def insert(c, version):
+        probe = {"synthetic_edition_probe": str(uuid4())}
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        c.execute(
+            "INSERT INTO impact.ai_content_snapshot(tenant_id,snapshot_id,schema_version,payload,payload_sha256,"
+            "captured_at) VALUES(%s,%s,%s,%s,%s,statement_timestamp())",
+            (tenant, str(uuid4()), version, Jsonb(probe), hash_data(probe)),
+        )
+
+    # Both editions are admitted (the probe rows are rolled back: snapshots are insert-only).
+    with pytest.raises(_Rollback):
+        with live.db() as c:
+            insert(c, archives.SCHEMA_V1)
+            insert(c, archives.SCHEMA_V2)
+            raise _Rollback
+    for refused in ("nonprofit-ai-guidance-v3", "NONPROFIT-AI-GUIDANCE-V2", ""):
+        with pytest.raises(psycopg.errors.CheckViolation):
+            with live.db() as c:
+                insert(c, refused)

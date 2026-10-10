@@ -1,5 +1,11 @@
 # Current data dictionary and schema evolution
 
+Local proposed build 0.39.0, schema 43 (branch `sprint-1/us-dc-04`, US-DC-04; not merged or deployed): migration 0043 replaces the `ai_content_snapshot_schema_version_check` of 0037 (same name) so that archived guidance snapshots may be labelled `nonprofit-ai-guidance-v1` or `nonprofit-ai-guidance-v2`. Edition v2 (`apps/api/impact_api/ai_content_schema_v2.json`) adds a required `commercial_disclosure` to every tool listing of the archived solutions component; v1 rows are unchanged and stay readable by the retained v1 reader. New saved plan revisions are captured in v2. No table, column, grant, role, policy, trigger or function is added or changed; snapshots stay insert-only and tenant-fenced. It also replaces 0040's `ai_plan_export_issuance_package_schema_version_check` (same name) with `IN ('nonprofit-ai-plan-export-v1', 'nonprofit-ai-plan-export-v2')`: an internal plan copy whose archived guidance is v2 is issued as package v2; copies of v1 or unarchived guidance keep package v1 and its published shape.
+
+Local proposed build 0.38.0, schema 42 (branch `sprint-1/us-mp-03`, US-MP-03; not merged or deployed): migration 0042 adds the registry kind `AIRankingWeights` (the `object_registry_object_type_check` is widened by appending the kind, preserving every earlier kind, as 0034, 0035 and 0038 did) and the partial unique index `ai_ranking_weights_one_per_tenant`, so each tenant has at most one weights object; every change of weights is its next immutable revision in the existing forced-RLS `object_registry`/`object_revision` with audit event, outbox intent and receipt. It also registers the generated onboarding profile `8664a1b707cb…` with a read-only FINANCE bundle (`ai.enablement.read`, `notifications.read`, `uploads.read`; the Operations Head persona). No projection table, grant, role, policy or function is added; existing tenant ceilings are unchanged and an existing tenant obtains the FINANCE role template only through the reviewed access upgrade.
+
+Local proposed build 0.37.0, schema 41 (branch `sprint-1/fr-ai-001`, FR-AI-001; not merged or deployed): migration 0041 adds the versioned tenant AI policy. `ai_policy_version` and `ai_use_case_policy` are insert-only, tenant-keyed and forced-RLS with `tenant_fence`; only `impact_app` receives SELECT/INSERT. Each version is the next immutable revision of the tenant's single `AIConfiguration` registry object (a 0002 kind, made a singleton by a partial unique index; no projection, no type CHECK change). CHECKs close the use cases, data classes, destinations (`openai-us` only), review mode and budget range, forbid any tool and allow the reserved use cases only as disabled. `ai_advisory_request` gains a nullable, tenant-keyed `policy_version_id` with a NOT VALID CHECK so that every new reservation names its policy version while earlier rows keep NULL. The generated onboarding profile with `ai.policy.manage` for TENANT_ADMIN is registered; existing tenant ceilings are unchanged.
+
 Local proposed schema40 candidate: migration0040 adds two insert-only issuer-private tables for JSON INTERNAL_SELF export of one exact saved adoption-plan revision. A typed immutable AuditEvent binds issuance metadata, original BYTEA, digest, original database generation time, exact archived guidance, one private nondelivery intent and pointer-only receipt in one deferred-sealed transaction. Current principal/member/scoped read plus export and both current readable head and exact AVAILABLE pin gate all reads; original bytes additionally expire for platform replay after168hours. Server-only slots bound actual retained issuances to100 per tenant principal across hidden/expired records. Exact MANAGERS-only export profile registration does not grant tenant business access. Both existing key-returning receipt purge definers exclude private advice/export commands while ordinary retention behavior remains; private advice has no hard permanent storage cap. Parent payload removal is refused while copied bytes remain. No new operated erasure path, retention duration, local-file revocation, hosted acceptance or deployment is claimed.
 
 Local proposed build 0.33.0, schema 39: migration0039 narrows the central participant helper to require the exact tenant/object/revision/type-qualified AI adoption plan anchor to remain AVAILABLE, in addition to its currently readable head. Earlier unavailable plan pins now withhold all case-related projections and pointer reads without changing old rows or roles. Migration0038 adds an existing-member human advice case projection and immutable private brief, tenant-qualified keys and forced participant row security. Invitation details and explicit sharing consent precede material adviser access; terminal adviser access ends. Narrow owner-definer helpers protect case-related registry/revision, audit, author, receipt and event pointers. The writable transaction-local principal context supports the authenticated application boundary and does not authenticate a human against a compromised database login. Programme evidence links reuse existing immutable AI-plan revisions without a new numeric-result table. Not merged or deployed.
@@ -67,6 +73,9 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0038_human_advice_cases.sql | ace70f9e77a2636df7e0cf5f85f5ffd29de74af8efa94df6e5804077e5331e00 |
 | 0039_human_advice_anchor_availability.sql | 12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0 |
 | 0040_ai_plan_portability.sql | a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89 |
+| 0041_ai_policy.sql | 46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2 |
+| 0042_ai_ranking_weights.sql | 67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636 |
+| 0043_ai_guidance_v2.sql | b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095 |
 
 ## Executable schema definitions
 
@@ -6133,4 +6142,201 @@ DELETE FROM impact.operation_receipt o USING (
 $$;
 COMMIT;
 
+```
+
+## 0041_ai_policy.sql
+
+Source: infrastructure/migrations/0041_ai_policy.sql. SHA-256: `46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2`. Local build 0.37.0 candidate on branch `sprint-1/fr-ai-001` (FR-AI-001), not merged or deployed. Additive; migrations 0001–0040 are byte-identical.
+
+`ai_policy_version` holds one row per policy change of a tenant; `ai_use_case_policy` holds that version's rules, one row per listed use case (a use case not listed is off). Both are insert-only (trigger `guard_ai_policy_insert_only`, SQLSTATE 42501), forced row security with `tenant_fence`, and SELECT/INSERT for `impact_app` only; the worker, identity, platform and privacy roles have no privilege. The API reads the latest version under the tenant write lock before any advisory reservation or provider call.
+
+| Table.column | SQL type / constraint | Meaning |
+| --- | --- | --- |
+| ai_policy_version.tenant_id | uuid, required | Tenant fence; in the primary key and every foreign key. |
+| ai_policy_version.policy_version_id | uuid, required | The `AIConfiguration` object revision of this version; typed FK to `object_revision`. |
+| ai_policy_version.object_id | uuid, required | The tenant's single `AIConfiguration` object (partial unique index `ai_configuration_one_per_tenant`). |
+| ai_policy_version.revision_kind | generated text `AIConfiguration` | Typed revision FK discriminator. |
+| ai_policy_version.version_no | integer ≥ 1, UNIQUE per tenant | Version shown to readers and pinned by requests; the server assigns 1..n without gaps. |
+| ai_policy_version.created_by | uuid, required | Principal who made the change (TENANT_ADMIN with fresh assurance); FK to `tenant_principal`. |
+| ai_policy_version.created_at | timestamptz, required | Time of the change. |
+| ai_use_case_policy.use_case | varchar(32) | ADVISORY_DRAFT, EXTRACTION, REPORT_DRAFT or CHAT; only ADVISORY_DRAFT may be enabled (`ai_use_case_reserved`). |
+| ai_use_case_policy.enabled | boolean | Use case on or off; an enabled rule needs at least one data class, destination, purpose and language (`ai_use_case_complete`). |
+| ai_use_case_policy.data_classes | text[] ⊆ PUBLIC/INTERNAL/CONFIDENTIAL/RESTRICTED | Read as a ceiling: a request passes at or below the highest listed class (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED). An advisory brief marked sensitive is CONFIDENTIAL, otherwise INTERNAL; the API refuses an enabled ADVISORY_DRAFT whose ceiling is below INTERNAL. |
+| ai_use_case_policy.destinations | text[] ⊆ `openai-us` | Closed provider-and-region labels; widening is a reviewed migration. |
+| ai_use_case_policy.purposes | text[], ≤ 10, no NULL or empty, ≤ 2,000 characters in all | Approved purposes in the administrator's words. |
+| ai_use_case_policy.languages | text[] of BCP 47 tags, ≤ 20 | Language coverage; the English advisory draft needs an `en` tag. |
+| ai_use_case_policy.review_mode | varchar(32) = HUMAN_REVIEW | Required review; no "no review" mode exists. |
+| ai_use_case_policy.budget_units | integer 0–1,000,000 | Approved budget; 0 blocks the use case. Not yet metered (FR-AI-016a). |
+| ai_use_case_policy.tools | text[], always empty | No tool can be granted in this schema. |
+| ai_advisory_request.policy_version_id | nullable uuid; FK (tenant_id, policy_version_id); CHECK NOT NULL NOT VALID | Policy version that allowed the reservation; NULL only on rows reserved before 0041. |
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- FR-AI-001 explicit AI enablement and policy. Additive: two insert-only, tenant-fenced policy
+-- registers, a nullable policy pin on the insert-only advisory reservation, the singleton index of
+-- the 0002 registry kind AIConfiguration (no projection; no type CHECK change) and the generated
+-- access profile that adds ai.policy.manage to TENANT_ADMIN.
+
+-- One AIConfiguration object per tenant; each policy version is its next immutable revision.
+CREATE UNIQUE INDEX ai_configuration_one_per_tenant ON impact.object_registry(tenant_id)
+ WHERE object_type='AIConfiguration';
+
+CREATE TABLE impact.ai_policy_version(
+ tenant_id uuid NOT NULL,
+ policy_version_id uuid NOT NULL,
+ object_id uuid NOT NULL,
+ revision_kind text GENERATED ALWAYS AS ('AIConfiguration') STORED,
+ version_no integer NOT NULL CHECK(version_no>=1),
+ created_by uuid NOT NULL,
+ created_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,policy_version_id),
+ UNIQUE(tenant_id,version_no),
+ FOREIGN KEY(tenant_id,object_id,policy_version_id)
+   REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,policy_version_id,revision_kind)
+   REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,created_by) REFERENCES impact.tenant_principal(tenant_id,principal_id)
+);
+-- Closed enums. Reserved use cases may be recorded only as disabled, no tool can be granted and
+-- the destination list holds only the reviewed provider-and-region labels; widening any of these
+-- is a later, reviewed migration.
+CREATE TABLE impact.ai_use_case_policy(
+ tenant_id uuid NOT NULL,
+ policy_version_id uuid NOT NULL,
+ use_case varchar(32) NOT NULL CHECK(use_case IN ('ADVISORY_DRAFT','EXTRACTION','REPORT_DRAFT','CHAT')),
+ enabled boolean NOT NULL,
+ data_classes text[] NOT NULL
+   CHECK(data_classes <@ ARRAY['PUBLIC','INTERNAL','CONFIDENTIAL','RESTRICTED']::text[]
+     AND cardinality(data_classes)<=4),
+ destinations text[] NOT NULL
+   CHECK(destinations <@ ARRAY['openai-us']::text[] AND cardinality(destinations)<=10),
+ purposes text[] NOT NULL
+   CHECK(cardinality(purposes)<=10 AND array_position(purposes,NULL) IS NULL
+     AND array_position(purposes,'') IS NULL AND char_length(array_to_string(purposes,''))<=2000),
+ languages text[] NOT NULL
+   CHECK(cardinality(languages)<=20 AND array_position(languages,NULL) IS NULL
+     AND array_to_string(languages,',') ~ '^([A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}(,[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3})*)?$'),
+ review_mode varchar(32) NOT NULL CHECK(review_mode IN ('HUMAN_REVIEW')),
+ budget_units integer NOT NULL CHECK(budget_units BETWEEN 0 AND 1000000),
+ tools text[] NOT NULL DEFAULT '{}' CHECK(cardinality(tools)=0),
+ PRIMARY KEY(tenant_id,policy_version_id,use_case),
+ FOREIGN KEY(tenant_id,policy_version_id) REFERENCES impact.ai_policy_version(tenant_id,policy_version_id),
+ CONSTRAINT ai_use_case_reserved CHECK(NOT enabled OR use_case='ADVISORY_DRAFT'),
+ CONSTRAINT ai_use_case_complete CHECK(NOT enabled OR (cardinality(data_classes)>0
+   AND cardinality(destinations)>0 AND cardinality(purposes)>0 AND cardinality(languages)>0))
+);
+CREATE FUNCTION impact.guard_ai_policy_insert_only() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+ BEGIN RAISE EXCEPTION 'AI policy versions are insert-only' USING ERRCODE='42501'; END $$;
+REVOKE ALL ON FUNCTION impact.guard_ai_policy_insert_only() FROM PUBLIC;
+CREATE TRIGGER ai_policy_version_immutable BEFORE UPDATE OR DELETE ON impact.ai_policy_version
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_policy_insert_only();
+CREATE TRIGGER ai_use_case_policy_immutable BEFORE UPDATE OR DELETE ON impact.ai_use_case_policy
+ FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_policy_insert_only();
+ALTER TABLE impact.ai_policy_version ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_policy_version FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_policy_version
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_use_case_policy ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_use_case_policy FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_use_case_policy
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_policy_version,impact.ai_use_case_policy TO impact_app;
+
+-- Every new reservation records the policy version that allowed it. Rows reserved before this
+-- migration keep NULL (the table is insert-only); NOT VALID applies the CHECK to new rows only.
+ALTER TABLE impact.ai_advisory_request ADD COLUMN policy_version_id uuid;
+ALTER TABLE impact.ai_advisory_request ADD CONSTRAINT ai_advisory_request_policy_version
+ FOREIGN KEY(tenant_id,policy_version_id) REFERENCES impact.ai_policy_version(tenant_id,policy_version_id);
+ALTER TABLE impact.ai_advisory_request ADD CONSTRAINT ai_advisory_request_policy_required
+ CHECK(policy_version_id IS NOT NULL) NOT VALID;
+
+-- The generated onboarding profile with ai.policy.manage for TENANT_ADMIN. Existing tenant ceilings
+-- are unchanged; the reviewed access-upgrade path (0036) is the only way to widen them.
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ VALUES('14997060d0b7d8a95c820674a5b1ad38c029eeed5d113e674a6ca04ec28ce133',$profile_0041${"purpose_bound":["audit.export","privacy-cases.draft.create","privacy-cases.draft.edit","privacy-cases.read","privacy.approve","privacy.execute","privacy.export"],"roles":{"ANALYST":["ai.enablement.read","calculated-results.read","dashboards.read","decisions.read","evidence.download","evidence.read","framework.export","frameworks.read","imports.read","indicator-definitions.read","indicator-instances.read","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"AUDIT_READER":["audit-events.read","notifications.read","uploads.read"],"AUTHOR":["ai.enablement.read","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","disclosure.request","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.draft.create","observations.draft.edit","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","report.submit","reporting-calendars.read","reports.draft.create","reports.draft.edit","reports.read","restatement-requests.read","snapshots.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"DATA_STEWARD":["ai.enablement.read","assignments.read","calculated-results.read","dashboards.read","decisions.read","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","forms.read","frameworks.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","notifications.read","observations.draft.create","observations.draft.edit","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","submissions.read","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflows.read"],"ENUMERATOR":["assignments.read","collection-rounds.read","forms.read","notifications.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","upload.create","upload.write","uploads.read"],"EXTERNAL":["calculated-results.read","dashboards.read","decisions.read","evidence.read","frameworks.read","indicator-definitions.read","indicator-instances.read","invitation.accept","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"MEL_ADMIN":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","disclosures.read","evidence.read","form.publish","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.export","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.activate","indicator.calculate","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","report.publish","report.withdraw","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"PRIVACY":["disclosure.request","disclosures.read","notifications.read","publication.download","report.withdraw","reports.read","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","uploads.read"],"PROGRAMME_MANAGER":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignment.reassign","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","evidence.read","form.submit","forms.read","framework.export","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","indicator.activate","indicator.calculate","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"REVIEWER":["ai.enablement.read","assignments.read","calculated-results.read","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","evidence.download","evidence.read","forms.read","frameworks.read","geographies.read","imports.read","indicator-definitions.read","indicator-instances.read","lineage-manifests.read","measurement-changes.read","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflow.approve","workflow.reject","workflow.return","workflows.read"],"TENANT_ADMIN":["access-denials.read","access-requests.read","access-scopes.create","access-scopes.read","ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","ai.policy.manage","connections.read","grant.approve","grant.request","grant.revoke","grants.read","groups.approve","groups.manage","groups.read","groups.request","member-invitations.read","member.invite","membership.reactivate","membership.renew.approve","membership.renew.request","membership.revoke","membership.suspend","memberships.read","notifications.read","organisation-units.manage","organisation-units.read","ownership.transfer","reference-data.manage","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","role-templates.read","roles.manage","uploads.read"]},"version":"initial-access-v2"}$profile_0041$::jsonb,'0041_ai_policy.sql');
+COMMIT;
+```
+
+## 0042_ai_ranking_weights.sql
+
+Source: infrastructure/migrations/0042_ai_ranking_weights.sql. SHA-256: `67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636`. Local build 0.38.0 candidate on branch `sprint-1/us-mp-03` (US-MP-03), not merged or deployed. Additive; migrations 0001–0041 are byte-identical.
+
+The organisation's opportunity-ranking weights are the registry kind `AIRankingWeights`: one object per tenant (partial unique index `ai_ranking_weights_one_per_tenant` on `object_registry(tenant_id)`), lifecycle state `Active`, classification `INTERNAL`; each saved set of weights is its next revision. No projection table exists: the weights are read from the head revision's payload, which the API validates on every read and refuses to use (503 `AI_RANKING_WEIGHTS_UNREADABLE`) unless it is exactly the closed object below. Row security, tenant fence and grants are those of `object_registry` and `object_revision` (unchanged).
+
+The migration also inserts the generated onboarding access profile `8664a1b707cb7d7b00ccd4d013bb55c54d161306cd12868d2a89686118324d2a` into `platform_access_profile` (`source_migration` `0042_ai_ranking_weights.sql`): the 0041 profile plus a FINANCE role bundle of exactly `ai.enablement.read`, `notifications.read` and `uploads.read` (no write capability; every other bundle and the purpose-bound list are unchanged). New tenants may choose FINANCE at initial access; existing tenants keep their ceilings and get the FINANCE role template only through the reviewed access upgrade (0036 path) to this registered profile.
+
+| Payload field | Type | Meaning |
+| --- | --- | --- |
+| impact | integer 0–100 | Weight of the editorial impact score (higher impact is better). |
+| effort | integer 0–100 | Weight of the editorial effort score (reverse-scored: less effort is better). |
+| cost | integer 0–100 | Weight of the editorial cost score (reverse-scored: lower cost is better). |
+| readiness | integer 0–100 | Weight of the readiness score computed from the brief's capacity gaps. |
+
+The four weights add up to exactly 100 (checked by the API before any write; JSON Schema cannot express the total). Until a tenant saves weights, the defaults 25/25/25/25 apply and no object exists. The editorial impact, effort and cost scores are code (`apps/api/impact_api/ai_opportunity_scores.py`, versioned by `SCORE_VERSION`), not database content.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- US-MP-03 rank opportunities with the organisation's weights. Additive: the registry kind
+-- AIRankingWeights (each saved set of weights is the next immutable revision of the tenant's single
+-- object, using the existing forced-RLS registry, revisions, audit, outbox and receipts) and the
+-- singleton index, and the generated onboarding access profile that adds the read-only FINANCE bundle
+-- (the Operations Head persona: ai.enablement.read, notifications.read, uploads.read). No projection
+-- table, no new grant, no role or policy change.
+
+-- Extend the current check, preserving kinds introduced by every prior migration (as 0034, 0035, 0038).
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIRankingWeights'')');
+END $$;
+
+-- One AIRankingWeights object per tenant; every change of weights is its next revision.
+CREATE UNIQUE INDEX ai_ranking_weights_one_per_tenant ON impact.object_registry(tenant_id)
+ WHERE object_type='AIRankingWeights';
+
+-- The generated onboarding profile with the FINANCE bundle (owner decision of 9 October 2026, US-MP-03
+-- review). Existing tenant ceilings are unchanged; the reviewed access-upgrade path (0036) is the only way
+-- for an existing tenant to obtain the FINANCE role template.
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ VALUES('8664a1b707cb7d7b00ccd4d013bb55c54d161306cd12868d2a89686118324d2a',$profile_0042${"purpose_bound":["audit.export","privacy-cases.draft.create","privacy-cases.draft.edit","privacy-cases.read","privacy.approve","privacy.execute","privacy.export"],"roles":{"ANALYST":["ai.enablement.read","calculated-results.read","dashboards.read","decisions.read","evidence.download","evidence.read","framework.export","frameworks.read","imports.read","indicator-definitions.read","indicator-instances.read","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"AUDIT_READER":["audit-events.read","notifications.read","uploads.read"],"AUTHOR":["ai.enablement.read","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","disclosure.request","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.draft.create","observations.draft.edit","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","report.submit","reporting-calendars.read","reports.draft.create","reports.draft.edit","reports.read","restatement-requests.read","snapshots.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"DATA_STEWARD":["ai.enablement.read","assignments.read","calculated-results.read","dashboards.read","decisions.read","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","forms.read","frameworks.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","notifications.read","observations.draft.create","observations.draft.edit","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","submissions.read","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflows.read"],"ENUMERATOR":["assignments.read","collection-rounds.read","forms.read","notifications.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","upload.create","upload.write","uploads.read"],"EXTERNAL":["calculated-results.read","dashboards.read","decisions.read","evidence.read","frameworks.read","indicator-definitions.read","indicator-instances.read","invitation.accept","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"FINANCE":["ai.enablement.read","notifications.read","uploads.read"],"MEL_ADMIN":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","disclosures.read","evidence.read","form.publish","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.export","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.activate","indicator.calculate","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","report.publish","report.withdraw","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"PRIVACY":["disclosure.request","disclosures.read","notifications.read","publication.download","report.withdraw","reports.read","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","uploads.read"],"PROGRAMME_MANAGER":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignment.reassign","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","evidence.read","form.submit","forms.read","framework.export","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","indicator.activate","indicator.calculate","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"REVIEWER":["ai.enablement.read","assignments.read","calculated-results.read","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","evidence.download","evidence.read","forms.read","frameworks.read","geographies.read","imports.read","indicator-definitions.read","indicator-instances.read","lineage-manifests.read","measurement-changes.read","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflow.approve","workflow.reject","workflow.return","workflows.read"],"TENANT_ADMIN":["access-denials.read","access-requests.read","access-scopes.create","access-scopes.read","ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","ai.policy.manage","connections.read","grant.approve","grant.request","grant.revoke","grants.read","groups.approve","groups.manage","groups.read","groups.request","member-invitations.read","member.invite","membership.reactivate","membership.renew.approve","membership.renew.request","membership.revoke","membership.suspend","memberships.read","notifications.read","organisation-units.manage","organisation-units.read","ownership.transfer","reference-data.manage","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","role-templates.read","roles.manage","uploads.read"]},"version":"initial-access-v2"}$profile_0042$::jsonb,'0042_ai_ranking_weights.sql');
+COMMIT;
+```
+
+## 0043_ai_guidance_v2.sql
+
+Source: infrastructure/migrations/0043_ai_guidance_v2.sql. SHA-256: `b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095`. Local build 0.39.0 candidate on branch `sprint-1/us-dc-04` (US-DC-04), not merged or deployed. Additive in effect: it widens two CHECKs; migrations 0001–0042 are byte-identical.
+
+Each constraint is dropped and re-created under the name PostgreSQL gave the original column check, which validates every existing row.
+
+| Table.column | Constraint | Allowed values | Meaning |
+| --- | --- | --- | --- |
+| ai_content_snapshot.schema_version (0037) | `ai_content_snapshot_schema_version_check` | `nonprofit-ai-guidance-v1`, `nonprofit-ai-guidance-v2` | The archive edition of `payload`. v1: guidance captured up to build 0.38.0 (`ai_content_schema_v1.json`). v2: captured from build 0.39.0 (`ai_content_schema_v2.json`); identical to v1 except that every listing of `payload.solutions.solutions[]` carries a required `commercial_disclosure` and its `category` is one of the published categories. |
+| ai_plan_export_issuance.package_schema_version (0040) | `ai_plan_export_issuance_package_schema_version_check` | `nonprofit-ai-plan-export-v1`, `nonprofit-ai-plan-export-v2` | The package edition of the retained copy. v1: guidance archived under v1 or no archive, exactly the document shape published before 0.39.0. v2: guidance archived under v2 (with disclosures). The server derives it from `guidance_schema_version`; existing issuances keep their label and bytes. |
+
+`commercial_disclosure` inside a v2 payload (JSON, not a column): `status` `NONE_KNOWN` or `DISCLOSED`; `relationship_types` from the closed list `referral_fee`, `revenue_share`, `reseller`, `sponsorship`, `ownership` (empty for `NONE_KNOWN`, at least one and no repeats for `DISCLOSED`); `statement` (1–1,000 characters, not blank); `declared_on` (calendar date the disclosure was prepared); `editorial_confirmation` `PENDING` (a draft prepared for Imprana editorial review) or `CONFIRMED`. The API reads a snapshot only with the reader of the edition named by both the row and the hashed payload, and verifies `payload_sha256`; a mismatch answers 503 `AI_GUIDANCE_UNREADABLE`. Saved plan revisions keep the snapshot bound at save time (`ai_plan_content_binding`, unchanged), so a v2 revision shows the disclosure that was current when it was saved, and a v1 revision shows none (it was saved before disclosures existed). No row is backfilled or relabelled.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- US-DC-04 disclose commercial relationships on every listing. Archived guidance gains edition
+-- nonprofit-ai-guidance-v2 (each tool listing carries its commercial disclosure). Saved revisions
+-- captured under v1 keep their rows and remain readable by the retained v1 reader, so the check now
+-- admits exactly both editions. It keeps the name PostgreSQL gave 0037's column check.
+ALTER TABLE impact.ai_content_snapshot DROP CONSTRAINT ai_content_snapshot_schema_version_check;
+ALTER TABLE impact.ai_content_snapshot ADD CONSTRAINT ai_content_snapshot_schema_version_check
+ CHECK(schema_version IN ('nonprofit-ai-guidance-v1','nonprofit-ai-guidance-v2'));
+-- An internal plan copy whose archived guidance is v2 is issued as package nonprofit-ai-plan-export-v2;
+-- copies of v1 or unarchived guidance stay nonprofit-ai-plan-export-v1 with the published v1 shape.
+-- Existing issuances keep their label and bytes. Same name as 0040's column check.
+ALTER TABLE impact.ai_plan_export_issuance DROP CONSTRAINT ai_plan_export_issuance_package_schema_version_check;
+ALTER TABLE impact.ai_plan_export_issuance ADD CONSTRAINT ai_plan_export_issuance_package_schema_version_check
+ CHECK(package_schema_version IN ('nonprofit-ai-plan-export-v1','nonprofit-ai-plan-export-v2'));
+-- No table, column, grant, role, policy, trigger or function change; both tables stay insert-only.
+COMMIT;
 ```

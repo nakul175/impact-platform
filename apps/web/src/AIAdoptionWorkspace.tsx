@@ -14,7 +14,12 @@ import { AIImpactEvidence } from "./AIImpactEvidence";
 import { AIHumanAdvice } from "./AIHumanAdvice";
 import { AIPlanPortability } from "./AIPlanPortability";
 import { AILearningLesson } from "./AILearningLesson";
-import { AIToolComparison, AIToolSources } from "./AIToolComparison";
+import {
+  AIDisclosureLabel,
+  AIToolComparison,
+  AIToolSources,
+  type PublicToolSolution,
+} from "./AIToolComparison";
 import { AIProcurementBriefFields } from "./AIProcurementBrief";
 import { AIProcurementPreview } from "./AIProcurementPreview";
 import { AIPlanReviewChecklist } from "./AIPlanReviewChecklist";
@@ -42,21 +47,7 @@ type ContentCompatibility = {
 };
 const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-type Solution = {
-  id: string;
-  name: string;
-  provider: string;
-  category: string;
-  use_case_ids: string[];
-  description: string;
-  deployment: string;
-  commercial_model: string;
-  nonprofit_offer: string;
-  api_available: string;
-  source_urls: { label: string; url: string }[];
-  verification_notes: string[];
-  data_review_questions: string[];
-};
+type Solution = PublicToolSolution;
 type Solutions = {
   content_version: string;
   checked_on: string;
@@ -1179,6 +1170,10 @@ export function AIAdoptionWorkspace({
                       </span>
                     </div>
                     <p className="muted">{solution.provider}</p>
+                    <AIDisclosureLabel
+                      name={solution.name}
+                      disclosure={solution.commercial_disclosure}
+                    />
                     <p>{solution.description}</p>
                     <button
                       type="button"

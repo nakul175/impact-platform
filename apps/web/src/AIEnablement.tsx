@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
+import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
+import { AIOpportunityRanking } from "./AIRanking";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -127,8 +129,38 @@ export function AIEnablementPanel({
   const busyRef = useRef(false);
   const sendingAbort = useRef<AbortController | null>(null);
   const [consent, setConsent] = useState(false);
+  // FR-AI-001: the organisation's AI policy in force, shown before the request button. A request
+  // names the version it was made against; without a readable policy no request is sent.
+  const [policyState, setPolicyState] = useState<{
+    base: string;
+    data: AIPolicyView;
+  } | null>(null);
+  const policy = policyState?.base === base ? policyState.data : null;
+  const [policyError, setPolicyError] = useState("");
+  const policyGeneration = useRef(0);
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
+  const canManagePolicy = capabilities.includes("ai.policy.manage");
+  // US-MP-03: the ranking weights are changed by holders of ai.enablement.manage.
+  const canManageWeights = capabilities.includes("ai.enablement.manage");
+  function loadPolicy(signal?: AbortSignal) {
+    const current = ++policyGeneration.current;
+    setPolicyError("");
+    return Promise.all([
+      request(base + "ai-enablement/policy", { signal }),
+      request(base + "ai-enablement/catalog", { signal }),
+    ])
+      .then(([policyResult, catalogResult]) => {
+        if (current !== policyGeneration.current || signal?.aborted) return;
+        pendingAdvisory.current = null;
+        setPolicyState({ base, data: policyResult });
+        setCatalogState({ base, data: catalogResult });
+      })
+      .catch((e) => {
+        if (current === policyGeneration.current && !signal?.aborted)
+          setPolicyError(explain(e));
+      });
+  }
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
@@ -144,7 +176,10 @@ export function AIEnablementPanel({
     pendingAdvisory.current = null;
     setConsent(false);
     setLoading(canRead);
-    if (canRead)
+    setPolicyState(null);
+    setPolicyError("");
+    policyGeneration.current += 1;
+    if (canRead) {
       request(base + "ai-enablement/catalog", { signal: controller.signal })
         .then((result) => {
           if (active) setCatalogState({ base, data: result });
@@ -155,9 +190,21 @@ export function AIEnablementPanel({
         .finally(() => {
           if (active) setLoading(false);
         });
+      const policyLoad = policyGeneration.current;
+      request(base + "ai-enablement/policy", { signal: controller.signal })
+        .then((result) => {
+          if (active && policyLoad === policyGeneration.current)
+            setPolicyState({ base, data: result });
+        })
+        .catch((e) => {
+          if (active && policyLoad === policyGeneration.current)
+            setPolicyError(explain(e));
+        });
+    }
     return () => {
       active = false;
       generation.current += 1;
+      policyGeneration.current += 1;
       controller.abort();
       sendingAbort.current?.abort();
     };
@@ -190,7 +237,7 @@ export function AIEnablementPanel({
     if (busyRef.current || !canRead || !catalog) return;
     if (
       kind === "advisory" &&
-      (!canAdvise || !catalog?.advisory_available || !consent)
+      (!canAdvise || !catalog?.advisory_available || !consent || !policy)
     )
       return;
     const currentGeneration = generation.current;
@@ -202,6 +249,7 @@ export function AIEnablementPanel({
         operation_id: crypto.randomUUID(),
         profile,
         consent: true,
+        policy_version: policy!.policy_version,
       });
     }
     setError("");
@@ -226,8 +274,19 @@ export function AIEnablementPanel({
       if (
         currentGeneration === generation.current &&
         !controller.signal.aborted
-      )
+      ) {
         setError(explain(e));
+        // The policy changed since this page loaded: show the version now in force. The next
+        // request is a new command made against that version.
+        if (
+          kind === "advisory" &&
+          (e as { reason?: string }).reason === "AI_POLICY_CHANGED"
+        ) {
+          pendingAdvisory.current = null;
+          setConsent(false);
+          void loadPolicy();
+        }
+      }
     } finally {
       if (currentGeneration === generation.current) {
         busyRef.current = false;
@@ -293,6 +352,19 @@ export function AIEnablementPanel({
                 for authorised colleagues in your organisation. Generated
                 advisory drafts are stored encrypted for safe retries.
               </p>
+              <AIPolicyInForce
+                base={base}
+                policy={policy}
+                loadError={policyError}
+                canManage={canManagePolicy}
+                request={request}
+                explain={explain}
+                Dialog={Dialog}
+                onChanged={() => {
+                  setConsent(false);
+                  void loadPolicy();
+                }}
+              />
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
@@ -412,7 +484,9 @@ export function AIEnablementPanel({
                       <button
                         className="secondary"
                         type="button"
-                        disabled={!catalog.advisory_available || !consent}
+                        disabled={
+                          !catalog.advisory_available || !consent || !policy
+                        }
                         onClick={(e) => {
                           const form = e.currentTarget.form;
                           if (form?.reportValidity()) {
@@ -427,7 +501,15 @@ export function AIEnablementPanel({
                   </div>
                 </fieldset>
               </form>
-              {canAdvise && !catalog.advisory_available ? (
+              {canAdvise &&
+              !catalog.advisory_available &&
+              policy?.server_enabled ? (
+                <p className="muted">
+                  Your organisation&apos;s AI policy does not allow AI advisory
+                  drafts. Readiness assessment and learning guidance remain
+                  available.
+                </p>
+              ) : canAdvise && !catalog.advisory_available ? (
                 <p className="muted">
                   AI advisory is not configured for this workspace. Readiness
                   assessment and learning guidance remain available.
@@ -488,6 +570,19 @@ export function AIEnablementPanel({
                 <Items items={assessment.limitations} />
               </section>
             )}
+            <AIOpportunityRanking
+              key={
+                "ranking:" + base + ":" + sessionIdentity + ":" + principalId
+              }
+              base={base}
+              profile={profile}
+              titles={Object.fromEntries(
+                catalog.use_cases.map((item) => [item.id, item.title]),
+              )}
+              canManage={canManageWeights}
+              request={request}
+              explain={explain}
+            />
             {advisory && (
               <section aria-labelledby="ai-advisory">
                 <h3 id="ai-advisory">AI advisory draft</h3>

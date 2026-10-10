@@ -10,6 +10,7 @@
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",
+      "ai.policy.manage",
       "connections.read",
       "grant.approve",
       "grant.request",
@@ -439,6 +440,11 @@
       "uploads.read",
       "work-items.read",
       "workflows.read"
+    ],
+    "FINANCE": [
+      "ai.enablement.read",
+      "notifications.read",
+      "uploads.read"
     ]
   },
   "purpose_bound": [

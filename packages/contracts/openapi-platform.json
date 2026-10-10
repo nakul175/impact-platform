@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.10.0"
+    "version": "1.11.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -2288,6 +2288,17 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "FINANCE": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
@@ -2483,6 +2494,17 @@
                                     "maxItems": 200
                                   },
                                   "AUDIT_READER": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "FINANCE": {
                                     "type": "array",
                                     "items": {
                                       "type": "string",
@@ -2817,6 +2839,17 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "FINANCE": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
@@ -2953,11 +2986,12 @@
                             "DATA_STEWARD",
                             "ENUMERATOR",
                             "PRIVACY",
-                            "AUDIT_READER"
+                            "AUDIT_READER",
+                            "FINANCE"
                           ]
                         },
                         "minItems": 1,
-                        "maxItems": 10,
+                        "maxItems": 11,
                         "uniqueItems": true
                       },
                       "expires_at": {
@@ -3183,6 +3217,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -3531,6 +3576,17 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "FINANCE": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
@@ -3870,6 +3926,17 @@
                               },
                               "uniqueItems": true,
                               "maxItems": 200
+                            },
+                            "FINANCE": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
                             }
                           },
                           "required": [
@@ -4200,6 +4267,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -10203,6 +10281,17 @@
                                         },
                                         "uniqueItems": true,
                                         "maxItems": 200
+                                      },
+                                      "FINANCE": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 64,
+                                          "pattern": "\\S"
+                                        },
+                                        "uniqueItems": true,
+                                        "maxItems": 200
                                       }
                                     },
                                     "required": [
@@ -10372,6 +10461,17 @@
                                     "maxItems": 200
                                   },
                                   "AUDIT_READER": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "FINANCE": {
                                     "type": "array",
                                     "items": {
                                       "type": "string",
@@ -10963,6 +11063,17 @@
                                         },
                                         "uniqueItems": true,
                                         "maxItems": 200
+                                      },
+                                      "FINANCE": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 64,
+                                          "pattern": "\\S"
+                                        },
+                                        "uniqueItems": true,
+                                        "maxItems": 200
                                       }
                                     },
                                     "required": [
@@ -11132,6 +11243,17 @@
                                     "maxItems": 200
                                   },
                                   "AUDIT_READER": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 64,
+                                      "pattern": "\\S"
+                                    },
+                                    "uniqueItems": true,
+                                    "maxItems": 200
+                                  },
+                                  "FINANCE": {
                                     "type": "array",
                                     "items": {
                                       "type": "string",
@@ -11476,6 +11598,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -11863,6 +11996,17 @@
                                       "maxItems": 200
                                     },
                                     "AUDIT_READER": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 64,
+                                        "pattern": "\\S"
+                                      },
+                                      "uniqueItems": true,
+                                      "maxItems": 200
+                                    },
+                                    "FINANCE": {
                                       "type": "array",
                                       "items": {
                                         "type": "string",
@@ -12405,6 +12549,17 @@
                                   },
                                   "uniqueItems": true,
                                   "maxItems": 200
+                                },
+                                "FINANCE": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 64,
+                                    "pattern": "\\S"
+                                  },
+                                  "uniqueItems": true,
+                                  "maxItems": 200
                                 }
                               },
                               "required": [
@@ -12574,6 +12729,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -13194,6 +13360,17 @@
                                   },
                                   "uniqueItems": true,
                                   "maxItems": 200
+                                },
+                                "FINANCE": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 64,
+                                    "pattern": "\\S"
+                                  },
+                                  "uniqueItems": true,
+                                  "maxItems": 200
                                 }
                               },
                               "required": [
@@ -13363,6 +13540,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -13968,6 +14156,17 @@
                                   },
                                   "uniqueItems": true,
                                   "maxItems": 200
+                                },
+                                "FINANCE": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 64,
+                                    "pattern": "\\S"
+                                  },
+                                  "uniqueItems": true,
+                                  "maxItems": 200
                                 }
                               },
                               "required": [
@@ -14137,6 +14336,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -14742,6 +14952,17 @@
                                   },
                                   "uniqueItems": true,
                                   "maxItems": 200
+                                },
+                                "FINANCE": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 64,
+                                    "pattern": "\\S"
+                                  },
+                                  "uniqueItems": true,
+                                  "maxItems": 200
                                 }
                               },
                               "required": [
@@ -14911,6 +15132,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",
@@ -15516,6 +15748,17 @@
                                   },
                                   "uniqueItems": true,
                                   "maxItems": 200
+                                },
+                                "FINANCE": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 64,
+                                    "pattern": "\\S"
+                                  },
+                                  "uniqueItems": true,
+                                  "maxItems": 200
                                 }
                               },
                               "required": [
@@ -15685,6 +15928,17 @@
                               "maxItems": 200
                             },
                             "AUDIT_READER": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 64,
+                                "pattern": "\\S"
+                              },
+                              "uniqueItems": true,
+                              "maxItems": 200
+                            },
+                            "FINANCE": {
                               "type": "array",
                               "items": {
                                 "type": "string",

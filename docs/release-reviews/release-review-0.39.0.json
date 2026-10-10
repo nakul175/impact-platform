@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "release": "0.39.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+  "prepared_on": "2026-10-09",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "14 critical threats are unresolved (TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34) and both chains are BLOCK (CH01 because TH21 retrieval and tools are blocked, CH02 because support sessions do not exist); no independent security assessment has been run (FR-SEC-010); every residual decision and impact review is an agent proposal that no person has confirmed. US-DC-04 adds TH36 (undisclosed commercial influence on tool listings, High, MITIGATE proposed, PARTIAL: the declarations themselves have no advisor review yet) and changes no other threat's decision, impact or verification status."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No evaluation of grounding, correctness, privacy, injection or budget against a live model exists. The commercial disclosures added in this build are editorial content; nothing in US-DC-04 calls a model."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH36",
+      "title": "Undisclosed commercial influence on tool listings",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.39-01",
+      "change_id": "US-DC-04",
+      "change": "US-DC-04 disclose commercial relationships on every listing: commercial_disclosure on each of the eight tool listings (all NONE_KNOWN, declared 2026-10-09), fail-closed catalogue validation and the closed AISolutionsCatalog contract; domain API 1.28.0",
+      "paths": [
+        "apps/api/impact_api/ai_solutions_catalog.py",
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "contracts",
+        "access-policy",
+        "ai-module"
+      ],
+      "threats": [
+        "TH36",
+        "TH02"
+      ],
+      "summary": "New threat TH36: a commercial relationship with a listed provider is hidden or misstated. Each listing now carries a disclosure from a closed list (NONE_KNOWN with no type; DISCLOSED with at least one of referral fee, revenue share, reseller, sponsorship, ownership); both carry a statement and a declaration date. solutions_catalog() validates every listing with plain rules and the published JSON schema before returning; a missing or invalid disclosure (including DISCLOSED without a type or a statement) raises, GET ai-enablement/solutions answers 503 AI_SOLUTIONS_CATALOG_INVALID and nothing is served (the API keeps running; other AI enablement reads are unaffected). The listing builder never adds a disclosure by default. No relationship is invented: the eight listings are NONE_KNOWN, worded as 'is known' rather than 'does not exist', and the editorial statement says the declaration awaits advisor review; that review is not built (C-DISCLOSURE-EDITORIAL-REVIEW, gap recorded). AISolutionsCatalog changes from an open object with five required keys to the closed schema of the archived v2 solutions component; GET solutions keeps ai.enablement.read and the same reader roles (TH02 unchanged). access-policy.json changes only its version field (1.27.0 -> 1.28.0): no operation, capability, role or assurance row changed. The web client shows the label on every card, comparison column and archived listing as a named note.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.39-02",
+      "change_id": "US-DC-04",
+      "change": "US-DC-04 archive edition nonprofit-ai-guidance-v2 with the v1 reader kept: migration 0043 widens the ai_content_snapshot edition check; guidance read and plan export contracts admit both editions",
+      "paths": [
+        "infrastructure/migrations/0043_ai_guidance_v2.sql",
+        "apps/api/impact_api/ai_content_archives.py",
+        "apps/api/impact_api/ai_content_schema_v2.json",
+        "apps/api/impact_api/ai_content_contracts.py",
+        "apps/api/impact_api/ai_plan_export_contracts.py"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "ai-module"
+      ],
+      "threats": [
+        "TH32",
+        "TH36",
+        "TH15",
+        "TH01"
+      ],
+      "summary": "Migration 0043 drops and re-creates ai_content_snapshot_schema_version_check (the name PostgreSQL gave 0037's column check) as schema_version IN ('nonprofit-ai-guidance-v1','nonprofit-ai-guidance-v2'); re-creating it validates existing rows. No table, column, grant, role, RLS policy, trigger or function changes; snapshots and bindings stay insert-only, tenant-keyed and fenced (TH01); 0001-0042 are byte-identical. New saves capture v2; v1 rows are never relabelled or backfilled and are read by the retained v1 reader (ai_content_schema_v1.json is byte-identical, pinned by SHA-256 in a unit test) (TH32). The reader now requires the row label and the hashed payload label to agree and validates with that edition's reader, so a mislabelled, tampered or disclosure-stripped v2 archive answers 503 AI_GUIDANCE_UNREADABLE (TH36: an archived disclosure cannot be altered silently). The guidance read contract and the export document's guidance member become one closed variant per edition plus the unavailable variant, each binding its label to its payload shapes. The export package stays nonprofit-ai-plan-export-v1 with its frozen plan projection; exports issued before 0.39.0 replay unchanged, and new exports of v2-archived plans carry the disclosures inside their guidance (TH15: export authority, mediation and replay are unchanged). Residual: a consumer that validates exports against the earlier published document schema would reject v2 guidance.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.39-03",
+      "change_id": "US-DC-04",
+      "change": "US-DC-04 independent review fixes: plan exports carrying v2 guidance are labelled nonprofit-ai-plan-export-v2 (owner decision) with migration 0043 also widening 0040's package check; disclosures reworded as drafts with editorial_confirmation PENDING; category closed; capture logs the refusal cause; the upgrade check populates and compares both checks exactly",
+      "paths": [
+        "infrastructure/migrations/0043_ai_guidance_v2.sql",
+        "apps/api/impact_api/ai_plan_exports.py",
+        "apps/api/impact_api/ai_plan_export_contracts.py",
+        "apps/api/impact_api/ai_solutions_catalog.py",
+        "apps/api/impact_api/ai_content_archives.py",
+        "apps/api/impact_api/ai_content_schema_v2.json",
+        "apps/web/src/AIPlanExportAdapter.ts",
+        "scripts/native_upgrade_check.py"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "ai-module"
+      ],
+      "threats": [
+        "TH15",
+        "TH32",
+        "TH36",
+        "TH03"
+      ],
+      "summary": "Supersedes the export residual of IR-0.39-02 (entries are append-only). The server derives the package label from the archived guidance edition, never from a request: v1 or no archive gives nonprofit-ai-plan-export-v1, whose AIPlanExportDocumentV1 is exactly the schema published at 0.38.0 (digest pinned; a v1-guidance copy renders byte-identical to 0.38.0's renderer); v2 gives nonprofit-ai-plan-export-v2 (new AIPlanExportDocumentV2, v2 guidance only). Issue and replay validate with the schema of the named label and refuse a label that does not match the guidance edition, even with matching metadata (TH03, TH15); authority, mediation, receipts and replay are otherwise unchanged. Migration 0043 also re-creates 0040's ai_plan_export_issuance_package_schema_version_check as IN (v1, v2) under the same name, validating existing rows; no other database change (TH32). The web adapter accepts each label only with its own guidance edition. Disclosures no longer claim an Imprana editorial declaration: each is a draft 'prepared for Imprana editorial review; not yet confirmed' with editorial_confirmation PENDING, shown as 'pending editorial confirmation' (TH36 gap unchanged: the truth of a declaration is unverified). category is closed. The unreleased v2 archive schema was regenerated for these two changes. Capture logs why a catalogue was refused. The native upgrade check inserts the v1 snapshot as soon as 0037 exists (stopping at 37 from an older baseline such as 33) and compares both re-created checks with the definitions the same server renders for exactly v1 and v2.",
+      "prepared_by": "Claude (agent), for Nakul Jain (owner)",
+      "prepared_on": "2026-10-09",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/RELEASE-0.39-ai-disclosure.md",
+    "docs/current/threat-register.json"
+  ],
+  "notes": [
+    "Agent-prepared review: no residual decision, chain decision or impact review has been confirmed by a person (confirmed_by is null everywhere), so this review cannot pass even when every critical threat is resolved.",
+    "US-DC-04 adds threat TH36 (High, AI category, FR-NPA-018) with the built control C-DISCLOSURE-FAIL-CLOSED and the target-design control C-DISCLOSURE-EDITORIAL-REVIEW (not built), and adds two edition-reader tests to TH32 as further evidence for C-VERSIONED-READERS; no other threat, control, impact, decision or verification status changed. Statuses rest on the latest recorded runs (docs/RELEASE-0.39-ai-disclosure.md and the earlier release notes it names). Hosted CI has not run on build 0.39.0."
+  ]
+}

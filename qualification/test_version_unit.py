@@ -70,3 +70,47 @@ def test_runtime_code_carries_no_version_literal():
     ]:
         text = (ROOT / script).read_text()
         assert '"' + version.BUILD + '"' not in text and "-v" + version.BUILD not in text, script
+
+
+def test_data_dictionary_ledgers_every_migration_file_with_its_checksum():
+    """The register the restore drill and the upgrade check read must name every migration file,
+    including names with digits (0043_ai_guidance_v2.sql), with its current SHA-256."""
+    import hashlib
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from native_upgrade_check import ledgered_checksums
+
+    files = {
+        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in (ROOT / "infrastructure/migrations").glob("*.sql")
+    }
+    assert ledgered_checksums() == files
+    assert len(files) == version.SCHEMA
+
+
+def test_upgrade_check_populates_an_archive_snapshot_from_any_baseline_before_0043():
+    """The v1 snapshot is inserted as soon as 0037 exists: at the baseline, or by stopping the upgrade
+    at 37 (the CI job upgrades from the deployed schema 33), so 0043 always runs on a populated table."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import native_upgrade_check as check
+
+    assert check.upgrade_plan(33, 43) == ([37, 43], 37)
+    assert check.upgrade_plan(21, 43) == ([37, 43], 37)
+    assert check.upgrade_plan(37, 43) == ([43], 37)
+    assert check.upgrade_plan(42, 43) == ([43], 42)
+    assert check.upgrade_plan(30, 32) == ([32], None)
+    expected = check.expected_check_table().as_string(None)
+    assert expected == (
+        'CREATE TEMP TABLE upgrade_expected_checks("schema_version" varchar(64) CONSTRAINT '
+        '"ai_content_snapshot_schema_version_check" CHECK("schema_version" IN (\'nonprofit-ai-guidance-v1\','
+        "'nonprofit-ai-guidance-v2')),\"package_schema_version\" varchar(64) CONSTRAINT "
+        '"ai_plan_export_issuance_package_schema_version_check" CHECK("package_schema_version" IN '
+        "('nonprofit-ai-plan-export-v1','nonprofit-ai-plan-export-v2')))"
+    )
+    migration = (ROOT / "infrastructure/migrations/0043_ai_guidance_v2.sql").read_text()
+    for name, (table, column, values) in check.EDITION_CHECKS.items():
+        assert f"ALTER TABLE {table} ADD CONSTRAINT {name}\n CHECK({column} IN (" in migration
+        assert "(" + ",".join("'" + value + "'" for value in values) + "))" in migration

@@ -1,4 +1,11 @@
-"""JSON-only saved-plan internal-copy contracts; frozen public projection v1."""
+"""JSON-only saved-plan internal-copy contracts; frozen public projection v1.
+
+Two package editions (US-DC-04, build 0.39.0): nonprofit-ai-plan-export-v1 carries guidance archived
+under nonprofit-ai-guidance-v1 (or no archive) and its document schema is exactly the one published
+before 0.39.0; nonprofit-ai-plan-export-v2 carries guidance archived under nonprofit-ai-guidance-v2
+(listings with commercial disclosures). The label is chosen from the guidance edition, never by a
+caller, and each document schema admits only its own guidance edition.
+"""
 
 from copy import deepcopy
 import json
@@ -7,7 +14,8 @@ from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 
 from impact_api.ai_adoption_contracts import MANAGERS
-from impact_api.ai_content_archives import CONTENT_SCHEMAS, SCHEMA_VERSION as GUIDANCE_VERSION
+from impact_api.ai_content_archives import EDITIONS as GUIDANCE_EDITIONS, SCHEMA_V1, SCHEMA_V2
+from impact_api.ai_content_contracts import guidance_variants
 from impact_api.measurement_contracts import UUID, closed
 
 VERSION = "1.25.0"
@@ -15,7 +23,11 @@ OPERATION = "issue_ai_plan_export"
 CAPABILITY = "ai.enablement.export"
 ROUTE = "ai-enablement/plans/{object_id}/revisions/{revision_id}/exports"
 IMPLEMENTED = [("post", ROUTE)]
-PACKAGE_VERSION = "nonprofit-ai-plan-export-v1"
+PACKAGE_V1 = "nonprofit-ai-plan-export-v1"
+PACKAGE_V2 = "nonprofit-ai-plan-export-v2"
+# The package edition that carries each archived guidance edition (no archive: v1, as before 0.39.0).
+PACKAGE_FOR_GUIDANCE = {None: PACKAGE_V1, SCHEMA_V1: PACKAGE_V1, SCHEMA_V2: PACKAGE_V2}
+PACKAGE_VERSIONS = (PACKAGE_V1, PACKAGE_V2)
 RENDERER_VERSION = "nonprofit-ai-plan-json-v1"
 MAX_COPY_BYTES = 1048576
 REPLAY_HOURS = 168
@@ -73,7 +85,7 @@ MANIFEST_SCHEMA = closed(
         "title": {"type": "string", "minLength": 1, "maxLength": 150},
         "saved_at": deepcopy(DATE),
         "generated_at": deepcopy(DATE),
-        "schema": {"const": PACKAGE_VERSION},
+        "schema": {"enum": list(PACKAGE_VERSIONS)},
         "renderer": {"const": RENDERER_VERSION},
         "filename": {
             "type": "string",
@@ -104,7 +116,8 @@ MANIFEST_SCHEMA = closed(
 )
 
 
-def guidance_schema():
+def guidance_schema_v1():
+    """The guidance member of package v1, byte for byte the shape published before build 0.39.0."""
     components = {}
     for name in ("catalog", "solutions", "practice"):
         components[name] = {
@@ -113,7 +126,7 @@ def guidance_schema():
                     {
                         "status": {"const": "AVAILABLE"},
                         "content_version": {"type": "string", "minLength": 1, "maxLength": 100},
-                        "payload": deepcopy(CONTENT_SCHEMAS[name]),
+                        "payload": deepcopy(GUIDANCE_EDITIONS[SCHEMA_V1][name]),
                     },
                     ["status", "content_version", "payload"],
                 ),
@@ -131,7 +144,7 @@ def guidance_schema():
         "object_id": deepcopy(UUID),
         "revision_id": deepcopy(UUID),
         "status": deepcopy(GUIDANCE_STATUS),
-        "snapshot_schema_version": {"enum": [GUIDANCE_VERSION, None]},
+        "snapshot_schema_version": {"enum": [SCHEMA_V1, None]},
         "captured_at": {"type": ["string", "null"], "format": "date-time"},
         "snapshot_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
         **components,
@@ -140,7 +153,16 @@ def guidance_schema():
     return closed(result, list(result))
 
 
-def document_schema():
+def guidance_schema_v2():
+    """The guidance member of package v2: an archive of edition v2 only (with its disclosures)."""
+    variants = guidance_variants(lambda version, name: deepcopy(GUIDANCE_EDITIONS[version][name]))
+    (variant,) = [
+        item for item in variants if item["properties"]["snapshot_schema_version"] == {"const": SCHEMA_V2}
+    ]
+    return variant
+
+
+def document_schema(package=PACKAGE_V1):
     public = {"$ref": "#/$defs/AIAdoptionPlanStoredData"}
     plan = closed(
         {
@@ -153,7 +175,7 @@ def document_schema():
         ["object_id", "revision_id", "saved_at", "schema_version", "data"],
     )
     fields = {
-        "schema_version": {"const": PACKAGE_VERSION},
+        "schema_version": {"const": package},
         "renderer_version": {"const": RENDERER_VERSION},
         "tenant_id": deepcopy(UUID),
         "issuance_id": deepcopy(UUID),
@@ -162,13 +184,33 @@ def document_schema():
         "record_status": {"const": "Draft"},
         "declared_components": {"const": ["PUBLIC_PLAN", "ARCHIVED_GUIDANCE"]},
         "plan": plan,
-        "guidance": guidance_schema(),
+        "guidance": guidance_schema_v1() if package == PACKAGE_V1 else guidance_schema_v2(),
         "disclaimer": {"const": DISCLAIMER},
     }
     return {**closed(fields, list(fields)), "$defs": deepcopy(PUBLIC_SCHEMA["$defs"])}
 
 
-DOCUMENT_SCHEMA = document_schema()
+def package_for(guidance):
+    """The package label for a guidance read result; an unknown archive edition has none (fail closed)."""
+    edition = guidance.get("snapshot_schema_version") if isinstance(guidance, dict) else None
+    if not (edition is None or isinstance(edition, str)):
+        return None
+    return PACKAGE_FOR_GUIDANCE.get(edition)
+
+
+DOCUMENT_SCHEMAS = {package: document_schema(package) for package in PACKAGE_VERSIONS}
+# Either edition, each binding its label to its own guidance shape (a document matches at most one).
+DOCUMENT_SCHEMA = {
+    "oneOf": [
+        {name: value for name, value in schema.items() if name != "$defs"}
+        for schema in DOCUMENT_SCHEMAS.values()
+    ],
+    "$defs": deepcopy(PUBLIC_SCHEMA["$defs"]),
+}
+DOCUMENT_VALIDATORS = {
+    package: Draft202012Validator(schema, format_checker=FormatChecker())
+    for package, schema in DOCUMENT_SCHEMAS.items()
+}
 REQUEST_VALIDATOR = Draft202012Validator(REQUEST_SCHEMA, format_checker=FormatChecker())
 PUBLIC_VALIDATOR = Draft202012Validator(PUBLIC_SCHEMA, format_checker=FormatChecker())
 DOCUMENT_VALIDATOR = Draft202012Validator(DOCUMENT_SCHEMA, format_checker=FormatChecker())
@@ -213,7 +255,8 @@ def augment(spec, policy):
     schemas["AIPlanExportRequest"] = deepcopy(REQUEST_SCHEMA)
     schemas["AIPlanExportReceipt"] = deepcopy(RECEIPT_SCHEMA)
     schemas["AIPlanExportManifest"] = deepcopy(MANIFEST_SCHEMA)
-    schemas["AIPlanExportDocumentV1"] = _openapi(DOCUMENT_SCHEMA)
+    schemas["AIPlanExportDocumentV1"] = _openapi(DOCUMENT_SCHEMAS[PACKAGE_V1])
+    schemas["AIPlanExportDocumentV2"] = _openapi(DOCUMENT_SCHEMAS[PACKAGE_V2])
     schemas["AIPlanExport"] = closed(
         {
             "manifest": {"$ref": "#/components/schemas/AIPlanExportManifest"},

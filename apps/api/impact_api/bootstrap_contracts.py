@@ -18,6 +18,8 @@ ROLE_NAMES = [
     "ENUMERATOR",
     "PRIVACY",
     "AUDIT_READER",
+    # US-MP-03 (build 0.38.0, profile registered by migration 0042): the Operations Head persona.
+    "FINANCE",
 ]
 CAPABILITY_LIST = {"type": "array", "items": text(64), "uniqueItems": True, "maxItems": 200}
 MANIFEST = obj(

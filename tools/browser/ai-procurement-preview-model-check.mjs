@@ -181,7 +181,7 @@ check(
     assert.equal(published.catalog.content_version, "nonprofit-2026-10-05.3");
     assert.equal(
       published.solutions.content_version,
-      "nonprofit-solutions-2026-10-05.1",
+      "nonprofit-solutions-2026-10-05.2",
     );
     assert.deepEqual(
       published.catalog.procurement_criteria.map((r) => r.id),

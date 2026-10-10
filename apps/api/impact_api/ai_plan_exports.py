@@ -20,17 +20,17 @@ from .clock import now
 from . import ai_content_archives
 from .ai_plan_export_contracts import (
     DISCLAIMER,
-    DOCUMENT_VALIDATOR,
+    DOCUMENT_VALIDATORS,
     MANIFEST_VALIDATOR,
     MAX_COPY_BYTES,
     OPERATION,
-    PACKAGE_VERSION,
     PUBLIC_SCHEMA,
     PUBLIC_VALIDATOR,
     RECEIPT_VALIDATOR,
     RENDERER_VERSION,
     REPLAY_HOURS,
     REQUEST_VALIDATOR,
+    package_for,
 )
 from .domain import DomainError
 from .store import EVENT_VALIDATOR, authorize, canonical, context, hash_data, load, write
@@ -129,9 +129,25 @@ def _guidance_consistent(guidance, plan_id, revision_id):
         unreadable()
 
 
+def valid_document(document):
+    """The document satisfies the schema of the package edition it names, and that edition is the
+    one its guidance requires (v1 for a v1 or missing archive, v2 for a v2 archive)."""
+    if not isinstance(document, dict):
+        return False
+    validator = DOCUMENT_VALIDATORS.get(document.get("schema_version"))
+    return bool(
+        validator
+        and validator.is_valid(document)
+        and package_for(document["guidance"]) == document["schema_version"]
+    )
+
+
 def render_document(tenant, issuance, generated, plan_id, revision_id, source, guidance):
+    package = package_for(guidance)
+    if package is None:
+        unreadable()
     document = {
-        "schema_version": PACKAGE_VERSION,
+        "schema_version": package,
         "renderer_version": RENDERER_VERSION,
         "tenant_id": tenant,
         "issuance_id": issuance,
@@ -149,7 +165,7 @@ def render_document(tenant, issuance, generated, plan_id, revision_id, source, g
         "guidance": guidance,
         "disclaimer": DISCLAIMER,
     }
-    if not DOCUMENT_VALIDATOR.is_valid(document):
+    if not valid_document(document):
         unreadable()
     _guidance_consistent(guidance, plan_id, revision_id)
     try:
@@ -179,7 +195,7 @@ def receipt(metadata):
 
 
 def original_response(metadata, body, at=None):
-    """Validate a retained v1 artifact and build its original manifest without rendering."""
+    """Validate a retained artifact (package v1 or v2) and build its original manifest without rendering."""
     if metadata["replay_until"] <= (at or now()):
         raise DomainError("IDEMPOTENCY_EXPIRED", 409)
     raw = bytes(body)
@@ -190,7 +206,7 @@ def original_response(metadata, body, at=None):
     try:
         content = raw.decode("utf-8", errors="strict")
         document = json.loads(content)
-        if not DOCUMENT_VALIDATOR.is_valid(document) or canonical(document) != raw:
+        if not valid_document(document) or canonical(document) != raw:
             unreadable()
     except (ValueError, TypeError, UnicodeError):
         unreadable()
@@ -375,7 +391,7 @@ class AIPlanExports:
             "request_sha256": fingerprint,
             "format": "JSON",
             "restriction": "INTERNAL_SELF",
-            "package_schema_version": PACKAGE_VERSION,
+            "package_schema_version": package_for(guidance),
             "renderer_version": RENDERER_VERSION,
             "guidance_status": guidance["status"],
             "guidance_snapshot_id": archived["snapshot_id"] if archived else None,

@@ -16,9 +16,9 @@ All four sit on one stacked branch, `sprint-1/us-dc-04` (it contains the earlier
 ## Evidence (local, synthetic data)
 
 - Every story: `make lint`, `make unit`, `tsc --noEmit`, documentation index, and `scripts/release_review.py --check` clean against that story's own base. The four stories were not checked as one change set before the push: hosted CI on PR #94 then failed the release review check, because the check searched only the 0.39.0 review for new entries. Fixed on 10 October (see `docs/RELEASE-0.37-threat-register.md`, "Correction after hosted CI"); the stacked change set now passes against `main` and against `sprint-0/foundation`, including a simulated test merge commit; story-specific PGlite suites pass; native PostgreSQL 16 focused runs, restart check, restore drill and populated upgrade (to 41, 42 and 43; also from baseline 33 for 43) pass; browser checks in packaged Chromium pass (ai-policy, ai-ranking, ai-disclosure, ai-enablement, ai-plan-export, ai-saved-review, ai-walkthrough, tola-ai-extension, a11y).
-- Full PGlite suite: 2,301 passed, 0 failed at ece6548; on the final head b11baee a rerun reached about 85 % with no failure before the 10-minute session limit.
+- Full PGlite suite: 2,301 passed, 0 failed at ece6548 (superseded by the run below).
 - Hosted CI (first run, 9 to 10 October, pushed by the owner's agent): PR #95 (Sprint 0) `checks` passed; PR #94 (Sprint 1) all four qualification jobs passed and `checks` failed at the release review step (the defect above), so its web type check step did not run there; locally `tsc --noEmit` passes.
-- Not run anywhere yet: the live Keycloak suite, the full native suite, the remaining ~19 browser groups.
+- Local runs on the fixed code (`ae6bbdc`, 10 October): full PGlite suite 2,319 passed, 0 failed, 97 skipped; full native PostgreSQL 16.15 suite 2,390 passed, 0 failed, 26 skipped, with API restart, restore drill and populated upgrade from schema 33 to 43 all PASS; all 28 browser groups (`make browser`) 302 checks passed, 0 failed. Not run locally: the live Keycloak suite and the container stack (both in the hosted qualification workflow, which re-runs on the push).
 
 ## Decisions taken during the sprint (owner defaults; change at review if needed)
 

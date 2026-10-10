@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "verified_at_utc": "2026-10-10 09:31:38 UTC",
+  "status": "blocked_issue_import_documents_verified",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "source_csv_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+  "import_plan_sha256": "37e8193c7a6f354faa4b60364120e4efd54af723867f3da6a931723f2b3590e2",
+  "manifest_verification": "manifest-verification.json",
+  "workspace": {
+    "id": "d1a47da0-006d-4757-b2b9-b46e92e2a961",
+    "name": "Aplyd Sandbox",
+    "url": "https://linear.app/aplyd-sandbox"
+  },
+  "team": {
+    "id": "525d5b8a-9fb9-496d-b98b-32b29915e80a",
+    "key": "APL"
+  },
+  "project": {
+    "id": "P-APL-2",
+    "uuid": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+    "url": "https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d"
+  },
+  "local_plan": {
+    "epics": 54,
+    "stories": 368,
+    "technical_tasks": 24,
+    "issues": 446,
+    "historical_split_records": 2
+  },
+  "external": {
+    "project_found": true,
+    "project_status": "Backlog",
+    "project_dates_unset": true,
+    "documents": [
+      {
+        "name": "README.md",
+        "id": "6586ed0a-2090-4180-92b3-5eec159688c1",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-planning-structure-2a261deb25ad",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "01-VISION.md",
+        "id": "bc33da1e-7fae-4f4e-81a6-9ff5076c43df",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-product-vision-4b7dec9426f2",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "02-STRATEGY.md",
+        "id": "3520d765-ed97-4901-ae89-7996b8d15bd9",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-product-strategy-e8966d3c4bf9",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "03-ROADMAP.md",
+        "id": "41cf9cd4-17ef-4ebb-8f59-5a26504b2d5e",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-outcome-roadmap-0ebbc1f64613",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "04-RELEASE-GOALS.md",
+        "id": "f16e5ce3-5544-4b29-a5f7-7066ea29fea0",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-release-goals-e4378e16f5e1",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "05-STORY-AND-TASK-STANDARD.md",
+        "id": "e76b87bb-1dae-4752-acbc-4f1ad7a779fd",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-story-and-task-standard-cda48d6d0517",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 2,
+        "relative_links": []
+      },
+      {
+        "name": "06-NEXT-SPRINT-REFINEMENT.md",
+        "id": "346b4fa1-3d8f-436c-83be-ad8951aaea1e",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-proposed-next-sprint-refinement-430351139033",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 4,
+        "relative_links": []
+      },
+      {
+        "name": "linear/README.md",
+        "id": "2bd0cf2a-20cf-4e58-be47-5394bcc2dac5",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-linear-integration-and-recovery-3216ee41f95f",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "07-LINEAR-IMPORT-STATUS.md",
+        "id": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-import-status-and-claude-handover-6d6b871e639e",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "08-BACKLOG-CATALOGUE.md",
+        "id": "f5b2a111-e190-4dc5-81aa-8a98ff9a7939",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-complete-backlog-catalogue-1bafcc6cdc27",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 0,
+        "relative_links": []
+      },
+      {
+        "name": "09-SPLIT-PARENT-HISTORY.md",
+        "id": "37cd9321-6f7d-4df8-973d-557a199de68b",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-retained-split-parent-history-705cbab9e83a",
+        "normalized_content_matches": true,
+        "code_blocks_exact": true,
+        "code_blocks": 2,
+        "relative_links": []
+      }
+    ],
+    "milestones": [
+      {
+        "canonical_id": "RG-FOUNDATION",
+        "id": "ceef6ef6-bd96-4543-8145-ab7eb78f4e30",
+        "name": "Foundation",
+        "description_matches": true,
+        "target_date_unset": true
+      },
+      {
+        "canonical_id": "RG-R1",
+        "id": "bd62b22d-8817-47b3-84ff-c41489959050",
+        "name": "R1 Pilot",
+        "description_matches": true,
+        "target_date_unset": true
+      },
+      {
+        "canonical_id": "RG-R2",
+        "id": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+        "name": "R2 Scale",
+        "description_matches": true,
+        "target_date_unset": true
+      },
+      {
+        "canonical_id": "RG-R3",
+        "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+        "name": "R3 Ecosystem",
+        "description_matches": true,
+        "target_date_unset": true
+      },
+      {
+        "canonical_id": "RG-LATER",
+        "id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+        "name": "Later",
+        "description_matches": true,
+        "target_date_unset": true
+      }
+    ],
+    "native_issue_count": 0,
+    "issue_list_has_next_page": false,
+    "issue_hierarchy_verified": false,
+    "original_story_criteria_on_native_issues_verified": false,
+    "estimates_on_native_issues_verified": false,
+    "task_dependencies_on_native_issues_verified": false,
+    "historical_split_records": {
+      "ids": [
+        "US-DX-01",
+        "FR-AI-016"
+      ],
+      "document_id": "37cd9321-6f7d-4df8-973d-557a199de68b",
+      "code_blocks_exact": true
+    }
+  },
+  "verification_method": {
+    "documents": "Read back all 11 saved documents. Compare full rendered Markdown after normalizing Linear's bullet markers, table separator lines, angle-bracket URL syntax, escaped punctuation and whitespace. Separately compare every fenced code block byte-for-byte; all eight match.",
+    "links": "All saved document links are absolute Linear or GitHub URLs; no relative Markdown links remain.",
+    "milestones": "Read project milestones; match all five IDs, goal descriptions and unset target dates.",
+    "issues": "List all project issues; zero returned and hasNextPage=false. No claim of completed issue import."
+  },
+  "blocker": {
+    "code": "LINEAR_FREE_ISSUE_LIMIT",
+    "http_status": 400,
+    "message": "You've exceeded the free issue limit for this workspace.",
+    "request_id": "a48491a96f6dbb10",
+    "created_issues": 0,
+    "required_owner_action": "Choose an existing paid workspace or upgrade the current workspace; new spending is not approved."
+  },
+  "required_owner_action": "Choose an existing paid workspace or upgrade the current workspace; new spending is not approved.",
+  "no_new_spending_approved": true,
+  "next_step": "Resolve workspace quota choice, reconcile project and checkpoint, import parent epics then stories then tasks and dependencies, then read back all 446 issues before claiming completion.",
+  "git_handover": {
+    "branch": "docs/imprana-linear-planning-2026-10-10",
+    "base_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+    "pull_request_created": false,
+    "merged": false,
+    "paid_ci_started": false,
+    "reason": "Non-main branch push does not trigger this repository's workflows; opening a PR with the Python planner requires financial permission."
+  }
+}

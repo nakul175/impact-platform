@@ -4,7 +4,8 @@
 
 This repository is becoming **Imprana Commons**: one platform that takes NGOs and impact organisations from a problem to a working, measured AI or tech solution, on top of the monitoring, evaluation and reporting core already built here as Impact Platform. The transition started in Sprint 0 (October 2026); until it completes, most documents, screens and code still say "Impact Platform".
 
-- **Backlog:** [docs/backlog/](docs/backlog/README.md): 366 user stories with Gherkin acceptance and rejection criteria, in five releases (Foundation, R1 Pilot, R2 Scale, R3 Ecosystem, Later).
+- **Backlog:** [docs/backlog/](docs/backlog/README.md): 368 active user stories and two retained Split parents, with Gherkin acceptance and rejection criteria, in five releases (Foundation, R1 Pilot, R2 Scale, R3 Ecosystem, Later).
+- **Product planning:** [docs/product/](docs/product/README.md): vision, strategy, roadmap, release goals, epics, stories, acceptance criteria and technical tasks, mapped to [Linear](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d).
 - **How we work:** [docs/agile/WORKING-AGREEMENT.md](docs/agile/WORKING-AGREEMENT.md): two-week sprints, Definition of Ready and Done, story cards.
 - **Licence:** still a placeholder (see [LICENSE](LICENSE)); a written licence to Athena Infonomics is story US-RT-01.
 

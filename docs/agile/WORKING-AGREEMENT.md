@@ -2,7 +2,7 @@
 
 Owner: Nakul Jain · Adopted 9 October 2026 (draft until the team confirms it at the first sprint planning) · Update trigger: any retrospective that changes how we work.
 
-We work fully agile. The backlog in [`docs/backlog/`](../backlog/README.md), imported as GitHub issues, is the only specification: there is no separate BRD/FSD to keep in step. Each story is detailed just before it is built, not months ahead.
+We work fully agile. [Product planning](../product/README.md) connects vision, strategy, roadmap and release goals to the backlog. The [Imprana Commons Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) is the intended working board after issue import; [`docs/backlog/`](../backlog/README.md) retains the source IDs and acceptance baseline. The current workspace issue limit blocks issue creation, so use the repository backlog and refinement records until [the import is verified](../product/07-LINEAR-IMPORT-STATUS.md). Existing business and engineering specifications retain their rules and historical scope. Each story is detailed just before it is built, not months ahead.
 
 ## Cadence
 
@@ -31,10 +31,11 @@ We work fully agile. The backlog in [`docs/backlog/`](../backlog/README.md), imp
 - [ ] User-facing text is in plain language; new screens pass the accessibility check.
 - [ ] The issue records what was built and the product owner has accepted it at the sprint review.
 
-## Story card (filled in at refinement, in the GitHub issue)
+## Story card (filled in at refinement, in the Linear issue)
 
 ```
 Story:            As a <persona>, I want <capability>, so that <benefit>.
+Traceability:     <original story ID, strategy objective, release goal, epic, Linear ID>
 Why / objective:  <business objective or BRD objective it serves>
 Functional notes: screens and flows, business rules, permissions by role, edge cases
 Data layer:       tables/columns, migration number, RLS policy, events, API endpoints
@@ -43,6 +44,7 @@ Acceptance:       Gherkin scenarios (from the backlog, refined)
 Rejection:        Gherkin "Scenario: Reject ..." blocks + one-line "Reject if ..."
 Dependencies:     other story IDs, connectors, partners
 Estimate:         points
+Technical tasks:  <child tasks, dependencies, verifiable outputs and evidence>
 ```
 
 ## Branches and reviews

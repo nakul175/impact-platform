@@ -1,5 +1,7 @@
 # Impact Platform documentation
 
+For Imprana Commons product direction and planning, start with [product planning](product/README.md): vision, strategy, roadmap, release goals and the [Linear integration](product/linear/README.md).
+
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](HANDOVER.md); `VERSION.json` is the source for the version numbers. Every build has a release note in this directory (`RELEASE-0.N*.md`; the latest is [RELEASE-0.36-procurement-preview.md](RELEASE-0.36-procurement-preview.md)).
 
 Start with the [current documentation index](current/DOCUMENTATION-INDEX.md); a newcomer should read the [engineering guide](current/ENGINEERING-GUIDE.md) first. Edition 1.1 is reconciled to application 0.12.0; builds 0.13.0 to 0.18.0 are recorded in [RELEASE-0.13.md](RELEASE-0.13.md), [RELEASE-0.14.md](RELEASE-0.14.md) (native PostgreSQL qualification), [RELEASE-0.15.md](RELEASE-0.15.md) (live identity provider), [RELEASE-0.16.md](RELEASE-0.16.md) (worker runtime, outbox dispatcher and email adapter: 405 PGlite and 437 native application checks, 16 + 16 live-provider checks, 143 reference, 93 browser and 2 live-provider browser checks; schema 18; platform API 1.4.0; ledger 76 PARTIAL, 231 PENDING, 0 accepted), and [RELEASE-0.18.md](RELEASE-0.18.md) (results framework and planning, built ahead of v0.17: 441 PGlite and 474 native application checks, 16 + 16 live-provider checks, 143 reference, 100 browser and 2 live-provider browser checks; schema 19; domain API 1.11.0; ledger 81 PARTIAL, 226 PENDING, 0 accepted) and the sequenced plan in [DELIVERY-PLAN.md](DELIVERY-PLAN.md); builds 0.19.0 to 0.36.0 have their own `RELEASE-0.N*.md` notes, listed in the [current documentation index](current/DOCUMENTATION-INDEX.md). Original editable documents and archives are retained in [history/v1.0](history/v1.0/).
@@ -226,6 +228,23 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### nonprofit-ai/v1.0/drafts/0.36/procurement-prototype
 
 - [Private procurement preview proposal](nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/INTEGRATION-PLAN.md)
+
+### product
+
+- [Imprana Commons vision](product/01-VISION.md)
+- [Imprana Commons strategy](product/02-STRATEGY.md)
+- [Imprana Commons outcome roadmap](product/03-ROADMAP.md)
+- [Imprana Commons release goals](product/04-RELEASE-GOALS.md)
+- [Story and technical task standard](product/05-STORY-AND-TASK-STANDARD.md)
+- [Next-sprint refinement: four proposed candidates](product/06-NEXT-SPRINT-REFINEMENT.md)
+- [Imprana Commons Linear import status and handover](product/07-LINEAR-IMPORT-STATUS.md)
+- [Imprana Commons backlog catalogue](product/08-BACKLOG-CATALOGUE.md)
+- [Imprana Commons retained split-parent history](product/09-SPLIT-PARENT-HISTORY.md)
+- [Imprana Commons product planning](product/README.md)
+
+### product/linear
+
+- [Imprana Commons Linear integration](product/linear/README.md)
 
 ### sprints
 

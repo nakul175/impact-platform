@@ -1,5 +1,7 @@
 # Handover — Impact Platform and nonprofit AI enablement
 
+**Product planning continuation — 10 October 2026:** Nakul authorised the vision → strategy → roadmap → release goals → epics → stories → criteria → technical tasks structure and Linear integration. Start at [docs/product/README.md](product/README.md), then [Linear import status](product/07-LINEAR-IMPORT-STATUS.md). Product documents and milestones are saved in Linear; 446 native issues remain blocked by its workspace quota. The source backlog and historical records are unchanged. This planning handover does not replace the engineering status evidence below.
+
 **Status — the one place this repository states it (verified 8 October 2026 against `VERSION.json`, the migration files and GitHub):**
 
 | Item | Value |

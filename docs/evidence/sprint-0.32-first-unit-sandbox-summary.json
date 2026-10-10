@@ -1,8 +1,0 @@
-{
-  "scope": "First invocation of unchanged make unit targets inside socket-restricted sandbox; execution environment failure only, all 17 failures/errors are loopback socket PermissionError.",
-  "passed": 925,
-  "failed": 15,
-  "errors": 2,
-  "skipped": 62,
-  "follow_up": "Repeat the same target list with authorized loopback socket access; no test assertions or product source changed."
-}

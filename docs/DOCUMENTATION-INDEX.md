@@ -88,6 +88,15 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)
 
+### agile
+
+- [Persona to role map](agile/PERSONA-ROLE-MAP.md)
+- [Imprana Commons working agreement](agile/WORKING-AGREEMENT.md)
+
+### backlog
+
+- [Imprana Commons backlog](backlog/README.md)
+
 ### current
 
 - [Accessibility statement — Impact Platform web client](current/ACCESSIBILITY-STATEMENT.md)
@@ -213,5 +222,9 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### nonprofit-ai/v1.0/drafts/0.36/procurement-prototype
 
 - [Private procurement preview proposal](nonprofit-ai/v1.0/drafts/0.36/procurement-prototype/INTEGRATION-PLAN.md)
+
+### sprints
+
+- [Sprint 1: governed AI and a trustworthy shortlist](sprints/SPRINT-01.md)
 
 <!-- END GENERATED INDEX -->

@@ -1,9 +1,0 @@
-{
-  "recorded_at": "2026-10-05T19:40:33.066880+00:00",
-  "status": "ENVIRONMENT_REFUSED_BEFORE_DATABASE_CREATION",
-  "scope": "First full native launch; default sandbox refused loopback TCP to the isolated synthetic PostgreSQL server",
-  "port": 55437,
-  "product_qualification": "NOT_RUN",
-  "credentials_printed": false,
-  "next_action": "Run the same owned synthetic qualification under permitted loopback access"
-}

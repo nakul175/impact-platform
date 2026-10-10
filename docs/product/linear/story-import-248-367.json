@@ -1,0 +1,971 @@
+{
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "range": {
+    "start": 248,
+    "end_exclusive": 368
+  },
+  "stories": {
+    "FR-MIG-001": {
+      "id": "APL-375",
+      "uuid": "3d8c92f0-9712-489a-9559-86a7e2957e08",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-375/fr-mig-001-source-discovery-and-mapping",
+      "title": "[FR-MIG-001] Source discovery and mapping",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-002": {
+      "id": "APL-377",
+      "uuid": "208ba9b9-f3dd-431b-9753-cbace3a83649",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-377/fr-mig-002-trial-migrations",
+      "title": "[FR-MIG-002] Trial migrations",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-003": {
+      "id": "APL-379",
+      "uuid": "f8e0fcf0-fb8a-4be1-849b-069317d1d5c6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-379/fr-mig-003-semantic-reconciliation",
+      "title": "[FR-MIG-003] Semantic reconciliation",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-004": {
+      "id": "APL-380",
+      "uuid": "cc453e3a-2a09-4036-b5a4-f688708f8016",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-380/fr-mig-004-historical-provenance",
+      "title": "[FR-MIG-004] Historical provenance",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-005": {
+      "id": "APL-382",
+      "uuid": "c41cc148-1470-4d12-bd94-b2bdf8f6a374",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-382/fr-mig-005-cutover-and-rollback",
+      "title": "[FR-MIG-005] Cutover and rollback",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-006": {
+      "id": "APL-394",
+      "uuid": "d9cb63ff-4f65-49c7-aa41-ded48b732157",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-394/fr-mig-006-user-enablement",
+      "title": "[FR-MIG-006] User enablement",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "FR-MIG-008": {
+      "id": "APL-397",
+      "uuid": "35cb2904-a343-4bea-81fc-c87afc869f31",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-397/fr-mig-008-closure-and-deletion-evidence",
+      "title": "[FR-MIG-008] Closure and deletion evidence",
+      "parent_id": "EPIC-MIGRATION-AND-EXIT",
+      "milestone_id": "RG-R2"
+    },
+    "VF-AIQ-003": {
+      "id": "APL-401",
+      "uuid": "0e47a417-f9c8-4919-b789-0aba7e405c09",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-401/vf-aiq-003-extraction-and-abstention",
+      "title": "[VF-AIQ-003] Extraction and abstention",
+      "parent_id": "EPIC-NFR-AI-QUALITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-AIQ-005": {
+      "id": "APL-404",
+      "uuid": "e55df490-f9ca-4f76-a45b-d43003427dd3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-404/vf-aiq-005-change-monitoring-and-rollback",
+      "title": "[VF-AIQ-005] Change monitoring and rollback",
+      "parent_id": "EPIC-NFR-AI-QUALITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-CAP-001": {
+      "id": "APL-407",
+      "uuid": "9025d13a-de2b-4b3f-851d-8f79154e093e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-407/vf-cap-001-supported-object-limits",
+      "title": "[VF-CAP-001] Supported object limits",
+      "parent_id": "EPIC-NFR-CAPACITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-CAP-002": {
+      "id": "APL-412",
+      "uuid": "a7dfff2d-a138-4f52-9f77-ccd2a14d1c3d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-412/vf-cap-002-scaling-and-workload-isolation",
+      "title": "[VF-CAP-002] Scaling and workload isolation",
+      "parent_id": "EPIC-NFR-CAPACITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-CMP-001": {
+      "id": "APL-414",
+      "uuid": "a32e3ae9-90da-40fb-8bf7-0b7b58b4d6ed",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-414/vf-cmp-001-browser-and-device-support",
+      "title": "[VF-CMP-001] Browser and device support",
+      "parent_id": "EPIC-NFR-COMPATIBILITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-L10-001": {
+      "id": "APL-417",
+      "uuid": "d6bee767-4056-4e64-b9a6-356129ef382a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-417/vf-l10-001-localisation-integrity",
+      "title": "[VF-L10-001] Localisation integrity",
+      "parent_id": "EPIC-NFR-LOCALISATION",
+      "milestone_id": "RG-R2"
+    },
+    "VF-MNT-001": {
+      "id": "APL-419",
+      "uuid": "796b6569-afaf-45e5-85ed-349c4a68f75d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-419/vf-mnt-001-maintainable-contracts",
+      "title": "[VF-MNT-001] Maintainable contracts",
+      "parent_id": "EPIC-NFR-MAINTAINABILITY",
+      "milestone_id": "RG-R2"
+    },
+    "VF-PER-002": {
+      "id": "APL-423",
+      "uuid": "4736942c-bda7-432e-becc-8ae0c0d0bccb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-423/vf-per-002-dashboard-response",
+      "title": "[VF-PER-002] Dashboard response",
+      "parent_id": "EPIC-NFR-PERFORMANCE",
+      "milestone_id": "RG-R2"
+    },
+    "VF-PER-003": {
+      "id": "APL-427",
+      "uuid": "c27a193d-88cc-4370-8b33-a228ae43cfc9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-427/vf-per-003-search-response",
+      "title": "[VF-PER-003] Search response",
+      "parent_id": "EPIC-NFR-PERFORMANCE",
+      "milestone_id": "RG-R2"
+    },
+    "VF-PER-004": {
+      "id": "APL-428",
+      "uuid": "54233f3c-2137-4f80-b283-714889105807",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-428/vf-per-004-import-and-recalculation-throughput",
+      "title": "[VF-PER-004] Import and recalculation throughput",
+      "parent_id": "EPIC-NFR-PERFORMANCE",
+      "milestone_id": "RG-R2"
+    },
+    "VF-PER-005": {
+      "id": "APL-430",
+      "uuid": "a7122ccf-51a1-4819-8fb6-c47368e2392e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-430/vf-per-005-export-and-report-generation",
+      "title": "[VF-PER-005] Export and report generation",
+      "parent_id": "EPIC-NFR-PERFORMANCE",
+      "milestone_id": "RG-R2"
+    },
+    "VF-PER-007": {
+      "id": "APL-432",
+      "uuid": "dc45e659-794c-4bbe-890d-827b22709a2a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-432/vf-per-007-ai-responsiveness",
+      "title": "[VF-PER-007] AI responsiveness",
+      "parent_id": "EPIC-NFR-PERFORMANCE",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-001": {
+      "id": "APL-433",
+      "uuid": "f4110985-1965-4dac-8e5a-50167ce34dfd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-433/fr-off-001-offline-task-packages",
+      "title": "[FR-OFF-001] Offline task packages",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-002": {
+      "id": "APL-436",
+      "uuid": "06a3c30b-e1b1-4870-875f-a662760ae7e1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-436/fr-off-002-durable-local-capture",
+      "title": "[FR-OFF-002] Durable local capture",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-003": {
+      "id": "APL-438",
+      "uuid": "910d8617-2fb0-4bc1-8249-45fbbfb11332",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-438/fr-off-003-idempotent-synchronisation",
+      "title": "[FR-OFF-003] Idempotent synchronisation",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-004": {
+      "id": "APL-440",
+      "uuid": "38db2ee2-0a3a-4b7f-8c21-ba85ed0dad41",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-440/fr-off-004-conflict-handling",
+      "title": "[FR-OFF-004] Conflict handling",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-005": {
+      "id": "APL-444",
+      "uuid": "de4cf148-021a-463e-ae43-61309f243354",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-444/fr-off-005-device-protection-and-expiry",
+      "title": "[FR-OFF-005] Device protection and expiry",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-006": {
+      "id": "APL-447",
+      "uuid": "e55ca74c-ab8e-4de0-b776-3655be186467",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-447/fr-off-006-shared-device-operation",
+      "title": "[FR-OFF-006] Shared device operation",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-007": {
+      "id": "APL-451",
+      "uuid": "d51f34a9-c5c3-42d7-9e16-9c845a9279b4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-451/fr-off-007-sync-and-quality-supervisor-view",
+      "title": "[FR-OFF-007] Sync and quality supervisor view",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OFF-008": {
+      "id": "APL-455",
+      "uuid": "69bebf0d-abf9-4975-802e-9eca730e4ef1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-455/fr-off-008-constrained-connectivity",
+      "title": "[FR-OFF-008] Constrained connectivity",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "VF-OFF-001": {
+      "id": "APL-458",
+      "uuid": "07a2b94b-4659-439c-802b-560a88e106f3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-458/vf-off-001-offline-authority-window",
+      "title": "[VF-OFF-001] Offline authority window",
+      "parent_id": "EPIC-OFFLINE-COLLECTION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-001": {
+      "id": "APL-461",
+      "uuid": "e0ce06a2-9a3e-4ca7-8c31-fd4cff31501c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-461/fr-par-001-optional-registries",
+      "title": "[FR-PAR-001] Optional registries",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-002": {
+      "id": "APL-464",
+      "uuid": "8e3fc520-b19b-4aba-9d81-eaf0e8e0da71",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-464/fr-par-002-purpose-limited-identity",
+      "title": "[FR-PAR-002] Purpose limited identity",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-003": {
+      "id": "APL-467",
+      "uuid": "4140a078-d16c-4720-9125-feb5fa2cb3c3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-467/fr-par-003-notice-consent-and-lawful-handling",
+      "title": "[FR-PAR-003] Notice consent and lawful handling",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-004": {
+      "id": "APL-470",
+      "uuid": "6a3e7e79-2bee-49be-bda3-73dec42524af",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-470/fr-par-004-service-and-participation-events",
+      "title": "[FR-PAR-004] Service and participation events",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-007": {
+      "id": "APL-472",
+      "uuid": "f35986f7-ce68-4c4b-9ebb-9161afbc7686",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-472/fr-par-007-safeguarding-and-vulnerable-people",
+      "title": "[FR-PAR-007] Safeguarding and vulnerable people",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PAR-008": {
+      "id": "APL-475",
+      "uuid": "6b7a7062-2242-4820-b969-f8b8b17989de",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-475/fr-par-008-participant-requests-and-corrections",
+      "title": "[FR-PAR-008] Participant requests and corrections",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R2"
+    },
+    "US-PT-01": {
+      "id": "APL-478",
+      "uuid": "b942e0d7-be7c-4013-9690-64005a4477b3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-478/us-pt-01-solution-partners-apply-to-be-listed",
+      "title": "[US-PT-01] Solution partners apply to be listed",
+      "parent_id": "EPIC-PARTNERS",
+      "milestone_id": "RG-R2"
+    },
+    "US-PT-02": {
+      "id": "APL-486",
+      "uuid": "89942095-c980-4131-b1aa-ea1ee288cd9e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-486/us-pt-02-partners-integrate-once-via-apis",
+      "title": "[US-PT-02] Partners integrate once via APIs",
+      "parent_id": "EPIC-PARTNERS",
+      "milestone_id": "RG-R2"
+    },
+    "US-PT-03": {
+      "id": "APL-489",
+      "uuid": "252395de-4c11-403f-ad40-96482462dbf4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-489/us-pt-03-qualified-referrals-with-consented-context",
+      "title": "[US-PT-03] Qualified referrals with consented context",
+      "parent_id": "EPIC-PARTNERS",
+      "milestone_id": "RG-R2"
+    },
+    "US-PT-06": {
+      "id": "APL-493",
+      "uuid": "afce072f-4fea-4401-88d7-e4e743a27c86",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-493/us-pt-06-annual-partner-review-and-delisting",
+      "title": "[US-PT-06] Annual partner review and delisting",
+      "parent_id": "EPIC-PARTNERS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRV-008": {
+      "id": "APL-496",
+      "uuid": "1a6e251f-ddae-46b3-bc60-e30eba567d74",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-496/fr-prv-008-sharing-register-and-agreements",
+      "title": "[FR-PRV-008] Sharing register and agreements",
+      "parent_id": "EPIC-PRIVACY",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-002": {
+      "id": "APL-498",
+      "uuid": "0d86814a-91c6-470b-b63b-0b7eb3481f38",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-498/fr-prg-002-activities-and-milestones",
+      "title": "[FR-PRG-002] Activities and milestones",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-003": {
+      "id": "APL-504",
+      "uuid": "1b1711de-0fce-485d-b510-41e1375dce9f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-504/fr-prg-003-workplans-and-calendars",
+      "title": "[FR-PRG-003] Workplans and calendars",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-004": {
+      "id": "APL-506",
+      "uuid": "6c2cf1ca-19a1-4245-81c0-9357f91c909c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-506/fr-prg-004-risks-issues-and-dependencies",
+      "title": "[FR-PRG-004] Risks issues and dependencies",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-005": {
+      "id": "APL-510",
+      "uuid": "09a76f55-7bab-4542-b782-c70468e06341",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-510/fr-prg-005-geography-and-sites",
+      "title": "[FR-PRG-005] Geography and sites",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-007": {
+      "id": "APL-513",
+      "uuid": "499b24c2-c9cd-47ec-be24-4479cce614dd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-513/fr-prg-007-programme-change-control",
+      "title": "[FR-PRG-007] Programme change control",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PRG-008": {
+      "id": "APL-517",
+      "uuid": "fd8dae7e-0166-45d8-9539-e00bb1dfa0f7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-517/fr-prg-008-closure-and-archival",
+      "title": "[FR-PRG-008] Closure and archival",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-001": {
+      "id": "APL-520",
+      "uuid": "88b6c71f-3dd4-4307-857d-8d7599941d34",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-520/fr-rpt-001-report-template-library",
+      "title": "[FR-RPT-001] Report template library",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-002": {
+      "id": "APL-522",
+      "uuid": "a2faaacb-04d1-4821-9cfe-64ae0c760b92",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-522/fr-rpt-002-reporting-obligations",
+      "title": "[FR-RPT-002] Reporting obligations",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-004": {
+      "id": "APL-525",
+      "uuid": "6f16a715-fc0e-43ca-ba4f-4861c2f37ced",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-525/fr-rpt-004-narrative-authoring-and-review",
+      "title": "[FR-RPT-004] Narrative authoring and review",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-005": {
+      "id": "APL-527",
+      "uuid": "eb3934e1-69e9-4373-a06c-1d769e3cf91a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-527/fr-rpt-005-accessible-export-formats",
+      "title": "[FR-RPT-005] Accessible export formats",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-008": {
+      "id": "APL-530",
+      "uuid": "8a42da8f-d0ea-47a4-bb69-67d3fee8d5a6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-530/fr-rpt-008-distribution-and-scheduled-delivery",
+      "title": "[FR-RPT-008] Distribution and scheduled delivery",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-RPT-012": {
+      "id": "APL-540",
+      "uuid": "e794a862-d791-481a-be5a-919dd97db1d1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-540/fr-rpt-012-report-evidence-package",
+      "title": "[FR-RPT-012] Report evidence package",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PLN-004": {
+      "id": "APL-542",
+      "uuid": "00305892-aec5-4d94-a1e2-bdfd31343707",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-542/fr-pln-004-reusable-libraries",
+      "title": "[FR-PLN-004] Reusable libraries",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PLN-007": {
+      "id": "APL-544",
+      "uuid": "f7819183-e53d-413b-8cd0-24976421e9fd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-544/fr-pln-007-assumptions-and-context",
+      "title": "[FR-PLN-007] Assumptions and context",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-PLN-009": {
+      "id": "APL-546",
+      "uuid": "e9d9c699-c77d-43d3-bd6d-3ffd47e752fc",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-546/fr-pln-009-document-assisted-setup",
+      "title": "[FR-PLN-009] Document assisted setup",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OPS-002": {
+      "id": "APL-549",
+      "uuid": "c117438f-2803-4681-8bb1-6ebe6710abe2",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-549/fr-ops-002-entitlements-and-limits",
+      "title": "[FR-OPS-002] Entitlements and limits",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OPS-003": {
+      "id": "APL-553",
+      "uuid": "457560cf-f134-400a-b2e1-d1e9ed82150e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-553/fr-ops-003-subscription-administration",
+      "title": "[FR-OPS-003] Subscription administration",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OPS-004": {
+      "id": "APL-555",
+      "uuid": "908f69fb-22fa-486d-af05-8ccbc3c095ce",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-555/fr-ops-004-support-case-management",
+      "title": "[FR-OPS-004] Support case management",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-OPS-008": {
+      "id": "APL-557",
+      "uuid": "8bf1ce15-17fb-4efe-8855-406391386d41",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-557/fr-ops-008-capacity-and-cost-management",
+      "title": "[FR-OPS-008] Capacity and cost management",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R2"
+    },
+    "FR-TEN-004": {
+      "id": "APL-559",
+      "uuid": "922bfd49-e422-44b9-b489-f8e7c51945fb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-559/fr-ten-004-configuration-and-terminology",
+      "title": "[FR-TEN-004] Configuration and terminology",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-TEN-005": {
+      "id": "APL-560",
+      "uuid": "d50e6be5-bd45-4527-976c-441c88747f49",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-560/fr-ten-005-custom-fields-and-templates",
+      "title": "[FR-TEN-005] Custom fields and templates",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-TEN-006": {
+      "id": "APL-564",
+      "uuid": "4eb6e843-9131-48fe-9e16-af1cab703bd5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-564/fr-ten-006-partner-and-consortium-boundaries",
+      "title": "[FR-TEN-006] Partner and consortium boundaries",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-TEN-007": {
+      "id": "APL-567",
+      "uuid": "47c38491-2fbc-484d-9951-b03c65738417",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-567/fr-ten-007-policy-inheritance-and-exceptions",
+      "title": "[FR-TEN-007] Policy inheritance and exceptions",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R2"
+    },
+    "FR-UX-002": {
+      "id": "APL-570",
+      "uuid": "c566c1d3-2e7c-42dd-8709-1bbca95bf00d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-570/fr-ux-002-progressive-configuration",
+      "title": "[FR-UX-002] Progressive configuration",
+      "parent_id": "EPIC-USER-EXPERIENCE",
+      "milestone_id": "RG-R2"
+    },
+    "FR-UX-008": {
+      "id": "APL-573",
+      "uuid": "bdb9941c-d96f-4b49-99d9-935dbe64d040",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-573/fr-ux-008-discoverability-and-help",
+      "title": "[FR-UX-008] Discoverability and help",
+      "parent_id": "EPIC-USER-EXPERIENCE",
+      "milestone_id": "RG-R2"
+    },
+    "FR-UX-010": {
+      "id": "APL-577",
+      "uuid": "b5a60231-1d81-4a02-a322-479e175d81cf",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-577/fr-ux-010-usability-evidence",
+      "title": "[FR-UX-010] Usability evidence",
+      "parent_id": "EPIC-USER-EXPERIENCE",
+      "milestone_id": "RG-R2"
+    },
+    "VF-UX-002": {
+      "id": "APL-585",
+      "uuid": "d4310bb6-ce4c-4b46-8f5e-cc27ba4f2783",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-585/vf-ux-002-usability-qualification",
+      "title": "[VF-UX-002] Usability qualification",
+      "parent_id": "EPIC-USER-EXPERIENCE",
+      "milestone_id": "RG-R2"
+    },
+    "FR-WFL-004": {
+      "id": "APL-588",
+      "uuid": "89fc25d2-5846-4a70-b7f4-ccaedefbd194",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-588/fr-wfl-004-delegation-escalation-and-absence",
+      "title": "[FR-WFL-004] Delegation escalation and absence",
+      "parent_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "milestone_id": "RG-R2"
+    },
+    "FR-WFL-005": {
+      "id": "APL-591",
+      "uuid": "d14d9b9d-2919-486f-9df8-fc9b8b5a5dad",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-591/fr-wfl-005-comments-mentions-and-discussions",
+      "title": "[FR-WFL-005] Comments mentions and discussions",
+      "parent_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "milestone_id": "RG-R2"
+    },
+    "FR-WFL-006": {
+      "id": "APL-594",
+      "uuid": "fe91fa57-9a1e-4a5b-8e8b-d73588d50f3e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-594/fr-wfl-006-task-and-notification-centre",
+      "title": "[FR-WFL-006] Task and notification centre",
+      "parent_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "milestone_id": "RG-R2"
+    },
+    "FR-AI-008": {
+      "id": "APL-597",
+      "uuid": "e5b58563-742c-44a6-91f4-e8e2b03a05b9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-597/fr-ai-008-qualitative-assistance",
+      "title": "[FR-AI-008] Qualitative assistance",
+      "parent_id": "EPIC-AI-CAPABILITIES",
+      "milestone_id": "RG-R3"
+    },
+    "FR-AI-009": {
+      "id": "APL-601",
+      "uuid": "95852654-e628-4635-9ee2-0f8761cf43de",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-601/fr-ai-009-proactive-findings",
+      "title": "[FR-AI-009] Proactive findings",
+      "parent_id": "EPIC-AI-CAPABILITIES",
+      "milestone_id": "RG-R3"
+    },
+    "FR-ACC-012": {
+      "id": "APL-603",
+      "uuid": "8df5d4ad-da45-4808-b5b6-fd76844aa807",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-603/fr-acc-012-administrative-review-and-simulation",
+      "title": "[FR-ACC-012] Administrative review and simulation",
+      "parent_id": "EPIC-ACCESS-CONTROL",
+      "milestone_id": "RG-R3"
+    },
+    "FR-CAL-013": {
+      "id": "APL-607",
+      "uuid": "63e3819b-a2be-476b-8aa4-3e33a9be2d9d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-607/fr-cal-013-weighted-and-composite-indicators",
+      "title": "[FR-CAL-013] Weighted and composite indicators",
+      "parent_id": "EPIC-CALCULATIONS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-CAL-016": {
+      "id": "APL-611",
+      "uuid": "1bbd6743-1e31-4718-b74b-b67cb6b7798f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-611/fr-cal-016-statistical-interpretation",
+      "title": "[FR-CAL-016] Statistical interpretation",
+      "parent_id": "EPIC-CALCULATIONS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-ANA-005": {
+      "id": "APL-613",
+      "uuid": "153879ce-ef64-48d4-9fa6-5e68af9193fc",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-613/fr-ana-005-table-analysis-and-pivots",
+      "title": "[FR-ANA-005] Table analysis and pivots",
+      "parent_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-ANA-006": {
+      "id": "APL-616",
+      "uuid": "639d9183-cf11-429b-ad0d-e6c6e682e225",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-616/fr-ana-006-geographic-analysis",
+      "title": "[FR-ANA-006] Geographic analysis",
+      "parent_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-ANA-009": {
+      "id": "APL-618",
+      "uuid": "d9b3c92d-397a-44e6-9a80-51e8ed5c9b8b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-618/fr-ana-009-alerts-and-thresholds",
+      "title": "[FR-ANA-009] Alerts and thresholds",
+      "parent_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-ANA-010": {
+      "id": "APL-620",
+      "uuid": "cce2ba6f-84b6-4bc1-8b06-eeb65ee3ca25",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-620/fr-ana-010-external-analytics-access",
+      "title": "[FR-ANA-010] External analytics access",
+      "parent_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-DQ-007": {
+      "id": "APL-623",
+      "uuid": "e1ab8ce1-7d2d-4f9a-964b-4f1d36cf6930",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-623/fr-dq-007-anomaly-assistance",
+      "title": "[FR-DQ-007] Anomaly assistance",
+      "parent_id": "EPIC-DATA-QUALITY",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVA-001": {
+      "id": "APL-625",
+      "uuid": "7619e8a4-e9c2-4054-bac7-649dc4aa5cb9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-625/fr-eva-001-evaluation-registry",
+      "title": "[FR-EVA-001] Evaluation registry",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVA-002": {
+      "id": "APL-630",
+      "uuid": "2226ab1b-99dd-423f-b470-dbd37caaf9b6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-630/fr-eva-002-sampling-and-methodological-metadata",
+      "title": "[FR-EVA-002] Sampling and methodological metadata",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVA-003": {
+      "id": "APL-632",
+      "uuid": "c43f0c80-2283-4173-8d13-d6b6d57a9f46",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-632/fr-eva-003-analysis-packages",
+      "title": "[FR-EVA-003] Analysis packages",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVA-006": {
+      "id": "APL-634",
+      "uuid": "4b892c32-2adc-42c6-b80c-2420a082ff3d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-634/fr-eva-006-learning-agenda",
+      "title": "[FR-EVA-006] Learning agenda",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVA-007": {
+      "id": "APL-639",
+      "uuid": "74e06849-7596-4fe9-a5dc-4eb15dfd538a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-639/fr-eva-007-management-responses-and-actions",
+      "title": "[FR-EVA-007] Management responses and actions",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVD-005": {
+      "id": "APL-641",
+      "uuid": "3e09f118-0df1-4cdc-b4df-e772e943b912",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-641/fr-evd-005-qualitative-coding",
+      "title": "[FR-EVD-005] Qualitative coding",
+      "parent_id": "EPIC-EVIDENCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVD-006": {
+      "id": "APL-644",
+      "uuid": "838b276d-2029-4e56-ae31-b0079f294736",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-644/fr-evd-006-transcription-and-translation",
+      "title": "[FR-EVD-006] Transcription and translation",
+      "parent_id": "EPIC-EVIDENCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-EVD-008": {
+      "id": "APL-646",
+      "uuid": "cd6a5964-e3ea-4fcf-95f3-36e5a71274e0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-646/fr-evd-008-findings-and-triangulation",
+      "title": "[FR-EVD-008] Findings and triangulation",
+      "parent_id": "EPIC-EVIDENCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FIN-002": {
+      "id": "APL-648",
+      "uuid": "5c8771ef-d2b3-4db1-941f-9ccaad2b8982",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-648/fr-fin-002-budget-planning",
+      "title": "[FR-FIN-002] Budget planning",
+      "parent_id": "EPIC-FINANCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FIN-003": {
+      "id": "APL-650",
+      "uuid": "88ea4817-50eb-4938-93ac-09f1388b7432",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-650/fr-fin-003-expenditure-ingestion",
+      "title": "[FR-FIN-003] Expenditure ingestion",
+      "parent_id": "EPIC-FINANCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FIN-005": {
+      "id": "APL-652",
+      "uuid": "d9caf246-38db-48ae-8d27-dffc64d0a4b4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-652/fr-fin-005-variance-and-forecast",
+      "title": "[FR-FIN-005] Variance and forecast",
+      "parent_id": "EPIC-FINANCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FIN-006": {
+      "id": "APL-654",
+      "uuid": "fd2bca6d-32d3-40b4-b1e5-84f60b1484c1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-654/fr-fin-006-shared-costs-and-allocations",
+      "title": "[FR-FIN-006] Shared costs and allocations",
+      "parent_id": "EPIC-FINANCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FRM-008": {
+      "id": "APL-657",
+      "uuid": "60995c97-4748-4b09-8f8e-430070508823",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-657/fr-frm-008-respondent-and-public-forms",
+      "title": "[FR-FRM-008] Respondent and public forms",
+      "parent_id": "EPIC-FORMS-AND-COLLECTION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-FRM-009": {
+      "id": "APL-659",
+      "uuid": "0f8d5691-85ae-4864-8331-e78adc832292",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-659/fr-frm-009-longitudinal-and-repeat-visits",
+      "title": "[FR-FRM-009] Longitudinal and repeat visits",
+      "parent_id": "EPIC-FORMS-AND-COLLECTION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-IAM-005": {
+      "id": "APL-661",
+      "uuid": "6763bf3b-bf91-4367-8535-c32218d77d18",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-661/fr-iam-005-provisioning-and-deprovisioning",
+      "title": "[FR-IAM-005] Provisioning and deprovisioning",
+      "parent_id": "EPIC-IDENTITY-AND-ACCOUNTS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-IAM-011": {
+      "id": "APL-663",
+      "uuid": "4d16202d-bf08-4773-8acc-43e08877d590",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-663/fr-iam-011-access-certification",
+      "title": "[FR-IAM-011] Access certification",
+      "parent_id": "EPIC-IDENTITY-AND-ACCOUNTS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-INT-006": {
+      "id": "APL-668",
+      "uuid": "d1faff90-f80d-4b60-afb4-0ca88a59e1ec",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-668/fr-int-006-webhook-delivery",
+      "title": "[FR-INT-006] Webhook delivery",
+      "parent_id": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-INT-008": {
+      "id": "APL-673",
+      "uuid": "dc0375e2-8eaf-4c21-a87c-aa5c66927d3a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-673/fr-int-008-import-export-standards",
+      "title": "[FR-INT-008] Import export standards",
+      "parent_id": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-INT-010": {
+      "id": "APL-676",
+      "uuid": "06009946-1be0-42d9-98e3-7f0eec3666ac",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-676/fr-int-010-development-and-testing-access",
+      "title": "[FR-INT-010] Development and testing access",
+      "parent_id": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "milestone_id": "RG-R3"
+    },
+    "VF-ECO-001": {
+      "id": "APL-679",
+      "uuid": "b116ddc9-37ab-4424-9951-2d3d0d6c0131",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-679/vf-eco-001-cost-transparency-and-sustainability",
+      "title": "[VF-ECO-001] Cost transparency and sustainability",
+      "parent_id": "EPIC-NFR-COST",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PAR-005": {
+      "id": "APL-681",
+      "uuid": "686ae884-4018-4e28-9739-cc5365b42a52",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-681/fr-par-005-household-and-group-membership",
+      "title": "[FR-PAR-005] Household and group membership",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PAR-006": {
+      "id": "APL-691",
+      "uuid": "b0fe85f9-2020-47b5-90d1-2c2e556ff123",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-691/fr-par-006-cohorts-and-follow-up",
+      "title": "[FR-PAR-006] Cohorts and follow up",
+      "parent_id": "EPIC-PARTICIPANTS",
+      "milestone_id": "RG-R3"
+    },
+    "US-PT-04": {
+      "id": "APL-693",
+      "uuid": "15792d38-53a3-4977-aca4-349b4dc9d581",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-693/us-pt-04-partners-see-outcomes-of-their-deployments",
+      "title": "[US-PT-04] Partners see outcomes of their deployments",
+      "parent_id": "EPIC-PARTNERS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PRG-009": {
+      "id": "APL-695",
+      "uuid": "d05c3e92-440a-4af7-9fb7-ac937356371e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-695/fr-prg-009-cross-project-dependencies",
+      "title": "[FR-PRG-009] Cross project dependencies",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PRG-010": {
+      "id": "APL-697",
+      "uuid": "fa205f7a-49f9-4f4d-80a4-d3eaed6b353c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-697/fr-prg-010-bulk-administration",
+      "title": "[FR-PRG-010] Bulk administration",
+      "parent_id": "EPIC-PROGRAMMES",
+      "milestone_id": "RG-R3"
+    },
+    "FR-RPT-006": {
+      "id": "APL-699",
+      "uuid": "5fe5cec1-b5f8-447a-8709-3811ca580c54",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-699/fr-rpt-006-presentation-and-donor-format-output",
+      "title": "[FR-RPT-006] Presentation and donor format output",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R3"
+    },
+    "FR-RPT-011": {
+      "id": "APL-702",
+      "uuid": "fec03bc1-426b-4d93-bb4c-e51bbe273f67",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-702/fr-rpt-011-transparency-publication",
+      "title": "[FR-RPT-011] Transparency publication",
+      "parent_id": "EPIC-REPORTING",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PLN-002": {
+      "id": "APL-704",
+      "uuid": "b9058a88-48c4-475b-873a-9e00c041eec1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-704/fr-pln-002-theory-of-change-relationships",
+      "title": "[FR-PLN-002] Theory of change relationships",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-R3"
+    },
+    "FR-PLN-005": {
+      "id": "APL-706",
+      "uuid": "2617c188-b73f-49a5-9cf1-004b0f98e387",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-706/fr-pln-005-standard-mappings",
+      "title": "[FR-PLN-005] Standard mappings",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-R3"
+    },
+    "FR-OPS-009": {
+      "id": "APL-708",
+      "uuid": "20237b9d-132b-4b2a-91f8-9f5a8c1a93d1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-708/fr-ops-009-operational-automation",
+      "title": "[FR-OPS-009] Operational automation",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-OPS-010": {
+      "id": "APL-710",
+      "uuid": "e033708e-4d00-4df2-8f0b-19fc8a9d9bb5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-710/fr-ops-010-trust-and-assurance-information",
+      "title": "[FR-OPS-010] Trust and assurance information",
+      "parent_id": "EPIC-SERVICE-OPERATIONS",
+      "milestone_id": "RG-R3"
+    },
+    "FR-TEN-008": {
+      "id": "APL-714",
+      "uuid": "0dfc1b17-34db-476c-82da-b4efe0d8b5c8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-714/fr-ten-008-configuration-promotion",
+      "title": "[FR-TEN-008] Configuration promotion",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-TEN-009": {
+      "id": "APL-715",
+      "uuid": "bb6ae4ad-a377-4f21-ad29-db319cea0847",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-715/fr-ten-009-branding-and-external-identity",
+      "title": "[FR-TEN-009] Branding and external identity",
+      "parent_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "milestone_id": "RG-R3"
+    },
+    "FR-UX-007": {
+      "id": "APL-716",
+      "uuid": "d00286a7-f8bc-4b46-af04-ffecd8013694",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-716/fr-ux-007-expanded-localisation",
+      "title": "[FR-UX-007] Expanded localisation",
+      "parent_id": "EPIC-USER-EXPERIENCE",
+      "milestone_id": "RG-R3"
+    },
+    "FR-WFL-009": {
+      "id": "APL-717",
+      "uuid": "81b05a84-6c7d-4f87-a73c-d9cf6fa63a3f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-717/fr-wfl-009-automation-rules",
+      "title": "[FR-WFL-009] Automation rules",
+      "parent_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "milestone_id": "RG-R3"
+    },
+    "FR-AI-017": {
+      "id": "APL-718",
+      "uuid": "5f14bdb0-6dea-4a30-b854-b61d4e702774",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-718/fr-ai-017-forecasts-and-scenario-assistance",
+      "title": "[FR-AI-017] Forecasts and scenario assistance",
+      "parent_id": "EPIC-AI-CAPABILITIES",
+      "milestone_id": "RG-LATER"
+    },
+    "FR-EVA-005": {
+      "id": "APL-719",
+      "uuid": "be1b07b9-43e7-4bd3-bb44-58a38faa2641",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-719/fr-eva-005-outcome-harvesting-and-contribution",
+      "title": "[FR-EVA-005] Outcome harvesting and contribution",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-LATER"
+    },
+    "FR-EVA-008": {
+      "id": "APL-720",
+      "uuid": "09f67259-d9d0-47c3-8584-d221530e7f6a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-720/fr-eva-008-institutional-learning-library",
+      "title": "[FR-EVA-008] Institutional learning library",
+      "parent_id": "EPIC-EVALUATION",
+      "milestone_id": "RG-LATER"
+    },
+    "FR-FIN-007": {
+      "id": "APL-721",
+      "uuid": "c7b0b5a3-8c61-4f7d-9827-67acfaabd2fa",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-721/fr-fin-007-cost-effectiveness",
+      "title": "[FR-FIN-007] Cost effectiveness",
+      "parent_id": "EPIC-FINANCE",
+      "milestone_id": "RG-LATER"
+    },
+    "FR-PLN-008": {
+      "id": "APL-722",
+      "uuid": "7b7586a1-eda6-4618-a2d7-96d6c00c443a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-722/fr-pln-008-planning-scenarios",
+      "title": "[FR-PLN-008] Planning scenarios",
+      "parent_id": "EPIC-RESULTS-PLANNING",
+      "milestone_id": "RG-LATER"
+    },
+    "FR-SEC-015": {
+      "id": "APL-723",
+      "uuid": "975ede31-4df9-4ea3-89fb-7a46c4e9dad1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-723/fr-sec-015-enterprise-assurance-options",
+      "title": "[FR-SEC-015] Enterprise assurance options",
+      "parent_id": "EPIC-SECURITY",
+      "milestone_id": "RG-LATER"
+    }
+  },
+  "status": "complete",
+  "last_error": null
+}

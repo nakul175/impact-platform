@@ -10,12 +10,12 @@ This is the planning entry point for Imprana Commons: one platform for impact ma
 | Strategy | [Product strategy](02-STRATEGY.md) | Choices, priorities, tradeoffs and success measures |
 | Roadmap | [Outcome roadmap](03-ROADMAP.md) | Dependency order across Foundation, Pilot, Scale and Ecosystem |
 | Release goals | [Release goals](04-RELEASE-GOALS.md) | Scope, exit conditions and open decisions per release |
-| Epics | Planned Linear parent issues; [import plan](linear/import-plan.json) | Outcome groups mapped to strategy objectives |
-| User stories | Planned Linear story sub-issues; [source backlog](../backlog/backlog.csv) | Personas, benefits and stable requirement IDs |
+| Epics | Linear parent issues; [import plan](linear/import-plan.json) | Outcome groups mapped to strategy objectives |
+| User stories | Linear story sub-issues; [source backlog](../backlog/backlog.csv) | Personas, benefits and stable requirement IDs |
 | Acceptance criteria | Each story description; [Gherkin files](../backlog/features/) | Positive and rejection behaviour, retained from the source |
 | Technical tasks | [Story and task standard](05-STORY-AND-TASK-STANDARD.md), [next-sprint refinement](06-NEXT-SPRINT-REFINEMENT.md), [task manifest](technical-tasks.json) | Proposed implementation and evidence work beneath the next sprint's stories |
 
-The [Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) contains the product documents and five release milestones. Its native issue import is blocked by the workspace's free issue limit: no epic, story or task issues were created. [Import status and continuation](07-LINEAR-IMPORT-STATUS.md) records the blocker; [integration and recovery](linear/README.md) explains the intended mapping and verification. Until the import succeeds, use the repository backlog and refinement records for story planning.
+The [Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) contains 11 product documents, five release milestones and the verified hierarchy of 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. [Import status and continuation](07-LINEAR-IMPORT-STATUS.md) records the completed import and evidence; [integration and recovery](linear/README.md) explains the mapping. Use Linear for day-to-day planning and Git for the preserved source and decisions.
 
 ## Source and status
 
@@ -23,7 +23,7 @@ The initial source is repository commit `8a1e405f0086033dfb25ad834689a08bfe9f1ee
 
 Four Sprint 1 stories remain In Review pending recorded product-owner acceptance. Ten active stories have source estimates; all other estimates remain unset. Sprint 2 and its technical tasks are proposed, without committed dates or assignments. A story enters a sprint only after the Definition of Ready is evidenced. Longer-term technical work is refined before its sprint rather than represented as fully designed now.
 
-Linear owns day-to-day planning status after import. Git retains stable source IDs, criteria, planning baselines, import receipts and product decisions. Preserve historical specifications and release evidence; the new roadmap does not accept old requirements, rewrite applied migrations or discard the governed impact core.
+Linear owns day-to-day planning status. Git retains stable source IDs, criteria, planning baselines, import receipts and product decisions. Preserve historical specifications and release evidence; the new roadmap does not accept old requirements, rewrite applied migrations or discard the governed impact core.
 
 ## Traceability and acceptance
 

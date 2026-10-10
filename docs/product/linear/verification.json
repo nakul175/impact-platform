@@ -1,11 +1,13 @@
 {
-  "version": 1,
-  "verified_at_utc": "2026-10-10 09:31:38 UTC",
-  "status": "blocked_issue_import_documents_verified",
+  "version": 2,
+  "status": "verified_complete",
+  "verified_at_utc": "2026-10-10 10:13:02 UTC",
+  "external_state_verified": true,
   "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
   "source_csv_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
   "import_plan_sha256": "37e8193c7a6f354faa4b60364120e4efd54af723867f3da6a931723f2b3590e2",
   "manifest_verification": "manifest-verification.json",
+  "native_issue_verification": "issue-readback-verification.json",
   "workspace": {
     "id": "d1a47da0-006d-4757-b2b9-b46e92e2a961",
     "name": "Aplyd Sandbox",
@@ -31,6 +33,15 @@
     "project_found": true,
     "project_status": "Backlog",
     "project_dates_unset": true,
+    "project_checks": {
+      "uuid_matches": true,
+      "description_matches": true,
+      "status_backlog": true,
+      "dates_unset": true,
+      "lead_unset": true,
+      "all_11_documents_attached": true,
+      "five_milestones": true
+    },
     "documents": [
       {
         "name": "README.md",
@@ -39,7 +50,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "01-VISION.md",
@@ -48,7 +60,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "02-STRATEGY.md",
@@ -57,7 +70,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "03-ROADMAP.md",
@@ -66,7 +80,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "04-RELEASE-GOALS.md",
@@ -75,7 +90,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "05-STORY-AND-TASK-STANDARD.md",
@@ -84,7 +100,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 2,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "06-NEXT-SPRINT-REFINEMENT.md",
@@ -93,7 +110,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 4,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "linear/README.md",
@@ -102,7 +120,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "07-LINEAR-IMPORT-STATUS.md",
@@ -111,7 +130,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "08-BACKLOG-CATALOGUE.md",
@@ -120,7 +140,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 0,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       },
       {
         "name": "09-SPLIT-PARENT-HISTORY.md",
@@ -129,7 +150,8 @@
         "normalized_content_matches": true,
         "code_blocks_exact": true,
         "code_blocks": 2,
-        "relative_links": []
+        "relative_links": [],
+        "unintended_literal_autolinks": false
       }
     ],
     "milestones": [
@@ -169,12 +191,23 @@
         "target_date_unset": true
       }
     ],
-    "native_issue_count": 0,
+    "native_issue_count": 446,
+    "native_counts": {
+      "epics": 54,
+      "stories": 368,
+      "technical_tasks": 24
+    },
     "issue_list_has_next_page": false,
-    "issue_hierarchy_verified": false,
-    "original_story_criteria_on_native_issues_verified": false,
-    "estimates_on_native_issues_verified": false,
-    "task_dependencies_on_native_issues_verified": false,
+    "issue_hierarchy_verified": true,
+    "original_story_criteria_on_native_issues_verified": true,
+    "original_gherkin_records_exact": 368,
+    "technical_task_criteria_verified": 96,
+    "estimates_on_native_issues_verified": true,
+    "source_estimates_preserved": 10,
+    "task_dependencies_on_native_issues_verified": true,
+    "task_dependency_edges": 36,
+    "dependency_graph_acyclic": true,
+    "issue_assignments_dates_cycles_unset": true,
     "historical_split_records": {
       "ids": [
         "US-DX-01",
@@ -185,12 +218,15 @@
     }
   },
   "verification_method": {
-    "documents": "Read back all 11 saved documents. Compare full rendered Markdown after normalizing Linear's bullet markers, table separator lines, angle-bracket URL syntax, escaped punctuation and whitespace. Separately compare every fenced code block byte-for-byte; all eight match.",
-    "links": "All saved document links are absolute Linear or GitHub URLs; no relative Markdown links remain.",
-    "milestones": "Read project milestones; match all five IDs, goal descriptions and unset target dates.",
-    "issues": "List all project issues; zero returned and hasNextPage=false. No claim of completed issue import."
+    "documents": "Read all 11 current saved documents; compare full rendered Markdown after presentation normalization. All eight fenced payloads match exactly. Source literals that Linear had turned into website links were repaired and read back.",
+    "links": "All native document links are absolute Linear or GitHub URLs; the catalogue links all 446 source IDs to their native issues. No relative links or known unintended literal autolinks remain.",
+    "milestones": "Read current project; all five milestone IDs, goal descriptions and unset target dates match.",
+    "issues": "Exhaust paginated native project listing: exactly 446 unique records. Fetch full get_issue descriptions for all 446, retain the selected metadata projection with explicit null fields, and fetch all 24 task relation records. Offline verifier compares the preserved source, complete bodies, exact Gherkin UTF-8 bytes, native identities, parents/milestones, labels, statuses, ten numeric source estimates and all 36 blockedBy edges. Independent agent audit confirms exact source criteria and the acyclic graph.",
+    "project": "Current UUID/description, Backlog status, unset dates, empty unassigned lead representation and all 11 attached document IDs verified."
   },
-  "blocker": {
+  "blocker": null,
+  "required_owner_action": null,
+  "resolved_blocker": {
     "code": "LINEAR_FREE_ISSUE_LIMIT",
     "http_status": 400,
     "message": "You've exceeded the free issue limit for this workspace.",
@@ -198,9 +234,11 @@
     "created_issues": 0,
     "required_owner_action": "Choose an existing paid workspace or upgrade the current workspace; new spending is not approved."
   },
-  "required_owner_action": "Choose an existing paid workspace or upgrade the current workspace; new spending is not approved.",
   "no_new_spending_approved": true,
-  "next_step": "Resolve workspace quota choice, reconcile project and checkpoint, import parent epics then stories then tasks and dependencies, then read back all 446 issues before claiming completion.",
+  "planning_import_complete": true,
+  "release_accepted": false,
+  "sprint_2_committed": false,
+  "next_step": "Review the proposed next story with Nakul one decision at a time; confirm Ready evidence and open product choices before building. Reconcile human changes rather than recreating imported issues.",
   "git_handover": {
     "branch": "docs/imprana-linear-planning-2026-10-10",
     "base_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",

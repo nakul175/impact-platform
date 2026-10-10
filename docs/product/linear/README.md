@@ -1,8 +1,8 @@
 # Imprana Commons Linear integration
 
-The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in the connected Aplyd Sandbox workspace contains the product documents, five release milestones and product-specific labels. Native issue creation is blocked by the workspace's free issue limit. No epic, story or task issue was created. The complete 446-issue import plan is preserved in Git; see [current status and continuation](../07-LINEAR-IMPORT-STATUS.md). It uses the existing APL team. Other products in that workspace are outside this integration.
+The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in the connected Aplyd Sandbox workspace contains the product documents, five release milestones and product-specific labels. All 446 native issues are saved and read-back verified: 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. The complete import plan, identities and verification receipts are preserved in Git; see [current status and continuation](../07-LINEAR-IMPORT-STATUS.md). It uses the existing APL team. Other products in that workspace are outside this integration.
 
-## Intended native structure
+## Native structure
 
 | Product layer | Linear object |
 | --- | --- |
@@ -26,17 +26,17 @@ Release membership belongs to the story. Epic parents spanning releases have no 
 
 ## Import and recovery
 
-`scripts/linear/build_imprana_import.py` creates [import-plan.json](import-plan.json) from the unchanged source CSV and [technical-tasks.json](../technical-tasks.json). It performs no external writes. The plan records the source commit and checksum, stable canonical IDs and exact descriptions. [checkpoint.json](checkpoint.json) records real Linear IDs and URLs as each object is saved. [verification.json](verification.json) records the final read-back result.
+`scripts/linear/build_imprana_import.py` creates [import-plan.json](import-plan.json) from the unchanged source CSV and [technical-tasks.json](../technical-tasks.json). It performs no external writes. The plan records the source commit and checksum, stable canonical IDs and exact descriptions. [checkpoint.json](checkpoint.json) records real Linear IDs and URLs as each object is saved. [verification.json](verification.json) records the final project/document/milestone result. [issue-readback-verification.json](issue-readback-verification.json) records all 446 issue checks and exact original Gherkin hashes. The two story-import shards preserve parallel creation receipts.
 
 Before a continuation, read the checkpoint and list the project's existing objects. Match canonical IDs and content markers before creating anything. After an uncertain response, fetch the known identifier or search the exact canonical title and marker; do not blindly repeat a create call. Do not overwrite a person's changed status, estimate or description during a later sync without reconciling the difference.
 
-Read-back verification compares the project, milestones, parent relationships, release membership, story IDs, status and original criteria with the plan. It checks that no active source story is missing or duplicated and that every proposed technical task has its intended story parent.
+Read-back verification compares the project, milestones, parent relationships, release membership, story IDs, status and original criteria with the plan. All 368 story Gherkin payloads match UTF-8 bytes exactly; all 96 proposed task criteria and 36 dependency edges match. No active story is missing or duplicated. `scripts/linear/verify_imprana_readback.py` checks a full native snapshot without external writes; fetch full `get_issue` descriptions because list responses truncate them. Keep explicit null fields from the list projection. The report records hashes and identities without description content or personal names. Its scope is planning-object verification, not an executed product test suite.
 
 ## GitHub and ongoing use
 
 The project links to the repository and the exact source backlog. Future branches and PR descriptions should include both the Linear identifier and original story ID, and link to the relevant issue. Product acceptance remains explicit after the demo; use a PR link rather than a closing keyword where an automation would otherwise mark the story Done before acceptance.
 
-The documents and milestones are saved through connected Linear tools; the issue plan remains pending the quota decision. A native GitHub OAuth app, webhook, automatic bidirectional sync, paid agent loop or sprint cycle has not been enabled. Configure those separately if needed, with the intended repository and permissions established first.
+The documents, milestones, issues and dependency relationships are saved through connected Linear tools. Linear is the working board; the source CSV remains the preserved import baseline. A native GitHub OAuth app, webhook, automatic bidirectional sync, paid agent loop or sprint cycle has not been enabled. Configure those separately if needed, with the intended repository and permissions established first.
 
 ## Open owner decisions
 

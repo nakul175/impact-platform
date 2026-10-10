@@ -2,7 +2,7 @@
 
 Owner: Nakul Jain · Adopted 9 October 2026 (draft until the team confirms it at the first sprint planning) · Update trigger: any retrospective that changes how we work.
 
-We work fully agile. [Product planning](../product/README.md) connects vision, strategy, roadmap and release goals to the backlog. The [Imprana Commons Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) is the intended working board after issue import; [`docs/backlog/`](../backlog/README.md) retains the source IDs and acceptance baseline. The current workspace issue limit blocks issue creation, so use the repository backlog and refinement records until [the import is verified](../product/07-LINEAR-IMPORT-STATUS.md). Existing business and engineering specifications retain their rules and historical scope. Each story is detailed just before it is built, not months ahead.
+We work fully agile. [Product planning](../product/README.md) connects vision, strategy, roadmap and release goals to the backlog. The [Imprana Commons Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) is the working board; its 446-issue import and 36 task dependencies are [verified](../product/07-LINEAR-IMPORT-STATUS.md). [`docs/backlog/`](../backlog/README.md) retains the source IDs and acceptance baseline. Git preserves decisions and evidence; reconcile human changes before any later sync. Existing business and engineering specifications retain their rules and historical scope. Each story is detailed just before it is built, not months ahead.
 
 ## Cadence
 

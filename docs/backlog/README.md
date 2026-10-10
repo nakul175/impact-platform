@@ -26,7 +26,7 @@ Since Sprint 1 planning the file holds 370 rows: two stories were split during r
 
 ## Linear and the retained GitHub importer
 
-The [Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) is the intended day-to-day board after import. Its issue import is currently blocked by the workspace's free issue limit; no native issues were created. The [import manifest and checkpoint](../product/linear/README.md) preserve all source records, criteria and IDs for continuation. Until then, use the source backlog and sprint/refinement records. The GitHub importer below remains an optional retained tool; do not run it as a second active backlog for this integration.
+The [Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) is the day-to-day planning board. Its 54 epics, 368 active stories and 24 proposed technical tasks are read-back verified, with original criteria and 36 task dependencies. The [import manifest, checkpoint and verification](../product/linear/README.md) preserve all source records and native IDs. This source CSV remains the original import baseline; reconcile future changes with Linear rather than blindly re-importing it. The GitHub importer below remains an optional retained tool; do not run it as a second active backlog for this integration.
 
 ```bash
 gh auth login

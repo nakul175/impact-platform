@@ -1,0 +1,38 @@
+{
+  "schema_version": "imprana-refinement-task-import/v1",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "story_offsets": [
+    0,
+    124
+  ],
+  "native_payload_sha256": "35eafa53699427f88fbedc5f919880936481b3812fe1ca3e8985a0b37c42beb0",
+  "refinement_sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+  "native_plan_sha256": "dc4339d763ca4cdc6af2ab1312fa27dc36ea14c10078704741e58e613c570b36",
+  "status": "BLOCKED_BY_APPROVAL_REVIEW",
+  "tasks": {},
+  "last_error": {
+    "canonical_id": "TASK-FR-SEC-008-01",
+    "kind": "automatic_approval_rejection",
+    "attempt": 2,
+    "native_created": false,
+    "reason": "The retry still exports internal planning and repository-derived details to Linear; only untrusted assistant claims support destination authorization, and no explicit user approval of this exact payload and destination was added.",
+    "response_uncertain": false
+  },
+  "approval_history": [
+    {
+      "canonical_id": "TASK-FR-SEC-008-01",
+      "kind": "automatic_approval_rejection",
+      "native_created": false,
+      "reason": "This creates a Linear issue containing internal planning and repository-derived implementation details; the user authorized Linear refinement generally, but did not specifically authorize exporting this payload to this destination, whose ownership is unverified.",
+      "response_uncertain": false
+    },
+    {
+      "canonical_id": "TASK-FR-SEC-008-01",
+      "kind": "automatic_approval_rejection",
+      "attempt": 2,
+      "native_created": false,
+      "reason": "The retry still exports internal planning and repository-derived details to Linear; only untrusted assistant claims support destination authorization, and no explicit user approval of this exact payload and destination was added.",
+      "response_uncertain": false
+    }
+  ]
+}

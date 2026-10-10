@@ -13,15 +13,19 @@ This is the planning entry point for Imprana Commons: one platform for impact ma
 | Epics | Linear parent issues; [import plan](linear/import-plan.json) | Outcome groups mapped to strategy objectives |
 | User stories | Linear story sub-issues; [source backlog](../backlog/backlog.csv) | Personas, benefits and stable requirement IDs |
 | Acceptance criteria | Each story description; [Gherkin files](../backlog/features/) | Positive and rejection behaviour, retained from the source |
-| Technical tasks | [Story and task standard](05-STORY-AND-TASK-STANDARD.md), [next-sprint refinement](06-NEXT-SPRINT-REFINEMENT.md), [task manifest](technical-tasks.json) | Proposed implementation and evidence work beneath the next sprint's stories |
+| Technical tasks | [Story and task standard](05-STORY-AND-TASK-STANDARD.md), [complete refinement](10-COMPLETE-BACKLOG-REFINEMENT.md), [full proposal](refinement/backlog-refinement.json) | Specific task and scenario-test proposals for every active story; the initial 24-task next-sprint baseline remains preserved |
 
 The [Linear project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) contains 11 product documents, five release milestones and the verified hierarchy of 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. [Import status and continuation](07-LINEAR-IMPORT-STATUS.md) records the completed import and evidence; [integration and recovery](linear/README.md) explains the mapping. Use Linear for day-to-day planning and Git for the preserved source and decisions.
+
+<!-- BEGIN COMPLETE REFINEMENT CHECKPOINT -->
+Nakul's requested [complete backlog refinement](10-COMPLETE-BACKLOG-REFINEMENT.md) is saved separately: all 368 active stories, 1,131 proposed technical tasks and plans for all 1,328 original scenarios. Twelve planning/import guard tests pass. The native expansion is paused pending direct approval of its repo-derived payload and exact Linear destination; the 446-issue counts above remain the separately verified initial import. See the latest [continuation checkpoint](07-LINEAR-IMPORT-STATUS.md) and delta receipts before any update.
+<!-- END COMPLETE REFINEMENT CHECKPOINT -->
 
 ## Source and status
 
 The initial source is repository commit `8a1e405f0086033dfb25ad834689a08bfe9f1eea`. Its CSV contains 370 rows: 368 active stories and two retained Split parents, across 54 epic/area groups. The active release counts are Foundation 6, R1 Pilot 172, R2 Scale 139, R3 Ecosystem 45 and Later 6. These are scope counts, not a completion percentage.
 
-Four Sprint 1 stories remain In Review pending recorded product-owner acceptance. Ten active stories have source estimates; all other estimates remain unset. Sprint 2 and its technical tasks are proposed, without committed dates or assignments. A story enters a sprint only after the Definition of Ready is evidenced. Longer-term technical work is refined before its sprint rather than represented as fully designed now.
+Four Sprint 1 stories remain In Review pending recorded product-owner acceptance. Ten active stories have source estimates; all other estimates remain unset. Sprint 2 and its technical tasks are proposed, without committed dates or assignments. A story enters a sprint only after the Definition of Ready is evidenced. Revisit each saved proposal against then-current code, owner decisions and capacity before sprint selection.
 
 Linear owns day-to-day planning status. Git retains stable source IDs, criteria, planning baselines, import receipts and product decisions. Preserve historical specifications and release evidence; the new roadmap does not accept old requirements, rewrite applied migrations or discard the governed impact core.
 

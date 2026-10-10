@@ -1,0 +1,415 @@
+{
+  "version": 1,
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "story_offsets": [
+    124,
+    248
+  ],
+  "source_refinement_sha256": "b9088d541137a8a848b026d5607387ba58340aa4ca3698a200a117c24fd9a1c9",
+  "refinement_sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+  "native_plan_sha256": "dc4339d763ca4cdc6af2ab1312fa27dc36ea14c10078704741e58e613c570b36",
+  "native_payload_sha256": "35eafa53699427f88fbedc5f919880936481b3812fe1ca3e8985a0b37c42beb0",
+  "expected_count": 382,
+  "count": 23,
+  "complete": false,
+  "status": "PAUSED_APPROVAL_REVIEW",
+  "tasks": {
+    "TASK-FR-PRV-003-01": {
+      "id": "APL-825",
+      "uuid": "6bd54ecb-a867-4cc1-bf36-1ac7b91e71dd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-825/task-fr-prv-003-01-destination-policy-and-approval-contract",
+      "story_id": "FR-PRV-003",
+      "title": "[TASK-FR-PRV-003-01] Destination policy and approval contract",
+      "parent_id": "APL-373",
+      "parent_uuid": "a1c3193c-acaf-4e4c-bc46-34b6198c1ee8",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:13:02.523Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-003-02": {
+      "id": "APL-827",
+      "uuid": "4c4adcd8-6d3c-4574-afd2-8f4d9c4aefec",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-827/task-fr-prv-003-02-pre-transfer-eligibility-gate",
+      "story_id": "FR-PRV-003",
+      "title": "[TASK-FR-PRV-003-02] Pre-transfer eligibility gate",
+      "parent_id": "APL-373",
+      "parent_uuid": "a1c3193c-acaf-4e4c-bc46-34b6198c1ee8",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-003-01"
+      ],
+      "blocked_by": [
+        "6bd54ecb-a867-4cc1-bf36-1ac7b91e71dd"
+      ],
+      "created_at": "2026-10-10T11:13:22.215Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-003-03": {
+      "id": "APL-829",
+      "uuid": "51f72e7c-e5d4-4703-906d-d8cfdb673f39",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-829/task-fr-prv-003-03-residency-safe-recovery-admission",
+      "story_id": "FR-PRV-003",
+      "title": "[TASK-FR-PRV-003-03] Residency-safe recovery admission",
+      "parent_id": "APL-373",
+      "parent_uuid": "a1c3193c-acaf-4e4c-bc46-34b6198c1ee8",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-003-02"
+      ],
+      "blocked_by": [
+        "4c4adcd8-6d3c-4574-afd2-8f4d9c4aefec"
+      ],
+      "created_at": "2026-10-10T11:13:27.120Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-003-04": {
+      "id": "APL-831",
+      "uuid": "240cf69d-2f7d-4927-946b-19346a041cb5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-831/task-fr-prv-003-04-destination-addition-and-failover-exercise",
+      "story_id": "FR-PRV-003",
+      "title": "[TASK-FR-PRV-003-04] Destination addition and failover exercise",
+      "parent_id": "APL-373",
+      "parent_uuid": "a1c3193c-acaf-4e4c-bc46-34b6198c1ee8",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-003-03"
+      ],
+      "blocked_by": [
+        "51f72e7c-e5d4-4703-906d-d8cfdb673f39"
+      ],
+      "created_at": "2026-10-10T11:13:31.758Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-004-01": {
+      "id": "APL-833",
+      "uuid": "d6fc03ec-b47c-48e9-9660-f36a335c8012",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-833/task-fr-prv-004-01-class-specific-retention-and-impact-preview",
+      "story_id": "FR-PRV-004",
+      "title": "[TASK-FR-PRV-004-01] Class-specific retention and impact preview contract",
+      "parent_id": "APL-384",
+      "parent_uuid": "7fedaad3-87e5-4c8a-822a-49900804066c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:13:37.437Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-004-02": {
+      "id": "APL-836",
+      "uuid": "20f5cca0-57e7-4f7f-a2a8-35db5618e20c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-836/task-fr-prv-004-02-approved-schedule-bindings-and-collection-guard",
+      "story_id": "FR-PRV-004",
+      "title": "[TASK-FR-PRV-004-02] Approved schedule bindings and collection guard",
+      "parent_id": "APL-384",
+      "parent_uuid": "7fedaad3-87e5-4c8a-822a-49900804066c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-004-01"
+      ],
+      "blocked_by": [
+        "d6fc03ec-b47c-48e9-9660-f36a335c8012"
+      ],
+      "created_at": "2026-10-10T11:13:42.276Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-004-03": {
+      "id": "APL-838",
+      "uuid": "eca59a15-82f9-4898-a7b1-db4efd4b129c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-838/task-fr-prv-004-03-retention-preview-and-approval-screen",
+      "story_id": "FR-PRV-004",
+      "title": "[TASK-FR-PRV-004-03] Retention preview and approval screen",
+      "parent_id": "APL-384",
+      "parent_uuid": "7fedaad3-87e5-4c8a-822a-49900804066c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-004-02"
+      ],
+      "blocked_by": [
+        "20f5cca0-57e7-4f7f-a2a8-35db5618e20c"
+      ],
+      "created_at": "2026-10-10T11:13:47.052Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-004-04": {
+      "id": "APL-840",
+      "uuid": "5a4a7386-7c94-4bb4-adee-069b3687692a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-840/task-fr-prv-004-04-expiry-stale-preview-and-hold-preservation-fixtures",
+      "story_id": "FR-PRV-004",
+      "title": "[TASK-FR-PRV-004-04] Expiry, stale preview and hold preservation fixtures",
+      "parent_id": "APL-384",
+      "parent_uuid": "7fedaad3-87e5-4c8a-822a-49900804066c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-004-03"
+      ],
+      "blocked_by": [
+        "eca59a15-82f9-4898-a7b1-db4efd4b129c"
+      ],
+      "created_at": "2026-10-10T11:13:53.488Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-005-01": {
+      "id": "APL-841",
+      "uuid": "448a2aa9-be99-4c21-9d5c-d1b0eb028885",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-841/task-fr-prv-005-01-restriction-and-copy-inventory-manifest",
+      "story_id": "FR-PRV-005",
+      "title": "[TASK-FR-PRV-005-01] Restriction and copy-inventory manifest",
+      "parent_id": "APL-386",
+      "parent_uuid": "6116ccfb-316c-4163-abca-67ff4a9ff302",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:14:16.112Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-005-02": {
+      "id": "APL-842",
+      "uuid": "9c754baa-258f-4ac6-ba51-a3483a97651a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-842/task-fr-prv-005-02-restrict-first-deletion-and-resumable-store-actions",
+      "story_id": "FR-PRV-005",
+      "title": "[TASK-FR-PRV-005-02] Restrict-first deletion and resumable store actions",
+      "parent_id": "APL-386",
+      "parent_uuid": "6116ccfb-316c-4163-abca-67ff4a9ff302",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-005-01"
+      ],
+      "blocked_by": [
+        "448a2aa9-be99-4c21-9d5c-d1b0eb028885"
+      ],
+      "created_at": "2026-10-10T11:14:20.453Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-005-03": {
+      "id": "APL-844",
+      "uuid": "bdde86b1-2986-43db-bcb4-7ed45b0c5de4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-844/task-fr-prv-005-03-deletion-outcome-and-held-content-access",
+      "story_id": "FR-PRV-005",
+      "title": "[TASK-FR-PRV-005-03] Deletion outcome and held-content access",
+      "parent_id": "APL-386",
+      "parent_uuid": "6116ccfb-316c-4163-abca-67ff4a9ff302",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-005-02"
+      ],
+      "blocked_by": [
+        "9c754baa-258f-4ac6-ba51-a3483a97651a"
+      ],
+      "created_at": "2026-10-10T11:14:25.788Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-005-04": {
+      "id": "APL-846",
+      "uuid": "dbd858eb-81d3-4a5b-8695-46b84e8e424f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-846/task-fr-prv-005-04-deletion-failure-and-held-use-negative-matrix",
+      "story_id": "FR-PRV-005",
+      "title": "[TASK-FR-PRV-005-04] Deletion failure and held-use negative matrix",
+      "parent_id": "APL-386",
+      "parent_uuid": "6116ccfb-316c-4163-abca-67ff4a9ff302",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-005-03"
+      ],
+      "blocked_by": [
+        "bdde86b1-2986-43db-bcb4-7ed45b0c5de4"
+      ],
+      "created_at": "2026-10-10T11:14:30.520Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-006-01": {
+      "id": "APL-848",
+      "uuid": "0f4f3935-70b9-4c2b-91b2-4e2b5cac6890",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-848/task-fr-prv-006-01-minimal-restoration-restriction-ledger",
+      "story_id": "FR-PRV-006",
+      "title": "[TASK-FR-PRV-006-01] Minimal restoration restriction ledger",
+      "parent_id": "APL-388",
+      "parent_uuid": "612beac8-b622-4a52-9b7a-cf456de67e94",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:14:35.219Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-006-02": {
+      "id": "APL-850",
+      "uuid": "f3f17519-053a-414c-8456-6a54c8c3a31a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-850/task-fr-prv-006-02-closed-restore-admission-and-replay",
+      "story_id": "FR-PRV-006",
+      "title": "[TASK-FR-PRV-006-02] Closed restore admission and replay",
+      "parent_id": "APL-388",
+      "parent_uuid": "612beac8-b622-4a52-9b7a-cf456de67e94",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-006-01"
+      ],
+      "blocked_by": [
+        "0f4f3935-70b9-4c2b-91b2-4e2b5cac6890"
+      ],
+      "created_at": "2026-10-10T11:14:39.558Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-006-03": {
+      "id": "APL-852",
+      "uuid": "641cd230-a551-4960-b823-0e74e59e6f7c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-852/task-fr-prv-006-03-backup-expiry-and-reopening-proof",
+      "story_id": "FR-PRV-006",
+      "title": "[TASK-FR-PRV-006-03] Backup expiry and reopening proof",
+      "parent_id": "APL-388",
+      "parent_uuid": "612beac8-b622-4a52-9b7a-cf456de67e94",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-006-02"
+      ],
+      "blocked_by": [
+        "f3f17519-053a-414c-8456-6a54c8c3a31a"
+      ],
+      "created_at": "2026-10-10T11:14:44.822Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-006-04": {
+      "id": "APL-854",
+      "uuid": "d2d88679-f038-44bf-9db9-3afa1c124a3e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-854/task-fr-prv-006-04-deleted-after-backup-and-revoked-grant-restore",
+      "story_id": "FR-PRV-006",
+      "title": "[TASK-FR-PRV-006-04] Deleted-after-backup and revoked-grant restore drill",
+      "parent_id": "APL-388",
+      "parent_uuid": "612beac8-b622-4a52-9b7a-cf456de67e94",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-006-03"
+      ],
+      "blocked_by": [
+        "641cd230-a551-4960-b823-0e74e59e6f7c"
+      ],
+      "created_at": "2026-10-10T11:14:49.692Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-007-01": {
+      "id": "APL-857",
+      "uuid": "41953b8e-d19e-44da-942e-f1f6853c0e6c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-857/task-fr-prv-007-01-verified-subject-scope-and-deadline-policy-model",
+      "story_id": "FR-PRV-007",
+      "title": "[TASK-FR-PRV-007-01] Verified subject scope and deadline policy model",
+      "parent_id": "APL-389",
+      "parent_uuid": "0032cad5-8b87-49b2-b38a-175a2c5f6f45",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:14:54.948Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-007-02": {
+      "id": "APL-858",
+      "uuid": "8da2ea90-b96e-4e7e-a9a7-ca3155652f62",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-858/task-fr-prv-007-02-case-search-redacted-response-and-outcome-rules",
+      "story_id": "FR-PRV-007",
+      "title": "[TASK-FR-PRV-007-02] Case search, redacted response and outcome rules",
+      "parent_id": "APL-389",
+      "parent_uuid": "0032cad5-8b87-49b2-b38a-175a2c5f6f45",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-007-01"
+      ],
+      "blocked_by": [
+        "41953b8e-d19e-44da-942e-f1f6853c0e6c"
+      ],
+      "created_at": "2026-10-10T11:15:00.083Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-007-03": {
+      "id": "APL-860",
+      "uuid": "d635eac8-dae3-4138-a30e-63c093413b0f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-860/task-fr-prv-007-03-minimal-verification-and-handler-case-view",
+      "story_id": "FR-PRV-007",
+      "title": "[TASK-FR-PRV-007-03] Minimal verification and handler case view",
+      "parent_id": "APL-389",
+      "parent_uuid": "0032cad5-8b87-49b2-b38a-175a2c5f6f45",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-007-02"
+      ],
+      "blocked_by": [
+        "8da2ea90-b96e-4e7e-a9a7-ca3155652f62"
+      ],
+      "created_at": "2026-10-10T11:15:04.845Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-007-04": {
+      "id": "APL-862",
+      "uuid": "c3ab08bf-0159-475c-a657-b67a2f48ba14",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-862/task-fr-prv-007-04-household-privacy-and-deadline-fixtures",
+      "story_id": "FR-PRV-007",
+      "title": "[TASK-FR-PRV-007-04] Household privacy and deadline fixtures",
+      "parent_id": "APL-389",
+      "parent_uuid": "0032cad5-8b87-49b2-b38a-175a2c5f6f45",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-007-03"
+      ],
+      "blocked_by": [
+        "d635eac8-dae3-4138-a30e-63c093413b0f"
+      ],
+      "created_at": "2026-10-10T11:15:11.088Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-009-01": {
+      "id": "APL-864",
+      "uuid": "00c7044e-b78a-4fa2-9064-e9ea87854c36",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-864/task-fr-prv-009-01-qualified-country-and-sensitivity-review-record",
+      "story_id": "FR-PRV-009",
+      "title": "[TASK-FR-PRV-009-01] Qualified country and sensitivity review record",
+      "parent_id": "APL-391",
+      "parent_uuid": "ef246fe0-d1b2-459c-8dfe-8833b7c7e858",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T11:15:17.569Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-009-02": {
+      "id": "APL-866",
+      "uuid": "4a14b0f8-1004-4d11-ac18-50e0d2a144bd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-866/task-fr-prv-009-02-mandatory-decision-activation-gate",
+      "story_id": "FR-PRV-009",
+      "title": "[TASK-FR-PRV-009-02] Mandatory-decision activation gate",
+      "parent_id": "APL-391",
+      "parent_uuid": "ef246fe0-d1b2-459c-8dfe-8833b7c7e858",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-009-01"
+      ],
+      "blocked_by": [
+        "00c7044e-b78a-4fa2-9064-e9ea87854c36"
+      ],
+      "created_at": "2026-10-10T11:15:22.745Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-009-03": {
+      "id": "APL-868",
+      "uuid": "70867624-9f78-49fa-b969-5daaf9280934",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-868/task-fr-prv-009-03-policy-decision-and-obligation-checklist",
+      "story_id": "FR-PRV-009",
+      "title": "[TASK-FR-PRV-009-03] Policy decision and obligation checklist",
+      "parent_id": "APL-391",
+      "parent_uuid": "ef246fe0-d1b2-459c-8dfe-8833b7c7e858",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-009-02"
+      ],
+      "blocked_by": [
+        "4a14b0f8-1004-4d11-ac18-50e0d2a144bd"
+      ],
+      "created_at": "2026-10-10T11:15:27.847Z",
+      "reconciled": false
+    }
+  },
+  "last_error": {
+    "message": "Root instructed pause after automatic approval review required direct human content+destination approval.",
+    "possible_in_flight_canonical_id": "TASK-FR-PRV-009-04",
+    "reconcile_query_results": [],
+    "uncertain_creation": false,
+    "reconciled_absent_at": "2026-10-10"
+  }
+}

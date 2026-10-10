@@ -1,5 +1,13 @@
 # Imprana Commons Linear import status and handover
 
+<!-- BEGIN COMPLETE REFINEMENT CHECKPOINT -->
+## Complete refinement proposal; native expansion paused
+
+Nakul's requested [368-story refinement](10-COMPLETE-BACKLOG-REFINEMENT.md) is complete locally: 1,131 proposed tasks, all 1,328 original source scenarios planned, 779 proposed prerequisite edges and 12 executed planning/import guard tests passing. Original CSV, import plan, initial 24 task cores and original Gherkin remain unchanged.
+
+The native delta is **not complete**. Automatic approval review rejected the first task in one slice twice, requiring direct human approval of the repo-derived payload and exact existing Imprana Commons Linear destination. All new native writes are paused; an approval question is pending with Nakul. The three `refinement/task-import-*.json` receipts record real acknowledged IDs and the precise blocker. [Current partial read-back](refinement/partial-readback-verification.json) validates 493 unique native records: the original 446 plus 47 new tasks and 33 new prerequisite edges, with zero check failures and `complete: false`; 1,060 new tasks and all 368 story sections remain pending. Reconcile these with the original checkpoint before resuming; do not recreate saved tasks or infer product acceptance. The counts below describe the initial completed 446-issue baseline only.
+<!-- END COMPLETE REFINEMENT CHECKPOINT -->
+
 Nakul authorised creating the product planning hierarchy and integrating it into Linear on 10 October 2026. The [Imprana Commons project](https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d) in Aplyd Sandbox, team APL, now contains **11 documents, five release milestones and all 446 read-back-verified native issues**: 54 epics, 368 stories and 24 proposed technical tasks, with 36 task dependencies. The planning import is complete. This does not declare an accepted release or completed development.
 
 ## Preserved planning
@@ -20,7 +28,7 @@ The [backlog catalogue](08-BACKLOG-CATALOGUE.md) links all 446 source IDs to the
 
 ## Verified external result
 
-The full native project listing contains exactly 446 unique issues. Every issue was fetched with its complete description because list responses truncate text. The read-back verifier passes with zero failures: all canonical IDs, parents, release milestones, strategy text, labels, statuses and estimates match. All **368 original Gherkin blocks match UTF-8 bytes exactly**; all **96 proposed task criteria** and **36 dependency edges** match. Four source stories remain In Review and ten existing estimates are preserved; other stories and tasks remain Backlog. No new estimates, assignments, due dates or sprint cycles were added.
+The initial baseline listing contained exactly 446 unique issues before refinement expansion. Every issue was fetched with its complete description because list responses truncate text. The read-back verifier passes with zero failures: all canonical IDs, parents, release milestones, strategy text, labels, statuses and estimates match. All **368 original Gherkin blocks match UTF-8 bytes exactly**; all **96 proposed task criteria** and **36 dependency edges** match. Four source stories remain In Review and ten existing estimates are preserved; other stories and tasks remain Backlog. No new estimates, assignments, due dates or sprint cycles were added.
 
 [checkpoint.json](linear/checkpoint.json) contains real project, document, milestone, label, epic, story and task IDs. [verification.json](linear/verification.json) records the final project/document/milestone result; [issue-readback-verification.json](linear/issue-readback-verification.json) records per-issue checks and source hashes. The two parallel story shards retain creation receipts. Verification establishes planning-object preservation; it is not a product acceptance or execution of the story scenarios.
 

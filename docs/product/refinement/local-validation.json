@@ -1,0 +1,66 @@
+{
+  "schema_version": "imprana-refinement-local-validation/v1",
+  "result": "PASS",
+  "scope": "Local proposal preservation and import-verifier failure guards; no native import or product-test claim",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "refinement_sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+  "native_plan_sha256": "dc4339d763ca4cdc6af2ab1312fa27dc36ea14c10078704741e58e613c570b36",
+  "counts": {
+    "stories": 368,
+    "epics": 54,
+    "original_scenarios_covered": 1328,
+    "test_plan_entries": 1328,
+    "test_entries_by_level": {
+      "manual": 66,
+      "integration": 939,
+      "browser": 135,
+      "native": 156,
+      "unit": 25,
+      "regression": 7
+    },
+    "existing_tasks_preserved": 24,
+    "new_tasks": 1107,
+    "total_technical_tasks": 1131,
+    "task_dependency_edges": 779
+  },
+  "checks": {
+    "complete_proposal_builder": "PASS",
+    "native_payload_renderer": "PASS",
+    "source_import_builder": "PASS",
+    "builder_failure_guards": {
+      "run": 6,
+      "skips": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "verifier_failure_guards": {
+      "run": 6,
+      "skips": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "ruff_lint": "PASS",
+    "ruff_format": "PASS",
+    "receipt_refresh_task_payloads_unchanged": "PASS",
+    "receipt_refresh_story_sections_changed": 14
+  },
+  "source_hashes": {
+    "docs/backlog/backlog.csv": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+    "docs/product/linear/import-plan.json": "37e8193c7a6f354faa4b60364120e4efd54af723867f3da6a931723f2b3590e2",
+    "docs/product/technical-tasks.json": "44f25e1fe8b1b52898506bd84b77e90403f220e9ab18c54e7664d494f8dfacd4"
+  },
+  "guard_script_hashes": {
+    "scripts/linear/test_refinement_guards.py": "5625696beec98be83e0da629252e13af828d5cb5b0dd72ff44f58c269c7c8dcb",
+    "scripts/linear/test_refinement_verifier_guards.py": "0630a830bd2c9f6554219320da3ea1f59b92f4c480e6095543a06ef44fade0fc"
+  },
+  "limits": [
+    "Native expansion paused pending direct human approval of repo-derived content and exact Linear destination",
+    "No product scenario execution, Ready decision, sprint commitment or release acceptance implied"
+  ],
+  "native_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+  "initial_native_payload": {
+    "path": "docs/product/refinement/native-payloads-pre-import.json",
+    "sha256": "35eafa53699427f88fbedc5f919880936481b3812fe1ca3e8985a0b37c42beb0",
+    "read_only": true
+  }
+}

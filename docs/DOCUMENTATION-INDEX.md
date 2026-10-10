@@ -240,6 +240,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Imprana Commons Linear import status and handover](product/07-LINEAR-IMPORT-STATUS.md)
 - [Imprana Commons backlog catalogue](product/08-BACKLOG-CATALOGUE.md)
 - [Imprana Commons retained split-parent history](product/09-SPLIT-PARENT-HISTORY.md)
+- [Imprana Commons complete backlog refinement](product/10-COMPLETE-BACKLOG-REFINEMENT.md)
 - [Imprana Commons product planning](product/README.md)
 
 ### product/linear

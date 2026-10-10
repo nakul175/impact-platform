@@ -1,0 +1,353 @@
+{
+  "version": 1,
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "source_csv_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+  "refinement_sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+  "native_plan_sha256": "dc4339d763ca4cdc6af2ab1312fa27dc36ea14c10078704741e58e613c570b36",
+  "native_payloads_sha256": "35eafa53699427f88fbedc5f919880936481b3812fe1ca3e8985a0b37c42beb0",
+  "shard_sha256": "6b1e3e4aa2c768659d3c38fd648a9721063fc153a744f0ecab4f4e3ba91f0551",
+  "story_offsets": [
+    248,
+    368
+  ],
+  "project_uuid": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+  "team_uuid": "525d5b8a-9fb9-496d-b98b-32b29915e80a",
+  "complete": false,
+  "counts": {
+    "expected_tasks": 365,
+    "acknowledged_tasks": 24,
+    "dependency_edges": 16
+  },
+  "tasks": {
+    "TASK-FR-MIG-001-01": {
+      "canonical_id": "TASK-FR-MIG-001-01",
+      "story_id": "FR-MIG-001",
+      "id": "APL-824",
+      "uuid": "18de6828-3ffb-443b-8d23-b65c3fd6ff16",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-824/task-fr-mig-001-01-source-inventory-and-versioned-mapping-schema",
+      "parent_uuid": "3d8c92f0-9712-489a-9559-86a7e2957e08",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-001-02": {
+      "canonical_id": "TASK-FR-MIG-001-02",
+      "story_id": "FR-MIG-001",
+      "id": "APL-826",
+      "uuid": "21d3e14b-3101-44d5-a77f-bd3aa23ab220",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-826/task-fr-mig-001-02-production-load-mapping-decision-gate",
+      "parent_uuid": "3d8c92f0-9712-489a-9559-86a7e2957e08",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-001-01"
+      ],
+      "blocked_by_uuids": [
+        "18de6828-3ffb-443b-8d23-b65c3fd6ff16"
+      ]
+    },
+    "TASK-FR-MIG-001-03": {
+      "canonical_id": "TASK-FR-MIG-001-03",
+      "story_id": "FR-MIG-001",
+      "id": "APL-828",
+      "uuid": "cf1ca1b4-7fa2-40c2-92b7-75284f54c10f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-828/task-fr-mig-001-03-discovery-and-unsupported-history-reconciliation",
+      "parent_uuid": "3d8c92f0-9712-489a-9559-86a7e2957e08",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-001-02"
+      ],
+      "blocked_by_uuids": [
+        "21d3e14b-3101-44d5-a77f-bd3aa23ab220"
+      ]
+    },
+    "TASK-FR-MIG-002-01": {
+      "canonical_id": "TASK-FR-MIG-002-01",
+      "story_id": "FR-MIG-002",
+      "id": "APL-830",
+      "uuid": "b34f4aee-33bc-4a7d-8ecb-7015ac5b51f7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-830/task-fr-mig-002-01-trial-manifest-and-side-effect-isolation-policy",
+      "parent_uuid": "208ba9b9-f3dd-431b-9753-cbace3a83649",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-002-02": {
+      "canonical_id": "TASK-FR-MIG-002-02",
+      "story_id": "FR-MIG-002",
+      "id": "APL-832",
+      "uuid": "653d040e-0dc3-454d-8563-fd6e7ab637e7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-832/task-fr-mig-002-02-clean-or-keyed-migration-replay-runner",
+      "parent_uuid": "208ba9b9-f3dd-431b-9753-cbace3a83649",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-002-01"
+      ],
+      "blocked_by_uuids": [
+        "b34f4aee-33bc-4a7d-8ecb-7015ac5b51f7"
+      ]
+    },
+    "TASK-FR-MIG-002-03": {
+      "canonical_id": "TASK-FR-MIG-002-03",
+      "story_id": "FR-MIG-002",
+      "id": "APL-834",
+      "uuid": "81868b6a-b461-46bb-a884-6a8414475e5e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-834/task-fr-mig-002-03-trial-credential-and-adapter-refusal-probes",
+      "parent_uuid": "208ba9b9-f3dd-431b-9753-cbace3a83649",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-002-02"
+      ],
+      "blocked_by_uuids": [
+        "653d040e-0dc3-454d-8563-fd6e7ab637e7"
+      ]
+    },
+    "TASK-FR-MIG-003-01": {
+      "canonical_id": "TASK-FR-MIG-003-01",
+      "story_id": "FR-MIG-003",
+      "id": "APL-835",
+      "uuid": "5029aafb-9083-4ef9-a707-1aee915d8c67",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-835/task-fr-mig-003-01-semantic-variance-ledger",
+      "parent_uuid": "f8e0fcf0-fb8a-4be1-849b-069317d1d5c6",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-003-02": {
+      "canonical_id": "TASK-FR-MIG-003-02",
+      "story_id": "FR-MIG-003",
+      "id": "APL-837",
+      "uuid": "b38d3ce6-0435-42b2-903b-ae5fd954b8e8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-837/task-fr-mig-003-02-independent-pooled-and-cumulative-reconciliation",
+      "parent_uuid": "f8e0fcf0-fb8a-4be1-849b-069317d1d5c6",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-003-01"
+      ],
+      "blocked_by_uuids": [
+        "5029aafb-9083-4ef9-a707-1aee915d8c67"
+      ]
+    },
+    "TASK-FR-MIG-003-03": {
+      "canonical_id": "TASK-FR-MIG-003-03",
+      "story_id": "FR-MIG-003",
+      "id": "APL-839",
+      "uuid": "201482ed-6ebc-47dd-8eb5-8bc1789656af",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-839/task-fr-mig-003-03-critical-variance-cutover-decision-gate",
+      "parent_uuid": "f8e0fcf0-fb8a-4be1-849b-069317d1d5c6",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-003-02"
+      ],
+      "blocked_by_uuids": [
+        "b38d3ce6-0435-42b2-903b-ae5fd954b8e8"
+      ]
+    },
+    "TASK-FR-MIG-004-01": {
+      "canonical_id": "TASK-FR-MIG-004-01",
+      "story_id": "FR-MIG-004",
+      "id": "APL-843",
+      "uuid": "2131e09d-36dd-49e3-b6c9-ee2df6ec8729",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-843/task-fr-mig-004-01-imported-history-provenance-envelope",
+      "parent_uuid": "cc453e3a-2a09-4036-b5a4-f688708f8016",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-004-02": {
+      "canonical_id": "TASK-FR-MIG-004-02",
+      "story_id": "FR-MIG-004",
+      "id": "APL-845",
+      "uuid": "3719301d-2076-4248-80c1-e84c74de0c8d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-845/task-fr-mig-004-02-source-history-import-and-decision-presentation",
+      "parent_uuid": "cc453e3a-2a09-4036-b5a4-f688708f8016",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-004-01"
+      ],
+      "blocked_by_uuids": [
+        "2131e09d-36dd-49e3-b6c9-ee2df6ec8729"
+      ]
+    },
+    "TASK-FR-MIG-004-03": {
+      "canonical_id": "TASK-FR-MIG-004-03",
+      "story_id": "FR-MIG-004",
+      "id": "APL-847",
+      "uuid": "e178ade5-f82c-40c5-8033-5bf3f8a18e24",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-847/task-fr-mig-004-03-approval-provenance-and-timestamp-audit-pack",
+      "parent_uuid": "cc453e3a-2a09-4036-b5a4-f688708f8016",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-004-02"
+      ],
+      "blocked_by_uuids": [
+        "3719301d-2076-4248-80c1-e84c74de0c8d"
+      ]
+    },
+    "TASK-FR-MIG-005-01": {
+      "canonical_id": "TASK-FR-MIG-005-01",
+      "story_id": "FR-MIG-005",
+      "id": "APL-849",
+      "uuid": "f25b22e9-3561-4700-9d92-cbde47499719",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-849/task-fr-mig-005-01-authoritative-system-cutover-runbook",
+      "parent_uuid": "c41cc148-1470-4d12-bd94-b2bdf8f6a374",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-005-02": {
+      "canonical_id": "TASK-FR-MIG-005-02",
+      "story_id": "FR-MIG-005",
+      "id": "APL-851",
+      "uuid": "3483224c-17cc-427f-b7df-5127df177721",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-851/task-fr-mig-005-02-stable-final-delta-and-exclusion-ledger",
+      "parent_uuid": "c41cc148-1470-4d12-bd94-b2bdf8f6a374",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-005-01"
+      ],
+      "blocked_by_uuids": [
+        "f25b22e9-3561-4700-9d92-cbde47499719"
+      ]
+    },
+    "TASK-FR-MIG-005-03": {
+      "canonical_id": "TASK-FR-MIG-005-03",
+      "story_id": "FR-MIG-005",
+      "id": "APL-853",
+      "uuid": "9f25b2b3-3162-4693-8591-f661464f9321",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-853/task-fr-mig-005-03-write-and-official-period-publication-interlocks",
+      "parent_uuid": "c41cc148-1470-4d12-bd94-b2bdf8f6a374",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-005-02"
+      ],
+      "blocked_by_uuids": [
+        "3483224c-17cc-427f-b7df-5127df177721"
+      ]
+    },
+    "TASK-FR-MIG-005-04": {
+      "canonical_id": "TASK-FR-MIG-005-04",
+      "story_id": "FR-MIG-005",
+      "id": "APL-855",
+      "uuid": "0eeba23b-0ce0-4c50-bfec-3f5bef602fa4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-855/task-fr-mig-005-04-post-switch-rollback-replay-manifest",
+      "parent_uuid": "c41cc148-1470-4d12-bd94-b2bdf8f6a374",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-005-03"
+      ],
+      "blocked_by_uuids": [
+        "9f25b2b3-3162-4693-8591-f661464f9321"
+      ]
+    },
+    "TASK-FR-MIG-006-01": {
+      "canonical_id": "TASK-FR-MIG-006-01",
+      "story_id": "FR-MIG-006",
+      "id": "APL-856",
+      "uuid": "33b81aa3-44ae-4925-8be0-948dc735bee1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-856/task-fr-mig-006-01-role-specific-synthetic-practice-catalogue",
+      "parent_uuid": "d9cb63ff-4f65-49c7-aa41-ded48b732157",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-006-02": {
+      "canonical_id": "TASK-FR-MIG-006-02",
+      "story_id": "FR-MIG-006",
+      "id": "APL-859",
+      "uuid": "3ac96329-5aa5-415f-893e-f57e6cf635a2",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-859/task-fr-mig-006-02-practice-assignment-and-scope-verification-view",
+      "parent_uuid": "d9cb63ff-4f65-49c7-aa41-ded48b732157",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-006-01"
+      ],
+      "blocked_by_uuids": [
+        "33b81aa3-44ae-4925-8be0-948dc735bee1"
+      ]
+    },
+    "TASK-FR-MIG-006-03": {
+      "canonical_id": "TASK-FR-MIG-006-03",
+      "story_id": "FR-MIG-006",
+      "id": "APL-861",
+      "uuid": "113a0956-2065-417d-9b32-2497fd5a76eb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-861/task-fr-mig-006-03-training-completion-and-production-access",
+      "parent_uuid": "d9cb63ff-4f65-49c7-aa41-ded48b732157",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-006-02"
+      ],
+      "blocked_by_uuids": [
+        "3ac96329-5aa5-415f-893e-f57e6cf635a2"
+      ]
+    },
+    "TASK-FR-MIG-008-01": {
+      "canonical_id": "TASK-FR-MIG-008-01",
+      "story_id": "FR-MIG-008",
+      "id": "APL-863",
+      "uuid": "432316bb-a958-4f0c-b0f2-ceb1f86c4a82",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-863/task-fr-mig-008-01-closure-retrieval-and-retention-decision-manifest",
+      "parent_uuid": "35cb2904-a343-4bea-81fc-c87afc869f31",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": []
+    },
+    "TASK-FR-MIG-008-02": {
+      "canonical_id": "TASK-FR-MIG-008-02",
+      "story_id": "FR-MIG-008",
+      "id": "APL-865",
+      "uuid": "32cdfcf9-8db0-49b2-bad2-1e5b4e0292a8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-865/task-fr-mig-008-02-access-termination-and-retention-outcome-recorder",
+      "parent_uuid": "35cb2904-a343-4bea-81fc-c87afc869f31",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-008-01"
+      ],
+      "blocked_by_uuids": [
+        "432316bb-a958-4f0c-b0f2-ceb1f86c4a82"
+      ]
+    },
+    "TASK-FR-MIG-008-03": {
+      "canonical_id": "TASK-FR-MIG-008-03",
+      "story_id": "FR-MIG-008",
+      "id": "APL-867",
+      "uuid": "43e5a0f1-9173-445e-b4c2-646f578a13a2",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-867/task-fr-mig-008-03-owner-closure-evidence-view",
+      "parent_uuid": "35cb2904-a343-4bea-81fc-c87afc869f31",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-008-02"
+      ],
+      "blocked_by_uuids": [
+        "32cdfcf9-8db0-49b2-bad2-1e5b4e0292a8"
+      ]
+    },
+    "TASK-FR-MIG-008-04": {
+      "canonical_id": "TASK-FR-MIG-008-04",
+      "story_id": "FR-MIG-008",
+      "id": "APL-869",
+      "uuid": "012fbbfe-a33b-42cb-b1ec-9e0d7c22498c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-869/task-fr-mig-008-04-held-data-and-irreversible-deletion-refusal-drill",
+      "parent_uuid": "35cb2904-a343-4bea-81fc-c87afc869f31",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [
+        "TASK-FR-MIG-008-03"
+      ],
+      "blocked_by_uuids": [
+        "43e5a0f1-9173-445e-b4c2-646f578a13a2"
+      ]
+    },
+    "TASK-VF-AIQ-003-01": {
+      "canonical_id": "TASK-VF-AIQ-003-01",
+      "story_id": "VF-AIQ-003",
+      "id": "APL-870",
+      "uuid": "209d6e84-fff3-422b-b501-e3c25cf76b45",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-870/task-vf-aiq-003-01-independent-field-and-question-evaluation-manifest",
+      "parent_uuid": "0e47a417-f9c8-4919-b789-0aba7e405c09",
+      "milestone_uuid": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "depends_on": [],
+      "blocked_by_uuids": [],
+      "reconciled_after_interrupted_response": true
+    }
+  },
+  "errors": []
+}

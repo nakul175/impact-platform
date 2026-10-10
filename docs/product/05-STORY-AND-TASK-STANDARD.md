@@ -109,7 +109,7 @@ The owner and implementing engineer record a dated Ready decision only when all 
 - Dependencies are available or deliberately selected in the same sprint with an executable order; unresolved owner decisions have been closed or explicitly removed from the slice.
 - Technical tasks and their dependencies are reviewed, story points are confirmed and actual capacity is considered. Existing source points are planning inputs, not elapsed-time promises.
 
-The four Sprint 2 candidates have proposed tasks in [technical-tasks.json](technical-tasks.json). They still have unresolved refinement decisions and remain Backlog. The other active stories are refined just before their release/sprint; the existence of an importable card does not establish Ready for all 368 active stories.
+The four Sprint 2 candidates retain their original proposed tasks in [technical-tasks.json](technical-tasks.json). At Nakul's explicit request, [complete backlog refinement](10-COMPLETE-BACKLOG-REFINEMENT.md) now adds a separate task and scenario-test proposal for all 368 active stories. Native expansion is tracked separately in the continuation checkpoint. Decisions remain explicit and source workflow states are unchanged. A complete written proposal does not establish Ready; the owner and engineer must resolve this checklist before selecting each slice.
 
 ## 6. Definition of Done and evidence record
 
@@ -123,4 +123,4 @@ A story Done decision names the accepted revision and any residual limitations. 
 
 ## 7. Refinement and later technical tasks
 
-Keep the complete active story catalogue and release/epic mapping available now. Provide buildable technical detail for the next candidate sprint, then refine the next stories during each sprint. The task manifest is a deliberate 24-task proposal for four stories, not a claim that hundreds of future stories have fully reviewed task plans. Later refinement repeats this standard with the then-current code and constraints, preserves stable IDs and historical decisions, and reconciles rather than duplicating imported Linear issues.
+The original 24-task next-sprint manifest remains an immutable planning baseline. Nakul's 10 October request authorises a full 368-story proposal now, saved separately in [backlog-refinement.json](refinement/backlog-refinement.json). Revisit each proposal with then-current code, owner decisions and capacity before implementation. Preserve stable IDs, original criteria and historical decisions; reconcile human changes rather than recreating or resetting imported Linear issues. Native task creation and additive story updates resume only through the recorded approval gate and receipt reconciliation.

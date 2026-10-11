@@ -1,0 +1,91 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T14:38:42.490573+00:00",
+  "tested_base_head": "fdd8e262af57298c3420001a275a84f41cb30bcc",
+  "stage": "UNREGISTERED_NATIVE_STORAGE_SHAPE_EXPERIMENT",
+  "draft_sql_sha256": "f879bfd44f09a1939155f33cece4e4e165600fa2ff9433d51460b50394c718c4",
+  "new_test_sha256": "c9035d09b39fd4acf98a71071f6dd2ffb6f2590ac8c2040e4bc5a75d51159cc4",
+  "native_passed": 108,
+  "native_added_experiment_cases": 14,
+  "retained_api_resolver_shape_cases": 89,
+  "retained_worker_cases_after_prototype_teardown": 5,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "separate_release_threat_unit_passed": 46,
+  "stable_executable_pins": 279,
+  "schema": 46,
+  "all46_applied_migrations_and_application_unchanged": true,
+  "actual_controls": [
+    "10 malformed optional-reference shapes refused through restricted APP INSERT with named CHECK; original revision payload unchanged",
+    "Absent/empty/canonical references pass pure predicate; SQL NULL REMOVED branch allowed then transaction rolled back, not a governed removal",
+    "Existing restricted MIGRATOR session is nonsuperuser/NOBYPASSRLS; SET ROLE impact_owner sees both synthetic tenant IDs through existing0018 worker_tenant_directory policy; unset revision context sees0, per-tenant revision scan remains fenced",
+    "Pure immutable invoker helper uses pg_catalog search_path; execution only existing app/worker/platform/privacy writers; identity denied",
+    "Unchanged actual worker authority-expiry reminder and pinned export assertion functions run while prototype constraint active, before teardown"
+  ],
+  "earlier_attempts": [
+    {
+      "run": 1,
+      "passed": 105,
+      "failed": 1,
+      "errors": 1,
+      "reason": "New fixture explicit rollback forbidden within psycopg transaction; post-cleanup assertion lacked owner context. Prototype DDL cleanup executed; cluster stopped."
+    },
+    {
+      "run": 2,
+      "passed": 106,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "run": 3,
+      "exit": 2,
+      "test_execution": "NONE_COLLECTION_REFUSED",
+      "reason": "New compatibility check imported nonexistent test_exports rather than actual test_report_exports; collection refused, no pass credit. Copied XML retained only as wrapper output, raw collection log authoritative."
+    },
+    {
+      "run": 4,
+      "passed": 108,
+      "failed": 0,
+      "errors": 0
+    }
+  ],
+  "reviews": {
+    "code": "Separate self-review inspected closed array/key/canonical/duplicate/bounds shape, pure invoker permissions, named SQL constraint refusal, existing tenant directory policy and per-tenant fences. No FK relation, kind/existence check or automatic linkage. References to nonexistent but well-shaped IDs intentionally pass shape helper; API availability remains separate.",
+    "evidence": "Separate self-review parsed108 native nodes including14 new experiment cases and46 separate release/threat unit nodes, exact final source pins and DRAFT hash, initial fixture/collection failures, prototype removal assertion and clusterstop0. Existing reminder/export checks actually invoked under active fixture. Not populated upgrade/backfill, source cleanup/privacy workflow, recovery, UI, human acceptance or deployment."
+  },
+  "cleanup": "Prototype CHECK/helper removed by restricted migrator with explicit absence assertion, runner ended, clusterstop0; historical generated evidence unchanged",
+  "remaining": [
+    "Implement atomic tenant-keyed typed reference linkage without history rewrite",
+    "Prove populated all-tenant upgrade/rollback and governed relation privacy lifecycle",
+    "Source privacy/retention races, accessible selector UI, recovery and integrated qualification",
+    "Required exact-head hosted/container/human/operational/owner and external/financial gates"
+  ],
+  "registered_migration": false,
+  "human_signoff": false,
+  "deployed": false,
+  "verified_delivered_stories": 0,
+  "evidence_sha256": {
+    "release-check.log": "420938d18996afd8b0d540883178e762ed8e8ea2920094829d9e3fbca8417011",
+    "run-1/RUN-RECEIPT.json": "5a4477e26575296e418c26c464cc6fbe67ce3c26c291e0aaece2d9ff66c7babb",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "eef189111536331a0570faa23a44590b1164d97b8ad9ead261549a8c27e60586",
+    "run-1/integrated-worker-fence.log": "618e87e142b057a1e616a0351f80edc3d4943ab47d90ab13e6e8664c7e4d6041",
+    "run-2/RUN-RECEIPT.json": "906ce9bd0375d0722a937120df06010781454f56d1072ef475c946ac08292407",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "a872902d1bfcf32df9c3398bcf484c00dec4f00a27ba94a805341fcf5ed60708",
+    "run-2/integrated-worker-fence.log": "9365e9924234dac0e00712c788f5fee0473229ddb0d26b331ecff0973fe9c7cf",
+    "run-3/RUN-RECEIPT.json": "c38f46ec410006ce3ab5b2261e0d15ed5fd7beb94b1eb0089bdeba15c2b3b8a6",
+    "run-3/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-3/integrated-worker-fence-tests.xml": "f35213f2aae224aba0a9fe61dec614d29744431d8613a136cd32689e0c73bb81",
+    "run-3/integrated-worker-fence.log": "6c2cca412fc757a7845d4dff3d14a997f0f68993c397631e9551ce31918d3579",
+    "run-4/RUN-RECEIPT.json": "43c85bbbb1a50afa46ef688b648e9106bda9bd953e6ef3f5fa95a022dabf9f27",
+    "run-4/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-4/integrated-worker-fence-tests.xml": "7cacc935831cccf4c131472c5ed4a737796925dd0fd09ac94a040243df7d222c",
+    "run-4/integrated-worker-fence.log": "2fce824a9071468a697cdbe5e7801575759b5347508979ec255e572eaa272a46",
+    "tested-DRAFT.sql": "f879bfd44f09a1939155f33cece4e4e165600fa2ff9433d51460b50394c718c4",
+    "unit.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611",
+    "unit.xml": "27893febcecc0344280e7d12c794951a030333b9647b207d2f9e35a8b97a04a6"
+  }
+}

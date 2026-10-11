@@ -1104,7 +1104,8 @@
         "qualification/test_ai_diagnosis_live.py::test_unknown_server_fields_and_reference_selectors_are_rejected_before_writes",
         "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order",
         "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused",
-        "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains"
+        "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains",
+        "qualification/test_ai_diagnosis_evidence_shape_experiment_native.py::test_actual_app_sql_refuses_malformed_optional_references"
       ],
       "coverage": {
         "C-CLOSED-DTO": [

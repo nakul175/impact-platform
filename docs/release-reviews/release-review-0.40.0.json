@@ -437,6 +437,26 @@
       "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-09",
+      "change_id": "US-DX-01a-source-shape",
+      "change": "Prepare and qualify an unregistered pure optional-reference storage predicate",
+      "paths": [
+        "docs/engineering/delivery-system-20261011/diagnosis-evidence-shape.DRAFT.sql",
+        "qualification/test_ai_diagnosis_evidence_shape_experiment_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Disposable experiment only: restricted migrator installs a pure invoker optional-reference CHECK, restricted APP SQL rejects malformed selectors, then teardown removes prototype. No registered migration, schema bump, relation or runtime application change. Existing writer-only pure predicate execution is bounded to app/worker/platform/privacy; no data or identity grant. Existing worker_tenant_directory policy permits owner tenant inventory without disabling forced RLS; per-tenant revision access remains fenced. Native reminder/export and cleanup evidence are separate, not binding/backfill/recovery/privacy workflow acceptance.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

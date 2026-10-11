@@ -1,0 +1,24 @@
+{
+  "phase": "source review",
+  "reviewer": "root agent; no independent human acceptance",
+  "observed_at": "2026-10-11T10:25:03.714781+00:00",
+  "source_sha256": "74c043b9553a147fb87ab925850335c6aae2a5a247232bbf662f7f11f6ceaf06",
+  "change": "Extend existing queued current-authority matrix from create/edit/create-replay to include complete/revise/complete-replay/revise-replay under withdrawn read/manage capability",
+  "prior_assertions_retained": true,
+  "oracle": "Observed pg_stat_activity advisory wait before synthetic grant narrowing, actual HTTP404 RESOURCE_UNAVAILABLE, unchanged domain counts and historic current data, exact grant restoration and same command succeeds; replay returns exact original receipt with unchanged counts",
+  "limits": [
+    "Synthetic projection grant narrowing, not governed revocation workflow",
+    "Development fixture identities on real native PostgreSQL, not live provider",
+    "Focused native run, not full regression/recovery/container/hosted CI"
+  ],
+  "runtime_probe": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "docker_cli": null,
+    "podman_cli": null,
+    "colima_cli": null,
+    "lima_cli": null,
+    "docker_app_installed": false,
+    "container_gate": "NOT RUN; no available local container engine discovered"
+  }
+}

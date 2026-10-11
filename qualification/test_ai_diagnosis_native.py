@@ -14,7 +14,7 @@ import time
 import psycopg
 import pytest
 
-from test_ai_diagnosis_live import diagnosis, domain_counts, get, save
+from test_ai_diagnosis_live import action, action_body, diagnosis, domain_counts, get, save
 from test_live_application import cmd
 from test_native_concurrency import count, outcomes, race, sender
 from test_native_roles import denied
@@ -162,7 +162,9 @@ def test_native_two_diagnosis_edits_publish_one_authoritative_head_and_one_confl
 
 
 @pytest.mark.parametrize("capability", ["ai.diagnosis.read", "ai.diagnosis.manage"])
-@pytest.mark.parametrize("command", ["create", "edit", "replay"])
+@pytest.mark.parametrize(
+    "command", ["create", "edit", "replay", "complete", "revise", "complete_replay", "revise_replay"]
+)
 def test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay(
     live, capability, command
 ):
@@ -173,6 +175,8 @@ def test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or
     """
     creation = cmd(diagnosis())
     row = save(live, body=creation)
+    if command in {"revise", "revise_replay"}:
+        row = action(live, row, "complete")
     original = get(live, row)
     tenant = live.fixture["tenant_a"]
     principal = live.fixture["actors"]["admin"]["principal_id"]
@@ -185,6 +189,16 @@ def test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or
         data = {key: deepcopy(original["data"][key]) for key in ("title", "problems", "priority_order")}
         data["title"] = "Synthetic queued edit under withdrawn authority"
         body = cmd(data, row["revision_id"])
+    elif command in {"complete", "revise", "complete_replay", "revise_replay"}:
+        name = command.removesuffix("_replay")
+        path += "/" + row["object_id"] + "/actions/" + name
+        expected = 200
+        body = action_body(
+            row, **({"reason": "Synthetic queued reasoned correction"} if name == "revise" else {})
+        )
+        if command.endswith("_replay"):
+            row = action(live, row, name, body)
+            original = get(live, row)
     token = live.token("admin")
     before = domain_counts(live)
     grants = []
@@ -238,5 +252,5 @@ def test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or
     # used to hide an unauthorised side effect from the queued attempt.
     response = live.request(path, actor="admin", method=method, body=body)
     assert response.status_code == expected, response.text
-    if command == "replay":
+    if command in {"replay", "complete_replay", "revise_replay"}:
         assert response.json() == row and domain_counts(live) == before

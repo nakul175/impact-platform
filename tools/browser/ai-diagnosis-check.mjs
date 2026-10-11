@@ -877,6 +877,23 @@ try {
         "Supporting evidence for " + problem.description,
       ).fill(problem.supporting_evidence);
     }
+    eq(
+      await region()
+        .getByRole("button", { name: /Choose saved evidence/ })
+        .count(),
+      0,
+      "Default diagnosis admin has no Evidence selector without evidence.read",
+    );
+    eq(
+      await region()
+        .getByText(
+          "Evidence read access is needed to choose saved evidence. You can still enter supporting notes.",
+          { exact: true },
+        )
+        .count(),
+      2,
+      "Notes remain usable without widening Evidence access",
+    );
     const ids = await region()
       .locator("li[data-problem-id]")
       .evaluateAll((rows) =>

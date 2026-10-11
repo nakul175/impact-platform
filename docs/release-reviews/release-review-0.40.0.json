@@ -479,6 +479,26 @@
       "prepared_by": "Codex root agent; separate code/evidence self-review, no human confirmation",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-11",
+      "change": "Add optional protected Evidence selection to diagnosis worksheet",
+      "paths": [
+        "apps/web/src/AIDiagnosis.tsx",
+        "tools/browser/ai-diagnosis-check.mjs",
+        "tools/browser/ai-diagnosis-uncertain-command-check.cjs"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Canonical exact selectors only; notes required and no default permission widening. Bounded current-authority Evidence metadata pages; source GET before selecting, changed-version refusal, late response invalidation, capability/session/tenant keyed remount. Actual adapter10 and native browser9 groups295 assertions scoped separately; positive selector browser path and external gates pending.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

@@ -1,0 +1,5 @@
+change set: 0 paths since HEAD (ec891997066b)
+register: 36 threats, 76 controls, 2 chains; open: 14 critical, 13 other, 2 chains
+open critical: TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34
+FAIL release review: impact_reviews/10: 'change_id' is a required property
+release review check failed: 1 problem(s)

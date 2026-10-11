@@ -1,11 +1,22 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import "./ai-diagnosis.css";
 
+type EvidenceReference = { object_id: string; revision_id: string };
+type EvidenceChoice = EvidenceReference & {
+  data: {
+    filename?: string;
+    evidence_type?: string;
+    upload_id?: string;
+    scan_state?: string;
+    external_reference?: string;
+  };
+};
 export type DiagnosisProblem = {
   problem_id: string;
   description: string;
   affected_area: string;
   supporting_evidence: string;
+  evidence_references?: EvidenceReference[];
 };
 export type DiagnosisDraft = {
   title: string;
@@ -73,6 +84,54 @@ const refusalCodes = new Set([
   "LIMIT_EXCEEDED",
   "ASSURANCE_REQUIRED",
 ]);
+function validReferences(value: unknown): value is EvidenceReference[] {
+  return (
+    Array.isArray(value) &&
+    value.length <= 5 &&
+    value.every(
+      (item) =>
+        item &&
+        typeof item === "object" &&
+        Object.keys(item).sort().join(",") === "object_id,revision_id" &&
+        typeof item.object_id === "string" &&
+        UUID.test(item.object_id) &&
+        item.object_id === item.object_id.toLowerCase() &&
+        typeof item.revision_id === "string" &&
+        UUID.test(item.revision_id) &&
+        item.revision_id === item.revision_id.toLowerCase(),
+    ) &&
+    new Set(value.map((item) => item.object_id + ":" + item.revision_id))
+      .size === value.length
+  );
+}
+function isEvidenceChoice(value: unknown): value is EvidenceChoice {
+  if (!value || typeof value !== "object") return false;
+  const item = value as EvidenceChoice;
+  return (
+    validReferences([
+      { object_id: item.object_id, revision_id: item.revision_id },
+    ]) &&
+    !!item.data &&
+    typeof item.data === "object" &&
+    !Array.isArray(item.data) &&
+    [
+      "filename",
+      "evidence_type",
+      "upload_id",
+      "scan_state",
+      "external_reference",
+    ].every(
+      (key) =>
+        item.data[key as keyof EvidenceChoice["data"]] === undefined ||
+        typeof item.data[key as keyof EvidenceChoice["data"]] === "string",
+    )
+  );
+}
+function selectableEvidence(item: EvidenceChoice) {
+  return item.data.upload_id
+    ? item.data.scan_state === "CLEAN"
+    : !!item.data.external_reference?.trim();
+}
 function isDraft(value: unknown): value is DiagnosisDraft {
   if (!value || typeof value !== "object") return false;
   const data = value as DiagnosisDraft;
@@ -102,7 +161,9 @@ function isDraft(value: unknown): value is DiagnosisDraft {
       typeof problem.affected_area !== "string" ||
       problem.affected_area.length > 150 ||
       typeof problem.supporting_evidence !== "string" ||
-      problem.supporting_evidence.length > 4000
+      problem.supporting_evidence.length > 4000 ||
+      (problem.evidence_references !== undefined &&
+        !validReferences(problem.evidence_references))
     )
       return false;
     seen.add(problem.problem_id);
@@ -178,6 +239,7 @@ export function AIDiagnosisPanel(props: Props) {
         props.sessionIdentity,
         canRead,
         canManage,
+        props.capabilities.includes("evidence.read"),
       ])}
       {...props}
       canRead={canRead}
@@ -192,7 +254,17 @@ function DiagnosisWorkspace({
   explain,
   canRead,
   canManage,
+  capabilities,
 }: Props & { canRead: boolean; canManage: boolean }) {
+  const canReadEvidence = capabilities.includes("evidence.read");
+  const [evidenceProblem, setEvidenceProblem] = useState<string | null>(null);
+  const [evidenceChoices, setEvidenceChoices] = useState<EvidenceChoice[]>([]);
+  const [evidenceCursor, setEvidenceCursor] = useState<string | null>(null);
+  const [evidenceError, setEvidenceError] = useState("");
+  const [evidenceBusy, setEvidenceBusy] = useState(false);
+  const evidenceReads = useRef(0);
+  const evidenceSending = useRef(false);
+  const evidenceTarget = useRef<string | null>(null);
   const id = useId();
   const headingId = id + "-diagnosis-heading";
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
@@ -248,7 +320,136 @@ function DiagnosisWorkspace({
       controllers.current.delete(controller);
     }
   }
+  function clearEvidence() {
+    ++evidenceReads.current;
+    evidenceTarget.current = null;
+    evidenceSending.current = false;
+    setEvidenceProblem(null);
+    setEvidenceChoices([]);
+    setEvidenceCursor(null);
+    setEvidenceError("");
+    setEvidenceBusy(false);
+  }
+  async function loadEvidence(problemId: string, cursor?: string) {
+    if (
+      !active() ||
+      !canEdit ||
+      editingBlocked ||
+      !canReadEvidence ||
+      evidenceSending.current
+    )
+      return;
+    const generation = ++evidenceReads.current;
+    evidenceSending.current = true;
+    evidenceTarget.current = problemId;
+    setEvidenceProblem(problemId);
+    setEvidenceBusy(true);
+    setEvidenceError("");
+    if (!cursor) {
+      setEvidenceChoices([]);
+      setEvidenceCursor(null);
+    }
+    try {
+      const page = await guardedRequest(
+        base +
+          "evidence?limit=20" +
+          (cursor ? "&cursor=" + encodeURIComponent(cursor) : ""),
+      );
+      if (!active() || generation !== evidenceReads.current) return;
+      if (
+        !page ||
+        !Array.isArray(page.items) ||
+        page.items.length > 20 ||
+        !page.items.every(isEvidenceChoice) ||
+        (page.next_cursor !== null && typeof page.next_cursor !== "string")
+      )
+        throw new Error("Evidence choices could not be read safely.");
+      // Replace each bounded page: no unbounded accumulation of protected metadata.
+      setEvidenceChoices(page.items.filter(selectableEvidence));
+      setEvidenceCursor(page.next_cursor);
+    } catch {
+      if (!active() || generation !== evidenceReads.current) return;
+      setEvidenceChoices([]);
+      setEvidenceCursor(null);
+      setEvidenceError(
+        "Evidence is unavailable. Check your access and try again.",
+      );
+    } finally {
+      if (active() && generation === evidenceReads.current) {
+        evidenceSending.current = false;
+        setEvidenceBusy(false);
+      }
+    }
+  }
+  async function chooseEvidence(problemId: string, item: EvidenceChoice) {
+    if (
+      !active() ||
+      !canEdit ||
+      editingBlocked ||
+      !canReadEvidence ||
+      evidenceSending.current ||
+      evidenceTarget.current !== problemId
+    )
+      return;
+    const generation = ++evidenceReads.current;
+    evidenceSending.current = true;
+    setEvidenceBusy(true);
+    setEvidenceError("");
+    try {
+      const current = await guardedRequest(base + "evidence/" + item.object_id);
+      if (!active() || generation !== evidenceReads.current) return;
+      if (
+        !isEvidenceChoice(current) ||
+        current.object_id !== item.object_id ||
+        !selectableEvidence(current)
+      )
+        throw new Error("Evidence unavailable");
+      if (current.revision_id !== item.revision_id) {
+        setEvidenceChoices([]);
+        setEvidenceCursor(null);
+        setEvidenceError(
+          "This evidence changed. Reload the choices before selecting its new version.",
+        );
+        return;
+      }
+      // A concurrent edit or pending command invalidates this picker before its response arrives.
+      const problem = draft.problems.find(
+        (value) => value.problem_id === problemId,
+      );
+      if (!problem || (problem.evidence_references?.length || 0) >= 5) return;
+      const refs = problem.evidence_references || [];
+      if (
+        refs.some(
+          (value) =>
+            value.object_id === item.object_id &&
+            value.revision_id === item.revision_id,
+        )
+      )
+        return;
+      changeProblem(problemId, {
+        evidence_references: [
+          ...refs,
+          { object_id: item.object_id, revision_id: item.revision_id },
+        ],
+      });
+      clearEvidence();
+      setNotice(
+        "Evidence version selected. Save the diagnosis to keep this link.",
+      );
+    } catch {
+      if (!active() || generation !== evidenceReads.current) return;
+      setEvidenceChoices([]);
+      setEvidenceCursor(null);
+      setEvidenceError("Evidence is unavailable. No link was added.");
+    } finally {
+      if (active() && generation === evidenceReads.current) {
+        evidenceSending.current = false;
+        setEvidenceBusy(false);
+      }
+    }
+  }
   function hideUnavailable() {
+    clearEvidence();
     authorityInvalidated.current = true;
     reads.current += 1;
     for (const controller of controllers.current) controller.abort();
@@ -328,6 +529,7 @@ function DiagnosisWorkspace({
 
   function install(value: Diagnosis) {
     if (!active()) return;
+    clearEvidence();
     const data = draftOf(value);
     setHead(value);
     setDraft(data);
@@ -381,6 +583,7 @@ function DiagnosisWorkspace({
       setSwitchRequest(value);
       return;
     }
+    clearEvidence();
     setSwitchRequest(null);
     setNotice("");
     if (value.kind === "select") void selectDiagnosis(value.id);
@@ -398,6 +601,7 @@ function DiagnosisWorkspace({
   }
   function change(next: DiagnosisDraft) {
     if (!active() || !canEdit || editingBlocked) return;
+    clearEvidence();
     setDraft(next);
     setNotice("");
     setMissing([]);
@@ -429,6 +633,7 @@ function DiagnosisWorkspace({
     if (!active() || sending.current || !canRead || !canManage || unavailable)
       return;
     if (pendingRef.current && pendingRef.current !== command) return;
+    clearEvidence();
     sending.current = true;
     pendingRef.current = command;
     setPending(command);
@@ -915,6 +1120,139 @@ function DiagnosisWorkspace({
                               }
                             />
                           </label>
+                          <section aria-label={`Evidence links for ${name}`}>
+                            <p className="muted">
+                              Optional saved evidence links supplement your
+                              notes. A link is not verification or approval.
+                            </p>
+                            {!!problem.evidence_references?.length && (
+                              <ul>
+                                {problem.evidence_references.map(
+                                  (ref, index) => (
+                                    <li key={ref.object_id + ref.revision_id}>
+                                      <span>
+                                        Evidence link {index + 1}:{" "}
+                                        {ref.object_id} · version{" "}
+                                        {ref.revision_id}
+                                      </span>
+                                      {canEdit && !editingBlocked && (
+                                        <button
+                                          type="button"
+                                          aria-label={`Remove evidence link ${index + 1} for ${name}`}
+                                          onClick={() =>
+                                            changeProblem(problem.problem_id, {
+                                              evidence_references:
+                                                problem.evidence_references!.filter(
+                                                  (_, position) =>
+                                                    position !== index,
+                                                ),
+                                            })
+                                          }
+                                        >
+                                          Remove link
+                                        </button>
+                                      )}
+                                    </li>
+                                  ),
+                                )}
+                              </ul>
+                            )}
+                            {canEdit && !editingBlocked && canReadEvidence && (
+                              <button
+                                type="button"
+                                disabled={
+                                  (problem.evidence_references?.length || 0) >=
+                                    5 || evidenceBusy
+                                }
+                                onClick={() =>
+                                  void loadEvidence(problem.problem_id)
+                                }
+                              >
+                                Choose saved evidence for {name}
+                              </button>
+                            )}
+                            {canEdit && !canReadEvidence && (
+                              <p className="muted">
+                                Evidence read access is needed to choose saved
+                                evidence. You can still enter supporting notes.
+                              </p>
+                            )}
+                            {evidenceProblem === problem.problem_id && (
+                              <fieldset
+                                aria-label={`Choose evidence for ${name}`}
+                                disabled={evidenceBusy || editingBlocked}
+                              >
+                                <legend>
+                                  Choose one saved evidence version
+                                </legend>
+                                {evidenceBusy && (
+                                  <p role="status">Checking evidence access…</p>
+                                )}
+                                {evidenceError && (
+                                  <p role="alert">{evidenceError}</p>
+                                )}
+                                {!evidenceBusy &&
+                                  !evidenceError &&
+                                  !evidenceChoices.length && (
+                                    <p>No selectable evidence on this page.</p>
+                                  )}
+                                <ul>
+                                  {evidenceChoices.map((item, index) => (
+                                    <li key={item.object_id + item.revision_id}>
+                                      <button
+                                        type="button"
+                                        disabled={
+                                          !!problem.evidence_references?.some(
+                                            (ref) =>
+                                              ref.object_id ===
+                                                item.object_id &&
+                                              ref.revision_id ===
+                                                item.revision_id,
+                                          )
+                                        }
+                                        onClick={() =>
+                                          void chooseEvidence(
+                                            problem.problem_id,
+                                            item,
+                                          )
+                                        }
+                                      >
+                                        Select{" "}
+                                        {item.data.filename ||
+                                          item.data.evidence_type ||
+                                          `evidence ${index + 1}`}{" "}
+                                        · version {item.revision_id}
+                                      </button>
+                                    </li>
+                                  ))}
+                                </ul>
+                                {evidenceCursor && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      void loadEvidence(
+                                        problem.problem_id,
+                                        evidenceCursor,
+                                      )
+                                    }
+                                  >
+                                    Next evidence page
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    void loadEvidence(problem.problem_id)
+                                  }
+                                >
+                                  Reload evidence choices
+                                </button>
+                                <button type="button" onClick={clearEvidence}>
+                                  Close evidence choices
+                                </button>
+                              </fieldset>
+                            )}
+                          </section>
                           {canEdit && !editingBlocked && (
                             <div className="ai-actions">
                               {position < 0 ? (

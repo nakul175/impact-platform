@@ -1,0 +1,32 @@
+2026-10-12 00:06:46,665 INFO impact.worker worker restart-worker-c3b050 started build=0.40.0 adapter=synthetic
+2026-10-12 00:06:46,710 INFO impact.worker retention sweep bea5708c-b583-4e23-a988-ca040e404ed3 {"OPERATION_RECEIPT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "OUTBOX_RECIPIENT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "PRIVACY_EXPORT_PACKAGE": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "SECURITY_EVENT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "UPLOAD_SESSION": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}
+2026-10-12 00:06:46,725 INFO impact.worker retention sweep 120095f8-28a0-4a91-9d31-9669ee8fbcd8 {"OPERATION_RECEIPT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "OUTBOX_RECIPIENT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "PRIVACY_EXPORT_PACKAGE": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "SECURITY_EVENT": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "UPLOAD_SESSION": {"affected": 0, "items_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}
+2026-10-12 00:06:46,727 INFO impact.worker worker iteration {"cancelled": 0, "claimed": 0, "dead": 0, "exports_cancelled": 0, "exports_claimed": 0, "exports_failed": 0, "exports_retried": 0, "exports_succeeded": 0, "refused_cancellations": 0, "released": 0, "reminders": 0, "retention_claimed": 2, "retention_failed": 0, "retention_scheduled": 2, "retention_swept": 2, "retried": 0, "sent": 0, "stale_refused": 0, "superseded": 0, "tenant_failures": 0, "tenants": 2}
+2026-10-12 00:06:52,283 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:52,598 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:52,906 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:53,220 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:53,530 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:53,843 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:54,153 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:54,465 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:54,780 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:55,089 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:55,400 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:55,714 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:56,028 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:56,338 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:56,645 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:56,954 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:57,268 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:57,576 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:57,889 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:58,198 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:58,514 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:58,827 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:59,138 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:59,444 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:06:59,753 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:07:00,064 WARNING impact.worker worker iteration failed class=ProtocolViolation
+2026-10-12 00:07:00,862 INFO impact.worker worker restart-worker-c3b050 stopping on signal 15
+2026-10-12 00:07:00,867 INFO impact.worker worker restart-worker-c3b050 stopped

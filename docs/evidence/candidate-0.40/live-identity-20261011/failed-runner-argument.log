@@ -1,0 +1,6 @@
+usage: run.py [-h] [--native] [--ephemeral] [--pytest-path PYTEST_PATH]
+              [--skip-upgrade-check] [--skip-restart-check]
+              [--skip-restore-drill] [--perf] [--no-worker]
+              [--pooler {pgbouncer}] [--idp {keycloak}]
+              {dev,check,test,browser,admin-browser,measurement-browser,planning-browser,ai-enablement-browser,ai-diagnosis-browser,ai-planning-browser,ai-saved-review-browser,ai-walkthrough-browser,tola-ai-sprint-browser,tola-ai-extension-browser,ai-plan-export-browser,ai-policy-browser,ai-ranking-browser,ai-disclosure-browser,dashboard-browser,forms-browser,reporting-browser,workspace-browser,tenant-browser,bootstrap-browser,recovery-browser,renewal-browser,import-browser,evidence-browser,export-browser,requeue-browser,a11y-browser,operators-browser,status-browser,idp-browser}
+run.py: error: unrecognized arguments: qualification/test_ai_diagnosis_idp.py

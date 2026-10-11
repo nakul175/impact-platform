@@ -1,0 +1,9 @@
+{
+  "java_source": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.12.1_1.tar.gz",
+  "java_sha256": "3623232f33a9c3baadf304480b2535f9a3cba8a58d42ecbb438ba267315d9998",
+  "java_archive_sha256": "3623232f33a9c3baadf304480b2535f9a3cba8a58d42ecbb438ba267315d9998",
+  "java_version": "Temurin21.0.12.1+1 macOS aarch64",
+  "keycloak_version": "26.7.4",
+  "keycloak_archive_sha256": "04823c336b797a7e18889a44262a7a64e6bf624cbbcc518c85e2622176ff2eee",
+  "scope": "Private project-local free runtime; no system installation, production resource or spending"
+}

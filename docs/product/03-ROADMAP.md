@@ -28,3 +28,28 @@ This order is a proposal for refinement, not a sprint commitment. It neither acc
 ## Change rules
 
 Refresh the roadmap when evidence or an owner decision changes a release outcome. Record the reason, affected stories, dependencies and acceptance consequences in the delivery system; synchronise the repository's import snapshot when the integration workflow requires it. Keep split parents for traceability and schedule only their active children. Never silently move a Must story or label a release complete because its implementation tasks are closed. Tenant isolation, independence by natural person and deterministic official arithmetic constrain every phase.
+
+
+<!-- imprana:bundle-v4.2:documentation:20261011 -->
+
+Application source 8a1e405f0086033dfb25ad834689a08bfe9f1eea; planning source eb194fdbb6fc8247db8429fc23120aa0fe659ed8; build 0.39.0, domain API 1.28.0, platform API 1.11.0, schema 43. These are source pins, not a fresh deployed-runtime assertion.
+
+This edition applies the attached Product Management Agent Bundle v4.2 / standard 3.0-generic to Imprana Commons. It adds source-bound product reasoning and executable evidence plans. Original requirements, Gherkin, estimates, priorities, workflow states, release allocations, historical decisions and human edits remain authoritative. Recommendations below are not user research, a test execution, Ready/Done, an approved sprint, financial authority or production acceptance. The current request authorises documentation refinement and Linear publication.
+
+Use the eight-tier chain: vision → strategy → roadmap → release goal → epic → user story → acceptance criterion and technical task. Criteria and tasks are sibling children of their story. Existing native epics can span releases; retain each story's real release and primary epic. A checker-only release anchor is explicitly a proposed adapter convention, never a native reparenting or scope change.
+
+## Refined outcome roadmap and scope rules — 11 October 2026
+
+| Release bucket | Active source stories | Outcome gate before the next investment | Proposed learning evidence |
+| --- | ---: | --- | --- |
+| Foundation | 6 | Traceable secure engineering, licence/rebrand/archive/backlog decisions and independent assurance; current applicable findings resolved/dispositioned through the source policy | Inspect exact release candidate and a changed requirement through code/test/migration/review/approval links |
+| R1 Pilot | 172 | A governed problem-to-follow-up journey and usable core MEL; included stories meet their original criteria and actual owner acceptance | Synthetic connected journey first; authorised representative pilot only with scoped purpose/data/baseline/operating owner |
+| R2 Scale | 139 | Multi-organisation/cohort/grantee/partner behaviour without lost isolation, consent, entitlement, recovery or exit | Paired organisations, restricted participants, changed sponsorship/permissions, workload and recovery cases |
+| R3 Ecosystem | 45 | Advanced services/analysis address approved observed needs with accountable data and commercial responsibility | Compare an advanced capability against simpler service/manual alternatives; preserve distributional and attribution limitations |
+| Later | 6 | A specific investment decision supports an optional capability; it does not inherit acceptance or funding from another release | A scoped research/qualification question and explicit include/defer/stop record |
+
+These 368 story allocations and all 54 epic memberships remain unchanged. Counts measure inventory, not effort, completion or an ETA. There is no approved calendar or converted points-to-date forecast. A narrower pilot slice requires an explicit scope decision that retains excluded Must stories in the full roadmap; this document does not silently mark them delivered or remove them.
+
+**Connected learning path:** Diagnose supplies a reviewed problem revision and evidence/baseline references; Map supplies a reviewed option/priority mapping; Discover adds disclosed capability and commercial constraints; Assess supplies a bounded trial and evaluation; Value case separates assumptions/forecast from measured observations; Deploy supplies approved operating/data/exit responsibilities; Adopt supplies capacity/support and task follow-up; Improve uses comparable review evidence to continue, change or stop. Each handoff pins its input revision and current authority; stale/hidden/revoked inputs, unsupported provenance and unapproved commercial/data obligations stay visible refusals or decisions.
+
+The next story is chosen only after its actual Ready gate: engineer/owner review, source scenarios, data/API/screen/NFR impact, prerequisites, estimate and capacity. A populated card, parser pass or synthetic smoke check does not select a sprint. The four existing In Review stories (FR-AI-001, US-DC-04, US-MP-03, FR-SEC-001) retain that state until actual acceptance is recorded.

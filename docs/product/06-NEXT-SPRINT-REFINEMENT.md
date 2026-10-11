@@ -246,3 +246,18 @@ Scenario: Reject a hidden tenant's usage request
 The task manifest names proposed test nodes and browser checks. They are a plan, with no implementation, run or pass implied. Reuse existing regression anchors where relevant: `qualification/test_ai_policy.py::test_core_workflows_complete_with_every_ai_use_case_off`, `qualification/test_ai_enablement.py::test_exact_replay_after_a_policy_change_returns_the_original_draft_only`, `qualification/test_import.py::test_large_commit_is_queued_fenced_and_reviewed`, `qualification/test_worker.py::test_queued_job_cancellation_is_honoured_and_a_running_job_is_not_cancelled`, and the existing `tools/browser/a11y-check.mjs`. Preserve the prior behaviour for existing classes while adding settlement-aware AI cancellation.
 
 For each built task, record source commit, named scenario, exact test/check and synthetic fixture, environment, result and artifact. Use native provisioned roles for RLS and native concurrent sessions for reservation, lock, cancellation and settlement races. Include restart and populated-upgrade proof when new persistence is introduced, with a newly allocated additive migration and security-impact review. Do not publish a focused run as a full-suite result. Product-owner review validates the actual built scope and remaining limits; it is not replaced by this plan or by an AI reviewer.
+
+
+<!-- imprana:bundle-v4.2:documentation:20261011 -->
+
+Application source 8a1e405f0086033dfb25ad834689a08bfe9f1eea; planning source eb194fdbb6fc8247db8429fc23120aa0fe659ed8; build 0.39.0, domain API 1.28.0, platform API 1.11.0, schema 43. These are source pins, not a fresh deployed-runtime assertion.
+
+This edition applies the attached Product Management Agent Bundle v4.2 / standard 3.0-generic to Imprana Commons. It adds source-bound product reasoning and executable evidence plans. Original requirements, Gherkin, estimates, priorities, workflow states, release allocations, historical decisions and human edits remain authoritative. Recommendations below are not user research, a test execution, Ready/Done, an approved sprint, financial authority or production acceptance. The current request authorises documentation refinement and Linear publication.
+
+Use the eight-tier chain: vision → strategy → roadmap → release goal → epic → user story → acceptance criterion and technical task. Criteria and tasks are sibling children of their story. Existing native epics can span releases; retain each story's real release and primary epic. A checker-only release anchor is explicitly a proposed adapter convention, never a native reparenting or scope change.
+
+## Refined next-sprint decision — 11 October 2026
+
+The existing 26-point four-story proposal is retained: US-DX-01a (5), US-DX-03 (8), FR-AI-016a (8), US-CM-05 (5). It is not a commitment. Recommended intent: preserve structured problems/baselines, a bounded AI job budget/policy and traceable procurement comparison before broader conversational/generative scope. Compare the simplest manual/deterministic option at each decision; no provider is selected here.
+
+Before selecting any story, use its exact new criterion/task/evidence contract and close its named decisions. Confirm current candidate reuse, input/output/interfaces, current authority/refusal tests, prerequisites, actual engineer estimate/capacity, owner agreement and affected NFR/AI scope. Define a demonstrable sprint benefit and one falsifiable learning question. Keep four prior In Review stories awaiting actual owner acceptance; this proposal cannot close them automatically.

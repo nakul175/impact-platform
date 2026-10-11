@@ -1,0 +1,1066 @@
+{
+  "edition": "imprana-task-evaluation-refinement/2026-10-11/v1",
+  "product": "Imprana Commons",
+  "created": "2026-10-11",
+  "planning_head": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+  "application_source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "application_version": {
+    "build": "0.39.0",
+    "domain_api": "1.28.0",
+    "platform_api": "1.11.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "authority": "Original backlog and task cores preserved. Additive execution/verification recommendations use the attached bundle; no owner/engineer approval, checker PASS, Ready/Done, sprint selection or run claimed.",
+  "native_update_policy": "Append reconciliation only after live issue readback; root/native writer owns publication. Preserve human edits, status, estimates, assignees, parents, milestones and every existing dependency. This file is not a bulk status update.",
+  "counts": {
+    "epics": 54,
+    "stories": 368,
+    "tasks": 1131,
+    "original_scenarios": 1328,
+    "existing_task_prerequisites": 779,
+    "new_native_issues": 0,
+    "actual_executions": 0
+  },
+  "bundle_source": {
+    "zip_path": "/Users/athena/Downloads/product-management-agent-bundle-v4.2.zip",
+    "zip_sha256": "896507ea2140a05fac0b609b8f3f625538ca4c5d28222730444e33f4eacca43d",
+    "entries": [
+      {
+        "entry": "product-management-agent-bundle-v4.2/START-HERE.md",
+        "sha256": "fab033395cdf357a970b098047372638a169fc5503ba24a355d6665817a148e9",
+        "bytes": 3905
+      },
+      {
+        "entry": "product-management-agent-bundle-v4.2/AGENTS.md",
+        "sha256": "ddeea438072942e63ba3ddc6b06828eb5b82cc4b6c02578a303c442f0c8a1cd5",
+        "bytes": 1353
+      },
+      {
+        "entry": "product-management-agent-bundle-v4.2/AI-ASSURANCE.md",
+        "sha256": "2daca863175de55394f2b063c0ffcf8da4db2b4345d01bbdcf190ba18c65e66b",
+        "bytes": 30437
+      },
+      {
+        "entry": "product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "bytes": 2125714
+      }
+    ],
+    "standard_identity_pin": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+    "identity_note": "Shipped identity from bundle entry, not a new trust-store approval or checker pass."
+  },
+  "source_preservation": "The 37 original blocks are retained byte-for-byte in the matrix; these separate notes do not insert Given into the source or increase the original scenario count.",
+  "missing_phase_notes": [
+    {
+      "criterion_id": "AC-FR-ACC-001-001",
+      "story_id": "FR-ACC-001",
+      "source_scenario": "Authorise every resource and reference",
+      "original_block_sha256": "ee0284aca0ba1089c94c143fc7018d45fe1b30954fafa01128aa362d66df80ed",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A synthetic actor has a current grant for the selected resource/action in tenant A; the resource has one permitted related reference and one reference outside that actor’s scope. The actor’s platform role and exact grant are resolved from the reviewed access contract, not inferred from the selector.",
+      "original_when_unchanged": [
+        "a request reads or writes a resource"
+      ],
+      "original_then_unchanged": [
+        "the resource and each related reference are authorised before access",
+        "a client supplied tenant or object ID is treated only as a selector"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-001-002",
+      "story_id": "FR-ACC-001",
+      "source_scenario": "Check batch items individually",
+      "original_block_sha256": "9dd3ba243027ab65a3914290a1f24e964d6b77a5408baaee5d68d8a121946c86",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A synthetic actor submits a batch containing an allowed item, an item outside their scope and a same-shaped item from tenant B. Their current grant covers only the allowed item; response outcomes must not disclose the hidden items.",
+      "original_when_unchanged": [
+        "a batch request is submitted"
+      ],
+      "original_then_unchanged": [
+        "each item is checked",
+        "only permitted item outcomes are exposed"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-001-004",
+      "story_id": "FR-ACC-001",
+      "source_scenario": "Reject leaky responses and failing open",
+      "original_block_sha256": "b8c4ddb75a2109e3aa383d63e58881aef47a81b7c070ed48e47c72f706ff6e13",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "Use two separate synthetic branches: a known actor requests a protected unknown/hidden selector; and an otherwise eligible actor’s policy resolution is deliberately unavailable. Retain the source’s disjunctive cases and a preloaded broad cache to demonstrate fail-closed behavior.",
+      "original_when_unchanged": [
+        "a protected unknown ID is requested or policy cannot be resolved"
+      ],
+      "original_then_unchanged": [
+        "RESOURCE_UNAVAILABLE is returned without record names or counts",
+        "the action is denied rather than using a cached broad role"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-002-001",
+      "story_id": "FR-ACC-002",
+      "source_scenario": "Define a fine grained grant",
+      "original_block_sha256": "37da1ed4ce922ef7767ed63e364e3373b6acbc90188fcfdf6a703a8078ceb2cd",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator is currently authorised to manage grants within a defined synthetic administration scope. Prepare separate action, project/partner scope, row condition and field-category choices; ordinary read starts without sensitive-view, download, approval or publication permission.",
+      "original_when_unchanged": [
+        "the Organisation Administrator creates a grant"
+      ],
+      "original_then_unchanged": [
+        "they select action, project or partner scope, record condition and permitted field categories separately",
+        "sensitive view, download, approval and publication are granted independently from ordinary read"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-002-002",
+      "story_id": "FR-ACC-002",
+      "source_scenario": "Apply row and field policy first",
+      "original_block_sha256": "05ed3d7056fcbf0bcb98aa4a603f238f4821db6b36e1a68034404b1019e9492f",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A synthetic member’s narrow grant permits a defined subset of rows and fields; hidden rows/fields would affect ordering, aggregates or exports if policy were applied late. Record the authorised subset as the independent expected view.",
+      "original_when_unchanged": [
+        "a member reads records"
+      ],
+      "original_then_unchanged": [
+        "row and field policy is applied before filters, sorting, aggregation or export"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-003-001",
+      "story_id": "FR-ACC-003",
+      "source_scenario": "Inspect effective access",
+      "original_block_sha256": "31074da1d568bbef3bae19326ba1c549e9fd09b334d8d8a00e16bc3aad28f403",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator has current simulation/explanation permission for one synthetic subject and selected action inside their administration scope. Prepare known grant paths, restrictions and missing assurance for that subject.",
+      "original_when_unchanged": [
+        "the Organisation Administrator inspects effective access for a selected action and a subject within their administration scope"
+      ],
+      "original_then_unchanged": [
+        "each permitted grant path, restriction and missing assurance is shown"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-003-002",
+      "story_id": "FR-ACC-003",
+      "source_scenario": "Explain a normal user's own access",
+      "original_block_sha256": "aeb28b1850c575afe0729abe2cbb9f903682282e881665d856c9cb828958c88a",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A normal synthetic user has their own permitted context plus hidden projects and another subject outside that context. Their own-access explanation is requested without administration or cross-subject simulation authority.",
+      "original_when_unchanged": [
+        "a normal user inspects their own access"
+      ],
+      "original_then_unchanged": [
+        "they see explanations only about their own permitted context"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-003-004",
+      "story_id": "FR-ACC-003",
+      "source_scenario": "Reject leaking hidden information",
+      "original_block_sha256": "aac441b0dab41fd767d8f61e2e879f942c113c0d3a6f8d3ef3d21182bcafd0b0",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "Prepare a denied synthetic request and a subject outside the Organisation Administrator’s simulation scope. Hidden project names and sensitive field values are unique canary values; neither case grants permission to reveal them.",
+      "original_when_unchanged": [
+        "a denial is explained or the Organisation Administrator attempts to simulate a subject outside their administration scope"
+      ],
+      "original_then_unchanged": [
+        "names of hidden projects and sensitive field values are not exposed",
+        "the out of scope simulation is refused"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-006-001",
+      "story_id": "FR-ACC-006",
+      "source_scenario": "Create a share",
+      "original_block_sha256": "e2aba4b277c7d76f32fbfe8ecf537f7c5935722c92f4db3bb58a15f22e0a7e6f",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager has current sharing authority for a specific synthetic artifact revision. Define the proposed recipient/audience, permitted actions, owner, reason and expiry; the recipient has a narrower effective view than the sender.",
+      "original_when_unchanged": [
+        "the MEL Manager shares an artifact"
+      ],
+      "original_then_unchanged": [
+        "they must specify the artifact version, audience, permitted actions, owner, reason and expiry",
+        "the preview uses the intended recipient's effective view",
+        "authenticated external access is the default"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-006-002",
+      "story_id": "FR-ACC-006",
+      "source_scenario": "Limit public links",
+      "original_block_sha256": "f2bbb5585f63fb03919abc55a053ea570ff2e04daf6e1f96853ac990a4f5f9b7",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "Prepare an approved public synthetic artifact revision and a same-shaped artifact not approved for public release. The requesting actor’s authority to request sharing is separate from approval of public exposure.",
+      "original_when_unchanged": [
+        "a public link is requested"
+      ],
+      "original_then_unchanged": [
+        "it is allowed only for approved public artifacts"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-011-001",
+      "story_id": "FR-ACC-011",
+      "source_scenario": "Propagate a grant change",
+      "original_block_sha256": "e776fd3943ebbd56da7efbb398a4a7919f7b53db88a11f2479d1d7bd4e82d846",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator can change a selected synthetic grant. Its subject has an active online session, cached read, queued job, generated artifact and AI dependency; capture their original grant version and the source timing origin before the change.",
+      "original_when_unchanged": [
+        "the Organisation Administrator changes a grant"
+      ],
+      "original_then_unchanged": [
+        "a revocation event covers active sessions, cached reads, queued jobs, generated artifacts and AI dependencies",
+        "new sensitive actions evaluate current policy immediately",
+        "online presentation converges within 60 seconds"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-001-003",
+      "story_id": "FR-IAM-001",
+      "source_scenario": "Report bulk invitation outcomes",
+      "original_block_sha256": "2b5dedc577a94b9212b2bf405b0f93446496dcb1b80d5fd4d4740206502f7047",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator has current invitation authority in a synthetic tenant. The bulk input contains a new eligible invitee, an existing invitation/member, an invalid address and a deliberately failing synthetic delivery channel; receipt of email is not activation.",
+      "original_when_unchanged": [
+        "the Organisation Administrator sends invitations in bulk"
+      ],
+      "original_then_unchanged": [
+        "outcomes are reported separately as created, duplicate, invalid and delivery failed",
+        "receiving the email alone is not treated as membership activation"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-006-001",
+      "story_id": "FR-IAM-006",
+      "source_scenario": "View sessions",
+      "original_block_sha256": "7a2ccff5453eb24bab7b974e21e2ca1a3cfa246ecd0e6936271e18f16f01a661",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A Data Author owns multiple synthetic sessions with known safe device labels, creation/last-use times and approximate activity. A session belonging to another actor and unnecessary precise-location data are excluded from the permitted view.",
+      "original_when_unchanged": [
+        "a Data Author views their sessions"
+      ],
+      "original_then_unchanged": [
+        "each shows a device label, approximate activity, creation and last use without unnecessary location detail"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-008-003",
+      "story_id": "FR-IAM-008",
+      "source_scenario": "Suspend a membership",
+      "original_block_sha256": "cb8f16017512349e0dd9e4b373c72f2a2c18aa294ee379fcd1596f813c4f2238",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator can suspend a current synthetic membership with an online session, pending work and historical authored records. Pin the prior attribution and membership version before suspension.",
+      "original_when_unchanged": [
+        "the Organisation Administrator suspends a membership"
+      ],
+      "original_then_unchanged": [
+        "online revocation starts immediately",
+        "pending work is identified",
+        "historical attribution is unchanged"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-014-001",
+      "story_id": "FR-IAM-014",
+      "source_scenario": "Offboard a departing member",
+      "original_block_sha256": "a47bfef94ee4b5b0ba770e12a99b5b11b8c4938a421133b60779e45d05359178",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator can offboard a departing synthetic member who owns sources, schedules, drafts, credentials and approval tasks. An eligible successor has explicit authority for the listed items; the member’s current access and each pending owner are known.",
+      "original_when_unchanged": [
+        "the Organisation Administrator runs the offboarding wizard for a departing member"
+      ],
+      "original_then_unchanged": [
+        "access is revoked first",
+        "owned sources, schedules, drafts, credentials and approval tasks are listed for an authorised successor",
+        "each item is reassigned, cancelled or held with an owner"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-001-001",
+      "story_id": "FR-PLN-001",
+      "source_scenario": "Create framework nodes in either view",
+      "original_block_sha256": "30af53338ca4b00aaafc4dba08819fbe43880dfb204eb840d3d8f80538b26992",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager can edit a synthetic framework draft with stable typed node identities. The table and relationship view reference the same draft revision; sample activity-to-output and relationship-versus-numeric-aggregation links are distinguishable.",
+      "original_when_unchanged": [
+        "the MEL Manager creates typed framework nodes in the table or relationship view"
+      ],
+      "original_then_unchanged": [
+        "both views edit the same stable node identities and version",
+        "activities may be linked to output nodes",
+        "relationship links are kept distinct from numeric aggregation links"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-001-003",
+      "story_id": "FR-PLN-001",
+      "source_scenario": "Validate nodes before review",
+      "original_block_sha256": "ba223f5c8cce6fa7278ad951a141b7b9bf6dcead8f8c091e9fb6f74c8909ccf7",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager has a current editable framework draft with both complete nodes and nodes missing title, description, owner or intended result level. Pin the exact draft submitted for review.",
+      "original_when_unchanged": [
+        "the MEL Manager submits the draft for review"
+      ],
+      "original_then_unchanged": [
+        "each node is validated for title, description, owner and intended result level"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-001-004",
+      "story_id": "FR-PLN-001",
+      "source_scenario": "Reject invalid structural changes",
+      "original_block_sha256": "0716777b97fde52c873bdc96ddf777dfc14ab99fe74e99edb75b00381d38e3fc",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager can edit a synthetic draft containing valid containment links, a candidate orphaned parent and an approved node referenced by another object. Capture the valid baseline; test cycle creation, orphan reference and referenced-node deletion separately.",
+      "original_when_unchanged": [
+        "the MEL Manager creates a containment cycle, leaves an orphaned parent reference or deletes a referenced approved node"
+      ],
+      "original_then_unchanged": [
+        "the change is rejected"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-003-001",
+      "story_id": "FR-PLN-003",
+      "source_scenario": "Submit and approve a framework baseline",
+      "original_block_sha256": "ee4601ceb83c9b3be5655a0ab30b4b11e1fcf7135bfb38ef3a8b75c5bef24ebf",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager has a current framework candidate, source-pinned completeness report and exact comparison to its prior baseline. The fixture includes impacted indicators, targets, activities, templates and obligations; any approval uses the source-required independently authorised reviewer.",
+      "original_when_unchanged": [
+        "the MEL Manager submits a framework candidate with its completeness report and change comparison"
+      ],
+      "original_then_unchanged": [
+        "review shows impacted indicators, targets, activities, templates and obligations",
+        "approval freezes a baseline version"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-007-001",
+      "story_id": "FR-ACC-007",
+      "source_scenario": "Preview an export",
+      "original_block_sha256": "c5ff1289a2adb54b3aeb93d72f91c3115e25ec29cf50527f56e4bcd6ad76aa81",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Analyst has current preview/export authority for a synthetic dataset whose selected fields, filters, classification, row count and format are independently known. Hidden rows/fields are outside that authority and must not affect a disclosed preview.",
+      "original_when_unchanged": [
+        "an Analyst prepares an export"
+      ],
+      "original_then_unchanged": [
+        "the preview lists selected fields, filters, classification, row estimate and intended format"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-007-002",
+      "story_id": "FR-ACC-007",
+      "source_scenario": "Authorise at each stage",
+      "original_block_sha256": "8a0df190e563514cc14ec3a9e39e0c52ea6af598c3cee1214fe572de84df9e9b",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Analyst owns an authorised synthetic export request with explicit owner/expiry. Prepare separate fresh-authority checks at request, execution, sensitive generation and download, including a revocation between stages; no earlier permission snapshot substitutes for the later checks.",
+      "original_when_unchanged": [
+        "the export is requested, starts execution, generates sensitive output and is downloaded"
+      ],
+      "original_then_unchanged": [
+        "authorisation is checked at each of those points",
+        "the receipt identifies the export owner and expiry"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-009-001",
+      "story_id": "FR-ACC-009",
+      "source_scenario": "Configure and test disclosure rules",
+      "original_block_sha256": "2a75b79ee0266e2527a6de3328459ae814120749ab217ebe2f9889eb07a9a7d1",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A Privacy Officer can configure the source-defined disclosure policy for synthetic small-cell data. Prepare totals, cross tables and filter combinations capable of reconstruction; preserve the source minimum of five and its complementary suppression/fixed-slice rules.",
+      "original_when_unchanged": [
+        "the Privacy Officer selects a minimum cell threshold, complementary suppression and allowed fixed slices"
+      ],
+      "original_then_unchanged": [
+        "the preview tests totals, cross tables and filter combinations for reconstruction",
+        "the default threshold of five is applied as a minimum rule"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-009-002",
+      "story_id": "FR-ACC-009",
+      "source_scenario": "Return the same suppressed output everywhere",
+      "original_block_sha256": "c36f153f709bc9df0bc10f32c7c344c4ee6d0a1b89ed5a349274493d42ed196d",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A synthetic public aggregate has an approved, source-pinned suppressed representation. The permitted public API and download paths reference that same representation; hidden raw values are separate canaries.",
+      "original_when_unchanged": [
+        "the aggregate is retrieved through public APIs or downloads"
+      ],
+      "original_then_unchanged": [
+        "the same suppressed representation is returned without hidden raw values"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-010-002",
+      "story_id": "FR-ACC-010",
+      "source_scenario": "Provide funder access through approved views",
+      "original_block_sha256": "02cc6ffb23867ab376ad519cac2f3f730ec033fce38fc67d511e3ffce6e77be6",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A Funder Portfolio Manager has separately approved synthetic result views for specific partner results. That view approval does not grant access to partner raw records or unapproved result sets; use the source action’s funder actor rather than treating the story persona as permission.",
+      "original_when_unchanged": [
+        "a Funder Portfolio Manager views partner results"
+      ],
+      "original_then_unchanged": [
+        "access is through separately approved result views"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-004-002",
+      "story_id": "FR-IAM-004",
+      "source_scenario": "Reset a password",
+      "original_block_sha256": "85c32cf0334b1fd22bf693f397061a2bd9702598f4fb3057848aafd9eb9c2a81",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "Prepare a registered synthetic Data Author and the selected identity provider’s actual supported reset flow. Pin the current recovery tokens and sessions; execute the reset as an unauthenticated recovery journey where the provider requires it, retaining the source single-use and 30-minute conditions.",
+      "original_when_unchanged": [
+        "a Data Author requests a password reset",
+        "they complete a successful reset"
+      ],
+      "original_then_unchanged": [
+        "a neutral acknowledgement is returned",
+        "a single use recovery link with a 30 minute expiry is issued",
+        "prior recovery tokens and sessions are revoked according to policy"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-004-004",
+      "story_id": "FR-IAM-004",
+      "source_scenario": "Reject account enumeration and unbounded retries",
+      "original_block_sha256": "51828078461b474edb862a6a3eacd2d3ac8dbaec24774b87877f88e323a8f713",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "Prepare an unregistered synthetic address and a same-shaped registered address with comparable observable responses. The recovery requester is unauthenticated where the selected provider requires it; configured abuse controls and telemetry capture contain no password text.",
+      "original_when_unchanged": [
+        "a reset is requested for an address that is not registered"
+      ],
+      "original_then_unchanged": [
+        "the response does not reveal whether the address is registered",
+        "repeated attempts are subject to bounded retry and abuse controls",
+        "password text is never exposed to telemetry or normal administrators"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-010-003",
+      "story_id": "FR-IAM-010",
+      "source_scenario": "Delete a group",
+      "original_block_sha256": "a0fe375694b9be125174abc3fa05671477b543679cdb9cf0d8cce5fae24d6e0f",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A currently authorised Organisation Administrator can delete a synthetic group with future grants and retained historical audit records. Pin those grants and history; group deletion must not remove the audit trail.",
+      "original_when_unchanged": [
+        "a group is deleted"
+      ],
+      "original_then_unchanged": [
+        "its future grants are retired",
+        "its audit history is retained"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-012-001",
+      "story_id": "FR-IAM-012",
+      "source_scenario": "Create a service identity",
+      "original_block_sha256": "29ad17013eb7d874a069d5ea8c5f1527537495db43d415d76a846cd9e4b4a800",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Integration Developer has explicit current machine-identity issuance authority for a synthetic purpose, allowed resources/operations and expiry. Secret issuance occurs only in the controlled first response; later views and logs have only the safe reference.",
+      "original_when_unchanged": [
+        "an Integration Developer creates a machine identity with purpose, allowed resources, operations and expiry"
+      ],
+      "original_then_unchanged": [
+        "the secret is shown once at issue",
+        "afterwards only a safe reference to it is shown"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-013-001",
+      "story_id": "FR-IAM-013",
+      "source_scenario": "Change profile preferences",
+      "original_block_sha256": "7d2b37fb6e5cfdf86b9209065998577e1ec1d0acebde9bf389878e9e1c1a360a",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A Data Author can edit their own supported preferences. Synthetic persisted numbers/timestamps and the organisation reporting calendar are pinned; the proposed display-name/language/time-zone/accessibility choices affect presentation rather than stored source values.",
+      "original_when_unchanged": [
+        "a Data Author changes their display name, interface language, reporting preferences, time zone or accessibility choices"
+      ],
+      "original_then_unchanged": [
+        "a preview shows the resulting date and number display",
+        "stored values are not changed"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-013-004",
+      "story_id": "FR-IAM-013",
+      "source_scenario": "Reject preferences that suppress notices or override calendars",
+      "original_block_sha256": "46b2de096b7e9704ac4fb706aed5dfb8bafce1b539c20cb165d6578d0efbf57c",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A Data Author can edit ordinary personal preferences, while mandatory security notices and the organisation reporting calendar remain policy-owned. Capture those mandatory settings before attempting each disallowed override.",
+      "original_when_unchanged": [
+        "a Data Author sets a preference that would suppress mandatory security notices or override the organisation reporting calendar"
+      ],
+      "original_then_unchanged": [
+        "the preference does not take effect"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-ACC-012-004",
+      "story_id": "FR-ACC-012",
+      "source_scenario": "Reject simulation side effects or overexposure",
+      "original_block_sha256": "72cf53d5dcaac605fd358a39fa86d517d2253451eae2d04e7286224a54002727",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator has current access-review simulation authority for one synthetic review scope. Source rows, grants and revisions are pinned before simulation; out-of-scope canary names and counts may be shown only when the current review permission explicitly allows it.",
+      "original_when_unchanged": [
+        "the Organisation Administrator runs a simulation"
+      ],
+      "original_then_unchanged": [
+        "nothing is changed",
+        "no data beyond their review scope is revealed, with counts or redacted scope labels used only when permitted"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-005-003",
+      "story_id": "FR-IAM-005",
+      "source_scenario": "Reconcile directory and platform",
+      "original_block_sha256": "2cee8b7dacea6179e18e44329c387f8f49ad0679b5771ade709746ef84fba837",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator has current reconciliation access for a configured synthetic directory/platform mapping. The directory fixture and platform snapshot contain known matching, missing and conflicting entries; no live directory activation or external contact is implied.",
+      "original_when_unchanged": [
+        "the Organisation Administrator views reconciliation"
+      ],
+      "original_then_unchanged": [
+        "differences between the directory and the platform are shown"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-011-001",
+      "story_id": "FR-IAM-011",
+      "source_scenario": "Start an access review",
+      "original_block_sha256": "5755c1660546635ab56a8aa52385805ad60cefee31dea97894c22bcb203c77dd",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "An Organisation Administrator can initiate an access review for explicit synthetic scopes and a snapshot date. The fixture contains grants with known subject/source/sensitive capability/expiry/owner/activity fields, plus hidden grants outside each reviewer’s effective scope.",
+      "original_when_unchanged": [
+        "the Organisation Administrator starts an access review for selected scopes and a snapshot date"
+      ],
+      "original_then_unchanged": [
+        "reviewers see each grant's subject, source of grant, sensitive capabilities, expiry, owner and last relevant activity"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-IAM-011-002",
+      "story_id": "FR-IAM-011",
+      "source_scenario": "Decide each grant",
+      "original_block_sha256": "72a596e6447400d4f2242de07a70c2a65ecd69af119ac160c79baad85ba14640",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A currently authorised synthetic reviewer has an open review of grants inside their scope. Prepare retain, narrow and revoke decisions with reasons, plus a separate unreviewed grant whose due state is overdue; all source decision branches remain in scope.",
+      "original_when_unchanged": [
+        "a reviewer retains, narrows or revokes a grant"
+      ],
+      "original_then_unchanged": [
+        "a reason is recorded",
+        "unreviewed grants remain flagged overdue"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-002-001",
+      "story_id": "FR-PLN-002",
+      "source_scenario": "Add a contribution link",
+      "original_block_sha256": "6f334974d21689836ddaff95a6ee6da909fd29cb359a878115c68aeb74c99f41",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager can edit a synthetic theory-of-change draft with existing result nodes and permitted evidence/context references. A directed contribution link has rationale, assumptions and evidence-strength inputs; alternative pathways remain distinct from containment and numeric aggregation.",
+      "original_when_unchanged": [
+        "the MEL Manager adds a directed contribution link"
+      ],
+      "original_then_unchanged": [
+        "it records rationale, assumptions, evidence strength and optional external context",
+        "alternative causal pathways are allowed"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-002-002",
+      "story_id": "FR-PLN-002",
+      "source_scenario": "Link across programmes",
+      "original_block_sha256": "3d1edfae71eeeb7e53b7f227a8266f827b87d2f6a41a2fcd6f6c19e2f05cd7cd",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager has a synthetic source result and two cross-programme destination cases: explicit permission to both endpoints, or an independently shared summary endpoint. A third hidden/unshared destination tests the unchanged source refusal boundary.",
+      "original_when_unchanged": [
+        "the MEL Manager links to a result in another programme"
+      ],
+      "original_then_unchanged": [
+        "the link is allowed only with permission to both endpoints or through a separately shared summary endpoint"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    },
+    {
+      "criterion_id": "AC-FR-PLN-002-004",
+      "story_id": "FR-PLN-002",
+      "source_scenario": "Reject containment cycles",
+      "original_block_sha256": "28e1fc235e5b0bf2fd89728db19ce763828a394f49fdadbc90176d461f3fa5e7",
+      "missing_original_phase": "Given",
+      "proposed_given_fixture_note": "A MEL Manager can edit a valid synthetic containment tree. Pin that tree and propose a link closing an ancestor cycle; the refused link must not change the valid structure.",
+      "original_when_unchanged": [
+        "a link would create a containment cycle"
+      ],
+      "original_then_unchanged": [
+        "it is rejected"
+      ],
+      "actual_role_capability_binding": "The implementing engineer resolves the named persona to actual current source roles/capabilities. A persona, selector or this note is not authority.",
+      "state": "Proposed best-assumption fixture clarification, not original Gherkin, owner approval, implemented fixture or executed test",
+      "resume": "Use this minimal synthetic context as the recommended starting point; bind exact contracts and capability grants before coding or running the original criterion."
+    }
+  ],
+  "existing_plan_augments": [
+    {
+      "criterion_id": "AC-US-RT-05-001",
+      "story_id": "US-RT-05",
+      "source_then": [
+        "each requirement becomes an issue carrying its ID"
+      ],
+      "existing_plan_assertions": [
+        "each requirement becomes an issue carrying its ID",
+        "Under the dated authorised tooling override, combined canonical requirement IDs resolve in the Linear working board against the preserved Git baseline; this is proposed override evidence, not a claim that the original GitHub-only criterion ran unchanged."
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "Under the dated authorised tooling override, combined canonical requirement IDs resolve in the Linear working board against the preserved Git baseline; this is proposed override evidence, not a claim that the original GitHub-only criterion ran unchanged.",
+          "classification": "Existing supplementary dated tooling-override trace assertion. Original GitHub wording stays preserved; the Linear substitution is not proof that the original GitHub-only criterion ran unchanged."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-UX-004-001",
+      "story_id": "FR-UX-004",
+      "source_then": [
+        "every step is completed with accessible labels, visible focus and understandable errors"
+      ],
+      "existing_plan_assertions": [
+        "they encounter an invalid field and a stale revision conflict",
+        "every step is completed with accessible labels, visible focus and understandable errors"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "they encounter an invalid field and a stale revision conflict",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-WFL-007-002",
+      "story_id": "FR-WFL-007",
+      "source_then": [
+        "the snapshot stays fixed",
+        "current views label the new data separately"
+      ],
+      "existing_plan_assertions": [
+        "a late optional record is then received",
+        "the snapshot stays fixed",
+        "current views label the new data separately"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "a late optional record is then received",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-WFL-008-001",
+      "story_id": "FR-WFL-008",
+      "source_then": [
+        "a new locked Q1 version is created",
+        "correction notices are created for eligible recipients",
+        "the old Q1 remains available marked as superseded"
+      ],
+      "existing_plan_assertions": [
+        "a Reviewer compares the old and proposed new snapshots and approves",
+        "a new locked Q1 version is created",
+        "correction notices are created for eligible recipients",
+        "the old Q1 remains available marked as superseded"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "a Reviewer compares the old and proposed new snapshots and approves",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-ACC-007-003",
+      "story_id": "FR-ACC-007",
+      "source_then": [
+        "no bytes are served after the revocation bound"
+      ],
+      "existing_plan_assertions": [
+        "retrieval is attempted from the original URL",
+        "no bytes are served after the revocation bound"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "retrieval is attempted from the original URL",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-DQ-001-001",
+      "story_id": "FR-DQ-001",
+      "source_then": [
+        "the preview reports the failures the rule would raise before the rule is activated"
+      ],
+      "existing_plan_assertions": [
+        "they preview it against a permitted sample",
+        "the preview reports the failures the rule would raise before the rule is activated"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "they preview it against a permitted sample",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    },
+    {
+      "criterion_id": "AC-FR-DQ-005-001",
+      "story_id": "FR-DQ-005",
+      "source_then": [
+        "closure records its evidence",
+        "the reporting delay and final accepted revision remain traceable"
+      ],
+      "existing_plan_assertions": [
+        "revalidation confirms the new outcome",
+        "closure records its evidence",
+        "the reporting delay and final accepted revision remain traceable"
+      ],
+      "disposition": "Preserve both. The original Given/When/Then source and all existing supplementary plan assertions remain separate; do not describe the augmented plan as an exact source-only oracle.",
+      "supplementary_assertions": [
+        {
+          "assertion": "revalidation confirms the new outcome",
+          "classification": "Existing supplementary execution assertion restating an original When/And action; not an additional original Then."
+        }
+      ],
+      "state": "Existing plan enrichment retained, with no new execution or approval claimed"
+    }
+  ],
+  "qualification_ownership": [
+    {
+      "story_id": "FR-PRG-006",
+      "proposed_existing_task": "TASK-FR-PRG-006-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Partner acceptance and correction workflow",
+      "criterion_ids": [
+        "AC-FR-PRG-006-001",
+        "AC-FR-PRG-006-002",
+        "AC-FR-PRG-006-003",
+        "AC-FR-PRG-006-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-PLN-006",
+      "proposed_existing_task": "TASK-FR-PLN-006-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Readiness matrix and resolvable activation errors",
+      "criterion_ids": [
+        "AC-FR-PLN-006-001",
+        "AC-FR-PLN-006-002",
+        "AC-FR-PLN-006-003",
+        "AC-FR-PLN-006-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-SEC-011",
+      "proposed_existing_task": "TASK-FR-SEC-011-03",
+      "kind": "governance",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Approved notification and response exercise",
+      "criterion_ids": [
+        "AC-FR-SEC-011-001",
+        "AC-FR-SEC-011-002",
+        "AC-FR-SEC-011-003",
+        "AC-FR-SEC-011-004"
+      ],
+      "recommended_completion_duty": "Retain the existing governance contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-TEN-002",
+      "proposed_existing_task": "TASK-FR-TEN-002-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Unit/project move preview and qualification",
+      "criterion_ids": [
+        "AC-FR-TEN-002-001",
+        "AC-FR-TEN-002-002",
+        "AC-FR-TEN-002-003",
+        "AC-FR-TEN-002-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-WFL-001",
+      "proposed_existing_task": "TASK-FR-WFL-001-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Workflow designer and stage-review qualification",
+      "criterion_ids": [
+        "AC-FR-WFL-001-001",
+        "AC-FR-WFL-001-002",
+        "AC-FR-WFL-001-003",
+        "AC-FR-WFL-001-004",
+        "AC-FR-WFL-001-005"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-WFL-003",
+      "proposed_existing_task": "TASK-FR-WFL-003-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Actionable returned-work comparison and tests",
+      "criterion_ids": [
+        "AC-FR-WFL-003-001",
+        "AC-FR-WFL-003-002",
+        "AC-FR-WFL-003-003",
+        "AC-FR-WFL-003-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-AI-002",
+      "proposed_existing_task": "TASK-FR-AI-002-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Ambiguity review and unsupported-commitment qualification",
+      "criterion_ids": [
+        "AC-FR-AI-002-001",
+        "AC-FR-AI-002-002",
+        "AC-FR-AI-002-003",
+        "AC-FR-AI-002-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-AI-004",
+      "proposed_existing_task": "TASK-FR-AI-004-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Sample diff and destructive-proposal qualification",
+      "criterion_ids": [
+        "AC-FR-AI-004-001",
+        "AC-FR-AI-004-002",
+        "AC-FR-AI-004-003",
+        "AC-FR-AI-004-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "US-VC-04",
+      "proposed_existing_task": "TASK-US-VC-04-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Three-scenario editor and oracle fixtures",
+      "criterion_ids": [
+        "AC-US-VC-04-001",
+        "AC-US-VC-04-002",
+        "AC-US-VC-04-003"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-DQ-001",
+      "proposed_existing_task": "TASK-FR-DQ-001-03",
+      "kind": "interface",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Quality editor and versioned failure qualification",
+      "criterion_ids": [
+        "AC-FR-DQ-001-001",
+        "AC-FR-DQ-001-002",
+        "AC-FR-DQ-001-003",
+        "AC-FR-DQ-001-004"
+      ],
+      "recommended_completion_duty": "Retain the existing interface contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-INT-005",
+      "proposed_existing_task": "TASK-FR-INT-005-03",
+      "kind": "governance",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Review migration notice and compatibility evidence before release",
+      "criterion_ids": [
+        "AC-FR-INT-005-001",
+        "AC-FR-INT-005-002",
+        "AC-FR-INT-005-003",
+        "AC-FR-INT-005-004"
+      ],
+      "recommended_completion_duty": "Retain the existing governance contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "FR-MIG-003",
+      "proposed_existing_task": "TASK-FR-MIG-003-03",
+      "kind": "governance",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Critical variance cutover decision gate",
+      "criterion_ids": [
+        "AC-FR-MIG-003-001",
+        "AC-FR-MIG-003-002",
+        "AC-FR-MIG-003-003"
+      ],
+      "recommended_completion_duty": "Retain the existing governance contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    },
+    {
+      "story_id": "US-PT-01",
+      "proposed_existing_task": "TASK-US-PT-01-03",
+      "kind": "governance",
+      "disposition": "Recommend an explicit scenario-verification obligation on this existing task. This is a role recommendation, not an added task, changed native dependency, Ready decision or evidence.",
+      "task_title": "Unvetted listing and late-decision review",
+      "criterion_ids": [
+        "AC-US-PT-01-001",
+        "AC-US-PT-01-002",
+        "AC-US-PT-01-003"
+      ],
+      "recommended_completion_duty": "Retain the existing governance contribution and make its source scenario verification duty explicit. Deliver a named check/manual protocol plus complete observations for every original parent scenario, including refusals and prohibited effects; the original planned levels and thresholds stay unchanged.",
+      "responsibility": "Implementing engineer or designated verifier for this existing task, proposed. No assignee, status, estimate, parent or prerequisite changes.",
+      "actual_evidence_state": "Not run; no actual assignment or accepted result supplied."
+    }
+  ]
+}

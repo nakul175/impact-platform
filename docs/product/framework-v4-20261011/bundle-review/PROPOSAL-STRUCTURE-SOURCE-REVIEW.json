@@ -1,0 +1,601 @@
+{
+  "reviewedAtUtc": "2026-10-11T02:09:19.086453+00:00",
+  "reviewType": "Independent read-only structural/source review, not app testing or product/native approval.",
+  "inputs": {
+    "epic-story-author/EPIC-REFINEMENT.json": {
+      "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+      "bytes": 716206
+    },
+    "epic-story-author/STORY-REFINEMENT.json": {
+      "sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+      "bytes": 3236539
+    },
+    "epic-story-author/CRITERION-EVIDENCE-ANNOTATIONS.json": {
+      "sha256": "53f4f7c6091590e1b373a71375666138c4a047d3ff90e7e769335cf0b86a60e4",
+      "bytes": 4595321
+    },
+    "epic-story-author/EPIC-NATIVE-APPENDS.json": {
+      "sha256": "9988cb820b77595430d0d5578eb5bbfcd53aadad4aedd68302f8ce15481b814a",
+      "bytes": 188585
+    },
+    "epic-story-author/STORY-NATIVE-APPENDS.json": {
+      "sha256": "0b90629ff6f6a80d8eeff9c2430a13537918e584074b98c04bd813f2e1b4cf7b",
+      "bytes": 1127933
+    },
+    "task-author/task-contracts.proposed.json": {
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+      "bytes": 13484732
+    },
+    "task-author/acceptance-task-matrix.proposed.json": {
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "bytes": 7419410
+    },
+    "task-author/native-task-appends.proposed.json": {
+      "sha256": "0dbdad7c66e65494be2d86c5b917ca4474a6dfd17eb1eccab0e037b303499562",
+      "bytes": 5513554
+    }
+  },
+  "sourceBoundary": {
+    "planningHead": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+    "applicationSourceCommit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+    "sourceCsvRows": 370,
+    "activeStories": 368,
+    "epics": 54,
+    "tasks": 1131,
+    "sourceScenarios": 1328
+  },
+  "structuralChecks": [
+    {
+      "name": "epic unique identities",
+      "passed": true,
+      "details": {
+        "records": 54
+      }
+    },
+    {
+      "name": "story unique identities",
+      "passed": true,
+      "details": {
+        "records": 368
+      }
+    },
+    {
+      "name": "annotation unique identities",
+      "passed": true,
+      "details": {
+        "records": 1328
+      }
+    },
+    {
+      "name": "epicappend unique identities",
+      "passed": true,
+      "details": {
+        "records": 54
+      }
+    },
+    {
+      "name": "storyappend unique identities",
+      "passed": true,
+      "details": {
+        "records": 368
+      }
+    },
+    {
+      "name": "task unique identities",
+      "passed": true,
+      "details": {
+        "records": 1131
+      }
+    },
+    {
+      "name": "matrix unique identities",
+      "passed": true,
+      "details": {
+        "records": 1328
+      }
+    },
+    {
+      "name": "taskappend unique identities",
+      "passed": true,
+      "details": {
+        "records": 1131
+      }
+    },
+    {
+      "name": "all 54 source epic identities retained",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all 368 active source stories retained",
+      "passed": true,
+      "details": {
+        "historicalSourceRowsExcluded": [
+          "FR-AI-016",
+          "US-DX-01"
+        ]
+      }
+    },
+    {
+      "name": "all 1131 source task identities retained",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "native append sets match epic/story/task canonical populations",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all stories/scenarios/hierarchy/dependencies/source state and hashes agree",
+      "passed": true,
+      "details": {
+        "errors": [],
+        "scenarioAliases": 1328
+      }
+    },
+    {
+      "name": "all epic child populations/release counts/native description source hashes agree",
+      "passed": true,
+      "details": {
+        "errors": []
+      }
+    },
+    {
+      "name": "all task cores/prerequisites/parentrefs/criteria/run limits retained",
+      "passed": true,
+      "details": {
+        "errors": [],
+        "prerequisiteEdges": 779
+      }
+    },
+    {
+      "name": "all unique declared component/team policy source pins match planning commit",
+      "passed": true,
+      "details": {
+        "uniqueFilePins": 160,
+        "planningCommit": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+        "errors": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "IMPRANA-ANNOTATION-01",
+      "severity": "clarification_required",
+      "scope": "Source-plan oracle separation",
+      "actual": "7 existing test-plan assertion groups differ from exact source Then clauses. Task matrix keeps both explicitly; native/story annotation must retain the source-vs-existing-supplement labels so a plan oracle is not called original acceptance.",
+      "affected": [
+        {
+          "criterion_id": "AC-US-RT-05-001",
+          "source_annotation_alias": "US-RT-05-AC-01",
+          "story_id": "US-RT-05",
+          "sourceThen": [
+            "each requirement becomes an issue carrying its ID"
+          ],
+          "existingPlanAssertions": [
+            "each requirement becomes an issue carrying its ID",
+            "Under the dated authorised tooling override, combined canonical requirement IDs resolve in the Linear working board against the preserved Git baseline; this is proposed override evidence, not a claim that the original GitHub-only criterion ran unchanged."
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-UX-004-001",
+          "source_annotation_alias": "FR-UX-004-AC-01",
+          "story_id": "FR-UX-004",
+          "sourceThen": [
+            "every step is completed with accessible labels, visible focus and understandable errors"
+          ],
+          "existingPlanAssertions": [
+            "they encounter an invalid field and a stale revision conflict",
+            "every step is completed with accessible labels, visible focus and understandable errors"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-WFL-007-002",
+          "source_annotation_alias": "FR-WFL-007-AC-02",
+          "story_id": "FR-WFL-007",
+          "sourceThen": [
+            "the snapshot stays fixed",
+            "current views label the new data separately"
+          ],
+          "existingPlanAssertions": [
+            "a late optional record is then received",
+            "the snapshot stays fixed",
+            "current views label the new data separately"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-WFL-008-001",
+          "source_annotation_alias": "FR-WFL-008-AC-01",
+          "story_id": "FR-WFL-008",
+          "sourceThen": [
+            "a new locked Q1 version is created",
+            "correction notices are created for eligible recipients",
+            "the old Q1 remains available marked as superseded"
+          ],
+          "existingPlanAssertions": [
+            "a Reviewer compares the old and proposed new snapshots and approves",
+            "a new locked Q1 version is created",
+            "correction notices are created for eligible recipients",
+            "the old Q1 remains available marked as superseded"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-007-003",
+          "source_annotation_alias": "FR-ACC-007-AC-03",
+          "story_id": "FR-ACC-007",
+          "sourceThen": [
+            "no bytes are served after the revocation bound"
+          ],
+          "existingPlanAssertions": [
+            "retrieval is attempted from the original URL",
+            "no bytes are served after the revocation bound"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-DQ-001-001",
+          "source_annotation_alias": "FR-DQ-001-AC-01",
+          "story_id": "FR-DQ-001",
+          "sourceThen": [
+            "the preview reports the failures the rule would raise before the rule is activated"
+          ],
+          "existingPlanAssertions": [
+            "they preview it against a permitted sample",
+            "the preview reports the failures the rule would raise before the rule is activated"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-DQ-005-001",
+          "source_annotation_alias": "FR-DQ-005-AC-01",
+          "story_id": "FR-DQ-005",
+          "sourceThen": [
+            "closure records its evidence",
+            "the reporting delay and final accepted revision remain traceable"
+          ],
+          "existingPlanAssertions": [
+            "revalidation confirms the new outcome",
+            "closure records its evidence",
+            "the reporting delay and final accepted revision remain traceable"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IMPRANA-ANNOTATION-02",
+      "severity": "planning_gap_retained",
+      "scope": "Source Gherkin context",
+      "actual": "37 source scenarios lack an explicit phase. Retain original clauses and propose fixture/context clarifications separately; no altered acceptance.",
+      "affected": [
+        {
+          "criterion_id": "AC-FR-ACC-001-001",
+          "source_annotation_alias": "FR-ACC-001-AC-01",
+          "story_id": "FR-ACC-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-001-002",
+          "source_annotation_alias": "FR-ACC-001-AC-02",
+          "story_id": "FR-ACC-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-001-004",
+          "source_annotation_alias": "FR-ACC-001-AC-04",
+          "story_id": "FR-ACC-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-002-001",
+          "source_annotation_alias": "FR-ACC-002-AC-01",
+          "story_id": "FR-ACC-002",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-002-002",
+          "source_annotation_alias": "FR-ACC-002-AC-02",
+          "story_id": "FR-ACC-002",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-003-001",
+          "source_annotation_alias": "FR-ACC-003-AC-01",
+          "story_id": "FR-ACC-003",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-003-002",
+          "source_annotation_alias": "FR-ACC-003-AC-02",
+          "story_id": "FR-ACC-003",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-003-004",
+          "source_annotation_alias": "FR-ACC-003-AC-04",
+          "story_id": "FR-ACC-003",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-006-001",
+          "source_annotation_alias": "FR-ACC-006-AC-01",
+          "story_id": "FR-ACC-006",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-006-002",
+          "source_annotation_alias": "FR-ACC-006-AC-02",
+          "story_id": "FR-ACC-006",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-011-001",
+          "source_annotation_alias": "FR-ACC-011-AC-01",
+          "story_id": "FR-ACC-011",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-001-003",
+          "source_annotation_alias": "FR-IAM-001-AC-03",
+          "story_id": "FR-IAM-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-006-001",
+          "source_annotation_alias": "FR-IAM-006-AC-01",
+          "story_id": "FR-IAM-006",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-008-003",
+          "source_annotation_alias": "FR-IAM-008-AC-03",
+          "story_id": "FR-IAM-008",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-014-001",
+          "source_annotation_alias": "FR-IAM-014-AC-01",
+          "story_id": "FR-IAM-014",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-001-001",
+          "source_annotation_alias": "FR-PLN-001-AC-01",
+          "story_id": "FR-PLN-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-001-003",
+          "source_annotation_alias": "FR-PLN-001-AC-03",
+          "story_id": "FR-PLN-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-001-004",
+          "source_annotation_alias": "FR-PLN-001-AC-04",
+          "story_id": "FR-PLN-001",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-003-001",
+          "source_annotation_alias": "FR-PLN-003-AC-01",
+          "story_id": "FR-PLN-003",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-007-001",
+          "source_annotation_alias": "FR-ACC-007-AC-01",
+          "story_id": "FR-ACC-007",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-007-002",
+          "source_annotation_alias": "FR-ACC-007-AC-02",
+          "story_id": "FR-ACC-007",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-009-001",
+          "source_annotation_alias": "FR-ACC-009-AC-01",
+          "story_id": "FR-ACC-009",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-009-002",
+          "source_annotation_alias": "FR-ACC-009-AC-02",
+          "story_id": "FR-ACC-009",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-010-002",
+          "source_annotation_alias": "FR-ACC-010-AC-02",
+          "story_id": "FR-ACC-010",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-004-002",
+          "source_annotation_alias": "FR-IAM-004-AC-02",
+          "story_id": "FR-IAM-004",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-004-004",
+          "source_annotation_alias": "FR-IAM-004-AC-04",
+          "story_id": "FR-IAM-004",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-010-003",
+          "source_annotation_alias": "FR-IAM-010-AC-03",
+          "story_id": "FR-IAM-010",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-012-001",
+          "source_annotation_alias": "FR-IAM-012-AC-01",
+          "story_id": "FR-IAM-012",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-013-001",
+          "source_annotation_alias": "FR-IAM-013-AC-01",
+          "story_id": "FR-IAM-013",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-013-004",
+          "source_annotation_alias": "FR-IAM-013-AC-04",
+          "story_id": "FR-IAM-013",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-ACC-012-004",
+          "source_annotation_alias": "FR-ACC-012-AC-04",
+          "story_id": "FR-ACC-012",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-005-003",
+          "source_annotation_alias": "FR-IAM-005-AC-03",
+          "story_id": "FR-IAM-005",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-011-001",
+          "source_annotation_alias": "FR-IAM-011-AC-01",
+          "story_id": "FR-IAM-011",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-IAM-011-002",
+          "source_annotation_alias": "FR-IAM-011-AC-02",
+          "story_id": "FR-IAM-011",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-002-001",
+          "source_annotation_alias": "FR-PLN-002-AC-01",
+          "story_id": "FR-PLN-002",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-002-002",
+          "source_annotation_alias": "FR-PLN-002-AC-02",
+          "story_id": "FR-PLN-002",
+          "missingPhases": [
+            "given"
+          ]
+        },
+        {
+          "criterion_id": "AC-FR-PLN-002-004",
+          "source_annotation_alias": "FR-PLN-002-AC-04",
+          "story_id": "FR-PLN-002",
+          "missingPhases": [
+            "given"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IMPRANA-ANNOTATION-03",
+      "severity": "planning_gap_retained",
+      "scope": "Verification responsibility",
+      "actual": "13 stories have no existing qualification-kind task. Matrix labels additional verification obligation on an existing task as proposed; do not claim reassignment or new approved acceptance duty.",
+      "affectedStoryIds": [
+        "FR-PRG-006",
+        "FR-PLN-006",
+        "FR-SEC-011",
+        "FR-TEN-002",
+        "FR-WFL-001",
+        "FR-WFL-003",
+        "FR-AI-002",
+        "FR-AI-004",
+        "US-VC-04",
+        "FR-DQ-001",
+        "FR-INT-005",
+        "FR-MIG-003",
+        "US-PT-01"
+      ]
+    },
+    {
+      "id": "IMPRANA-ANNOTATION-04",
+      "severity": "identity_alias_documentation",
+      "scope": "Criterion IDs",
+      "actual": "Two supplementary AC ID formats denote the same 1328 existing scenarios. Alias map is one-to-one; do not count 2656 criteria, create new native issues, or omit matching clause/whitespace source pins."
+    }
+  ],
+  "semanticSamplePending": "20 contrasting stories specified by reviewer, qualitative disposition follows separately.",
+  "nativeAppendDisposition": "Structurally consistent append candidates with recommendation/unrun/authority limits. Root must reconcile current native readback and human edits; no native publication or approval claimed by this reviewer.",
+  "advisoryOnly": true,
+  "formalCheckerRun": false,
+  "productAcceptanceGranted": false,
+  "nativeMutation": false
+}

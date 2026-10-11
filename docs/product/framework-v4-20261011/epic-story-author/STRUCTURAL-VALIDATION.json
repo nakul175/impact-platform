@@ -1,0 +1,16 @@
+{
+  "passed_structure_checks": [
+    "54 authored coherent epic contracts",
+    "368 source-bound story records",
+    "1328 original scenarios retained and annotated",
+    "No active story or split-parent identity lost",
+    "One original primary epic for each story",
+    "Criterion IDs unique",
+    "Source Gherkin pins preserved",
+    "All original source status/priority/points/sprint preserved",
+    "1131 original task identities retained",
+    "Every criterion is explicitly unrun by refinement"
+  ],
+  "failures": [],
+  "semantic_quality_or_ready_result": "Not certified; structural/source preservation only"
+}

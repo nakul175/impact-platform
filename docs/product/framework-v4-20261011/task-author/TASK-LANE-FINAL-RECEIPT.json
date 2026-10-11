@@ -1,0 +1,95 @@
+{
+  "scope": "Additive technical-task and acceptance/test-plan proposal authoring plus local source/count consistency; no application/runtime/CI tests, native Linear write, human approval or full checker PASS.",
+  "planning_head": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+  "source_application_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "original_counts": {
+    "epics": 54,
+    "stories": 368,
+    "tasks": 1131,
+    "original_scenarios": 1328,
+    "existing_task_prerequisites": 779,
+    "new_native_issues": 0,
+    "actual_executions": 0
+  },
+  "observed_clarification_counts": {
+    "missing_given": 37,
+    "existing_plan_augments": 7,
+    "qualification_role_gaps": 13,
+    "native_story_note_targets": 40
+  },
+  "verification_ownership_corrections": {
+    "AC-VF-PRV-001-004": "TASK-VF-PRV-001-03",
+    "AC-VF-PER-005-003": "TASK-VF-PER-005-03"
+  },
+  "preservation": "Original 1,328 blocks and all 24 baseline task cores checked exact; 779 dependencies retained; original 66 manual/939 integration/135 browser/156 native/25 unit/7 regression levels unchanged; source checkout clean before/after.",
+  "actual_test_runs": 0,
+  "native_linear_writes": 0,
+  "owner_or_engineer_approvals_invented": false,
+  "files": [
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/task-contracts.proposed.json",
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+      "bytes": 13484732
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "bytes": 7419410
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/supplemental-verification-plans.proposed.json",
+      "sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+      "bytes": 1132335
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/native-task-appends.proposed.json",
+      "sha256": "0dbdad7c66e65494be2d86c5b917ca4474a6dfd17eb1eccab0e037b303499562",
+      "bytes": 5513554
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/native-story-appends.proposed.json",
+      "sha256": "03a1836a27da76c2d7befb2ecaa201326597597103175da331b205da67b7a4b8",
+      "bytes": 146682
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/acceptance-clarifications.proposed.json",
+      "sha256": "7f107169827dd436ce0a213097ecb6dac6ba041ed5d28715cb4c1694c5ead8ee",
+      "bytes": 76311
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/gaps-and-recommendations.json",
+      "sha256": "a6f65614f129522ca1e5e11ee23e24e9a01da5e90098e07a3eab02581e90c11e",
+      "bytes": 35445
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/bundle-criteria-extract.json",
+      "sha256": "3d080b4b51b351cb6574c6a4d7e6c4b9598932649035cb3ca5ef00ad573866b9",
+      "bytes": 250603
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/SOURCE-PINS.json",
+      "sha256": "be0b77c01cfca6cf68ecebfbff78d10281dcf5ae399f2fe5fb919fb522b480f6",
+      "bytes": 167771
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/PROPOSAL-CONSISTENCY-RECEIPT.json",
+      "sha256": "ef955ae98e8ac9e0b0a2c1fa7157555988cf899f926dcb3ba64ed90129c3105b",
+      "bytes": 1508
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/README.md",
+      "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+      "bytes": 3987
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/build_proposals.py",
+      "sha256": "34493735de5ebfeba1a5df367b8dbd179863948e59a9f1fa7a5782be1e5c2efc",
+      "bytes": 44359
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/task-author/build_clarifications.py",
+      "sha256": "256217973ae6cc4e55a9a3077f64c64ff6cd6a1ab43f15194b4512d0464f8a6a",
+      "bytes": 23126
+    }
+  ]
+}

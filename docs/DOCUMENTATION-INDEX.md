@@ -241,7 +241,29 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Imprana Commons backlog catalogue](product/08-BACKLOG-CATALOGUE.md)
 - [Imprana Commons retained split-parent history](product/09-SPLIT-PARENT-HISTORY.md)
 - [Imprana Commons complete backlog refinement](product/10-COMPLETE-BACKLOG-REFINEMENT.md)
+- [Imprana Commons — product documentation refinement, 11 October 2026](product/11-FRAMEWORK-REFINEMENT.md)
 - [Imprana Commons product planning](product/README.md)
+
+### product/framework-v4-20261011
+
+- [01-VISION](product/framework-v4-20261011/01-VISION.md)
+- [02-STRATEGY](product/framework-v4-20261011/02-STRATEGY.md)
+- [03-ROADMAP](product/framework-v4-20261011/03-ROADMAP.md)
+- [04-RELEASE-GOALS](product/framework-v4-20261011/04-RELEASE-GOALS.md)
+- [05-STORY-AND-TASK-STANDARD](product/framework-v4-20261011/05-STORY-AND-TASK-STANDARD.md)
+- [06-NEXT-SPRINT-REFINEMENT](product/framework-v4-20261011/06-NEXT-SPRINT-REFINEMENT.md)
+- [07-LINEAR-IMPORT-STATUS](product/framework-v4-20261011/07-LINEAR-IMPORT-STATUS.md)
+- [08-BACKLOG-CATALOGUE](product/framework-v4-20261011/08-BACKLOG-CATALOGUE.md)
+- [10-COMPLETE-BACKLOG-REFINEMENT](product/framework-v4-20261011/10-COMPLETE-BACKLOG-REFINEMENT.md)
+- [Imprana Commons — product documentation refinement, 11 October 2026](product/framework-v4-20261011/README.md)
+
+### product/framework-v4-20261011/epic-story-author
+
+- [Imprana Commons epic, story and criterion refinement](product/framework-v4-20261011/epic-story-author/GAP-ANALYSIS.md)
+
+### product/framework-v4-20261011/task-author
+
+- [Imprana Commons task and acceptance refinement — 11 October 2026](product/framework-v4-20261011/task-author/README.md)
 
 ### product/linear
 

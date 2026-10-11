@@ -50,3 +50,18 @@ This confirms issue creation is allowed. It does not establish that a subscripti
 The planning branch is `docs/imprana-linear-planning-2026-10-10`, based on product source commit `8a1e405f0086033dfb25ad834689a08bfe9f1eea`. Source CSV, initial import plan, original task manifest, historical drafts, applied migrations and runtime code are unchanged. Complete native receipts and evidence are preserved on this branch. Start at [AGENTS.md](../../AGENTS.md), [CLAUDE.md](../../CLAUDE.md) and [HANDOVER](../HANDOVER.md); resolve runtime versions and migration numbers from VERSION.json and the actual frozen migration ledger before engineering. Older header counts retain their original observation dates.
 
 No runtime feature, version bump, migration, acceptance promotion, main merge, deployment or paid CI/provider action is part of this planning change. Do not push directly to main. Opening a PR for the branch's Python planning/verification tools runs CI and requires the repository's financial permission; merging and deployment also retain their qualification and owner gates.
+
+
+<!-- imprana:bundle-v4.2:documentation:20261011 -->
+
+Application source 8a1e405f0086033dfb25ad834689a08bfe9f1eea; planning source eb194fdbb6fc8247db8429fc23120aa0fe659ed8; build 0.39.0, domain API 1.28.0, platform API 1.11.0, schema 43. These are source pins, not a fresh deployed-runtime assertion.
+
+This edition applies the attached Product Management Agent Bundle v4.2 / standard 3.0-generic to Imprana Commons. It adds source-bound product reasoning and executable evidence plans. Original requirements, Gherkin, estimates, priorities, workflow states, release allocations, historical decisions and human edits remain authoritative. Recommendations below are not user research, a test execution, Ready/Done, an approved sprint, financial authority or production acceptance. The current request authorises documentation refinement and Linear publication.
+
+Use the eight-tier chain: vision → strategy → roadmap → release goal → epic → user story → acceptance criterion and technical task. Criteria and tasks are sibling children of their story. Existing native epics can span releases; retain each story's real release and primary epic. A checker-only release anchor is explicitly a proposed adapter convention, never a native reparenting or scope change.
+
+## Framework refinement publication checkpoint — 11 October 2026
+
+The attached v4.2 bundle has now produced an additive edition for all 54 epics, 368 stories, 1,328 original scenario plans and 1,131 existing tasks. The previous 1,553 native issues and 779 prerequisites are the protected publication baseline. New source contracts, per-story measures, scenario/task maps and clarification proposals are preserved under `docs/product/framework-v4-20261011/`. Consult that edition's actual publication receipt before claiming native completion; a local proposal is not a Linear readback.
+
+The refinement request authorises the overview and updates to current planning documents/issues. Retained split-parent history, original criteria, earlier publication receipts and confirmed decisions remain unchanged. Current source is build 0.39.0/schema 43; deployed health is not established by that source pin. Actual engineering checks/reviews, owner decisions, estimates, release/spending authority and observational pilot evidence remain separate from this documentation work.

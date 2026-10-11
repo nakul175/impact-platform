@@ -34,3 +34,8 @@ Linear owns day-to-day planning status. Git retains stable source IDs, criteria,
 Each story links to its epic, release goal and applicable strategy objectives. Each technical task links to one original story ID and states a verifiable output. Evidence records the environment and exact candidate commit. Merge, deployment, test success and product-owner acceptance remain separate facts; linking a pull request must not automatically imply product acceptance.
 
 Official arithmetic remains deterministic. AI output is a proposal. Current tenant authority, natural-person independence and immutable approved history apply to every layer.
+
+
+<!-- imprana:bundle-v4.2:documentation:20261011 -->
+
+The [11 October framework edition](11-FRAMEWORK-REFINEMENT.md) refines all eight planning tiers using the attached v4.2 bundle. Its source-bound proposals, criterion/task maps, real planning checker results and actual Linear publication receipt are preserved in [framework-v4-20261011](framework-v4-20261011/README.md). This current edition supersedes the earlier pending-overview note for publication scope; prior receipts remain historical evidence.

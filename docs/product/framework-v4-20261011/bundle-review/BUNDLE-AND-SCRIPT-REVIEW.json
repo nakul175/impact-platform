@@ -1,0 +1,226 @@
+{
+  "reviewedAtUtc": "2026-10-11T02:00:21.509258+00:00",
+  "scope": "Only Imprana Commons/impact-platform documentation and hierarchy workflow; this package does not provide product facts",
+  "archive": {
+    "path": "/Users/athena/Downloads/product-management-agent-bundle-v4.2.zip",
+    "sha256": "896507ea2140a05fac0b609b8f3f625538ca4c5d28222730444e33f4eacca43d",
+    "bytes": 1467057,
+    "fileEntries": 159,
+    "unsafeMemberPaths": [],
+    "extractedOrExecuted": false
+  },
+  "entryReferences": [
+    {
+      "file": "START-HERE.md",
+      "bytes": 3905,
+      "sha256": "fab033395cdf357a970b098047372638a169fc5503ba24a355d6665817a148e9"
+    },
+    {
+      "file": "AGENTS.md",
+      "bytes": 1353,
+      "sha256": "ddeea438072942e63ba3ddc6b06828eb5b82cc4b6c02578a303c442f0c8a1cd5"
+    },
+    {
+      "file": "STANDARD-IDENTITY.json",
+      "bytes": 876,
+      "sha256": "9e9448866838ec509851a7a46e5015bd20ea6d51f82c2bb90add15b534948b7e"
+    },
+    {
+      "file": "PRODUCT-CONTEXT.md",
+      "bytes": 9101,
+      "sha256": "1b23d990a8bb3efc550e79e52963e82b8872c2f5d4c1c0e8f2f7ffd6d4bf359a"
+    },
+    {
+      "file": "AI-ASSURANCE.md",
+      "bytes": 30437,
+      "sha256": "2daca863175de55394f2b063c0ffcf8da4db2b4345d01bbdcf190ba18c65e66b"
+    },
+    {
+      "file": "checker/README.md",
+      "bytes": 23566,
+      "sha256": "3b9055b443f77eab33b04db037791251b3e11cf299e6aaed80d5d27bd2c5da1a"
+    },
+    {
+      "file": "checker/ASSISTANT-WORKFLOW.txt",
+      "bytes": 8266,
+      "sha256": "62debaa7f7855c2a9933b1d17d012ae390da8676086c8101c54b273ea234f2bc"
+    }
+  ],
+  "standardIdentity": {
+    "schemaVersion": "1.0",
+    "bundleEdition": "4.2-generic",
+    "catalogueVersion": "3.0-generic",
+    "cataloguePath": "checker/catalogue.json",
+    "canonicalSha256": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+    "shippedFileSha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+    "canonicalization": "SHA-256 of json.dumps(parsedJSON, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8').",
+    "enforcement": "The checker independently pins the literal canonical hash; this descriptive file, document pins and trust files cannot override it.",
+    "policy": "Do not weaken criteria to obtain a pass. Altered criteria require a separately governed framework release.",
+    "authorityBoundary": "Local file integrity does not authenticate reviewers, source truth, organizational approval, readiness or delivery."
+  },
+  "canonicalCatalogueIdentityVerifiedWithoutRuleDump": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+  "scriptStaticInspection": [
+    {
+      "file": "checker/quality_checker.py",
+      "sha256": "48477e9e7a522ab37cbcb66203041781d014bfdc7479f339e8e67f4011e8c327",
+      "pythonSyntaxParsedWithoutExecuting": true,
+      "imports": [
+        "__future__",
+        "argparse",
+        "copy",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "quality_loop",
+        "quality_tools",
+        "re",
+        "sys"
+      ],
+      "networkShellDynamicCodeDeleteCallsFound": [],
+      "localWriteCallsites": [
+        {
+          "line": 77,
+          "function": "os.replace"
+        },
+        {
+          "line": 1003,
+          "function": "write_json"
+        },
+        {
+          "line": 1049,
+          "function": "write_json"
+        },
+        {
+          "line": 1000,
+          "function": "write_json"
+        },
+        {
+          "line": 1047,
+          "function": "snapshot.write_bytes"
+        },
+        {
+          "line": 1167,
+          "function": "write_json"
+        },
+        {
+          "line": 1144,
+          "function": "write_json"
+        },
+        {
+          "line": 1174,
+          "function": "quality_loop.write_state"
+        },
+        {
+          "line": 1175,
+          "function": "write_json"
+        }
+      ]
+    },
+    {
+      "file": "checker/quality_loop.py",
+      "sha256": "ad589c27c5794d7b7854d4ab4932060940ccc5ec8bf751e1c539344a2faa62c7",
+      "pythonSyntaxParsedWithoutExecuting": true,
+      "imports": [
+        "__future__",
+        "copy",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re"
+      ],
+      "networkShellDynamicCodeDeleteCallsFound": [],
+      "localWriteCallsites": [
+        {
+          "line": 47,
+          "function": "os.replace"
+        },
+        {
+          "line": 269,
+          "function": "write_json"
+        },
+        {
+          "line": 550,
+          "function": "write_state"
+        },
+        {
+          "line": 574,
+          "function": "write_state"
+        },
+        {
+          "line": 587,
+          "function": "write_state"
+        },
+        {
+          "line": 265,
+          "function": "write_json"
+        }
+      ]
+    },
+    {
+      "file": "checker/quality_tools.py",
+      "sha256": "059c416a3ddac30c99194dd861757c08658822a3e0ee24954bb61edeb58adeb0",
+      "pythonSyntaxParsedWithoutExecuting": true,
+      "imports": [
+        "json",
+        "pathlib"
+      ],
+      "networkShellDynamicCodeDeleteCallsFound": [],
+      "localWriteCallsites": [
+        {
+          "line": 185,
+          "function": "get('write_json')"
+        }
+      ]
+    },
+    {
+      "file": "checker/render_rulebooks.py",
+      "sha256": "8a4e50b680c6c48fe9c7e23945115f8ae4b273e9de7b3be9f2bc794ff2447699",
+      "pythonSyntaxParsedWithoutExecuting": true,
+      "imports": [
+        "collections",
+        "json",
+        "pathlib"
+      ],
+      "networkShellDynamicCodeDeleteCallsFound": [],
+      "localWriteCallsites": [
+        {
+          "line": 57,
+          "function": "(out / 'index.json').write_text"
+        },
+        {
+          "line": 55,
+          "function": "path.write_text"
+        }
+      ]
+    }
+  ],
+  "scriptSafetyDisposition": "Reviewed scripts use standard-library/local modules and local JSON/assets/state writes. No network/shell/dependency-install/paid actions found in inspected code. This is source inspection, not runtime execution or a security certification.",
+  "commands": {
+    "assessmentMutations": [
+      "loop/check write report; loop writes durable queues/state",
+      "scaffold writes new document",
+      "apply-revision replaces proposed document after protection checks and saves prior snapshot",
+      "migrate writes new version/history and retires stale bindings",
+      "record-answer/acknowledge-batch/dismiss-question update state only from genuine input"
+    ],
+    "inspectionReadOnly": [
+      "summary",
+      "next",
+      "explain",
+      "fingerprint without output mutation"
+    ],
+    "bindingHelpers": [
+      "bind-evidence writes separate candidate for existing evidence only",
+      "review-hashes writes existing hashes if output requested",
+      "trust-template writes incomplete advisory intake, no verification receipt or authority"
+    ],
+    "runBoundary": "If root chooses execution, use shipped unchanged scripts and catalogue in isolated output-owned checker/document/report/state paths; preserve originals and drafts; inspect compact summary/next before detail. Never run apply-revision against protected canonical sources."
+  },
+  "noUnrelatedProductReferencesRead": true,
+  "noRepositoryOrLinearWrites": true,
+  "noExternalMessagesOrProviderNetworkSpending": true
+}

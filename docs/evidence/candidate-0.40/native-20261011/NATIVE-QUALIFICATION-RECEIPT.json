@@ -1,0 +1,122 @@
+{
+  "phase": "completed-run evidence review separate from earlier source review",
+  "reviewer": "root agent; no independent human/agent signoff claimed",
+  "observed_at": "2026-10-11T09:50:36.313901+00:00",
+  "parent_head": "a71cd333bc60ccf6440b1276eb2a6f191676e08d",
+  "tested_patch": {
+    "path": "qualification/test_ai_diagnosis_native.py",
+    "sha256": "c2ca60600f31a32e7346eebb8161eeb3b8bd3ed1a9e31a99b54127845960150b"
+  },
+  "runtime": "Native PostgreSQL17.10 on Apple arm64; UTF8/C locale, no ICU/readline/TLS; private local synthetic cluster",
+  "tests": {
+    "tests": 2510,
+    "passed": 2484,
+    "skipped": 26,
+    "failures": 0,
+    "errors": 0,
+    "existing_runner_deselected": 1,
+    "warning": 1
+  },
+  "diagnosis_native_cases": [
+    {
+      "name": "test_native_diagnosis_shared_registry_and_revision_have_forced_tenant_fences",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_application_cannot_rewrite_or_delete_a_saved_diagnosis_revision",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_platform_restrictive_kind_list_does_not_gain_diagnosis_access",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_two_diagnosis_edits_publish_one_authoritative_head_and_one_conflict",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[create-ai.diagnosis.read]",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[create-ai.diagnosis.manage]",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[edit-ai.diagnosis.read]",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[edit-ai.diagnosis.manage]",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[replay-ai.diagnosis.read]",
+      "outcome": "PASS"
+    },
+    {
+      "name": "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[replay-ai.diagnosis.manage]",
+      "outcome": "PASS"
+    }
+  ],
+  "restart": "PASS",
+  "restore": {
+    "outcome": "PASS",
+    "tables_compared": 192,
+    "rows_compared": 111751,
+    "row_count_differences": {},
+    "checksums_verified": 44,
+    "rls_grants_functions_identical": true,
+    "limits": "Generic restore drill checks all row counts/security and a pinned golden result, not exact diagnosis payload/replay through a restored API."
+  },
+  "upgrade": {
+    "outcome": "PASS",
+    "baseline": 40,
+    "target": 44,
+    "data_preserved": true,
+    "checksums_verified": 44
+  },
+  "source_changes_during_run": [],
+  "original_history_restored": [
+    "docs/evidence/sprint-0.33-listing-visibility-native-applied-migrations.json",
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/golden-reconciliation.json",
+    "docs/evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json",
+    "docs/evidence/native-application-tests.xml",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.33-retained-visibility-native-applied-migrations.json",
+    "docs/evidence/native-restore-drill.json",
+    "docs/evidence/native-qualification.json"
+  ],
+  "cluster_stopped": true,
+  "original_criteria_changed": false,
+  "story_done": false,
+  "next_story_started": false,
+  "production_accepted": false,
+  "remaining_gates": [
+    "Live identity-provider qualification",
+    "Container deployment-path qualification",
+    "Exact-head required hosted CI",
+    "Human security/accessibility and owner acceptance",
+    "Reviewed existing-tenant access upgrade"
+  ],
+  "artifacts": {
+    "RUN-RECEIPT.json": "9e6b5477455e8c9788839edc34c84282ec9ba2bf0d06f2e53922cb7c546a8651",
+    "cluster-start.log": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "RUNTIME-BUILD-RECEIPT.json": "e67c34936f1a5ba1a8b7ca167ce18076f128fd7f44e27c4b17a4457370b186c9",
+    "native-full.log": "0e76b6c3735560117c78b61a55211af0b2f94da7c011280aaeae23741b6a2996",
+    "SOURCE-REVIEW.json": "f7daffaa7d89f40e6f30da95e291f2ef614b2e4b2a77a9e072ffd7c737cc482a",
+    "initdb.log": "4f5622ea0f5375461152cde975765505b8d236def7d1f871e09ae3ea7df0da6a",
+    "UNCHANGED-HARNESS-PINS.json": "87c3b27d78192b19635010d2e9bcd6898521e7ca740095143f116cb92122a9e7",
+    "generated-evidence/sprint-0.33-listing-visibility-native-applied-migrations.json": "625af7d3071731a8c87ca098d28ee9304ada84953cb0c0b410c33cbe5e5dc9d7",
+    "generated-evidence/nonprofit-ai-content-applied-migrations.json": "dbf407944548e8571e2c045e6cd401bf7a2373f83293263905e5c57ac6e3b439",
+    "generated-evidence/golden-reconciliation.json": "00e7c2cb1c71006be2081e6467efdaea73fe5e116cda2edf987f93cdfad74dca",
+    "generated-evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json": "faf682896123b3601edf54a126690eac033e6e27e6654f576cd214de50aafc14",
+    "generated-evidence/native-application-tests.xml": "09e01bd656ba1c9339377613ceacd72f409b668ccb0e3ac6bdbb748fc505a3f4",
+    "generated-evidence/nonprofit-ai-framework-old-pin-visibility-observation.json": "1f75ed4e08a8c5bef3c5ea275cafc3e0b509b2c516ad5ecde9422a0ce0801dfe",
+    "generated-evidence/sprint-0.33-retained-visibility-native-applied-migrations.json": "c6708ca65eecd3f543a1614c2fedd17faaa91139836a965e9a113097a1dd56c9",
+    "generated-evidence/native-restore-drill.json": "2538b1bdea839b2114cab75363f956ff754df6e795c512864b0e8f544b2ec3b9",
+    "generated-evidence/native-qualification.json": "625447081c52b2f3ca7091128a4193cfb4df259b5b0e6ba2ed0c5d5dc1884fbe"
+  }
+}

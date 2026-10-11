@@ -1,0 +1,17 @@
+{
+  "source_url": "https://ftp.postgresql.org/pub/source/v17.10/postgresql-17.10.tar.bz2",
+  "checksum_url": "https://ftp.postgresql.org/pub/source/v17.10/postgresql-17.10.tar.bz2.sha256",
+  "sha256": "078a03516dcdbdb705fecaf415ea3d13a956c589e46f09fed68a06fb00598c90",
+  "version": "17.10",
+  "purpose": "Free local disposable synthetic native qualification only; no system installation or paid resources",
+  "configure": [
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-native-runtime-20261011/postgresql-17.10/configure",
+    "--prefix=/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-native-runtime-20261011/installed",
+    "--without-icu",
+    "--without-readline"
+  ],
+  "started_at": "2026-10-11T09:38:24.227471+00:00",
+  "configure_exit_code": 0,
+  "build_exit_code": 0,
+  "install_exit_code": 0
+}

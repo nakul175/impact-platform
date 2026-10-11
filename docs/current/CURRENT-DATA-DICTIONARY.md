@@ -6462,3 +6462,6 @@ ALTER TABLE impact.object_revision ADD CONSTRAINT diagnosis_problem_order_valid
             ELSE COALESCE(impact.diagnosis_problem_order_valid(payload),false) END);
 COMMIT;
 ```
+
+
+Unregistered local diagnosis privacy projection candidate (not a schema migration): `docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql`, SHA256`4d789d420f900673abe3399e72c6e934bf798b0cbbd7aacc48a245e835db329d`. Nullable `privacy_case_current.diagnosis_ids` JSONarray; no new grant/table/definer. Actual130native candidate qualification includes install/remove; registered46migration bytes unchanged. Newoptional API selector requires registered promotion beforedeployment.

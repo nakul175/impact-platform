@@ -1289,7 +1289,8 @@
         "qualification/test_live_idp.py::test_logout_revokes_the_session_and_ends_the_provider_session",
         "qualification/test_ai_enablement.py::test_revoked_authority_after_call_never_returns_draft_or_regenerates",
         "qualification/test_ai_diagnosis_live.py::test_create_and_replay_recheck_current_grants_before_receipt_access",
-        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access"
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_new_diagnosis_revision_invalidates_actual_approved_erasure_plan"
       ],
       "coverage": {
         "C-CURRENT-AUTHORITY": [
@@ -1529,7 +1530,11 @@
         "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants",
         "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure",
         "qualification/test_ai_diagnosis_linkage_restore_native.py::test_real_restored_linkage_preserves_history_triggers_and_runtime_fences",
-        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access"
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_actual_independent_diagnosis_erasure_cleans_bindings_preserves_history_and_source",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_foreign_tenant_diagnosis_is_not_subject_data",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_actual_erasure_removes_insert_only_restricted_diagnosis_revision",
+        "qualification/test_ai_diagnosis_privacy_scope_unit.py::test_diagnosis_plan_budget_is_global_and_overflow_prevents_digest"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
@@ -2370,7 +2375,9 @@
         "qualification/test_privacy_requests.py::test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried",
         "qualification/test_privacy_requests.py::test_case_approval_requires_an_independent_natural_person",
         "qualification/test_privacy_requests.py::test_erasure_of_a_named_import_batch_removes_its_raw_content",
-        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure"
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_actual_diagnosis_erasure_honours_retention_hold",
+        "qualification/test_ai_diagnosis_privacy_scope_unit.py::test_legacy_privacy_plan_hash_unchanged_without_diagnosis_scope"
       ],
       "coverage": {
         "C-PRIVACY-STORE-INVENTORY": [

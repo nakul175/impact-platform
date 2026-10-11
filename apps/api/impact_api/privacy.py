@@ -103,7 +103,7 @@ class Privacy:
         return member
 
     def owned_objects(self, c, ctx, kind, ids, principal):
-        """Evidence or import batches the privacy officer names must be the subject's own: created
+        """Objects the privacy officer names must be the subject's own: created
         or owned by the subject's principal. Import batches must be finished (Committed/Cancelled)."""
         rows = []
         for obj in ids or []:
@@ -125,11 +125,14 @@ class Privacy:
 
     def check_draft(self, c, ctx, data):
         member = self.subject(c, ctx, data["subject_membership_id"])
-        if data["request_type"] == "ACCESS" and (data.get("evidence_ids") or data.get("import_ids")):
+        if data["request_type"] == "ACCESS" and (
+            data.get("evidence_ids") or data.get("import_ids") or data.get("diagnosis_ids")
+        ):
             refuse("ERASURE_SCOPE_ONLY")
         principal = str(member["principal_id"])
         self.owned_objects(c, ctx, "Evidence", data.get("evidence_ids"), principal)
         self.owned_objects(c, ctx, "ImportJob", data.get("import_ids"), principal)
+        self.owned_objects(c, ctx, "AIDiagnosis", data.get("diagnosis_ids"), principal)
         return member
 
     def erasable(self, c, ctx, member):
@@ -190,6 +193,8 @@ class Privacy:
         member = self.subject(c, ctx, data["subject_membership_id"])
         membership, principal = str(member["object_id"]), str(member["principal_id"])
         entries, extras = [], {"object_store": {}}
+        diagnosis_revisions = []
+        remaining_diagnosis_revisions = PLAN_LIMIT
         if data["request_type"] == "ERASURE":
 
             def add(store, action, obj, kind, state="APPROVED", reason=None):
@@ -273,6 +278,28 @@ class Privacy:
                 ).fetchone():
                     add("PROJECTION", "REDACT", obj, "ImportJob")
                     add("DATABASE", "DELETE", obj, "ImportJob")
+            for row in self.owned_objects(c, ctx, "AIDiagnosis", data.get("diagnosis_ids"), principal):
+                obj = str(row["object_id"])
+                revisions = c.execute(
+                    "SELECT revision_id,payload_sha256,restriction_state FROM impact.object_revision "
+                    "WHERE tenant_id=%s AND object_id=%s AND restriction_state<>'REMOVED' "
+                    "ORDER BY revision_id LIMIT %s",
+                    (ctx.tenant_id, obj, remaining_diagnosis_revisions + 1),
+                ).fetchall()
+                if len(revisions) > remaining_diagnosis_revisions:
+                    raise DomainError("LIMIT_EXCEEDED", 422, reason="PRIVACY_PLAN_TOO_LARGE")
+                remaining_diagnosis_revisions -= len(revisions)
+                if revisions:
+                    add("DATABASE", "DELETE", obj, "AIDiagnosis")
+                diagnosis_revisions.append(
+                    [
+                        obj,
+                        [
+                            [str(v["revision_id"]), bytes(v["payload_sha256"]).hex(), v["restriction_state"]]
+                            for v in revisions
+                        ],
+                    ]
+                )
             held = self.holds(c, ctx, {e["object_id"] for e in entries})
             for entry in entries:
                 if entry["object_id"] in held:
@@ -292,6 +319,9 @@ class Privacy:
                 "entries": [
                     [e["store"], e["action"], e["object_id"], e["state"], e["reason"]] for e in entries
                 ],
+                # Preserve historical hashes for cases without diagnosis scope.
+                # A new diagnosis revision requires a fresh independent plan approval.
+                **({"diagnosis_revisions": sorted(diagnosis_revisions)} if diagnosis_revisions else {}),
             }
         ).hex()
         return entries, digest, {**extras, "member": member}

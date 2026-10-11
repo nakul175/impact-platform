@@ -617,6 +617,32 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-18",
+      "change_id": "DX-DIAGNOSIS-PRIVACY-SCOPE",
+      "change": "Prepare supported explicitly selected owned diagnosis erasure with revision-bound independent approval",
+      "paths": [
+        "apps/api/impact_api/privacy.py",
+        "apps/api/impact_api/privacy_contracts.py",
+        "docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py",
+        "qualification/test_ai_diagnosis_privacy_scope_unit.py"
+      ],
+      "areas": [
+        "contracts",
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Unregistered explicitly selected owned diagnosis erasure candidate: existing actual independent privacy API removes payloads/bindings, retained immutable metadata/source/official numbers. AllnonREMOVED revisionID/hash/state pins;2000globalbudget; earlier hashes exact.130native(6new+124retained)0failure/skip;56separateunits;287stablepins. Newcandidatecolumn notregistered; no schema47/release/acceptance/deployment. Supporting review3defects fixed before run; code/evidence phases separate.",
+      "prepared_by": "Codex root integration and supporting code review; separate root evidence review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

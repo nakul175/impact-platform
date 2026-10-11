@@ -41246,6 +41246,15 @@
             "maxItems": 50,
             "uniqueItems": true
           },
+          "diagnosis_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "uniqueItems": true
+          },
           "purpose": {
             "enum": [
               "DATA_SUBJECT_REQUEST"
@@ -41460,6 +41469,15 @@
             "maxItems": 50,
             "uniqueItems": true
           },
+          "diagnosis_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 50,
+            "uniqueItems": true
+          },
           "purpose": {
             "enum": [
               "DATA_SUBJECT_REQUEST"
@@ -41522,6 +41540,15 @@
                 "uniqueItems": true
               },
               "import_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "maxItems": 50,
+                "uniqueItems": true
+              },
+              "diagnosis_ids": {
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -41608,6 +41635,15 @@
                 "uniqueItems": true
               },
               "import_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "maxItems": 50,
+                "uniqueItems": true
+              },
+              "diagnosis_ids": {
                 "type": "array",
                 "items": {
                   "type": "string",

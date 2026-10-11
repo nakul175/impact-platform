@@ -103,3 +103,8 @@ Additive0046 enforces canonical unique problem IDs and member priority order; Dr
 ### Full local native schema46 qualification — 11 October2026
 
 Exact a8597a7 source:2,530 passed/28 skipped/zero failures-errors, one unchanged IT_018 deselection and existing TestClient warning. Actual native login/restart/backup restore/generic populated45-to46 upgrade passed;271 source pins exact; historical generated evidence restored. [Current receipt](evidence/candidate-0.40/full-native-schema46-20261011/FULL-NATIVE-RECEIPT.json) records each skip and distinct source/evidence reviews. Earlier provider/browser results stay source-bound; current hosted/container/human/wider-task gates remain held, release passed=false,0/50 delivered, no remote action or spending.
+
+
+### Current schema46 local provider qualification — 11 October2026
+
+Actual18 MFA/sign-in/logout/provider diagnosis cases passed, zero skips/failures/errors, at09ebf6c with271 exact source pins. Historical provider evidence restored; all disposable services stopped. [Identity receipt](evidence/candidate-0.40/live-identity-schema46-20261011/IDENTITY-RECEIPT.json). Browser/container/hosted/human delivery gates remain held; no production/remote/spending/Done claim.

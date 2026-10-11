@@ -1,0 +1,60 @@
+from pathlib import Path
+import subprocess,os,json,datetime,hashlib,shutil,secrets,socket,uuid
+project=Path(__file__).resolve().parents[2]
+root=project/"work/imprana-diagnosis-20261011"
+out=Path(__file__).resolve().parent/"diagnosis-pooler-direct-regression-run-3";out.mkdir(exist_ok=False)
+pg=Path(__file__).resolve().parent/"installed/bin"
+private=root/".local"/("native-10h-"+uuid.uuid4().hex[:8]);private.mkdir(mode=0o700)
+cluster=private/"cluster";pw=private/"bootstrap-password";password=secrets.token_urlsafe(32);pw.write_text(password+"\n");pw.chmod(0o600)
+sock=Path("/private/tmp")/("imprana-pg-"+uuid.uuid4().hex[:8]);sock.mkdir(mode=0o700)
+with socket.socket() as s:s.bind(("127.0.0.1",0));port=s.getsockname()[1]
+env=os.environ.copy();env["PATH"]=str(project/"outputs/imprana-pooler-runtime-20261011/installed/bin")+os.pathsep+str(pg)+os.pathsep+env["PATH"]
+receipt={"started_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),"source_head":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),"engine":"native PostgreSQL 17.10, private loopback disposable cluster","runtime_path":str(pg),"cluster_path":str(cluster),"port":port,"upgrade_baseline":45,"production_data":False,"paid_resources":False,"source_pins":{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in [root/"scripts/pooler.py",root/"scripts/run.py"]+list((root/"apps/api").rglob("*.py"))+list((root/"qualification").glob("*.py"))+list((root/"infrastructure/migrations").glob("*.sql"))+list((root/"docs/engineering/delivery-system-20261011").glob("*.CANDIDATE.sql"))}}
+receipt["unused_pooler_binary_path"] = str(project/"outputs/imprana-pooler-runtime-20261011/installed/bin/pgbouncer")
+receipt["pooler_used"] = False
+(out/"RUN-RECEIPT.json").write_text(json.dumps(receipt,indent=2)+"\n")
+before={str(p.relative_to(root)):p.read_bytes() for p in (root/"docs/evidence").rglob("*") if p.is_file()}
+started=False;code=1
+try:
+ with (out/"initdb.log").open("w") as log:
+  subprocess.run([str(pg/"initdb"),"-D",str(cluster),"-U","postgres","-A","scram-sha-256","--pwfile="+str(pw),"--locale=C","-E","UTF8"],stdout=log,stderr=subprocess.STDOUT,check=True,env=env)
+ pw.unlink()
+ with (out/"cluster-start.log").open("w") as log:
+  subprocess.run([str(pg/"pg_ctl"),"-D",str(cluster),"-l",str(private/"server.log"),"-o",f"-h 127.0.0.1 -p {port} -k {sock}","-w","start"],stdout=log,stderr=subprocess.STDOUT,check=True,env=env)
+ started=True
+ env["PGPASSWORD"]=password
+ subprocess.run([str(pg/"createdb"),"-h","127.0.0.1","-p",str(port),"-U","postgres","impact_test_imprana_10h"],env=env,check=True)
+ env.pop("PGPASSWORD")
+ env.update(IMPACT_FIXTURE_DSN=f"postgresql://postgres:{password}@127.0.0.1:{port}/impact_test_imprana_10h",IMPACT_PORT="8368",IMPACT_PG_BIN=str(pg),IMPACT_UPGRADE_BASELINE="45",PYTHONDONTWRITEBYTECODE="1")
+ env.update(IMPACT_BROWSER_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",IMPACT_BROWSER_EVIDENCE_FILE=str(out/"browser-tests.json"),IMPACT_BROWSER_CAPTURE_DIRECTORY=str(out/"captures"))
+ with (out/"direct-regression.log").open("w") as log:
+  code=subprocess.call([str(project/"work/impact-platform/.venv/bin/python"),"-B","scripts/run.py","test","--native","--perf","--skip-upgrade-check","--skip-restart-check","--skip-restore-drill","--pytest-path","qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure","--pytest-path","qualification/test_ai_diagnosis_linkage_restore_native.py","--pytest-path","qualification/test_ai_diagnosis_linkage_api_restore_native.py","--pytest-path","qualification/test_ai_diagnosis_erasure_restore_native.py","--pytest-path","qualification/test_clone_connections_native.py",],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+finally:
+ reports=list((root/".local").glob("test-*/perf-tests.xml"))
+ if reports:
+  report=max(reports,key=lambda p:p.stat().st_mtime)
+  shutil.copy2(report,out/"direct-regression-tests.xml")
+  detail=report.parent/"diagnosis-erasure-receipts.json"
+  if detail.exists():shutil.copy2(detail,out/detail.name)
+  for name in ["diagnosis-linkage-restore.json", "diagnosis-linkage-api-restore.json", "diagnosis-erasure-restore.json"]:
+   artifact=report.parent/name
+   if artifact.exists():shutil.copy2(artifact,out/name)
+ changed=[]
+ for p in (root/"docs/evidence").rglob("*"):
+  if not p.is_file():continue
+  key=str(p.relative_to(root));current=p.read_bytes()
+  if before.get(key)!=current:
+   dest=out/"generated-evidence"/p.relative_to(root/"docs/evidence");dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(current);changed.append(key)
+   if key in before:p.write_bytes(before[key])
+   else:p.unlink()
+ for key,content in before.items():
+  p=root/key
+  if not p.exists():p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(content)
+ if started:
+  with (out/"cluster-stop.log").open("w") as log:stop=subprocess.call([str(pg/"pg_ctl"),"-D",str(cluster),"-w","stop","-m","fast"],stdout=log,stderr=subprocess.STDOUT,env=env)
+  receipt["cluster_stop_exit_code"]=stop
+ if pw.exists():pw.unlink()
+receipt["source_pins_stable"]=all(hashlib.sha256((root/name).read_bytes()).hexdigest()==digest for name,digest in receipt["source_pins"].items())
+receipt.update(exit_code=code,finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),historical_evidence_restored=changed)
+(out/"RUN-RECEIPT.json").write_text(json.dumps(receipt,indent=2)+"\n")
+print(json.dumps({k:v for k,v in receipt.items() if k!="source_pins"}));raise SystemExit(code)

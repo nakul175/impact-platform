@@ -18,6 +18,8 @@ from psycopg.rows import dict_row
 import pytest
 import test_privacy_requests as privacy
 
+from clone_connections import clone_login_dsn
+
 from test_ai_diagnosis_linkage_candidate_native import linkage, registered_linkage  # noqa: F401
 from test_ai_diagnosis_privacy_candidate_native import diagnosis_privacy_scope, owned, stored  # noqa: F401
 from test_live_application import cmd, expect
@@ -143,7 +145,7 @@ def test_post_erasure_backup_restored_api_keeps_removed_payloads_and_exact_priva
         result["restore"] = drill
         config = dict(live.config)
         for key, role in [("app_dsn", "APP"), ("identity_dsn", "IDENTITY"), ("platform_dsn", "PLATFORM")]:
-            config[key] = make_conninfo(os.environ["IMPACT_LOGIN_DSN_" + role], dbname=target)
+            config[key] = clone_login_dsn(role, target)
         config["public_origin"] = base
         private = local / "config.json"
         private.write_text(json.dumps(config))

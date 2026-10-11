@@ -547,6 +547,13 @@ def main():
                 IMPACT_LOGIN_DSN_MIGRATOR=dsns["impact_migrator"],
                 IMPACT_LOGIN_DSN_WORKER=runtime["impact_worker_login"],
                 IMPACT_LOGIN_DSN_EXECUTOR=runtime["impact_executor_login"],
+                # Restored clone databases are outside the bounded pooler mapping.
+                # Test-only restricted direct logins never reach the application process.
+                IMPACT_DIRECT_LOGIN_DSN_APP=dsns["impact_app_login"],
+                IMPACT_DIRECT_LOGIN_DSN_IDENTITY=dsns["impact_identity_login"],
+                IMPACT_DIRECT_LOGIN_DSN_PLATFORM=dsns["impact_platform_login"],
+                IMPACT_DIRECT_LOGIN_DSN_WORKER=dsns["impact_worker_login"],
+                IMPACT_DIRECT_LOGIN_DSN_EXECUTOR=dsns["impact_executor_login"],
             )
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migration = migrate.run(env["IMPACT_MIGRATION_DSN"], fixture_dsn, fixture=True)
@@ -583,7 +590,7 @@ def main():
         api_env = {
             k: v
             for k, v in env.items()
-            if k not in PRIVILEGED_ENV and not k.startswith("IMPACT_LOGIN_") and not k.startswith("PG")
+            if k not in PRIVILEGED_ENV and not k.startswith(("IMPACT_LOGIN_", "IMPACT_DIRECT_LOGIN_", "PG"))
         }
         base = config["public_origin"]
         (local / "api.log").write_text("")
@@ -610,6 +617,7 @@ def main():
             )
         env.update(
             IMPACT_BASE_URL=base,
+            IMPACT_API_PID=str(api.pid),
             IMPACT_FIXTURE_FILE=str(ROOT / "specification/fixtures/api-fixture.json"),
             IMPACT_ALLOW_MUTATIONS="1",
             IMPACT_TEST_LOCAL=str(local),

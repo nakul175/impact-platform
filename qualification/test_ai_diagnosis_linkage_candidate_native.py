@@ -11,6 +11,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import psycopg
+from psycopg.rows import dict_row
 from psycopg.errors import ForeignKeyViolation, InsufficientPrivilege
 import pytest
 import test_privacy_requests as privacy
@@ -315,8 +316,60 @@ def test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure(link
                 ]
             ]
 
-    def waiting(c, minimum):
+    pooled = os.environ.get("IMPACT_DB_POOLER") == "pgbouncer-transaction"
+
+    def pool_waiters(c):
+        """Count real queued clients, which have no PostgreSQL backend yet."""
+        database = c.execute("SELECT current_database() AS name").fetchone()["name"]
+        admin_dsn = os.environ.get("IMPACT_POOLER_ADMIN_DSN")
+        assert admin_dsn, "Pooled qualification requires its actual admin console"
+        with psycopg.connect(
+            admin_dsn, autocommit=True, prepare_threshold=None, row_factory=dict_row
+        ) as admin:
+            pools = [
+                r
+                for r in admin.execute("SHOW POOLS").fetchall()
+                if r["database"] == database and r["user"] == "impact_app_login"
+            ]
+            clients = [
+                r
+                for r in admin.execute("SHOW CLIENTS").fetchall()
+                if r["database"] == database and r["user"] == "impact_app_login" and r["state"] == "waiting"
+            ]
+        assert len(pools) <= 1, "Expected one app pool for this synthetic database"
+        return pools[0] if pools else None, len(clients)
+
+    def advisory_waiters(c):
+        c.execute("SELECT pg_stat_clear_snapshot()")
+        return c.execute(
+            "SELECT count(*) AS n FROM pg_stat_activity WHERE usename='impact_app_login' "
+            "AND datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory'"
+        ).fetchone()["n"]
+
+    def waiting(c, minimum, pooled_queue=False):
         deadline = time.monotonic() + 2
+        if pooled_queue:
+            size = int(os.environ["IMPACT_POOLER_POOL_SIZE"])
+            assert size == 3, "This qualification pins the deliberately small three-backend pool"
+            last = None
+            while time.monotonic() < deadline:
+                count = advisory_waiters(c)
+                app_pool, client_waiting = pool_waiters(c)
+                last = (count, app_pool, client_waiting)
+                if (
+                    app_pool is not None
+                    and app_pool["pool_mode"] == "transaction"
+                    and count == size
+                    and int(app_pool["sv_active"]) == size
+                    and int(app_pool["cl_active"]) == size
+                    and int(app_pool["cl_waiting"]) == minimum - size
+                    and client_waiting == minimum - size
+                ):
+                    return
+                time.sleep(0.01)
+            pytest.fail(
+                f"Eight actual requests did not reach three advisory waits plus five pool queues: {last}"
+            )
         while time.monotonic() < deadline:
             c.execute("SELECT pg_stat_clear_snapshot()")
             count = c.execute(
@@ -381,11 +434,16 @@ def test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure(link
                 with ThreadPoolExecutor(max_workers=8) as pool:
                     with live.db() as holder:
                         holder.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,7))", (pause_key,))
+                        if pooled:
+                            app_pool, client_waiting = pool_waiters(holder)
+                            assert advisory_waiters(holder) == 0
+                            assert client_waiting == 0
+                            assert app_pool is None or int(app_pool["cl_waiting"]) == 0
                         erasure = pool.submit(original_execute, *args, **kwargs)
                         waiting(holder, 1)
                         assert not erasure.done(), "Real erasure must still hold its tenant lock"
                         queued = {name: pool.submit(call) for name, call in calls.items()}
-                        waiting(holder, 8)
+                        waiting(holder, 8, pooled_queue=pooled)
                         assert not erasure.done() and all(not f.done() for f in queued.values())
                         holder.commit()
                     receipt = erasure.result(timeout=10)

@@ -1,0 +1,72 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "tested_base_head": "7953f17bfc16df0a66d10680fa19a93e2ca6142d",
+  "tested_scope": "First failed run at exact base; successful native runs at base plus nine exact pinned test-harness source files. No application/API/SQL change or clean-current-head full suite claim.",
+  "counts": {
+    "failed-pooler": {
+      "tests": 186,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 184
+    },
+    "fixed-pooler": {
+      "tests": 190,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 189
+    },
+    "direct-regression": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 5
+    }
+  },
+  "units": {
+    "tests": 43,
+    "passed": 43,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new": 25,
+    "retained": 18
+  },
+  "source_pin_count": {
+    "failed-pooler": 295,
+    "fixed-pooler": 298,
+    "direct-regression": 298
+  },
+  "runtime": "Actual native PostgreSQL17.10 and checksum-verified project-local PgBouncer1.26.0/static libevent2.1.13; transaction pool size3. No TLS or upstream-signature claim; build observations retain earlier failures.",
+  "failure": "Pooler run1 retained: erasure barrier required eight backend waiters, impossible with three server connections. Four pooler cases passed separately; downstream privacy race assertions did not qualify in that run.",
+  "fixed_queue": "Real database-scoped three advisory waiters plus five queued PgBouncer clients and matching pool counters; erasure and all seven route futures unfinished. Original direct eight-backend wait and all post-erasure privacy/current-history/receipt/effect assertions retained and pass in separate direct regression.",
+  "clone_topology": "Original API/worker transaction pooled; copied APIs and role checks direct restricted logins. Explicit clone-only direct DSNs; missing configuration fails closed, no privileged fallback; strip clone-only credentials from original API process, actual process check passed. Restored APIs keep minimal environments. Never pooled-restored-API proof.",
+  "restores": {
+    "schema": 47,
+    "tables_each": 193,
+    "fixed_pooler_rows": [
+      19864,
+      19921,
+      20293
+    ],
+    "comparison": "zero differences/all47checksums/security/official arithmetic checks PASS",
+    "backup_erasure_phase": "AFTER erasure; no pre-erasure TH27 claim",
+    "direct_regression_rows": [
+      4498,
+      4555,
+      4927
+    ]
+  },
+  "cleanup": "Both successful runs exit0, cluster_stop_exit_code0, stable pins and no historical evidence changes. Copied APIs clean-stop and copies dropped. Linkage JSON dropped:false is a historical pre-finally snapshot retained byte-exact; passing test subsequently asserts DROP and database absence.",
+  "code_review": "Separate supporting read-only review found missing normal pytest API_PID export; fixed test-only after API launch and verified before native runs. No further introduced concrete defect found. Not human signoff.",
+  "evidence_review": "Separate supporting read-only review verified fixed native XML/source pins/runtime hash/four pooler cases/privacy queue/actual process isolation/three clone artifacts/security/arithmetic/cleanup and scanned ten raw artifacts. Distinct direct review verified5passes/zero skips/errors/failures,298exactpins/no pooler, schema47/193tables/zero differences/security/arithmetic, clone/API/clustercleanup and nine raw artifacts without credential-pattern matches. Not human signoff.",
+  "limits": [
+    "Affected checks only; original full-suite remains pinned79b2316",
+    "Fixed pooler run retains one database-restart skip: no owned stop/start commands supplied",
+    "Direct restored APIs are not pooled restore qualification",
+    "No hosted CI/container/human acceptance/public export/deployment;0/50delivered",
+    "All applied SQL, source references, original criteria and historical receipts unchanged"
+  ]
+}

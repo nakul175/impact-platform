@@ -1,0 +1,12 @@
+{
+  "time": "2026-10-11T18:23:40.083700+00:00",
+  "reviewer": "separate supporting read-only release gate agent",
+  "finding_fixed": "Normal pytest did not export API PID; added test-only after API launch, verified before native run",
+  "scope": "Restricted direct clone configuration separate from unchanged pooled runtime; new prefix stripped from API, actual native process check added; three clone callers; real 3 advisory +5 client queue barrier retains all eight unfinished and original direct branch/post-erasure assertions",
+  "result": "No further introduced concrete defect found",
+  "limits": [
+    "Fixture credentials trusted by helper; actual native role/process/run evidence separately required",
+    "Two-second queue barrier timing sensitivity retained",
+    "Not independent human signoff"
+  ]
+}

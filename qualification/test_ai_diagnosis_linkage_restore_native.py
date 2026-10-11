@@ -11,6 +11,8 @@ from psycopg.conninfo import make_conninfo
 from psycopg.errors import ForeignKeyViolation, InsufficientPrivilege
 import pytest
 
+from clone_connections import clone_login_dsn
+
 from test_ai_diagnosis_evidence_live import external, linked, source_access
 from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, registered_linkage, rows  # noqa: F401
 from test_ai_diagnosis_live import action, action_body, save
@@ -58,9 +60,7 @@ def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(liv
             with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
                 assert registered_linkage(c) is registered
             assert snapshot(restored, current["object_id"]) == original
-            with psycopg.connect(
-                make_conninfo(os.environ["IMPACT_LOGIN_DSN_APP"], dbname=target), autocommit=True
-            ) as c:
+            with psycopg.connect(clone_login_dsn("APP", target), autocommit=True) as c:
                 assert c.execute(
                     "SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=session_user"
                 ).fetchone() == (False, False)
@@ -118,7 +118,7 @@ def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(liv
                 ("IDENTITY", "impact_identity"),
             ]:
                 with psycopg.connect(
-                    make_conninfo(os.environ["IMPACT_LOGIN_DSN_" + name], dbname=target),
+                    clone_login_dsn(name, target),
                     autocommit=True,
                 ) as c:
                     with pytest.raises(InsufficientPrivilege):

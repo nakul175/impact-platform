@@ -73,3 +73,8 @@ Focused native PostgreSQL suite passed **25 cases, zero failures/errors/skips**:
 ## Task-level delivery reconciliation — 11 October 2026
 
 [Six-task delivery/status reconciliation](TASK-DELIVERY-RECONCILIATION.md) distinguishes scoped local implementation from the broader native task proposals. All six tasks and the story are still Backlog; suggested In Progress/In Review transitions await the owner's direct status-sync answer, not a heartbeat. No Done or original criterion/description change. SQL diagnosis-payload constraints, inherited worker isolation and protected evidence-reference coverage are not established by the manual notes candidate; earlier scoped test passes do not close those broader task criteria. Required container/hosted CI/human acceptance gates remain held. Separate source/evidence advisory review and receipt are preserved under docs/evidence/candidate-0.40/task-delivery-reconciliation-20261011. This checkpoint adds documentation only, with no new runtime pass, feature, remote action or migration change.
+
+
+## Approved native status sync — 11 October2026
+
+Direct owner approval applied the reviewed seven-issue mapping: story APL-361 and tasks APL-666/APL-671/APL-678 are In Progress; tasks APL-665/APL-669/APL-675 are In Review. Fresh native readback verified all seven states and unchanged descriptions/criteria/labels/priority/estimate/hierarchy/milestone. This supersedes earlier Backlog/pending-transition statements, not task scope or release acceptance. Linear dashboard now records the native transitions. No Done, runtime change or new test run, spending, push/merge/deployment.

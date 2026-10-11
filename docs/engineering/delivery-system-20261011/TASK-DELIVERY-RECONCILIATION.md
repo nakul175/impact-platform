@@ -34,3 +34,8 @@ Do not retrofit broad registry privilege changes into applied migrations. A prop
 - Latest focused native checkpoint:25 passed, no failures/errors/skips, including14 queued-authority matrix cases and7 simultaneous operation cases. This is not the full native suite rerun.
 
 Current receipt entry points are [release note](../../RELEASE-0.40-ai-diagnosis.md) and [handover](HANDOVER.md). Earlier receipts, original criteria and all applied migrations remain intact. Release review stays passed=false despite the structural checker passing. Container remains NOT RUN without an available local engine; no remote export/CI/spending/merge/deploy is authorised by this reconciliation.
+
+
+## Superseding owner-approved status sync
+
+On 11 October2026 the owner directly replied “han badal bhai” to the concrete seven-issue transition proposal above. Actual native updates and fresh readback verified: APL-361/APL-666/APL-671/APL-678 → In Progress; APL-665/APL-669/APL-675 → In Review. This supersedes the earlier Backlog/pending-status observation only. All descriptions, original criteria, labels, priority, estimate, hierarchy and milestone were verified unchanged. Approval covers these workflow transitions, not scope changes, Done, human security/release acceptance, spending or remote Git/deployment authority. Broader task gaps and release gates above remain held. Earlier planning/source/evidence receipts remain historical and byte-exact.

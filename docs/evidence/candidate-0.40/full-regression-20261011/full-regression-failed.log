@@ -1,0 +1,1279 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-b19cbf14/passwords.json
+Ready at http://127.0.0.1:8247
+.................................s.s.s.......................s.......... [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+.s...................................................................... [ 11%]
+........................ss.............................................. [ 14%]
+................................ssss..................s................. [ 17%]
+........................................................................ [ 20%]
+...................................................s.................... [ 23%]
+........................................................................ [ 25%]
+......................................EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEsE [ 28%]
+........................................................................ [ 31%]
+........................s............................................... [ 34%]
+.................................................sssss.................. [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+....................................s................................... [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+.........................................s.....................s........ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 69%]
+s.........sssss......................................................... [ 71%]
+................................................s....................... [ 74%]
+..................................sssssssssssssssss..................... [ 77%]
+...............................................sssssssssss..s...ssssssss [ 80%]
+ssssssssssssssssssssssssssssss.......................................... [ 83%]
+.....................................................................s.. [ 86%]
+...........................s............................................ [ 89%]
+................................................................s....... [ 92%]
+.............s.......................................................... [ 94%]
+........................................................................ [ 97%]
+........................................................                 [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_one_issuance_binds_original_bytes_audit_receipt_and_nondelivery_intent _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_saved_revision_is_deliberate_and_replay_does_not_follow_a_new_head _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_legacy_unknown_fields_are_excluded_and_saved_strings_preserved_without_reconstruction _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_partial_archive_preserves_known_catalog_and_truthful_unavailable_practice _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_storage_valid_saved_decimal_lexemes_survive_without_current_recalculation _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_exact_unavailable_old_pin_is_opaque_despite_a_readable_appended_head[RESTRICTED] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_exact_unavailable_old_pin_is_opaque_despite_a_readable_appended_head[REMOVED] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_expired_owner_only_storage_fixture_retains_dedup_but_deadline_hides_bytes _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_separate_capability_revocation_blocks_issue_and_exact_replay[ai.enablement.export] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_separate_capability_revocation_blocks_issue_and_exact_replay[ai.enablement.read] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan[ai.enablement.read] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan[ai.enablement.export] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[other_tenant] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[revoked] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[partner] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[admin] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[None] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>0] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>1] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>2] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>3] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>4] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>5] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_closed_internal_only_request_refuses_without_domain_writes[<lambda>6] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_fresh_signed_authentication_is_checked_again_on_replay _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_real_transaction_rolls_back_every_written_component_on_late_failure[metadata] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_real_transaction_rolls_back_every_written_component_on_late_failure[bytes] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_real_transaction_rolls_back_every_written_component_on_late_failure[intent] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_real_transaction_rolls_back_every_written_component_on_late_failure[receipt] _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_registry_classification_hides_original_and_replay_without_erasing_retained_bytes _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_original_receipt_deletion_does_not_allow_operation_reuse_or_recreation _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_storage_sql_forces_tenant_fences_insert_only_and_original_retention _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+_ ERROR at setup of test_plans_archived_under_guidance_v1_and_v2_both_export_valid_documents _
+
+live = <conftest.live.<locals>.Client object at 0x10ece9310>
+
+    @pytest.fixture(scope="module", autouse=True)
+    def export_migration_ledger(live):
+        root = Path(__file__).resolve().parents[1]
+        with live.db() as c:
+            rows = c.execute("SELECT version,sha256 FROM impact.schema_migration ORDER BY version").fetchall()
+        applied = []
+        for row in rows:
+            source = next((root / "infrastructure/migrations").glob(f"{row['version']:04d}_*.sql"))
+            applied.append(
+                {
+                    "version": row["version"],
+                    "file": source.name,
+                    "applied_sha256": row["sha256"],
+                    "current_source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                }
+            )
+        native = os.environ.get("IMPACT_NATIVE_TEST") == "1"
+        environment = "native" if native else "pglite"
+        report = {
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "environment": "NATIVE_POSTGRESQL" if native else "PGLITE",
+            "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
+            "migrations": applied,
+        }
+        path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
+        path.write_text(json.dumps(report, indent=2) + "\n")
+>       assert len(applied) == 43
+E       AssertionError: assert 44 == 43
+E        +  where 44 = len([{'version': 1, 'file': '0001_roles.sql', 'applied_sha256': '5e75f33a46817c92888cb1c1077ce06887326e38f68d6db5576786705...ffd8f2b1eab13e90ce', 'current_source_sha256': '081b24b3927a426d4426912764d16c9a792f4e7b5ae84fffd8f2b1eab13e90ce'}, ...])
+
+qualification/test_ai_plan_exports_live.py:79: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR qualification/test_ai_plan_exports_live.py::test_one_issuance_binds_original_bytes_audit_receipt_and_nondelivery_intent
+ERROR qualification/test_ai_plan_exports_live.py::test_saved_revision_is_deliberate_and_replay_does_not_follow_a_new_head
+ERROR qualification/test_ai_plan_exports_live.py::test_legacy_unknown_fields_are_excluded_and_saved_strings_preserved_without_reconstruction
+ERROR qualification/test_ai_plan_exports_live.py::test_partial_archive_preserves_known_catalog_and_truthful_unavailable_practice
+ERROR qualification/test_ai_plan_exports_live.py::test_storage_valid_saved_decimal_lexemes_survive_without_current_recalculation
+ERROR qualification/test_ai_plan_exports_live.py::test_exact_unavailable_old_pin_is_opaque_despite_a_readable_appended_head[RESTRICTED]
+ERROR qualification/test_ai_plan_exports_live.py::test_exact_unavailable_old_pin_is_opaque_despite_a_readable_appended_head[REMOVED]
+ERROR qualification/test_ai_plan_exports_live.py::test_expired_owner_only_storage_fixture_retains_dedup_but_deadline_hides_bytes
+ERROR qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay[ai.enablement.export]
+ERROR qualification/test_ai_plan_exports_live.py::test_separate_capability_revocation_blocks_issue_and_exact_replay[ai.enablement.read]
+ERROR qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan[ai.enablement.read]
+ERROR qualification/test_ai_plan_exports_live.py::test_object_scope_is_current_and_both_read_and_export_must_cover_exact_plan[ai.enablement.export]
+ERROR qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[other_tenant]
+ERROR qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[revoked]
+ERROR qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[partner]
+ERROR qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[admin]
+ERROR qualification/test_ai_plan_exports_live.py::test_other_tenant_removed_member_and_uninvolved_operator_cannot_issue[None]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>0]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>1]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>2]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>3]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>4]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>5]
+ERROR qualification/test_ai_plan_exports_live.py::test_closed_internal_only_request_refuses_without_domain_writes[<lambda>6]
+ERROR qualification/test_ai_plan_exports_live.py::test_fresh_signed_authentication_is_checked_again_on_replay
+ERROR qualification/test_ai_plan_exports_live.py::test_real_transaction_rolls_back_every_written_component_on_late_failure[metadata]
+ERROR qualification/test_ai_plan_exports_live.py::test_real_transaction_rolls_back_every_written_component_on_late_failure[bytes]
+ERROR qualification/test_ai_plan_exports_live.py::test_real_transaction_rolls_back_every_written_component_on_late_failure[intent]
+ERROR qualification/test_ai_plan_exports_live.py::test_real_transaction_rolls_back_every_written_component_on_late_failure[receipt]
+ERROR qualification/test_ai_plan_exports_live.py::test_registry_classification_hides_original_and_replay_without_erasing_retained_bytes
+ERROR qualification/test_ai_plan_exports_live.py::test_original_receipt_deletion_does_not_allow_operation_reuse_or_recreation
+ERROR qualification/test_ai_plan_exports_live.py::test_storage_sql_forces_tenant_fences_insert_only_and_original_retention
+ERROR qualification/test_ai_plan_exports_live.py::test_plans_archived_under_guidance_v1_and_v2_both_export_valid_documents
+2370 passed, 101 skipped, 1 deselected, 1 warning, 33 errors in 224.87s (0:03:44)

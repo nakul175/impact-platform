@@ -1,0 +1,28 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "tested_base_head": "7b75d265c7c1c95887dfa939b2787b495ae97ae5",
+  "tested_worktree": "One new uncommitted test file; all application and47SQL unchanged; source manifest binds actual tested bytes",
+  "new_test_sha256": "0147c0b3e59e660d6cd28c5dd2dc287e97ea10565e5c2324b2fac6e41c84609b",
+  "counts": {
+    "passed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0
+  },
+  "source_pins": 300,
+  "pins_stable": true,
+  "exit_code": 0,
+  "cluster_stop_exit_code": 0,
+  "historical_artifacts_changed": [],
+  "scope": "Actual HTTP create/read/list/history/namedrevision/exactreplay201 plus changedsameoperation409/currentreadloss404/anonymous401/missing404. no-store/nosniff/no-referrer/permissions/CSP3directives/correlationUUID verified; refusal bodies omit private title andnotes; domaincounts unchanged",
+  "code_review": "Separate supporting read-only review matched actual middleware/auth/route/helpers/counts; no blocking source finding",
+  "evidence_review": "Separate supporting read-only audit verified actualJUnit1pass/0skip/fail/error,300stablepins/newtesthash, actualnative transactionpooler3 andAPP/IDENTITY/PLATFORMports,14real HTTPresponses/status/headeroracles/noextraeffects and runtimecleanup. Six copiedtext artifacts credentialscan no hits; nohuman/deployment credit. Exact unusedbootstrapdeletion is rootobservedcleanup, not independently proved byFAILEDreceipt.",
+  "initial_failure": "Sandbox loopback bind PermissionError beforetest/services; retainedfailedwrapper/observedfailure; exact unusedprivatebootstrapdeleted; authorizedlocal runtime escalationretry accepted",
+  "limits": [
+    "Synthetic development bearer auth andnotes-only diagnosis",
+    "No browsercache eviction, TLS/HSTS, realprovider session or deployedheaders",
+    "Synthetic grantpurpose narrowing, notgovernedrevocation",
+    "No linkedsource orerasedtarget headerproof",
+    "No freshfullsuite/hosted/container/human/release/deployment credit;0/50delivered"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "tested_base_head": "396e84dfa9d8ac2419f7c732a72fc3c812f6f8d9",
+  "tested_scope": "396e84d application plus exact pinned new native test; not clean-head/fullsuite/hosted result",
+  "counts": {
+    "tests": 131,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_cases": 1,
+  "retained_cases": 130,
+  "source_pin_count": 293,
+  "new_test_sha256": "c93b1bd415460150d4d8accab5b3bb9be308a6789932ef59d7f561864ab9b3f1",
+  "fixture_limit": "Only fresh HTTP-created diagnosis owner_id attributed to fresh privacy subject undertenantlock, allotherregistry/historybytes preserved; not governed ownership transfer. Actualindependentapprove/execute; no fabricated grants/receipts/approvals. Originalauthor remainsactive/currentlyauthorised, demonstrated by post-erasurelist200.",
+  "actual_observations": "Three exact original command retries404; three genericoperationreads404; current/history/threeversions404; changedbytes409; paginatedlist excludeserasedid; originalprivateSQLreceipts exact/scoped3revision3receipt3auditunchanged/removedpayloadNULL metadataexact.",
+  "code_review": "Separate supporting read-only review found no concrete defect. Notes-only diagnosis: zero binding assertion does not prove linked cleanup.",
+  "evidence_review": "Separate supporting review verified actual131JUnitpass/zeroerrorsfailuresskips,293 exact currentpins, actualremoved-target/list/retry/precedence/scopedcounts/privateSQLreceipt assertions, exit/cleanup0. Sevenrawartifacts credential-patternscan nohits; no privateconfiguration/cookie/dump copied. No linkedcleanup/governedtransfer/backup/pooler/human/deploymentcredit.",
+  "limits": [
+    "No backup/TH27 or governedownership/humanacceptance claim",
+    "Existing linked erasure tests provide separate nonvacuous binding cleanup evidence",
+    "Originalfullapplication2626pass28skip stillpinned79b2316",
+    "No publicexport/paidCI/container/deployment;0/50delivered"
+  ]
+}

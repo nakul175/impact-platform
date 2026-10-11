@@ -8,6 +8,7 @@ from psycopg.types.json import Jsonb
 
 from .domain import DomainError
 from .store import audit, authorize, context, hash_data, load, write
+from .ai_diagnosis_evidence import resolve_problem_references, validate_references
 
 KIND = "AIDiagnosis"
 ROUTE = "ai-enablement/diagnoses"
@@ -49,8 +50,14 @@ def validate_diagnosis(data, complete=False):
         _invalid()
     ids = []
     for problem in problems:
-        if not isinstance(problem, dict) or set(problem) != PROBLEM_FIELDS:
+        if (
+            not isinstance(problem, dict)
+            or not PROBLEM_FIELDS <= set(problem)
+            or set(problem) - PROBLEM_FIELDS - {"evidence_references"}
+        ):
             _invalid()
+        if "evidence_references" in problem:
+            validate_references(problem["evidence_references"])
         ids.append(_uuid(problem["problem_id"]))
         for field, maximum in TEXT_LIMITS.items():
             value = problem[field]
@@ -101,31 +108,67 @@ class AIDiagnoses:
     def __init__(self, service):
         self.service = service
 
+    @staticmethod
+    def check_evidence(c, identity, tenant, payload):
+        try:
+            resolve_problem_references(c, identity, tenant, payload["problems"])
+        except DomainError as error:
+            if error.code != "VALIDATION_FAILED":
+                raise
+            raise DomainError("RESOURCE_UNAVAILABLE", 404) from None
+
+    def visible_page(self, c, identity, tenant, rows, limit):
+        page = []
+        scanned = 0
+        # Scan a bounded source batch and fill the requested visible page.
+        # Advance past hidden rows without returning their identifiers.
+        for row in rows[:100]:
+            scanned += 1
+            try:
+                self.check_evidence(c, identity, tenant, row["payload"])
+            except DomainError as error:
+                if error.status != 404:
+                    raise
+                continue
+            page.append(row)
+            if len(page) == limit:
+                break
+        return page, scanned
+
+    @staticmethod
+    def revision(c, tenant, object_id, revision_id):
+        row = c.execute(
+            "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s "
+            "AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
+            (tenant, object_id, revision_id, KIND),
+        ).fetchone()
+        if not row:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
+        return row["payload"]
+
     def get(self, identity, tenant, object_id, revision_id=None):
         _uuid(object_id)
         if revision_id is not None:
             _uuid(revision_id)
         with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
             ctx = context(c, identity, tenant)
             # None deliberately requires a TENANT grant, not an object-scoped grant.
             authorize(c, ctx, "get_ai_diagnosis", hidden=True)
             current = load(c, ctx, object_id, KIND, READ_CAP)
+            self.check_evidence(c, identity, tenant, current["payload"])
             if revision_id is None:
                 return _result(object_id, current["head_revision"], current["payload"])
             authorize(c, ctx, "get_ai_diagnosis_revision", hidden=True)
-            row = c.execute(
-                "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s "
-                "AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
-                (tenant, object_id, revision_id, KIND),
-            ).fetchone()
-            if not row:
-                raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            return _result(object_id, revision_id, row["payload"])
+            payload = self.revision(c, tenant, object_id, revision_id)
+            self.check_evidence(c, identity, tenant, payload)
+            return _result(object_id, revision_id, payload)
 
     def listing(self, identity, tenant, limit=50, cursor=None):
         if type(limit) is not int or not 1 <= limit <= 100:
             _invalid()
         with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "list_ai_diagnoses", hidden=True)
             bound = self.service.cursor_binding(ctx, ROUTE)
@@ -148,13 +191,13 @@ class AIDiagnoses:
                 query += " AND r.object_id>%s::uuid"
                 params.append(after)
             query += " ORDER BY r.object_id LIMIT %s"
-            params.append(limit + 1)
+            params.append(101)
             rows = c.execute(query, params).fetchall()
-            page = rows[:limit]
+            page, scanned = self.visible_page(c, identity, tenant, rows, limit)
             return {
                 "items": [_result(row["object_id"], row["head_revision"], row["payload"]) for row in page],
-                "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])])
-                if len(rows) > limit
+                "next_cursor": self.service.next_cursor(bound, [str(rows[scanned - 1]["object_id"])])
+                if len(rows) > scanned
                 else None,
             }
 
@@ -163,9 +206,11 @@ class AIDiagnoses:
         if type(limit) is not int or not 1 <= limit <= 100:
             _invalid()
         with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "list_ai_diagnosis_revisions", hidden=True)
-            load(c, ctx, object_id, KIND, READ_CAP)
+            current = load(c, ctx, object_id, KIND, READ_CAP)
+            self.check_evidence(c, identity, tenant, current["payload"])
             bound = self.service.cursor_binding(ctx, ROUTE + "/" + object_id + "/revisions")
             key = self.service.cursor_key(bound, cursor)
             if key is not None and (
@@ -173,7 +218,7 @@ class AIDiagnoses:
             ):
                 raise DomainError("INVALID_CURSOR", 400)
             query = (
-                "SELECT revision_id,revision_number,created_at,payload->>'title' AS title,"
+                "SELECT revision_id,revision_number,created_at,payload,payload->>'title' AS title,"
                 "payload->>'diagnosis_state' AS business_state FROM impact.object_revision "
                 "WHERE tenant_id=%s AND object_id=%s AND object_type=%s AND restriction_state='AVAILABLE'"
             )
@@ -182,9 +227,9 @@ class AIDiagnoses:
                 query += " AND revision_number<%s"
                 params.append(key[0])
             query += " ORDER BY revision_number DESC LIMIT %s"
-            params.append(limit + 1)
+            params.append(101)
             rows = c.execute(query, params).fetchall()
-            page = rows[:limit]
+            page, scanned = self.visible_page(c, identity, tenant, rows, limit)
             return {
                 "object_id": object_id,
                 "items": [
@@ -197,8 +242,8 @@ class AIDiagnoses:
                     }
                     for row in page
                 ],
-                "next_cursor": self.service.next_cursor(bound, [page[-1]["revision_number"]])
-                if len(rows) > limit
+                "next_cursor": self.service.next_cursor(bound, [rows[scanned - 1]["revision_number"]])
+                if len(rows) > scanned
                 else None,
             }
 
@@ -243,9 +288,16 @@ class AIDiagnoses:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 if old["expires_at"] <= now:
                     raise DomainError("IDEMPOTENCY_EXPIRED", 409)
-                load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
+                replay_current = load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
+                self.check_evidence(c, identity, tenant, replay_current["payload"])
+                replay_payload = self.revision(
+                    c, tenant, old["outcome"]["object_id"], old["outcome"]["revision_id"]
+                )
+                self.check_evidence(c, identity, tenant, replay_payload)
                 return old["outcome"]
             previous = load(c, ctx, object_id, KIND, READ_CAP, lock=True) if object_id else None
+            if previous:
+                self.check_evidence(c, identity, tenant, previous["payload"])
             if previous and str(previous["head_revision"]) != body["expected_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
             if action is None:
@@ -284,6 +336,7 @@ class AIDiagnoses:
                     payload.pop("completed_at", None)
                     payload.pop("completed_by", None)
                     payload.update(diagnosis_state=state, correction_reason=reason)
+            self.check_evidence(c, identity, tenant, payload)
             receipt = write(c, ctx, KIND, payload, state, previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             audit(c, ctx, operation, receipt, correlation)

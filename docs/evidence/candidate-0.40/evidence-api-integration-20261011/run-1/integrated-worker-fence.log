@@ -1,0 +1,355 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-990c6824/passwords.json
+Ready at http://127.0.0.1:8313
+........................FFFFFFF......................................... [ 81%]
+................                                                         [100%]
+=================================== FAILURES ===================================
+_ test_default_admin_cannot_create_linked_diagnosis_without_source_read_grant __
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+
+    def test_default_admin_cannot_create_linked_diagnosis_without_source_read_grant(live):
+        evidence = external(live)
+        before = domain_counts(live)
+>       expect(
+            live.request(
+                live.path("ai-enablement/diagnoses"), actor="admin", method="POST", body=cmd(linked(evidence))
+            ),
+            404,
+            "RESOURCE_UNAVAILABLE",
+        )
+E       TypeError: expect() takes 2 positional arguments but 3 were given
+
+qualification/test_ai_diagnosis_evidence_live.py:85: TypeError
+_ test_exact_reference_save_completion_correction_and_retry_preserve_notes_and_history _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+
+    def test_exact_reference_save_completion_correction_and_retry_preserve_notes_and_history(live):
+        evidence = external(live)
+>       with source_access(live, evidence):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_evidence_live.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/athena/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+qualification/test_ai_diagnosis_evidence_live.py:40: in source_access
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10e95cda0>
+query = "INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT',%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'acc3f168-9d7d-4a84-843f-84c9f832a767', UUID('f785cbf6-b065-57c7-a743-3b07034b5c95'))
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "scope_definition" violates check constraint "scope_definition_scope_type_check"
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, acc3f168-9d7d-4a84-843f-84c9f832a767, OBJECT, f785cbf6-b065-57c7-a743-3b07034b5c95).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: CheckViolation
+_ test_current_source_grant_loss_refuses_all_reads_completion_and_exact_replay _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+
+    def test_current_source_grant_loss_refuses_all_reads_completion_and_exact_replay(live):
+        evidence = external(live)
+>       with source_access(live, evidence):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_evidence_live.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/athena/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+qualification/test_ai_diagnosis_evidence_live.py:40: in source_access
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10e95ef30>
+query = "INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT',%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'c31d1e3d-1402-423e-ac54-398fd45a71be', UUID('f785cbf6-b065-57c7-a743-3b07034b5c95'))
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "scope_definition" violates check constraint "scope_definition_scope_type_check"
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, c31d1e3d-1402-423e-ac54-398fd45a71be, OBJECT, f785cbf6-b065-57c7-a743-3b07034b5c95).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: CheckViolation
+_ test_new_source_unavailability_refuses_completion_without_history_rewrite[RESTRICTED] _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+state = 'RESTRICTED'
+
+    @pytest.mark.parametrize("state", ["RESTRICTED", "REMOVED"])
+    def test_new_source_unavailability_refuses_completion_without_history_rewrite(live, state):
+        evidence = external(live)
+>       with source_access(live, evidence):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_evidence_live.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/athena/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+qualification/test_ai_diagnosis_evidence_live.py:40: in source_access
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10e886db0>
+query = "INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT',%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '1ab3a2ff-d03e-4123-924f-43012d6fd9b2', UUID('f785cbf6-b065-57c7-a743-3b07034b5c95'))
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "scope_definition" violates check constraint "scope_definition_scope_type_check"
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 1ab3a2ff-d03e-4123-924f-43012d6fd9b2, OBJECT, f785cbf6-b065-57c7-a743-3b07034b5c95).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: CheckViolation
+_ test_new_source_unavailability_refuses_completion_without_history_rewrite[REMOVED] _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>, state = 'REMOVED'
+
+    @pytest.mark.parametrize("state", ["RESTRICTED", "REMOVED"])
+    def test_new_source_unavailability_refuses_completion_without_history_rewrite(live, state):
+        evidence = external(live)
+>       with source_access(live, evidence):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_evidence_live.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/athena/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+qualification/test_ai_diagnosis_evidence_live.py:40: in source_access
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10e95c0b0>
+query = "INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT',%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '8475be12-bd87-479b-8a73-23a45c93b71d', UUID('f785cbf6-b065-57c7-a743-3b07034b5c95'))
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "scope_definition" violates check constraint "scope_definition_scope_type_check"
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 8475be12-bd87-479b-8a73-23a45c93b71d, OBJECT, f785cbf6-b065-57c7-a743-3b07034b5c95).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: CheckViolation
+_ test_object_scoped_source_grant_does_not_authorize_another_evidence_selector _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+
+    def test_object_scoped_source_grant_does_not_authorize_another_evidence_selector(live):
+        first, second = external(live), external(live)
+>       with source_access(live, first):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_evidence_live.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/athena/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+qualification/test_ai_diagnosis_evidence_live.py:40: in source_access
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10e964440>
+query = "INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT',%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '347bf3db-c468-4632-b772-d220befa72b0', UUID('f785cbf6-b065-57c7-a743-3b07034b5c95'))
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "scope_definition" violates check constraint "scope_definition_scope_type_check"
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 347bf3db-c468-4632-b772-d220befa72b0, OBJECT, f785cbf6-b065-57c7-a743-3b07034b5c95).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: CheckViolation
+_ test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains _
+
+live = <conftest.live.<locals>.Client object at 0x10e6d4440>
+
+    def test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains(live):
+        data = diagnosis()
+        original = deepcopy(data)
+        data["problems"][0]["evidence_references"] = [
+            {"object_id": str(uuid4()), "revision_id": str(uuid4()), "title": "Synthetic private source"}
+        ]
+        before = domain_counts(live)
+>       expect(
+            live.request(live.path("ai-enablement/diagnoses"), actor="admin", method="POST", body=cmd(data)),
+            422,
+            "VALIDATION_FAILED",
+        )
+E       TypeError: expect() takes 2 positional arguments but 3 were given
+
+qualification/test_ai_diagnosis_evidence_live.py:175: TypeError
+=========================== short test summary info ============================
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_default_admin_cannot_create_linked_diagnosis_without_source_read_grant
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_exact_reference_save_completion_correction_and_retry_preserve_notes_and_history
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_current_source_grant_loss_refuses_all_reads_completion_and_exact_replay
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_new_source_unavailability_refuses_completion_without_history_rewrite[RESTRICTED]
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_new_source_unavailability_refuses_completion_without_history_rewrite[REMOVED]
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector
+FAILED qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains
+7 failed, 81 passed in 6.48s

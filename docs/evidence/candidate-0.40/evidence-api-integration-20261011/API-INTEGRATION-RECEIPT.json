@@ -1,0 +1,91 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T14:13:21.921745+00:00",
+  "tested_base_head": "7a70b81aacd239610d2b22dadeb2a1234d9bd586",
+  "stage": "LOCAL_PROTECTED_EVIDENCE_API_INTEGRATION_PARTIAL",
+  "build": "0.40.0 unreleased candidate",
+  "domain_api": "1.30.0",
+  "schema": 46,
+  "actual_tests": {
+    "native_final_passed": 89,
+    "native_final_failed": 0,
+    "native_final_errors": 0,
+    "native_final_skipped": 0,
+    "native_new_http_cases": 8,
+    "native_helper_and_shape_cases": 24,
+    "existing_diagnosis_http_cases": 57,
+    "unit_separate_passed": 114,
+    "unit_skipped_failed_errors": 0,
+    "earlier_attempts": [
+      {
+        "run": 1,
+        "passed": 81,
+        "failed": 7,
+        "reason": "New fixture scope enum and expect helper invocation; no old test weakened"
+      },
+      {
+        "run": 2,
+        "passed": 88,
+        "failed": 0
+      },
+      {
+        "run": 3,
+        "passed": 88,
+        "failed": 1,
+        "reason": "Existing bounded list test exposed sparse page when hidden source rows precede visible rows; fixed product pagination"
+      },
+      {
+        "run": 4,
+        "passed": 89,
+        "failed": 0
+      }
+    ]
+  },
+  "native_source_pins_stable": 276,
+  "separate_new_paging_unit_source": "e621aac4abf4713a98476907a717783a80cbe8e8c37b5dd0d63146da4e8b3b72",
+  "all46_migrations_byte_exact": true,
+  "contract": "Optional closed evidence_references per problem, at most5 canonical unique object/revision pairs. Notes and original completeness rules remain mandatory; absent field is not added to old payloads. References persist only in immutable JSON; no separate reference FK table exists.",
+  "visibility": "Fresh current diagnosis/Evidence authority under tenant lock on commands, current/historical get, history/list and exact replay. Replay validates current head and named receipt revision; hidden rows filter. Scan at most100 source rows plus1 lookahead, filling requested visible page; opaque cursor advances over scanned rows, no totals. Dense hidden batches may yield sparse/empty pages with continuation.",
+  "synthetic_permission_fixture": "Default TENANT_ADMIN has no evidence.read. Refusal is tested unchanged. Positive checks provision one fresh synthetic OBJECT_SET scope/grant for exactly one evidence object, narrowed on teardown in disposable DB. No live identity/account/default role/profile/ceiling change and no claim of governed grant-flow qualification.",
+  "reviews": {
+    "code": "Separate integration self-review examined closed shapes, compatible absent fields, command atomicity, current and named replay source checks, hidden history/list and bounded scanned-row pagination. Source-unavailable previous diagnosis blocks edits, including removing that reference; no repair flow or waiver invented. Source upload/blob/revision reads have no new row locks: privacy/retention races still require actual qualification.",
+    "evidence": "Separate integration self-review parsed every final89 node and114 unit nodes, retained seven initial fixture failures and actual old pagination regression, checked exact native executable pins and all46 migration bytes, unconfirmed append-only security impact record and stopped disposable runtime. New3 deterministic paging unit cases are separate from native89, not added to a fabricated full-suite total."
+  },
+  "remaining": [
+    "Tenant-keyed persisted Evidence revision linkage and SQL constraints, including governed privacy compatibility",
+    "Accessible selection UI and actual source-selection browser qualification",
+    "Native source authority/privacy/retention concurrency and recovery plus integrated full regression/provider refresh after implementation",
+    "Four exact-head hosted jobs plus checks, container path, remote-export/financial authority and human/operational/owner release gates"
+  ],
+  "cleanup": "All four runners ended; every cluster stop exit0, historical generated evidence restored unchanged; fresh test-only grant narrowed. No paid resource or external provider/message.",
+  "human_signoff": false,
+  "deployed": false,
+  "verified_delivered_stories": 0,
+  "evidence_sha256": {
+    "TRACKED-WORKING-DIFF.patch": "0234346ae41d92c12c8a8477d18b7444b5b6ec448c7f2feb30fe0367e31d0652",
+    "release-check.log": "8c8c5b59e6310e297d6d2f9d340cbf6a570c420e254c31a196d08d4a30e83a2d",
+    "run-1/RUN-RECEIPT.json": "3ce9427f95d2bb5cc64afed9a6b81fe2d6b6ab278ae9861440459cb301cff6c9",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "a666da3389b83b9a278ca6499b0770ecb750c76f9d4e240e90569f4add5ea5ae",
+    "run-1/integrated-worker-fence.log": "8c2919b1826b75d5aafbffcd3312bf15512be708702a1cb241af1c3cdeeee491",
+    "run-2/RUN-RECEIPT.json": "f156bae092a91820968262329a2a899662c903031e63c8135f2093166cf26efc",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "21261522f499b4aaa74684fe5bdb70b9744ab65b14e7dfca67ff091558512377",
+    "run-2/integrated-worker-fence.log": "25a6d0d2c053f7d9a3bdc692fcf47ecce1c2616e72fda8db56114a32ac0b407c",
+    "run-3/RUN-RECEIPT.json": "45ab8f76faf61feaf3a81775da6f62d89c5d09bbd52cc79681ea21b91c89d16f",
+    "run-3/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-3/integrated-worker-fence-tests.xml": "56d04799796f7005198efc7be2962f88c1ef5b486e4ff0b9638113d98ffb15b3",
+    "run-3/integrated-worker-fence.log": "dc0127e5283283d2cecb1f4c22ce7d2b92b8a9fef829ee4774c969a99b39f5f6",
+    "run-4/RUN-RECEIPT.json": "40cd999987e3f413e356ce6cd08d916fa9942155f9ada66b9bb4bdfbcc59e9ab",
+    "run-4/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-4/integrated-worker-fence-tests.xml": "213ec323e0155f3173ee9e90df6adae506cec115b19995d01561294865daf074",
+    "run-4/integrated-worker-fence.log": "be11ae70330967720f2fd03b66f283d0d6ca5102e08edd9055049d42ec8e9f10",
+    "tested-new-source/qualification/test_ai_diagnosis_evidence_live.py": "d967886b4f8ad5588be9928b0177a12ba43eed5ddedffe0cdba7c62e4af7b91d",
+    "tested-new-source/qualification/test_ai_diagnosis_evidence_paging_unit.py": "e621aac4abf4713a98476907a717783a80cbe8e8c37b5dd0d63146da4e8b3b72",
+    "unit-final.log": "ec055756592c1bb329da72c4e5089f85afc5e27d0c065575c1f11962c207f5b1",
+    "unit-final.xml": "089deea4788e9f6266c6b7a2a7e40c3197b83b51fd35a7dc6f77ff20f00d76dd",
+    "unit.log": "e9e93bf6ce99e361311c2f70ba62d9ecf3e7ce0c72664f23da96aebf4f90392e",
+    "unit.xml": "d8e9891434d58c75bbfc4b34c4d29e64a5801a4f01154fc373779cc89b5fc576"
+  }
+}

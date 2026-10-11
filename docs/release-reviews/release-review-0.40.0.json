@@ -391,6 +391,34 @@
       "prepared_by": "Codex root agent; separate code/evidence self-review is not human signoff",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-07",
+      "change_id": "US-DX-01a-evidence-api",
+      "change": "Integrate compatible optional Evidence references and current disclosure checks",
+      "paths": [
+        "apps/api/impact_api/ai_diagnoses.py",
+        "apps/api/impact_api/ai_diagnosis_evidence.py",
+        "apps/api/impact_api/ai_diagnosis_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json",
+        "qualification/test_ai_diagnosis_evidence_live.py",
+        "qualification/test_ai_diagnosis_evidence_paging_unit.py"
+      ],
+      "areas": [
+        "ai-module",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Optional closed canonical per-problem Evidence selectors retain mandatory notes and untouched historical payloads. Fresh current capability/source checks under tenant lock precede command effects and current/historical/list/receipt replay disclosure. Hidden list rows filter with scanned-row continuation. No default grants, capabilities, profiles, accounts, prior migrations, provider calls or metadata fetch. Synthetic object-read grant is bounded disposable fixture setup, not governed authority acceptance. References persist only in revision JSON; tenant-keyed SQL linkage, UI, privacy/retention races, recovery and release/human gates remain. No task Done or accepted criterion.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

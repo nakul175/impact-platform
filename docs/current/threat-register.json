@@ -1103,7 +1103,8 @@
         "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
         "qualification/test_ai_diagnosis_live.py::test_unknown_server_fields_and_reference_selectors_are_rejected_before_writes",
         "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order",
-        "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused"
+        "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused",
+        "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains"
       ],
       "coverage": {
         "C-CLOSED-DTO": [
@@ -1114,7 +1115,8 @@
           "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
           "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
           "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order",
-          "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused"
+          "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused",
+          "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains"
         ],
         "C-SERVER-OWNED-FIELDS": [
           "qualification/test_unit.py::test_server_owned_fields",
@@ -1519,7 +1521,8 @@
         "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
         "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts",
         "qualification/test_ai_diagnosis_payload_native.py::test_constraint_helper_has_no_definer_or_identity_data_authority",
-        "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals"
+        "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals",
+        "qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [

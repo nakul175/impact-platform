@@ -4,7 +4,7 @@ from copy import deepcopy
 
 from .measurement_contracts import closed
 
-VERSION = "1.29.0"
+VERSION = "1.30.0"
 ROOT = "ai-enablement/diagnoses"
 ROUTES = [
     ("get", "", "list_ai_diagnoses", None, "AIDiagnosisList"),
@@ -40,7 +40,17 @@ def augment(spec, policy):
         "affected_area": {"type": "string", "maxLength": 150},
         "supporting_evidence": {"type": "string", "maxLength": 4000},
     }
-    schemas["AIDiagnosisProblem"] = closed(problem, list(problem))
+    required_problem = list(problem)
+    schemas["AIDiagnosisEvidenceReference"] = closed(
+        {"object_id": deepcopy(uid), "revision_id": deepcopy(uid)}, ["object_id", "revision_id"]
+    )
+    problem["evidence_references"] = {
+        "type": "array",
+        "maxItems": 5,
+        "uniqueItems": True,
+        "items": {"$ref": "#/components/schemas/AIDiagnosisEvidenceReference"},
+    }
+    schemas["AIDiagnosisProblem"] = closed(problem, required_problem)
     data = {
         "title": {"type": "string", "minLength": 1, "maxLength": 150},
         "problems": {

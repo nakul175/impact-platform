@@ -1,4 +1,4 @@
-"""Protected-reference resolver foundation; not yet wired to diagnosis routes.
+"""Protected-reference resolver used by diagnosis commands and disclosures.
 
 Call within the caller's transaction. Diagnosis command/read authorization remains
 the caller's duty. This helper resolves fresh evidence authority under the tenant
@@ -49,6 +49,25 @@ def resolve_references(c, identity, tenant, references):
     external references are stored metadata and are never fetched here.
     """
     validate_references(references)
+    return _resolve_checked(c, identity, tenant, references)
+
+
+def resolve_problem_references(c, identity, tenant, problems):
+    """Resolve one bounded diagnosis's optional references with one fresh context."""
+    if not isinstance(problems, list) or len(problems) > 20:
+        raise DomainError("VALIDATION_FAILED", reason="DIAGNOSIS_EVIDENCE_INVALID")
+    references = []
+    for problem in problems:
+        if not isinstance(problem, dict):
+            raise DomainError("VALIDATION_FAILED", reason="DIAGNOSIS_EVIDENCE_INVALID")
+        refs = problem.get("evidence_references", [])
+        validate_references(refs)
+        references.extend(refs)
+    if references:
+        _resolve_checked(c, identity, tenant, references)
+
+
+def _resolve_checked(c, identity, tenant, references):
     c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
     ctx = context(c, identity, tenant, write=True)
     for reference in references:

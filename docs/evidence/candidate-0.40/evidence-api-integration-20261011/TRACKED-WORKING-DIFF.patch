@@ -1,0 +1,607 @@
+diff --git a/VERSION.json b/VERSION.json
+index 130e78e..af8a724 100644
+--- a/VERSION.json
++++ b/VERSION.json
+@@ -1,6 +1,6 @@
+ {
+   "build": "0.40.0",
+-  "domain_api": "1.29.0",
++  "domain_api": "1.30.0",
+   "platform_api": "1.11.0",
+   "documentation_edition": "1.1",
+   "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+diff --git a/apps/api/impact_api/ai_diagnoses.py b/apps/api/impact_api/ai_diagnoses.py
+index 7a7c16b..7a7b1a5 100644
+--- a/apps/api/impact_api/ai_diagnoses.py
++++ b/apps/api/impact_api/ai_diagnoses.py
+@@ -8,6 +8,7 @@ from psycopg.types.json import Jsonb
+ 
+ from .domain import DomainError
+ from .store import audit, authorize, context, hash_data, load, write
++from .ai_diagnosis_evidence import resolve_problem_references, validate_references
+ 
+ KIND = "AIDiagnosis"
+ ROUTE = "ai-enablement/diagnoses"
+@@ -49,8 +50,14 @@ def validate_diagnosis(data, complete=False):
+         _invalid()
+     ids = []
+     for problem in problems:
+-        if not isinstance(problem, dict) or set(problem) != PROBLEM_FIELDS:
++        if (
++            not isinstance(problem, dict)
++            or not PROBLEM_FIELDS <= set(problem)
++            or set(problem) - PROBLEM_FIELDS - {"evidence_references"}
++        ):
+             _invalid()
++        if "evidence_references" in problem:
++            validate_references(problem["evidence_references"])
+         ids.append(_uuid(problem["problem_id"]))
+         for field, maximum in TEXT_LIMITS.items():
+             value = problem[field]
+@@ -101,31 +108,67 @@ class AIDiagnoses:
+     def __init__(self, service):
+         self.service = service
+ 
++    @staticmethod
++    def check_evidence(c, identity, tenant, payload):
++        try:
++            resolve_problem_references(c, identity, tenant, payload["problems"])
++        except DomainError as error:
++            if error.code != "VALIDATION_FAILED":
++                raise
++            raise DomainError("RESOURCE_UNAVAILABLE", 404) from None
++
++    def visible_page(self, c, identity, tenant, rows, limit):
++        page = []
++        scanned = 0
++        # Scan a bounded source batch and fill the requested visible page.
++        # Advance past hidden rows without returning their identifiers.
++        for row in rows[:100]:
++            scanned += 1
++            try:
++                self.check_evidence(c, identity, tenant, row["payload"])
++            except DomainError as error:
++                if error.status != 404:
++                    raise
++                continue
++            page.append(row)
++            if len(page) == limit:
++                break
++        return page, scanned
++
++    @staticmethod
++    def revision(c, tenant, object_id, revision_id):
++        row = c.execute(
++            "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s "
++            "AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
++            (tenant, object_id, revision_id, KIND),
++        ).fetchone()
++        if not row:
++            raise DomainError("RESOURCE_UNAVAILABLE", 404)
++        return row["payload"]
++
+     def get(self, identity, tenant, object_id, revision_id=None):
+         _uuid(object_id)
+         if revision_id is not None:
+             _uuid(revision_id)
+         with self.service.db.transaction(tenant) as c:
++            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+             ctx = context(c, identity, tenant)
+             # None deliberately requires a TENANT grant, not an object-scoped grant.
+             authorize(c, ctx, "get_ai_diagnosis", hidden=True)
+             current = load(c, ctx, object_id, KIND, READ_CAP)
++            self.check_evidence(c, identity, tenant, current["payload"])
+             if revision_id is None:
+                 return _result(object_id, current["head_revision"], current["payload"])
+             authorize(c, ctx, "get_ai_diagnosis_revision", hidden=True)
+-            row = c.execute(
+-                "SELECT payload FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s "
+-                "AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
+-                (tenant, object_id, revision_id, KIND),
+-            ).fetchone()
+-            if not row:
+-                raise DomainError("RESOURCE_UNAVAILABLE", 404)
+-            return _result(object_id, revision_id, row["payload"])
++            payload = self.revision(c, tenant, object_id, revision_id)
++            self.check_evidence(c, identity, tenant, payload)
++            return _result(object_id, revision_id, payload)
+ 
+     def listing(self, identity, tenant, limit=50, cursor=None):
+         if type(limit) is not int or not 1 <= limit <= 100:
+             _invalid()
+         with self.service.db.transaction(tenant) as c:
++            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+             ctx = context(c, identity, tenant)
+             authorize(c, ctx, "list_ai_diagnoses", hidden=True)
+             bound = self.service.cursor_binding(ctx, ROUTE)
+@@ -148,13 +191,13 @@ class AIDiagnoses:
+                 query += " AND r.object_id>%s::uuid"
+                 params.append(after)
+             query += " ORDER BY r.object_id LIMIT %s"
+-            params.append(limit + 1)
++            params.append(101)
+             rows = c.execute(query, params).fetchall()
+-            page = rows[:limit]
++            page, scanned = self.visible_page(c, identity, tenant, rows, limit)
+             return {
+                 "items": [_result(row["object_id"], row["head_revision"], row["payload"]) for row in page],
+-                "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])])
+-                if len(rows) > limit
++                "next_cursor": self.service.next_cursor(bound, [str(rows[scanned - 1]["object_id"])])
++                if len(rows) > scanned
+                 else None,
+             }
+ 
+@@ -163,9 +206,11 @@ class AIDiagnoses:
+         if type(limit) is not int or not 1 <= limit <= 100:
+             _invalid()
+         with self.service.db.transaction(tenant) as c:
++            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+             ctx = context(c, identity, tenant)
+             authorize(c, ctx, "list_ai_diagnosis_revisions", hidden=True)
+-            load(c, ctx, object_id, KIND, READ_CAP)
++            current = load(c, ctx, object_id, KIND, READ_CAP)
++            self.check_evidence(c, identity, tenant, current["payload"])
+             bound = self.service.cursor_binding(ctx, ROUTE + "/" + object_id + "/revisions")
+             key = self.service.cursor_key(bound, cursor)
+             if key is not None and (
+@@ -173,7 +218,7 @@ class AIDiagnoses:
+             ):
+                 raise DomainError("INVALID_CURSOR", 400)
+             query = (
+-                "SELECT revision_id,revision_number,created_at,payload->>'title' AS title,"
++                "SELECT revision_id,revision_number,created_at,payload,payload->>'title' AS title,"
+                 "payload->>'diagnosis_state' AS business_state FROM impact.object_revision "
+                 "WHERE tenant_id=%s AND object_id=%s AND object_type=%s AND restriction_state='AVAILABLE'"
+             )
+@@ -182,9 +227,9 @@ class AIDiagnoses:
+                 query += " AND revision_number<%s"
+                 params.append(key[0])
+             query += " ORDER BY revision_number DESC LIMIT %s"
+-            params.append(limit + 1)
++            params.append(101)
+             rows = c.execute(query, params).fetchall()
+-            page = rows[:limit]
++            page, scanned = self.visible_page(c, identity, tenant, rows, limit)
+             return {
+                 "object_id": object_id,
+                 "items": [
+@@ -197,8 +242,8 @@ class AIDiagnoses:
+                     }
+                     for row in page
+                 ],
+-                "next_cursor": self.service.next_cursor(bound, [page[-1]["revision_number"]])
+-                if len(rows) > limit
++                "next_cursor": self.service.next_cursor(bound, [rows[scanned - 1]["revision_number"]])
++                if len(rows) > scanned
+                 else None,
+             }
+ 
+@@ -243,9 +288,16 @@ class AIDiagnoses:
+                     raise DomainError("CONFLICT_OPERATION", 409)
+                 if old["expires_at"] <= now:
+                     raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+-                load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
++                replay_current = load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
++                self.check_evidence(c, identity, tenant, replay_current["payload"])
++                replay_payload = self.revision(
++                    c, tenant, old["outcome"]["object_id"], old["outcome"]["revision_id"]
++                )
++                self.check_evidence(c, identity, tenant, replay_payload)
+                 return old["outcome"]
+             previous = load(c, ctx, object_id, KIND, READ_CAP, lock=True) if object_id else None
++            if previous:
++                self.check_evidence(c, identity, tenant, previous["payload"])
+             if previous and str(previous["head_revision"]) != body["expected_revision"]:
+                 raise DomainError("CONFLICT_VERSION", 409)
+             if action is None:
+@@ -284,6 +336,7 @@ class AIDiagnoses:
+                     payload.pop("completed_at", None)
+                     payload.pop("completed_by", None)
+                     payload.update(diagnosis_state=state, correction_reason=reason)
++            self.check_evidence(c, identity, tenant, payload)
+             receipt = write(c, ctx, KIND, payload, state, previous=previous)
+             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
+             audit(c, ctx, operation, receipt, correlation)
+diff --git a/apps/api/impact_api/ai_diagnosis_contracts.py b/apps/api/impact_api/ai_diagnosis_contracts.py
+index 987491a..fba278e 100644
+--- a/apps/api/impact_api/ai_diagnosis_contracts.py
++++ b/apps/api/impact_api/ai_diagnosis_contracts.py
+@@ -4,7 +4,7 @@ from copy import deepcopy
+ 
+ from .measurement_contracts import closed
+ 
+-VERSION = "1.29.0"
++VERSION = "1.30.0"
+ ROOT = "ai-enablement/diagnoses"
+ ROUTES = [
+     ("get", "", "list_ai_diagnoses", None, "AIDiagnosisList"),
+@@ -40,7 +40,17 @@ def augment(spec, policy):
+         "affected_area": {"type": "string", "maxLength": 150},
+         "supporting_evidence": {"type": "string", "maxLength": 4000},
+     }
+-    schemas["AIDiagnosisProblem"] = closed(problem, list(problem))
++    required_problem = list(problem)
++    schemas["AIDiagnosisEvidenceReference"] = closed(
++        {"object_id": deepcopy(uid), "revision_id": deepcopy(uid)}, ["object_id", "revision_id"]
++    )
++    problem["evidence_references"] = {
++        "type": "array",
++        "maxItems": 5,
++        "uniqueItems": True,
++        "items": {"$ref": "#/components/schemas/AIDiagnosisEvidenceReference"},
++    }
++    schemas["AIDiagnosisProblem"] = closed(problem, required_problem)
+     data = {
+         "title": {"type": "string", "minLength": 1, "maxLength": 150},
+         "problems": {
+diff --git a/apps/api/impact_api/ai_diagnosis_evidence.py b/apps/api/impact_api/ai_diagnosis_evidence.py
+index c3bafc9..f640d9d 100644
+--- a/apps/api/impact_api/ai_diagnosis_evidence.py
++++ b/apps/api/impact_api/ai_diagnosis_evidence.py
+@@ -1,4 +1,4 @@
+-"""Protected-reference resolver foundation; not yet wired to diagnosis routes.
++"""Protected-reference resolver used by diagnosis commands and disclosures.
+ 
+ Call within the caller's transaction. Diagnosis command/read authorization remains
+ the caller's duty. This helper resolves fresh evidence authority under the tenant
+@@ -49,6 +49,25 @@ def resolve_references(c, identity, tenant, references):
+     external references are stored metadata and are never fetched here.
+     """
+     validate_references(references)
++    return _resolve_checked(c, identity, tenant, references)
++
++
++def resolve_problem_references(c, identity, tenant, problems):
++    """Resolve one bounded diagnosis's optional references with one fresh context."""
++    if not isinstance(problems, list) or len(problems) > 20:
++        raise DomainError("VALIDATION_FAILED", reason="DIAGNOSIS_EVIDENCE_INVALID")
++    references = []
++    for problem in problems:
++        if not isinstance(problem, dict):
++            raise DomainError("VALIDATION_FAILED", reason="DIAGNOSIS_EVIDENCE_INVALID")
++        refs = problem.get("evidence_references", [])
++        validate_references(refs)
++        references.extend(refs)
++    if references:
++        _resolve_checked(c, identity, tenant, references)
++
++
++def _resolve_checked(c, identity, tenant, references):
+     c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+     ctx = context(c, identity, tenant, write=True)
+     for reference in references:
+diff --git a/docs/current/threat-register.json b/docs/current/threat-register.json
+index 9daf9a5..8c36f7f 100644
+--- a/docs/current/threat-register.json
++++ b/docs/current/threat-register.json
+@@ -1103,7 +1103,8 @@
+         "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
+         "qualification/test_ai_diagnosis_live.py::test_unknown_server_fields_and_reference_selectors_are_rejected_before_writes",
+         "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order",
+-        "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused"
++        "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused",
++        "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains"
+       ],
+       "coverage": {
+         "C-CLOSED-DTO": [
+@@ -1114,7 +1115,8 @@
+           "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
+           "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
+           "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order",
+-          "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused"
++          "qualification/test_ai_diagnosis_evidence_unit.py::test_ambiguous_unbounded_and_metadata_bearing_selectors_are_refused",
++          "qualification/test_ai_diagnosis_evidence_live.py::test_invalid_selector_metadata_is_refused_before_write_and_original_notes_contract_remains"
+         ],
+         "C-SERVER-OWNED-FIELDS": [
+           "qualification/test_unit.py::test_server_owned_fields",
+@@ -1519,7 +1521,8 @@
+         "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
+         "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts",
+         "qualification/test_ai_diagnosis_payload_native.py::test_constraint_helper_has_no_definer_or_identity_data_authority",
+-        "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals"
++        "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals",
++        "qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector"
+       ],
+       "coverage": {
+         "C-TENANT-CONTEXT": [
+diff --git a/docs/release-reviews/release-review-0.40.0.json b/docs/release-reviews/release-review-0.40.0.json
+index b63732b..e503ea2 100644
+--- a/docs/release-reviews/release-review-0.40.0.json
++++ b/docs/release-reviews/release-review-0.40.0.json
+@@ -391,6 +391,34 @@
+       "prepared_by": "Codex root agent; separate code/evidence self-review is not human signoff",
+       "prepared_on": "2026-10-11",
+       "confirmed_by": null
++    },
++    {
++      "id": "IR-0.40-07",
++      "change_id": "US-DX-01a-evidence-api",
++      "change": "Integrate compatible optional Evidence references and current disclosure checks",
++      "paths": [
++        "apps/api/impact_api/ai_diagnoses.py",
++        "apps/api/impact_api/ai_diagnosis_evidence.py",
++        "apps/api/impact_api/ai_diagnosis_contracts.py",
++        "packages/contracts/access-policy.json",
++        "packages/contracts/openapi.json",
++        "packages/contracts/openapi-implemented.json",
++        "qualification/test_ai_diagnosis_evidence_live.py",
++        "qualification/test_ai_diagnosis_evidence_paging_unit.py"
++      ],
++      "areas": [
++        "ai-module",
++        "contracts",
++        "access-policy"
++      ],
++      "threats": [
++        "TH03",
++        "TH10"
++      ],
++      "summary": "Optional closed canonical per-problem Evidence selectors retain mandatory notes and untouched historical payloads. Fresh current capability/source checks under tenant lock precede command effects and current/historical/list/receipt replay disclosure. Hidden list rows filter with scanned-row continuation. No default grants, capabilities, profiles, accounts, prior migrations, provider calls or metadata fetch. Synthetic object-read grant is bounded disposable fixture setup, not governed authority acceptance. References persist only in revision JSON; tenant-keyed SQL linkage, UI, privacy/retention races, recovery and release/human gates remain. No task Done or accepted criterion.",
++      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
++      "prepared_on": "2026-10-11",
++      "confirmed_by": null
+     }
+   ],
+   "evidence": [
+diff --git a/packages/contracts/access-policy.json b/packages/contracts/access-policy.json
+index a5b8d48..4ef6b80 100644
+--- a/packages/contracts/access-policy.json
++++ b/packages/contracts/access-policy.json
+@@ -1,5 +1,5 @@
+ {
+-  "version": "1.29.0",
++  "version": "1.30.0",
+   "roles": [
+     "OWNER",
+     "TENANT_ADMIN",
+diff --git a/packages/contracts/openapi-implemented.json b/packages/contracts/openapi-implemented.json
+index 7fe3359..35b50f5 100644
+--- a/packages/contracts/openapi-implemented.json
++++ b/packages/contracts/openapi-implemented.json
+@@ -2,7 +2,7 @@
+   "openapi": "3.1.1",
+   "info": {
+     "title": "Impact Platform \u2014 implemented domain API",
+-    "version": "1.29.0",
++    "version": "1.30.0",
+     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
+   },
+   "servers": [
+@@ -29257,7 +29257,7 @@
+         "operationId": "list_ai_diagnoses",
+         "summary": "list ai diagnoses",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -29383,7 +29383,7 @@
+         "operationId": "create_ai_diagnosis",
+         "summary": "create ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -29504,7 +29504,7 @@
+         "operationId": "get_ai_diagnosis",
+         "summary": "get ai diagnosis",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -29622,7 +29622,7 @@
+         "operationId": "update_ai_diagnosis",
+         "summary": "update ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -29752,7 +29752,7 @@
+         "operationId": "complete_ai_diagnosis",
+         "summary": "complete ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -29882,7 +29882,7 @@
+         "operationId": "revise_ai_diagnosis",
+         "summary": "revise ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -30012,7 +30012,7 @@
+         "operationId": "list_ai_diagnosis_revisions",
+         "summary": "list ai diagnosis revisions",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -30149,7 +30149,7 @@
+         "operationId": "get_ai_diagnosis_revision",
+         "summary": "get ai diagnosis revision",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -61352,6 +61352,24 @@
+           "permitted_actions"
+         ]
+       },
++      "AIDiagnosisEvidenceReference": {
++        "type": "object",
++        "additionalProperties": false,
++        "properties": {
++          "object_id": {
++            "type": "string",
++            "format": "uuid"
++          },
++          "revision_id": {
++            "type": "string",
++            "format": "uuid"
++          }
++        },
++        "required": [
++          "object_id",
++          "revision_id"
++        ]
++      },
+       "AIDiagnosisProblem": {
+         "type": "object",
+         "additionalProperties": false,
+@@ -61371,6 +61389,14 @@
+           "supporting_evidence": {
+             "type": "string",
+             "maxLength": 4000
++          },
++          "evidence_references": {
++            "type": "array",
++            "maxItems": 5,
++            "uniqueItems": true,
++            "items": {
++              "$ref": "#/components/schemas/AIDiagnosisEvidenceReference"
++            }
+           }
+         },
+         "required": [
+diff --git a/packages/contracts/openapi.json b/packages/contracts/openapi.json
+index 66b1e15..2b0c0d8 100644
+--- a/packages/contracts/openapi.json
++++ b/packages/contracts/openapi.json
+@@ -2,7 +2,7 @@
+   "openapi": "3.1.1",
+   "info": {
+     "title": "Impact Management Platform API Contract",
+-    "version": "1.29.0",
++    "version": "1.30.0",
+     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
+   },
+   "servers": [
+@@ -43261,7 +43261,7 @@
+         "operationId": "list_ai_diagnoses",
+         "summary": "list ai diagnoses",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -43387,7 +43387,7 @@
+         "operationId": "create_ai_diagnosis",
+         "summary": "create ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -43508,7 +43508,7 @@
+         "operationId": "get_ai_diagnosis",
+         "summary": "get ai diagnosis",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -43626,7 +43626,7 @@
+         "operationId": "update_ai_diagnosis",
+         "summary": "update ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -43756,7 +43756,7 @@
+         "operationId": "complete_ai_diagnosis",
+         "summary": "complete ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -43886,7 +43886,7 @@
+         "operationId": "revise_ai_diagnosis",
+         "summary": "revise ai diagnosis",
+         "x-capability": "ai.diagnosis.manage",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -44016,7 +44016,7 @@
+         "operationId": "list_ai_diagnosis_revisions",
+         "summary": "list ai diagnosis revisions",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -44153,7 +44153,7 @@
+         "operationId": "get_ai_diagnosis_revision",
+         "summary": "get ai diagnosis revision",
+         "x-capability": "ai.diagnosis.read",
+-        "x-contract-version": "1.29.0",
++        "x-contract-version": "1.30.0",
+         "parameters": [
+           {
+             "name": "tenant_id",
+@@ -75356,6 +75356,24 @@
+           "permitted_actions"
+         ]
+       },
++      "AIDiagnosisEvidenceReference": {
++        "type": "object",
++        "additionalProperties": false,
++        "properties": {
++          "object_id": {
++            "type": "string",
++            "format": "uuid"
++          },
++          "revision_id": {
++            "type": "string",
++            "format": "uuid"
++          }
++        },
++        "required": [
++          "object_id",
++          "revision_id"
++        ]
++      },
+       "AIDiagnosisProblem": {
+         "type": "object",
+         "additionalProperties": false,
+@@ -75375,6 +75393,14 @@
+           "supporting_evidence": {
+             "type": "string",
+             "maxLength": 4000
++          },
++          "evidence_references": {
++            "type": "array",
++            "maxItems": 5,
++            "uniqueItems": true,
++            "items": {
++              "$ref": "#/components/schemas/AIDiagnosisEvidenceReference"
++            }
+           }
+         },
+         "required": [

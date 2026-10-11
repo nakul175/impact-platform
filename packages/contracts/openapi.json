@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.29.0",
+    "version": "1.30.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -43261,7 +43261,7 @@
         "operationId": "list_ai_diagnoses",
         "summary": "list ai diagnoses",
         "x-capability": "ai.diagnosis.read",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43387,7 +43387,7 @@
         "operationId": "create_ai_diagnosis",
         "summary": "create ai diagnosis",
         "x-capability": "ai.diagnosis.manage",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43508,7 +43508,7 @@
         "operationId": "get_ai_diagnosis",
         "summary": "get ai diagnosis",
         "x-capability": "ai.diagnosis.read",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43626,7 +43626,7 @@
         "operationId": "update_ai_diagnosis",
         "summary": "update ai diagnosis",
         "x-capability": "ai.diagnosis.manage",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43756,7 +43756,7 @@
         "operationId": "complete_ai_diagnosis",
         "summary": "complete ai diagnosis",
         "x-capability": "ai.diagnosis.manage",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43886,7 +43886,7 @@
         "operationId": "revise_ai_diagnosis",
         "summary": "revise ai diagnosis",
         "x-capability": "ai.diagnosis.manage",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -44016,7 +44016,7 @@
         "operationId": "list_ai_diagnosis_revisions",
         "summary": "list ai diagnosis revisions",
         "x-capability": "ai.diagnosis.read",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -44153,7 +44153,7 @@
         "operationId": "get_ai_diagnosis_revision",
         "summary": "get ai diagnosis revision",
         "x-capability": "ai.diagnosis.read",
-        "x-contract-version": "1.29.0",
+        "x-contract-version": "1.30.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -75356,6 +75356,24 @@
           "permitted_actions"
         ]
       },
+      "AIDiagnosisEvidenceReference": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id"
+        ]
+      },
       "AIDiagnosisProblem": {
         "type": "object",
         "additionalProperties": false,
@@ -75375,6 +75393,14 @@
           "supporting_evidence": {
             "type": "string",
             "maxLength": 4000
+          },
+          "evidence_references": {
+            "type": "array",
+            "maxItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisEvidenceReference"
+            }
           }
         },
         "required": [

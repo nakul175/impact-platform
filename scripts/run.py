@@ -642,6 +642,9 @@ def main():
                     return 1
             return 0
         if args.mode in BROWSER_MODES:
+            # Fixture helpers must share this runner's installed dependencies even
+            # when an isolated checkout reuses a virtualenv at another path.
+            env["IMPACT_QUALIFICATION_PYTHON"] = sys.executable
             return subprocess.call(["node", "tools/browser/" + BROWSER_MODES[args.mode]], cwd=ROOT, env=env)
         targets = args.pytest_path or (
             ["qualification/test_live_idp.py"]

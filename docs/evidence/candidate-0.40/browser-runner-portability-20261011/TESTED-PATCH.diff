@@ -1,0 +1,28 @@
+diff --git a/scripts/run.py b/scripts/run.py
+index 7a01d61..4806eef 100644
+--- a/scripts/run.py
++++ b/scripts/run.py
+@@ -642,6 +642,9 @@ def main():
+                     return 1
+             return 0
+         if args.mode in BROWSER_MODES:
++            # Fixture helpers must share this runner's installed dependencies even
++            # when an isolated checkout reuses a virtualenv at another path.
++            env["IMPACT_QUALIFICATION_PYTHON"] = sys.executable
+             return subprocess.call(["node", "tools/browser/" + BROWSER_MODES[args.mode]], cwd=ROOT, env=env)
+         targets = args.pytest_path or (
+             ["qualification/test_live_idp.py"]
+diff --git a/tools/browser/ai-diagnosis-check.mjs b/tools/browser/ai-diagnosis-check.mjs
+index 7570703..5c951c6 100644
+--- a/tools/browser/ai-diagnosis-check.mjs
++++ b/tools/browser/ai-diagnosis-check.mjs
+@@ -270,7 +270,8 @@ finally:generator.close()
+ `;
+ function setup(operation, args = {}) {
+   const result = spawnSync(
+-    path.join(root, ".venv/bin/python"),
++    process.env.IMPACT_QUALIFICATION_PYTHON ||
++      path.join(root, ".venv/bin/python"),
+     ["-c", fixturePython],
+     {
+       cwd: root,

@@ -270,7 +270,8 @@ finally:generator.close()
 `;
 function setup(operation, args = {}) {
   const result = spawnSync(
-    path.join(root, ".venv/bin/python"),
+    process.env.IMPACT_QUALIFICATION_PYTHON ||
+      path.join(root, ".venv/bin/python"),
     ["-c", fixturePython],
     {
       cwd: root,

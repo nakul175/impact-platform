@@ -1,0 +1,43 @@
+{
+  "observed_at": "2026-10-11T11:10:21.382256+00:00",
+  "full_report_readbacks_verified": {
+    "stories": true,
+    "tasks": true,
+    "epics": true
+  },
+  "normalizations": "Native Markdown table separator/alignment, list marker, escaped nested title brackets, issue XML references/URL brackets and split bold spans",
+  "native_saved_views_created": false,
+  "browser_failure": "Admin-enforced security policy verification unavailable; Linear browser access denied",
+  "bypass_attempted": false,
+  "issue_criteria_or_hierarchy_changed": false,
+  "counts": {
+    "epics": 54,
+    "stories": 368,
+    "tasks": 1131,
+    "inventory": 1553
+  },
+  "reports": [
+    {
+      "key": "stories",
+      "id": "1de0f819-5808-47ec-92dc-b9aea48e38b7",
+      "title": "Imprana Commons \u2014 User story progress",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-user-story-progress-872b2956092f"
+    },
+    {
+      "key": "tasks",
+      "id": "7a7b0a61-757c-4f67-b564-7ff15e85981c",
+      "title": "Imprana Commons \u2014 Technical task progress",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-technical-task-progress-e38fc1ac0fbc"
+    },
+    {
+      "key": "epics",
+      "id": "846d0724-f08f-4bf8-a4ad-340e6faaecb3",
+      "title": "Imprana Commons \u2014 Epic and roadmap progress",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-epic-and-roadmap-progress-d01ffe266064"
+    }
+  ],
+  "review_phases": {
+    "code_document_review": "Checked counts, real report URLs, refresh instructions and explicit snapshot/browser limitations. Root-agent review, not human signoff.",
+    "evidence_review": "All three full normalized native report readbacks verified; unique inventory and main retained-content verification preserved in local outputs. No new runtime checks."
+  }
+}

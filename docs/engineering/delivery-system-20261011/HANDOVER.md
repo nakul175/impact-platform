@@ -78,3 +78,8 @@ Focused native PostgreSQL suite passed **25 cases, zero failures/errors/skips**:
 ## Approved native status sync — 11 October2026
 
 Direct owner approval applied the reviewed seven-issue mapping: story APL-361 and tasks APL-666/APL-671/APL-678 are In Progress; tasks APL-665/APL-669/APL-675 are In Review. Fresh native readback verified all seven states and unchanged descriptions/criteria/labels/priority/estimate/hierarchy/milestone. This supersedes earlier Backlog/pending-transition statements, not task scope or release acceptance. Linear dashboard now records the native transitions. No Done, runtime change or new test run, spending, push/merge/deployment.
+
+
+## Segmented Linear progress — 11 October 2026
+
+[Separate story/task/epic reports](SEGMENTED-PROGRESS.md) now link from the main native dashboard. Actual inventory is 368 stories (363 Backlog, one In Progress, four In Review), 1,131 tasks (1,125 Backlog, three In Progress, three In Review), and 54 Backlog epics. All three report readbacks were verified. These are dated reports; native saved charts remain blocked by unavailable browser admin-policy verification, with no bypass. No criteria/status/release changes or new runtime evidence in this checkpoint.

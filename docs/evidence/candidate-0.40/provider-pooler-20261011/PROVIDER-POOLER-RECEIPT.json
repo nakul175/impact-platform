@@ -1,0 +1,32 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "provider_tested_head": "c7a55b18ee33d7df095c7a193b53e146c6c62fec",
+  "provider_counts": {
+    "tests": 18,
+    "passed": 18,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 42.593
+  },
+  "source_pins": 297,
+  "source_pins_stable": true,
+  "keycloak_version": "26.7.4",
+  "keycloak_distribution_sha256": "04823c336b797a7e18889a44262a7a64e6bf624cbbcc518c85e2622176ff2eee",
+  "pooler_binary_sha256": "26abb67072fda4dc0014a6dfd8f9dfa97a26c1668ec1942a6bd40fa1ea44af91",
+  "topology_evidence": "Separate reviewer verified actual transaction pooler size3 configuration and all three API runtime DSN ports matching the owned pooler, without exposing credentials. Generated IdP report does not itself record pooling. Keycloak uses local dev-mem H2; native application DB PostgreSQL17.10. API deliberately retains narrow provider provisioner configuration, so no blanket credential-free API claim.",
+  "actual_provider_behavior": "Real Keycloak password/TOTP+PKCE/callback/provider-token validation; owner-like role claims grant no application capability; diagnosis create exact retry/changed-body refusal/completion/history/natural person server-author/logout old cookie401/foreign tenant and insufficient-capability404. Completion is not independent approval.",
+  "code_review": "Separate supporting read-only review of actual provider tests and runner: development JWT minting disabled, provisioned runtime pooled, fixture/migrator direct, privileged/login/direct-clone/PG hints stripped; no independence waiver or concrete defect. Separate narrow browser CLI guard review: native test and diagnosis-browser only; existing IDP/development controls unchanged, browser starts no worker.",
+  "browser_cli_patch": "Previously --pooler refused browser mode before runtime. Narrow source change adds only native ai-diagnosis-browser alongside existing native test. Actualmain CLI8cases plus43retained units=51pass0fail/error/skip. Browser runtime NOT RUN at this preparation checkpoint.",
+  "preparation_failure": "First output-only wrapper referenced nonexistent scripts/identity_provider.py before initdb/services/tests; failed observation and exact wrapper retained,0tests/servicesfalse. Correct scripts/idp.py inspected. Exact newly owned bootstrap file removed; older unrelated private file not altered.",
+  "evidence_review": "Separate supporting review verified18JUnitpasses/297pins (later run.py compared exact testedc7 bytes)/actualproviderflows/poolerconfig/realruntime hashes and API/pooler/Keycloak/cluster shutdown,2historicalevidence byte restoration; seven published raw artifacts scanned without credential matches. Generated report retains olderPGlite history, no newPGlite pass claim.",
+  "cluster_stop_exit_code": 0,
+  "historical_evidence_files_restored": 2,
+  "limits": [
+    "HTTPcookie jar/provider integration is not actualChrome or productionTLS acceptance",
+    "Diagnosis complete/revise retries/linked evidence/erasure are separately qualified",
+    "Prior fullnative2690pass24skip remains pinned0ed0c5b, originalskips unchanged",
+    "Local synthetic runtime only; no new resources/realaccounts/paidservices",
+    "No hostedCI/container/humanacceptance/publicexport/deployment;0/50delivered"
+  ]
+}

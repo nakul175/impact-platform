@@ -451,7 +451,7 @@ def main():
     parser.add_argument(
         "--pooler",
         choices=["pgbouncer"],
-        help="Native test mode: start a PgBouncer in transaction pooling mode and connect the API and "
+        help="Native test or ai-diagnosis-browser mode: start a PgBouncer in transaction pooling mode and connect the API and "
         "the worker through it (scripts/pooler.py); migrations and the fixture connection stay direct",
     )
     parser.add_argument(
@@ -464,8 +464,8 @@ def main():
         parser.error("--idp keycloak is available in test mode (PGlite or --native) and idp-browser mode")
     if args.mode in IDP_ONLY_MODES and not args.idp:
         parser.error(args.mode + " needs --idp keycloak")
-    if args.pooler and not (args.native and args.mode == "test"):
-        parser.error("--pooler pgbouncer is available in native test mode only")
+    if args.pooler and not (args.native and args.mode in {"test", "ai-diagnosis-browser"}):
+        parser.error("--pooler pgbouncer is available in native test or ai-diagnosis-browser mode only")
     preflight_fixture()
     local = ROOT / ".local" / ("dev" if args.mode == "dev" else "test-" + str(uuid.uuid4())[:8])
     local.mkdir(parents=True, exist_ok=True)

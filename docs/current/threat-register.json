@@ -1101,7 +1101,8 @@
         "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
         "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
         "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
-        "qualification/test_ai_diagnosis_live.py::test_unknown_server_fields_and_reference_selectors_are_rejected_before_writes"
+        "qualification/test_ai_diagnosis_live.py::test_unknown_server_fields_and_reference_selectors_are_rejected_before_writes",
+        "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order"
       ],
       "coverage": {
         "C-CLOSED-DTO": [
@@ -1110,7 +1111,8 @@
           "qualification/test_ai_impact_references.py::test_input_is_closed_and_cannot_supply_server_pins_or_numbers",
           "qualification/test_ai_planning_live.py::test_closed_api_inputs_reject_forged_decisions_types_and_unsupported_fields_without_work",
           "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
-          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force"
+          "qualification/test_ai_ranking.py::test_weights_not_totalling_100_are_refused_and_the_previous_weights_stay_in_force",
+          "qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order"
         ],
         "C-SERVER-OWNED-FIELDS": [
           "qualification/test_unit.py::test_server_owned_fields",
@@ -1513,7 +1515,8 @@
         "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
         "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
         "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
-        "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts"
+        "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts",
+        "qualification/test_ai_diagnosis_payload_native.py::test_constraint_helper_has_no_definer_or_identity_data_authority"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
@@ -1525,7 +1528,8 @@
         ],
         "C-RUNTIME-ROLES": [
           "qualification/test_native_roles.py::test_runtime_guard_refuses_privileged_and_shared_connections",
-          "qualification/test_native_roles.py::test_each_login_is_unprivileged_and_assumes_exactly_its_own_role"
+          "qualification/test_native_roles.py::test_each_login_is_unprivileged_and_assumes_exactly_its_own_role",
+          "qualification/test_ai_diagnosis_payload_native.py::test_constraint_helper_has_no_definer_or_identity_data_authority"
         ],
         "C-TENANT-RLS": [
           "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",

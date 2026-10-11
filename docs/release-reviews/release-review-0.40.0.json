@@ -350,6 +350,26 @@
       "prepared_by": "Codex root agent; separate source/evidence advisory reviews only",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-05",
+      "change_id": "US-DX-01a-problem-order",
+      "change": "Enforce diagnosis problem identities and priority order at storage boundary",
+      "paths": [
+        "infrastructure/migrations/0046_diagnosis_problem_order.sql",
+        "qualification/test_ai_diagnosis_payload_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Additive validated diagnosis-only revision CHECK with pure immutable invoker helper and pure helper execution for existing app/worker/platform/privacy revision writers (PostgreSQL checks execution even for other-kind branches); no new table/identity authority. Reject malformed IDs/order at SQL independently of HTTP. Draft partial order and governed SQL NULL removal preserved; no previous migration, history, tenant RLS or capability change. Full JSON key/text/completion metadata remain API validation; native, upgrade/recovery and human release qualification must be recorded separately.",
+      "prepared_by": "Codex root agent; source/evidence review phases are not human signoff",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

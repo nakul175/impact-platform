@@ -1,0 +1,389 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-5369afda/passwords.json
+Ready at http://127.0.0.1:8285
+........................................................................ [ 45%]
+.........................F........F..............s..F.FFF...........F... [ 91%]
+.F............                                                           [100%]
+=================================== FAILURES ===================================
+________ test_existing_reminders_and_worker_grants_with_diagnosis_fence ________
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_existing_reminders_and_worker_grants_with_diagnosis_fence(live):
+        worker_tests.test_worker_role_holds_no_privilege_migration_0025_revoked(live)
+        worker_tests.test_worker_job_and_report_privileges_after_migration_0026(live)
+>       worker_tests.test_authority_expiry_reminders_are_idempotent_per_threshold(live)
+
+qualification/test_ai_diagnosis_worker_native.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_authority_expiry_reminders_are_idempotent_per_threshold(live):
+        """Isolated from the shared suite database: two ceilings of the reviewer with an expiry instant
+        no other row has; every assertion is about that (principal, instant) group only, and the
+        ceilings are removed afterwards."""
+        tenant = live.fixture["tenant_a"]
+        reviewer = live.fixture["actors"]["reviewer"]["principal_id"]
+        expires = (datetime.now(timezone.utc) + timedelta(days=10, seconds=random.randrange(1, 80000))).replace(
+            microsecond=0
+        )
+        authorities = [str(uuid4()) for _ in range(2)]
+        with live.db() as c:
+            scope = c.execute(
+                "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT'",
+                (tenant,),
+            ).fetchone()["scope_id"]
+            for authority in authorities:
+                c.execute(
+                    "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,%s)",
+                    (tenant, authority, reviewer, "qualification.reminder." + authority[:8], scope, expires),
+                )
+    
+        def reminders():
+            with live.db() as c:
+                return c.execute(
+                    "SELECT a.threshold_days,a.notification_id,n.notice_class,n.recipient_id,r.created_by "
+                    "FROM impact.authority_reminder a JOIN impact.notification_current n "
+                    "ON n.tenant_id=a.tenant_id AND n.object_id=a.notification_id JOIN impact.object_registry r "
+                    "ON r.tenant_id=n.tenant_id AND r.object_id=n.object_id "
+                    "WHERE a.tenant_id=%s AND a.principal_id=%s AND a.expires_at=%s ORDER BY a.threshold_days DESC",
+                    (tenant, reviewer, expires),
+                ).fetchall()
+    
+        try:
+            clock = Clock()
+            clock.advance(days=-5)
+            make_worker(live, clock=clock).run_once()
+            assert reminders() == []
+            clock.advance(days=5)
+            worker = make_worker(live, clock=clock)
+            worker.run_once()
+            worker.run_once()
+>           [fourteen] = reminders()
+            ^^^^^^^^^^
+E           ValueError: not enough values to unpack (expected 1, got 0)
+
+qualification/test_worker.py:515: ValueError
+------------------------------ Captured log call -------------------------------
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+_________ test_platform_role_writes_only_its_restrictive_object_types __________
+
+connect = <function connect.<locals>._connect at 0x10c2da980>
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_platform_role_writes_only_its_restrictive_object_types(connect, live):
+        """0013 grants impact_platform SELECT/INSERT on object_revision and RESTRICTIVE policies bound
+        to a fixed object-type list, widened once by 0014 to Tenant, Membership, HostingPolicy,
+        PrivacyPolicy, RetentionPolicy, Grant, RoleTemplate and Predicate. A Programme revision is
+        outside that list; grant_authority is SELECT-only and member_role_assignment SELECT/INSERT
+        (0014), so both expiries can be re-dated only by the SECURITY DEFINER applicator (0016)."""
+        c = connect("PLATFORM")
+        tenant = live.fixture["tenant_a"]
+        membership = live.records["member_author"]
+        programme = live.fixture["programme_a"]
+        principal = live.fixture["actors"]["author"]["principal_id"]
+    
+        def revision_insert(object_id, object_type):
+            return (
+                "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,predecessor_revision,schema_version,payload,payload_sha256,author_id,created_at,revision_number) VALUES(%s,%s,%s,%s,NULL,'1.2','{}'::jsonb,%s,%s,now(),99)",
+                (tenant, object_id, str(uuid.uuid4()), object_type, b"\x00" * 32, principal),
+            )
+    
+        # Positive control, rolled back: a Membership revision passes both policies.
+        with pytest.raises(Rollback):
+            with c.transaction():
+                c.execute("SET LOCAL ROLE impact_platform")
+                c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+>               c.execute(*revision_insert(membership["object_id"], "Membership"))
+
+qualification/test_native_roles.py:251: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [IDLE] (host=127.0.0.1 port=50405 user=impact_platform_login database=impact_test_imprana_10h) at 0x10bf392e0>
+query = "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,predecessor_revision,schema_version,payload,payload_sha256,author_id,created_at,revision_number) VALUES(%s,%s,%s,%s,NULL,'1.2','{}'::jsonb,%s,%s,now(),99)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '6d93fd6b-66a8-5722-b3cc-40fc417e799d', 'fd15c1db-d950-4a4c-87bf-864c390dd582...0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 'ed661ad8-b93f-5f9f-acb8-4d8a56774a9c')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for function diagnosis_problem_order_valid
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege
+_________ test_authority_expiry_reminders_are_idempotent_per_threshold _________
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_authority_expiry_reminders_are_idempotent_per_threshold(live):
+        """Isolated from the shared suite database: two ceilings of the reviewer with an expiry instant
+        no other row has; every assertion is about that (principal, instant) group only, and the
+        ceilings are removed afterwards."""
+        tenant = live.fixture["tenant_a"]
+        reviewer = live.fixture["actors"]["reviewer"]["principal_id"]
+        expires = (datetime.now(timezone.utc) + timedelta(days=10, seconds=random.randrange(1, 80000))).replace(
+            microsecond=0
+        )
+        authorities = [str(uuid4()) for _ in range(2)]
+        with live.db() as c:
+            scope = c.execute(
+                "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT'",
+                (tenant,),
+            ).fetchone()["scope_id"]
+            for authority in authorities:
+                c.execute(
+                    "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,%s)",
+                    (tenant, authority, reviewer, "qualification.reminder." + authority[:8], scope, expires),
+                )
+    
+        def reminders():
+            with live.db() as c:
+                return c.execute(
+                    "SELECT a.threshold_days,a.notification_id,n.notice_class,n.recipient_id,r.created_by "
+                    "FROM impact.authority_reminder a JOIN impact.notification_current n "
+                    "ON n.tenant_id=a.tenant_id AND n.object_id=a.notification_id JOIN impact.object_registry r "
+                    "ON r.tenant_id=n.tenant_id AND r.object_id=n.object_id "
+                    "WHERE a.tenant_id=%s AND a.principal_id=%s AND a.expires_at=%s ORDER BY a.threshold_days DESC",
+                    (tenant, reviewer, expires),
+                ).fetchall()
+    
+        try:
+            clock = Clock()
+            clock.advance(days=-5)
+            make_worker(live, clock=clock).run_once()
+            assert reminders() == []
+            clock.advance(days=5)
+            worker = make_worker(live, clock=clock)
+            worker.run_once()
+            worker.run_once()
+>           [fourteen] = reminders()
+            ^^^^^^^^^^
+E           ValueError: not enough values to unpack (expected 1, got 0)
+
+qualification/test_worker.py:515: ValueError
+------------------------------ Captured log call -------------------------------
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+___ test_recovery_channel_verification_code_is_single_use_and_evidence_only ____
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_recovery_channel_verification_code_is_single_use_and_evidence_only(live):
+>       row, tenant, _, _ = nominate(live)
+                            ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:611: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"47bce096-e508-4e36-beb3-3f98854916ba","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+____ test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts ____
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:669: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"a4aa0f25-3118-4dc0-a042-2578cc5f2592","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_____________ test_channel_request_is_refused_for_a_closed_contact _____________
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_channel_request_is_refused_for_a_closed_contact(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:716: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"d8e57aeb-919d-40de-a21c-daddc8686f97","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+____________ test_challenge_contact_must_belong_to_the_same_tenant _____________
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_challenge_contact_must_belong_to_the_same_tenant(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:1033: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"bbfd02f0-eca0-4646-9f25-d5837dd4459b","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state __
+
+live = <conftest.live.<locals>.Client object at 0x10a955190>
+
+    def test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state(live):
+>       row, tenant, _, _ = nominate(live)
+                            ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:1075: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"f5ceb4a5-a565-4734-b75f-e5a388288a3f","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+=========================== short test summary info ============================
+FAILED qualification/test_ai_diagnosis_worker_native.py::test_existing_reminders_and_worker_grants_with_diagnosis_fence
+FAILED qualification/test_native_roles.py::test_platform_role_writes_only_its_restrictive_object_types
+FAILED qualification/test_worker.py::test_authority_expiry_reminders_are_idempotent_per_threshold
+FAILED qualification/test_worker.py::test_recovery_channel_verification_code_is_single_use_and_evidence_only
+FAILED qualification/test_worker.py::test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts
+FAILED qualification/test_worker.py::test_channel_request_is_refused_for_a_closed_contact
+FAILED qualification/test_worker.py::test_challenge_contact_must_belong_to_the_same_tenant
+FAILED qualification/test_worker.py::test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state
+8 failed, 149 passed, 1 skipped in 21.98s

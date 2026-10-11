@@ -1,0 +1,3504 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-c7ac96f5/passwords.json
+Ready at http://127.0.0.1:8283
+FFFFFFFFFFFFFFFFFFFFFFFFF............................................... [ 45%]
+.........................F........F..............s..F.FFF...........F... [ 91%]
+.F............                                                           [100%]
+=================================== FAILURES ===================================
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[missing_problems] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'missing_problems'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a577ec0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('9ec61111-2bcc-40bc-9816-3eb6fb189392', Jsonb({'title': 'Synthetic organisation d ... (173 chars)), '013beda3-fb45-4a00-9ca0-18dcba9c740c')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[null_problems] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'null_problems'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5a3140>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('30c55d09-f4e4-4f79-a7ea-41d1e526eb60', Jsonb({'title': 'Synthetic organisation d ... (191 chars)), 'bed13358-49e9-44b2-be43-5381d2ef6858')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[object_problems] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'object_problems'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5a3020>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('e4b919cb-cb0f-4fbc-b70e-6d41fe6a2377', Jsonb({'title': 'Synthetic organisation d ... (189 chars)), 'bc102ba6-f476-4e5a-a54f-8e59d2be9467')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[scalar_problem] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'scalar_problem'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5a3c20>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('7c259ec8-819c-4e2f-8593-0723b0a26028', Jsonb({'title': 'Synthetic organisation d ... (462 chars)), 'b3c37ea3-e227-4375-8d05-3a36210a7eb6')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+__ test_application_sql_rejects_malformed_diagnosis_problem_order[missing_id] __
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'missing_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5a21b0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('4200dbf4-83e1-4a8b-af14-7739efce9adc', Jsonb({'title': 'Synthetic organisation d ... (651 chars)), '27ec1152-7633-4926-83a1-8b36a316983e')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+___ test_application_sql_rejects_malformed_diagnosis_problem_order[null_id] ____
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>, fault = 'null_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5777d0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('8b1e8a9a-59d3-4796-a892-5066e34f3f72', Jsonb({'title': 'Synthetic organisation d ... (671 chars)), '9c014f87-5bca-4484-8cd0-8803c0dd6ca2')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+__ test_application_sql_rejects_malformed_diagnosis_problem_order[number_id] ___
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'number_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d21e0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('1129b913-3a19-4474-9bf8-e8945719f2cc', Jsonb({'title': 'Synthetic organisation d ... (668 chars)), 'c2cec549-1127-4a2b-9e6d-8c8286d06ab9')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+__ test_application_sql_rejects_malformed_diagnosis_problem_order[invalid_id] __
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'invalid_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d3230>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('eeb26ca1-fd59-4b77-9f03-c240dbaa6eb6', Jsonb({'title': 'Synthetic organisation d ... (679 chars)), 'cc3694ea-4ef6-4e0a-b55f-9674ac33e081')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[uppercase_id] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'uppercase_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d3080>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('693e0742-2b0a-4931-891c-db29049579c1', Jsonb({'title': 'Synthetic organisation d ... (705 chars)), '95db4f2d-1c71-4c5c-a9e5-24e96f038caf')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_id] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'duplicate_id'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a47d4c0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('3edd2f5c-e80a-4a96-b1f4-2427696fdd5a', Jsonb({'title': 'Synthetic organisation d ... (705 chars)), '2595a388-f1d5-445e-8504-f0672ad5446c')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_problems] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'too_many_problems'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d1e20>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('edc763c2-89c0-4418-8b89-2578b5c0763e', Jsonb({'title': 'Synthetic organisation d ... (5521 chars)), 'd1061ebf-7540-4320-bd18-27d76b1c298b')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[missing_order] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'missing_order'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a47f830>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('4b2b271b-e710-48bd-b10e-022495cbe4bd', Jsonb({'title': 'Synthetic organisation d ... (605 chars)), '9433b592-7618-4fe8-a2a0-eb725902baee')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+__ test_application_sql_rejects_malformed_diagnosis_problem_order[null_order] __
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'null_order'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a47fb60>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('7a15ff1b-a238-49e9-a123-59b788184fc1', Jsonb({'title': 'Synthetic organisation d ... (629 chars)), '2cce55d3-95c5-4a53-9039-b3238e16d0ab')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[object_order] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'object_order'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d0c80>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('3ffaae87-fc48-4871-882a-d84ca02d8634', Jsonb({'title': 'Synthetic organisation d ... (627 chars)), '2ee7181c-fb79-4499-b87e-61e28be2f5c1')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[number_priority] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'number_priority'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d2a20>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('561d225f-e9d4-4d70-9c7a-7fe6b6d4b2ae', Jsonb({'title': 'Synthetic organisation d ... (668 chars)), '3064fdde-45e8-4499-89a9-d918b7b72052')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[foreign_priority] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'foreign_priority'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4eb650>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('d5432ec5-e92a-4319-abea-8b5b71dfa39f', Jsonb({'title': 'Synthetic organisation d ... (705 chars)), '6f3ed778-f795-4301-be33-6d8e331f9b09')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_priority] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'duplicate_priority'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a47ecc0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('44b97a5b-4f8f-44ea-a8d3-98a8bff63cc2', Jsonb({'title': 'Synthetic organisation d ... (705 chars)), 'afadc9e1-5155-4c85-998d-163a85932f09')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_priorities] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'too_many_priorities'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d03b0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('934767ca-069e-495b-a21a-050c6b9f1007', Jsonb({'title': 'Synthetic organisation d ... (1465 chars)), 'e69f5253-7860-45a6-833d-32eb0141fd0f')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[missing_state] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'missing_state'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4ebfb0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('618979df-280a-4dd2-b6d2-3b77f9b24781', Jsonb({'title': 'Synthetic organisation d ... (677 chars)), 'a98c2fad-41f1-47df-a2d7-6cd4e410b79a')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[unknown_state] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'unknown_state'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4ebbc0>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('dddd4926-bbad-4aed-a73d-55f8a3f97716', Jsonb({'title': 'Synthetic organisation d ... (708 chars)), 'b6205fa0-5e42-4ecb-ae0d-35e05f9d02e1')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+__ test_application_sql_rejects_malformed_diagnosis_problem_order[null_state] __
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'null_state'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a47f770>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('95e88589-e96b-4b22-a7e7-ef5b59627a1d', Jsonb({'title': 'Synthetic organisation d ... (702 chars)), 'ee9986fc-2902-4f88-bf11-70315e8e6f00')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[completed_partial_order] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'completed_partial_order'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d3800>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('d22188d9-035b-42f6-9e77-fec3d693215d', Jsonb({'title': 'Synthetic organisation d ... (669 chars)), '80ad9c8e-079d-4c7a-9ecc-aa985aa0e37d')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+_ test_application_sql_rejects_malformed_diagnosis_problem_order[completed_no_problems] _
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+fault = 'completed_no_problems'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "missing_problems",
+            "null_problems",
+            "object_problems",
+            "scalar_problem",
+            "missing_id",
+            "null_id",
+            "number_id",
+            "invalid_id",
+            "uppercase_id",
+            "duplicate_id",
+            "too_many_problems",
+            "missing_order",
+            "null_order",
+            "object_order",
+            "number_priority",
+            "foreign_priority",
+            "duplicate_priority",
+            "too_many_priorities",
+            "missing_state",
+            "unknown_state",
+            "null_state",
+            "completed_partial_order",
+            "completed_no_problems",
+        ],
+    )
+    def test_application_sql_rejects_malformed_diagnosis_problem_order(live, fault):
+        row = save(live)
+        original = get(live, row)
+        data = deepcopy(payload(live, row))
+        problems, order = data["problems"], data["priority_order"]
+        if fault == "missing_problems":
+            del data["problems"]
+        elif fault == "null_problems":
+            data["problems"] = None
+        elif fault == "object_problems":
+            data["problems"] = {}
+        elif fault == "scalar_problem":
+            problems[0] = "invalid"
+        elif fault == "missing_id":
+            del problems[0]["problem_id"]
+        elif fault == "null_id":
+            problems[0]["problem_id"] = None
+        elif fault == "number_id":
+            problems[0]["problem_id"] = 1
+        elif fault == "invalid_id":
+            problems[0]["problem_id"] = "not-a-uuid"
+        elif fault == "uppercase_id":
+            problems[0]["problem_id"] = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+        elif fault == "duplicate_id":
+            problems[1]["problem_id"] = problems[0]["problem_id"]
+        elif fault == "too_many_problems":
+            data["problems"] = [{**problems[0], "problem_id": str(uuid4())} for _ in range(21)]
+        elif fault == "missing_order":
+            del data["priority_order"]
+        elif fault == "null_order":
+            data["priority_order"] = None
+        elif fault == "object_order":
+            data["priority_order"] = {}
+        elif fault == "number_priority":
+            order[0] = 1
+        elif fault == "foreign_priority":
+            order[0] = str(uuid4())
+        elif fault == "duplicate_priority":
+            order[1] = order[0]
+        elif fault == "too_many_priorities":
+            data["priority_order"] = [order[0]] * 21
+        elif fault == "missing_state":
+            del data["diagnosis_state"]
+        elif fault == "unknown_state":
+            data["diagnosis_state"] = "Approved"
+        elif fault == "null_state":
+            data["diagnosis_state"] = None
+        elif fault == "completed_partial_order":
+            data.update(diagnosis_state="Completed", priority_order=order[:1])
+        elif fault == "completed_no_problems":
+            data.update(diagnosis_state="Completed", problems=[], priority_order=[])
+        with login("APP") as c:
+            with pytest.raises(CheckViolation) as error:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_app")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                   insert_copy(c, row, data)
+
+qualification/test_ai_diagnosis_payload_native.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4d3c50>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('1577135b-f960-4a4d-8941-4853fe4bd49f', Jsonb({'title': 'Synthetic organisation d ... (115 chars)), 'ecbfeca5-478b-4ea8-ae47-75740c74ca05')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+___ test_partial_drafts_completion_correction_and_exact_history_remain_valid ___
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_partial_drafts_completion_correction_and_exact_history_remain_valid(live):
+        row = save(live)
+        completed = action(live, row, "complete")
+        correction = action(live, completed, "revise", body=action_body(completed, reason="Synthetic correction"))
+        draft = deepcopy(payload(live, correction))
+        for body in (
+            {**draft, "problems": [], "priority_order": []},
+            {**draft, "priority_order": []},
+            {**draft, "priority_order": draft["priority_order"][:1]},
+            {
+                **draft,
+                "problems": [{**draft["problems"][0], "problem_id": "00000000-0000-0000-0000-000000000000"}],
+                "priority_order": ["00000000-0000-0000-0000-000000000000"],
+            },
+        ):
+            with login("APP") as c:
+                with pytest.raises(Rollback):
+                    with c.transaction():
+                        c.execute("SET LOCAL ROLE impact_app")
+                        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+>                       insert_copy(c, correction, body)
+
+qualification/test_ai_diagnosis_payload_native.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_payload_native.py:29: in insert_copy
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a4ea120>
+query = 'INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,schema_version,payload,payload_sha256,...ect_type,schema_version,%s,payload_sha256,author_id,revision_number+1 FROM impact.object_revision WHERE revision_id=%s'
+params = ('71a6f2f3-1ba8-4cf4-95ec-43313be688a2', Jsonb({'title': 'Synthetic organisation d ... (156 chars)), '4c44e313-578d-438c-a615-d7e16146fb72')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_revision" violates not-null constraint
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+___________ test_governed_removed_payload_and_constraint_validation ____________
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_governed_removed_payload_and_constraint_validation(live):
+        row = save(live)
+        tenant = live.fixture["tenant_a"]
+        with live.db() as c:
+            meta = c.execute(
+                "SELECT convalidated FROM pg_constraint WHERE conrelid='impact.object_revision'::regclass "
+                "AND conname='diagnosis_problem_order_valid'"
+            ).fetchone()
+            assert meta and meta["convalidated"]
+            with pytest.raises(Rollback):
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_owner")
+                    c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+                    c.execute("SELECT set_config('impact.privacy_executor','privacy_remove_revisions',true)")
+>                   c.execute(
+                        "UPDATE impact.object_revision SET payload=NULL,restriction_state='REMOVED' "
+                        "WHERE revision_id=%s",
+                        (row["revision_id"],),
+                    )
+
+qualification/test_ai_diagnosis_payload_native.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a5a2a80>
+query = "UPDATE impact.object_revision SET payload=NULL,restriction_state='REMOVED' WHERE revision_id=%s"
+params = ('0f4ebcad-b31a-4eb1-803d-336f43b8ad1d',), prepare = None
+binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.RaiseException: privacy context required
+E           CONTEXT:  PL/pgSQL function impact.guard_revision_removal() line 9 at RAISE
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: RaiseException
+________ test_existing_reminders_and_worker_grants_with_diagnosis_fence ________
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_existing_reminders_and_worker_grants_with_diagnosis_fence(live):
+        worker_tests.test_worker_role_holds_no_privilege_migration_0025_revoked(live)
+        worker_tests.test_worker_job_and_report_privileges_after_migration_0026(live)
+>       worker_tests.test_authority_expiry_reminders_are_idempotent_per_threshold(live)
+
+qualification/test_ai_diagnosis_worker_native.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_authority_expiry_reminders_are_idempotent_per_threshold(live):
+        """Isolated from the shared suite database: two ceilings of the reviewer with an expiry instant
+        no other row has; every assertion is about that (principal, instant) group only, and the
+        ceilings are removed afterwards."""
+        tenant = live.fixture["tenant_a"]
+        reviewer = live.fixture["actors"]["reviewer"]["principal_id"]
+        expires = (datetime.now(timezone.utc) + timedelta(days=10, seconds=random.randrange(1, 80000))).replace(
+            microsecond=0
+        )
+        authorities = [str(uuid4()) for _ in range(2)]
+        with live.db() as c:
+            scope = c.execute(
+                "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT'",
+                (tenant,),
+            ).fetchone()["scope_id"]
+            for authority in authorities:
+                c.execute(
+                    "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,%s)",
+                    (tenant, authority, reviewer, "qualification.reminder." + authority[:8], scope, expires),
+                )
+    
+        def reminders():
+            with live.db() as c:
+                return c.execute(
+                    "SELECT a.threshold_days,a.notification_id,n.notice_class,n.recipient_id,r.created_by "
+                    "FROM impact.authority_reminder a JOIN impact.notification_current n "
+                    "ON n.tenant_id=a.tenant_id AND n.object_id=a.notification_id JOIN impact.object_registry r "
+                    "ON r.tenant_id=n.tenant_id AND r.object_id=n.object_id "
+                    "WHERE a.tenant_id=%s AND a.principal_id=%s AND a.expires_at=%s ORDER BY a.threshold_days DESC",
+                    (tenant, reviewer, expires),
+                ).fetchall()
+    
+        try:
+            clock = Clock()
+            clock.advance(days=-5)
+            make_worker(live, clock=clock).run_once()
+            assert reminders() == []
+            clock.advance(days=5)
+            worker = make_worker(live, clock=clock)
+            worker.run_once()
+            worker.run_once()
+>           [fourteen] = reminders()
+            ^^^^^^^^^^
+E           ValueError: not enough values to unpack (expected 1, got 0)
+
+qualification/test_worker.py:515: ValueError
+------------------------------ Captured log call -------------------------------
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+_________ test_platform_role_writes_only_its_restrictive_object_types __________
+
+connect = <function connect.<locals>._connect at 0x10b8c4680>
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_platform_role_writes_only_its_restrictive_object_types(connect, live):
+        """0013 grants impact_platform SELECT/INSERT on object_revision and RESTRICTIVE policies bound
+        to a fixed object-type list, widened once by 0014 to Tenant, Membership, HostingPolicy,
+        PrivacyPolicy, RetentionPolicy, Grant, RoleTemplate and Predicate. A Programme revision is
+        outside that list; grant_authority is SELECT-only and member_role_assignment SELECT/INSERT
+        (0014), so both expiries can be re-dated only by the SECURITY DEFINER applicator (0016)."""
+        c = connect("PLATFORM")
+        tenant = live.fixture["tenant_a"]
+        membership = live.records["member_author"]
+        programme = live.fixture["programme_a"]
+        principal = live.fixture["actors"]["author"]["principal_id"]
+    
+        def revision_insert(object_id, object_type):
+            return (
+                "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,predecessor_revision,schema_version,payload,payload_sha256,author_id,created_at,revision_number) VALUES(%s,%s,%s,%s,NULL,'1.2','{}'::jsonb,%s,%s,now(),99)",
+                (tenant, object_id, str(uuid.uuid4()), object_type, b"\x00" * 32, principal),
+            )
+    
+        # Positive control, rolled back: a Membership revision passes both policies.
+        with pytest.raises(Rollback):
+            with c.transaction():
+                c.execute("SET LOCAL ROLE impact_platform")
+                c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+>               c.execute(*revision_insert(membership["object_id"], "Membership"))
+
+qualification/test_native_roles.py:251: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [IDLE] (host=127.0.0.1 port=63565 user=impact_platform_login database=impact_test_imprana_10h) at 0x109e88140>
+query = "INSERT INTO impact.object_revision(tenant_id,object_id,revision_id,object_type,predecessor_revision,schema_version,payload,payload_sha256,author_id,created_at,revision_number) VALUES(%s,%s,%s,%s,NULL,'1.2','{}'::jsonb,%s,%s,now(),99)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '6d93fd6b-66a8-5722-b3cc-40fc417e799d', 'f776a0e3-68ff-4db3-96e7-e235d10f6c17...0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 'ed661ad8-b93f-5f9f-acb8-4d8a56774a9c')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for function diagnosis_problem_order_valid
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege
+_________ test_authority_expiry_reminders_are_idempotent_per_threshold _________
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_authority_expiry_reminders_are_idempotent_per_threshold(live):
+        """Isolated from the shared suite database: two ceilings of the reviewer with an expiry instant
+        no other row has; every assertion is about that (principal, instant) group only, and the
+        ceilings are removed afterwards."""
+        tenant = live.fixture["tenant_a"]
+        reviewer = live.fixture["actors"]["reviewer"]["principal_id"]
+        expires = (datetime.now(timezone.utc) + timedelta(days=10, seconds=random.randrange(1, 80000))).replace(
+            microsecond=0
+        )
+        authorities = [str(uuid4()) for _ in range(2)]
+        with live.db() as c:
+            scope = c.execute(
+                "SELECT scope_id FROM impact.scope_definition WHERE tenant_id=%s AND scope_type='TENANT'",
+                (tenant,),
+            ).fetchone()["scope_id"]
+            for authority in authorities:
+                c.execute(
+                    "INSERT INTO impact.grant_authority VALUES(%s,%s,%s,%s,%s,%s)",
+                    (tenant, authority, reviewer, "qualification.reminder." + authority[:8], scope, expires),
+                )
+    
+        def reminders():
+            with live.db() as c:
+                return c.execute(
+                    "SELECT a.threshold_days,a.notification_id,n.notice_class,n.recipient_id,r.created_by "
+                    "FROM impact.authority_reminder a JOIN impact.notification_current n "
+                    "ON n.tenant_id=a.tenant_id AND n.object_id=a.notification_id JOIN impact.object_registry r "
+                    "ON r.tenant_id=n.tenant_id AND r.object_id=n.object_id "
+                    "WHERE a.tenant_id=%s AND a.principal_id=%s AND a.expires_at=%s ORDER BY a.threshold_days DESC",
+                    (tenant, reviewer, expires),
+                ).fetchall()
+    
+        try:
+            clock = Clock()
+            clock.advance(days=-5)
+            make_worker(live, clock=clock).run_once()
+            assert reminders() == []
+            clock.advance(days=5)
+            worker = make_worker(live, clock=clock)
+            worker.run_once()
+            worker.run_once()
+>           [fourteen] = reminders()
+            ^^^^^^^^^^
+E           ValueError: not enough values to unpack (expected 1, got 0)
+
+qualification/test_worker.py:515: ValueError
+------------------------------ Captured log call -------------------------------
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+WARNING  impact.worker:worker.py:514 worker tenant pass failed class=InsufficientPrivilege
+___ test_recovery_channel_verification_code_is_single_use_and_evidence_only ____
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_recovery_channel_verification_code_is_single_use_and_evidence_only(live):
+>       row, tenant, _, _ = nominate(live)
+                            ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:611: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"c671b0e3-557e-4e11-b299-788f2c2b4aa8","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+____ test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts ____
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:669: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"adf28869-5593-48f0-9ac4-286c5a6d14aa","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_____________ test_channel_request_is_refused_for_a_closed_contact _____________
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_channel_request_is_refused_for_a_closed_contact(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:716: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"3fd8ea84-21ce-4aa3-ae5a-55732efabb2b","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+____________ test_challenge_contact_must_belong_to_the_same_tenant _____________
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_challenge_contact_must_belong_to_the_same_tenant(live):
+>       row, _, _, _ = nominate(live)
+                       ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:1033: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"90b0975b-f401-4a3a-aec5-f5095480c9a1","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state __
+
+live = <conftest.live.<locals>.Client object at 0x109e89370>
+
+    def test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state(live):
+>       row, tenant, _, _ = nominate(live)
+                            ^^^^^^^^^^^^^^
+
+qualification/test_worker.py:1075: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_recovery_contacts.py:33: in nominate
+    tenant = tenant or preparing(live)
+                       ^^^^^^^^^^^^^^^
+qualification/test_recovery_contacts.py:17: in preparing
+    return tenant_action(live, tenant, "accept-owner", "author")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qualification/test_tenant_lifecycle.py:40: in action
+    return expect(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"ab619e9c-0abf-403a-964b-7a92351a13cc","permitted_actions":[],"field_errors":[]}
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+=========================== short test summary info ============================
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_problems]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[null_problems]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[object_problems]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[scalar_problem]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[null_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[number_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[invalid_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[uppercase_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_id]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_problems]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_order]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[null_order]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[object_order]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[number_priority]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[foreign_priority]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_priority]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_priorities]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_state]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[unknown_state]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[null_state]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[completed_partial_order]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_application_sql_rejects_malformed_diagnosis_problem_order[completed_no_problems]
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_partial_drafts_completion_correction_and_exact_history_remain_valid
+FAILED qualification/test_ai_diagnosis_payload_native.py::test_governed_removed_payload_and_constraint_validation
+FAILED qualification/test_ai_diagnosis_worker_native.py::test_existing_reminders_and_worker_grants_with_diagnosis_fence
+FAILED qualification/test_native_roles.py::test_platform_role_writes_only_its_restrictive_object_types
+FAILED qualification/test_worker.py::test_authority_expiry_reminders_are_idempotent_per_threshold
+FAILED qualification/test_worker.py::test_recovery_channel_verification_code_is_single_use_and_evidence_only
+FAILED qualification/test_worker.py::test_recovery_channel_code_expires_and_locks_after_five_wrong_attempts
+FAILED qualification/test_worker.py::test_channel_request_is_refused_for_a_closed_contact
+FAILED qualification/test_worker.py::test_challenge_contact_must_belong_to_the_same_tenant
+FAILED qualification/test_worker.py::test_channel_requests_are_rate_limited_and_confirm_follows_the_tenant_state
+33 failed, 124 passed, 1 skipped in 21.75s

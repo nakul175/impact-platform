@@ -413,3 +413,8 @@ Final browser verification: **10 scenarios passed** in installed Chrome on macOS
 ### Local schema45 diagnosis worker fence follow-up
 
 See [0.40 release follow-up](RELEASE-0.40-ai-diagnosis.md) and its source-bound receipt: additive0045,88 affected native passes/one existing skip,28 version/access-upgrade unit passes and actual restart/restore/populated44-to45 upgrade. No full-suite, hosted/container/human acceptance or deployed story claim; broader task gaps remain. Earlier source-checkpoint results stay historical.
+
+
+### Local schema46 diagnosis identity/order follow-up — 11 October2026
+
+Additive0046 enforces canonical unique problem IDs and member priority order; Draft partial order and SQL NULL removal storage shape remain valid. Actual158 focused native passes/one existing skip,28 version/access unit passes and56 recovery passes/one restored-mode skip followed by one restored-only API pass; real restart/restore/generic populated45-to46 upgrade passed. Earlier33 and8 failures preserved, no old test or prior migration changed. This is bounded local qualification, not full schema46 regression, independent human acceptance or deployment. See [candidate handover](engineering/delivery-system-20261011/HANDOVER.md) and [constraint receipt](evidence/candidate-0.40/diagnosis-order-schema46-20261011/CONSTRAINT-RECEIPT.json). Remaining protected-reference/access/hosted/container/human/release gates stay held,0 of50 delivered.

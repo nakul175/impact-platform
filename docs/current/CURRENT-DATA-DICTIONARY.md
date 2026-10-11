@@ -78,6 +78,7 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0043_ai_guidance_v2.sql | b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095 |
 | 0044_ai_diagnoses.sql | 9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65 |
 | 0045_diagnosis_worker_fence.sql | 603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2 |
+| 0046_diagnosis_problem_order.sql | 953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f |
 
 ## Executable schema definitions
 
@@ -6388,5 +6389,76 @@ CREATE POLICY worker_diagnosis_revision_fence
  ON impact.object_revision AS RESTRICTIVE FOR ALL TO impact_worker
  USING (object_type <> 'AIDiagnosis')
  WITH CHECK (object_type <> 'AIDiagnosis');
+COMMIT;
+```
+
+
+## Migration0046 — diagnosis problem identity and priority order
+
+Additive local0.40 candidate follow-up; derived schema46. The pure immutable invoker function validates canonical unique problem IDs, bounded arrays, unique member priorities and full nonempty coverage for Completed records. Draft permits empty problems and partial order. This is a bounded identity/order constraint, not full JSON-schema or semantic completion validation; the closed API retains text/key/metadata checks. Existing SQL NULL governed removal stays valid. Existing rows must validate atomically without rewriting history. No table or tenant authority grants change; pure helper execution is granted to existing app/worker/platform/privacy revision writers, because PostgreSQL checks this even for other-kind CHECK branches; no table or identity authority is added. All0001–0045 stay byte-exact. Not deployed or accepted.
+
+SHA256 `953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f`.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- A pure invoker function: no table reads, identity lookup or authority bypass.
+-- Draft priorities may be partial; Completed priorities must cover every problem.
+CREATE FUNCTION impact.diagnosis_problem_order_valid(p jsonb) RETURNS boolean
+ LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog AS $$
+DECLARE
+ item jsonb;
+ id text;
+ problems text[] := ARRAY[]::text[];
+ priorities text[] := ARRAY[]::text[];
+BEGIN
+ IF jsonb_typeof(p) IS DISTINCT FROM 'object'
+    OR jsonb_typeof(p->'problems') IS DISTINCT FROM 'array'
+    OR jsonb_typeof(p->'priority_order') IS DISTINCT FROM 'array'
+    OR jsonb_typeof(p->'diagnosis_state') IS DISTINCT FROM 'string'
+    OR p->>'diagnosis_state' NOT IN ('Draft','Completed') THEN
+  RETURN false;
+ END IF;
+ IF jsonb_array_length(p->'problems')>20 OR jsonb_array_length(p->'priority_order')>20 THEN
+  RETURN false;
+ END IF;
+ FOR item IN SELECT value FROM jsonb_array_elements(p->'problems') LOOP
+  IF jsonb_typeof(item) IS DISTINCT FROM 'object'
+     OR jsonb_typeof(item->'problem_id') IS DISTINCT FROM 'string' THEN
+   RETURN false;
+  END IF;
+  id := item->>'problem_id';
+  IF id !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+     OR id=ANY(problems) THEN
+   RETURN false;
+  END IF;
+  problems := array_append(problems,id);
+ END LOOP;
+ FOR item IN SELECT value FROM jsonb_array_elements(p->'priority_order') LOOP
+  IF jsonb_typeof(item) IS DISTINCT FROM 'string' THEN
+   RETURN false;
+  END IF;
+  id := item #>> '{}';
+  IF NOT id=ANY(problems) OR id=ANY(priorities) THEN
+   RETURN false;
+  END IF;
+  priorities := array_append(priorities,id);
+ END LOOP;
+ RETURN p->>'diagnosis_state'='Draft'
+        OR (cardinality(problems)>0 AND cardinality(problems)=cardinality(priorities));
+END;
+$$;
+REVOKE ALL ON FUNCTION impact.diagnosis_problem_order_valid(jsonb) FROM PUBLIC;
+-- PostgreSQL checks helper execution privilege even for another kind's CHECK
+-- branch. Existing revision writers need only this pure predicate, no new data grant.
+GRANT EXECUTE ON FUNCTION impact.diagnosis_problem_order_valid(jsonb)
+ TO impact_app,impact_worker,impact_platform,impact_privacy;
+-- Existing governed removal uses SQL NULL, never a JSON null/tombstone payload.
+-- Validate all existing revisions; invalid historical data blocks the migration
+-- atomically rather than being rewritten or silently waived.
+ALTER TABLE impact.object_revision ADD CONSTRAINT diagnosis_problem_order_valid
+ CHECK(CASE WHEN object_type<>'AIDiagnosis' THEN true
+            WHEN restriction_state='REMOVED' AND payload IS NULL THEN true
+            ELSE COALESCE(impact.diagnosis_problem_order_valid(payload),false) END);
 COMMIT;
 ```

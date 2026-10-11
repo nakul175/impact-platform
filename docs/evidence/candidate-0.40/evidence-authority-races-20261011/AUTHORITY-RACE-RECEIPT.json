@@ -1,0 +1,37 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T14:22:20.184347+00:00",
+  "tested_base_head": "829983fdcbf579dd28be84f1672353c98eb47646",
+  "new_test_sha256": "81a80c95672af47a237c256df7dce09bd7ac5085e81166d02379ae546f8a4eb8",
+  "native_passed": 96,
+  "native_existing_cases": 89,
+  "native_added_queued_source_cases": 7,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "release_threat_unit_separate_passed": 46,
+  "stable_executable_pins": 278,
+  "unchanged_application_and_all46_migrations": true,
+  "actual_wait": "Every new case observes impact_app_login advisory wait before fixture grant purpose narrows; independent HTTP connection and pre-minted token. Actual wait required, not sleep assumption.",
+  "scope": "Current-source grant loss during get/named/history/list/create/complete/create exact replay; unavailable reads/writes/replay404 or list filters diagnosis. Domain counts unchanged. Same request succeeds after temporary grant restoration; replay exact and zero extra effects.",
+  "synthetic_permission": "One fresh object-only Evidence read scope/grant per case in disposable database; temporary narrowing/restoration then scope grant narrowed by fixture teardown. No live identity/default role/profile/ceiling change; not governed revocation acceptance.",
+  "reviews": {
+    "code": "Separate integration self-review inspected actual wait observation before narrowing commit, current fresh authority, independent HTTP connection, count checks, finally restoration and outer teardown narrowing. Original application/migration bytes unchanged.",
+    "evidence": "Separate integration self-review parsed96 native nodes including7 queued cases,46 separate release/threat units, stable executable pins, clusterstop0 and historical evidence restoration. Tests establish native source authority ordering, not source privacy/retention race, binding SQL constraints, migration backfill, recovery, UI or human signoff."
+  },
+  "storage_design": "DIAGNOSIS-EVIDENCE-LINKAGE-REVIEW.md is an unapplied concrete recommendation. Forced-RLS all-tenant backfill and governed relation cleanup lifecycle must be qualified before schema47 registration. No table/migration applied.",
+  "deployed": false,
+  "human_signoff": false,
+  "verified_delivered_stories": 0,
+  "cleanup": "Runner ended; cluster stop0; historical evidence unchanged; fresh fixture grant narrowed at teardown",
+  "evidence_sha256": {
+    "RUN-RECEIPT.json": "0ffccb3ce7435e8b48f6bd6879890b2376870adfa43d297247298c88c7702d74",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "integrated-worker-fence-tests.xml": "e99c07f36d4725e7f96ffee3fa318c3dc96e9cb2dd108b756c9693d905df77b2",
+    "integrated-worker-fence.log": "d32167779b79e992409b21e32aa793464479af00b1f26c1a4b2605cfe2898870",
+    "release-check.log": "74ef862707ef3a650463ac2348470ad68ec6f9028ef53e3ffb562906e70a2871",
+    "unit.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611",
+    "unit.xml": "1541d25d2cc091c97dd88ecda3641069e336eb6a7eb5c07b61ed96bacda0932c"
+  }
+}

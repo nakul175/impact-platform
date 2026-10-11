@@ -419,6 +419,24 @@
       "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-08",
+      "change_id": "US-DX-01a-evidence-races",
+      "change": "Qualify source authority changes while diagnosis operations actually wait",
+      "paths": [
+        "qualification/test_ai_diagnosis_evidence_races_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH10"
+      ],
+      "summary": "Native-only supporting qualification observes actual API advisory-lock waits before narrowing a fresh disposable object-only evidence.read fixture grant. Read/named/history/list/create/complete/exact replay must recheck current source authority, refuse/filter without domain effects, and permit the same request after fixture authority restoration. No application, migration, capability, default profile/role, production identity or historical payload change. Not governed revocation or privacy-removal qualification, independent human review or acceptance.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

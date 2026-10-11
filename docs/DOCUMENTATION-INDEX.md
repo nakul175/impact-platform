@@ -153,6 +153,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### engineering/delivery-system-20261011
 
 - [US-DX-01a candidate review pack](engineering/delivery-system-20261011/CANDIDATE-REVIEW-PACK.md)
+- [Diagnosis Evidence linkage: storage preparation](engineering/delivery-system-20261011/DIAGNOSIS-EVIDENCE-LINKAGE-REVIEW.md)
 - [Diagnosis worker fence: bounded preparation](engineering/delivery-system-20261011/DIAGNOSIS-WORKER-FENCE-REVIEW.md)
 - [Imprana Commons — diagnosis coding handover](engineering/delivery-system-20261011/HANDOVER.md)
 - [Imprana Commons progress by work type](engineering/delivery-system-20261011/SEGMENTED-PROGRESS.md)

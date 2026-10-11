@@ -1,7 +1,8 @@
 # Imprana Commons: current diagnosis candidate
 
-Observed 11 October 2026 at 19:02 UTC, against clean local preservation head
-`8326f54c2014d9c5340007564421c3eb7256404d`. This page is a navigation and
+Latest qualification observed 11 October 2026 at 19:39 UTC, against baseline
+`d2cb26f932bb96dc3264ca50ec2c6202f4461468` plus the two newly pinned optional
+provider-browser test/checker files. This page is a navigation and
 release-handoff checkpoint, not acceptance or a deployed-state receipt. Inspect
 the actual head and writer record before continuing. Older sections in the
 handover, implementation contract and review pack remain chronological evidence;
@@ -38,6 +39,8 @@ no new remote or deployed-state observation.
 | [Actual Chrome through pooler](../../evidence/candidate-0.40/browser-pooler-20261011/BROWSER-POOLER-RECEIPT.json) | Ten groups / 318 assertions; nine scoped axe scans with zero violations/incomplete findings | `37de5a1`; synthetic development login. All 47 recorded transport failures remain in raw evidence: 46 aborted requests and one deliberately lost response. No human accessibility or worker delivery claim. |
 | Provider receipt: narrow CLI and retained units | 51 passed: eight new CLI cases plus 43 retained cases | Narrow native test/diagnosis-browser allowance; unsupported modes refused before runtime. |
 | [Private HTTP headers](../../evidence/candidate-0.40/private-headers-native-20261011/PRIVATE-HEADERS-RECEIPT.json) | One passed, zero skips/failures/errors; 300 stable pins | `7b75d265` plus exact new-test hash: actual success/replay/404/409/401 headers and no extra domain effects. Not browser cache eviction, provider sessions, TLS or deployed headers. |
+
+| [Real-provider Chrome](../../evidence/candidate-0.40/provider-browser-native-20261011/PROVIDER-BROWSER-RECEIPT.json) | One pytest / three browser groups /45assertions, zero skips/failures/errors;398pins stable | `d2cb26f` plus two exact test hashes; actual Keycloak password/TOTP/cookies, UI save/reopen/complete, provider logout/oldcookie401, delivered late200 cannot restore UI, owner404. Independent target2revision/2receipt/2audit storage proof. Optional coverage; no axe/TLS/erasure/human/deployment claim. |
 
 All these are local synthetic qualification. Actual runtime services stopped;
 historical evidence restored or unchanged. Initial setup/test failures and skips
@@ -90,8 +93,8 @@ authority; the coding request does not authorize production identity changes.
 
 Separate read-only story and release audits at this checkpoint found no uncovered
 mandatory local defect in the two frozen story criteria. The optional combined
-real-provider Chrome flow is not claimed as passed, a missing frozen criterion or
-an automatic release requirement. Resolve the declared release gates before
+real-provider Chrome flow now has the distinct source-pinned local receipt above;
+it is not a missing frozen criterion or an automatic release requirement. Resolve the declared release gates before
 starting another feature; repeated local checks do not replace them.
 
 ## Resume safely

@@ -1,0 +1,67 @@
+{
+  "suite": "Actual local provider-cookie diagnosis browser",
+  "browser_version": "154.0.8037.98",
+  "delayed_response_outcome": "delivered",
+  "status": "passed",
+  "results": [
+    {
+      "id": "DX-IDP-B01",
+      "name": "Actual admin password/TOTP session and diagnosis UI save/reopen/completion",
+      "status": "passed",
+      "assertions": 20
+    },
+    {
+      "id": "DX-IDP-B02",
+      "name": "Actual provider logout, stale cookie refusal and delayed private read clearing",
+      "status": "passed",
+      "assertions": 12
+    },
+    {
+      "id": "DX-IDP-B03",
+      "name": "Actual owner provider session cannot gain diagnosis access from custody",
+      "status": "passed",
+      "assertions": 13
+    }
+  ],
+  "counts": {
+    "groups": 3,
+    "passed": 3,
+    "assertions": 45
+  },
+  "runtime": {
+    "dev_auth": false,
+    "native": true,
+    "pooler": "pgbouncer-transaction",
+    "pool_size": "3",
+    "origins": [
+      "http://127.0.0.1:8378",
+      "http://127.0.0.1:56546"
+    ]
+  },
+  "object_id": "deb71f44-3d3f-4047-b7ec-6662cb499284",
+  "operation_ids": [
+    "b684ecc1-4f3d-4366-83f2-4029b55f4440",
+    "610f7486-2bcb-4422-8039-3e2018cc6eac"
+  ],
+  "draft_revision_id": "808a6742-df6d-49ee-94d2-456111463a5e",
+  "completed_revision_id": "6070b700-c80e-4336-a2af-2fd7c97c03d5",
+  "title": "Synthetic provider browser diagnosis",
+  "supporting_evidence": "Synthetic evidence notes preserved through actual provider cookies.",
+  "dev_auth": false,
+  "forbidden_requests": [],
+  "uncaught_error_names": [],
+  "cleanup_failures": [],
+  "limits": [
+    "Synthetic loopback fixture only; no human UX/acceptance/deployment claim.",
+    "Real password/TOTP/cookies/CSRF; no development bearer token or grant/account changes.",
+    "Effect counts and exact stored payload verification belong to the invoking native pytest wrapper; no delivery claim.",
+    "No Evidence selectors, privacy erasure, accessibility/TLS/HSTS or production provider claim.",
+    "External source/migration/binary pinning belongs to the invoking reviewed wrapper."
+  ],
+  "readonly_native_counts": {
+    "revisions": 2,
+    "receipts": 2,
+    "audit": 2
+  },
+  "checker_sha256": "4f1e10fd3f95ebf6269a44ba57147123d69e4412f2597da81c42b1096391b320"
+}

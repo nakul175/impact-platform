@@ -168,11 +168,15 @@ class Privacy:
         revision that is still available uses the same blob."""
         rows = c.execute(
             "SELECT DISTINCT b.blob_id,b.purged_at,EXISTS(SELECT 1 FROM impact.object_revision v2 "
-            "JOIN impact.upload_session u2 ON u2.tenant_id=v2.tenant_id AND u2.upload_id=(v2.payload->>'upload_id')::uuid "
+            "JOIN impact.upload_session u2 ON u2.tenant_id=v2.tenant_id AND u2.upload_id=CASE "
+            "WHEN (v2.payload->>'upload_id') ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' "
+            "THEN (v2.payload->>'upload_id')::uuid END "
             "WHERE v2.tenant_id=b.tenant_id AND v2.object_type='Evidence' AND v2.object_id<>%s "
             "AND v2.restriction_state='AVAILABLE' AND u2.blob_id=b.blob_id) AS shared "
             "FROM impact.object_revision v JOIN impact.upload_session u ON u.tenant_id=v.tenant_id "
-            "AND u.upload_id=(v.payload->>'upload_id')::uuid JOIN impact.file_blob b ON b.tenant_id=u.tenant_id "
+            "AND u.upload_id=CASE "
+            "WHEN (v.payload->>'upload_id') ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' "
+            "THEN (v.payload->>'upload_id')::uuid END JOIN impact.file_blob b ON b.tenant_id=u.tenant_id "
             "AND b.blob_id=u.blob_id WHERE v.tenant_id=%s AND v.object_id=%s AND v.object_type='Evidence' "
             "AND v.payload ? 'upload_id' ORDER BY b.blob_id",
             (str(evidence_id), ctx.tenant_id, str(evidence_id)),

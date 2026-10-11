@@ -1,0 +1,93 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T14:58:15.749363+00:00",
+  "tested_base_head": "442d73dbff17f1dccfa7c1f8fd06865ca96b36ab",
+  "stage": "TYPED_LINKAGE_CODED_UNREGISTERED_LOCAL_CANDIDATE",
+  "candidate_sql_sha256": "30f261b2ceffa490c8bd379f8d9d1cdf574e965b85214100446cec937c085725",
+  "tested_new_test_sha256": "89d51fed8405689b84fefa94be26b6f84395b00d66ce12cd83ceb62a48b5331e",
+  "privacy_fix_sha256": "704e8c7238cc31fe69c288d860cbd15254d16dc0f4291e2bc928226d3e3e2371",
+  "actual_native_passed": 123,
+  "new_linkage_cases": 10,
+  "retained_diagnosis_resolver_cases": 89,
+  "retained_worker_cases": 5,
+  "additional_existing_privacy_security_cases": 19,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "separate_release_threat_units_passed": 46,
+  "stable_executable_pins": 280,
+  "all46_applied_migrations_unchanged": true,
+  "domain_api": "1.30.0",
+  "registered_schema": 46,
+  "actual_linkage": [
+    "Tenant-keyed typed diagnosis and Evidence object/revision/kind FKs with forced RLS and no worker/platform/identity table grants",
+    "AFTER INSERT derives exact per-problem/position links in same diagnosis transaction; immutable tuple guard prevents extras and ordinary owner deletion",
+    "Save/completion/correction preserve exact links and old revision data; real APP INSERT refuses missing/wrong-object/wrong-kind/actual foreign-tenant source keys",
+    "Restricted migrator backfills existing linked records in both fixture tenants using existing owner directory and per-tenant context; exact revision JSON/hash/metadata unchanged; ledger remains46",
+    "Existing independent synthetic privacy-erasure API test runs while table/hooks active and Evidence read fixture grant still active; source bytes erased, official/audit assertions intact, diagnosis GET404 and original links/history retained",
+    "Unchanged worker reminder/audit and pinned-export assertions run while candidate active"
+  ],
+  "privacy_bug_fix": "Earlier malformed appended Evidence fixture exposed unchecked upload_id UUID cast in unrelated shared-blob privacy planning, causing503 before approval. Validate both targeted/shared upload selectors with SQL CASE before cast; do not weaken malformed-source test or rewrite historical payload. Exact valid upload sharing behavior retained by existing privacy/security cases.",
+  "earlier_attempts": [
+    {
+      "run": 1,
+      "passed": 101,
+      "failed": 0
+    },
+    {
+      "run": 2,
+      "passed": 102,
+      "failed": 1,
+      "reason": "Actual integrated existing privacy planning503 on unrelated malformed Evidence upload_id; raw failure and parameterised SQL excerpt retained"
+    },
+    {
+      "run": 3,
+      "passed": 104,
+      "failed": 0
+    },
+    {
+      "run": 4,
+      "passed": 123,
+      "failed": 0
+    }
+  ],
+  "reviews": {
+    "code": "Separate self-review inspected four tenant/object/revision/type FKs, exact JSON tuple/position guard, invoker insertion trigger, pure shape checks, forced tenant RLS and no new worker/identity/platform data grant, owner per-tenant backfill and cleanup prerequisites. Source availability remains API current-authority duty, not inferred from FK. Cleanup hook cannot add a new privacy target or bypass approved plan/ledger/revision guard.",
+    "evidence": "Separate self-review parsed final123 actual nodes,10 linkage cases and46 separate units, exact SQL/source hashes and46 unchanged migrations. Full existing independent source-erasure assertions ran under table/hooks and granted source-read context, with failure fixed at source. Actual valid two-tenant backfill differs from registered checksum-ledgered populated upgrade. Diagnosis-removal cleanup positive flow, invalid historical rollback and restart/restore are not passing evidence."
+  },
+  "cleanup": "Candidate triggers/table/functions/CHECK removed by restricted migrator with absence assertion, runtime ended and clusterstop0; historical generated evidence unchanged, bounded source grants narrowed on teardown",
+  "remaining": [
+    "Positive supported diagnosis-store removal lifecycle without a new unapproved privacy target/plan waiver",
+    "Invalid populated all-tenant linkage upgrade rollback and exact checksum-ledger registration/retry; native recovery",
+    "Current source privacy/retention races and accessible selector UI/browser; integrated regression refresh",
+    "Required exact-head hosted/container/human/operational/owner and unresolved external/financial release gates"
+  ],
+  "registered_migration": false,
+  "human_signoff": false,
+  "deployed": false,
+  "verified_delivered_stories": 0,
+  "evidence_sha256": {
+    "privacy-failure-sql-excerpt.log": "464bc91914350abbf5750a5bd42f755a4a7383af74924f1b3db564104a8f675c",
+    "release-check.log": "481f07e706628e3a91fded917625d757ba190f6701ec095be8d347b9067102c8",
+    "run-1/RUN-RECEIPT.json": "c6f5485c1f009491135fe2632b06a1482edf0c47e7a93c2b7e97c34d4838b99c",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "806133005bb7d48df4fa33fdabfbc999a862953ae1bd9ac6b58c529f6ff9fdbf",
+    "run-1/integrated-worker-fence.log": "0dee393d517adf180c131c6dc3ec72c589e9fda2ed80bd9f41ce3269ea6f8f63",
+    "run-2/RUN-RECEIPT.json": "3aa2214bd5d1656111a4ee3bb8ca533eec616c2489d877670856067b94463137",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "fe9fbb61f45880e20ca8d07a5d096fad2ab794735b251cf7c93a914aa7ba568b",
+    "run-2/integrated-worker-fence.log": "4d7c1cde20dcbe0f75ff0c9d0763758ffce5a7107e742209a1583d8e6a8b648f",
+    "run-3/RUN-RECEIPT.json": "f5ef502a64ba717654c5d183262155fe8444ec55640727e5f11463254fe45043",
+    "run-3/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-3/integrated-worker-fence-tests.xml": "35549d6322e9f990cfd6bbddd508f492f23d13eba8975e7d3a4b2df1507d2b8e",
+    "run-3/integrated-worker-fence.log": "35af72fc1900413b04daecaaf762b89e367cc4b7feeb850b769eaf26e9c1cd7b",
+    "run-4/RUN-RECEIPT.json": "e45f08438fd7844e1095c8e8e6a9ae2fc384abc93e2025f9d8876c388defcc8b",
+    "run-4/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-4/integrated-worker-fence-tests.xml": "859a1125fd81e12189deaa78dc04d383e4a8efeae9939267267ebbcf244bf5dc",
+    "run-4/integrated-worker-fence.log": "a5183ca90e92a08e0fe34311a044fc47fb30039e725fe5853236cdf4ca19f8fb",
+    "tested-CANDIDATE.sql": "30f261b2ceffa490c8bd379f8d9d1cdf574e965b85214100446cec937c085725",
+    "unit.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611",
+    "unit.xml": "714995418dc1a750818f7d15c5f71caae787330dc98e405337f74ea61a91b9ae"
+  }
+}

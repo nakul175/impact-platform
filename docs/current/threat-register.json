@@ -1524,7 +1524,8 @@
         "qualification/test_ai_diagnosis_payload_native.py::test_constraint_helper_has_no_definer_or_identity_data_authority",
         "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals",
         "qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector",
-        "qualification/test_ai_diagnosis_evidence_races_native.py::test_waiting_diagnosis_operation_rechecks_source_grant_before_disclosure_or_effect"
+        "qualification/test_ai_diagnosis_evidence_races_native.py::test_waiting_diagnosis_operation_rechecks_source_grant_before_disclosure_or_effect",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [

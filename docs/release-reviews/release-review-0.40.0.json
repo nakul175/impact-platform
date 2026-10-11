@@ -457,6 +457,28 @@
       "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-10",
+      "change_id": "US-DX-01a-typed-linkage",
+      "change": "Implement and qualify unregistered typed diagnosis linkage and safe privacy upload selectors",
+      "paths": [
+        "docs/engineering/delivery-system-20261011/diagnosis-evidence-linkage.CANDIDATE.sql",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py",
+        "apps/api/impact_api/privacy.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Complete unregistered linkage candidate adds tenant/object/revision/type FKs, exact immutable JSON tuple guards, atomic insert trigger, owner-directory per-tenant backfill and guarded cleanup hook; no active migration or default account/profile/role change. Ordinary owner deletion refuses. Source privacy API erasure with existing independent approval preserves linkage/history and hides diagnosis. Integrated malformed-source fixture exposed unsafe UUID cast in privacy blob planning: CASE now validates UUID transport before cast, preserving correct shared-blob checks. No new privacy target or approved-plan waiver. Positive diagnosis-removal cleanup and invalid populated upgrade/recovery gates remain before registration; no human approval or release acceptance.",
+      "prepared_by": "Codex root agent; separate code/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

@@ -597,6 +597,26 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-17",
+      "change_id": "DX-CURRENT-NATIVE-FULL",
+      "change": "Qualify current diagnosis candidate in the full native platform suite",
+      "paths": [
+        "docs/evidence/candidate-0.40/current-head-native-full-20261011/FULL-NATIVE-RECEIPT.json"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "No executable change: tested1a47253 full native2609pass28skip1existingIT018deselection1warning0failure/error. Restart2phases, actual generic restore and45-to46upgradePASS;283pins stable and9historical artifacts restored. Skip inventory explicit; no browser/provider/hosted/container/registration/privacy-target/human acceptance credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

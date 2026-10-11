@@ -1,0 +1,109 @@
+{
+  "at": "2026-10-11T16:07:50.342242+00:00",
+  "base_head": "6bbaedbf891fc730a31b653817bbf69fa1e0fdc0",
+  "story": "US-DX-01a / APL-361",
+  "schema_registered": 46,
+  "candidate_registered": false,
+  "native_runs": [
+    {
+      "run": 1,
+      "passed": 124,
+      "failed": 1,
+      "errors": 0,
+      "skips": 0,
+      "stable_pins": 282,
+      "started_at": "2026-10-11T16:05:15.928646+00:00",
+      "finished_at": "2026-10-11T16:05:42.057220+00:00"
+    },
+    {
+      "run": 2,
+      "passed": 125,
+      "failed": 0,
+      "errors": 0,
+      "skips": 0,
+      "stable_pins": 282,
+      "started_at": "2026-10-11T16:06:17.026252+00:00",
+      "finished_at": "2026-10-11T16:06:45.551430+00:00"
+    },
+    {
+      "run": 3,
+      "passed": 125,
+      "failed": 0,
+      "errors": 0,
+      "skips": 0,
+      "stable_pins": 282,
+      "started_at": "2026-10-11T16:08:23.185243+00:00",
+      "finished_at": "2026-10-11T16:08:50.233801+00:00",
+      "qualification": "exact new binding field assertion"
+    },
+    {
+      "run": 4,
+      "passed": 125,
+      "failed": 0,
+      "errors": 0,
+      "skips": 0,
+      "stable_pins": 282,
+      "started_at": "2026-10-11T16:09:13.171487+00:00",
+      "finished_at": "2026-10-11T16:09:38.083170+00:00",
+      "qualification": "formatted exact candidate source"
+    }
+  ],
+  "scope": "One new backup/restore test plus124 retained affected cases. Not a new story, registered linkage migration, replacement API or full-suite refresh.",
+  "actual_proof": [
+    "Actual custom pg_dump/pg_restore copy with candidate table/functions/triggers active; existing restore drill checks golden official result, row counts, table owner/RLS/policy/functions/grants equality and restricted APP fences",
+    "Registered46 migration checksum verification and no-op migration runner on copy; does not imply unregistered candidate checksum registration",
+    "Exact Draft/Completed/correction diagnosis registry/JSON/hash/history/head plus exact per-version links preserved",
+    "Actual restored non-superuser/NOBYPASSRLS APP login sees exact own-tenant three-version links, foreign/unset tenant sees none",
+    "Restored population trigger creates exact one-source binding inside forced-rollback transaction; wrong-kind source revision refuses FK and rolls back",
+    "Actual restored worker/platform/identity login-role SELECT on binding table refuses InsufficientPrivilege",
+    "Final diagnosis/history remains identical after probes; restored copy dropped with absence assertion; candidate hooks removed and cluster stopped"
+  ],
+  "initial_failure": "Actual restore drill PASS but test explicit c.rollback inside transaction context raised ProgrammingError; corrected test instrumentation to transaction(force_rollback=True) and strengthened all-three-version checks. Initial124pass/1fail retained. No production code or old test weakened.",
+  "initial_lint": "Fixture import plus argument raised F811; usefixtures marker retains same actual fixture without duplicate argument. Observed tooling output retained in chat; no fabricated raw artifact.",
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "New qualification file only; existing approved flow, candidate SQL and46 migrations untouched. Reuses existing free restore drill and restricted runtime logins. Fresh bounded source-only grant and disposable DB CONNECT grants; no production roles/accounts or signoff. New insert probe force-rolls back, copy drops in finally."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Final125actual native passes, zero skip/error/failure; initial124pass/1test-fixturefailure retained.282executablepins stable per run. Private restore result reportsPASS with actual dump/restore and allchecks true. SQL checks do not claim restored API replay/restart or supported diagnosis-removal cleanup. Final run4 pins match the exact formatted candidate. Run3 strengthens new binding field comparison; its subsequent formatting-only change is explicitly superseded by run4."
+    }
+  ],
+  "remaining": [
+    "Supported diagnosis-removal privacy scope/contract and positive cleanup",
+    "Unregistered linkage promotion/checksum retry and replacement API recovery",
+    "Current-head integrated refresh, hosted/container/export/financial/human/operational/owner release gates"
+  ],
+  "delivered_stories": 0,
+  "deployed": false,
+  "raw_sha256": {
+    "release-threat-units.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611",
+    "run-4/integrated-worker-fence.log": "177c1261be5380b4d671a5f83c120dfddfb4ae097aec914eb59ee2e2192a5e47",
+    "run-4/RUN-RECEIPT.json": "c510ed7f941fd3c4d4d1404d37f4075f53a3e95547516d2767d3dd729e547e8a",
+    "run-4/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-4/diagnosis-linkage-restore.json": "44a1a57f729fbd95e8ec4ea01dbe21b9a4bf58496ce0cb631165bbecae47d994",
+    "run-4/integrated-worker-fence-tests.xml": "f41bb3d379d6e8b0e8cc7cfeda8401a1133c306390786031fc0010db737fc6b5",
+    "run-3/integrated-worker-fence.log": "c5d03ef47c6f628e313b244ff46abc3054f08419c2a319931311fc7bb58f8194",
+    "run-3/RUN-RECEIPT.json": "4f583c9ac3c72824cc34344b1c3634339e3bcd00fbf03a3d35a24eb7c9680e15",
+    "run-3/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-3/diagnosis-linkage-restore.json": "dc4404f4c4a9f9e3c091b9ac5053e81c1e2c17f3c2a297f04411219c4e40e32d",
+    "run-3/integrated-worker-fence-tests.xml": "ac7223377c5c36f6bbd49cd419e4bc2b219447b93eaa704e8e1491b442f68355",
+    "run-2/integrated-worker-fence.log": "328cfd9186b7eb061401f84ec833e8f27675b1b369129a8037d726e2d7b23e8e",
+    "run-2/RUN-RECEIPT.json": "cc5e2f227bf5e5d291b2c79262e6db6e8661bf80ea95be79308eac2b6fa19f64",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/diagnosis-linkage-restore.json": "ef1b6d2c15c3f0985c283e732451b4c80c5d83269de0f5f493efc0dbf4b744cd",
+    "run-2/integrated-worker-fence-tests.xml": "44443ccddafca2185b01b429f1c74e0ee150e6ba13d287cdd9183edae01d320a",
+    "run-1/integrated-worker-fence.log": "9e2efd9a0b984809c3d5a87623ccec57418589eb0b0973c7998b0f816d30c9f8",
+    "run-1/RUN-RECEIPT.json": "9ba88cd6f88956624add056251b7ef8b4d6c505152a84f25b5023a2089693162",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/diagnosis-linkage-restore.json": "7640335382dcce5f5471f43768a7ce92d9c8f04e205c55eb872ce9130c3f7c05",
+    "run-1/integrated-worker-fence-tests.xml": "c86ab8358e4e48fc5b5d80a75dc93e9fd02473df62b3dfc7064cb077696cb4d3"
+  },
+  "final_exact_run": 4,
+  "release_threat_units_passed": 46
+}

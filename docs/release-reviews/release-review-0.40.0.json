@@ -558,6 +558,25 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-15",
+      "change_id": "DX-LINKAGE-NATIVE-RESTORE",
+      "change": "Qualify unregistered typed linkage through real native backup/restore",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_restore_native.py"
+      ],
+      "areas": [
+        "ai-module",
+        "migration"
+      ],
+      "threats": [
+        "TH10"
+      ],
+      "summary": "Actual custom pg_dump/pg_restore with candidate active; generic golden/security/rowcount checks, exact3-version JSON/hash/history/linkage, restored APP tenant fences, population trigger rollback/FK refusal and worker/platform/identity table denial.125native passes,282stablepins. Initial test rollback failure retained. Schema46 registered runner no-op is not candidate registration or restored API/release acceptance.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

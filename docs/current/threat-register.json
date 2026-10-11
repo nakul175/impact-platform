@@ -1526,7 +1526,8 @@
         "qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector",
         "qualification/test_ai_diagnosis_evidence_races_native.py::test_waiting_diagnosis_operation_rechecks_source_grant_before_disclosure_or_effect",
         "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants",
-        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure"
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure",
+        "qualification/test_ai_diagnosis_linkage_restore_native.py::test_real_restored_linkage_preserves_history_triggers_and_runtime_fences"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [

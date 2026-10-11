@@ -673,6 +673,29 @@
       "prepared_by": "Codex rootintegration/supporting source review; separate root evidence review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-20",
+      "change_id": "DX-Migration-Quiescence",
+      "change": "Bounded local diagnosis47 deployment writer-quiescence precaution and current registered application qualification",
+      "paths": [
+        "deploy/check_writer_quiescence.py",
+        "deploy/lib.sh",
+        "deploy/update.sh",
+        "deploy/Dockerfile",
+        "qualification/test_deployment_quiescence_unit.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH26"
+      ],
+      "summary": "StopsComposewritersbeforemigration;read-onlycompletevisibilityprobe refusessessions/preparedtransactions;failed ordinarydeployretainsprivate0600checkpoint/noautomaticoldimage restart.198finalaffectedunits incl27newhelpercases,95retaineddeploy; firstBashfailurepreserved.5actualnativeprobeobservations; probePythonexact, later shellbytes separatelyunitqualified. Current79bapplication2626pass28skip/native recovery/provider18/browser10-318 retained. NoDocker/globalwriterfence/hosted/human/operational acceptance;0deployed.",
+      "prepared_by": "Codex integration; separate supporting code and evidence reviews",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

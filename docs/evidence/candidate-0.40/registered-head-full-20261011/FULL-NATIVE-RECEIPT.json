@@ -1,0 +1,136 @@
+{
+  "at": "2026-10-11T17:25:59.042034+00:00",
+  "tested_head": "79b2316b73cfe8d3a69d76ab5146c6632025350e",
+  "story": "US-DX-01a / APL-361",
+  "registered_schema": 47,
+  "application": {
+    "passed": 2626,
+    "skipped": 28,
+    "deselected": 1,
+    "warnings": 1,
+    "failures": 0,
+    "errors": 0,
+    "skip_inventory": "SKIP-INVENTORY.json",
+    "configured_deselection": "Existing runner -k not IT_018 unchanged"
+  },
+  "native_recovery": {
+    "api_restart_phases_passed": 2,
+    "restart_outcome": "PASS",
+    "generic_pg_dump_restore": "PASS",
+    "tables_compared": 193,
+    "rows_compared": 116622,
+    "checksums_verified": 47,
+    "restored_database_dropped": true,
+    "upgrade_45_to47": "PASS"
+  },
+  "database_outage": {
+    "separate_passed": 1,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "direct_connection": true,
+    "observation": {
+      "topology": "direct",
+      "downtime_seconds": 2.2,
+      "seconds_to_first_503_readiness": 0.0,
+      "seconds_to_read_503": 0.0,
+      "seconds_to_ready_after_start": 0.0,
+      "read_attempts_after_ready": 1,
+      "seconds_to_read_after_ready": 0.0,
+      "worker_survived": true,
+      "worker_refused_classes": [
+        "OperationalError"
+      ]
+    },
+    "scope": "Actual owned cluster stopped between requests and restarted; same API and worker survive, exact previous receipt and refused-during-outage retry preserved. Not an uncertain midtransaction crash or pooler mode."
+  },
+  "source_pins_stable": true,
+  "source_pin_count": 289,
+  "cluster_stop_exit_code": 0,
+  "historical_restoration": [
+    "docs/evidence/sprint-0.33-listing-visibility-native-applied-migrations.json",
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/golden-reconciliation.json",
+    "docs/evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json",
+    "docs/evidence/native-application-tests.xml",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.33-retained-visibility-native-applied-migrations.json",
+    "docs/evidence/native-restore-drill.json",
+    "docs/evidence/native-qualification.json"
+  ],
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "diagnosis_privacy_review supporting agent",
+      "human_signoff": false,
+      "finding": "Independent raw/pins review289hashesexact at full/native-outage completion,47checksums/193tables116622rows/security/replay/cleanup checked. Public-connect fixture doesnot establish deployment hardening."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration separate reconciliation",
+      "human_signoff": false,
+      "finding": "Raw JUnit2626pass28skip and2separateAPIrestartcases; separateDBoutage1pass. Originalskips retained unchanged; no container/hosted/deployment/human claim. Private signedstate/config/passwords/dumps excluded."
+    }
+  ],
+  "human_signoff": false,
+  "delivered_stories": 0,
+  "deployed": false,
+  "remaining": [
+    "Later bounded deployment-script patch is not covered by these79b2316 application/provider/browser runs; qualify affected helpers separately and required exactcandidate CI",
+    "Actual container and four hosted exact-candidate jobs plus checks",
+    "GitHub export approval boundary and CI spending authority",
+    "Quiescent migration operational implementation/qualification and accountable maintenance operator",
+    "Independent human/security/accessibility/product/release dispositions"
+  ],
+  "raw_sha256": {
+    "SKIP-INVENTORY.json": "1b2534b086c501c4a87949347a542bb0278b567808e05c77e19694d882383507",
+    "full/RUN-RECEIPT.json": "1f86cf9207f076b41dde6a43552505694a1a1285a010fa093f4375cb6790faa4",
+    "full/diagnosis-linkage-api-restore.json": "5d625bbaa5f2eadff2fbf01a44683616cbd3f97a6afb04d1ade23fdad2a8d4c1",
+    "full/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "full/native-full.log": "0dc1b150708d526389c3aa5ffbcf26b606ed201fa8aa98bfaa76a1140bfb62e7",
+    "full/diagnosis-linkage-restore.json": "3a49cc463f4927876b63e6ed03ea8d31caae788083f254f96a052313875913cb",
+    "full/application-tests.xml": "ee927de8ebe1f3ab7526a0b781777e2aca3b38d748de46030986ea5f09ddcf0d",
+    "full/generated-evidence/sprint-0.33-listing-visibility-native-applied-migrations.json": "16f888f20615ab24b590e8102fabc81007d31de0df41fae2d1f071c72c3f8d1e",
+    "full/generated-evidence/nonprofit-ai-content-applied-migrations.json": "c5f347475c2b8525c33b04e09a8dcd6c17d4c22c60121e75a14f71fd2c32e1f5",
+    "full/generated-evidence/golden-reconciliation.json": "f2dec243fd9f1b8e5b6455d8a5f80d69dea1b611cf6b3501226ad4b0f22527b8",
+    "full/generated-evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json": "4844384e2e83855902b61ab92cca7de30814190cfc0f3d9993ae0af3e9d5f026",
+    "full/generated-evidence/native-application-tests.xml": "ee927de8ebe1f3ab7526a0b781777e2aca3b38d748de46030986ea5f09ddcf0d",
+    "full/generated-evidence/nonprofit-ai-framework-old-pin-visibility-observation.json": "5c7cfa0fe6ca584c0ff49ba68b8538a526ae87f56493a687deebb7bb28d4d598",
+    "full/generated-evidence/sprint-0.33-retained-visibility-native-applied-migrations.json": "68067263872a5f613dedc77c23c80ecdfaf76dd1c3c9452349fcf92d704a9e19",
+    "full/generated-evidence/native-restore-drill.json": "c758763fc16c9765d5d62514f464e45ac8a4d402d9b6e60152c6708422e68d15",
+    "full/generated-evidence/native-qualification.json": "ecf7f5d877762e435eca42d4111a4b897d283b4bb0276247979d0acfeb75cbe8",
+    "provider/RUN-RECEIPT.json": "01d44a2953d6437d20ddbf20d6993e08a5f8f48a1575a952f12d27ab7617f56d",
+    "provider/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "provider/idp-native.log": "52ae74729054bf170e115207026df09a47e7bb3dcda2a651cb8b6e436ae5e14d",
+    "provider/generated-evidence/idp-qualification.json": "40d15a7341fc0e92f333e46fc5c31e906087d0d6ffd460d1119aeb0e4f0ce569",
+    "provider/generated-evidence/idp-native-tests.xml": "a467254721e14ddf759abce54ebce3f2c8afa8576876ce34ff8c62a30d0cc9ea",
+    "browser/integrated-worker-fence.log": "3d10d29d789db020dcae101d9ee4154daba2ea2992f6890128811b4fabe918d8",
+    "browser/RUN-RECEIPT.json": "c9fc29e6317c98d1446ff24b94058ef49501519d641c998d41aae310d6e6ea85",
+    "browser/browser-tests.json": "39211d7b55ae1b68fcfaeb85d328602659953fb70c4a27fb7a4f76f8100bedbd",
+    "browser/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "database-outage/RUN-RECEIPT.json": "ba9674ce38af2695830193239f84a14e2f263e2eff4ed97187c3cbc6ac865f1a",
+    "database-outage/native-restart.log": "477f5f56356b67dd87e400f29b7c05492f047e08e4aa8efeb8780b105027e112",
+    "database-outage/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "database-outage/perf-tests.xml": "34227e0942c35aeba09d091ebb4555104003a74c0ebca9b26553251c1c8647ec",
+    "database-outage/restart-worker-d87f15.log": "aebddcc90983425b7557ebc79c11f3eccb78bb95f189af227da780d8d86a294e",
+    "database-outage/database-restart.json": "22ab9f01a3878820ea6d9ebcf501633cf368604d2ded28fead0f420282af990c"
+  },
+  "provider": {
+    "passed": 18,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "source_head": "79b2316b73cfe8d3a69d76ab5146c6632025350e",
+    "source_pins_stable": true,
+    "scope": "Actual existing local Keycloak26.7.4/nativePG17.10 synthetic fixture; separate from original28skip inventory."
+  },
+  "browser": {
+    "groups_passed": 10,
+    "assertions": 318,
+    "failures": 0,
+    "not_run": 0,
+    "source_head": "79b2316b73cfe8d3a69d76ab5146c6632025350e",
+    "source_pins_stable": true,
+    "scope": "Actual local Chrome154/native API47, exact uncertain replay, heldread/currentauthority and sourceEvidence choice/loss checks."
+  }
+}

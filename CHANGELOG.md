@@ -99,3 +99,8 @@ US-DX-01a only, tested head1a47253d52297e68e61de3124f809e59835b89ea. Full native
 All283 executable pins and46 applied migration bytes stable. Candidate linkage stays unregistered, fixture hooks removed, copy databases removed, API/cluster stopped. Nine generated historical evidence artifacts restored byte-exact; actual new observations saved separately. Receipt: `docs/evidence/candidate-0.40/current-head-native-full-20261011/FULL-NATIVE-RECEIPT.json`. Separate root self code/evidence review, IR-0.40-17 unconfirmed; no accepted requirements or human signoff.
 
 Current code full native integration gate is locally qualified. Supported diagnosis-erasure target/contract and positive relation cleanup, candidate registration/checksum/recovery, current-head browser/live-provider and required container/hosted/export/financial/human/operational/owner release gates remain. No next feature, remote export, deployment or spending;0/50 delivered/deployed. Prior focused/full runs below/above remain their own dated scopes.
+
+
+### 0.40 local qualification follow-up — 11 October 2026
+
+Registered schema47 diagnosis regression: 2,626 native pass / 28 explicit skips, real restore/upgrade and separate database outage, provider18 and browser10/318 pass at79b2316. Bounded deployment writer stop/probe/fail-closed private checkpoint added for local qualification; external-writer maintenance and actual container/hosted/human gates remain. No deployment or story acceptance.

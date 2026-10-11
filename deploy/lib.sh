@@ -29,6 +29,59 @@ compose() {
   docker compose -p "$PROJECT" -f "$COMPOSE_FILE" --env-file "$COMPOSE_ENV" "$@"
 }
 
+# Build first, then stop only application writers. Keep database/identity/edge/volumes.
+# Failures leave writers stopped: a failed migration job may already have committed
+# earlier additive migrations, so starting the previous image is never automatic.
+quiesce_writers() {
+  local service ids id state image after
+  local running_ids=()
+  WRITER_CHECKPOINT=""
+  WRITER_QUIESCENCE="stopping"
+  for service in api worker executor; do
+    ids="$(compose ps --all -q "$service")" || return 1
+    for id in $ids; do
+      state="$(docker inspect --format '{{.State.Running}}' "$id")" || return 1
+      image="$(docker inspect --format '{{.Image}}' "$id")" || return 1
+      log "writer checkpoint service=$service running=$state (container/image retained privately)"
+      WRITER_CHECKPOINT+="$(printf '%s\t%s\t%s\t%s' "$service" "$id" "$image" "$state")"
+      WRITER_CHECKPOINT+=$'\n'
+      case "$state" in
+        true) running_ids+=("$id") ;;
+        false) ;;
+        *) log "ERROR: invalid writer state; migration refused" >&2; return 1 ;;
+      esac
+    done
+  done
+  compose stop --timeout 120 api worker executor || return 1
+  for id in ${running_ids[@]+"${running_ids[@]}"}; do
+    after="$(docker inspect --format '{{.State.Running}} {{.State.ExitCode}} {{.State.OOMKilled}}' "$id")" || return 1
+    case "$after" in
+      false\ 0\ false|false\ 143\ false) ;;
+      *) log "ERROR: writer stop unclean or incomplete; operator assessment required" >&2; return 1 ;;
+    esac
+  done
+  # Re-enumerate to catch a replacement writer that appeared during the stop.
+  for service in api worker executor; do
+    ids="$(compose ps --all -q "$service")" || return 1
+    for id in $ids; do
+      state="$(docker inspect --format '{{.State.Running}}' "$id")" || return 1
+      [ "$state" = false ] || { log "ERROR: a writer is still running; migration refused" >&2; return 1; }
+    done
+  done
+  WRITER_QUIESCENCE="stopped"
+}
+
+verify_writer_quiescence() {
+  local observation
+  observation="$(compose run --rm -T --entrypoint python migrate deploy/check_writer_quiescence.py)" || return 1
+  log "writer quiescence: $observation"
+  WRITER_SCHEMA_BEFORE="$(printf '%s' "$observation" | json_field schema_before)"
+  case "$WRITER_SCHEMA_BEFORE" in
+    ""|*[!0-9]*) log "ERROR: invalid pre-migration schema observation" >&2; return 1 ;;
+  esac
+  WRITER_QUIESCENCE="verified"
+}
+
 # Value of KEY in an env file (KEY=value lines, no quoting); empty when absent.
 env_value() {
   local file=$1 key=$2

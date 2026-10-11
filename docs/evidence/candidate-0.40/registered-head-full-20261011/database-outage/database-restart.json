@@ -1,0 +1,13 @@
+{
+  "topology": "direct",
+  "downtime_seconds": 2.2,
+  "seconds_to_first_503_readiness": 0.0,
+  "seconds_to_read_503": 0.0,
+  "seconds_to_ready_after_start": 0.0,
+  "read_attempts_after_ready": 1,
+  "seconds_to_read_after_ready": 0.0,
+  "worker_survived": true,
+  "worker_refused_classes": [
+    "OperationalError"
+  ]
+}

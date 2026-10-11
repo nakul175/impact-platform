@@ -1,0 +1,29 @@
+from pathlib import Path
+import sys, os, json
+import psycopg
+root=Path(__file__).resolve().parents[2]/"work/imprana-diagnosis-20261011"
+sys.path[:0]=[str(root/"deploy"),str(root/"scripts")]
+import check_writer_quiescence as probe
+import migrate
+admin=os.environ["IMPACT_FIXTURE_DSN"]
+assert probe.check(admin)=={"other_client_sessions":0,"prepared_transactions":0,"schema_before":0}
+migrate.run(admin)
+assert probe.check(admin)=={"other_client_sessions":0,"prepared_transactions":0,"schema_before":47}
+with psycopg.connect(admin,autocommit=True) as held:
+    held.execute("SELECT 1")
+    try:probe.check(admin)
+    except probe.QuiescenceError as e:assert "1 other client sessions" in str(e)
+    else:raise AssertionError("Surviving actual native session was accepted")
+assert probe.check(admin)["other_client_sessions"]==0
+with psycopg.connect(admin,autocommit=True) as held:
+    held.execute("BEGIN")
+    held.execute("SELECT 1")
+    held.execute("PREPARE TRANSACTION 'imprana_synthetic_quiescence'")
+try:
+    try:probe.check(admin)
+    except probe.QuiescenceError as e:assert "1 prepared transactions" in str(e)
+    else:raise AssertionError("Prepared native transaction was accepted")
+finally:
+    with psycopg.connect(admin,autocommit=True) as held:held.execute("ROLLBACK PREPARED 'imprana_synthetic_quiescence'")
+assert probe.check(admin)["prepared_transactions"]==0
+print(json.dumps({"fresh_schema_zero":"PASS","registered_schema47":"PASS","actual_surviving_client_refusal":"PASS","actual_prepared_transaction_refusal":"PASS","post_cleanup_zero_counts":"PASS","role_or_account_changes":False}))

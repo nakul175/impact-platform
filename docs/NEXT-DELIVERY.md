@@ -69,3 +69,8 @@ Already delivered: custom role create/revise/retire; independently reviewed flat
 The former 16-stage sequence (tenant administration; security and privacy; programme planning; advanced measurement; forms; ingestion; offline; evidence and evaluation; participant and finance; analytics; automation and integrations; reporting; AI; product administration, migration, localisation, help; full qualification; production acceptance) is retained in the engineering implementation plan for traceability and is no longer used for scheduling.
 
 Earlier builds contain bounded implementation in some later-release areas. Their original acceptance criteria remain open. Track implementation, test evidence and operational acceptance separately. No deployment, real invitations, external messages or infrastructure purchases are implied by this record; hosting, identity-provider and email-provider decisions are the owner's and are listed in DELIVERY-PLAN.md §2.
+
+
+### Local schema45 diagnosis worker fence follow-up
+
+See [0.40 release follow-up](RELEASE-0.40-ai-diagnosis.md) and its source-bound receipt: additive0045,88 affected native passes/one existing skip,28 version/access-upgrade unit passes and actual restart/restore/populated44-to45 upgrade. No full-suite, hosted/container/human acceptance or deployed story claim; broader task gaps remain. Earlier source-checkpoint results stay historical.

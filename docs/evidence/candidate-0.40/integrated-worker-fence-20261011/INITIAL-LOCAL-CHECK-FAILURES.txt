@@ -1,0 +1,2 @@
+Preparation: threat register edit initially selected TH28, which has no C-TENANT-RLS coverage key; corrected to actual database-boundary TH10 before native run.
+Initial focused version/access-upgrade unit run: test_data_dictionary_ledgers_every_migration_file_with_its_checksum failed because the dictionary prose/SQL appendix named0045 but its machine-readable checksum table still had44 rows. Expected45, found44. No test removed or weakened.

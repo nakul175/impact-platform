@@ -1512,7 +1512,8 @@
         "qualification/test_native_nonfunctional.py::test_native_pooler_many_clients_share_few_server_connections_with_tenant_context_kept",
         "qualification/test_pooler_unit.py::test_runtime_sql_keeps_no_session_state",
         "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
-        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+        "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
+        "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
@@ -1529,7 +1530,8 @@
         "C-TENANT-RLS": [
           "qualification/test_native_roles.py::test_app_role_tenant_fence_needs_transaction_local_tenant",
           "qualification/test_worker.py::test_worker_role_reads_only_the_tenant_in_context",
-          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role"
+          "qualification/test_ai_ranking_live.py::test_native_weights_singletons_are_per_tenant_and_fenced_under_the_application_role",
+          "qualification/test_ai_diagnosis_worker_native.py::test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts"
         ]
       },
       "verification": {

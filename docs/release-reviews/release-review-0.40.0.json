@@ -330,6 +330,26 @@
       "prepared_by": "Codex root agent; local documentation correction, no human confirmation",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-04",
+      "change_id": "US-DX-01a-worker-fence",
+      "change": "Narrow worker access to shared diagnosis registry and revisions",
+      "paths": [
+        "infrastructure/migrations/0045_diagnosis_worker_fence.sql",
+        "qualification/test_ai_diagnosis_worker_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH02",
+        "TH10"
+      ],
+      "summary": "Additive restrictive worker-only policies exclude AIDiagnosis without changing tenant fences, table grants, prior migrations, history or app capabilities. Existing worker reminder/audit and pinned export duties remain required. Native experiment is historical; integrated schema45 qualification, recovery and release/human gates remain before delivery. No account widening, paid resource or production action.",
+      "prepared_by": "Codex root agent; separate source/evidence advisory reviews only",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

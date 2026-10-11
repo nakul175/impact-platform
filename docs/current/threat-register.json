@@ -1288,7 +1288,8 @@
         "qualification/test_native_sessions.py::test_revoked_session_is_refused_in_parallel",
         "qualification/test_live_idp.py::test_logout_revokes_the_session_and_ends_the_provider_session",
         "qualification/test_ai_enablement.py::test_revoked_authority_after_call_never_returns_draft_or_regenerates",
-        "qualification/test_ai_diagnosis_live.py::test_create_and_replay_recheck_current_grants_before_receipt_access"
+        "qualification/test_ai_diagnosis_live.py::test_create_and_replay_recheck_current_grants_before_receipt_access",
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access"
       ],
       "coverage": {
         "C-CURRENT-AUTHORITY": [
@@ -1527,7 +1528,8 @@
         "qualification/test_ai_diagnosis_evidence_races_native.py::test_waiting_diagnosis_operation_rechecks_source_grant_before_disclosure_or_effect",
         "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants",
         "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure",
-        "qualification/test_ai_diagnosis_linkage_restore_native.py::test_real_restored_linkage_preserves_history_triggers_and_runtime_fences"
+        "qualification/test_ai_diagnosis_linkage_restore_native.py::test_real_restored_linkage_preserves_history_triggers_and_runtime_fences",
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py::test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_source_access"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [

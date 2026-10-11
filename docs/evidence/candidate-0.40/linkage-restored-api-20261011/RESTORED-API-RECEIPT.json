@@ -1,0 +1,80 @@
+{
+  "at": "2026-10-11T16:23:14.761230+00:00",
+  "base_head": "93d202a3694a86de733879b429d2cede08db4a16",
+  "story": "US-DX-01a / APL-361",
+  "native_runs": [
+    {
+      "run": 1,
+      "passed": 126,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stable_pins": 283,
+      "started_at": "2026-10-11T16:20:26.907250+00:00",
+      "finished_at": "2026-10-11T16:20:56.961033+00:00",
+      "replacement_api_processes": 2,
+      "original_api_unchanged_assertion": false
+    },
+    {
+      "run": 2,
+      "passed": 126,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stable_pins": 283,
+      "started_at": "2026-10-11T16:21:37.884850+00:00",
+      "finished_at": "2026-10-11T16:22:07.051061+00:00",
+      "replacement_api_processes": 2,
+      "original_api_unchanged_assertion": true
+    }
+  ],
+  "scope": "1 new restored-API case plus125 retained affected cases; linked SQL candidate remains unregistered at schema46. Synthetic signed fixture identity, not live-provider qualification.",
+  "schema_registered": 46,
+  "candidate_registered": false,
+  "actual_proof": [
+    "Actual custom pg_dump/pg_restore while typed-linkage candidate active; existing generic official/security/checksum/no-op46 checks retained",
+    "Replacement real uvicorn API receives only three restored restricted APP/IDENTITY/PLATFORM DSNs in private config; no fixture/migrator/worker DSN, PG override/login passwords/provider key inherited",
+    "Exact linked Draft/Completed/correction current/history/named versions, original create/complete/revise receipts and3revision/3receipt/3audit counts preserved",
+    "Existing verify_diagnosis asserts changed-body same-operation409 and exact receipts with no extra effects; passes before and after actual API process restart",
+    "Only copied source-object fixture grant purpose narrows under tenant lock: current/history/named reads and all3 exact original receipt retries refuse404 RESOURCE_UNAVAILABLE; owned revision/receipt/audit counts remain exact",
+    "Original API still passes unchanged verify_diagnosis after copied grant narrows, proving isolation of restored authority change",
+    "Both replacement processes shut down cleanly; restored copy drops with absence assertion; original candidate hooks removed and cluster stopped"
+  ],
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Only new native test source. Reuses unchanged capture/verify recovery assertions with linked synthetic input and existing scoped source fixture. Sanitized minimal process environment, private0600 config, finally stop/drop. No default role/profile, immutable history, governed plan or applied migration change."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Both rawJUnit126passed0fail/error/skip; final283sourcepins match formatted exact code. Actual custom archive restore and2 replacement API phases, clean shutdowns, exact read/retry/conflict/current-authority checks. Copy-only purpose narrowing is not governed revocation, diagnosis-removal approval, registered47/no-op or hosted/container/live-provider/full-suite/acceptance evidence."
+    }
+  ],
+  "remaining": [
+    "Supported diagnosis-removal privacy scope/contract and positive cleanup before linkage promotion",
+    "Candidate registration/checksum retry/recovery after applicable gates",
+    "Current-head full integration refresh and required hosted/container/export/financial/human/operational/owner release gates"
+  ],
+  "delivered_stories": 0,
+  "deployed": false,
+  "raw_sha256": {
+    "run-2/integrated-worker-fence.log": "45b271c7c9f974dfd05e555e71752ce595ba87472960f1df562080019ca5eaf2",
+    "run-2/api.log": "ab339f2f952761443fcaf11ebe5a3b55240323d8a9819eb564957efe65f3ae7b",
+    "run-2/RUN-RECEIPT.json": "c6962d39b978713536cca70d0312534a5765cf32ffafce5d23854ad38246006f",
+    "run-2/diagnosis-linkage-api-restore.json": "719e26e1e1bd86a06ce63a666c281b636c397bdeb7587f4fdfa4ad9deb62d63b",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "7f6552f0d734a767a0f9a5f8ecfdf90b4529542ddf6ea392dc2607eaec5f7fb7",
+    "run-1/integrated-worker-fence.log": "2ca355f9d56202cfcf5f4c1cb6bf4a1f3b75bd2e5e967c1ba28d780c667523f6",
+    "run-1/api.log": "b697154b5eacf1d6cacbd2077cc6a52c705d44670f94147dff55b610294850ac",
+    "run-1/RUN-RECEIPT.json": "5d5a03eeac19b917fb441c8f68b19dc564309467e8c229e862659fea81762d0c",
+    "run-1/diagnosis-linkage-api-restore.json": "410d796bb26e4040bf4897e4c4d1b7ea8abd61481b14c74f94f574b3cf4e4a0e",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "e78517f94744d994bf58b2ad4069d7ef4d0990d7a75beec8df03206eab907dea",
+    "release-threat-units.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611"
+  },
+  "release_threat_units_passed": 46
+}

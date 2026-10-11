@@ -577,6 +577,26 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-16",
+      "change_id": "DX-LINKAGE-RESTORED-API",
+      "change": "Qualify linked diagnosis on replacement restored API and restart",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py"
+      ],
+      "areas": [
+        "ai-module",
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH10"
+      ],
+      "summary": "Actual custom native restore and2 restricted-config uvicorn processes with synthetic signed fixture tokens. Existing capture/verify exact3-version history/receipt replay/no effects and changed-body409 assertions preserved. Copy-only bounded source grant narrowing causes reads/all3 oldreceipt retries404; original API unchanged.126native passes twice,283stablepins. No governed revocation/human approval/registration/hosted/live-provider/full-suite/deployment credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

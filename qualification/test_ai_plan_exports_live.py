@@ -76,7 +76,13 @@ def export_migration_ledger(live):
     }
     path = root / f"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json"
     path.write_text(json.dumps(report, indent=2) + "\n")
-    assert len(applied) == 43
+    # This is the current candidate ledger, not the historical schema-43 receipt.
+    # Require every source migration exactly once and in contiguous order; a new
+    # additive migration must not make the older export regression unavailable.
+    sources = sorted((root / "infrastructure/migrations").glob("[0-9][0-9][0-9][0-9]_*.sql"))
+    assert [int(source.name[:4]) for source in sources] == list(range(1, len(sources) + 1))
+    assert [row["version"] for row in applied] == list(range(1, len(sources) + 1))
+    assert [row["file"] for row in applied] == [source.name for source in sources]
     assert all(row["applied_sha256"] == row["current_source_sha256"] for row in applied)
 
 

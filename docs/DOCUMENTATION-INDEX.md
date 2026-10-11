@@ -4,6 +4,8 @@ For Imprana Commons product direction and planning, start with [product planning
 
 For the 11 October 2026 comparison against the owner-supplied APLYD QA v1.3 package, see the [testing documentation audit](qa/APLYD-v1.3-AUDIT-20261011.md) and [proposed reconciliation sequence](qa/APLYD-v1.3-RECONCILIATION-20261011.md). These document gaps and bounded checker/source observations; they do not replace historical test editions or establish current product qualification.
 
+The [current testing planning edition](qa/current-20261011/README.md) begins that reconciliation with a source-bound strategy, release test plan and execution/domain procedures. Original criteria and test history remain preserved; current execution and actual acceptance are separate.
+
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](HANDOVER.md); `VERSION.json` is the source for the version numbers. Every build has a release note in this directory (`RELEASE-0.N*.md`; the latest is [RELEASE-0.36-procurement-preview.md](RELEASE-0.36-procurement-preview.md)).
 
 Start with the [current documentation index](current/DOCUMENTATION-INDEX.md); a newcomer should read the [engineering guide](current/ENGINEERING-GUIDE.md) first. Edition 1.1 is reconciled to application 0.12.0; builds 0.13.0 to 0.18.0 are recorded in [RELEASE-0.13.md](RELEASE-0.13.md), [RELEASE-0.14.md](RELEASE-0.14.md) (native PostgreSQL qualification), [RELEASE-0.15.md](RELEASE-0.15.md) (live identity provider), [RELEASE-0.16.md](RELEASE-0.16.md) (worker runtime, outbox dispatcher and email adapter: 405 PGlite and 437 native application checks, 16 + 16 live-provider checks, 143 reference, 93 browser and 2 live-provider browser checks; schema 18; platform API 1.4.0; ledger 76 PARTIAL, 231 PENDING, 0 accepted), and [RELEASE-0.18.md](RELEASE-0.18.md) (results framework and planning, built ahead of v0.17: 441 PGlite and 474 native application checks, 16 + 16 live-provider checks, 143 reference, 100 browser and 2 live-provider browser checks; schema 19; domain API 1.11.0; ledger 81 PARTIAL, 226 PENDING, 0 accepted) and the sequenced plan in [DELIVERY-PLAN.md](DELIVERY-PLAN.md); builds 0.19.0 to 0.36.0 have their own `RELEASE-0.N*.md` notes, listed in the [current documentation index](current/DOCUMENTATION-INDEX.md). Original editable documents and archives are retained in [history/v1.0](history/v1.0/).
@@ -303,6 +305,20 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### qa/audit-v13-20261011/traceability-audit
 
 - [Imprana Commons: QA v1.3 traceability/source audit](qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.md)
+
+### qa/current-20261011
+
+- [Imprana Commons criteria and case bridge](qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md)
+- [Imprana Commons current test strategy](qa/current-20261011/CURRENT-TEST-STRATEGY.md)
+- [Imprana Commons execution and defect protocol — current planning edition](qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md)
+- [Imprana Commons current testing edition](qa/current-20261011/README.md)
+- [Imprana Commons release test plan — current planning edition](qa/current-20261011/RELEASE-TEST-PLAN.md)
+- [Imprana Commons specialist verification plans](qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md)
+- [Imprana Commons test data and environments](qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md)
+
+### qa/current-20261011/evidence/bridge-independent-review
+
+- [Imprana Commons criteria bridge: bounded independent review](qa/current-20261011/evidence/bridge-independent-review/REVIEW.md)
 
 ### sprints
 

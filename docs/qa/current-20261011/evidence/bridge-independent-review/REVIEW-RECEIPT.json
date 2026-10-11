@@ -1,0 +1,116 @@
+{
+  "review_id": "IMPRANA-QA-BRIDGE-INDEPENDENT-20261011-v1",
+  "review_type": "BOUNDED_AI_SOURCE_AND_DOCUMENT_REVIEW",
+  "prepared_by": "separate AI review lane; author of neither reviewed input",
+  "reviewed_at_utc": "2026-10-11T04:48:46.957381+00:00",
+  "disposition": "NO_MATERIAL_DOCUMENT_OR_SOURCE_CONSISTENCY_FINDING_IN_REVIEWED_SCOPE",
+  "documentation_baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "reviewed_inputs": {
+    "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md": {
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "bytes": 12412
+    },
+    "outputs/imprana-qa-reconciliation-20261011/PRIMARY-SOURCE-CENSUS.json": {
+      "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184",
+      "bytes": 826611
+    }
+  },
+  "actual_source_checks": {
+    "path": "ACTUAL-SOURCE-CHECKS.json",
+    "sha256": "479628bcf03115f6f3763add09390e195e3b70ea996134e98d593743263ded27",
+    "passed": 19,
+    "failed": 0,
+    "meaning": "read-only source/document consistency; not product execution or package-gate PASS"
+  },
+  "review_script": {
+    "path": "independent_source_review.py",
+    "sha256": "ee703c7df63210652f3e63483cdbdca1314494a231a2cbd9782bed7bd52e61f5"
+  },
+  "material_findings": [],
+  "manual_contract_review": [
+    {
+      "topic": "primary denominator and retained history",
+      "document_refs": [
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:9",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:13",
+        "docs/backlog/README.md:5",
+        "docs/backlog/README.md:7"
+      ],
+      "conclusion": "Census derived from original CSV before QA mappings;1328active and7Split are separately retained."
+    },
+    {
+      "topic": "proposed source-hash revision",
+      "document_refs": [
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:49",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:51"
+      ],
+      "package_refs": [
+        "checker/criteria_pin.py:13",
+        "workflow/CODE-IDS-AND-CONCURRENCY.md:2",
+        "workflow/CRITERIA-SOURCE-PINNING.md:16"
+      ],
+      "conclusion": "Permissible proposal only: eventual encoded version must start with letter and use package-allowed characters; digest/raw hex alone is not a supplied convention or approval. Scope/applicability changes still require reviewed source version/pins even if text digest unchanged."
+    },
+    {
+      "topic": "exact required fields and pin protocol",
+      "document_refs": [
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:37",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:47",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:55",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:57"
+      ],
+      "package_refs": [
+        "templates/criteria-source.json:1",
+        "checker/criteria_pin.py:8",
+        "checker/criteria_pin.py:17",
+        "workflow/CRITERIA-SOURCE-PINNING.md:5"
+      ],
+      "conclusion": "Fields, YES/NO/UNKNOWN applicability, complete count and exact identity-set/source-byte hashes match actual attachment; template also carries schema_version1, while source helper/checker requires stated source fields. No real export generated."
+    },
+    {
+      "topic": "case, run and coverage separation",
+      "document_refs": [
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:63",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:73",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:79",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:85"
+      ],
+      "package_refs": [
+        "standards/register-schema.json:1",
+        "workflow/TRACEABILITY.md:4",
+        "workflow/TRACEABILITY.md:6",
+        "workflow/CODE-IDS-AND-CONCURRENCY.md:4"
+      ],
+      "conclusion": "Reused/new cases need actual version/procedure/meaningful binding; immutable actual runs separate from mappings and explicit qualification selection. Unknown applicability never validates; zero denominator null."
+    },
+    {
+      "topic": "trust/adoption boundary",
+      "document_refs": [
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:3",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:53",
+        "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md:91"
+      ],
+      "package_refs": [
+        "workflow/CRITERIA-SOURCE-PINNING.md:19",
+        "workflow/CRITERIA-SOURCE-PINNING.md:24"
+      ],
+      "conclusion": "No invented approval, AC-version, scope/candidate, source completeness, actual execution or installed enforcement; required owner review/source protection remains unresolved."
+    }
+  ],
+  "unresolved_real_decisions": [
+    "source-owner completeness/applicability review",
+    "operating release or planning scope selection",
+    "approved AC/source/case version convention",
+    "actual case mappings/procedures and meaningful code bindings",
+    "immutable actual qualification evidence and approved selection",
+    "live source-protection/required-review/bypass enforcement"
+  ],
+  "scope_limits": [
+    "Read-only review of exactly two proposed inputs plus their primary Git/source and actual attachment references.",
+    "Checks establish fidelity to retained c1bcae planning snapshot, not live Linear current planning authority or independent source completeness.",
+    "No product tests, runtime, build, provider, CI, network, Native mutation or repository edits.",
+    "No package helper/checker executed; package contracts inspected as source.",
+    "This AI review is not human/source-owner completeness approval, external assurance, adopted package validation or release qualification."
+  ],
+  "files_written_only_under": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-reconciliation-20261011/bridge-independent-review"
+}

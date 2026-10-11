@@ -1,0 +1,136 @@
+{
+  "scope": "Imprana source-bound QA planning edition local integration checks; not product testing, owner review, adoption or release approval",
+  "recorded_at_utc": "2026-10-11T04:52:29.378687+00:00",
+  "documentation_base": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "checks": [
+    {
+      "check": "expected documentation baseline HEAD",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "every other baseline tracked file preserves exact blob and mode",
+      "passed": true,
+      "detail": {
+        "count": 1885,
+        "errors": []
+      }
+    },
+    {
+      "check": "original index content preserved: docs/DOCUMENTATION-INDEX.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "original index content preserved: docs/current/DOCUMENTATION-INDEX.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "original index content preserved: docs/qa/README.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "seven current planning documents present",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "new documentation relative links exist and stay in repository",
+      "passed": false,
+      "detail": {
+        "count": 109,
+        "errors": [
+          {
+            "source": "docs/qa/current-20261011/README.md",
+            "target": "evidence/ROOT-INTEGRATION-FINAL-CHECKS.json"
+          }
+        ]
+      }
+    },
+    {
+      "check": "current authored prose stays within Imprana scope",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "check": "primary census active and historical populations explicit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "primary census records thirteen source-only checks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source census declares no approved export/version/execution",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "byte-exact author artifact copy: PRIMARY-SOURCE-CENSUS.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "byte-exact author artifact copy: BRIDGE-AUTHORING-RECEIPT.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "canonical backlog CSV hash still matches census",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed_checks": 13,
+  "total_checks": 14,
+  "details": {
+    "document_pins": [
+      {
+        "path": "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+        "bytes": 12412,
+        "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20"
+      },
+      {
+        "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+        "bytes": 18986,
+        "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+      },
+      {
+        "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+        "bytes": 26402,
+        "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef"
+      },
+      {
+        "path": "docs/qa/current-20261011/README.md",
+        "bytes": 7296,
+        "sha256": "099df90f3a3ddee844f20ef70f4c1f35fc9c1da80ec16c197d24fabf5bc08ea3"
+      },
+      {
+        "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+        "bytes": 26265,
+        "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8"
+      },
+      {
+        "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+        "bytes": 14040,
+        "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535"
+      },
+      {
+        "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+        "bytes": 14723,
+        "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310"
+      }
+    ],
+    "census_pin": {
+      "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184",
+      "bytes": 826611
+    }
+  },
+  "product_tests_executed": false,
+  "remote_actions": false,
+  "owner_approval": false
+}

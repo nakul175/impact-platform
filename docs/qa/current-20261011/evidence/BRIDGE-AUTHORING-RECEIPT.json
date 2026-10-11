@@ -1,0 +1,33 @@
+{
+  "scope": "Authorship/source consistency of the single proposed Imprana criteria/case bridge; not independent ownerapproval or productqualification",
+  "created_at_utc": "2026-10-11T04:44:14.101869+00:00",
+  "source_head": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "authored_repository_path": "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+  "authored_bytes": 12412,
+  "authored_sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+  "primary_source_census_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-reconciliation-20261011/PRIMARY-SOURCE-CENSUS.json",
+  "primary_source_census_sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184",
+  "primary_source_census_bytes": 826611,
+  "census_source_checks": {
+    "csv_all_source_story_ids_unique": true,
+    "active_scope_uses_existing_Split_status_policy": true,
+    "primary_CSV_active_scenarios1328": true,
+    "historical_Split_scenarios7_retained": true,
+    "all_source_whitespace_and_Gherkin_blocks_reconstruct_exactly": true,
+    "all1328_aliases_uniquely_match_primary_source": true,
+    "existing1328_matrix_records_same_source_blocks": true,
+    "all_proposed_execution_not_run_no_evidence": true,
+    "1131task_ids_unique": true,
+    "779dependency_edges_retained_with_existing_endpoints": true,
+    "37_missing_original_Given_preserved": true,
+    "7_original_then_vs_supplemental_plan_groups_preserved": true,
+    "13_existing_stories_without_qualification_task_retained": true
+  },
+  "relative_document_links_checked": 6,
+  "relative_link_errors": [],
+  "current_decision": "No checker-ready criteria export or normalized registers now; source-hash revision policy remains proposed; actual scope/version/source-owner completeness review unresolved.",
+  "source_protection_and_execution": "HistoricalSplit7/current1328 population distinction, aliases/fulltext and779edges preserved; no Native/code/CI/AGENTS/history changes; no app/packagechecks/network/spend.",
+  "only_authored_repo_file": "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+  "product_execution": "NOT_RUN",
+  "readiness_or_owner_approval": false
+}

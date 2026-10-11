@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-11T08:53:40.598337+00:00",
+  "project": "Imprana Commons",
+  "story": "US-DX-01a",
+  "candidate": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "mode": "independent read-only source fix reconciliation",
+  "outcome": "BOTH_P2_SOURCE_MECHANISMS_CORRECTED_ACTUAL_BROWSER_PROOF_PENDING",
+  "prior_receipt": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/final-code-review/UI-SECURITY-ADVISORY-RECEIPT.json",
+    "sha256": "4d78beb19a5cb934bca337be9560531827c0c301650237f5723eec698d60a104",
+    "unchanged": true
+  },
+  "source_pins": {
+    "apps/web/src/AIDiagnosis.tsx": {
+      "sha256": "ee64cb465983c141ea7a700975e92f9ab161f30e45382addebdacbe8ee004b42",
+      "bytes": 40184
+    },
+    "apps/web/src/ai-diagnosis.css": {
+      "sha256": "af84ed95ea5a872bfeea3ef8f0c7b1dbf94e9062f28a130dba6bc734433b736b",
+      "bytes": 1580
+    },
+    "apps/web/src/main.tsx": {
+      "sha256": "8564c99e4ed32c042fca263c8a96839ea1dc56c00b43ada8fa666e2b426fa98b",
+      "bytes": 84456
+    },
+    "apps/api/impact_api/ai_diagnoses.py": {
+      "sha256": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+      "bytes": 13622
+    },
+    "apps/api/impact_api/store.py": {
+      "sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+      "bytes": 20595
+    },
+    "tools/browser/ai-diagnosis-check.mjs": {
+      "sha256": "88f2f969eeee5c14244faf9b9010872a2884d9bce030441f5a7e355d65a002d8",
+      "bytes": 49658
+    }
+  },
+  "source_diff": {
+    "path": "UI-ROOT-FIX-SOURCE-DIFF.patch",
+    "sha256": "1d25599dc5f91d9fe5e913a0461d9f9c55f1ddf5396aae21f5700f2c4b97e8e1"
+  },
+  "findings": [
+    {
+      "id": "DX-UI-F01",
+      "previous_severity": "P2",
+      "status": "CORRECTED_AT_SOURCE_PIN_RUNTIME_PROOF_PENDING"
+    },
+    {
+      "id": "DX-UI-F02",
+      "previous_severity": "P2",
+      "status": "CORRECTED_AT_SOURCE_PIN_RUNTIME_PROOF_PENDING"
+    }
+  ],
+  "checks": [
+    {
+      "id": "DX-UI-FIX-C01",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "Read refusal terminal invalidation",
+      "evidence": "authorityInvalidated.current is set before state clear; active() requires alive and not invalidated. hideUnavailable increments read sequence, aborts every controller, clears cursor/head/current version/draft/pending/busy/loading. It never resets invalidation within a workspace."
+    },
+    {
+      "id": "DX-UI-FIX-C02",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "In-flight continuation refusal",
+      "evidence": "guardedRequest checks active before network and after await; readList also checks read sequence; select, send, nested readback and independent read probe test active before installing or reporting. install itself rejects invalidated workspaces."
+    },
+    {
+      "id": "DX-UI-FIX-C03",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "Late success and late error privacy",
+      "evidence": "Success arriving after read refusal throws at guardedRequest post-await; catch sees inactive and returns, so no private body/head/revision resurrection. The current denial may still report its generic error after hide. Later aborted/unknown errors cannot overwrite the terminal state."
+    },
+    {
+      "id": "DX-UI-FIX-C04",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "Cleanup and StrictMode compatibility",
+      "evidence": "Cleanup sets alive false and increments list sequence. Effect replay sets alive true but does not reset authority invalidation; earlier initial list sequence is stale. Distinct keyed scopes create distinct refs. main currently renders App without StrictMode."
+    },
+    {
+      "id": "DX-UI-FIX-C05",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "Expired or conflicting uncertain replay",
+      "evidence": "CONFLICT_OPERATION and IDEMPOTENCY_EXPIRED removed from no-effect refusalCodes. They now reach uncertain-result branch preserving original PendingCommand/ref; exact retry uses unchanged serialized body/path/method. Editing/switching/new save stay locked."
+    },
+    {
+      "id": "DX-UI-FIX-C06",
+      "result": "SOURCE_REVIEW_PASS",
+      "boundary": "Prior reviewed behavior retained",
+      "evidence": "Root diff adds terminal active guards/clear behavior and removes two refusal codes. Scoped panel key, receipt validation/binding, expected_revision, independent write-denial read probe, explicit conflict replacement, escaped text and CSS remain intact."
+    },
+    {
+      "id": "DX-UI-FIX-C07",
+      "result": "RUNTIME_PROOF_PENDING",
+      "boundary": "Actual same-scope denial and delayed successful response",
+      "evidence": "Independent browser author is preparing an authentic server-denial/held authorised-response overlap case. Source review alone is not browser qualification."
+    },
+    {
+      "id": "DX-UI-FIX-C08",
+      "result": "OPTIONAL_HARDENING_ADVISORY",
+      "boundary": "Synchronous entry-point symmetry",
+      "evidence": "switchTo/change/move/command use state guards while send/install/request use terminal ref. Adding active() to these synchronous entries would make terminal refusal uniform during a queued event; no remaining reported network/head metadata defect observed."
+    }
+  ],
+  "canonical_edits_by_reviewer": 0,
+  "runtime_execution_by_reviewer": false,
+  "human_security_confirmation": null,
+  "release_certification": false,
+  "limits": [
+    "Independent source/control-flow review only, no browser run or fault injection performed by this reviewer.",
+    "Root-reported rebuild success is not independently certified by this advisory.",
+    "Changed local source pins require refresh before exact-head qualification.",
+    "No production, CI, provider, native binding or release acceptance authority established."
+  ]
+}

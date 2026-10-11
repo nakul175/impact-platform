@@ -89,6 +89,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Build 0.38 rank opportunities with the organisation's weights (US-MP-03)](RELEASE-0.38-ai-ranking.md)
 - [Build 0.39 disclose commercial relationships on every listing (US-DC-04)](RELEASE-0.39-ai-disclosure.md)
 - [Release 0.4.0 — governed measurement changes](RELEASE-0.4.md)
+- [v0.40 — Manual organisation diagnosis (US-DX-01a)](RELEASE-0.40-ai-diagnosis.md)
 - [Release 0.5.0 — programme-period close and restatement](RELEASE-0.5.md)
 - [Release 0.6.0 — frozen internal reporting packages](RELEASE-0.6.md)
 - [Release 0.7.0 — reviewed exclusions and recalculation work centre](RELEASE-0.7.md)
@@ -148,6 +149,11 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### development-tracker
 
 - [Live Tola + AI development tracker](development-tracker/README.md)
+
+### engineering/delivery-system-20261011
+
+- [Imprana Commons — diagnosis coding handover](engineering/delivery-system-20261011/HANDOVER.md)
+- [Imprana Commons — manual problem diagnosis candidate](engineering/delivery-system-20261011/US-DX-01a-IMPLEMENTATION.md)
 
 ### governance
 

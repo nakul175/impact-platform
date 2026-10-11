@@ -1,0 +1,124 @@
+{
+  "scope": "Imprana Commons / nakul175/impact-platform only",
+  "observed_at_utc": "2026-10-11 08:28:33 UTC",
+  "runtime": "/Users/athena/.local/bin/python3.12 -B",
+  "byte_integrity": {
+    "chunk_id": "083811",
+    "wall_time_seconds": 0.003777042,
+    "exit_code": 0,
+    "original_token_count": 35,
+    "output": "{\n  \"byteIntegrity\": \"passed\",\n  \"filesChecked\": 381,\n  \"failures\": [],\n  \"externalTrustVerified\": false,\n  \"productTestsExecuted\": false\n}\n"
+  },
+  "workflow_companions": {
+    "chunk_id": "d1e6e4",
+    "wall_time_seconds": 0.000007541,
+    "exit_code": 0,
+    "original_token_count": 103,
+    "output": "{\n  \"results\": [\n    {\n      \"archive\": \"product-management-agent-bundle-v4.2.zip\",\n      \"pinnedBytesMatch\": true\n    },\n    {\n      \"archive\": \"APLYD-Software-Testing-QA-v1.3.zip\",\n      \"pinnedBytesMatch\": true\n    },\n    {\n      \"archive\": \"APLYD-Coding-Engineering-Package-v2.1.0.zip\",\n      \"pinnedBytesMatch\": true\n    }\n  ],\n  \"nativeCompatibilityVerified\": false,\n  \"externalAuthorityVerified\": false\n}\n"
+  },
+  "workflow_package_integrity": {
+    "chunk_id": "5b5afb",
+    "wall_time_seconds": 0.000007208,
+    "exit_code": 0,
+    "original_token_count": 35,
+    "output": "{\n  \"byteIntegrity\": \"passed\",\n  \"filesChecked\": 19,\n  \"failures\": [],\n  \"externalTrustVerified\": false,\n  \"productTestsExecuted\": false\n}\n"
+  },
+  "engineering_adoption_dry_run": {
+    "chunk_id": "87f5c5",
+    "wall_time_seconds": 0.005989209,
+    "exit_code": 0,
+    "original_token_count": 1427,
+    "output": "{\n  \"mode\": \"DRY_RUN_NO_WRITES\",\n  \"payload\": \"core\",\n  \"created_files\": 0,\n  \"items\": [\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/01-governance/cross-bundle-contract.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/01-governance/engineering-workflow-controls.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/01-governance/governance-and-exceptions.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/01-governance/native-bundle-adapters.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/01-governance/security-and-privacy.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/ai-engineering-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/api-integration-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/architecture-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/backend-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/code-conventions.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/database-migration-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/dependency-supply-chain-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/frontend-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/02-architecture/reliability-operations-standard.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/04-agent-instructions/engineering-agent-rules.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/README.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/controls.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/commands.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/exceptions.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/integration.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/native-bindings.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/repository-profile.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/task-links.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/schemas/traceability.schema.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/adopt.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/connect_bundles.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/engctl.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/integration.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/migrate_exceptions.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/06-enforcement/scripts/native_bridge.py\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/CODING_STANDARD.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/SOURCES.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/VERSION.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/DISTRIBUTION_REFERENCE.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/PACKAGE_MANIFEST.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/engineering/2.1.0/SHA256SUMS\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".aplyd/integration.json\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/.editorconfig\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".engineering/commands.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".engineering/repository.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".engineering/traceability.json\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".env.example\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".github/CODEOWNERS.example\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/.gitignore\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \".governance/exceptions.json\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/CONTRIBUTING.md\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/README.md\"\n    },\n    {\n      \"action\": \"ADD\",\n      \"path\": \"docs/engineering/README.md\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/AGENTS.md\"\n    },\n    {\n      \"action\": \"STAGE_CONFLICT\",\n      \"path\": \".aplyd/proposals/2.1.0/.github/PULL_REQUEST_TEMPLATE.md\"\n    },\n    {\n      \"action\": \"STAGE_WORKFLOW\",\n      \"path\": \".aplyd/proposals/2.1.0/.github/workflows/engineering.yml\"\n    }\n  ],\n  \"next_state\": \"Review conflicts and v1-to-v2 migration; configure actual bindings; approve server controls separately.\"\n}\n"
+  },
+  "actual_repository_state": {
+    "chunk_id": "ca6841",
+    "wall_time_seconds": 0.000006833,
+    "exit_code": 0,
+    "original_token_count": 19,
+    "output": "92341d6d81414be4627c5981363636580f7cbf52\ndocs/imprana-framework-v4-20261011\n"
+  },
+  "interpretation": {
+    "sealed_payload": "381 master manifest files and four exact original archive extracts verified; workflow own manifest 19 files verified.",
+    "companion_pins": "PM4.2/QA1.3/Engineering2.1.0 archive hashes match; this is not compatibility or approval.",
+    "adoption": "Dry run only, no repo files created. Existing router/records/CI preserved. Package integrity also checked by adopt.py.",
+    "local_implementation": "Owner's present request authorizes safe bounded local code and meaningful offline tests using existing reviewed repository commands. No draft configuration installation or invented authority is needed to do that.",
+    "ungranted": [
+      "New financial commitment/paid CI/provider/cloud",
+      "GitHub internal documentation export permission",
+      "Main merge or deployment",
+      "Real-data/production/patient use",
+      "Server protection or role changes"
+    ],
+    "quality_state": "No story Ready/Done, QA run, independent accountable approval, native binding approval or operational delivery enforcement inferred."
+  },
+  "source_pins": {
+    "files": [
+      {
+        "path": "/Users/athena/Downloads/APLYD-Delivery-System-v1.0.zip",
+        "sha256": "8732cefe6224c202acb7ec3e8d1c64b351686205d70160f5cbcf34307810d375",
+        "bytes": 3657983
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/BUNDLE-MANIFEST.json",
+        "sha256": "86310f8e50e38f0d52b235f48861ac9e659dd3e44343bbd8576dccc77d63db08",
+        "bytes": 58783
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/PACKAGE-LOCK.json",
+        "sha256": "6c9f88a01439929f14ae45fce39b0660c79fea61eb6311db92a071a5e5017445",
+        "bytes": 1557
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/verify_integrity.py",
+        "sha256": "6f68eaaf6eebc712f9f6c54a33a8d20f006408f2387453b934b29499353ac27f",
+        "bytes": 2416
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/packages/APLYD-Workflow-Process-v2.0/PACKAGE-LOCK.json",
+        "sha256": "8068ab6561e4da111bd8ce2d38292a21efce3f439ee5f877b6735f3678657b9a",
+        "bytes": 1569
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/packages/APLYD-Workflow-Process-v2.0/verify_companions.py",
+        "sha256": "94347e3fbb9994a29d9d47588b91d6c2ce509feba697e65543b73cf4343b04e6",
+        "bytes": 860
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/packages/APLYD-Coding-Engineering-Package-v2.1.0/PACKAGE_MANIFEST.json",
+        "sha256": "7a9fc30ad1bebf699028d51d9c6e59c55fcbadc89d89cce13c811c9e41fd911a",
+        "bytes": 18442
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/reference/APLYD-Delivery-System-v1.0/packages/APLYD-Coding-Engineering-Package-v2.1.0/06-enforcement/scripts/adopt.py",
+        "sha256": "eabbc380524681d7cf7134ed85f1c10151df4857b4204e691c333c831b651056",
+        "bytes": 8145
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/AGENTS.md",
+        "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+        "bytes": 20201
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/CLAUDE.md",
+        "sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a",
+        "bytes": 6575
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/Makefile",
+        "sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54",
+        "bytes": 5530
+      },
+      {
+        "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/VERSION.json",
+        "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+        "bytes": 214
+      }
+    ],
+    "profiles_present": {
+      "work/imprana-framework-refinement-20261011/.engineering/repository.json": false,
+      "work/imprana-framework-refinement-20261011/.engineering/commands.json": false,
+      "work/imprana-framework-refinement-20261011/.aplyd/integration.json": false
+    },
+    "migration_count": 43
+  }
+}

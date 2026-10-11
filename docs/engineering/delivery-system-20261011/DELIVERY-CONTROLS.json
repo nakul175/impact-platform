@@ -1,0 +1,20 @@
+{
+  "project": "Imprana Commons",
+  "active_story": "US-DX-01a",
+  "parent_ready_done_changed": false,
+  "current_mode": "Owner-authorised local coding and synthetic qualification",
+  "master_zip_sha256": "8732cefe6224c202acb7ec3e8d1c64b351686205d70160f5cbcf34307810d375",
+  "reference_hash_checks": "Observed pass; actual receipt retained",
+  "formal_package_adoption": false,
+  "root_router_overwritten": false,
+  "engineering_workflow_ci_profile_activated": false,
+  "writer": "One local integration writer; supporting agents output-only",
+  "concurrency_limit": 4,
+  "local_lock": "O_EXCL local writer claim; no distributed lease or fencing proof",
+  "human_reviewer_or_signoff_invented": false,
+  "financial_release_export_authority": "No new authority assumed; dependent external actions held",
+  "first_story_case_binding": "New local scope supplement; prior planning scope remains immutable/unqualified",
+  "definition_of_done": "Not certified; native/current-head CI/manual/owner gates remaining",
+  "production_accepted": false,
+  "next_story_started": false
+}

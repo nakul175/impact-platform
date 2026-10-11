@@ -70,6 +70,7 @@ BROWSER_MODES = {
     "measurement-browser": "measurement-check.mjs",
     "planning-browser": "planning-check.mjs",
     "ai-enablement-browser": "ai-enablement-check.mjs",
+    "ai-diagnosis-browser": "ai-diagnosis-check.mjs",
     "ai-planning-browser": "ai-planning-check.mjs",
     "ai-saved-review-browser": "ai-saved-review-check.mjs",
     "ai-walkthrough-browser": "ai-walkthrough-check.mjs",

@@ -527,10 +527,13 @@ def test_one_weights_object_per_tenant_and_the_kind_check_keeps_every_earlier_ki
             "SELECT pg_get_constraintdef(oid) AS d FROM pg_constraint "
             "WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check'"
         ).fetchone()["d"]
-    # The full list: exactly the kinds of the definition before 0042 plus AIRankingWeights.
+    # Exact latest list: all pre0042 kinds plus the two later registered kinds.
+    # 0042 adds AIRankingWeights; additive0044 adds AIDiagnosis.
     before = kinds_before_0042()
     assert "AIRankingWeights" not in before and len(before) == len(set(before))
-    assert sorted(re.findall(r"'(\w+)'::text", definition)) == sorted(before + ["AIRankingWeights"])
+    assert sorted(re.findall(r"'(\w+)'::text", definition)) == sorted(
+        before + ["AIRankingWeights", "AIDiagnosis"]
+    )
 
 
 def kinds_before_0042():

@@ -1,0 +1,80 @@
+.ai-diagnosis {
+  padding: 1.2rem;
+  border: 1px solid var(--ai-panel-border, #bccbb0);
+  border-radius: 10px;
+  background: var(--ai-panel, #f7f9f3);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ai-diagnosis label {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  min-width: 0;
+}
+.ai-diagnosis input,
+.ai-diagnosis textarea,
+.ai-diagnosis select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.ai-diagnosis button,
+.ai-diagnosis input,
+.ai-diagnosis select {
+  min-height: 44px;
+}
+.ai-diagnosis button {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-diagnosis fieldset {
+  min-width: 0;
+  margin: 1rem 0;
+}
+.ai-diagnosis-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: end;
+}
+.ai-diagnosis-selector label {
+  flex: 1 1 16rem;
+  margin-bottom: 0;
+}
+.ai-diagnosis-problems {
+  padding-left: 1.5rem;
+}
+.ai-diagnosis-problems > li {
+  padding: 0;
+  margin: 1rem 0;
+}
+.ai-diagnosis-problem {
+  padding: 1rem;
+  border: 1px solid var(--ai-border, #dce2d8);
+  border-radius: 8px;
+  background: var(--ai-surface, #fff);
+}
+.ai-diagnosis-confirm {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--ai-panel-border, #bccbb0);
+  background: var(--ai-notice, #edf2e7);
+  border-radius: 8px;
+}
+.ai-diagnosis-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ai-diagnosis .ai-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+.ai-diagnosis :focus-visible {
+  outline: 2px solid var(--focus-ring, #2f6b4a);
+  outline-offset: 2px;
+}

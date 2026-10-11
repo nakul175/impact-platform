@@ -113,6 +113,9 @@ def bootstrap(local, idp=None):
                 "framework.export",
                 "ai.enablement.read",
                 "ai.enablement.manage",
+                # Synthetic explicit diagnosis grants; no live membership or ceiling changes.
+                "ai.diagnosis.read",
+                "ai.diagnosis.manage",
                 "ai.advisory.request",
                 # FR-AI-001 (0.37.0): the tenant AI policy; TENANT_ADMIN only, fresh assurance.
                 "ai.policy.manage",

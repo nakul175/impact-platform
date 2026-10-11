@@ -5,6 +5,7 @@ import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { AIEnablementPanel } from "./AIEnablement";
+import { AIDiagnosisPanel } from "./AIDiagnosis";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -112,7 +113,7 @@ const nav = [
 // match on the capability name; an empty list means always). Hidden entries are never
 // security: the server authorises every request. "My account" needs no grant.
 const areaCapabilities: Record<string, string[]> = {
-  "ai-enablement": ["ai.enablement.read", "ai.policy."],
+  "ai-enablement": ["ai.enablement.read", "ai.policy.", "ai.diagnosis."],
   programmes: ["programmes.", "programme."],
   observations: ["observations.", "observation."],
   configuration: [
@@ -1052,22 +1053,37 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "ai-enablement" ? (
-            <AIEnablementPanel
-              Dialog={Dialog}
-              key={
-                tenant +
-                ":" +
-                session.identity_id +
-                ":" +
-                (access.principal_id || "")
-              }
-              base={base}
-              principalId={access.principal_id || ""}
-              sessionIdentity={session.identity_id}
-              request={api}
-              explain={explain}
-              capabilities={access.capabilities}
-            />
+            <>
+              <AIDiagnosisPanel
+                base={base}
+                principalId={access.principal_id || ""}
+                sessionIdentity={session.identity_id}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              {(access.capabilities.includes("ai.enablement.read") ||
+                access.capabilities.some((value) =>
+                  value.startsWith("ai.policy."),
+                )) && (
+                <AIEnablementPanel
+                  Dialog={Dialog}
+                  key={
+                    tenant +
+                    ":" +
+                    session.identity_id +
+                    ":" +
+                    (access.principal_id || "")
+                  }
+                  base={base}
+                  principalId={access.principal_id || ""}
+                  sessionIdentity={session.identity_id}
+                  request={api}
+                  explain={explain}
+                  capabilities={access.capabilities}
+                />
+              )}
+            </>
           ) : route === "memberships" ? (
             <>
               <AdministrationPanel

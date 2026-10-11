@@ -1,0 +1,53 @@
+{
+  "scope": "ACTUAL_COMPONENT_CLOSURES_WITH_DECLARED_TEST_ONLY_HOOKS_AND_REQUEST_ADAPTER",
+  "status": "passed",
+  "counts": {
+    "cases": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "source_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/apps/web/src/AIDiagnosis.tsx",
+  "source_sha256": "2b45b4e29cf003982271d5bdd791c8f8ba90e90c2ad8e1790e1fced5e9866fc3",
+  "compiled_sha256": "7b6be0a49444392e180003b84419b628ad7ff0a7e9992e35d6cf399846667bbd",
+  "react_version": "19.3.0",
+  "results": [
+    {
+      "name": "IDEMPOTENCY_EXPIRED preserves frozen uncertain create and exact retry",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "IDEMPOTENCY_EXPIRED",
+        "requests_to_adapter": 2,
+        "request_bytes_sha256": "6c5adf1c438805a8db5c776c297e5cf0f32b2b2e878ee30139170bb6dbf4f975",
+        "operation_id": "6933a0ae-9703-4416-9ed2-a332cd7dd840",
+        "frozen_pending_after_retry": true,
+        "new_create_control_disabled": true
+      }
+    },
+    {
+      "name": "CONFLICT_OPERATION preserves frozen uncertain create and exact retry",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "CONFLICT_OPERATION",
+        "requests_to_adapter": 2,
+        "request_bytes_sha256": "f477d4e7cf4023ae1300ff0c577b71cdb376f3b419df7274c98072ef4b5936b8",
+        "operation_id": "e86158bd-ab60-4e56-83fc-35ad98dccbf3",
+        "frozen_pending_after_retry": true,
+        "new_create_control_disabled": true
+      }
+    },
+    {
+      "name": "Known validation refusal releases the refused draft for editing",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "VALIDATION_FAILED",
+        "pending_after_refusal": false,
+        "refused_input_preserved": true
+      }
+    }
+  ],
+  "limitations": [
+    "No real browser mount, DOM events, React concurrent scheduler, API/DB/server receipt expiry, test clock or production acceptance is claimed.",
+    "Synthetic request-adapter errors exercise actual component command handlers and rendered control state; they are not server responses or HTTP qualification.",
+    "Actual API expired replay requires an approved test clock or actual elapsed retention period; immutable receipts and audit/history must not be edited to manufacture expiry."
+  ]
+}

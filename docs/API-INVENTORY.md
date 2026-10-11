@@ -17,6 +17,14 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/cost-comparison` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses` | `ai.diagnosis.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses` | `ai.diagnosis.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}` | `ai.diagnosis.read` |
+| PUT | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}` | `ai.diagnosis.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete` | `ai.diagnosis.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise` | `ai.diagnosis.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions` | `ai.diagnosis.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/human-advice` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/eligible-peers` | `ai.enablement.manage` |

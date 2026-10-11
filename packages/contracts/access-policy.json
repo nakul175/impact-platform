@@ -1,5 +1,5 @@
 {
-  "version": "1.28.0",
+  "version": "1.29.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6259,6 +6259,102 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnoses",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_diagnosis",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_diagnosis",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "complete_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnosis_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_diagnosis_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "get_ai_adoption_guidance",

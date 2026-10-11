@@ -7,6 +7,8 @@
       "access-scopes.create",
       "access-scopes.read",
       "ai.advisory.request",
+      "ai.diagnosis.manage",
+      "ai.diagnosis.read",
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",

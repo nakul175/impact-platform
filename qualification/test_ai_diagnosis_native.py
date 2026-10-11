@@ -15,7 +15,7 @@ import psycopg
 import pytest
 
 from test_ai_diagnosis_live import action, action_body, diagnosis, domain_counts, get, save
-from test_live_application import cmd
+from test_live_application import cmd, expect
 from test_native_concurrency import count, outcomes, race, sender
 from test_native_roles import denied
 
@@ -254,3 +254,123 @@ def test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or
     assert response.status_code == expected, response.text
     if command in {"replay", "complete_replay", "revise_replay"}:
         assert response.json() == row and domain_counts(live) == before
+
+
+@pytest.mark.parametrize(
+    "command,conflicting",
+    [
+        ("create", False),
+        ("edit", False),
+        ("complete", False),
+        ("revise", False),
+        ("create", True),
+        ("edit", True),
+        ("revise", True),
+    ],
+)
+def test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload(
+    live, command, conflicting
+):
+    path = live.path("ai-enablement/diagnoses")
+    method, success, prior_revisions = "POST", 201, 0
+    original = None
+    first = cmd(diagnosis())
+    if command != "create":
+        row = save(live)
+        if command == "revise":
+            row = action(live, row, "complete")
+            prior_revisions = 2
+        else:
+            prior_revisions = 1
+        original = get(live, row)
+        path += "/" + row["object_id"]
+        success = 200
+        if command == "edit":
+            method = "PUT"
+            first = cmd(diagnosis(), row["revision_id"])
+        else:
+            path += "/actions/" + command
+            first = action_body(
+                row, **({"reason": "Synthetic competing correction A"} if command == "revise" else {})
+            )
+    second = deepcopy(first)
+    if conflicting:
+        if command == "revise":
+            second["reason"] = "Synthetic competing correction B"
+        else:
+            second["data"]["title"] = "Synthetic competing payload B"
+    before = domain_counts(live)
+    token = live.token("admin")
+    results = race(
+        sender(live, token, method, path, first),
+        sender(live, token, method, path, second),
+    )
+    assert outcomes(results) == ([success, 409] if conflicting else [success, success]), results
+    winner = next(i for i, result in enumerate(results) if result["status"] == success)
+    receipt = results[winner]["body"]
+    if conflicting:
+        assert results[1 - winner]["body"]["code"] == "CONFLICT_OPERATION"
+    else:
+        assert results[0]["body"] == results[1]["body"]
+    current = get(live, receipt)
+    assert current["revision_id"] == receipt["revision_id"]
+    winner_body = (first, second)[winner]
+    if command == "revise":
+        assert current["business_state"] == "Draft"
+        assert current["data"]["correction_reason"] == winner_body["reason"]
+    elif command == "complete":
+        assert current["business_state"] == "Completed"
+    else:
+        assert current["data"]["title"] == winner_body["data"]["title"]
+    tenant = live.fixture["tenant_a"]
+    assert (
+        count(
+            live,
+            "SELECT count(*) AS n FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s",
+            tenant,
+            receipt["object_id"],
+        )
+        == prior_revisions + 1
+    )
+    assert (
+        count(
+            live,
+            "SELECT count(*) AS n FROM impact.audit_event_current WHERE tenant_id=%s AND object_reference=%s",
+            tenant,
+            receipt["object_id"],
+        )
+        == prior_revisions + 1
+    )
+    assert (
+        count(
+            live,
+            "SELECT count(*) AS n FROM impact.operation_receipt WHERE tenant_id=%s AND operation_id=%s",
+            tenant,
+            first["operation_id"],
+        )
+        == 1
+    )
+    after = domain_counts(live)
+    assert after["outbox_event"] == before["outbox_event"] + 1
+    assert after["object_revision"] == before["object_revision"] + 2  # Diagnosis and its audit.
+    assert after["operation_receipt"] == before["operation_receipt"] + 1
+    if original:
+        assert (
+            expect(
+                live.request(
+                    live.path("ai-enablement/diagnoses", receipt["object_id"])
+                    + "/revisions/"
+                    + original["revision_id"],
+                    actor="admin",
+                ),
+                200,
+            )
+            == original
+        )
+    assert expect(live.request(path, actor="admin", method=method, body=winner_body), success) == receipt
+    if conflicting:
+        refused = expect(
+            live.request(path, actor="admin", method=method, body=(first, second)[1 - winner]), 409
+        )
+        assert refused["code"] == "CONFLICT_OPERATION"
+    assert domain_counts(live) == after

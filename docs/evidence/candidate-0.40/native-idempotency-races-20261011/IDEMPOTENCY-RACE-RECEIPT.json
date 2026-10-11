@@ -1,0 +1,52 @@
+{
+  "phase": "evidence review after separate source review",
+  "reviewer": "root agent; no independent human acceptance",
+  "observed_at": "2026-10-11T10:40:59.001344+00:00",
+  "parent_head": "3ba676d5eddfe410305b63b01f93b712f38fe80e",
+  "source_sha256": {
+    "qualification/test_ai_diagnosis_native.py": "f9fd1c8621046ff8735052f9451e82f48908f50071a0a0e879cab15533f0840f"
+  },
+  "source_changed_during_run": [],
+  "focused_native": {
+    "passed": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "prior_cases": 18,
+    "added_cases": 7
+  },
+  "added_case_names": [
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[create-False]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[edit-False]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[complete-False]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[revise-False]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[create-True]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[edit-True]",
+    "test_native_simultaneous_diagnosis_operation_writes_once_and_binds_exact_payload[revise-True]"
+  ],
+  "identical_concurrent_create_edit_complete_revise_single_receipt": true,
+  "changed_payload_concurrent_create_edit_revise_refused": true,
+  "single_new_revision_audit_receipt_outbox": true,
+  "old_revision_preserved": true,
+  "winner_retry_exact_loser_retry_refused_counts_unchanged": true,
+  "cluster_stopped": true,
+  "historical_evidence_overwritten": [],
+  "limits": [
+    "Barrier release of independent HTTP requests, not forced observation of both winning orders",
+    "Focused native suite only; --perf isolates JUnit/omits unrelated recovery reruns and is not performance evidence",
+    "Previous full native2484/live identity18 results stay bound to their original source checkpoints",
+    "Container not run; hosted CI, reviewed existing-tenant access and human release gates held"
+  ],
+  "next_story_started": false,
+  "remote_actions": false,
+  "artifact_hashes": {
+    "RUN-RECEIPT.json": "827ee3b6b8c9ced5729b8809eef931ba205ca6cf30e05b17b1447f07ad0cccf3",
+    "cluster-start.log": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "native-idempotency-races.log": "320e2342dfb474d94872d303a47c82364c21b91b8db23189c3cf41853b36d3a8",
+    "local-orchestration-source.py": "357bc086322c2b56f8538f248d395d453b4293db786593b8f431e6213d927f9e",
+    "SOURCE-REVIEW.json": "259e82ffc6b5de2ad2c2d00e95a0bb41292f49705e2b4930ae5406df1c2923eb",
+    "native-idempotency-races-tests.xml": "54d42f34fe26cb6c59f3e62205221148cfafe1dd656c0b83f05141d44d8ea719",
+    "initdb.log": "0aac1073a8bd7462e6f718a53f0f69ebc5605ba2dbcda120207e63c5a1256205"
+  }
+}

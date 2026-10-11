@@ -1,0 +1,55 @@
+{
+  "source_parent": "b3fca7057148d7fbf1eb8053273980249ebc622f",
+  "source_pins": {
+    "qualification/diagnosis_worker_fence_experiment.py": "7265e65ac5cd6dd4fdbed1a736b6391f83f1a9b0cebb382c3bd98a4dc938e9d5",
+    "docs/engineering/delivery-system-20261011/diagnosis-worker-fence.DRAFT.sql": "ab0eab10721c3f711e7cf7eca4efd3e7cad730d60fa8f6640e91148f986ce8cc"
+  },
+  "actual_native_engine": "PostgreSQL17.10 private disposable cluster with provisioned NOINHERIT login roles and restricted API",
+  "passed": 4,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "draft_policy_applied_only_in_disposable_test": true,
+  "candidate_migration_applied": false,
+  "schema": 44,
+  "attempts": [
+    {
+      "number": 1,
+      "outcome": "sandbox loopback bind denied; zero tests"
+    },
+    {
+      "number": 2,
+      "outcome": "four fixture setup errors: test omitted worker SET ROLE; preserved"
+    },
+    {
+      "number": 3,
+      "outcome": "four passed after fixture correction; baseline login denial retained"
+    }
+  ],
+  "observed_before_policy": "Explicit worker role can read the synthetic diagnosis revision under existing schema44 grants",
+  "observed_with_draft": [
+    "NOINHERIT login still refuses schema access before SET ROLE",
+    "Explicit worker role hides exact diagnosis rows and diagnosis-kind scans in same/foreign/unset tenant",
+    "Valid registry/revision INSERTs refused specifically by RLS",
+    "App current corrected diagnosis unchanged",
+    "Existing worker kept/revoked grant checks and actual idempotent reminder pass preserved",
+    "Actual PDF/XLSX/DOCX pinned export artifact rendering and original deterministic-byte checks preserved"
+  ],
+  "limits": [
+    "Experimental draft only, not registered migration/deployed fix",
+    "Not full suite, full security review, mixed-role topology, chart-target-specific, upgrade/recovery or governed revocation qualification"
+  ],
+  "source_review": "Root reviewed corrected fixture against actual provisioned NOINHERIT topology and original unmodified regression helper assertions; no human signoff",
+  "evidence_review": "Root separately reconciled four-node JUnit with log and source pins; no skip-to-pass or failed-attempt deletion",
+  "cluster_stop_exit_code": 0,
+  "historical_evidence_overwritten": false,
+  "paid_resources": false,
+  "remote_actions": false,
+  "artifacts_sha256": {
+    "attempt-1-startup-failure.txt": "42ef2fa0da74fa90fcce72394a17fb102eab470f11eac1dc1a3726fbdf9f3565",
+    "attempt-3-worker-fence-experiment.log": "1c41e5d66edfe57346b6fa0d07cb7dff59337f8ac31ff6d36ef14592b707cbb2",
+    "attempt-2-worker-fence-experiment.log": "c99f9a0fd505b84e5d1c37485f3f374b102345dc6adb4760f101e8cf7d2079f8",
+    "attempt-3-worker-fence-experiment-tests.xml": "4d266c77a616afa71982164bb17487363b600270248c03b09689adff171bceaa",
+    "attempt-2-worker-fence-experiment-tests.xml": "300607e3b919901073825452d66e4d49848b00f25d42e73aaed860942b99002b"
+  }
+}

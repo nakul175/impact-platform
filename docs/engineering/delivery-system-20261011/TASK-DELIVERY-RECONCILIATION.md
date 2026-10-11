@@ -114,3 +114,12 @@ Separate self code/evidence review, IR-0.40-10 unconfirmed, no human signoff. Po
 ## 11 October2026 — positive selector browser/native checkpoint
 
 The existing diagnosis Evidence selector has actual native HTTP/mounted browser proof: changed-version refusal, keyboard selection, save/reopen/completion/correction exact reference preservation and source-access-loss refusal/clearing. Final10 groups316 assertions,9 bounded axe scans,360 stable source pins. This closes only the earlier positive-selector browser proof gap; linkage lifecycle/registered upgrade/recovery, source cleanup races and current full/external/human/operational release gates remain. Issue states and original criteria untouched;0/50 delivered. See `docs/evidence/candidate-0.40/evidence-selector-browser-native-20261011/POSITIVE-SELECTOR-RECEIPT.json`.
+
+
+## Populated linkage candidate upgrade — 11 October2026
+
+Actual restricted impact_migrator qualification against populated schema46 now proves the sealed unregistered linkage candidate preserves valid two-tenant Draft/Completed/correction JSON/hash/metadata/head, worker fences and ledger, and creates exact per-version typed links. Six malformed current/older-history cases each refuse twice: duplicate current selectors, extra field in older Completed, missing older revision, wrong current object, wrong older kind and actual foreign-tenant older source. Every failed transaction leaves no candidate table/functions/triggers/CHECK and keeps history/ledger byte-exact. No historical row rewritten; synthetic invalid payloads are seeded before application.
+
+Native10 passed, zero failures/errors/skips:7 added candidate-upgrade cases plus3 retained actual registered45-to46 upgrade cases. All281 executable pins and sealed SQL exact; disposable databases dropped with absence assertions and cluster stopped. Valid candidate reapply refuses DuplicateFunction without history changes; this is explicitly not registered checksum-ledger no-op retry. Source/evidence self-review phases do not supply independent human approval.
+
+Unregistered populated rollback gate is locally qualified. Positive supported diagnosis-removal cleanup, active registration/checksum/retry/recovery, source privacy/retention races, integrated refresh and actual external/financial/hosted/container/human/operational release gates remain. Build0.40/domain1.30/schema46;0/50 delivered/deployed, no next feature or remote action. Evidence: `docs/evidence/candidate-0.40/linkage-populated-upgrade-20261011/POPULATED-UPGRADE-RECEIPT.json`.

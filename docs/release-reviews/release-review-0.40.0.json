@@ -519,6 +519,26 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-13",
+      "change_id": "DX-LINKAGE-POPULATED-UPGRADE",
+      "change": "Qualify sealed linkage candidate populated upgrade and atomic refusal",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_upgrade_native.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Restricted migrator on fresh populated synthetic databases; no SQL or applied migration change. Valid two-tenant3-revision exact typed binding and unchanged history/ledger/worker fences. Six malformed current/older cases refuse twice with complete DDL rollback. Native10 passes separate7new+3retained;281stable pins. Candidate remains unregistered and reapply refusal is not checksum retry. Positive supported cleanup/registration/recovery and release gates held.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

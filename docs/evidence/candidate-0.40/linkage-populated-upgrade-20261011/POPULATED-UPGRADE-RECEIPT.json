@@ -1,0 +1,55 @@
+{
+  "at": "2026-10-11T15:37:38.881723+00:00",
+  "base_head": "7cbcfe36e0a6cbfa3047c63edefbddae7cdc6506",
+  "story": "US-DX-01a / APL-361",
+  "candidate_sha256": "30f261b2ceffa490c8bd379f8d9d1cdf574e965b85214100446cec937c085725",
+  "schema_registered": 46,
+  "migration_registered": false,
+  "native_counts": {
+    "passed": 10,
+    "new_linkage_cases": 7,
+    "retained_schema45_to46_cases": 3,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "stable_executable_pins": 281,
+  "actual_proof": [
+    "Restricted impact_migrator non-superuser/NOBYPASSRLS executes exact sealed candidate with migrate.execute_script transaction primitive",
+    "Valid populated schema46:3 diagnosis revisions in each of2 tenants with typed exact evidence bindings; JSON/hash/registry/head/worker fences and checksum ledger remain identical",
+    "Absent and empty reference fields compatible",
+    "Duplicate selectors in current history and closed-key violation in older Completed history each refuse shape CHECK twice",
+    "Missing revision in older history, wrong object current, wrong-kind older and actual foreign-tenant older reference each refuse FK twice after candidate backfill; all new DDL rolls back",
+    "Every failed attempt leaves no candidate table/functions/triggers/CHECK, schema46 ledger and original histories unchanged",
+    "Valid reapplication refuses DuplicateFunction without rewriting diagnosis history; explicitly not registered checksum-ledger no-op retry",
+    "Disposable test databases drop with absence assertions; cluster stops successfully"
+  ],
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "finding": "One new native test file only; sealed candidate SQL and all46 applied migration bytes untouched. Synthetic invalid history seeded before candidate application, never edits an existing revision. Existing restricted migration runner transaction primitive used. No role/account changes.",
+      "human_signoff": false
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "finding": "Actual rawJUnit has10 passed, zero skip/error/failure;7 new tests distinct from3 retained registered45-to46 tests. Source hashes stable. Unregistered DDL reapply failure does not prove checksum registration/retry or API restart/restore recovery.",
+      "human_signoff": false
+    }
+  ],
+  "remaining": [
+    "Supported positive diagnosis-removal cleanup before relation promotion",
+    "Registered migration checksum/no-op retry and real recovery",
+    "Source privacy/retention races and integrated full refresh",
+    "Required exact-head hosted/container/external/financial/human/operational/owner gates"
+  ],
+  "deployed": false,
+  "delivered_stories": 0,
+  "raw_sha256": {
+    "integrated-worker-fence.log": "794241891c728fcfc5c7a045902d3cdb7de45719fff6981d75fa79c1341e829b",
+    "RUN-RECEIPT.json": "a9563a51ef99a81ee09c72ef0600e27ddc2eb51eca898e0329d08880e6926e20",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "integrated-worker-fence-tests.xml": "aff73b613b3a537fe1ee935a0a2b4a0e65a94a728cc8176b0ea13087faee8452"
+  }
+}

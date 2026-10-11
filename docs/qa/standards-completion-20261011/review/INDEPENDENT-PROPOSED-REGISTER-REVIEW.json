@@ -1,0 +1,170 @@
+{
+  "record": "INDEPENDENT-COMPLETE-PROPOSED-QA-REGISTER-REVIEW",
+  "recorded_at_utc": "2026-10-11T05:48:41.228397+00:00",
+  "scope": "Read-only peer register population and actual saved diagnostic evidence, compared against frozen original sources/case designs/package headers; no application or checker rerun",
+  "checks": [
+    {
+      "check": "Eight exact CSV headers independently match unchanged package schema",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Complete unique1328AC/case/mapping rows independently match frozen canonical case identities",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Canonical AC version digest is exact39cff4a4 all1328 pairs",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Every proposed mapping/version/layer/hierarchy/task and all strategy/supporting duties exact; no accepted binding manufactured",
+      "pass": true,
+      "details": []
+    },
+    {
+      "check": "1262AUTO and66MANUAL proposals retained without relabel/fake marker",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "All1328 applicability UNKNOWN retained; no operating release or actual candidate selected",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Run/selection/defect/exception registers contain zero fabricated attempt/event rows",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Original full-source scaffold/provenance/risk/history copied byte-exact, not retroactively upgraded",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Source review remains actual AI/source comparison only, owner/external authority unresolved",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "59 risk-family rows remain provisional/unassigned/unassessed without actual evidence or approval",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Risk required-case relationships and all mapping risk IDs resolve as design obligations",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Every final proposed artifact manifest member independently byte pinned",
+      "pass": true,
+      "details": {
+        "actual_members": 393
+      }
+    },
+    {
+      "check": "Sealed first empty-case source scaffold remains independently exact",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "825legacy/108AI exact provenance remains in frozen case design with no acceptance or run conversion",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "3786 genuine saved structure errors are exactly three unresolved AUTO failures per1262case",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "3794 saved negative release errors retain all3786 plus eight real missing-current gates",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Saved coverage summary matches every actual raw count; proposed mapping coverage is never product acceptance",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Diagnostic stdout/stderr and unchanged checker/helper/schema pins resolve byte exact",
+      "pass": true,
+      "details": null
+    },
+    {
+      "check": "Narrative explicitly discloses expected structural failure, authentic manual review, empty events and no readiness",
+      "pass": true,
+      "details": null
+    }
+  ],
+  "passed": 19,
+  "failed": 0,
+  "source_pins": [
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/PROPOSED-REGISTER-ARTIFACT-MANIFEST.json",
+      "sha256": "9b38ce783808973325add25e534332435cb318933b291fe8148aae0a6061f288",
+      "bytes": 102696
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/PROPOSED-REGISTER-DIAGNOSTIC-RECEIPT.json",
+      "sha256": "a7bde415ffde50b60c7202a4ac6cda33dc4efceb2c1f6c46f5981bc0ca9896b2",
+      "bytes": 8037
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/ACTUAL-COVERAGE-SUMMARY.json",
+      "sha256": "3d51ca90566ea84cf2c2e663c6f72d51972170815744813a7800f26d32504452",
+      "bytes": 4266
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/README.md",
+      "sha256": "5b424be916de905f56cf7cd91ce5865c7a35c8bae8d085bda27061c23feabb13",
+      "bytes": 3935
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/DESIGN-REGISTER-DECISIONS.json",
+      "sha256": "1640c21704dcd51a88599b02f49ef3d788f82bc52133f4faf621239d467f5607",
+      "bytes": 3152173
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/CASE-DESIGN-MANIFEST.json",
+      "sha256": "4b5de1cc76ea171c34ebb5f3af946af6843d97bf61d620db7e1d88e96094949c",
+      "bytes": 10104521
+    },
+    {
+      "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/register-schema.json",
+      "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e",
+      "bytes": 2006
+    }
+  ],
+  "reviewer_source": {
+    "path": "outputs/imprana-standards-completion-20261011/cases/review_proposed_registers.py",
+    "sha256": "25923095f074568c2f9fa94a8a46c164f9689ff2afd6c738761fe65fe45cd248",
+    "bytes": 12789
+  },
+  "actual_observation": {
+    "source_cases_mappings": 1328,
+    "proposedAUTO": 1262,
+    "proposedMANUAL": 66,
+    "actual_accepted_bindings": 0,
+    "actual_runs": 0,
+    "actual_structure_errors": 3786,
+    "actual_release_record_errors": 3794,
+    "risk_families": 59,
+    "unknown_applicability": 1328
+  },
+  "findings": [],
+  "limits": [
+    "Review is AI/source evidence only, not source-owner/human approval, accepted risk or release authority.",
+    "The required=YES field is proposed complete design allocation; every actual applicability remains UNKNOWN.",
+    "Procedure fragments name the logical canonical criterion; no claim of a browser-generated HTML anchor or executable selector is made.",
+    "Copied source risk JSON retains the dated initial pending-case narrative; current59riskCSV mappings and DESIGN-REGISTER-DECISIONS retain the new proposed case links separately without rewriting the first snapshot.",
+    "Saved checker errors are real and preserved;1328/1328 planned mappings is not meaningful accepted binding/current qualification or implementation percentage."
+  ],
+  "no_product_tests_or_network_or_checker_rerun": true,
+  "no_native_or_repo_mutations": true,
+  "owner_or_release_approval": false
+}

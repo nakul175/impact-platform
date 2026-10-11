@@ -1,0 +1,66 @@
+{
+  "record": "IMPRANA-DISJOINT-NATIVE-PUBLICATION-LANES",
+  "lanes": [
+    {
+      "lane": "root-initial",
+      "indices": [
+        0,
+        60
+      ],
+      "actual_verified_story_count": 61,
+      "original_criterion_count": 194,
+      "local_receipt": "native-root-lane-final-journal.json",
+      "local_receipt_sha256": "fe7fa74acc0ae874ddecfe0588956fae2542c26191b9c4e33423a4d6208f8a62"
+    },
+    {
+      "lane": "A",
+      "indices": [
+        61,
+        163
+      ],
+      "actual_verified_story_count": 103,
+      "original_criterion_count": 379,
+      "local_receipt": "native-lane-a/NATIVE-LANE-A-FINAL-RECEIPT.json",
+      "local_receipt_sha256": "1147d1aa301beb144d016b54dc29ea8739458240ff334210af0edb69e5e8d0d4"
+    },
+    {
+      "lane": "B",
+      "indices": [
+        164,
+        266
+      ],
+      "actual_verified_story_count": 103,
+      "original_criterion_count": 368,
+      "local_receipt": "native-lane-b/FINAL-LANE-B-RECEIPT.json",
+      "local_receipt_sha256": "345c0ff659d5b61a88df6925eef720a06f885e77815de733ea374d07f4a5788e"
+    },
+    {
+      "lane": "C",
+      "indices": [
+        267,
+        317
+      ],
+      "actual_verified_story_count": 51,
+      "original_criterion_count": 194,
+      "local_receipt": "native-lane-c/FINAL-RECEIPT.json",
+      "local_receipt_sha256": "80339f66e7caf9d879227558a1c62a0d7e49045876e134ca5c0dd07a59f46210"
+    },
+    {
+      "lane": "D",
+      "indices": [
+        318,
+        367
+      ],
+      "actual_verified_story_count": 50,
+      "original_criterion_count": 193,
+      "local_receipt": "native-lane-d/FINAL-JOURNAL.json",
+      "local_receipt_sha256": "57ef3869ef10a0087a2040eed6ce23aadd7be31257acebbd4d0054e1ebd8294c"
+    }
+  ],
+  "stories": 368,
+  "original_criteria": 1328,
+  "source_literal_repair_targets": 21,
+  "provenance": "Counts cover actual verified final lane journals and the exact source plan; final integrated fresh all368/1553/10 proof is separately retained. All raw account payloads, initial failures and full repair records stay outside Git.",
+  "product_runs": 0,
+  "human_approval": false
+}

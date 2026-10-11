@@ -1,0 +1,441 @@
+{
+  "record": "INDEPENDENT-CAPTURED-FIVE-NATIVE-QA-DOCUMENT-REVIEW",
+  "recorded_at_utc": "2026-10-11T05:40:30.780565+00:00",
+  "scope": "Read-only full captured native planning-document content and project/title checks; no fresh API request or source-owner review",
+  "source_pins": [
+    {
+      "path": "outputs/imprana-standards-completion-20261011/native-qa-plan.json",
+      "sha256": "a6564735d2311bf3334334bf16e961eb5aeebb6f0c4c6daa7635f3daf2b57d3c",
+      "bytes": 104871
+    },
+    {
+      "path": "outputs/imprana-standards-completion-20261011/native-qa-save-readbacks.json",
+      "sha256": "abd48044bbf3f2d5bab3af01c690c4eb3d906babe8979c2c18bb79bcf77ec448",
+      "bytes": 107083
+    },
+    {
+      "path": "outputs/imprana-standards-completion-20261011/native-qa-second-readback-observation.json",
+      "sha256": "1702d465fc393567a081cc68809bab73168eee3e83945edd241fcf33ace6bcd9",
+      "bytes": 211918
+    },
+    {
+      "path": "outputs/imprana-standards-completion-20261011/review_native_publication.py",
+      "sha256": "a55d658a60733d7561d7f7950dc99ced00a7193a98c110d30e6c1a7c920b4b0d",
+      "bytes": 7331
+    }
+  ],
+  "reviewer_source": {
+    "path": "outputs/imprana-standards-completion-20261011/cases/review_five_native_qa_docs.py",
+    "sha256": "b11ed18c0bc9b9a47bc600f2a15f263b674cb8562c4fa265e9adf2a3a9a7873c",
+    "bytes": 6636
+  },
+  "checks": [
+    {
+      "check": "Exact five plan/readback members with unique native document IDs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Full title/project/content equivalent under bounded presentation policy: 4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Single current-QA edition marker preserved: 4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Planning/nonapproval and local-export boundaries preserved: 4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Document source/application pins preserved: 4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Full title/project/content equivalent under bounded presentation policy: f321736b-6449-4040-b316-bec1a282100e",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Single current-QA edition marker preserved: f321736b-6449-4040-b316-bec1a282100e",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Planning/nonapproval and local-export boundaries preserved: f321736b-6449-4040-b316-bec1a282100e",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Document source/application pins preserved: f321736b-6449-4040-b316-bec1a282100e",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Full title/project/content equivalent under bounded presentation policy: 8ed726e6-f594-4852-aed3-3b6620ca215c",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Single current-QA edition marker preserved: 8ed726e6-f594-4852-aed3-3b6620ca215c",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Planning/nonapproval and local-export boundaries preserved: 8ed726e6-f594-4852-aed3-3b6620ca215c",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Document source/application pins preserved: 8ed726e6-f594-4852-aed3-3b6620ca215c",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Full title/project/content equivalent under bounded presentation policy: 67cfbfc6-c652-4238-896d-57052721dc5a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Single current-QA edition marker preserved: 67cfbfc6-c652-4238-896d-57052721dc5a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Planning/nonapproval and local-export boundaries preserved: 67cfbfc6-c652-4238-896d-57052721dc5a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Document source/application pins preserved: 67cfbfc6-c652-4238-896d-57052721dc5a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Full title/project/content equivalent under bounded presentation policy: 6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Single current-QA edition marker preserved: 6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Planning/nonapproval and local-export boundaries preserved: 6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Document source/application pins preserved: 6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: table_delimiter_presentation_only",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: HTTP_URL_angle_presentation_only",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: code_fence_preserved",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: inline_code_preserved",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: arbitrary_line_space_not_normalized",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: different_URL_not_normalized",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: semantic_qualification_added_rejected",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "Independent formatting/corruption guard: number_changed_rejected",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "passed": 29,
+  "failed": 0,
+  "observations": [
+    {
+      "sourceIndex": 0,
+      "native_id": "4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+      "title": "Imprana Commons QA — Current test strategy — 11 October 2026",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-qa-current-test-strategy-11-october-2026-ae95f52dee74",
+      "raw_expected_sha256": "e48955f1d091acb784106aa184f615052f8d2dabba70f883bb002ae3fcda99d5",
+      "raw_actual_sha256": "d5c6e48d4eb7a08a1111201bbb941e6ff20f5c102b07e9703eb1a0405879265c",
+      "raw_exact": false,
+      "bounded_presentation_equivalent": true,
+      "actual_full_content_differences": [
+        "--- declared native plan\n",
+        "+++ captured full native readback\n",
+        "@@ -31,7 +31,7 @@\n",
+        " For future reviewed risk records, carry the package's `standards/RISK-CLASSIFICATION.md` rule explicitly: impact and likelihood each use 1–4, score is their product, **impact 4 is Critical regardless of score**, High is score 9–16 or material irreversible action, Medium 4–8 and Low 1–3. Unknown likelihood needs a conservative provisional rating, stated basis and resolution plan; it is not invented observed frequency. Escalate for sensitive data, vulnerable users, broad/hard-to-detect effects, external actions or unvalidated AI. Record inherent and evidence-based residual risk separately; defect severity and scheduling priority remain different decisions. Critical requires threat/abuse/fallback/isolation checks and independent specialist review; High adds relevant boundary/integration/E2E/recovery evidence; Medium needs affected interfaces and regression; Low permits focused verification or review proportionate to the change. These are proposed adoption rules, not newly approved ratings or a waiver of contractual/legal/accessibility requirements.\n",
+        " \n",
+        " | Layer or domain | Meaningful selection and oracle | Existing entry points and evidence limit |\n",
+        "-|---|---|---|\n",
+        "+| -- | -- | -- |\n",
+        " | Unit/component | Closed/malformed/boundary values, independent decimal examples, state guards, stable IDs, current replay rules; component state must be user-observable. | Makefile (local source: `../../../Makefile`) `unit`; `qualification/test_*_unit.py`, golden and catalogue tests; browser model checks. Preserve explicit database-dependent skips. Pure/reference/fake checks do not prove persistence or concurrency. |\n",
+        " | API/contract/integration | Implemented method/route/schema, object/tenant scope, pagination, revocation, denied-request non-effects, stale versions, identical replay and changed intent under the same key. Read resulting records/receipts/audit. | `scripts/run.py test --pytest-path <actual file or node>`; `qualification/`; retained `specification/reference-v1/tests/test_integration.py`. PGlite covers local HTTP/SQL flow; mock transport is labelled separately. |\n",
+        " | Native database/worker/identity | Actual nonowner logins, forced RLS/context reset, concurrent transactions, leases, atomic rollback, durable receipt and restart/upgrade. Provider identity tests require the real local qualified provider. | `scripts/run.py test --native`; native-role/concurrency/worker tests; restart/restore/upgrade helpers; `--idp keycloak` and `idp-browser` separately. Provisioning/fixture credentials never become application authority. |\n",
+        "@@ -80,4 +80,4 @@\n",
+        " \n",
+        " This proposed edition reads the retained strategy §§1–13, fixture specification §§1–9, nonprofit strategy §§Traceability–Review deliverables, current product continuation, working agreement, Makefile/runner, governance AI/accessibility/performance/recovery records and latest `release-review-0.39.0.json`. Exact-source audit pins are retained with the QA audit (local source: `../APLYD-v1.3-AUDIT-20261011.md`). Original old-build paragraphs and historical Word/workbook files remain unchanged.\n",
+        " \n",
+        "-Before dependent qualification resolve: actual scope/candidate and case versions; platform/language/device support; fixture/environment/evidence-store authority; real QA/specialist/operations roles and capacity; target/risk/applicability decisions; AI corpus/rubric/provider terms and funding if applicable; and enforced review/required checks. This file closes no execution, acceptance, security finding or release decision.\n",
+        "+Before dependent qualification resolve: actual scope/candidate and case versions; platform/language/device support; fixture/environment/evidence-store authority; real QA/specialist/operations roles and capacity; target/risk/applicability decisions; AI corpus/rubric/provider terms and funding if applicable; and enforced review/required checks. This file closes no execution, acceptance, security finding or release decision."
+      ]
+    },
+    {
+      "sourceIndex": 1,
+      "native_id": "f321736b-6449-4040-b316-bec1a282100e",
+      "title": "Imprana Commons QA — Release test plan — 11 October 2026",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-qa-release-test-plan-11-october-2026-9843bb1f0141",
+      "raw_expected_sha256": "4b29c6112d5eb8ea39ba076fb68d47f33dd0e7a84c506b26a38216fb98ee37b1",
+      "raw_actual_sha256": "c0b0c52d28f9d4d8d3e925249493bf2e5783bf2d92c8a906b80189b9ac0f43a8",
+      "raw_exact": false,
+      "bounded_presentation_equivalent": true,
+      "actual_full_content_differences": [
+        "--- declared native plan\n",
+        "+++ captured full native readback\n",
+        "@@ -11,7 +11,7 @@\n",
+        " ## 1. Source and candidate boundary\n",
+        " \n",
+        " | Item | Bound source or unresolved field |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Documentation input | `c1bcae29718bcae0fac51000d69734a536061fba`; the QA audit and current product refinement carried by that commit |\n",
+        " | Application input | `8a1e405f0086033dfb25ad834689a08bfe9f1eea`; source build 0.39.0, domain API 1.28.0, platform API 1.11.0, schema 43 |\n",
+        " | Preserved planning baseline | `eb194fdbb6fc8247db8429fc23120aa0fe659ed8`; original criteria, estimates, allocations, workflow states and dependencies remain authoritative |\n",
+        "@@ -36,7 +36,7 @@\n",
+        " The existing Sprint 2 proposal (local source: `../../product/06-NEXT-SPRINT-REFINEMENT.md`) and its current refinement (local source: `../../product/framework-v4-20261011/06-NEXT-SPRINT-REFINEMENT.md`) propose the following 26-point slice. It is a refinement sequence, not an approved sprint or chosen release scope.\n",
+        " \n",
+        " | Existing story | Existing proposal and dependency | Planned correctness/absence oracles |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | `US-DX-01a` — prioritised problem diagnosis | 5 points; structured problem model, completion/correction rules, evidence types and capability scopes must be settled first; tasks `TASK-US-DX-01a-01`–`06` | Stable problem IDs and exact ordered evidence survive reopen/restart; incomplete completion and duplicate/stale ordering refuse atomically; hidden and missing evidence both return `404 RESOURCE_UNAVAILABLE` without a title leak; AI-off creates no provider transmission |\n",
+        " | `US-DX-03` — locked problem baseline | 8 points; depends on agreed problem IDs/revision semantics from `US-DX-01a`; tasks `TASK-US-DX-03-01`–`06` | The four source-defined measures have explicit units, period, denominator and evidence; missing differs from zero; exact decimals and server-owned lock actor/date persist; locked observations remain immutable; stale source and competing locks cannot create an invalid or second lock |\n",
+        " | `FR-AI-016a` — bounded jobs/reservation/cancellation | 8 points; depends on actual policy readiness and a settled budget-unit/window/upper-bound/uncertain-acceptance contract; `FR-AI-001` review/acceptance is unresolved; tasks `TASK-FR-AI-016a-01`–`06` | Permitted bounded `ADVISORY_DRAFT` creates one stable job/reservation/receipt atomically; exact retry is authority-aware and changed payload conflicts; native races cannot overspend or settle twice; cancellation stops the next controllable call and accounts for accepted/uncertain work; stale lease holders cannot publish or settle; AI-off/exhaustion leaves core MEL available |\n",
+        "@@ -66,7 +66,7 @@\n",
+        " Every selected original scenario needs its positive and rejection assertions plus the affected platform controls. Check authoritative revisions, receipts, audit/outbox state and provider-attempt records when proving absence. A UI refusal alone cannot prove that no forbidden write or transmission happened. A bounded refusal audit explicitly required by the source remains permitted.\n",
+        " \n",
+        " | Domain | Planned evidence and decision boundary |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Static/unit/contract | Existing lint/types/build; source-bound DTO and Decimal rules; closed inputs/duplicate JSON keys; state-machine transitions and exact oracles. Unit/component evidence alone cannot validate real tenancy, concurrency, identity or provider behavior |\n",
+        " | API/integration/SQL | Real HTTP paths and authoritative persisted state; transaction rollback; stale revision, exact retry/changed payload, hidden/missing identity symmetry, denied side effects. Preserve existing regression minima and all task dependencies |\n",
+        " | Native database/current authority | PostgreSQL 16/17 with provisioned runtime login roles, forced RLS and narrow grants; cross-tenant direct SQL and API denial, revoked capability, natural-person self-approval refusal, simultaneous mutations/leases/cancellation/settlement. Migration-owner/superuser fixture setup is distinct from runtime evidence |\n",
+        "@@ -89,7 +89,7 @@\n",
+        " The following are existing entry points, not a claim that they ran for this edition. Angle-bracket values are unresolved run configuration, not literal runnable commands. Dependencies must already be authorised and available; installation/fetching, resource provision and paid CI are separate actions.\n",
+        " \n",
+        " | Order | Existing command/entry point | What the actual report must distinguish |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | 1 — input/static checks | `make lint`; `python3 scripts/doc_index.py --check`; `make unit`; `make build`; `npx tsc --noEmit` from `apps/web` | Exact selected targets, failures/errors/skips, source head/tools and outputs. `make unit` cannot certify DB-dependent behavior; skipped assertions are not passes |\n",
+        " | 2 — security change consistency | `.venv/bin/python scripts/release_review.py --check --base <actual-change-base>` | Actual change base and required append-only impact-review entries. CI uses `HEAD^1` for its checkout semantics; do not assume that is the correct local story baseline. Consistency success does not pass G11 or confirm residual risk |\n",
+        " | 3 — affected existing tests | `IMPACT_PORT=<isolated_port> .venv/bin/python scripts/run.py test --pytest-path qualification/test_ai_policy_live.py` is an existing focused entry point | Select only where that existing test is relevant; record actual new story case bindings when implemented. Focused PGlite output is not a full suite or native proof |\n",
+        "@@ -105,7 +105,7 @@\n",
+        " ### Existing hosted gate portfolio\n",
+        " \n",
+        " | Workflow/job | Declared source behavior | Required evidence before any release promotion |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | `checks` / `checks` | Every PR and main push; 15-minute timeout; lint, doc index, unit, release-review consistency and web types | Genuine successful steps on the exact candidate; this small job is not a child-result completion aggregator |\n",
+        " | `Application qualification` / `local-reference-and-browser` | 30-minute timeout; setup, local API/reference/lint and browser | Actual local artifacts and logs; no model-adapter result substituted for real UI |\n",
+        " | `Application qualification` / `live-identity-provider` | 20-minute timeout; pinned Keycloak/live identity API and browser | Real identity result and configuration, separate from synthetic fixture authentication |\n",
+        "@@ -138,4 +138,4 @@\n",
+        " \n",
+        " Before any authorised rollout, name the actual cohort/operator, exposure and observation window, permitted data/provider use, alert/support responsibility, stop signals and rollback/restore/compensation procedure. Verify current deployed commit/schema/health/demo only after promotion. Code rollback cannot be assumed to undo migrations, privacy effects or provider actions. No rollout selection, merge or deployment is approved here.\n",
+        " \n",
+        "-The next documentation adoption step is a reviewed complete criterion export and case/register compatibility bridge for the owner-selected bounded scope. Actual execution follows only after source/candidate/environment/protocol and permissions are concrete. Preserve the original evidence and all later attempts as history.\n",
+        "+The next documentation adoption step is a reviewed complete criterion export and case/register compatibility bridge for the owner-selected bounded scope. Actual execution follows only after source/candidate/environment/protocol and permissions are concrete. Preserve the original evidence and all later attempts as history."
+      ]
+    },
+    {
+      "sourceIndex": 2,
+      "native_id": "8ed726e6-f594-4852-aed3-3b6620ca215c",
+      "title": "Imprana Commons QA — Test data and environments — 11 October 2026",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-qa-test-data-and-environments-11-october-2026-ea572a5bbb19",
+      "raw_expected_sha256": "7cc73199f9c54ca93c8a62fb077e058a973430db1788ff2c5d18124ddbae8c50",
+      "raw_actual_sha256": "5f895b668f50d8b4e81a0b304aefc1ed31d8b0340fc82320c7208af9b141fd82",
+      "raw_exact": false,
+      "bounded_presentation_equivalent": true,
+      "actual_full_content_differences": [
+        "--- declared native plan\n",
+        "+++ captured full native readback\n",
+        "@@ -15,7 +15,7 @@\n",
+        " The following hashes identify inspected source bytes, not generated environment data, successful loading or an approved processing purpose. The fixture is `impact-acceptance-20260925-v1`, with ten synthetic actors; the actual current stamp expires `2027-09-01T00:00:00Z`. Older specification paragraphs retain older fixed-clock dates as history.\n",
+        " \n",
+        " | Source dataset/input | Exact SHA-256 | Purpose and boundary |\n",
+        "-|---|---|---|\n",
+        "+| -- | -- | -- |\n",
+        " | API fixture manifest (local source: `../../../specification/fixtures/api-fixture.json`) | `f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b` | Tenant/actor selectors, token environment names, mutable test records and fixture identity. No real credentials. |\n",
+        " | Records (local source: `../../../specification/fixtures/records.json`) | `a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5` | Synthetic domain/configuration/source-lineage setup. Seeded official/clean examples are setup, not proof a calculation/scanner ran. |\n",
+        " | Grants (local source: `../../../specification/fixtures/grants.json`) | `85c7bcb147f943415ef839bbaa5a29f464e3722a39885b3ad366c6299370f0de` | Positive, scoped, alias, revoked and other-tenant controls. A second login for one natural person is an independence-negative actor, not another approver. |\n",
+        "@@ -36,7 +36,7 @@\n",
+        " ## Existing environment modes and limits\n",
+        " \n",
+        " | Mode | What existing source provides | Required binding and limits before a claim |\n",
+        "-|---|---|---|\n",
+        "+| -- | -- | -- |\n",
+        " | Pure/unit/reference | Existing Makefile unit selection, pure/fake mechanics and the retained reference harness. | Exact selected files/nodes, Python/Node/tool/dependency versions, case/oracle/data pins and all skip reasons. Some Makefile entries contain database-dependent cases; a skip is not a passed required mapping. |\n",
+        " | Local PGlite/API/browser | `scripts/run.py` starts fresh test/browser state with UUID run directories and OS-chosen database ports; uses real HTTP/SQL and synthetic accounts. | Actual checkout/artifact/schema/config, runtime manifest, service versions, state/port ownership, browser/OS/viewport/locale/network and relevant source/data hashes. Serialized PGlite is not native parallelism or runtime-login proof. |\n",
+        " | Native PostgreSQL | The runner uses a separately provisioned disposable fixture database and actual app/identity/platform/worker role paths; privileged fixture/migration credentials are not handed to the API. | Authorized disposable database connection supplied through a secret reference, actual engine/role topology/config, independent transactions, required populated upgrade/restart/restore protocol. No existing native database is selected by this file. |\n",
+        "@@ -71,4 +71,4 @@\n",
+        " \n",
+        " Retain the exact environment manifest, dataset/generated-output hashes, source/case/AC versions, setup/cleanup and current-authority checks, dependency/runtime versions, procedure, all attempts/errors/metrics, artifact digests, actual executor/reviewer and explicit production differences. A successful seed or a green component is not a qualified environment. Any relevant source, schema, fixture, provider/model/prompt/corpus, dependency, config or network/device change requires impact/freshness review and affected reruns.\n",
+        " \n",
+        "-Source references: retained fixture specification (local source: `../../current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md`) §§1–9; nonprofit test strategy (local source: `../../nonprofit-ai/v1.0/05-TEST-STRATEGY.md`) §§Environments/Entry criteria; `scripts/run.py:1–30,166–197,468–480,645–701`; `scripts/fixture_support.py:1–29`; `qualification/conftest.py`; the exact data files above; performance (local source: `../../QA-PERFORMANCE-2026-10.md`), backup/DR (local source: `../../governance/BACKUP-DR.md`) and AI governance records. The attached QA v1.3 data/environment template supplies field guidance; actual authority and measured qualification remain external evidence.\n",
+        "+Source references: retained fixture specification (local source: `../../current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md`) §§1–9; nonprofit test strategy (local source: `../../nonprofit-ai/v1.0/05-TEST-STRATEGY.md`) §§Environments/Entry criteria; `scripts/run.py:1–30,166–197,468–480,645–701`; `scripts/fixture_support.py:1–29`; `qualification/conftest.py`; the exact data files above; performance (local source: `../../QA-PERFORMANCE-2026-10.md`), backup/DR (local source: `../../governance/BACKUP-DR.md`) and AI governance records. The attached QA v1.3 data/environment template supplies field guidance; actual authority and measured qualification remain external evidence."
+      ]
+    },
+    {
+      "sourceIndex": 3,
+      "native_id": "67cfbfc6-c652-4238-896d-57052721dc5a",
+      "title": "Imprana Commons QA — Execution and defect protocol — 11 October 2026",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-qa-execution-and-defect-protocol-11-october-2026-e53d78d47a61",
+      "raw_expected_sha256": "0d6d4048b94eff560863c2ec304f89a835c0b8e1509a69fd43d354b2f2f37c51",
+      "raw_actual_sha256": "43f2cb7774aae61e20e7b12478ed1d9f1cddfbd03fbc526c03016bd0a84a8d4f",
+      "raw_exact": false,
+      "bounded_presentation_equivalent": true,
+      "actual_full_content_differences": [
+        "--- declared native plan\n",
+        "+++ captured full native readback\n",
+        "@@ -13,7 +13,7 @@\n",
+        " ## 1. Separate design, execution and decisions\n",
+        " \n",
+        " | Dimension | Package values / interpretation |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Applicability | `YES`, `NO`, `UNKNOWN`; `NO` requires a real reviewed rationale for the complete scope; unresolved applicability cannot disappear from the source inventory |\n",
+        " | Execution result | `PASS`, `FAIL`, `BLOCKED`, `NOT_RUN`, `SKIPPED`, `NOT_APPLICABLE`; PASS means the actual declared assertions/thresholds completed successfully |\n",
+        " | Freshness | `CURRENT`, `STALE`, `UNASSESSED`; this is separate from execution, so a historical PASS can be STALE |\n",
+        "@@ -41,7 +41,7 @@\n",
+        " These are the **exact field sets** of the referenced package schema, for a reviewed future adoption. They are not newly installed registers or fake populated rows. Do not add multivalued identities, execution results to links-only traceability or comments disguised as CSV records. Keep richer narratives and specialist protocols in linked versioned artifacts.\n",
+        " \n",
+        " | Record | Exact schema fields | Purpose and preservation rule |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | `ac-register.csv` | `ac_id`, `ac_version`, `scope_id`, `source_ref`, `applicability`, `applicability_rationale`, `review_ref`, `risk_tier` | Full source criterion inventory independent of tests; unknown applicability remains visible |\n",
+        " | `case-register.csv` | `case_id`, `case_version`, `scope_id`, `mode`, `procedure_ref`, `automation_locator`, `marker` | Versioned designed procedure and honest AUTO/MANUAL binding; no execution claim |\n",
+        " | `traceability.csv` | `mapping_id`, `vision_id`, `strategy_id`, `roadmap_id`, `release_goal_id`, `release_id`, `epic_id`, `story_id`, `ac_id`, `ac_version`, `task_id`, `risk_id`, `case_id`, `case_version`, `required` | Stable links only; preserve story/release/epic identity and existing task prerequisites |\n",
+        "@@ -73,7 +73,7 @@\n",
+        " For each completed actual attempt/group, capture the following in its run evidence narrative, linked by the normalized row:\n",
+        " \n",
+        " | Evidence group | Required actual content |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Identity | Run/group ID; parent failure/diagnostic relation; exact case and AC versions; story/task/risk/source links; purpose and protocol version |\n",
+        " | Candidate | Build SHA and tree state; deployable artifact hash; schema/migration state; environment/configuration/data versions; provider/model/prompt/corpus or justified source-backed not-applicable boundary |\n",
+        " | Execution | Actual command/manual steps and selected files/modes; tools/OS/database/browser/assistive technology; executor; start/end/timezone; resource bounds; every assertion and actual code/error/skip outcome |\n",
+        "@@ -102,7 +102,7 @@\n",
+        " Every observed material failure gets a concrete defect narrative: original failed behavior/expected vs actual, release/story/criterion/task/case/run links, candidate/configuration/data identity, reproduction steps/frequency/denominator, impact/blast radius, redacted evidence, workaround, actual owner/status, hypothesis-labelled cause, fix PR/build and required retest/regression scope. Use new immutable event IDs with `previous_event_id`; one initial root, no fork/cycle, and the same defect/case identity throughout the chain.\n",
+        " \n",
+        " | Package severity | Source guide | Explicit legacy compatibility where that scale is used |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | D4 | Severe harm, critical outage or disclosure | S1 → D4 |\n",
+        " | D3 | Major function impaired | S2 → D3 |\n",
+        " | D2 | Recoverable material issue | S3 → D2 |\n",
+        "@@ -131,7 +131,7 @@\n",
+        " Use the package report structure with actual scope/build/artifact/environment/window first. Report required mappings and unique selected runs separately from historical run rows and designed cases. Show PASS, FAIL, BLOCKED, NOT_RUN, SKIPPED and NOT_APPLICABLE counts, then freshness counts separately. Report first failures/repeats/flakes, high/critical coverage, approved exclusions, open defect severities, exception expiry, domain slices/uncertainty and unresolved decision owners. No report is populated by this edition.\n",
+        " \n",
+        " | Measure | Numerator / denominator and qualification rule |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Planned AC coverage | Criteria with at least one required mapping / complete source population whose applicability is YES or UNKNOWN; reviewed NO records alone are excluded |\n",
+        " | Validated AC coverage | YES criteria for which every required mapping has selected current PASS QUALIFICATION evidence matching the candidate / complete YES-or-UNKNOWN source population |\n",
+        " | Required-case completion | Selected required mappings with current executed PASS or FAIL / all required mappings whose criterion is YES or UNKNOWN; blocked/not-run/skipped/unassessed/stale evidence cannot masquerade as completed qualification |\n",
+        "@@ -156,4 +156,4 @@\n",
+        " \n",
+        " The preserved 0.39 review remains **G11 Not passed**, **G12 Not run**, 14 open critical threats, 13 open other threats and two BLOCK chains. The release review (local source: `../../release-reviews/release-review-0.39.0.json`) and threat register (local source: `../../current/threat-register.json`) remain unchanged; confirmations and independent assessment/model evaluation are not supplied here. A new product run, defect event or approval is not inferred from this documentation work.\n",
+        " \n",
+        "-The next bounded adoption needs an actual owner-selected scope, a complete independently reviewed criterion snapshot, honest case-to-code/manual bindings, a reviewed legacy compatibility bridge, candidate/environment/protocol authority and immutable evidence capture. Only then can actual affected tests create qualified run records. Preserve all earlier editions, source Gherkin, estimates, workflow states, regression minima, failures/retries and confirmed history. Documentation alignment alone cannot clear readiness.\n",
+        "+The next bounded adoption needs an actual owner-selected scope, a complete independently reviewed criterion snapshot, honest case-to-code/manual bindings, a reviewed legacy compatibility bridge, candidate/environment/protocol authority and immutable evidence capture. Only then can actual affected tests create qualified run records. Preserve all earlier editions, source Gherkin, estimates, workflow states, regression minima, failures/retries and confirmed history. Documentation alignment alone cannot clear readiness."
+      ]
+    },
+    {
+      "sourceIndex": 4,
+      "native_id": "6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+      "title": "Imprana Commons QA — Specialist verification plans — 11 October 2026",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-qa-specialist-verification-plans-11-october-2026-33920042633e",
+      "raw_expected_sha256": "a1e844677e5817fe4e07abb1353117058e3742fbca571a95450b27ef025956b3",
+      "raw_actual_sha256": "8273f533d7b91adbfd11ef4a47eda1882a3649d12af17603c5bd6f3249d0eab7",
+      "raw_exact": false,
+      "bounded_presentation_equivalent": true,
+      "actual_full_content_differences": [
+        "--- declared native plan\n",
+        "+++ captured full native readback\n",
+        "@@ -10,10 +10,10 @@\n",
+        " \n",
+        " ## Accessibility: proposed protocol ACC-01\n",
+        " \n",
+        "-Source: existing accessibility requirement and limits (local source: `../../current/ACCESSIBILITY-STATEMENT.md`) and original test strategy §10 (local source: `../../current/Impact-Management-Test-Strategy-v1.1.md`). Preserve the existing WCAG 2.2 AA requirement. Qualify complete selected journeys, including authentication and generated outputs, using the applicable normative criteria from [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/). A scan alone is insufficient evidence for the retained product requirement.\n",
+        "+Source: existing accessibility requirement and limits (local source: `../../current/ACCESSIBILITY-STATEMENT.md`) and original test strategy §10 (local source: `../../current/Impact-Management-Test-Strategy-v1.1.md`). Preserve the existing WCAG 2.2 AA requirement. Qualify complete selected journeys, including authentication and generated outputs, using the applicable normative criteria from [W3C WCAG 2.2](<https://www.w3.org/TR/WCAG22/>). A scan alone is insufficient evidence for the retained product requirement.\n",
+        " \n",
+        " | Procedure | Required observation |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Freeze the release matrix | Actual browser/OS/assistive-technology versions, viewport, language and source candidate; distinguish desktop/mobile and supported/excluded profiles. Prior Chromium-only evidence remains historical. |\n",
+        " | Walk each critical journey without a pointer | Every necessary action is reachable; focus is visible, ordered and restored; no trap or obscured decision caveat. Include validation, stale revision, independent review and recovery. |\n",
+        " | Repeat with assistive technology | Record what names, states, errors, updates and chart alternatives are conveyed; markup presence does not substitute for the observed experience. |\n",
+        "@@ -40,7 +40,7 @@\n",
+        " These charters add design coverage without changing the original scenario population. They are not new canonical acceptance criteria. Recommended timebox is 60 minutes each, to be confirmed by the executor before a session; no session has run.\n",
+        " \n",
+        " | Charter | Mission, risk and boundaries | Notes/evidence to capture |\n",
+        "-| --- | --- | --- |\n",
+        "+| -- | -- | -- |\n",
+        " | EXP-IC-01 — interrupted governed work | Explore disconnect/reload/retry/stale revision across an existing collect → submit → independent review → report flow. Use two synthetic tenants and distinct fixture principals. Look for duplicate acknowledged effects, lost accepted data or stale authority. | Actual candidate, fixture IDs, grants, steps, response/revision/receipt lineage, recovery outcome, unexpected states and follow-up case links. |\n",
+        " | EXP-IC-02 — privacy and audience changes | Explore revoked access, restricted fields, wider exports and cleanup/recovery boundaries of an implemented journey. Begin with distinctive synthetic markers; keep target and stop rules local/isolated. | Audience/permission changes, visible and authoritative effects, retained denial audit where required, derivative-store gaps, evidence references and defect severity proposal. |\n",
+        " | EXP-IC-03 — AI-off and misleading drafts | Explore an existing AI enablement workflow with missing evidence/costs, stale catalogue sources, denied/disabled/budget-exhausted advisory and adversarial supplied text. Use synthetic or stubbed provider data; live calls require separate financial/data authority. | Proposed versus approved values, fallback usability, attempted prohibited actions, provider intent versus actual delivery, human-review caveats and unsupported claims. |\n",
+        "@@ -56,7 +56,7 @@\n",
+        " Create separate development, validation and held-out populations with provenance, licence/permitted use, classification, duplicate/leakage checks, exclusions, hash/version and independent labels/rubric. Freeze the held-out set before choosing a candidate; it must not enter prompt examples or candidate-selection feedback. Synthetic cases can exercise mechanics and attacks; their real-world representativeness remains unestablished. Preserve the original target of at least 200 representative cases per use case where feasible, at least 20% boundary/unsupported/adversarial cases, and explicit risk review for specialist smaller sets.\n",
+        " \n",
+        " | Existing source target | Measurement contract to bind before execution |\n",
+        "-| --- | --- |\n",
+        "+| -- | -- |\n",
+        " | Supported factual claims ≥95%; correct citation locations ≥98% | Enumerate independently labelled claims and required source locations; define unsupported/missing/partial handling, denominators and per-language/sector slices. |\n",
+        " | Official numeric claims exactly match authoritative tools | Compare exact authoritative tool inputs/revisions/results. Any official arithmetic or authority change by the advisory model remains forbidden. |\n",
+        " | Extraction precision ≥95%; mandatory-field recall ≥90% | Freeze field definitions, positive/negative labels, mandatory fields, missing-value rules and slices; no aggregate score hides a critical field error. |\n",
+        "@@ -83,4 +83,4 @@\n",
+        " \n",
+        " Keep the existing machine-readable threat register (local source: `../../current/threat-register.json`), 0.39 release review (local source: `../../release-reviews/release-review-0.39.0.json`) and source ASVS/control mapping. Relevant cases must cover revocation, tenant/object/purpose boundaries, privileged roles, sensitive exports, retention/deletion derivatives, provider transfers and restoration. Source controls and original assertions remain mandatory; scan inventories or policy text alone do not qualify them.\n",
+        " \n",
+        "-Record actual applicable standard/control IDs, case/run versions and environment, finding severity and same-case retest, plus a real independent residual decision. Legal/processor/region/retention decisions remain with qualified accountable people. The preserved 14 critical threats, 13 other threats, two BLOCK chains, G11 Not passed and G12 Not run remain visible. This planning edition neither closes a threat nor approves a release.\n",
+        "+Record actual applicable standard/control IDs, case/run versions and environment, finding severity and same-case retest, plus a real independent residual decision. Legal/processor/region/retention decisions remain with qualified accountable people. The preserved 14 critical threats, 13 other threats, two BLOCK chains, G11 Not passed and G12 Not run remain visible. This planning edition neither closes a threat nor approves a release."
+      ]
+    }
+  ],
+  "allowed_cosmetics": "Only table delimiter spacing/dash lengths, angle-bracket representation around identical HTTP(S) Markdown destinations outside literal code, terminal LF removal. Every other word/number/literal code byte remains significant.",
+  "historical_red_preservation": "First save raw_exact:false fields and separate second-readback-observation remain unchanged; this review does not erase renderer differences or recast them as product failures.",
+  "no_native_writes_or_network": true,
+  "product_or_package_tests_executed": false,
+  "owner_approval_or_qualification_claim": false,
+  "limits": [
+    "Captured evidence only; no claim current remote contents are unchanged after these captures.",
+    "Created planning documents are not runtime qualification, specialist approval, adoption, readiness or release authority.",
+    "Assignee/cycle/backend omitted fields and live branch/source-protection enforcement are not certified."
+  ]
+}

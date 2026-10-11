@@ -1,0 +1,317 @@
+{
+  "schema_version": "imprana.pm.completion-artifacts.v1",
+  "files": [
+    {
+      "path": "ELEMENT-ASSURANCE-MAP.json",
+      "sha256": "cb999b260a7bcfe9fa371c1dccc8bd2e5951ae37c1446e6aa6e4c62755c96be4",
+      "bytes": 6465273
+    },
+    {
+      "path": "INTEGRITY-RESULT.json",
+      "sha256": "8a09f8cf887809cda7eea1e9595998f97a098e48a72ebdd25a84f3b3c1378f28",
+      "bytes": 13125
+    },
+    {
+      "path": "PM-CLOSURE.md",
+      "sha256": "98f73dc0544babc27709edff9a53819b7b6ab592bf4cbe4c1946b8f2bbfcd3f7",
+      "bytes": 4316
+    },
+    {
+      "path": "README.md",
+      "sha256": "82fe2d16e83d59361d72703b8c11b06a5306e7c99845a8fb3dd132cb3d872343",
+      "bytes": 312
+    },
+    {
+      "path": "RECORD-MANIFEST.json",
+      "sha256": "f4b49b744cc86a9ce973a4b1646be269d97da10023478f9e4dd4e98e041d0216",
+      "bytes": 25003
+    },
+    {
+      "path": "REVIEW-REQUEST-CONTRACTS.json",
+      "sha256": "0e5319da54c02acd3e42b50e0fffdb24fde70b176f4a2834d19209500d6d4ad6",
+      "bytes": 153129
+    },
+    {
+      "path": "SOURCE-PINS.json",
+      "sha256": "446228889914c019c4fbcb258cb5a56bb76476e8a5630a86a0703f36a6ab4470",
+      "bytes": 6153
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-CROSS-CUTTING.json",
+      "sha256": "8ef05a8444ed7ab66243a923f4bbdf161b49446128d428223414578387c17ab1",
+      "bytes": 140820
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ACCESS-CONTROL.json",
+      "sha256": "2f8ca6837f531d1a8e9c2992c8af9e950a7458cba427fc999377af15bbd0d9a3",
+      "bytes": 63056
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ADOPT.json",
+      "sha256": "876cb3ab72f5863f0af6087a331d215913852840caf08ab67e90c81600d2f89b",
+      "bytes": 60981
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ASSESS.json",
+      "sha256": "0a2572f590734c909bd8a5d7610b9bf517250821a0b1677b7ea1259229f2c632",
+      "bytes": 60696
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DEPLOY.json",
+      "sha256": "11979bce1716d9bf483c047594609030cb11def55771057c483be38127c8d94b",
+      "bytes": 60758
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE.json",
+      "sha256": "ddb28624a54b40a6fcbdb4b80321d159df9faac250c65af00d7c18c9fbf2868a",
+      "bytes": 61643
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DISCOVER.json",
+      "sha256": "b9999a8f9b4e4e4f5b48b097c0a04ae763f44e91160dd74dd54d6d1c7e45b1a5",
+      "bytes": 60960
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-IMPROVE.json",
+      "sha256": "985f23569a1744c684ba5fb0d81477ca769fad7bf9fd7accc2f307bed9ad151a",
+      "bytes": 61452
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-MAP.json",
+      "sha256": "abb2ebdd70c1b7bb383d82bed0ef66bc1b36a39a40b47f597c0fa933d67ae1ea",
+      "bytes": 60960
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-VALUE-CASE.json",
+      "sha256": "b2dc1e86d6167f243449d0809fccc758ccb45423ec31719e64a1df84e08322f7",
+      "bytes": 61495
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-AI-CAPABILITIES.json",
+      "sha256": "4520e07f3274b11583f7dc7eb4f137ace629c55fda7b05367c4b9293449b56fc",
+      "bytes": 64544
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-CALCULATIONS.json",
+      "sha256": "7bc1afc061135ad0dd8595c0e911d717a2077f83ad3c8b230438ca1822b6a28e",
+      "bytes": 63796
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-COMMERCIAL-AND-BILLING.json",
+      "sha256": "f6866894b34a45976486839c4796a2fdd5569e00eae97efca89037a5e900b9ff",
+      "bytes": 62065
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DASHBOARDS-AND-ANALYSIS.json",
+      "sha256": "571cd3868dbfd70a1e8731ff51b00d58e608e4b0b9d7d826706c31c78e1c9c9a",
+      "bytes": 62523
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-IMPORT-AND-MANAGEMENT.json",
+      "sha256": "2d587e94d0c6fc43429da7125f20690f66ca0bc05ef0d24a39a9df2efb84df32",
+      "bytes": 63025
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-QUALITY.json",
+      "sha256": "9803e3bcd0431ab1b3bf2e4c9722a880db1bb4149cc8acd116f9780ebe0ad2fe",
+      "bytes": 61931
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVALUATION.json",
+      "sha256": "b8b3e1dffaae0766fc999b2d10a1e5609cc9c5462b7d79947dd7ed8d5895ab0e",
+      "bytes": 61925
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVIDENCE.json",
+      "sha256": "741055fede524af1fcdeea4c325a8a0258ef355399153ded6d1866c71c78eeb8",
+      "bytes": 61917
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FINANCE.json",
+      "sha256": "d1a5d5552cc8c8902f562460126cef3cf6e9c95d0c8fbdb252bab10e7f7345c4",
+      "bytes": 61890
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FORMS-AND-COLLECTION.json",
+      "sha256": "a271a8cc0a3eaf89f0420c3bee46b892ed9e922fa4ddf1e91bba984a072eb3b0",
+      "bytes": 62547
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FUNDER-PORTFOLIO.json",
+      "sha256": "8fd7a0704a7c12ec7473c8cf10ed96f5e113a285fda503abe10a99f8e3736764",
+      "bytes": 60988
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-IDENTITY-AND-ACCOUNTS.json",
+      "sha256": "e771d50d02ba9ce3e7fd3b2d8c19f540d18bc18aa3415d3676e1c0a3d3321070",
+      "bytes": 63832
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-INDICATORS.json",
+      "sha256": "4e7a5eb3156de63d3dec7961e2f936acf942a2f14c4cce46d0db8c867d0bf3ea",
+      "bytes": 63414
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-INTEGRATIONS-AND-CONNECTORS.json",
+      "sha256": "9c8973ee9fd6e3b1cdd28b581cf8608b7612a50868ac66fbe698e5c754c4a5f2",
+      "bytes": 62635
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-MIGRATION-AND-EXIT.json",
+      "sha256": "d4a527fc138a4b7f89bd0343a3a591e2d46f659d36b1745eea2a132a7b2ecc14",
+      "bytes": 61957
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AI-QUALITY.json",
+      "sha256": "918f2f7a59315606ff9312aa99b4f21c8d1105f4da8f2280f80dcd63c3e0a7a6",
+      "bytes": 61286
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AUDIT.json",
+      "sha256": "55fa2fbae18fa54337e4a42a648405e6500d77dccbb83581751ef820db162198",
+      "bytes": 60198
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AVAILABILITY.json",
+      "sha256": "a8857cf912e80ca32df2353e7e96226cc112c004646d0f92489404e1918646bc",
+      "bytes": 60470
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-CAPACITY.json",
+      "sha256": "8197aadf21d49e38f5b2700c4f4889d7305043fdb33d24550eeccce51a2ccd7a",
+      "bytes": 60327
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COMPATIBILITY.json",
+      "sha256": "8d6a11caf18033bc218e664260d8405aebc23235ad582a97805131da2d370014",
+      "bytes": 60174
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COST.json",
+      "sha256": "af62d6f40c252b469eab148f27f0d682cb9daf017ca317bf6e51d2421e706d6a",
+      "bytes": 60216
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-DATA-INTEGRITY.json",
+      "sha256": "987dd425aa29d40c48f417749e38d2892324def797a3f8f82be23f2a3516abee",
+      "bytes": 60561
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-LOCALISATION.json",
+      "sha256": "bd2077745f206c192ec9e5bca10d9cf113622ed86973f9d37b63406d3a9a3687",
+      "bytes": 60228
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-MAINTAINABILITY.json",
+      "sha256": "e5322d7635e345a3680911716061f6c8876904bfc27f9e3c890bcfd4e4c8b720",
+      "bytes": 60265
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-OBSERVABILITY.json",
+      "sha256": "b51041a6fd09f2433aa2ba3714b2916806e63c1fb603374b4d75c5cd22566ccc",
+      "bytes": 60192
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PERFORMANCE.json",
+      "sha256": "d9f511ce5f0cbdfcae1be86fa4fd29da582e439398f7aca66197d1c15fe4ef20",
+      "bytes": 61646
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PORTABILITY.json",
+      "sha256": "7aaedef9a217cdef33d91e8ec0474c54c821d1134067db2d22f0c252d03666cb",
+      "bytes": 60184
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-RECOVERY.json",
+      "sha256": "64f088170c06798c991c2b6a73fb6a26d21559f9dd6a79754282b5733f79fbe7",
+      "bytes": 60689
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-SUPPORT.json",
+      "sha256": "1b428b609381005e2f9d64d27db61b1614055fd3cadb94e9eb2140db4ed8cb58",
+      "bytes": 60212
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NON-FUNCTIONAL.json",
+      "sha256": "dc407ab84b0548d44bc1f81f7772166abfe4732d4112d1da3386b6eadd708276",
+      "bytes": 60072
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-OFFLINE-COLLECTION.json",
+      "sha256": "54903e5d2546cd6cd1cce0a935c8fb41a4af1f7244edec9201ef28b54ece6c02",
+      "bytes": 62256
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-OPERATORS.json",
+      "sha256": "379004c06e57172fb468f8bfe54aeea891b3daf2424ca452c38bb0e18ed95257",
+      "bytes": 60329
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTICIPANTS.json",
+      "sha256": "bf2ad5747d1973bd181d65dc768f88f362d2c2ca30e217ae2ba2ecf1600f0361",
+      "bytes": 62038
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTNERS.json",
+      "sha256": "6d4ab50e55703265c11048ebad563d3fe8c25d0079282865a06ce675a7082743",
+      "bytes": 61426
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PLATFORM.json",
+      "sha256": "28d1d90de3e80be35fb3bcd0ee3c2cb09661fb99f2338eea1f129caae056fe47",
+      "bytes": 60151
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PRIVACY.json",
+      "sha256": "171a010921cd46fffcb2a50bc2a2fd001b37a9693b166e0e0058ccfe3b1bae92",
+      "bytes": 62757
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PROGRAMMES.json",
+      "sha256": "f2f1c8dbc88b69d9abf919b896dc9a0e44cae4c8612ebf12999d3aa692de0f75",
+      "bytes": 62342
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-REPORTING.json",
+      "sha256": "19b20ae6adcadee81ac64d32ee1ccae54917b691cec53288334551c722d914bb",
+      "bytes": 62869
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-RESULTS-PLANNING.json",
+      "sha256": "ddd1fe40914c012b45c1ba564e78211d089b1053f1f60b95a49de0597f59c052",
+      "bytes": 62404
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-SECURITY.json",
+      "sha256": "b16542c16686944ab97aa232b8078dc91db146eda65e23c41a7221e9f891c075",
+      "bytes": 63994
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-SERVICE-OPERATIONS.json",
+      "sha256": "f105ddd6df961e91cd3fadf0346d3d86268639f898532e063828d7e19d7d13f2",
+      "bytes": 62531
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-TENANCY-AND-ORGANISATION.json",
+      "sha256": "7adc027ae7b7bb0b7fca904ceb00b1ae5b1dd0a24f80d8c9ec8fa8a74b9b163b",
+      "bytes": 62695
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-TRANSITION.json",
+      "sha256": "53ba8200b4668d4e13a444657f30c636bac6a41b2466178d0ede5e90869e0e4a",
+      "bytes": 60945
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-USER-EXPERIENCE.json",
+      "sha256": "b85dfb604222b7bb36736826e6d2265643bf632d48e513860b26e3c105d23948",
+      "bytes": 62933
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-WORKFLOW-AND-REVIEW.json",
+      "sha256": "2bb390fb90b9216267635ca4c364ef272827f7e1f08a214e1bed6238d62536a4",
+      "bytes": 62581
+    }
+  ],
+  "count": 62,
+  "claim": "Hashes of authored draft artifacts, not package or product quality certification."
+}

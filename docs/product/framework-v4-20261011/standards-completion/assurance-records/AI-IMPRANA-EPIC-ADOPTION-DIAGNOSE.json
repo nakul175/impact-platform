@@ -1,0 +1,1207 @@
+{
+  "templateVersion": "3.0-generic",
+  "moduleId": "generic.ai_assurance.v3",
+  "purpose": "Intake and evidence index only; not executable checker input, an AI runtime, approval or compliance certification",
+  "record": {
+    "id": "AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE",
+    "version": "draft-20261011.1",
+    "contentHash": "f5bd137f50f6c4a9f251e9f6143ad49f878f0e0178b47811feabc1d5fed99a27",
+    "capabilityId": "EPIC-ADOPTION-DIAGNOSE",
+    "releaseOrScopeId": "EPIC-ADOPTION-DIAGNOSE",
+    "stage": "planning",
+    "environment": "Documentation planning; no selected runtime candidate",
+    "author": "Imprana PM author (AI-assisted draft; authority not authenticated)",
+    "authorAuthoritySourceIds": [],
+    "updatedAt": "2026-10-11T05:47:07.709681+00:00"
+  },
+  "productRuntimeAiApplicability": {
+    "applicability": "yes",
+    "sourceIds": [
+      "src-original-FR-AI-001"
+    ],
+    "rationale": "Actual original FR-AI-001 requires an organisation AI use-case/provider/transmission policy. The complete product scope includes the existing AI adoption/capability stories; absence in a single slice is not no-use.",
+    "resolutionPlan": "Product-level YES retained. Scoped exposure is assessed through this mapping; no non-AI item is used to waive product obligations."
+  },
+  "documentationAuthoringAiUse": {
+    "applicability": "yes",
+    "toolAndDataHandlingPermissionsEvidence": [],
+    "limitation": "Owner requested documentation refinement in this chat; no independently authenticated tool/data authorisation evidence is supplied to the package."
+  },
+  "sources": [
+    {
+      "id": "local-1",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+      "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-2",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-3",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+      "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-4",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-5",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-6",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-7",
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+      "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-8",
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-9",
+      "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-10",
+      "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-11",
+      "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+      "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-12",
+      "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-13",
+      "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "source-epic",
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json",
+      "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+      "json_pointer": "/5",
+      "kind": "protected planning input"
+    }
+  ],
+  "assuranceGroups": [
+    {
+      "id": "AI-01",
+      "title": "Intended use, authority and risk",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.context_profile",
+        "common.boundary"
+      ],
+      "pendingQuestions": [
+        "Name the actual use case, accountable decision authority and permitted recommendation/action boundary before commitment.",
+        "Review scoped risk and human escalation capacity; no role appointment is supplied by this authoring."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "capabilityAndNonAiBaseline": "One versioned diagnosis carries stable ordered problems, readiness, a locked baseline, staff contributions and advisor validation. Compare manual/deterministic/AI-off alternatives before claiming incremental value.",
+        "usersAndAffectedGroups": [
+          {
+            "story_id": "US-DX-01a",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-01b",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-02",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-03",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-05",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          }
+        ],
+        "allowedAndProhibitedUses": [],
+        "operatingBoundary": "Stable problem IDs/order, evidence bindings, baseline version, contribution/review history, keyboard interaction and stale-edit refusal.",
+        "recommendationDecisionActionDistinction": "AI output remains a proposal; current governed command/report approval remains separately required.",
+        "riskClassificationAndSourceEvidence": {
+          "state": "proposed risk scope; classification/acceptance pending",
+          "hypothesis": {
+            "hypothesis": "Staff and leadership can agree priorities and explain evidence in a structured manual form before generated intake is needed.",
+            "counter_hypothesis": "The proposed capability does not produce the stated outcome or its controls cannot preserve the declared boundary.",
+            "rank_rationale": "Recommended highest-consequence uncertainty in this capability; priority not approved and no numerical risk score fabricated.",
+            "method": "Recommended isolated synthetic walkthrough of one source-positive case and its strongest source refusal; later representative user/operator evaluation requires an actually authorised purpose/population.",
+            "population": "No real participant cohort recruited or authorised by this proposal; source personas are planning roles.",
+            "decision_rule": "Any prohibited disclosure, data loss, independence bypass or wrong official result stops the affected commitment. If source checks succeed, assess the stated outcome in the authorised walkthrough; change the scope or method if the outcome is not demonstrated. This is a proposed qualitative rule, not an observed result or approved success threshold.",
+            "actual_observation": "Not run by this documentation refinement",
+            "threshold_and_window": "Existing source thresholds remain exact; any new user-outcome threshold/sample/window needs a recorded decision before it can support a commitment."
+          }
+        },
+        "riskRegister": [],
+        "toolAndExternalEffectPermissions": [],
+        "humanOversightAndOverrideContract": "Hand a referenced diagnosis revision to Map and baseline references to Improve; conversational intake remains an optional separately governed route.",
+        "operatorAvailabilityAndEscalation": null,
+        "residualRiskDecisionEvidence": []
+      }
+    },
+    {
+      "id": "AI-02",
+      "title": "Evaluation dataset quality and rights",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Supply a lawful held-out synthetic/authorised evaluation population, dataset/rubric version, rights, slice counts and adequacy rationale.",
+        "Approve target quality bars and annotation independence; no dataset or label audit is claimed."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "datasetManifest": {
+          "id": null,
+          "version": null,
+          "contentHash": null,
+          "sourceDateRange": null,
+          "taskAndTargetPopulation": "One versioned diagnosis carries stable ordered problems, readiness, a locked baseline, staff contributions and advisor validation.",
+          "recordCount": null,
+          "selectionMethod": "Propose source-positive/refusal cases, include critical slices from exact criterion locators in ELEMENT-ASSURANCE-MAP.json; selection counts and adequacy require actual decisions.",
+          "knownExclusions": [],
+          "syntheticOrActualComposition": "Synthetic proposed first; no concrete dataset created or lawful real-data rights asserted.",
+          "recordProvenanceIndex": null,
+          "accessRestrictions": null,
+          "purposeRightsPermissionsReferences": [],
+          "retentionDeletionContract": null
+        },
+        "qualityBar": {
+          "status": "target_pending",
+          "coverageSliceMatrix": [],
+          "minimumSliceCounts": [],
+          "labelValidityThreshold": null,
+          "labelCompletenessThreshold": null,
+          "duplicationErrorLimits": null,
+          "representativenessGapLimits": null,
+          "statisticalAdequacyRationale": null,
+          "approvalEvidence": []
+        },
+        "trainTuneAcceptanceSeparation": null,
+        "entityTimeSplitAndLeakageChecks": [],
+        "unknownTrainingContaminationLimitations": "Provider/training corpus not selected; contamination evidence is unavailable.",
+        "restrictedAcceptanceAccess": null,
+        "annotationRubricVersionHash": null,
+        "annotationQualificationsAndIndependence": null,
+        "disagreementMeasurementAndAdjudication": null,
+        "independentLabelAudit": {
+          "samplingMethod": null,
+          "sampleCount": null,
+          "observedErrors": null,
+          "resultReferences": [],
+          "qualityBarDecision": "needs_input"
+        },
+        "aiJudgeValidationAndHumanCalibrationIfUsed": null,
+        "freshAcceptanceSetAfterTuningOnFailures": null
+      }
+    },
+    {
+      "id": "AI-03",
+      "title": "Acceptance metrics and observed results",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Freeze numerator/denominator, critical slices, costly-error/refusal measures, targets, sample/window and configuration before evaluation.",
+        "Supply actual retained per-case results; original thresholds remain exact, new targets are pending."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "frozenMetricContracts": [
+          {
+            "id": null,
+            "outcomeReference": null,
+            "definition": null,
+            "unit": null,
+            "eligiblePopulationAndExclusions": null,
+            "numeratorDefinition": null,
+            "denominatorDefinition": null,
+            "operator": null,
+            "targetValue": null,
+            "targetStatus": "target_pending",
+            "targetAuthorityEvidence": [],
+            "datasetIdVersionHash": null,
+            "configurationManifestReference": null,
+            "requiredSliceThresholds": [],
+            "measurementWindow": null,
+            "minimumUsableCount": null,
+            "uncertaintyMethod": null,
+            "observedNumerator": null,
+            "observedDenominator": null,
+            "observedValue": null,
+            "perSliceResults": [],
+            "runEvidenceReferences": [],
+            "baselineComparison": null,
+            "decision": "needs_input"
+          }
+        ],
+        "taskSuccessAndCostlyErrorMetrics": [],
+        "refusalFailureAndFalseRefusalMetrics": [],
+        "calibrationAbstentionRequirements": null,
+        "repeatRunsAndStochasticSettings": null,
+        "runManifestAndRawResults": [],
+        "aggregateAndMandatorySliceDecisions": [],
+        "errorAnalysisAndLimitations": "Use exact original numeric/prohibited-effect criteria and proposed criterion evidence plans; do not substitute aggregate success for mandatory refusal/privacy/official-result controls.",
+        "latencyAvailabilityResourceCostTargetsIfMaterial": [],
+        "insufficientOrEmptyDenominatorHandling": "Record no usable observation when denominator is empty; do not infer 0 error or 100% success.",
+        "targetChangeDecisionHistory": []
+      }
+    },
+    {
+      "id": "AI-04",
+      "title": "Safety, refusal, fallback and recovery",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Execute source-positive, hidden/revoked, wrong-tenant, stale, prompt-injection, uncertain/cancelled/replayed and AI-off fallback paths on the selected candidate.",
+        "Resolve must-pass safety findings and operator/accessibility capacity with authorised decisions."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "policyAndProhibitedOutcomeSources": [
+          {
+            "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+            "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111"
+          },
+          "Stable problem IDs/order, evidence bindings, baseline version, contribution/review history, keyboard interaction and stale-edit refusal."
+        ],
+        "scenarioSuiteIdVersionHash": null,
+        "ordinaryRefusalUncertainIncorrectUnavailableScenarios": [],
+        "adversarialPrivacyAndToolScenarios": [],
+        "coverageAndResidualRiskLimitations": "Exact per-item criterion/task locators are mapped; test design is not execution. Follow source refusal clauses, missing phases and declared recovery protocol; no residual risk acceptance supplied.",
+        "scenarioPassRulesAndObservedResults": [],
+        "fallbackContractAndEndToEndEvidence": [],
+        "humanEscalationCapacityAndAccessibility": null,
+        "partialCompletionDuplicateCancellationRecoveryTests": [],
+        "safeLoggingAndAccess": "Use synthetic fixtures and protected evidence; do not log participant data, secrets or hidden reasoning. Current tenant/principal/scope controls remain required.",
+        "unresolvedMustPassFailures": []
+      }
+    },
+    {
+      "id": "AI-05",
+      "title": "Versioning, regression and promotion",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.change_history",
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Choose and pin the actual model/prompt/tool/corpus/runtime candidate; verify scope/configuration changes invalidate affected evidence.",
+        "Supply regression, rollback and promotion evidence with actual release authority; no provider/spend is selected."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "releaseManifest": {
+          "id": null,
+          "version": null,
+          "contentHash": null,
+          "modelIdentityRevisionOrSnapshot": null,
+          "mutableAliasLimitationsAndDetection": null,
+          "promptsInstructionsTemplateHash": null,
+          "prePostProcessingVersions": null,
+          "guardrailPolicyConfigurationHash": null,
+          "retrievalCorpusIndexEmbeddingRankingVersions": null,
+          "toolSchemaPermissionCodeVersions": null,
+          "runtimeDependencyConfigurationVersions": null,
+          "datasetRubricJudgeEvaluatorPins": null
+        },
+        "changeAndImpactRecord": {
+          "mapping": "ELEMENT-ASSURANCE-MAP.json",
+          "source_revision": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+          "source_hash": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+          "stage": "planning",
+          "record_policy": "Review invalidated by semantic scope, source, dependency, configuration, record or gate changes; use package scoped-v1 fingerprints when actual reviews are authored."
+        },
+        "baselineManifestAndRequiredRegressionSet": null,
+        "regressionResultsAndPromotionThresholds": [],
+        "candidateApprovalAndObservedOperatingManifestReferences": [],
+        "actualPromotionAuthorityEvidence": [],
+        "rollbackOrHaltAvailablePath": "Propose retain approved history, refuse unresolved replay, halt affected AI capability and use independently qualified AI-off path; actual end-to-end proof pending.",
+        "rollbackCompatibilityAndEffectTests": [],
+        "changesThatInvalidatePriorReviews": [
+          "Changed applicable item/ancestor/closure/source/evidence/authority profiles, as defined by checker/loop-quality-spec.md; bookkeeping alone is not a blanket validity guarantee."
+        ],
+        "acceptedReproducibilityLimitationsEvidence": []
+      }
+    },
+    {
+      "id": "AI-06",
+      "title": "Data permissions, privacy and law",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.personal_data_controls",
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+        "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "personalDataApplicability": {
+          "applicability": "yes",
+          "rationale": "Actual original classification/purpose/retention and participant/registry source require sensitive/personal data controls; no real-data use or privacy approval is inferred.",
+          "sourceIds": [
+            "src-original-FR-PRV-001",
+            "src-original-FR-PAR-001"
+          ]
+        },
+        "dataFlowInventory": [],
+        "purposeAndPermissionBasisPerFlow": [],
+        "trainingReuseSeparatePermissionEvidence": [],
+        "noticesConsentWithdrawalOrOtherBasisDecision": null,
+        "collectionMinimisationAccessSecurityRetentionDeletionTests": [
+          {
+            "state": "planned, not executed",
+            "protocol": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+            "scope": "Tenant/current-authority disclosure, grant withdrawal, minimisation, retention/deletion and protected evidence per exact source criterion."
+          }
+        ],
+        "childrenOrLawfulGuardianApplicabilityDecision": null,
+        "recipientsProcessorsLocationsTransfersAndContractControls": [],
+        "providerTrainingSubprocessorDeletionAndTelemetryDecisions": [],
+        "rightsAndIncidentResponseContract": null,
+        "jurisdictionCurrentDutyRegister": [],
+        "indiaDpdpReviewIfApplicable": {
+          "applicability": "unknown",
+          "factualScopeAndRole": null,
+          "reviewedAt": null,
+          "qualifiedReviewerAuthorityEvidence": [],
+          "actRulesCorrigendumAndOrderVersions": [],
+          "currentlyInForceProvisions": [],
+          "scheduledProvisionsAndDerivedDates": [],
+          "otherCurrentApplicableDuties": [],
+          "productPolicyBeforeCommencement": [],
+          "exemptionsAndJustification": [],
+          "actualReleaseDateApplicabilityDecision": null
+        },
+        "unresolvedRequiredPermissionOrLegalDecisions": [
+          "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+          "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+        ]
+      }
+    },
+    {
+      "id": "AI-07",
+      "title": "Monitoring, incidents and product learning",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "EPIC-ADOPTION-DIAGNOSE",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Agree lawful monitored population, actionable signals, cadence/minimum counts and actual incident/escalation responsibility.",
+        "Supply alert, operator-absence, halt/rollback and post-release observations at the stage when required."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "acceptedManifestPopulationAndBaseline": null,
+        "inputOutputBehaviorOutcomeIncidentSignals": [],
+        "importantSlicePerformanceAndDisparityMeasures": [],
+        "refusalAbstentionOverrideComplaintAvailabilityResourceSignals": [],
+        "permissionsSampleCadenceMinimumCountsAndLag": null,
+        "driftQualityAndSafetyThresholds": [],
+        "labelDelayAndProxyLimitations": null,
+        "alertDestinationOwnerAuthorityAndResponseTime": null,
+        "alertAndOperatorAbsenceTests": [],
+        "warningEscalationFallbackRollbackHaltContract": "Use scoped refusal/AI-off/halt plan, with actual available operator and lawful alert routes still pending.",
+        "protectedIncidentEvidenceAndRegressionFeedback": "Proposed defect/incident protocol must retain exact source/candidate/configuration, raw failure evidence, confidentiality and affected regression links; no incident owner/cadence or operating result asserted.",
+        "postReleaseReview": {
+          "windowAndPopulation": null,
+          "reviewDateAndActualOwner": null,
+          "targetBaselineActualComparisons": [],
+          "perSliceNumeratorsDenominatorsUncertainty": [],
+          "incidentsUnexpectedEffectsAndConfounders": [],
+          "continueImproveNarrowRollbackRetireDecision": null,
+          "authorityEvidence": [],
+          "strategyFeedbackReferences": [],
+          "roadmapFeedbackReferences": [],
+          "ownedActionsAndHypothesisUpdates": []
+        }
+      }
+    }
+  ],
+  "hierarchyEvidenceMapping": [
+    {
+      "manifest": "ELEMENT-ASSURANCE-MAP.json",
+      "scope_id": "EPIC-ADOPTION-DIAGNOSE",
+      "included_story_ids": [
+        "US-DX-01a",
+        "US-DX-01b",
+        "US-DX-02",
+        "US-DX-03",
+        "US-DX-04",
+        "US-DX-05"
+      ],
+      "claim": "Shared intake/evidence reuse only; no per-child verdict or independent review created."
+    }
+  ],
+  "nextRequiredQuestions": [
+    {
+      "groupId": "AI-01",
+      "questions": [
+        "Name the actual use case, accountable decision authority and permitted recommendation/action boundary before commitment.",
+        "Review scoped risk and human escalation capacity; no role appointment is supplied by this authoring."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-02",
+      "questions": [
+        "Supply a lawful held-out synthetic/authorised evaluation population, dataset/rubric version, rights, slice counts and adequacy rationale.",
+        "Approve target quality bars and annotation independence; no dataset or label audit is claimed."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-03",
+      "questions": [
+        "Freeze numerator/denominator, critical slices, costly-error/refusal measures, targets, sample/window and configuration before evaluation.",
+        "Supply actual retained per-case results; original thresholds remain exact, new targets are pending."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-04",
+      "questions": [
+        "Execute source-positive, hidden/revoked, wrong-tenant, stale, prompt-injection, uncertain/cancelled/replayed and AI-off fallback paths on the selected candidate.",
+        "Resolve must-pass safety findings and operator/accessibility capacity with authorised decisions."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-05",
+      "questions": [
+        "Choose and pin the actual model/prompt/tool/corpus/runtime candidate; verify scope/configuration changes invalidate affected evidence.",
+        "Supply regression, rollback and promotion evidence with actual release authority; no provider/spend is selected."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-06",
+      "questions": [
+        "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+        "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-07",
+      "questions": [
+        "Agree lawful monitored population, actionable signals, cadence/minimum counts and actual incident/escalation responsibility.",
+        "Supply alert, operator-absence, halt/rollback and post-release observations at the stage when required."
+      ],
+      "state": "needs_input"
+    }
+  ],
+  "externalReviewAndApprovalBoundary": {
+    "mode": "offline_advisory",
+    "trustedRegistryOrReviewServiceReference": null,
+    "externalTrustAnchorEvidence": [],
+    "approvalEvidence": []
+  },
+  "assessmentClaim": "Draft planning intake and evidence index. All seven groups needs_input; not package checker input, assessed capability, approval, Ready/Done, release qualification or certification.",
+  "planningScope": {
+    "scope_id": "EPIC-ADOPTION-DIAGNOSE",
+    "included_story_ids": [
+      "US-DX-01a",
+      "US-DX-01b",
+      "US-DX-02",
+      "US-DX-03",
+      "US-DX-04",
+      "US-DX-05"
+    ],
+    "source_problem": {
+      "text": "Priority problems, data readiness and baseline facts are scattered and can be reinterpreted between advice and implementation.",
+      "evidence_state": "Source requirement synthesis; no user research observation claimed"
+    },
+    "proposed_outcome": "One versioned diagnosis carries stable ordered problems, readiness, a locked baseline, staff contributions and advisor validation.",
+    "source_contract": "Stable problem IDs/order, evidence bindings, baseline version, contribution/review history, keyboard interaction and stale-edit refusal.",
+    "excluded_scope": "Hand a referenced diagnosis revision to Map and baseline references to Improve; conversational intake remains an optional separately governed route.",
+    "risk_hypothesis": {
+      "hypothesis": "Staff and leadership can agree priorities and explain evidence in a structured manual form before generated intake is needed.",
+      "counter_hypothesis": "The proposed capability does not produce the stated outcome or its controls cannot preserve the declared boundary.",
+      "rank_rationale": "Recommended highest-consequence uncertainty in this capability; priority not approved and no numerical risk score fabricated.",
+      "method": "Recommended isolated synthetic walkthrough of one source-positive case and its strongest source refusal; later representative user/operator evaluation requires an actually authorised purpose/population.",
+      "population": "No real participant cohort recruited or authorised by this proposal; source personas are planning roles.",
+      "decision_rule": "Any prohibited disclosure, data loss, independence bypass or wrong official result stops the affected commitment. If source checks succeed, assess the stated outcome in the authorised walkthrough; change the scope or method if the outcome is not demonstrated. This is a proposed qualitative rule, not an observed result or approved success threshold.",
+      "actual_observation": "Not run by this documentation refinement",
+      "threshold_and_window": "Existing source thresholds remain exact; any new user-outcome threshold/sample/window needs a recorded decision before it can support a commitment."
+    },
+    "release_allocation": {
+      "R1 Pilot": 6
+    }
+  }
+}

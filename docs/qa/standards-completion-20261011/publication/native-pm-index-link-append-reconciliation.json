@@ -1,0 +1,9 @@
+{
+  "beforeId": "10991a34-5d41-4b5d-b565-047b8afced0c",
+  "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-pm-assurance-continuation-11-october-2026-0309e66d7472",
+  "originalPrefixByteExact": true,
+  "normalizedExact": true,
+  "verified": true,
+  "firstObservation": "native-pm-index-link-append.json retained false composer check",
+  "qualification": "The first expected composer carried the draft's terminal newline into an internal separator. Use exact before native content plus authorized appendix; original prefix is byte-identical and entire readback equals planned append under observed cosmetics."
+}

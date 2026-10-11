@@ -1,0 +1,3727 @@
+{
+  "templateVersion": "3.0-generic",
+  "moduleId": "generic.ai_assurance.v3",
+  "purpose": "Intake and evidence index only; not executable checker input, an AI runtime, approval or compliance certification",
+  "record": {
+    "id": "AI-IMPRANA-CROSS-CUTTING",
+    "version": "draft-20261011.1",
+    "contentHash": "00f97149a3b502e08ad7e270a6e976dd21cdeb17905f4c7f56ea3624f5b01d6a",
+    "capabilityId": "IMPRANA-CROSS-CUTTING",
+    "releaseOrScopeId": "IMPRANA-CROSS-CUTTING",
+    "stage": "planning",
+    "environment": "Documentation planning; no selected runtime candidate",
+    "author": "Imprana PM author (AI-assisted draft; authority not authenticated)",
+    "authorAuthoritySourceIds": [],
+    "updatedAt": "2026-10-11T05:47:07.709681+00:00"
+  },
+  "productRuntimeAiApplicability": {
+    "applicability": "yes",
+    "sourceIds": [
+      "src-original-FR-AI-001"
+    ],
+    "rationale": "Actual original FR-AI-001 requires an organisation AI use-case/provider/transmission policy. The complete product scope includes the existing AI adoption/capability stories; absence in a single slice is not no-use.",
+    "resolutionPlan": "Product-level YES retained. Scoped exposure is assessed through this mapping; no non-AI item is used to waive product obligations."
+  },
+  "documentationAuthoringAiUse": {
+    "applicability": "yes",
+    "toolAndDataHandlingPermissionsEvidence": [],
+    "limitation": "Owner requested documentation refinement in this chat; no independently authenticated tool/data authorisation evidence is supplied to the package."
+  },
+  "sources": [
+    {
+      "id": "local-1",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+      "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-2",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-3",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+      "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-4",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-5",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-6",
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-7",
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+      "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-8",
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-9",
+      "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-10",
+      "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-11",
+      "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+      "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-12",
+      "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "local-13",
+      "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "kind": "retained source / proposed protocol; no new execution"
+    },
+    {
+      "id": "source-adapter",
+      "path": "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V4.json",
+      "sha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+      "json_pointer": "/productProfile",
+      "kind": "protected planning input"
+    }
+  ],
+  "assuranceGroups": [
+    {
+      "id": "AI-01",
+      "title": "Intended use, authority and risk",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.context_profile",
+        "common.boundary"
+      ],
+      "pendingQuestions": [
+        "Name the actual use case, accountable decision authority and permitted recommendation/action boundary before commitment.",
+        "Review scoped risk and human escalation capacity; no role appointment is supplied by this authoring."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "capabilityAndNonAiBaseline": "A permitted end-to-end workflow with current authority, deterministic official results and usable AI-off alternatives. Compare manual/deterministic/AI-off alternatives before claiming incremental value.",
+        "usersAndAffectedGroups": [
+          {
+            "story_id": "FR-SEC-008",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-010",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-RT-01",
+            "source_persona": "Athena Leadership",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-RT-02",
+            "source_persona": "Product Owner",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-RT-03",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-RT-05",
+            "source_persona": "Product Owner",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-007",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-011",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-012",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-013",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-014",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-015",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-016a",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-016b",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-018",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-002",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-003",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-005",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-011",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AD-01",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AD-02",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AS-01",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AS-03",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DP-02",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DP-03",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-01a",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-01b",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-02",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-03",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DX-05",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DC-01",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DC-02",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DC-03",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DC-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-IM-01",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-IM-02",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-IM-03",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-MP-01",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-MP-02",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-MP-03",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-MP-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-VC-01",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-VC-02",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-VC-03",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-VC-05",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-001",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-002",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-003",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-005",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-009",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-010",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-011",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-015",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-05",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-09",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-002",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-003",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-004",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-002",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-009",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-003",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-003",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-005",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-006",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-FP-01",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-FP-03",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-002",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-003",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-006",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-008",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-009",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-014",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-IAM-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-003",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-005",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-007",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-010",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-012",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-002",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-003",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-007",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AIQ-001",
+            "source_persona": "Product Owner",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AIQ-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AIQ-004",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AUD-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AVL-001",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AVL-002",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-DIN-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-DIN-002",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-OBS-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-001",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-006",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PRT-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-DR-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-DR-002",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-DR-003",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-SUP-001",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "NFR-08",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-OP-01",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-OP-02",
+            "source_persona": "Imprana Advisor",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-05",
+            "source_persona": "Solution Partner Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PL-03",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-001",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-002",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-003",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-004",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-005",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-006",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-007",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-009",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-010",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PRV-001",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PRV-002",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-001",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-006",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-003",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-007",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-009",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-010",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-003",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-010",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-002",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-003",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-004",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-005",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-006",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-007",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-009",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-011",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-012",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-013",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-014",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-SEC-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-SEC-002",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-005",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-006",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-007",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-002",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-003",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-010",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-001",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-003",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-004",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-005",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-006",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-009",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-UX-001",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-001",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-002",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-003",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-007",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-010",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-003",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-005",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-006",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-010",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-007",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-008",
+            "source_persona": "Support Agent",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-009",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-010",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AD-03",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AD-04",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-AS-02",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-DP-04",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-IM-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-IM-05",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-VC-04",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-004",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-006",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-007",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-012",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-014",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-02",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-03",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-06",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-07",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-CM-08",
+            "source_persona": "Operations Head",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-001",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-007",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-003",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-005",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-006",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-007",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-008",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-010",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-011",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DAT-012",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-002",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-005",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-003",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-004",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-007",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-001",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-004",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-008",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-007",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-010",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-FP-02",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-FP-04",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-004",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-007",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-010",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-012",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-013",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-009",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-011",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-013",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-014",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IND-015",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-004",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-005",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-007",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-009",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-002",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-003",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-005",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-006",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-MIG-008",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AIQ-003",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-AIQ-005",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-CAP-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-CAP-002",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-CMP-001",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-L10-001",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-MNT-001",
+            "source_persona": "Product Owner",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-002",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-003",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-005",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-PER-007",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-001",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-002",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-003",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-004",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-005",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-006",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-007",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OFF-008",
+            "source_persona": "Field Data Collector",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-OFF-001",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-001",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-002",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-003",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-007",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-008",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-01",
+            "source_persona": "Solution Partner Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-02",
+            "source_persona": "Solution Partner Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-03",
+            "source_persona": "Solution Partner Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-06",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRV-008",
+            "source_persona": "Privacy Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-002",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-003",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-004",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-005",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-007",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-008",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-002",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-004",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-005",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-008",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-012",
+            "source_persona": "Funder Portfolio Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-004",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-007",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-009",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-002",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-003",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-004",
+            "source_persona": "Support Agent",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-008",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-004",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-005",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-006",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-007",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-002",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-008",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-010",
+            "source_persona": "Product Owner",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-UX-002",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-004",
+            "source_persona": "Reviewer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-005",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-006",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-008",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-009",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ACC-012",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-013",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-CAL-016",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-005",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-006",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-009",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-ANA-010",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-DQ-007",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-001",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-002",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-003",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-007",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-005",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-006",
+            "source_persona": "Analyst",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVD-008",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-002",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-003",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-005",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-006",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-008",
+            "source_persona": "Programme Participant",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FRM-009",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-005",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-IAM-011",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-006",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-008",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-INT-010",
+            "source_persona": "Integration Developer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "VF-ECO-001",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-005",
+            "source_persona": "Data Steward",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PAR-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "US-PT-04",
+            "source_persona": "Solution Partner Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-009",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PRG-010",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-006",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-RPT-011",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-002",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-005",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-009",
+            "source_persona": "Platform Operator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-OPS-010",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-008",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-TEN-009",
+            "source_persona": "Organisation Administrator",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-UX-007",
+            "source_persona": "Data Author",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-WFL-009",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-AI-017",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-005",
+            "source_persona": "MEL Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-EVA-008",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-FIN-007",
+            "source_persona": "Finance Officer",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-PLN-008",
+            "source_persona": "Programme Manager",
+            "status": "source persona, not an appointment or permission"
+          },
+          {
+            "story_id": "FR-SEC-015",
+            "source_persona": "Executive Director",
+            "status": "source persona, not an appointment or permission"
+          }
+        ],
+        "allowedAndProhibitedUses": [],
+        "operatingBoundary": "Deny by default; tenant fence; current authority; natural-person independence; immutable history; deterministic decimal official arithmetic; synthetic authoring fixtures only.",
+        "recommendationDecisionActionDistinction": "AI output remains a proposal; current governed command/report approval remains separately required.",
+        "riskClassificationAndSourceEvidence": {
+          "state": "proposed risk scope; classification/acceptance pending",
+          "hypothesis": {
+            "actual_observation": "Not run",
+            "method": "Proposed synthetic connected workflow and refusal controls before any authorised real pilot."
+          }
+        },
+        "riskRegister": [],
+        "toolAndExternalEffectPermissions": [],
+        "humanOversightAndOverrideContract": "No autonomous approval, official arithmetic by AI, actual provider/data/spend approval or production certification.",
+        "operatorAvailabilityAndEscalation": null,
+        "residualRiskDecisionEvidence": []
+      }
+    },
+    {
+      "id": "AI-02",
+      "title": "Evaluation dataset quality and rights",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Supply a lawful held-out synthetic/authorised evaluation population, dataset/rubric version, rights, slice counts and adequacy rationale.",
+        "Approve target quality bars and annotation independence; no dataset or label audit is claimed."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "datasetManifest": {
+          "id": null,
+          "version": null,
+          "contentHash": null,
+          "sourceDateRange": null,
+          "taskAndTargetPopulation": "A permitted end-to-end workflow with current authority, deterministic official results and usable AI-off alternatives.",
+          "recordCount": null,
+          "selectionMethod": "Propose source-positive/refusal cases, include critical slices from exact criterion locators in ELEMENT-ASSURANCE-MAP.json; selection counts and adequacy require actual decisions.",
+          "knownExclusions": [],
+          "syntheticOrActualComposition": "Synthetic proposed first; no concrete dataset created or lawful real-data rights asserted.",
+          "recordProvenanceIndex": null,
+          "accessRestrictions": null,
+          "purposeRightsPermissionsReferences": [],
+          "retentionDeletionContract": null
+        },
+        "qualityBar": {
+          "status": "target_pending",
+          "coverageSliceMatrix": [],
+          "minimumSliceCounts": [],
+          "labelValidityThreshold": null,
+          "labelCompletenessThreshold": null,
+          "duplicationErrorLimits": null,
+          "representativenessGapLimits": null,
+          "statisticalAdequacyRationale": null,
+          "approvalEvidence": []
+        },
+        "trainTuneAcceptanceSeparation": null,
+        "entityTimeSplitAndLeakageChecks": [],
+        "unknownTrainingContaminationLimitations": "Provider/training corpus not selected; contamination evidence is unavailable.",
+        "restrictedAcceptanceAccess": null,
+        "annotationRubricVersionHash": null,
+        "annotationQualificationsAndIndependence": null,
+        "disagreementMeasurementAndAdjudication": null,
+        "independentLabelAudit": {
+          "samplingMethod": null,
+          "sampleCount": null,
+          "observedErrors": null,
+          "resultReferences": [],
+          "qualityBarDecision": "needs_input"
+        },
+        "aiJudgeValidationAndHumanCalibrationIfUsed": null,
+        "freshAcceptanceSetAfterTuningOnFailures": null
+      }
+    },
+    {
+      "id": "AI-03",
+      "title": "Acceptance metrics and observed results",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Freeze numerator/denominator, critical slices, costly-error/refusal measures, targets, sample/window and configuration before evaluation.",
+        "Supply actual retained per-case results; original thresholds remain exact, new targets are pending."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "frozenMetricContracts": [
+          {
+            "id": null,
+            "outcomeReference": null,
+            "definition": null,
+            "unit": null,
+            "eligiblePopulationAndExclusions": null,
+            "numeratorDefinition": null,
+            "denominatorDefinition": null,
+            "operator": null,
+            "targetValue": null,
+            "targetStatus": "target_pending",
+            "targetAuthorityEvidence": [],
+            "datasetIdVersionHash": null,
+            "configurationManifestReference": null,
+            "requiredSliceThresholds": [],
+            "measurementWindow": null,
+            "minimumUsableCount": null,
+            "uncertaintyMethod": null,
+            "observedNumerator": null,
+            "observedDenominator": null,
+            "observedValue": null,
+            "perSliceResults": [],
+            "runEvidenceReferences": [],
+            "baselineComparison": null,
+            "decision": "needs_input"
+          }
+        ],
+        "taskSuccessAndCostlyErrorMetrics": [],
+        "refusalFailureAndFalseRefusalMetrics": [],
+        "calibrationAbstentionRequirements": null,
+        "repeatRunsAndStochasticSettings": null,
+        "runManifestAndRawResults": [],
+        "aggregateAndMandatorySliceDecisions": [],
+        "errorAnalysisAndLimitations": "Use exact original numeric/prohibited-effect criteria and proposed criterion evidence plans; do not substitute aggregate success for mandatory refusal/privacy/official-result controls.",
+        "latencyAvailabilityResourceCostTargetsIfMaterial": [],
+        "insufficientOrEmptyDenominatorHandling": "Record no usable observation when denominator is empty; do not infer 0 error or 100% success.",
+        "targetChangeDecisionHistory": []
+      }
+    },
+    {
+      "id": "AI-04",
+      "title": "Safety, refusal, fallback and recovery",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Execute source-positive, hidden/revoked, wrong-tenant, stale, prompt-injection, uncertain/cancelled/replayed and AI-off fallback paths on the selected candidate.",
+        "Resolve must-pass safety findings and operator/accessibility capacity with authorised decisions."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "policyAndProhibitedOutcomeSources": [
+          {
+            "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+            "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111"
+          },
+          "Deny by default; tenant fence; current authority; natural-person independence; immutable history; deterministic decimal official arithmetic; synthetic authoring fixtures only."
+        ],
+        "scenarioSuiteIdVersionHash": null,
+        "ordinaryRefusalUncertainIncorrectUnavailableScenarios": [],
+        "adversarialPrivacyAndToolScenarios": [],
+        "coverageAndResidualRiskLimitations": "Exact per-item criterion/task locators are mapped; test design is not execution. Follow source refusal clauses, missing phases and declared recovery protocol; no residual risk acceptance supplied.",
+        "scenarioPassRulesAndObservedResults": [],
+        "fallbackContractAndEndToEndEvidence": [],
+        "humanEscalationCapacityAndAccessibility": null,
+        "partialCompletionDuplicateCancellationRecoveryTests": [],
+        "safeLoggingAndAccess": "Use synthetic fixtures and protected evidence; do not log participant data, secrets or hidden reasoning. Current tenant/principal/scope controls remain required.",
+        "unresolvedMustPassFailures": []
+      }
+    },
+    {
+      "id": "AI-05",
+      "title": "Versioning, regression and promotion",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.change_history",
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Choose and pin the actual model/prompt/tool/corpus/runtime candidate; verify scope/configuration changes invalidate affected evidence.",
+        "Supply regression, rollback and promotion evidence with actual release authority; no provider/spend is selected."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "releaseManifest": {
+          "id": null,
+          "version": null,
+          "contentHash": null,
+          "modelIdentityRevisionOrSnapshot": null,
+          "mutableAliasLimitationsAndDetection": null,
+          "promptsInstructionsTemplateHash": null,
+          "prePostProcessingVersions": null,
+          "guardrailPolicyConfigurationHash": null,
+          "retrievalCorpusIndexEmbeddingRankingVersions": null,
+          "toolSchemaPermissionCodeVersions": null,
+          "runtimeDependencyConfigurationVersions": null,
+          "datasetRubricJudgeEvaluatorPins": null
+        },
+        "changeAndImpactRecord": {
+          "mapping": "ELEMENT-ASSURANCE-MAP.json",
+          "source_revision": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+          "source_hash": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+          "stage": "planning",
+          "record_policy": "Review invalidated by semantic scope, source, dependency, configuration, record or gate changes; use package scoped-v1 fingerprints when actual reviews are authored."
+        },
+        "baselineManifestAndRequiredRegressionSet": null,
+        "regressionResultsAndPromotionThresholds": [],
+        "candidateApprovalAndObservedOperatingManifestReferences": [],
+        "actualPromotionAuthorityEvidence": [],
+        "rollbackOrHaltAvailablePath": "Propose retain approved history, refuse unresolved replay, halt affected AI capability and use independently qualified AI-off path; actual end-to-end proof pending.",
+        "rollbackCompatibilityAndEffectTests": [],
+        "changesThatInvalidatePriorReviews": [
+          "Changed applicable item/ancestor/closure/source/evidence/authority profiles, as defined by checker/loop-quality-spec.md; bookkeeping alone is not a blanket validity guarantee."
+        ],
+        "acceptedReproducibilityLimitationsEvidence": []
+      }
+    },
+    {
+      "id": "AI-06",
+      "title": "Data permissions, privacy and law",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.personal_data_controls",
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+        "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "personalDataApplicability": {
+          "applicability": "yes",
+          "rationale": "Actual original classification/purpose/retention and participant/registry source require sensitive/personal data controls; no real-data use or privacy approval is inferred.",
+          "sourceIds": [
+            "src-original-FR-PRV-001",
+            "src-original-FR-PAR-001"
+          ]
+        },
+        "dataFlowInventory": [],
+        "purposeAndPermissionBasisPerFlow": [],
+        "trainingReuseSeparatePermissionEvidence": [],
+        "noticesConsentWithdrawalOrOtherBasisDecision": null,
+        "collectionMinimisationAccessSecurityRetentionDeletionTests": [
+          {
+            "state": "planned, not executed",
+            "protocol": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+            "scope": "Tenant/current-authority disclosure, grant withdrawal, minimisation, retention/deletion and protected evidence per exact source criterion."
+          }
+        ],
+        "childrenOrLawfulGuardianApplicabilityDecision": null,
+        "recipientsProcessorsLocationsTransfersAndContractControls": [],
+        "providerTrainingSubprocessorDeletionAndTelemetryDecisions": [],
+        "rightsAndIncidentResponseContract": null,
+        "jurisdictionCurrentDutyRegister": [],
+        "indiaDpdpReviewIfApplicable": {
+          "applicability": "unknown",
+          "factualScopeAndRole": null,
+          "reviewedAt": null,
+          "qualifiedReviewerAuthorityEvidence": [],
+          "actRulesCorrigendumAndOrderVersions": [],
+          "currentlyInForceProvisions": [],
+          "scheduledProvisionsAndDerivedDates": [],
+          "otherCurrentApplicableDuties": [],
+          "productPolicyBeforeCommencement": [],
+          "exemptionsAndJustification": [],
+          "actualReleaseDateApplicabilityDecision": null
+        },
+        "unresolvedRequiredPermissionOrLegalDecisions": [
+          "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+          "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+        ]
+      }
+    },
+    {
+      "id": "AI-07",
+      "title": "Monitoring, incidents and product learning",
+      "status": "needs_input",
+      "assessedStage": null,
+      "claim": "Source-bound planning proposal only; required actual decisions/reviews/results remain unresolved.",
+      "scope": "IMPRANA-CROSS-CUTTING",
+      "evidenceReferences": [
+        {
+          "id": "local-1",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-2",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-3",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-4",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-5",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-6",
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-7",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+          "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-8",
+          "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-9",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+          "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-10",
+          "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+          "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-11",
+          "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+          "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-12",
+          "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "kind": "retained source / proposed protocol; no new execution"
+        },
+        {
+          "id": "local-13",
+          "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+          "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+          "kind": "retained source / proposed protocol; no new execution"
+        }
+      ],
+      "sourceIds": [
+        "src-original-FR-AI-001",
+        "src-original-FR-PRV-001",
+        "src-original-FR-PAR-001"
+      ],
+      "catalogueFieldReferences": [
+        "common.ai_assurance_reference"
+      ],
+      "pendingQuestions": [
+        "Agree lawful monitored population, actionable signals, cadence/minimum counts and actual incident/escalation responsibility.",
+        "Supply alert, operator-absence, halt/rollback and post-release observations at the stage when required."
+      ],
+      "exclusionsWithEvidence": [],
+      "reviewReference": null,
+      "details": {
+        "acceptedManifestPopulationAndBaseline": null,
+        "inputOutputBehaviorOutcomeIncidentSignals": [],
+        "importantSlicePerformanceAndDisparityMeasures": [],
+        "refusalAbstentionOverrideComplaintAvailabilityResourceSignals": [],
+        "permissionsSampleCadenceMinimumCountsAndLag": null,
+        "driftQualityAndSafetyThresholds": [],
+        "labelDelayAndProxyLimitations": null,
+        "alertDestinationOwnerAuthorityAndResponseTime": null,
+        "alertAndOperatorAbsenceTests": [],
+        "warningEscalationFallbackRollbackHaltContract": "Use scoped refusal/AI-off/halt plan, with actual available operator and lawful alert routes still pending.",
+        "protectedIncidentEvidenceAndRegressionFeedback": "Proposed defect/incident protocol must retain exact source/candidate/configuration, raw failure evidence, confidentiality and affected regression links; no incident owner/cadence or operating result asserted.",
+        "postReleaseReview": {
+          "windowAndPopulation": null,
+          "reviewDateAndActualOwner": null,
+          "targetBaselineActualComparisons": [],
+          "perSliceNumeratorsDenominatorsUncertainty": [],
+          "incidentsUnexpectedEffectsAndConfounders": [],
+          "continueImproveNarrowRollbackRetireDecision": null,
+          "authorityEvidence": [],
+          "strategyFeedbackReferences": [],
+          "roadmapFeedbackReferences": [],
+          "ownedActionsAndHypothesisUpdates": []
+        }
+      }
+    }
+  ],
+  "hierarchyEvidenceMapping": [
+    {
+      "manifest": "ELEMENT-ASSURANCE-MAP.json",
+      "scope_id": "IMPRANA-CROSS-CUTTING",
+      "included_story_ids": [
+        "FR-SEC-008",
+        "FR-SEC-010",
+        "US-RT-01",
+        "US-RT-02",
+        "US-RT-03",
+        "US-RT-05",
+        "FR-AI-001",
+        "FR-AI-007",
+        "FR-AI-011",
+        "FR-AI-012",
+        "FR-AI-013",
+        "FR-AI-014",
+        "FR-AI-015",
+        "FR-AI-016a",
+        "FR-AI-016b",
+        "FR-AI-018",
+        "FR-ACC-001",
+        "FR-ACC-002",
+        "FR-ACC-003",
+        "FR-ACC-004",
+        "FR-ACC-005",
+        "FR-ACC-006",
+        "FR-ACC-011",
+        "US-AD-01",
+        "US-AD-02",
+        "US-AS-01",
+        "US-AS-03",
+        "US-DP-02",
+        "US-DP-03",
+        "US-DX-01a",
+        "US-DX-01b",
+        "US-DX-02",
+        "US-DX-03",
+        "US-DX-04",
+        "US-DX-05",
+        "US-DC-01",
+        "US-DC-02",
+        "US-DC-03",
+        "US-DC-04",
+        "US-IM-01",
+        "US-IM-02",
+        "US-IM-03",
+        "US-MP-01",
+        "US-MP-02",
+        "US-MP-03",
+        "US-MP-04",
+        "US-VC-01",
+        "US-VC-02",
+        "US-VC-03",
+        "US-VC-05",
+        "FR-CAL-001",
+        "FR-CAL-002",
+        "FR-CAL-003",
+        "FR-CAL-005",
+        "FR-CAL-008",
+        "FR-CAL-009",
+        "FR-CAL-010",
+        "FR-CAL-011",
+        "FR-CAL-015",
+        "US-CM-04",
+        "US-CM-05",
+        "US-CM-09",
+        "FR-ANA-002",
+        "FR-ANA-003",
+        "FR-ANA-004",
+        "FR-DAT-001",
+        "FR-DAT-002",
+        "FR-DAT-004",
+        "FR-DAT-009",
+        "FR-DQ-003",
+        "FR-DQ-006",
+        "FR-EVD-001",
+        "FR-FRM-001",
+        "FR-FRM-002",
+        "FR-FRM-003",
+        "FR-FRM-005",
+        "FR-FRM-006",
+        "US-FP-01",
+        "US-FP-03",
+        "FR-IAM-001",
+        "FR-IAM-002",
+        "FR-IAM-003",
+        "FR-IAM-006",
+        "FR-IAM-008",
+        "FR-IAM-009",
+        "FR-IAM-014",
+        "VF-IAM-001",
+        "FR-IND-001",
+        "FR-IND-002",
+        "FR-IND-003",
+        "FR-IND-004",
+        "FR-IND-005",
+        "FR-IND-006",
+        "FR-IND-007",
+        "FR-IND-008",
+        "FR-IND-010",
+        "FR-IND-012",
+        "FR-INT-001",
+        "FR-INT-002",
+        "FR-INT-003",
+        "FR-MIG-007",
+        "VF-AIQ-001",
+        "VF-AIQ-002",
+        "VF-AIQ-004",
+        "VF-AUD-001",
+        "VF-AVL-001",
+        "VF-AVL-002",
+        "VF-DIN-001",
+        "VF-DIN-002",
+        "VF-OBS-001",
+        "VF-PER-001",
+        "VF-PER-006",
+        "VF-PRT-001",
+        "VF-DR-001",
+        "VF-DR-002",
+        "VF-DR-003",
+        "VF-SUP-001",
+        "NFR-08",
+        "US-OP-01",
+        "US-OP-02",
+        "US-PT-05",
+        "US-PL-03",
+        "FR-PRV-001",
+        "FR-PRV-002",
+        "FR-PRV-003",
+        "FR-PRV-004",
+        "FR-PRV-005",
+        "FR-PRV-006",
+        "FR-PRV-007",
+        "FR-PRV-009",
+        "FR-PRV-010",
+        "VF-PRV-001",
+        "VF-PRV-002",
+        "FR-PRG-001",
+        "FR-PRG-006",
+        "FR-RPT-003",
+        "FR-RPT-007",
+        "FR-RPT-009",
+        "FR-RPT-010",
+        "FR-PLN-001",
+        "FR-PLN-003",
+        "FR-PLN-006",
+        "FR-PLN-010",
+        "FR-SEC-001",
+        "FR-SEC-002",
+        "FR-SEC-003",
+        "FR-SEC-004",
+        "FR-SEC-005",
+        "FR-SEC-006",
+        "FR-SEC-007",
+        "FR-SEC-009",
+        "FR-SEC-011",
+        "FR-SEC-012",
+        "FR-SEC-013",
+        "FR-SEC-014",
+        "VF-SEC-001",
+        "VF-SEC-002",
+        "FR-OPS-001",
+        "FR-OPS-005",
+        "FR-OPS-006",
+        "FR-OPS-007",
+        "FR-TEN-001",
+        "FR-TEN-002",
+        "FR-TEN-003",
+        "FR-TEN-010",
+        "FR-UX-001",
+        "FR-UX-003",
+        "FR-UX-004",
+        "FR-UX-005",
+        "FR-UX-006",
+        "FR-UX-009",
+        "VF-UX-001",
+        "FR-WFL-001",
+        "FR-WFL-002",
+        "FR-WFL-003",
+        "FR-WFL-007",
+        "FR-WFL-008",
+        "FR-WFL-010",
+        "FR-AI-002",
+        "FR-AI-003",
+        "FR-AI-004",
+        "FR-AI-005",
+        "FR-AI-006",
+        "FR-AI-010",
+        "FR-ACC-007",
+        "FR-ACC-008",
+        "FR-ACC-009",
+        "FR-ACC-010",
+        "US-AD-03",
+        "US-AD-04",
+        "US-AS-02",
+        "US-DP-04",
+        "US-IM-04",
+        "US-IM-05",
+        "US-VC-04",
+        "FR-CAL-004",
+        "FR-CAL-006",
+        "FR-CAL-007",
+        "FR-CAL-012",
+        "FR-CAL-014",
+        "US-CM-02",
+        "US-CM-03",
+        "US-CM-06",
+        "US-CM-07",
+        "US-CM-08",
+        "FR-ANA-001",
+        "FR-ANA-007",
+        "FR-ANA-008",
+        "FR-DAT-003",
+        "FR-DAT-005",
+        "FR-DAT-006",
+        "FR-DAT-007",
+        "FR-DAT-008",
+        "FR-DAT-010",
+        "FR-DAT-011",
+        "FR-DAT-012",
+        "FR-DQ-001",
+        "FR-DQ-002",
+        "FR-DQ-004",
+        "FR-DQ-005",
+        "FR-DQ-008",
+        "FR-EVA-004",
+        "FR-EVD-002",
+        "FR-EVD-003",
+        "FR-EVD-004",
+        "FR-EVD-007",
+        "FR-FIN-001",
+        "FR-FIN-004",
+        "FR-FIN-008",
+        "FR-FRM-004",
+        "FR-FRM-007",
+        "FR-FRM-010",
+        "US-FP-02",
+        "US-FP-04",
+        "FR-IAM-004",
+        "FR-IAM-007",
+        "FR-IAM-010",
+        "FR-IAM-012",
+        "FR-IAM-013",
+        "FR-IND-009",
+        "FR-IND-011",
+        "FR-IND-013",
+        "FR-IND-014",
+        "FR-IND-015",
+        "FR-INT-004",
+        "FR-INT-005",
+        "FR-INT-007",
+        "FR-INT-009",
+        "FR-MIG-001",
+        "FR-MIG-002",
+        "FR-MIG-003",
+        "FR-MIG-004",
+        "FR-MIG-005",
+        "FR-MIG-006",
+        "FR-MIG-008",
+        "VF-AIQ-003",
+        "VF-AIQ-005",
+        "VF-CAP-001",
+        "VF-CAP-002",
+        "VF-CMP-001",
+        "VF-L10-001",
+        "VF-MNT-001",
+        "VF-PER-002",
+        "VF-PER-003",
+        "VF-PER-004",
+        "VF-PER-005",
+        "VF-PER-007",
+        "FR-OFF-001",
+        "FR-OFF-002",
+        "FR-OFF-003",
+        "FR-OFF-004",
+        "FR-OFF-005",
+        "FR-OFF-006",
+        "FR-OFF-007",
+        "FR-OFF-008",
+        "VF-OFF-001",
+        "FR-PAR-001",
+        "FR-PAR-002",
+        "FR-PAR-003",
+        "FR-PAR-004",
+        "FR-PAR-007",
+        "FR-PAR-008",
+        "US-PT-01",
+        "US-PT-02",
+        "US-PT-03",
+        "US-PT-06",
+        "FR-PRV-008",
+        "FR-PRG-002",
+        "FR-PRG-003",
+        "FR-PRG-004",
+        "FR-PRG-005",
+        "FR-PRG-007",
+        "FR-PRG-008",
+        "FR-RPT-001",
+        "FR-RPT-002",
+        "FR-RPT-004",
+        "FR-RPT-005",
+        "FR-RPT-008",
+        "FR-RPT-012",
+        "FR-PLN-004",
+        "FR-PLN-007",
+        "FR-PLN-009",
+        "FR-OPS-002",
+        "FR-OPS-003",
+        "FR-OPS-004",
+        "FR-OPS-008",
+        "FR-TEN-004",
+        "FR-TEN-005",
+        "FR-TEN-006",
+        "FR-TEN-007",
+        "FR-UX-002",
+        "FR-UX-008",
+        "FR-UX-010",
+        "VF-UX-002",
+        "FR-WFL-004",
+        "FR-WFL-005",
+        "FR-WFL-006",
+        "FR-AI-008",
+        "FR-AI-009",
+        "FR-ACC-012",
+        "FR-CAL-013",
+        "FR-CAL-016",
+        "FR-ANA-005",
+        "FR-ANA-006",
+        "FR-ANA-009",
+        "FR-ANA-010",
+        "FR-DQ-007",
+        "FR-EVA-001",
+        "FR-EVA-002",
+        "FR-EVA-003",
+        "FR-EVA-006",
+        "FR-EVA-007",
+        "FR-EVD-005",
+        "FR-EVD-006",
+        "FR-EVD-008",
+        "FR-FIN-002",
+        "FR-FIN-003",
+        "FR-FIN-005",
+        "FR-FIN-006",
+        "FR-FRM-008",
+        "FR-FRM-009",
+        "FR-IAM-005",
+        "FR-IAM-011",
+        "FR-INT-006",
+        "FR-INT-008",
+        "FR-INT-010",
+        "VF-ECO-001",
+        "FR-PAR-005",
+        "FR-PAR-006",
+        "US-PT-04",
+        "FR-PRG-009",
+        "FR-PRG-010",
+        "FR-RPT-006",
+        "FR-RPT-011",
+        "FR-PLN-002",
+        "FR-PLN-005",
+        "FR-OPS-009",
+        "FR-OPS-010",
+        "FR-TEN-008",
+        "FR-TEN-009",
+        "FR-UX-007",
+        "FR-WFL-009",
+        "FR-AI-017",
+        "FR-EVA-005",
+        "FR-EVA-008",
+        "FR-FIN-007",
+        "FR-PLN-008",
+        "FR-SEC-015"
+      ],
+      "claim": "Shared intake/evidence reuse only; no per-child verdict or independent review created."
+    }
+  ],
+  "nextRequiredQuestions": [
+    {
+      "groupId": "AI-01",
+      "questions": [
+        "Name the actual use case, accountable decision authority and permitted recommendation/action boundary before commitment.",
+        "Review scoped risk and human escalation capacity; no role appointment is supplied by this authoring."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-02",
+      "questions": [
+        "Supply a lawful held-out synthetic/authorised evaluation population, dataset/rubric version, rights, slice counts and adequacy rationale.",
+        "Approve target quality bars and annotation independence; no dataset or label audit is claimed."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-03",
+      "questions": [
+        "Freeze numerator/denominator, critical slices, costly-error/refusal measures, targets, sample/window and configuration before evaluation.",
+        "Supply actual retained per-case results; original thresholds remain exact, new targets are pending."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-04",
+      "questions": [
+        "Execute source-positive, hidden/revoked, wrong-tenant, stale, prompt-injection, uncertain/cancelled/replayed and AI-off fallback paths on the selected candidate.",
+        "Resolve must-pass safety findings and operator/accessibility capacity with authorised decisions."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-05",
+      "questions": [
+        "Choose and pin the actual model/prompt/tool/corpus/runtime candidate; verify scope/configuration changes invalidate affected evidence.",
+        "Supply regression, rollback and promotion evidence with actual release authority; no provider/spend is selected."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-06",
+      "questions": [
+        "Resolve per-flow purpose, minimisation, grants, retention/deletion, destinations, training reuse and provider terms before data transmission.",
+        "Qualified human review must decide actual jurisdiction/duties; no legal conclusion or real-data permission is generated."
+      ],
+      "state": "needs_input"
+    },
+    {
+      "groupId": "AI-07",
+      "questions": [
+        "Agree lawful monitored population, actionable signals, cadence/minimum counts and actual incident/escalation responsibility.",
+        "Supply alert, operator-absence, halt/rollback and post-release observations at the stage when required."
+      ],
+      "state": "needs_input"
+    }
+  ],
+  "externalReviewAndApprovalBoundary": {
+    "mode": "offline_advisory",
+    "trustedRegistryOrReviewServiceReference": null,
+    "externalTrustAnchorEvidence": [],
+    "approvalEvidence": []
+  },
+  "assessmentClaim": "Draft planning intake and evidence index. All seven groups needs_input; not package checker input, assessed capability, approval, Ready/Done, release qualification or certification.",
+  "planningScope": {
+    "scope_id": "IMPRANA-CROSS-CUTTING",
+    "included_story_ids": [
+      "FR-SEC-008",
+      "FR-SEC-010",
+      "US-RT-01",
+      "US-RT-02",
+      "US-RT-03",
+      "US-RT-05",
+      "FR-AI-001",
+      "FR-AI-007",
+      "FR-AI-011",
+      "FR-AI-012",
+      "FR-AI-013",
+      "FR-AI-014",
+      "FR-AI-015",
+      "FR-AI-016a",
+      "FR-AI-016b",
+      "FR-AI-018",
+      "FR-ACC-001",
+      "FR-ACC-002",
+      "FR-ACC-003",
+      "FR-ACC-004",
+      "FR-ACC-005",
+      "FR-ACC-006",
+      "FR-ACC-011",
+      "US-AD-01",
+      "US-AD-02",
+      "US-AS-01",
+      "US-AS-03",
+      "US-DP-02",
+      "US-DP-03",
+      "US-DX-01a",
+      "US-DX-01b",
+      "US-DX-02",
+      "US-DX-03",
+      "US-DX-04",
+      "US-DX-05",
+      "US-DC-01",
+      "US-DC-02",
+      "US-DC-03",
+      "US-DC-04",
+      "US-IM-01",
+      "US-IM-02",
+      "US-IM-03",
+      "US-MP-01",
+      "US-MP-02",
+      "US-MP-03",
+      "US-MP-04",
+      "US-VC-01",
+      "US-VC-02",
+      "US-VC-03",
+      "US-VC-05",
+      "FR-CAL-001",
+      "FR-CAL-002",
+      "FR-CAL-003",
+      "FR-CAL-005",
+      "FR-CAL-008",
+      "FR-CAL-009",
+      "FR-CAL-010",
+      "FR-CAL-011",
+      "FR-CAL-015",
+      "US-CM-04",
+      "US-CM-05",
+      "US-CM-09",
+      "FR-ANA-002",
+      "FR-ANA-003",
+      "FR-ANA-004",
+      "FR-DAT-001",
+      "FR-DAT-002",
+      "FR-DAT-004",
+      "FR-DAT-009",
+      "FR-DQ-003",
+      "FR-DQ-006",
+      "FR-EVD-001",
+      "FR-FRM-001",
+      "FR-FRM-002",
+      "FR-FRM-003",
+      "FR-FRM-005",
+      "FR-FRM-006",
+      "US-FP-01",
+      "US-FP-03",
+      "FR-IAM-001",
+      "FR-IAM-002",
+      "FR-IAM-003",
+      "FR-IAM-006",
+      "FR-IAM-008",
+      "FR-IAM-009",
+      "FR-IAM-014",
+      "VF-IAM-001",
+      "FR-IND-001",
+      "FR-IND-002",
+      "FR-IND-003",
+      "FR-IND-004",
+      "FR-IND-005",
+      "FR-IND-006",
+      "FR-IND-007",
+      "FR-IND-008",
+      "FR-IND-010",
+      "FR-IND-012",
+      "FR-INT-001",
+      "FR-INT-002",
+      "FR-INT-003",
+      "FR-MIG-007",
+      "VF-AIQ-001",
+      "VF-AIQ-002",
+      "VF-AIQ-004",
+      "VF-AUD-001",
+      "VF-AVL-001",
+      "VF-AVL-002",
+      "VF-DIN-001",
+      "VF-DIN-002",
+      "VF-OBS-001",
+      "VF-PER-001",
+      "VF-PER-006",
+      "VF-PRT-001",
+      "VF-DR-001",
+      "VF-DR-002",
+      "VF-DR-003",
+      "VF-SUP-001",
+      "NFR-08",
+      "US-OP-01",
+      "US-OP-02",
+      "US-PT-05",
+      "US-PL-03",
+      "FR-PRV-001",
+      "FR-PRV-002",
+      "FR-PRV-003",
+      "FR-PRV-004",
+      "FR-PRV-005",
+      "FR-PRV-006",
+      "FR-PRV-007",
+      "FR-PRV-009",
+      "FR-PRV-010",
+      "VF-PRV-001",
+      "VF-PRV-002",
+      "FR-PRG-001",
+      "FR-PRG-006",
+      "FR-RPT-003",
+      "FR-RPT-007",
+      "FR-RPT-009",
+      "FR-RPT-010",
+      "FR-PLN-001",
+      "FR-PLN-003",
+      "FR-PLN-006",
+      "FR-PLN-010",
+      "FR-SEC-001",
+      "FR-SEC-002",
+      "FR-SEC-003",
+      "FR-SEC-004",
+      "FR-SEC-005",
+      "FR-SEC-006",
+      "FR-SEC-007",
+      "FR-SEC-009",
+      "FR-SEC-011",
+      "FR-SEC-012",
+      "FR-SEC-013",
+      "FR-SEC-014",
+      "VF-SEC-001",
+      "VF-SEC-002",
+      "FR-OPS-001",
+      "FR-OPS-005",
+      "FR-OPS-006",
+      "FR-OPS-007",
+      "FR-TEN-001",
+      "FR-TEN-002",
+      "FR-TEN-003",
+      "FR-TEN-010",
+      "FR-UX-001",
+      "FR-UX-003",
+      "FR-UX-004",
+      "FR-UX-005",
+      "FR-UX-006",
+      "FR-UX-009",
+      "VF-UX-001",
+      "FR-WFL-001",
+      "FR-WFL-002",
+      "FR-WFL-003",
+      "FR-WFL-007",
+      "FR-WFL-008",
+      "FR-WFL-010",
+      "FR-AI-002",
+      "FR-AI-003",
+      "FR-AI-004",
+      "FR-AI-005",
+      "FR-AI-006",
+      "FR-AI-010",
+      "FR-ACC-007",
+      "FR-ACC-008",
+      "FR-ACC-009",
+      "FR-ACC-010",
+      "US-AD-03",
+      "US-AD-04",
+      "US-AS-02",
+      "US-DP-04",
+      "US-IM-04",
+      "US-IM-05",
+      "US-VC-04",
+      "FR-CAL-004",
+      "FR-CAL-006",
+      "FR-CAL-007",
+      "FR-CAL-012",
+      "FR-CAL-014",
+      "US-CM-02",
+      "US-CM-03",
+      "US-CM-06",
+      "US-CM-07",
+      "US-CM-08",
+      "FR-ANA-001",
+      "FR-ANA-007",
+      "FR-ANA-008",
+      "FR-DAT-003",
+      "FR-DAT-005",
+      "FR-DAT-006",
+      "FR-DAT-007",
+      "FR-DAT-008",
+      "FR-DAT-010",
+      "FR-DAT-011",
+      "FR-DAT-012",
+      "FR-DQ-001",
+      "FR-DQ-002",
+      "FR-DQ-004",
+      "FR-DQ-005",
+      "FR-DQ-008",
+      "FR-EVA-004",
+      "FR-EVD-002",
+      "FR-EVD-003",
+      "FR-EVD-004",
+      "FR-EVD-007",
+      "FR-FIN-001",
+      "FR-FIN-004",
+      "FR-FIN-008",
+      "FR-FRM-004",
+      "FR-FRM-007",
+      "FR-FRM-010",
+      "US-FP-02",
+      "US-FP-04",
+      "FR-IAM-004",
+      "FR-IAM-007",
+      "FR-IAM-010",
+      "FR-IAM-012",
+      "FR-IAM-013",
+      "FR-IND-009",
+      "FR-IND-011",
+      "FR-IND-013",
+      "FR-IND-014",
+      "FR-IND-015",
+      "FR-INT-004",
+      "FR-INT-005",
+      "FR-INT-007",
+      "FR-INT-009",
+      "FR-MIG-001",
+      "FR-MIG-002",
+      "FR-MIG-003",
+      "FR-MIG-004",
+      "FR-MIG-005",
+      "FR-MIG-006",
+      "FR-MIG-008",
+      "VF-AIQ-003",
+      "VF-AIQ-005",
+      "VF-CAP-001",
+      "VF-CAP-002",
+      "VF-CMP-001",
+      "VF-L10-001",
+      "VF-MNT-001",
+      "VF-PER-002",
+      "VF-PER-003",
+      "VF-PER-004",
+      "VF-PER-005",
+      "VF-PER-007",
+      "FR-OFF-001",
+      "FR-OFF-002",
+      "FR-OFF-003",
+      "FR-OFF-004",
+      "FR-OFF-005",
+      "FR-OFF-006",
+      "FR-OFF-007",
+      "FR-OFF-008",
+      "VF-OFF-001",
+      "FR-PAR-001",
+      "FR-PAR-002",
+      "FR-PAR-003",
+      "FR-PAR-004",
+      "FR-PAR-007",
+      "FR-PAR-008",
+      "US-PT-01",
+      "US-PT-02",
+      "US-PT-03",
+      "US-PT-06",
+      "FR-PRV-008",
+      "FR-PRG-002",
+      "FR-PRG-003",
+      "FR-PRG-004",
+      "FR-PRG-005",
+      "FR-PRG-007",
+      "FR-PRG-008",
+      "FR-RPT-001",
+      "FR-RPT-002",
+      "FR-RPT-004",
+      "FR-RPT-005",
+      "FR-RPT-008",
+      "FR-RPT-012",
+      "FR-PLN-004",
+      "FR-PLN-007",
+      "FR-PLN-009",
+      "FR-OPS-002",
+      "FR-OPS-003",
+      "FR-OPS-004",
+      "FR-OPS-008",
+      "FR-TEN-004",
+      "FR-TEN-005",
+      "FR-TEN-006",
+      "FR-TEN-007",
+      "FR-UX-002",
+      "FR-UX-008",
+      "FR-UX-010",
+      "VF-UX-002",
+      "FR-WFL-004",
+      "FR-WFL-005",
+      "FR-WFL-006",
+      "FR-AI-008",
+      "FR-AI-009",
+      "FR-ACC-012",
+      "FR-CAL-013",
+      "FR-CAL-016",
+      "FR-ANA-005",
+      "FR-ANA-006",
+      "FR-ANA-009",
+      "FR-ANA-010",
+      "FR-DQ-007",
+      "FR-EVA-001",
+      "FR-EVA-002",
+      "FR-EVA-003",
+      "FR-EVA-006",
+      "FR-EVA-007",
+      "FR-EVD-005",
+      "FR-EVD-006",
+      "FR-EVD-008",
+      "FR-FIN-002",
+      "FR-FIN-003",
+      "FR-FIN-005",
+      "FR-FIN-006",
+      "FR-FRM-008",
+      "FR-FRM-009",
+      "FR-IAM-005",
+      "FR-IAM-011",
+      "FR-INT-006",
+      "FR-INT-008",
+      "FR-INT-010",
+      "VF-ECO-001",
+      "FR-PAR-005",
+      "FR-PAR-006",
+      "US-PT-04",
+      "FR-PRG-009",
+      "FR-PRG-010",
+      "FR-RPT-006",
+      "FR-RPT-011",
+      "FR-PLN-002",
+      "FR-PLN-005",
+      "FR-OPS-009",
+      "FR-OPS-010",
+      "FR-TEN-008",
+      "FR-TEN-009",
+      "FR-UX-007",
+      "FR-WFL-009",
+      "FR-AI-017",
+      "FR-EVA-005",
+      "FR-EVA-008",
+      "FR-FIN-007",
+      "FR-PLN-008",
+      "FR-SEC-015"
+    ],
+    "source_problem": {
+      "text": "One platform connecting governed impact evidence and nonprofit technology/AI adoption.",
+      "evidence_state": "Requirements-derived planning hypothesis; no market/user observation claimed"
+    },
+    "proposed_outcome": "A permitted end-to-end workflow with current authority, deterministic official results and usable AI-off alternatives.",
+    "source_contract": "Deny by default; tenant fence; current authority; natural-person independence; immutable history; deterministic decimal official arithmetic; synthetic authoring fixtures only.",
+    "excluded_scope": "No autonomous approval, official arithmetic by AI, actual provider/data/spend approval or production certification.",
+    "risk_hypothesis": {
+      "actual_observation": "Not run",
+      "method": "Proposed synthetic connected workflow and refusal controls before any authorised real pilot."
+    },
+    "release_allocation": "Each source item retains its existing release relationship."
+  }
+}

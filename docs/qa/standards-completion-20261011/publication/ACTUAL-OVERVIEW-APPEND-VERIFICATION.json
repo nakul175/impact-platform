@@ -1,0 +1,15 @@
+{
+  "record": "IMPRANA-CURRENT-OVERVIEW-APPEND-VERIFICATION",
+  "id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+  "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-framework-refinement-11-october-2026-0fefa9856f45",
+  "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+  "verified": true,
+  "original_prefix_byte_exact": true,
+  "marker_count": 1,
+  "before_sha256": "4ae3f792e52814ad7a68f6f138a107f870bf2414538667e38f81bcfd389f2204",
+  "after_sha256": "c630a85631e9c642d991223d5edebf85a06306ffc92c8fb22658e40c0e3a82cb",
+  "addition_sha256": "319e52e3ef6bc1f396f67c7bde5719de0b67fc4e78fa67221eef578cd41be77a",
+  "raw_evidence_sha256": "b51e8dad573303179aca3354adefb84e2e494817e79455f4b8cdc3e040c1ca6d",
+  "scope": "Existing overview original full prefix plus unique new authoring-evidence appendix; no old receipt/history rewrite.",
+  "qualification": "Complete source-bound Native documentation proof only; no product run, human trust/approval, readiness or release action."
+}

@@ -1,0 +1,2240 @@
+{
+  "record": "INDEPENDENT-IMPRANA-CASE-AND-APPEND-SOURCE-REVIEW",
+  "recorded_at_utc": "2026-10-11T05:41:31.069878+00:00",
+  "reviewer": "Codex independent AI documentation agent; not appointed human owner/reviewer or external trust authority",
+  "scope": "Complete1328 source/case conservation +368 proposed appendices,20 contrasting semantic source samples, root integration boundary only",
+  "status": "SOURCE_AND_DOC_REVIEW_PASS",
+  "source_manifest": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/CASE-DESIGN-MANIFEST.json",
+    "sha256": "4b5de1cc76ea171c34ebb5f3af946af6843d97bf61d620db7e1d88e96094949c",
+    "bytes": 10104521
+  },
+  "append_plan": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/LINEAR-STORY-QA-APPENDS.json",
+    "sha256": "d756eb781548eeca495b0c14cb46450ab3b52cae6b364943a796758483ec42c6",
+    "bytes": 2558022
+  },
+  "original_source": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/ORIGINAL-SCENARIO-SOURCE.json",
+    "sha256": "91c072316d92cc6d118071be8c729aa8635b7014fb3af36e6d8b01c658bb1fc8",
+    "bytes": 960693
+  },
+  "root_docs": [
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/README.md",
+      "sha256": "d9b5524f9836217e1f11623314ccf3d1353c305d322d7207cfed9a136c34b938",
+      "bytes": 5327
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/ADOPTION-CONTRACT.md",
+      "sha256": "a5463d3af949b758a5a266b9c7e058e955fe4b5417e5b265a50f1c267fde18d8",
+      "bytes": 7803
+    }
+  ],
+  "counts": {
+    "original_active_criteria": 1328,
+    "stories": 368,
+    "historical_split_scenarios": 7,
+    "tasks": 1131,
+    "edges": 779,
+    "proposed_modes": {
+      "MANUAL": 66,
+      "AUTO": 1262
+    },
+    "accepted_bindings": 0,
+    "runs": 0,
+    "semantic_story_samples": 20
+  },
+  "checks": [
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-RT-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-RT-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-RT-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-RT-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-013",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-014",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-015",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-016",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-016a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-016b",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-018",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AD-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AD-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AS-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AS-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DP-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DP-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-01a",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-01b",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DX-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DC-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DC-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DC-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DC-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-IM-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-IM-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-IM-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-MP-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-MP-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-MP-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-MP-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-VC-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-VC-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-VC-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-VC-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-015",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-09",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-FP-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-FP-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-014",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-IAM-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AIQ-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AIQ-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AIQ-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AUD-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AVL-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AVL-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-DIN-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-DIN-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-OBS-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PRT-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-DR-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-DR-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-DR-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-SUP-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation NFR-08",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-OP-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-OP-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PL-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PRV-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PRV-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-013",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-014",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-SEC-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-SEC-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-UX-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AD-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AD-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-AS-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-DP-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-IM-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-IM-05",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-VC-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-014",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-06",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-07",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-CM-08",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DAT-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-FP-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-FP-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-013",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-013",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-014",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IND-015",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-MIG-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AIQ-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-AIQ-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-CAP-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-CAP-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-CMP-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-L10-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-MNT-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-PER-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OFF-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-OFF-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-01",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-02",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-03",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-06",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRV-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-UX-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-004",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ACC-012",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-013",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-CAL-016",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-ANA-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-DQ-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVD-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-003",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FRM-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-IAM-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-INT-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation VF-ECO-001",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PAR-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation US-PT-04",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PRG-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-006",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-RPT-011",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-002",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-OPS-010",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-TEN-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-UX-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-WFL-009",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-AI-017",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-005",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-EVA-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-FIN-007",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-PLN-008",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "primary complete Gherkin concatenation FR-SEC-015",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "exact original active denominator and separate history",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "all case/alias/matrix keys exactly original primary criteria",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "no duplicate proposed case IDs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "append stories exactly active primary stories",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "manifest source pins exact current bytes",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "protected source CSV at documentation baseline",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "task population and unchanged predecessor denominator",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "all 1328 exact source, versions, original phases, supplements, hierarchy and honest state",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "all 368 proposed appendices exact complete visible source oracles and draft limits",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "37 missing Given retained",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "7 supplemental assertion groups retained separate",
+      "pass": true,
+      "detail": 7
+    },
+    {
+      "check": "13 non-qualification-task story duties retained",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "proposed method recommendations retain 1262 AUTO / 66 MANUAL",
+      "pass": true,
+      "detail": {
+        "MANUAL": 66,
+        "AUTO": 1262
+      }
+    },
+    {
+      "check": "identity digest exact complete proposed revisions",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "check": "root README.md actual semantic draft/authority boundaries",
+      "pass": true,
+      "detail": [
+        "Applicability remains UNKNOWN until genuinely assessed",
+        "It does not authenticate a human source owner",
+        "No product run, passing qualification result",
+        "these are local source pins"
+      ]
+    },
+    {
+      "check": "root ADOPTION-CONTRACT.md actual semantic draft/authority boundaries",
+      "pass": true,
+      "detail": [
+        "Actual source-owner completeness/applicability/scope/version decision",
+        "NOT_VERIFIED",
+        "authoring decision record",
+        "NOT_READY for release decisions"
+      ]
+    }
+  ],
+  "semantic_samples": [
+    {
+      "story_id": "FR-SEC-008",
+      "case_count": 3,
+      "source_title": "Secure engineering lifecycle",
+      "proposed_layers": [
+        "manual"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-SEC-003",
+      "case_count": 3,
+      "source_title": "Tenant isolation verification",
+      "proposed_layers": [
+        "native"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-ACC-003",
+      "case_count": 4,
+      "source_title": "Effective permissions",
+      "proposed_layers": [
+        "browser",
+        "integration"
+      ],
+      "specific_reuse_gaps": [
+        "Native tenant-fence tests do not establish own-access capability/grant-path explanations for every source path."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-ACC-004",
+      "case_count": 4,
+      "source_title": "Separation of duties",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-AI-001",
+      "case_count": 4,
+      "source_title": "Explicit enablement and policy",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-AI-016a",
+      "case_count": 3,
+      "source_title": "AI jobs with budget reservation and cancellation",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [
+        "Synchronous advisory-attempt tests do not prove source 202 job identity, budget reservations, durable terminal settlement, cancellation or lease/recovery fencing."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-AI-016b",
+      "case_count": 2,
+      "source_title": "Timeouts and labelled partial drafts",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-CAL-001",
+      "case_count": 4,
+      "source_title": "Deterministic calculation",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "VF-DIN-001",
+      "case_count": 3,
+      "source_title": "Calculation correctness",
+      "proposed_layers": [
+        "unit"
+      ],
+      "specific_reuse_gaps": [
+        "Calculation-method file presence is not all golden corpus gate assertions or refusal of release on a failure; inspect the actual independent oracle/gate evidence."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-OFF-001",
+      "case_count": 4,
+      "source_title": "Offline task packages",
+      "proposed_layers": [
+        "browser"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "VF-OFF-001",
+      "case_count": 4,
+      "source_title": "Offline authority window",
+      "proposed_layers": [
+        "browser"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "US-DX-01a",
+      "case_count": 2,
+      "source_title": "Record and prioritise the organisation's problems",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [
+        "Existing adoption-plan storage tests are reusable immutable-save/retry patterns, but do not prove structured problem identity, diagnosis evidence, priority order or completion refusal."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "US-DX-03",
+      "case_count": 4,
+      "source_title": "Locked baseline metrics per priority problem",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [
+        "Adoption-plan tests do not prove immutable reviewed diagnosis baseline, baseline comparison or current-authority rules for this story."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "US-CM-05",
+      "case_count": 3,
+      "source_title": "Visible AI usage credits and limits",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [
+        "Daily advisory limits are not authoritative budget-ledger usage or independent alerts; source requires the actual governed usage contract."
+      ],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "US-DC-04",
+      "case_count": 2,
+      "source_title": "Disclose commercial relationships",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-PRG-006",
+      "case_count": 4,
+      "source_title": "Partner responsibilities",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-TEN-001",
+      "case_count": 4,
+      "source_title": "Tenant lifecycle",
+      "proposed_layers": [
+        "native"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-PRV-001",
+      "case_count": 4,
+      "source_title": "Data inventory and classification",
+      "proposed_layers": [
+        "browser",
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-INT-001",
+      "case_count": 3,
+      "source_title": "Connector qualification",
+      "proposed_layers": [
+        "integration"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    },
+    {
+      "story_id": "FR-SEC-010",
+      "case_count": 4,
+      "source_title": "Independent assurance",
+      "proposed_layers": [
+        "manual"
+      ],
+      "specific_reuse_gaps": [],
+      "all_source_oracles_retained": true,
+      "review_scope": "Source obligations and candidacy boundary; no assertion equivalence, current run, real permission or human approval certified."
+    }
+  ],
+  "findings": [],
+  "append_suitability": "Suitable for additive publication as proposed source-bound case design only, contingent on exact fresh Native prefix/metadata/relations preservation and full readback. Does not authorize or certify runtime, owner approval or accepted case binding.",
+  "remaining_gates": [
+    "Exact fixture inputs/routes/selectors and authoritative absence/readback observations remain unresolved for actual execution.",
+    "Manual recommendations inherit proposed source layer, not human acceptance.",
+    "Accepted risk/applicability/operating scope/source revision policy, independent actual people, real code/version markers or named accepted manual binding remain unresolved.",
+    "No product execution, actual Native publication/readback or Git remote availability observed by this review."
+  ],
+  "product_runs": false,
+  "native_writes": false,
+  "owner_approval": false
+}

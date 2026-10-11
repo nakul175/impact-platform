@@ -1,0 +1,61 @@
+{
+  "scope": "Public-safe stable identities/hashes and bounded documentation proofs. Full Native account payloads/failed readbacks/mutation journals remain outside Git.",
+  "members": [
+    {
+      "source": "ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json",
+      "file": "ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json",
+      "bytes": 136035,
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "exact_copy": true
+    },
+    {
+      "source": "ACTUAL-TARGET-FULL-METADATA-COMPARISON.json",
+      "file": "ACTUAL-TARGET-FULL-METADATA-COMPARISON.json",
+      "bytes": 257,
+      "sha256": "a6dd8f1603e3bdc3bcd19f6e8b36a2b258cd87f1f11ecace49efed89664d67f3",
+      "exact_copy": true
+    },
+    {
+      "source": "ROOT-INTEGRATION-PREPUBLICATION-CHECK.json",
+      "file": "ROOT-INTEGRATION-PREPUBLICATION-CHECK.json",
+      "bytes": 1378,
+      "sha256": "3a0bc0f7521aa2a3bbe07074b6c56ceaf7acdfed911aa0731929ea5f71d195a6",
+      "exact_copy": true
+    },
+    {
+      "source": "ROOT-INTEGRATION-FIRST-LINK-ADAPTER-OBSERVATION.json",
+      "file": "ROOT-INTEGRATION-FIRST-LINK-ADAPTER-OBSERVATION.json",
+      "bytes": 530,
+      "sha256": "ed6b9fc7fd663e79ba3039a3938a8f3d4bbb37406c66e39615a08358353e2e3e",
+      "exact_copy": true
+    },
+    {
+      "source": "native-pm-index-link-append-reconciliation.json",
+      "file": "native-pm-index-link-append-reconciliation.json",
+      "bytes": 627,
+      "sha256": "1bed6eb7b2aa2edde561da34a75165bb031d9d83df9ba04f7d460890e22221c7",
+      "exact_copy": true
+    },
+    {
+      "source": "review_native_publication.py",
+      "file": "review_native_publication.py",
+      "bytes": 8281,
+      "sha256": "d70d9538bc9b9c9fb81a7bbecabe1c6780cb2ae56b8bcd62f00b7b26d7772dc9",
+      "exact_copy": true
+    },
+    {
+      "file": "ACTUAL-OVERVIEW-APPEND-VERIFICATION.json",
+      "bytes": 995,
+      "sha256": "36449a85f2dbfcfa90be2efc5c464909fa963b58f9846bc9a2643428d2ad244e",
+      "compact_derived_from": "native-overview-final-append-readback.json"
+    },
+    {
+      "source": "ACTUAL-FINAL-DOCUMENT-INTEGRITY.json",
+      "file": "ACTUAL-FINAL-DOCUMENT-INTEGRITY.json",
+      "sha256": "804091d4f14133ff5468b57801c3ba8a50ef39d785814d8454732f3070bc9390",
+      "bytes": 1378,
+      "exact_copy": true
+    }
+  ],
+  "prior_prepublication_source_retained_at": "root-integration-history/first-published-root-prepublication-check.json"
+}

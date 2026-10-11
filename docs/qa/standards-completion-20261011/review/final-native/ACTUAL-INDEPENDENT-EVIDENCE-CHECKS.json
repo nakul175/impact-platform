@@ -1,0 +1,700 @@
+{
+  "record": "IMPRANA-FINAL-NATIVE-INDEPENDENT-EVIDENCE-REVIEW-20261011",
+  "reviewed_at_utc": "2026-10-11T06:21:17.073304+00:00",
+  "status": "PASS",
+  "material_findings": [],
+  "checks": [
+    {
+      "check": "actual_unchanged_helper_exit_and_13_corruption_guards",
+      "passed": true,
+      "details": {
+        "exit": 0,
+        "guard_count": 13,
+        "errors": []
+      }
+    },
+    {
+      "check": "root_result_matches_separate_actual_helper_result",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "complete_capture_counts_and_uniqueness",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "all1553_combined_fields_bind_exactly_to_fresh_list_and368_fullGET_descriptions",
+      "passed": true,
+      "details": {
+        "errors": [],
+        "target_full_descriptions": 368,
+        "unselected_excerpt_only": 1185
+      }
+    },
+    {
+      "check": "all1553_fresh_estimate_fields_present_and_unchanged",
+      "passed": true,
+      "details": {
+        "explicit_list_estimate_count": 1553
+      }
+    },
+    {
+      "check": "all368_full_original_prefixes_appends_markers",
+      "passed": true,
+      "details": {
+        "checked": 368,
+        "failures": []
+      }
+    },
+    {
+      "check": "all368_additional_observed_fullGET_fields_exact",
+      "passed": true,
+      "details": {
+        "field_values": 11418,
+        "differences": [],
+        "omitted": []
+      }
+    },
+    {
+      "check": "additional_fullGET_count_and_root_receipt_match",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "first_target_recovered_original_matches_exact_retained_prior_capture",
+      "passed": true,
+      "details": {
+        "fresh_presave_fullGET_obtained": false,
+        "authority": "Saved earlier complete publication capture; not a fresh pre-save capture"
+      }
+    },
+    {
+      "check": "ten_full_document_contents_and_project_exact",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "all21_concrete_parser_repair_provenance_retained_and_literal_only",
+      "passed": true,
+      "details": {
+        "count": 21,
+        "root": 1,
+        "C": 9,
+        "D": 11,
+        "records": [
+          {
+            "id": "APL-429",
+            "lane": "root",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": false,
+            "observed_removed_link_occurrences": 5
+          },
+          {
+            "id": "APL-433",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-436",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-438",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-440",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-444",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-447",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-451",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-455",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-458",
+            "lane": "C",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-607",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-611",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-613",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-616",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-618",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-620",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-648",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-650",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-652",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-654",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          },
+          {
+            "id": "APL-721",
+            "lane": "D",
+            "preserved_bad_prefix": true,
+            "identical_literal_only": true,
+            "restored_original_byte_exact": true,
+            "final_fresh_capture_exact": true,
+            "structured_request_available": true
+          }
+        ]
+      }
+    },
+    {
+      "check": "overview_original_full_content_prefix_and_unique_declared_appendix",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "overview_observed_identity_title_project_metadata_preserved",
+      "passed": true,
+      "details": {
+        "fields": [
+          "id",
+          "title",
+          "icon",
+          "color",
+          "url",
+          "slugId",
+          "createdAt",
+          "archivedAt",
+          "creator",
+          "project",
+          "initiative",
+          "team",
+          "issue"
+        ],
+        "updatedAt_and_updatedBy_not_certified_unchanged": true
+      }
+    },
+    {
+      "check": "24_frozen_PM_source_package_adapter_inputs_unchanged",
+      "passed": true,
+      "details": {
+        "checked": 24,
+        "failures": []
+      }
+    },
+    {
+      "check": "protected_primary_QA_source_history_invariants_unchanged",
+      "passed": true,
+      "details": {
+        "checked": 9,
+        "failures": []
+      }
+    },
+    {
+      "check": "overview_unresolved_QA_runtime_and_acceptance_claims_remain_honest",
+      "passed": true,
+      "details": {
+        "negative_release_errors": 3794,
+        "unknown_applicability": 1328,
+        "selected_unique_runs": 0
+      }
+    },
+    {
+      "check": "five_additional_independent_projection_and_literal_repair_corruption_guards",
+      "passed": true,
+      "details": {
+        "fullGET_description_projection_mutation_rejected": true,
+        "list_estimate_projection_mutation_rejected": true,
+        "combined_extra_field_rejected": true,
+        "generated_autolink_not_normalized_away": true,
+        "repair_word_mutation_rejected": true
+      }
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-full-target-before.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-story-full-plan.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-final-full-targets.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-final-all-metadata.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-final-combined.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-final-ten-document-fresh.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/review_native_publication.py",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/ACTUAL-TARGET-FULL-METADATA-COMPARISON.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-first-target-full-prefix-reconciliation.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-product-refinement-20261011/native-after/full-issues.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-APL-429-auto-link-repair.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/FINAL-JOURNAL.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/267-20261011060220004.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/267-20261011060220004-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/268-20261011060250160.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/268-20261011060250160-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/269-20261011060301516.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/269-20261011060301516-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/270-20261011060311575.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/270-20261011060311575-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/271-20261011060323350.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/271-20261011060323350-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/272-20261011060333444.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/272-20261011060333444-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/273-20261011060348508.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/273-20261011060348508-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/274-20261011060401210.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/274-20261011060401210-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/275-20261011060412528.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-c/after/275-20261011060412528-repaired.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-lane-d/FINAL-JOURNAL.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:outputs/imprana-standards-completion-20261011/native-overview-final-append-readback.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/SOURCE-PINS.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers/SOURCE-BASELINE-PRESERVATION-RECEIPT.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/negative-release-record.stdout.json",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "input_immutable_during_review:work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/CASE-DESIGN-MANIFEST.json",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "input_pins": {
+    "outputs/imprana-standards-completion-20261011/native-full-target-before.json": {
+      "sha256": "1bbd0cce430a74b92f67362b026bb2f4e3c40c575b56d4533a7705d5023f9eb7",
+      "bytes": 14666401
+    },
+    "outputs/imprana-standards-completion-20261011/native-story-full-plan.json": {
+      "sha256": "26906f844807856863b2e8e2e66fae0997c34c0fc7cadb4e9f22235512ae2ade",
+      "bytes": 10842246
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-full-targets.json": {
+      "sha256": "f789711471bbd6bd7ea46815e7d9e20155cdd8547191e8b1e248cac50f2818e1",
+      "bytes": 9116916
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-all-metadata.json": {
+      "sha256": "27a7725b0072d4bf64a2bf2a10f1f905e5a8a8ca7400cda7d0fbf4184b5a6692",
+      "bytes": 1841784
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-combined.json": {
+      "sha256": "761821f029968788a6aac99138539ef40b1015f2b54b086e13c1dd1269c80fd1",
+      "bytes": 10105916
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-ten-document-fresh.json": {
+      "sha256": "6be4a6652a392d4e673e0cad28c9dd7ce187c862554eae05e169c770d2a9af17",
+      "bytes": 584450
+    },
+    "outputs/imprana-standards-completion-20261011/ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json": {
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "bytes": 136035
+    },
+    "outputs/imprana-standards-completion-20261011/review_native_publication.py": {
+      "sha256": "d70d9538bc9b9c9fb81a7bbecabe1c6780cb2ae56b8bcd62f00b7b26d7772dc9",
+      "bytes": 8281
+    },
+    "outputs/imprana-standards-completion-20261011/ACTUAL-TARGET-FULL-METADATA-COMPARISON.json": {
+      "sha256": "a6dd8f1603e3bdc3bcd19f6e8b36a2b258cd87f1f11ecace49efed89664d67f3",
+      "bytes": 257
+    },
+    "outputs/imprana-standards-completion-20261011/native-first-target-full-prefix-reconciliation.json": {
+      "sha256": "7bd5c9d50a6c30ad41f00aab48bd8b93b1349169115d3ccc8960062e9fc4940f",
+      "bytes": 15907
+    },
+    "outputs/imprana-product-refinement-20261011/native-after/full-issues.json": {
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe",
+      "bytes": 16822121
+    },
+    "outputs/imprana-standards-completion-20261011/native-APL-429-auto-link-repair.json": {
+      "sha256": "a393051b90dbe1cf87d890a6b286a2fd0143fca8833115cdf71bc6e5e23ccb90",
+      "bytes": 57811
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/FINAL-JOURNAL.json": {
+      "sha256": "194b81daeeaa857f5c41f0dcfc9dcc29d3784a6509f71ece3f481837b81ad3a7",
+      "bytes": 157789
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/267-20261011060220004.json": {
+      "sha256": "313b74d539ab3e88ca5984adf3140c57de565c4c69fb70db03f67e1db6ba6b40",
+      "bytes": 27166
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/267-20261011060220004-repaired.json": {
+      "sha256": "a3541fe80d6d97b3f122677bf9da2b64245348b342d54b0d455c4e5fb8a1bf4f",
+      "bytes": 26875
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/268-20261011060250160.json": {
+      "sha256": "9f241d24ae6eb94f8bbd513a70f4f201b118b451ab9e7b77e541063d7efe8d95",
+      "bytes": 27072
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/268-20261011060250160-repaired.json": {
+      "sha256": "d71c4fbf4b0ee0cafd2aaaf87e30de4109707c810eff8eebe56e811866c573c8",
+      "bytes": 26782
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/269-20261011060301516.json": {
+      "sha256": "488e3142b7d070dc731aac4e8158f3d92695571f1db45e8b75d45b633d0b45ee",
+      "bytes": 24787
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/269-20261011060301516-repaired.json": {
+      "sha256": "d0913a134d61409fff28845dfcb86f14ec66446cc39f6a8fa7cedd27c09c0b27",
+      "bytes": 24531
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/270-20261011060311575.json": {
+      "sha256": "011615655a09623ff6562aaf09cf127f7dc70f1213e9f13f7a0d73c732644b16",
+      "bytes": 23823
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/270-20261011060311575-repaired.json": {
+      "sha256": "ee898207528fc100ba8b13084cb0f5cdff4b2092ca231bad538470d046533c3a",
+      "bytes": 23569
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/271-20261011060323350.json": {
+      "sha256": "7fd64609a9a0de4b05a70684682275b11d7b359695a9239d20f7e79ab57a56b7",
+      "bytes": 26405
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/271-20261011060323350-repaired.json": {
+      "sha256": "f24d105600b61498f7aa3d0f73ecb2b1abc95c6793361b45ba5431da3cb0177b",
+      "bytes": 26116
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/272-20261011060333444.json": {
+      "sha256": "a0b37cb9bb21cc5689fff8279d03dfe1b63fd6f59f2471132ac8321af602a476",
+      "bytes": 24547
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/272-20261011060333444-repaired.json": {
+      "sha256": "b06e4ac65f5298bba314f8c9d8098f2187b4121414b426c40028704046f0d4e9",
+      "bytes": 24292
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/273-20261011060348508.json": {
+      "sha256": "b665e7e7af9dc1a5ce43d501fabb807b43511e2a3fcc55628577026344cce9c6",
+      "bytes": 26730
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/273-20261011060348508-repaired.json": {
+      "sha256": "78c4a6fd9a6e9ff37f8e770158bb5454671556c5f08b167f7c5b7fbedff5e7b6",
+      "bytes": 26443
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/274-20261011060401210.json": {
+      "sha256": "3f7f44653c0c6cf4b9ae5b342af3f1e60906407f45ee87638e1ff89e298ccb9b",
+      "bytes": 26514
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/274-20261011060401210-repaired.json": {
+      "sha256": "07dc6b2d847624f5a33ce931b20357721c0214a689921afc0e8d8f812a2f4e3f",
+      "bytes": 26228
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/tool-pre-repair/275-20261011060412528.json": {
+      "sha256": "a9dba59b714b8a711ac8c05e8aee258733d867466bf6e0fd2ad1973e00bd32e5",
+      "bytes": 28077
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/after/275-20261011060412528-repaired.json": {
+      "sha256": "fb1e943a304a7e30366a43b132f3f8ef277f51a154d064ba3baf071712086ba3",
+      "bytes": 27790
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-d/FINAL-JOURNAL.json": {
+      "sha256": "57ef3869ef10a0087a2040eed6ce23aadd7be31257acebbd4d0054e1ebd8294c",
+      "bytes": 5743813
+    },
+    "outputs/imprana-standards-completion-20261011/native-overview-final-append-readback.json": {
+      "sha256": "b51e8dad573303179aca3354adefb84e2e494817e79455f4b8cdc3e040c1ca6d",
+      "bytes": 33698
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/SOURCE-PINS.json": {
+      "sha256": "446228889914c019c4fbcb258cb5a56bb76476e8a5630a86a0703f36a6ab4470",
+      "bytes": 6153
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers/SOURCE-BASELINE-PRESERVATION-RECEIPT.json": {
+      "sha256": "c3d79d42d4f5df57cb7a956db8eb87f30fe58e5d9e5f6e3dd24c79eb5ac2c546",
+      "bytes": 3513
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/negative-release-record.stdout.json": {
+      "sha256": "bddfc2eb2dc669eecd65d677bbde6bbbd83135037805097ec2ff8c920d430696",
+      "bytes": 518956
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/CASE-DESIGN-MANIFEST.json": {
+      "sha256": "4b5de1cc76ea171c34ebb5f3af946af6843d97bf61d620db7e1d88e96094949c",
+      "bytes": 10104521
+    }
+  },
+  "counts": {
+    "target_full_descriptions": 368,
+    "captured_issue_metadata": 1553,
+    "explicit_estimates": 1553,
+    "unselected_excerpt_only": 1185,
+    "documents": 10,
+    "concrete_repaired_targets": 21,
+    "additional_fullGET_field_values": 11418,
+    "helper_corruption_guards": 13,
+    "additional_independent_guards": 5
+  },
+  "scope": "Bounded AI evidence review of actual saved captures and an actual offline publication-helper run; no Native queries/mutations or product tests.",
+  "independence": "Reviewer authored PM draft records and published Native lane B (103 targets); separately reviews capture integration, root/helper disposition, lanes C/D repairs and overview. This is not independent human/trust/acceptance approval.",
+  "limitations": [
+    "Unselected1185 descriptions are500-character list excerpts, not complete-content proof.",
+    "First target original prefix uses exact saved prior full capture; no fresh pre-save full GET for that target.",
+    "Assignee/cycle fields were not requested and are not inferred from omissions.",
+    "779 source dependency edges are immutable; no new all-live relationship proof or external enforcement proof.",
+    "Root APL429 repair has raw bad/fixed readbacks and a prose patch description, not a structured save request; identical-literal equivalence was independently derived from those raw bytes.",
+    "Native captures establish bounded captured field/content integrity, not runtime tests, Ready/Done, approval, deployment or spending authority.",
+    "PM shared draft assurance groups remain needs_input; QA bindings/applicability/run/adoption and authentic reviews remain unresolved."
+  ]
+}

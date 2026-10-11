@@ -1,0 +1,74 @@
+{
+  "record": "IMPRANA-EXPECTED-NEGATIVE-RELEASE-RECORD-DIAGNOSTIC",
+  "recorded_at_utc": "2026-10-11T05:37:24.370004+00:00",
+  "scope": "Actual offline --release record validation as a NEGATIVE diagnostic of deliberately unconfigured planning artifacts, not a selected release, product execution or release action",
+  "argv": [
+    "/Users/athena/.local/bin/python3.12",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+    "--registers",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers",
+    "--root",
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011",
+    "--release"
+  ],
+  "exit_code": 1,
+  "raw_stdout_sha256": "4e5274d2b165daf19f2525d097d146a8f2b4dd3ac01d54e3fee8e944348e3ea0",
+  "raw_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_report": {
+    "mode": "RELEASE_RECORD_GATE",
+    "errors": [
+      "release scope: missing build_sha",
+      "release scope: missing artifact_digest",
+      "release scope: missing environment",
+      "release scope: missing config_version",
+      "release scope: missing data_version",
+      "release: unknown applicability",
+      "release: incomplete validated AC coverage"
+    ],
+    "warnings": [],
+    "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+    "result_counts": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 0,
+      "SKIPPED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "freshness_counts": {
+      "CURRENT": 0,
+      "STALE": 0,
+      "UNASSESSED": 0
+    },
+    "historical_qualification_counts": {},
+    "selected_unique_runs": 0,
+    "unknown_applicability": 1328,
+    "planned_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "validated_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "required_completion": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "selected_pass_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers",
+    "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+  },
+  "interpretation": "Expected failure preserves missing actual candidate pins,1328UNKNOWN applicability and incomplete validated coverage. No errors or package rules removed. The checker cannot authenticate the source-owner, evidence or complete readiness; external gates remain unresolved even if structure exits0.",
+  "expected_failure_observed": true,
+  "source_owner_approval": false,
+  "product_test_result": "NOT_RUN",
+  "release_ready": false
+}

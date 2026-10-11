@@ -1,0 +1,1591 @@
+{
+  "schema_version": "imprana.pm.review-request-contracts.v1",
+  "definition_count": 56,
+  "expanded_planning_gate_obligations": 20251,
+  "actual_reviews_created": 0,
+  "mapping": "ELEMENT-ASSURANCE-MAP.json",
+  "contracts": [
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.01",
+      "gate_id": "gate.vision.planning.01",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.01",
+        "full_gate_sha256": "df3d8a6eaefdeb28c579c606baef0380df640b9d3316ab49f86e76e2d66c7887"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "The direction names actual users/operators, their problem and a durable outcome; parent/source links resolve to current authoritative evidence rather than a feature inventory. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "vision.primary_users_context",
+        "vision.problem_evidence",
+        "vision.vision_statement"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.02",
+      "gate_id": "gate.vision.planning.02",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.02",
+        "full_gate_sha256": "95d1d3ae9af04735bdd0df7dc9d093b169c9e47d1bab789e7f80a9677299b213"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Operating context, affected people, non-goals and decision principles distinguish in-scope outcomes from exclusions without waiving protected requirements. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "vision.primary_users_context",
+        "vision.principles",
+        "vision.non_goals"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.03",
+      "gate_id": "gate.vision.planning.03",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.03",
+        "full_gate_sha256": "5d4e4569332a6a5d412dc7a0638000d449676568239f65f6d832953043742815"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Claims and assumptions are distinguished; relevant research has population, method, source and limitations, and the most important remaining uncertainty has a falsifiable research/decision plan. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "vision.research_sources",
+        "vision.problem_evidence",
+        "vision.assumptions_research"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.04",
+      "gate_id": "gate.vision.planning.04",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.04",
+        "full_gate_sha256": "4d61233e42d715b42c450640c39e2516f1342ce93afbe1b6bb3a726252cdeeaf"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Success signals describe observable user/organization outcomes; each relevant measure has definition, population, method and review horizon, with agreed targets or explicit pending decision. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "vision.success_signals",
+        "vision.signal_measurement"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.05",
+      "gate_id": "gate.vision.planning.05",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.05",
+        "full_gate_sha256": "9cc7da70d70552c9c76d1f368608d8f181cfb7ecaf60bc93f8d423d5d15f07ba"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "The chosen direction explains value and major alternatives/trade-offs and connects to strategy; resource or timing commitments are sourced, and pending feasibility decisions remain visible. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "vision.value",
+        "vision.review_strategy"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.06",
+      "gate_id": "gate.vision.planning.06",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.06",
+        "full_gate_sha256": "7336ae7e8610d59dfd972f16b55bae7703c3f8d174b7035e93c7fe617f295e0b"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "The actual profile identifies AI, affected rights, safety, security, access, privacy and accessibility applicability; scope/principles protect these obligations and prohibited effects. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "vision.principles",
+        "vision.non_goals"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.vision.planning.07",
+      "gate_id": "gate.vision.planning.07",
+      "element_type": "vision",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.vision.planning.07",
+        "full_gate_sha256": "ffce70a13d14d1b6ad403687412a92f874e2912e92e334019fe8b6f3e538b089"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Actual product ownership/review authority, version and state are distinct from approval and delivery; review triggers connect observed learning to a decision and canonical strategy/roadmap updates. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "vision.owner_authority",
+        "vision.state_review",
+        "vision.review_strategy"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product vision revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.01",
+      "gate_id": "gate.strategy.planning.01",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.01",
+        "full_gate_sha256": "ce5f5b450bdad887fb562efa04f1e3baa2dabe92fc2593e456b9f68ef65c6f44"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "Each strategic choice resolves to the vision and an evidenced priority problem/user outcome; sources distinguish established facts from proposed bets. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "strategy.vision_sources",
+        "strategy.priority_problems",
+        "strategy.choices_tradeoffs"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.02",
+      "gate_id": "gate.strategy.planning.02",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.02",
+        "full_gate_sha256": "bd3492d235f2e98d9e245454a67463f785b284b7a2eb944b757eb36844bf5f0e"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Priority users/use cases, constraints, exclusions and reuse decisions bound the strategy and identify affected operators and prohibited scope expansion. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "strategy.priority_users_use_cases",
+        "strategy.constraints",
+        "strategy.deferral"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.03",
+      "gate_id": "gate.strategy.planning.03",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.03",
+        "full_gate_sha256": "4a67499946d5e80bd49f98eb5576dbd15e0629603199ad4e29642c4993905e5f"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Diagnosis and major bets have cited evidence, counterevidence and limitations; the validation plan can disprove the riskiest choice and has a predeclared continue/change/stop rule. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "strategy.diagnosis_evidence",
+        "strategy.validation_plan",
+        "strategy.continue_adjust_stop"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.04",
+      "gate_id": "gate.strategy.planning.04",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.04",
+        "full_gate_sha256": "fc5ce30066929307970cd3448cfdca392f89b82a2b5b46d044e343a8f3aac35f"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Outcome measures, baseline and agreed targets define population, method and horizon; pending target decisions are explicit before the stage that depends on them. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "strategy.outcome_measures",
+        "strategy.targets"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.05",
+      "gate_id": "gate.strategy.planning.05",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.05",
+        "full_gate_sha256": "0e93cab2d4f1004d2681b99c470494056443f9768ebebad8a34328e50ff09e4b"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Choice and sequencing rationale compare meaningful alternatives and opportunity cost; dependencies, capacity/resource assumptions and uncertainty support any actual commitment. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "strategy.choices_tradeoffs",
+        "strategy.dependencies_assumptions",
+        "strategy.open_decisions"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.06",
+      "gate_id": "gate.strategy.planning.06",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.06",
+        "full_gate_sha256": "77fb417b8768312ff11302999d2e54b7cc1b4b6eab329b08667f1eaaab228417"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Applicable assurance obligations, including product AI and personal-data jurisdiction, constrain strategic choices; unsafe or unauthorized benefits cannot justify bypassing required controls. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "strategy.constraints",
+        "strategy.choices_tradeoffs"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.strategy.planning.07",
+      "gate_id": "gate.strategy.planning.07",
+      "element_type": "strategy",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.strategy.planning.07",
+        "full_gate_sha256": "1dee39ae4917a93ea6942891a4fc14fc27adcabb1568ce30f7df29ab361d1cce"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Actual decision authority and change state are explicit; observed discovery/release learning drives a recorded continue/change/stop decision and strategy/roadmap feedback, with actual follow-up owner. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "strategy.identity_state",
+        "strategy.roadmap_release_links",
+        "strategy.review_history"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Product strategy revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.01",
+      "gate_id": "gate.roadmap.planning.01",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.01",
+        "full_gate_sha256": "1782588fed47b0f4772a5e6e56f994e112044f018da85d07cbc73dfd334a97b1"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "Canonical roadmap outcomes and items resolve to current strategy and release goals; no duplicate backlog competes with the owning records. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "roadmap.alignment_links",
+        "roadmap.sequence_outcome",
+        "roadmap.sequence_item_links"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.02",
+      "gate_id": "gate.roadmap.planning.02",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.02",
+        "full_gate_sha256": "674b23a0ac47044be45016bc0d354e19957528d188efb2a5d2abb56245a1c767"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Now/Next/Later and release allocation bound a versioned scope; deferrals, shared contributors and confidence distinguish intended direction from agreed commitments. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "roadmap.now",
+        "roadmap.next",
+        "roadmap.later",
+        "roadmap.deferred_scope"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.03",
+      "gate_id": "gate.roadmap.planning.03",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.03",
+        "full_gate_sha256": "8b7dc47b69d6292023178938e81682026037fadbd1a326294fb538d1fe171bd2"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Evidence gates for horizon movement reference the highest-risk assumptions and actual discovery outputs; an untested hypothesis is not presented as an established predecessor result. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "roadmap.horizon_gate_evidence",
+        "roadmap.predecessor_outputs"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.04",
+      "gate_id": "gate.roadmap.planning.04",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.04",
+        "full_gate_sha256": "b20f9df3281a9b1d86a1a1c67dfa884a46fd1da9d3422a51e1a83f5ef3711592"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Each allocated outcome has a linked release measure and review window or explicit pending decision; progress denominators and evidence describe outcomes without counting duplicate items. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "roadmap.sequence_outcome",
+        "roadmap.release_allocation",
+        "roadmap.sequence_gate"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.05",
+      "gate_id": "gate.roadmap.planning.05",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.05",
+        "full_gate_sha256": "b54227fbed64d09ee6abdc96b8e16570aa07e05e59fe0cc6da8bc16ae3f8fd8b"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Sequence rationale reflects child priority/size ranges, genuine predecessor outputs and capacity uncertainty; estimates/timing are sourced and confidence is explicit, not invented. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "roadmap.sequence_rationale",
+        "roadmap.capacity_uncertainty",
+        "roadmap.sequence_confidence",
+        "roadmap.predecessor_outputs"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.06",
+      "gate_id": "gate.roadmap.planning.06",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.06",
+        "full_gate_sha256": "9a6e1e6230c775b9f2a8333eee1296da7349528dbc4d9fec1cb1c5609a841548"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Assurance, approval and access prerequisites appear as actual dependency/decision gates, including AI evaluation/privacy/fallback where applicable; a horizon label never waives a safety obligation. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "roadmap.sequence_gate",
+        "roadmap.horizon_gate_evidence"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.roadmap.planning.07",
+      "gate_id": "gate.roadmap.planning.07",
+      "element_type": "roadmap",
+      "applicable_element_count": 1,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.roadmap.planning.07",
+        "full_gate_sha256": "1e295cb9916d5f2a993efb028a56982b6a1de9b5038475a6fb2d5c3cfef2ffc6"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Actual roadmap authority, blockers and precise resume conditions are current; measured learning changes priority/allocation or records a no-change rationale with a next decision and owner. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "roadmap.identity_state",
+        "roadmap.blockers_decisions",
+        "roadmap.change_history"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Roadmap revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.01",
+      "gate_id": "gate.release_goal.planning.01",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.01",
+        "full_gate_sha256": "ce2adf50024e84b85c2831cdb9fff6155ad3797d99a48ed32a9477f115ceac8f"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "The release identifies actual users and an end-to-end usable outcome traceable to strategy/roadmap; included canonical items collectively deliver that outcome. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "release_goal.alignment_sources",
+        "release_goal.users_journey",
+        "release_goal.usable_outcome",
+        "release_goal.included_items"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.02",
+      "gate_id": "gate.release_goal.planning.02",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.02",
+        "full_gate_sha256": "875934eceefd065a7393535a7d8b709c158c6c64a4818fe390d0529631b0978d"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "In-scope and deferred items, operating context and preserved behaviour form a single versioned release boundary; dependencies and readiness assumptions are explicit. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "release_goal.included_items",
+        "release_goal.excluded_deferred",
+        "release_goal.dependencies_decisions"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.03",
+      "gate_id": "gate.release_goal.planning.03",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.03",
+        "full_gate_sha256": "6300759251f805d109d21c59cf5d7e9a6a29eb3e5d9519ecdbd84eafd6913aa3"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Value/readiness claims cite actual predecessor/discovery evidence with limitations; unresolved assumptions are tracked to an actual decision and exact resume condition. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "release_goal.dependencies_decisions",
+        "release_goal.unmet_gates"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.04",
+      "gate_id": "gate.release_goal.planning.04",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.04",
+        "full_gate_sha256": "e42b07da925f120ca7e46c119f1dfd81dc9e3a9ca359c11a50b1022704879d91"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Outcome targets, baseline/population/method and acceptance evidence are predeclared; entry and exit requirements are testable and do not conflate tests, acceptance, release and availability. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "release_goal.measures_targets",
+        "release_goal.entry_gate",
+        "release_goal.exit_gate"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.05",
+      "gate_id": "gate.release_goal.planning.05",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.05",
+        "full_gate_sha256": "20b0ce0ca734ca36e3b01fb2ca736b7b1cad8d1e501926c997858534425ea732"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Scope and sequence fit sourced epic/story priority and size/capacity assumptions; release dependencies, resource constraints and uncertain timing are explicit before any commitment. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "release_goal.included_items",
+        "release_goal.dependencies_decisions"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.06",
+      "gate_id": "gate.release_goal.planning.06",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.06",
+        "full_gate_sha256": "f87a8568ff1988567c627db4e26836a8559d329b3b3eefd89e3667502509a369"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Actual product/privacy/security/domain approval route, NFRs, recovery and applicable AI controls are specified; required dataset rights, measured thresholds, safety/fallback and monitoring gates cannot be sampled away. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "release_goal.requirements_nfrs",
+        "release_goal.approval_authorities",
+        "release_goal.rollout_recovery"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference",
+          "release_goal.ai_release_controls"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.release_goal.planning.07",
+      "gate_id": "gate.release_goal.planning.07",
+      "element_type": "release_goal",
+      "applicable_element_count": 5,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.release_goal.planning.07",
+        "full_gate_sha256": "5edfcc1088e812fc452f8b43385ce2122f9d220564e49da007bcbc8f6606e84a"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "The release retains separate quality, approval, readiness, acceptance, authorized publication and observed-availability evidence; actual outcome review ownership/window and strategy/roadmap feedback survive go-live. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "release_goal.identity_milestone",
+        "release_goal.unmet_gates",
+        "release_goal.change_history",
+        "release_goal.post_release_review"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Release goal revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.01",
+      "gate_id": "gate.epic.planning.01",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.01",
+        "full_gate_sha256": "a6de075f6a4cad759ccbe0c4720fd90f15fc67f600cd722d5b1ad53fe68f5a63"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "One coherent capability addresses an evidenced user/operator problem and traces to current strategy/release requirements; its scope is not a collection of unrelated tasks. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "epic.alignment_requirements",
+        "epic.problem",
+        "epic.capability_outcome"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.02",
+      "gate_id": "gate.epic.planning.02",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.02",
+        "full_gate_sha256": "5033775ecfa47cfbc7f0f2b0752b67fe93559e4f5ebf99a2bcb5dac95c30e5c7"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Included/excluded scope and hand-offs are explicit; canonical children have one primary parent and cross-epic contributions use related links rather than duplicate acceptance counts. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "epic.included_scope",
+        "epic.excluded_handoffs",
+        "epic.children",
+        "epic.primary_parent"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.03",
+      "gate_id": "gate.epic.planning.03",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.03",
+        "full_gate_sha256": "685f60246a86752c3fa35533554cf805b9eac687bfd6c6ecd8d456e89a3cb69a"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "The riskiest assumption is ranked by consequence/uncertainty and has a falsifiable test, authorized method/sample, predeclared decision threshold, observed result when due and documented continue/change/stop or bounded authorized risk decision. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "epic.assumption_test",
+        "epic.risks_decisions"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.04",
+      "gate_id": "gate.epic.planning.04",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.04",
+        "full_gate_sha256": "6a8cbd5baa9f18c30229d604e777d6531a453a6783834391c1077ada9cb3a98f"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "The capability completion/outcome boundary has observable measures and child acceptance mapping; uncovered source requirements, unsuccessful children and scope denominators remain visible. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "epic.completion_boundary",
+        "epic.child_evidence_gaps",
+        "epic.accepted_rollup"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.05",
+      "gate_id": "gate.epic.planning.05",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.05",
+        "full_gate_sha256": "b1b48000e1bdeeeb55e20971a13db4abc4ef8655ed20c02d44588b59c5530781"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Priority compares meaningful alternatives and opportunity cost; size is a sourced range/coarse unit with scope, method, uncertainty and dependencies, and true prerequisites are separated from design relationships. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "epic.priority_rationale",
+        "epic.size_estimate",
+        "epic.dependencies"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.06",
+      "gate_id": "gate.epic.planning.06",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.06",
+        "full_gate_sha256": "4af809be8df8fd012feedfc8cb970586fe814e8da52de8e67bb8d46faee6c837"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Shared experience/information/interface/quality contracts carry actual applicable access, safety, privacy, accessibility and AI requirements into children; no critical obligation falls between epics or into advisory-only samples. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "epic.shared_contracts",
+        "epic.risks_decisions"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference",
+          "epic.ai_validation_contract"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.epic.planning.07",
+      "gate_id": "gate.epic.planning.07",
+      "element_type": "epic",
+      "applicable_element_count": 54,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.epic.planning.07",
+        "full_gate_sha256": "f93f157915ca9e64e592a1a52095abed2068e6f1047a500abe89399ebfcf64d6"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Actual epic owner/authority, revision, readiness/completion and gaps are distinct; accepted children alone do not prove capability value, and outcome learning feeds strategy/roadmap with an actual owner and next review. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "epic.identity_workpackage",
+        "epic.gaps_history"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Epic revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.01",
+      "gate_id": "gate.user_story.planning.01",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.01",
+        "full_gate_sha256": "50dc9231f4789ba3fd6ed65e075b299d579dad9b2b5315312fe7130fdee54bf1"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "One bounded user/operator need and observable outcome resolves to its canonical epic/release and original source clauses; supporting/investigation items use their explicit variant rather than invented end-user value. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "user_story.identity_parent",
+        "user_story.story_statement",
+        "user_story.source_clauses"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.02",
+      "gate_id": "gate.user_story.planning.02",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.02",
+        "full_gate_sha256": "c92bbef349ee24eae8f94247c796ecf924e5ccd004aa6b8a32696d99afd64350"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Trigger/preconditions, main journey, in/out of scope, preserved behaviour and affected users/operators are explicit; the experience can be understood without guessing. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "user_story.context_trigger",
+        "user_story.in_scope",
+        "user_story.out_of_scope",
+        "user_story.main_journey"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.03",
+      "gate_id": "gate.user_story.planning.03",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.03",
+        "full_gate_sha256": "74674bf3ca807ec1f928ce906fce45bba49773522ce39e52892e60283fec9c3e"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Evidence and inspected reuse sources support the need/design; unresolved assumptions/decisions retain exact source, actual owner and resume condition, and source criteria are distinguished from proposed supplements. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "user_story.inspected_components",
+        "user_story.source_supplement_separation",
+        "user_story.ready_prerequisites"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.04",
+      "gate_id": "gate.user_story.planning.04",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.04",
+        "full_gate_sha256": "6a1faa34434952ce29073e56b0149e2931cbbf091f3f95257505cd9006450e85"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Identified criteria define observable positive/adverse/refusal/failure/authorization/recovery outcomes as applicable; every criterion maps to an approved evaluation context and expected evidence, with measurable thresholds where required. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "user_story.criteria",
+        "user_story.scenario_coverage",
+        "user_story.evaluation_mapping",
+        "user_story.nfr_thresholds"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.05",
+      "gate_id": "gate.user_story.planning.05",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.05",
+        "full_gate_sha256": "1fce39ae49efebe1d21208330f34c9fb256951dac7d791ef8024255c0faa9026"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Priority follows sourced outcome, urgency/risk and alternatives; size is an attributable range/coarse unit with method, uncertainty, scope and dependencies, supporting a feasible bounded item. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "user_story.priority_rationale",
+        "user_story.size_estimate",
+        "user_story.ready_prerequisites"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.06",
+      "gate_id": "gate.user_story.planning.06",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.06",
+        "full_gate_sha256": "e48b27376dd7a69fb53aa68c6ad82acde961565a70d6d258d07be535fe579244"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Actual operation contracts and side effects, access/accountability, refusal, information continuity, accessibility and NFRs cover applicable risks; AI acceptance metrics/slices, safety/fallback, rights/versioning and monitoring use the pinned module. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "user_story.operation_contracts",
+        "user_story.permissions_refusal",
+        "user_story.interaction_accessibility",
+        "user_story.nfr_thresholds"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference",
+          "user_story.ai_acceptance_contract"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.user_story.planning.07",
+      "gate_id": "gate.user_story.planning.07",
+      "element_type": "user_story",
+      "applicable_element_count": 368,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.user_story.planning.07",
+        "full_gate_sha256": "ddfffeb1a647a1f2b92d871b40662ae9ef2ddf9fcf52bf1d34569f206b86f80b"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Canonical team Ready/Done versions and item-specific additions are linked; quality, specification approval, execution readiness, criterion acceptance and delivery are distinct, with final revision and outcome-learning hand-off current. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "user_story.specification_state",
+        "user_story.team_ready_reference",
+        "user_story.team_done_reference"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current User story revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.01",
+      "gate_id": "gate.acceptance_criterion.planning.01",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.01",
+        "full_gate_sha256": "1f8164f5147a35ec5e3f738313f67e0e50bb772ce06c131b68c302420d4fa2df"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "Criterion ID and owning item resolve to exact source provenance/current specification; a proposed supplement is distinguished from a protected original requirement. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "acceptance_criterion.identity_owner",
+        "acceptance_criterion.source_provenance",
+        "acceptance_criterion.approval_state"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.02",
+      "gate_id": "gate.acceptance_criterion.planning.02",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.02",
+        "full_gate_sha256": "71887a074fa0c1519c702da32c6773e4a51ccf517249750b3f6bfb963dfc5c1b"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Given/When/Then identify one scenario, trigger, expected observable result and applicable prohibited effects without implementation guesses or hidden side effects. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "acceptance_criterion.scenario_kind",
+        "acceptance_criterion.given",
+        "acceptance_criterion.when",
+        "acceptance_criterion.then",
+        "acceptance_criterion.prohibited_effects"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.03",
+      "gate_id": "gate.acceptance_criterion.planning.03",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.03",
+        "full_gate_sha256": "72c94f5644dc906c2872429d71340dfdeeb0d2c37a08669b2ce442515550b344"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "The intended scenario and evaluation design use relevant source/risk evidence and an authorized reproducible context; missing facts or unavailable test inputs remain unresolved rather than guessed. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "acceptance_criterion.source_provenance",
+        "acceptance_criterion.evaluation_method"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.04",
+      "gate_id": "gate.acceptance_criterion.planning.04",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.04",
+        "full_gate_sha256": "ad410c1160af76afcde752138fa281bf2715e860c5ddd940899dd04c7a56012f"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Measurement defines method, units, threshold, sample/population and uncertainty where relevant; expected evidence can distinguish pass/fail, and AI metrics use fixed dataset/slice/model/prompt revisions. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "acceptance_criterion.measurement",
+        "acceptance_criterion.expected_evidence"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.05",
+      "gate_id": "gate.acceptance_criterion.planning.05",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.05",
+        "full_gate_sha256": "b50dbf6f8771bbcd0f57c08f4d90582eb09af7025e82d86ecb2dd93ca76f915d"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "The criterion maps to the owning item priority/risk and feasible verification method; any fixture/sample or predecessor constraint is explicit, and one result is not double-counted across competing criterion IDs. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "acceptance_criterion.identity_owner",
+        "acceptance_criterion.evaluation_method",
+        "acceptance_criterion.gap_resume"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.06",
+      "gate_id": "gate.acceptance_criterion.planning.06",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.06",
+        "full_gate_sha256": "2f3318466b26fa59043f922f433e07c8ab04e0d57aa48c043b6e78c857bb6ec6"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "The criterion covers its applicable safety/privacy/access/authorization/fallback obligation and prohibited effects; actual AI accuracy and critical-slice/safety thresholds are independently required when this criterion claims AI behaviour. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "acceptance_criterion.prohibited_effects",
+        "acceptance_criterion.measurement"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference",
+          "acceptance_criterion.ai_evaluation_measurement"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.acceptance_criterion.planning.07",
+      "gate_id": "gate.acceptance_criterion.planning.07",
+      "element_type": "acceptance_criterion",
+      "applicable_element_count": 1328,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.acceptance_criterion.planning.07",
+        "full_gate_sha256": "908e95ac3354c3dc2d60dceef89fc6655b51f057907a4cff341b393526eb9f8f"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Specification approval, not-run/planned execution, observed result and accepted state remain separate; evidence is bound to the current criterion/revision and a failed/skipped/blocked result has a precise follow-up. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "acceptance_criterion.approval_state",
+        "acceptance_criterion.gap_resume"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Acceptance criterion revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.01",
+      "gate_id": "gate.technical_task.planning.01",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.01",
+        "full_gate_sha256": "0af0cfcde95263f7f90ac3eb7f770c7051aa28fb02305f24516b908b7fb7bfaf"
+      },
+      "title": "Outcome and traceability",
+      "pass_criterion": "One bounded implementation/design/operational/manufacturing/verification result has a canonical parent and exact source/criterion links; completing it must contribute to the parent outcome. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.identity",
+        "common.traceability",
+        "technical_task.parent_owner",
+        "technical_task.source_criteria",
+        "technical_task.bounded_result"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.02",
+      "gate_id": "gate.technical_task.planning.02",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.02",
+        "full_gate_sha256": "7077ccd36bf7148ea1502c0b4c53817c4816cc1b7b445ed21b5ae8f46aa94d64"
+      },
+      "title": "Scope and context",
+      "pass_criterion": "Affected components/processes and exact contracts/specification revision, exclusions and preserved behaviour bound the change; work steps and deliverables are reviewable in the actual product process. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.boundary",
+        "technical_task.components_contracts",
+        "technical_task.affected_components",
+        "technical_task.exclusions_preservation",
+        "technical_task.deliverables"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.03",
+      "gate_id": "gate.technical_task.planning.03",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.03",
+        "full_gate_sha256": "71ae1ba31d6d24f7f09b8d03e013a4c4431c85fcc3ffd0546c092697a0839712"
+      },
+      "title": "Discovery and evidence",
+      "pass_criterion": "Work/reuse/spike claims cite inspected sources and falsifiable investigation where relevant; required evaluation inputs/access and unresolved decisions remain explicit without fabricated facts. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.evidence",
+        "common.source_provenance",
+        "technical_task.data_environment_access",
+        "technical_task.work_steps"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.04",
+      "gate_id": "gate.technical_task.planning.04",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.04",
+        "full_gate_sha256": "d298ad1cf224b3861c9119be653983572d254f114a9ddcd85b6d6b36500718ae"
+      },
+      "title": "Measures and verification",
+      "pass_criterion": "Verification cases and expected outputs map to parent acceptance criteria and actual product qualification method; no mirror-only demonstration substitutes for the declared user/operating requirement. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "technical_task.verification_cases",
+        "technical_task.qualification_review"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.05",
+      "gate_id": "gate.technical_task.planning.05",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.05",
+        "full_gate_sha256": "ab93438774f994b0da1148d7f129d56e516221d842ff743de34495535cc50bab"
+      },
+      "title": "Priority, size and dependencies",
+      "pass_criterion": "Sequence relies on actual predecessor outputs and native completion blockers; parent priority/size and task effort/resource uncertainty support a feasible scope without invented commitments. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "technical_task.predecessors",
+        "technical_task.native_blockers",
+        "technical_task.work_steps"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.06",
+      "gate_id": "gate.technical_task.planning.06",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.06",
+        "full_gate_sha256": "b641d9dd0f3f0dfd226db68cbdd7545800e29f3a72caa19568b9824d45b25592"
+      },
+      "title": "Applicable assurance and controls",
+      "pass_criterion": "Impacts cover applicable experience, information, interface, access, safety and quality; evaluation access is authorized and AI artifact/held-out/safety/version/promotion evidence meets the pinned module when applicable. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated. Unsampled conditional assurance: resolve product AI yes/no/unknown from the pinned actual context. If AI is used, AI-01 to AI-07 in the pinned module apply at their current-stage requirements: dataset quality/rights, predeclared overall and critical-slice metrics/thresholds, observed safety/refusal/fallback, exact model/prompt/configuration revision, applicable personal-data/jurisdiction decisions and monitoring/drift/rollback. An evidence-backed no-use exclusion must not waive other applicable obligations. Unknown applicability or absent required rights/results is unresolved, never N/A.",
+      "required_field_ids": [
+        "common.context_profile",
+        "technical_task.impacts",
+        "technical_task.data_environment_access"
+      ],
+      "conditional_field_ids": {
+        "ai": [
+          "common.ai_assurance_reference",
+          "technical_task.ai_artifact_evidence"
+        ],
+        "personalData": [
+          "common.personal_data_controls"
+        ]
+      },
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    },
+    {
+      "request_contract_id": "REQUEST-gate.technical_task.planning.07",
+      "gate_id": "gate.technical_task.planning.07",
+      "element_type": "technical_task",
+      "applicable_element_count": 1131,
+      "status": "requested evidence/independent review, not performed",
+      "gate_source": {
+        "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+        "profile_check_id": "gate.technical_task.planning.07",
+        "full_gate_sha256": "a72c41cbbd939e17b3b40f221a52b8c9c4f231746e4d78a30f9d938542c9f289"
+      },
+      "title": "Governance and learning",
+      "pass_criterion": "Actual task owner/state and canonical team Ready/Done versions are current; task completion, parent acceptance and release/availability remain distinct, and actual outputs plus learning/follow-up are handed to the owning story/release. Planning stage: require a bounded testable plan, sourced priority/dependency rationale and honestly attributed size uncertainty where relevant. Unagreed targets/owners/estimates may remain explicitly pending only before a dependent commitment, approval or ready decision; record the exact unresolved decision and evidence needed. Future execution/launch results remain planned, never fabricated.",
+      "required_field_ids": [
+        "common.state",
+        "common.change_history",
+        "technical_task.identity_type",
+        "technical_task.team_ready_reference",
+        "technical_task.team_done_reference"
+      ],
+      "conditional_field_ids": {},
+      "evidence_requirement": "Current Implementation or verification task revision; explicit applicable field components and pinned authoritative sources. Exact evidence locators and stage-specific decision/evaluation/observation records; no invented facts or substituted future results.",
+      "reviewer_role": "Independent authorised Imprana PM reviewer; actual identity/profile/trust evidence not supplied",
+      "required_binding": "Actual per-item/field/check scoped-v1 package subject fingerprint, retained evidence, distinct qualified reviewer and independently supplied trust verification required. This request contract is not a review.",
+      "invalidation_source": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "resume": "Supply actual missing facts/decisions/evidence, perform independent current-scope review, and run the package workflow against the explicitly amended candidate with authentic trust. No substituted runtime/production conclusion."
+    }
+  ],
+  "trust_intake": {
+    "authority_registry": null,
+    "externally_verified_source_pins": null,
+    "scoped_review_verifications": null,
+    "reviewer_coverage": null,
+    "approval_evidence": null,
+    "state": "needs_input"
+  },
+  "limits": "56 reusable gate/type contracts reference all 2,893 elements. These are requests, not 20,251 fabricated reviews; neither original missing review count nor quality outcome is recomputed."
+}

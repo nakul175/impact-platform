@@ -1,0 +1,70 @@
+{
+  "record": "IMPRANA-ALL-ACTIVE-SOURCE-STRUCTURE-OBSERVATION-20261011",
+  "recorded_at_utc": "2026-10-11T05:34:56.126539+00:00",
+  "scope": "Actual bounded AI/algorithmic original-source structure observation for complete all-active planning export; NOT actual source-owner approval or independent externally authorised review",
+  "source_owner_approval": "PENDING",
+  "source_owner_completeness_applicability_review_ref": null,
+  "export_revision_convention": "PROPOSED_AUTHORING_ONLY",
+  "operating_release_selected": false,
+  "checks": {
+    "primary370_rows368active2Split": true,
+    "full1328_primary_active_criteria": true,
+    "all7_historical_scenarios_retained_separately": true,
+    "full1328_alias_rows_join_primary_without_mismatch": true,
+    "all_full_Gherkin_fields_and_separator_bytes_reconstruct": true,
+    "full1328_id_version_pairs_unique": true,
+    "valid_letter_prefixed_revision_and_existing_alias_ids": true,
+    "all1328_applicability_UNKNOWN_no_exclusion": true,
+    "1131_tasks779_predecessor_edges_unchanged": true
+  },
+  "primary_source": {
+    "path": "docs/backlog/backlog.csv",
+    "bytes": 718739,
+    "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+  },
+  "alias_source": {
+    "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+    "bytes": 890236,
+    "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee"
+  },
+  "counts": {
+    "active_stories": 368,
+    "active_source_criteria": 1328,
+    "historical_Split_scenarios": 7,
+    "all_original_scenarios_including_history": 1335,
+    "tasks": 1131,
+    "preserved_prerequisite_edges": 779
+  },
+  "source_release_allocations": {
+    "Foundation": 6,
+    "R1 Pilot": 172,
+    "R2 Scale": 139,
+    "R3 Ecosystem": 45,
+    "Later": 6
+  },
+  "export_pin": {
+    "path": "criteria-source.json",
+    "bytes": 231604,
+    "sha256": "3ec514b67c7a931af1d6edf87510a6213c2e4b635992706a9c275e6a471370f6"
+  },
+  "source_provenance_pin": {
+    "path": "criteria-provenance.json",
+    "bytes": 2534747,
+    "sha256": "9571577e3f4362828b818dbadb12a523d73a5aca1ab5a3aced795a830ff47dda"
+  },
+  "method": "Primary original CSV Gherkin enumeration first, exact block/full-field digest and1328 alias join second, historical7 separation; generated pairs are never taken from case/coverage/run rows.",
+  "independence_limit": "Algorithmically independent of QA/test mappings, but the same author produced this export and observation. A separate independent source verification and actual owner decision remain unresolved.",
+  "no_execution_or_authority": {
+    "product_test_executed": false,
+    "Native_changes": false,
+    "owner_approval": false,
+    "review_enforcement_verified": false,
+    "qualification_or_release_ready": false
+  },
+  "open_source_gaps": {
+    "source_missing_Given": 37,
+    "supplemental_assertion_groups": 7,
+    "proposed_qualification_duties": 13
+  },
+  "statement": "This record exists and may resolve a structural review_ref path. Path presence, an AI author name or checksum cannot authenticate the owner-review semantics required by attached QA v1.3."
+}

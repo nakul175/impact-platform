@@ -1,0 +1,212 @@
+{
+  "record": "IMPRANA-PLANNING-SOURCE-REGISTER-DIAGNOSTIC-20261011",
+  "recorded_at_utc": "2026-10-11T05:34:56.410105+00:00",
+  "scope": "Actual unmodified QA v1.3 helper and structural record checker on complete authoring-only planning source/scaffolds; not product tests, owner approval or qualification",
+  "actual_python": "Python 3.12.15",
+  "bytecode_disabled": true,
+  "package_source_modified": false,
+  "commands": [
+    {
+      "argv": [
+        "/Users/athena/.local/bin/python3.12",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/criteria_pin.py",
+        "--source",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers/criteria-source.json"
+      ],
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "criteria-pin.stdout.json",
+        "bytes": 483,
+        "sha256": "9c417da05f16a0acd77ed9caecda96df5c287477dab1f3735146128605e67284"
+      },
+      "stderr_pin": {
+        "path": "criteria-pin.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "/Users/athena/.local/bin/python3.12",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+        "--registers",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers",
+        "--root",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011"
+      ],
+      "exit_code": 0,
+      "stdout_pin": {
+        "path": "structure-check.stdout.json",
+        "bytes": 1212,
+        "sha256": "82f02c84d01111d67157828c77c6c557175f8da6b8c6883ff427d3cef1fe0137"
+      },
+      "stderr_pin": {
+        "path": "structure-check.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "actual_candidate_pins": {
+    "expected_ac_count": 1328,
+    "expected_ac_ids_sha256": "39cff4a4f12169469c6f4af29f6324e7066f97a4dca4676479b3f4ad3b37fff4",
+    "criteria_source_sha256": "3ec514b67c7a931af1d6edf87510a6213c2e4b635992706a9c275e6a471370f6",
+    "criteria_source_review_ref": "source-structure-review.json",
+    "scope_id": "SCOPE-IMPRANA-ALL-ACTIVE-PLANNING-20261011",
+    "notice": "Candidate values only; source completeness/authority must be independently reviewed. This helper does not modify scope."
+  },
+  "actual_structure_report": {
+    "mode": "STRUCTURE_AND_REPORT",
+    "errors": [],
+    "warnings": [],
+    "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+    "result_counts": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 0,
+      "SKIPPED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "freshness_counts": {
+      "CURRENT": 0,
+      "STALE": 0,
+      "UNASSESSED": 0
+    },
+    "historical_qualification_counts": {},
+    "selected_unique_runs": 0,
+    "unknown_applicability": 1328,
+    "planned_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "validated_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "required_completion": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "selected_pass_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers",
+    "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+  },
+  "source_checks": {
+    "primary370_rows368active2Split": true,
+    "full1328_primary_active_criteria": true,
+    "all7_historical_scenarios_retained_separately": true,
+    "full1328_alias_rows_join_primary_without_mismatch": true,
+    "all_full_Gherkin_fields_and_separator_bytes_reconstruct": true,
+    "full1328_id_version_pairs_unique": true,
+    "valid_letter_prefixed_revision_and_existing_alias_ids": true,
+    "all1328_applicability_UNKNOWN_no_exclusion": true,
+    "1131_tasks779_predecessor_edges_unchanged": true
+  },
+  "source_inputs": [
+    {
+      "path": "docs/backlog/backlog.csv",
+      "bytes": 718739,
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+    },
+    {
+      "path": "docs/backlog/README.md",
+      "bytes": 3356,
+      "sha256": "44d0efa01b27103b0819bbd27072f3d2855047f92bed7a2d456c81c77bb897cc"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+      "bytes": 890236,
+      "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "bytes": 13484732,
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8"
+    },
+    {
+      "path": "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+      "bytes": 12412,
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20"
+    },
+    {
+      "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "bytes": 14723,
+      "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310"
+    },
+    {
+      "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "bytes": 14040,
+      "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535"
+    },
+    {
+      "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "bytes": 26402,
+      "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef"
+    },
+    {
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "bytes": 15468,
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8"
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "bytes": 443,
+      "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b"
+    },
+    {
+      "path": "VERSION.json",
+      "bytes": 214,
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9"
+    }
+  ],
+  "protected_source_inputs_still_exact": true,
+  "schema_pin": {
+    "path": "standards/register-schema.json",
+    "bytes": 2006,
+    "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+  },
+  "helper_pin": {
+    "path": "checker/criteria_pin.py",
+    "bytes": 1696,
+    "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+  },
+  "checker_pin": {
+    "path": "checker/qa_lint.py",
+    "bytes": 22397,
+    "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+  },
+  "statuses_pin": {
+    "path": "standards/statuses.json",
+    "bytes": 1058,
+    "sha256": "ba979a6ea772cd6e468ce7928c98653f93720b4735e7a1cd66a81d072c966ec1"
+  },
+  "interpretation": "Any structure exit0 means supplied records are mechanically consistent only. It is not approved source completeness, observed risk, case coverage, current test execution, legal/specialist review or readiness. No --release gate is claimed.",
+  "earlier_guidance_limit": "Earlier memory-only arithmetic used localPython3.9.6. It was not supported checker qualification; this saved-source diagnostic is a new separate observation using actual supported3.12.15. Earlier source guidance remains preserved.",
+  "real_source_owner_approval": false,
+  "independently_authorised_source_owner_review": false,
+  "actual_applicability_decisions": false,
+  "product_tests_executed": false,
+  "Native_changes": false,
+  "financial_or_network_actions": false,
+  "release_ready": false,
+  "remaining_gate_categories": [
+    "source-owner scope/revision/applicability",
+    "independent complete-source review/protection",
+    "actual refined risk/residual decisions",
+    "real case bindings/mappings",
+    "candidate/environment/protocol/permissions",
+    "meaningful immutable executions/current qualification selection",
+    "specialist/numeric target/model/corpus evidence",
+    "G11/G12threats/chains",
+    "actual human acceptance/approval",
+    "release/operations/financial/data authority"
+  ]
+}

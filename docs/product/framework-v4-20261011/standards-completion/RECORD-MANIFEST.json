@@ -1,0 +1,557 @@
+{
+  "schema_version": "imprana.pm.record-manifest.v1",
+  "records": [
+    {
+      "id": "AI-IMPRANA-CROSS-CUTTING",
+      "version": "draft-20261011.1",
+      "scope_id": "IMPRANA-CROSS-CUTTING",
+      "path": "assurance-records/AI-IMPRANA-CROSS-CUTTING.json",
+      "content_hash": "00f97149a3b502e08ad7e270a6e976dd21cdeb17905f4c7f56ea3624f5b01d6a",
+      "file_sha256": "8ef05a8444ed7ab66243a923f4bbdf161b49446128d428223414578387c17ab1",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-AI-CAPABILITIES",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-AI-CAPABILITIES",
+      "path": "assurance-records/AI-IMPRANA-EPIC-AI-CAPABILITIES.json",
+      "content_hash": "01fc59aec2f1edb386d18b031c5c219736169597394b6555f2729560268396bd",
+      "file_sha256": "4520e07f3274b11583f7dc7eb4f137ace629c55fda7b05367c4b9293449b56fc",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ACCESS-CONTROL",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ACCESS-CONTROL",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ACCESS-CONTROL.json",
+      "content_hash": "5857266b320017f4da77eea1e0e71a3ebf104bfc08cdf439f3f40958df86fa23",
+      "file_sha256": "2f8ca6837f531d1a8e9c2992c8af9e950a7458cba427fc999377af15bbd0d9a3",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-ADOPT",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-ADOPT",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ADOPT.json",
+      "content_hash": "b3184ec1e80e7eaffa54c531086cc1ef999ceca1964a251fc67546459e40c32c",
+      "file_sha256": "876cb3ab72f5863f0af6087a331d215913852840caf08ab67e90c81600d2f89b",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-ASSESS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-ASSESS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ASSESS.json",
+      "content_hash": "be90d8511bf13cd09dabd90463618b0628b7c431ef726b515b00a757be8ca733",
+      "file_sha256": "0a2572f590734c909bd8a5d7610b9bf517250821a0b1677b7ea1259229f2c632",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-DEPLOY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-DEPLOY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DEPLOY.json",
+      "content_hash": "cad9da1c9784e756c528584d4db7e5762fa2f1b0aa931a47f0edc79f102b6683",
+      "file_sha256": "11979bce1716d9bf483c047594609030cb11def55771057c483be38127c8d94b",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-DIAGNOSE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE.json",
+      "content_hash": "f5bd137f50f6c4a9f251e9f6143ad49f878f0e0178b47811feabc1d5fed99a27",
+      "file_sha256": "ddb28624a54b40a6fcbdb4b80321d159df9faac250c65af00d7c18c9fbf2868a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-DISCOVER",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-DISCOVER",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DISCOVER.json",
+      "content_hash": "130cd76cf43689c0d0f113df8d81e8e61e50050004c2ea364e2fdeb2fd996f16",
+      "file_sha256": "b9999a8f9b4e4e4f5b48b097c0a04ae763f44e91160dd74dd54d6d1c7e45b1a5",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-IMPROVE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-IMPROVE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-IMPROVE.json",
+      "content_hash": "6a5aae0579de4f2fd2647012b65d33d993049d9e2067ac2f809c5ecd1c6a66ec",
+      "file_sha256": "985f23569a1744c684ba5fb0d81477ca769fad7bf9fd7accc2f307bed9ad151a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-MAP",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-MAP",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-MAP.json",
+      "content_hash": "f118dbb1db4f577a6cf051acef9c82c4589bf4d03b28dee05f75a57fa3b65bbd",
+      "file_sha256": "abb2ebdd70c1b7bb383d82bed0ef66bc1b36a39a40b47f597c0fa933d67ae1ea",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-ADOPTION-VALUE-CASE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-ADOPTION-VALUE-CASE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-VALUE-CASE.json",
+      "content_hash": "0c97c88a0a0495634f7e190d43a5fa562b279d329923c9c6ac4dec4ccab8def1",
+      "file_sha256": "b2dc1e86d6167f243449d0809fccc758ccb45423ec31719e64a1df84e08322f7",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-CALCULATIONS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-CALCULATIONS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-CALCULATIONS.json",
+      "content_hash": "66937226de8abcf85e6c5357f5d6787cdd3dd94478a42b156fbe9b3421b229b6",
+      "file_sha256": "7bc1afc061135ad0dd8595c0e911d717a2077f83ad3c8b230438ca1822b6a28e",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-COMMERCIAL-AND-BILLING",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-COMMERCIAL-AND-BILLING",
+      "path": "assurance-records/AI-IMPRANA-EPIC-COMMERCIAL-AND-BILLING.json",
+      "content_hash": "07a9419489ad6d9c741c41ef39f6db84ec00fe285f38a838d1b8c8d9ee993b2f",
+      "file_sha256": "f6866894b34a45976486839c4796a2fdd5569e00eae97efca89037a5e900b9ff",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-DASHBOARDS-AND-ANALYSIS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-DASHBOARDS-AND-ANALYSIS.json",
+      "content_hash": "138f13b0f6a82f22eeedda70c06ce274e4a9c7935352fb0ed55872fc64bd9ee3",
+      "file_sha256": "571cd3868dbfd70a1e8731ff51b00d58e608e4b0b9d7d826706c31c78e1c9c9a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-DATA-IMPORT-AND-MANAGEMENT",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-DATA-IMPORT-AND-MANAGEMENT",
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-IMPORT-AND-MANAGEMENT.json",
+      "content_hash": "2cf6e057f778306f8d1e7d00408fceee2c79dd7d145baaadf0cb18dfd2056d64",
+      "file_sha256": "2d587e94d0c6fc43429da7125f20690f66ca0bc05ef0d24a39a9df2efb84df32",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-DATA-QUALITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-DATA-QUALITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-QUALITY.json",
+      "content_hash": "e103f5ca43af58c887047e21f65884ccfb5c7ef68a9ced8ab6b21f5948ecd9f4",
+      "file_sha256": "9803e3bcd0431ab1b3bf2e4c9722a880db1bb4149cc8acd116f9780ebe0ad2fe",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-EVALUATION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-EVALUATION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVALUATION.json",
+      "content_hash": "e4928a3d4649a78173fbaae2ffec0e685dc591f47f418c5ca088eb3cf71eb0de",
+      "file_sha256": "b8b3e1dffaae0766fc999b2d10a1e5609cc9c5462b7d79947dd7ed8d5895ab0e",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-EVIDENCE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-EVIDENCE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVIDENCE.json",
+      "content_hash": "c56daec444db4d422e37897d28b22c1498dd4857cea358ff19292b1aa2a0ae30",
+      "file_sha256": "741055fede524af1fcdeea4c325a8a0258ef355399153ded6d1866c71c78eeb8",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-FINANCE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-FINANCE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-FINANCE.json",
+      "content_hash": "ef99fded15183dc17ca4d85d502e4345a035c7af21b1785732759d8d5dbde8bf",
+      "file_sha256": "d1a5d5552cc8c8902f562460126cef3cf6e9c95d0c8fbdb252bab10e7f7345c4",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-FORMS-AND-COLLECTION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-FORMS-AND-COLLECTION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-FORMS-AND-COLLECTION.json",
+      "content_hash": "d4920d74252287342a35bc12d86f4e731f498f3008fa2a666dcd310c6944f69b",
+      "file_sha256": "a271a8cc0a3eaf89f0420c3bee46b892ed9e922fa4ddf1e91bba984a072eb3b0",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-FUNDER-PORTFOLIO",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-FUNDER-PORTFOLIO",
+      "path": "assurance-records/AI-IMPRANA-EPIC-FUNDER-PORTFOLIO.json",
+      "content_hash": "448cfd9d7962496462a179b6454b76281395e72b752458ff196bbfa4e9a09c1e",
+      "file_sha256": "8fd7a0704a7c12ec7473c8cf10ed96f5e113a285fda503abe10a99f8e3736764",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-IDENTITY-AND-ACCOUNTS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-IDENTITY-AND-ACCOUNTS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-IDENTITY-AND-ACCOUNTS.json",
+      "content_hash": "4e24d1f12047cda4a7db7c1690d99145e1088ab4c57089e957e512712d2de9d3",
+      "file_sha256": "e771d50d02ba9ce3e7fd3b2d8c19f540d18bc18aa3415d3676e1c0a3d3321070",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-INDICATORS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-INDICATORS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-INDICATORS.json",
+      "content_hash": "6fece376ffd0144a386a058c517d209a085f060b01791c2acaa2746f5ae500b9",
+      "file_sha256": "4e7a5eb3156de63d3dec7961e2f936acf942a2f14c4cce46d0db8c867d0bf3ea",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-INTEGRATIONS-AND-CONNECTORS.json",
+      "content_hash": "38090c4c5d146dc98d9acef9cb84d7aba4daf89abf65b5cc2b10d36004c8d2b7",
+      "file_sha256": "9c8973ee9fd6e3b1cdd28b581cf8608b7612a50868ac66fbe698e5c754c4a5f2",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-MIGRATION-AND-EXIT",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-MIGRATION-AND-EXIT",
+      "path": "assurance-records/AI-IMPRANA-EPIC-MIGRATION-AND-EXIT.json",
+      "content_hash": "f99227621480bea298d1406c24bba14d0fa09f5c887afe6198e5ec6731313afc",
+      "file_sha256": "d4a527fc138a4b7f89bd0343a3a591e2d46f659d36b1745eea2a132a7b2ecc14",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-AI-QUALITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-AI-QUALITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AI-QUALITY.json",
+      "content_hash": "4bb34235d4d4300f05759c6c86951e078a45c3cd1dd5dbefb8bd109c26ce7951",
+      "file_sha256": "918f2f7a59315606ff9312aa99b4f21c8d1105f4da8f2280f80dcd63c3e0a7a6",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-AUDIT",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-AUDIT",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AUDIT.json",
+      "content_hash": "c389833eb7b76319a79f2907f14deff967a2a2c4722377a52b2195c656ec9d3a",
+      "file_sha256": "55fa2fbae18fa54337e4a42a648405e6500d77dccbb83581751ef820db162198",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-AVAILABILITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-AVAILABILITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AVAILABILITY.json",
+      "content_hash": "4e5e9837998356eb3e0f422644152c5aa6ae59862674bf7c5e041389e409cb77",
+      "file_sha256": "a8857cf912e80ca32df2353e7e96226cc112c004646d0f92489404e1918646bc",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-CAPACITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-CAPACITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-CAPACITY.json",
+      "content_hash": "d6387b4e6a3465c69a211a2d312a72361652684ab0c9272c2b56a8f7b60f483d",
+      "file_sha256": "8197aadf21d49e38f5b2700c4f4889d7305043fdb33d24550eeccce51a2ccd7a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-COMPATIBILITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-COMPATIBILITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COMPATIBILITY.json",
+      "content_hash": "112cef57b3e33fd03a61c4c5aab9246c9597409627484183a40c9ac51d18bf66",
+      "file_sha256": "8d6a11caf18033bc218e664260d8405aebc23235ad582a97805131da2d370014",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-COST",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-COST",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COST.json",
+      "content_hash": "15e3e6a224bb47280a6b509c76a4cba85daea5de30f0f09fd6ffa6db52abb122",
+      "file_sha256": "af62d6f40c252b469eab148f27f0d682cb9daf017ca317bf6e51d2421e706d6a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-DATA-INTEGRITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-DATA-INTEGRITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-DATA-INTEGRITY.json",
+      "content_hash": "1e9ded8e1729f24849313f1926aed7c6469bd8a21f8d3c3cef182bfebd7a3fa7",
+      "file_sha256": "987dd425aa29d40c48f417749e38d2892324def797a3f8f82be23f2a3516abee",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-LOCALISATION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-LOCALISATION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-LOCALISATION.json",
+      "content_hash": "afce99c02682819fb8135a3e2b3fb7cf6660adad432ea853c7f5df754c2706d3",
+      "file_sha256": "bd2077745f206c192ec9e5bca10d9cf113622ed86973f9d37b63406d3a9a3687",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-MAINTAINABILITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-MAINTAINABILITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-MAINTAINABILITY.json",
+      "content_hash": "f1e7a0e54b19153418de2ea2bafeba9a9ce309459be9b8b8b40e239b86daabb3",
+      "file_sha256": "e5322d7635e345a3680911716061f6c8876904bfc27f9e3c890bcfd4e4c8b720",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-OBSERVABILITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-OBSERVABILITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-OBSERVABILITY.json",
+      "content_hash": "c188e5c7d39f64daeb51276b94c6e1c96ae6a38201a2f07e698d06721f2af449",
+      "file_sha256": "b51041a6fd09f2433aa2ba3714b2916806e63c1fb603374b4d75c5cd22566ccc",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-PERFORMANCE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-PERFORMANCE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PERFORMANCE.json",
+      "content_hash": "3ebda9fcb2ea0a54ff8e52884b15973b93796e90769b98ec0fb4691780be7ccc",
+      "file_sha256": "d9f511ce5f0cbdfcae1be86fa4fd29da582e439398f7aca66197d1c15fe4ef20",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-PORTABILITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-PORTABILITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PORTABILITY.json",
+      "content_hash": "8100917f23c1f9828830afd732811c8ec07738d11a4b3348b0f2cc9867cccc11",
+      "file_sha256": "7aaedef9a217cdef33d91e8ec0474c54c821d1134067db2d22f0c252d03666cb",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-RECOVERY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-RECOVERY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-RECOVERY.json",
+      "content_hash": "660cadb5c3a0672eceb86781d025e2deca8d49a023b165f3abd2eb4855723f8c",
+      "file_sha256": "64f088170c06798c991c2b6a73fb6a26d21559f9dd6a79754282b5733f79fbe7",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NFR-SUPPORT",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NFR-SUPPORT",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-SUPPORT.json",
+      "content_hash": "d8d80e82afeb584de9d645f2366078948b8b51041d23fd3411dfe4486fced65a",
+      "file_sha256": "1b428b609381005e2f9d64d27db61b1614055fd3cadb94e9eb2140db4ed8cb58",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-NON-FUNCTIONAL",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-NON-FUNCTIONAL",
+      "path": "assurance-records/AI-IMPRANA-EPIC-NON-FUNCTIONAL.json",
+      "content_hash": "1b3bb7c9a31a9183cf8ddb495deb481c92362b437cd802279a7970f0c97510de",
+      "file_sha256": "dc407ab84b0548d44bc1f81f7772166abfe4732d4112d1da3386b6eadd708276",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-OFFLINE-COLLECTION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-OFFLINE-COLLECTION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-OFFLINE-COLLECTION.json",
+      "content_hash": "d203e13bf2579de6c6fd926a4ad7de1023f6d5d68508d33ddf9487a61e76afc3",
+      "file_sha256": "54903e5d2546cd6cd1cce0a935c8fb41a4af1f7244edec9201ef28b54ece6c02",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-OPERATORS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-OPERATORS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-OPERATORS.json",
+      "content_hash": "49cf599222691789724f7230a782e40ddc99f89f42f652dd991c64026fc4494e",
+      "file_sha256": "379004c06e57172fb468f8bfe54aeea891b3daf2424ca452c38bb0e18ed95257",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-PARTICIPANTS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-PARTICIPANTS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTICIPANTS.json",
+      "content_hash": "92df810d099ea98dd032035afc1e97d3b365294fe06f894f577d879d4ea6ee4a",
+      "file_sha256": "bf2ad5747d1973bd181d65dc768f88f362d2c2ca30e217ae2ba2ecf1600f0361",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-PARTNERS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-PARTNERS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTNERS.json",
+      "content_hash": "7659801a295b045209e6cba508c3cbd9fcbce124c36583b94178b606840b9000",
+      "file_sha256": "6d4ab50e55703265c11048ebad563d3fe8c25d0079282865a06ce675a7082743",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-PLATFORM",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-PLATFORM",
+      "path": "assurance-records/AI-IMPRANA-EPIC-PLATFORM.json",
+      "content_hash": "a82a504f2cc1c7891976fe9e2e10086a74c6d69ba8951cde7f6e65ca05bbf365",
+      "file_sha256": "28d1d90de3e80be35fb3bcd0ee3c2cb09661fb99f2338eea1f129caae056fe47",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-PRIVACY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-PRIVACY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-PRIVACY.json",
+      "content_hash": "b8dbe05dbe64bcc83c810cb1cbe3a72ec1e90d6014750fafebdd9f4cbd053cc2",
+      "file_sha256": "171a010921cd46fffcb2a50bc2a2fd001b37a9693b166e0e0058ccfe3b1bae92",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-PROGRAMMES",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-PROGRAMMES",
+      "path": "assurance-records/AI-IMPRANA-EPIC-PROGRAMMES.json",
+      "content_hash": "885382b87d4333c582d62330bb05d01f72700220bb98ba91d8d6f323f11d8f7c",
+      "file_sha256": "f2f1c8dbc88b69d9abf919b896dc9a0e44cae4c8612ebf12999d3aa692de0f75",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-REPORTING",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-REPORTING",
+      "path": "assurance-records/AI-IMPRANA-EPIC-REPORTING.json",
+      "content_hash": "6056ebf2965e75a3191ff2c0c45ffb8e0a593f3baf506fece579e00761867bca",
+      "file_sha256": "19b20ae6adcadee81ac64d32ee1ccae54917b691cec53288334551c722d914bb",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-RESULTS-PLANNING",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-RESULTS-PLANNING",
+      "path": "assurance-records/AI-IMPRANA-EPIC-RESULTS-PLANNING.json",
+      "content_hash": "c2ca56253fa745488e3a26c63362bd0e3f8e1fedc77e33acf5d8205b65d08528",
+      "file_sha256": "ddd1fe40914c012b45c1ba564e78211d089b1053f1f60b95a49de0597f59c052",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-SECURITY",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-SECURITY",
+      "path": "assurance-records/AI-IMPRANA-EPIC-SECURITY.json",
+      "content_hash": "031c845b97174c3ac7f46d9dc740cd7804ab77be6c3ba5c78f230c254f75503a",
+      "file_sha256": "b16542c16686944ab97aa232b8078dc91db146eda65e23c41a7221e9f891c075",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-SERVICE-OPERATIONS",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-SERVICE-OPERATIONS",
+      "path": "assurance-records/AI-IMPRANA-EPIC-SERVICE-OPERATIONS.json",
+      "content_hash": "fbb3647ca3b7647a3217b0f523ad0158ea37a5a2aa6ddacb32d42425a6491f08",
+      "file_sha256": "f105ddd6df961e91cd3fadf0346d3d86268639f898532e063828d7e19d7d13f2",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-TENANCY-AND-ORGANISATION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-TENANCY-AND-ORGANISATION.json",
+      "content_hash": "f8ccb3e0dacd86c06f8710a910faabe5c21310ac5183935c9f27131514810185",
+      "file_sha256": "7adc027ae7b7bb0b7fca904ceb00b1ae5b1dd0a24f80d8c9ec8fa8a74b9b163b",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-TRANSITION",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-TRANSITION",
+      "path": "assurance-records/AI-IMPRANA-EPIC-TRANSITION.json",
+      "content_hash": "a8b0cebd3dc0c480557730217821c194468c0a299097adb553d2723895877e3c",
+      "file_sha256": "53ba8200b4668d4e13a444657f30c636bac6a41b2466178d0ede5e90869e0e4a",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-USER-EXPERIENCE",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-USER-EXPERIENCE",
+      "path": "assurance-records/AI-IMPRANA-EPIC-USER-EXPERIENCE.json",
+      "content_hash": "f19153cd43a7993b108a51013dda4f48bf09db9350686ba84a166a26b64b8bef",
+      "file_sha256": "b85dfb604222b7bb36736826e6d2265643bf632d48e513860b26e3c105d23948",
+      "stage": "planning",
+      "status": "needs_input"
+    },
+    {
+      "id": "AI-IMPRANA-EPIC-WORKFLOW-AND-REVIEW",
+      "version": "draft-20261011.1",
+      "scope_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "path": "assurance-records/AI-IMPRANA-EPIC-WORKFLOW-AND-REVIEW.json",
+      "content_hash": "d3a4d6f9f2791d69cd14f3b10ecf8336dad2d965c3477b83c7cd187ddf60b7dc",
+      "file_sha256": "2bb390fb90b9216267635ca4c364ef272827f7e1f08a214e1bed6238d62536a4",
+      "stage": "planning",
+      "status": "needs_input"
+    }
+  ],
+  "content_hash_policy": "SHA-256 of sorted compact UTF-8 JSON after replacing record.contentHash with null; file_sha256 separately hashes actual saved bytes. This is an authored draft-record convention, not an adopted criterion revision/approval scheme.",
+  "claim": "One cross-cutting record and 54 epic-scoped reusable intake records. Seven needs_input groups each; no child verdict tree or obligations waived."
+}

@@ -1,0 +1,77 @@
+{
+  "scope": "Seven preserved historical scenarios from two existing Split parents; excluded only from active census and not deleted or counted again",
+  "source_commit": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "source_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+  "records": [
+    {
+      "source_story_id": "FR-AI-016",
+      "scenario_ordinal": 1,
+      "exact_source_block": "Scenario: Request reserves budget and shows progress\n  Given an AI request\n  When it starts\n  Then its job class and usage are estimated and permitted budget is reserved\n  And progress, timeout and cancellation are shown\n  And ordinary question answering follows the BRD latency target\n",
+      "exact_source_block_sha256": "eeb28caede0e39a5e758d7fcef4506128ad2ae3c1c4e4ad823250f69601ce3af",
+      "full_original_gherkin_sha256": "392afb91caed2a21f3ffa47ce81a42957a2a2c0a375fbf81a647bb4e1cb0ef26",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "AI capabilities"
+    },
+    {
+      "source_story_id": "FR-AI-016",
+      "scenario_ordinal": 2,
+      "exact_source_block": "\nScenario: Default timeouts keep partial drafts labelled\n  Given the proposed default timeouts\n  When a standard extraction runs beyond 15 minutes or a report draft runs beyond 20 minutes\n  Then the job times out\n  And any partial draft remains labelled incomplete\n",
+      "exact_source_block_sha256": "fd1120410e7ccdb779e5896a6b377c1d59449f85a2db8217cd89c305d933c3fd",
+      "full_original_gherkin_sha256": "392afb91caed2a21f3ffa47ce81a42957a2a2c0a375fbf81a647bb4e1cb0ef26",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "AI capabilities"
+    },
+    {
+      "source_story_id": "FR-AI-016",
+      "scenario_ordinal": 3,
+      "exact_source_block": "\nScenario: Budget exhausted during close\n  Given the AI budget is exhausted during period close\n  When the MEL Manager continues close\n  Then they can still approve data, calculate results and generate a non-AI report\n",
+      "exact_source_block_sha256": "c7a464782acea48b9e5340e548464526df979dd0aef3a0bc0107eb00faf88cbb",
+      "full_original_gherkin_sha256": "392afb91caed2a21f3ffa47ce81a42957a2a2c0a375fbf81a647bb4e1cb0ef26",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "AI capabilities"
+    },
+    {
+      "source_story_id": "FR-AI-016",
+      "scenario_ordinal": 4,
+      "exact_source_block": "\nScenario: Reject lost input and uncontrolled continuation\n  Given the AI budget is exhausted or a job is cancelled\n  When the user submits or cancels an AI request\n  Then a clear limit state is returned without losing user input\n  And cancellation stops new model and tool calls where controllable\n  And provider work already accepted is accounted separately",
+      "exact_source_block_sha256": "e5a4c2cd375aa30a5aabd8e365eeb21685f79aacf7df5d681ba8178579738809",
+      "full_original_gherkin_sha256": "392afb91caed2a21f3ffa47ce81a42957a2a2c0a375fbf81a647bb4e1cb0ef26",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "AI capabilities"
+    },
+    {
+      "source_story_id": "US-DX-01",
+      "scenario_ordinal": 1,
+      "exact_source_block": "Scenario: Complete a guided problem-discovery conversation\n  Given an Executive Director starting problem discovery\n  When they answer the guided, plain-language questions\n  Then the conversation completes in under 60 minutes\n",
+      "exact_source_block_sha256": "1c4afe967d842053440137a91e2fd55fd0e3c984286b4dc0bdd3a1881961f35d",
+      "full_original_gherkin_sha256": "8d8583df3ffc923e8dd8439057778cce93d170af4812f072455b1c9668220dd7",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "Adoption: Diagnose"
+    },
+    {
+      "source_story_id": "US-DX-01",
+      "scenario_ordinal": 2,
+      "exact_source_block": "\nScenario: Output lists prioritised problems with evidence\n  Given a completed problem-discovery conversation\n  When the Executive Director views the output\n  Then it lists the organisation's problems in priority order\n  And each problem shows its supporting evidence\n",
+      "exact_source_block_sha256": "968df677dd52a367472fb8b319abb881d06585953d21f52b41bf2b322f4d19a1",
+      "full_original_gherkin_sha256": "8d8583df3ffc923e8dd8439057778cce93d170af4812f072455b1c9668220dd7",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "Adoption: Diagnose"
+    },
+    {
+      "source_story_id": "US-DX-01",
+      "scenario_ordinal": 3,
+      "exact_source_block": "\nScenario: Reject an overlong or unsupported discovery\n  Given a problem-discovery conversation\n  When it takes 60 minutes or more, or a listed problem has no priority or no supporting evidence\n  Then the discovery is not accepted as complete",
+      "exact_source_block_sha256": "2e6c643820bfc2351fa17362582f57c5f2570cf8c4e837d9abe594afce3385c3",
+      "full_original_gherkin_sha256": "8d8583df3ffc923e8dd8439057778cce93d170af4812f072455b1c9668220dd7",
+      "source_story_release": "R1 Pilot",
+      "source_story_status": "Split",
+      "source_epic_area": "Adoption: Diagnose"
+    }
+  ]
+}

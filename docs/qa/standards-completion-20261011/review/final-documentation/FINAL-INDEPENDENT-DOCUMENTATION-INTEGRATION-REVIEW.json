@@ -1,0 +1,977 @@
+{
+  "record": "IMPRANA-FINAL-INDEPENDENT-DOCUMENT-INTEGRATION-REVIEW",
+  "recorded_at_utc": "2026-10-11T06:23:32.143451+00:00",
+  "disposition": "PASS_DOCUMENT_SOURCE_AND_PUBLICATION_INTEGRITY_ONLY",
+  "reviewer": "Separate AI documentation/source reviewer; no authenticated human/owner authority asserted",
+  "scope": {
+    "records": 55,
+    "groups": 385,
+    "scoped_summary_sections": 55,
+    "elements": 2893,
+    "original_criteria": 1328,
+    "native_stories": 368,
+    "native_documents": 10,
+    "overview_appendix": 1,
+    "selected_full_metadata_values": 11418,
+    "unselected_descriptions": "1185 list excerpts only",
+    "actual_package_or_product_tests_run_by_this_review": 0,
+    "Native_writes": 0,
+    "repo_writes": 0
+  },
+  "checks": [
+    {
+      "id": "canonical_cosmetics_are_declared_and_literal_code_is_excluded",
+      "passed": true,
+      "evidence": {
+        "observed_rules": "table delimiter spacing/dash lengths; unordered dash/star bullets; angle destinations around same HTTP URL; two explicit escaped labels; terminal LF only. Fenced/inline code excluded. No plain identifier generated-autolink removal."
+      }
+    },
+    {
+      "id": "negative_guard_source_contains_13_declared_checks",
+      "passed": true,
+      "evidence": {
+        "guard_names": [
+          "appendix_truncation_rejected",
+          "duplicate_appendix_rejected",
+          "duplicate_identity_rejected",
+          "literal_class_escape_change_not_normalized",
+          "literal_code_bullet_change_not_normalized",
+          "literal_code_delimiter_change_not_normalized",
+          "literal_code_url_change_not_normalized",
+          "missing_identity_rejected",
+          "old_source_mutation_rejected",
+          "source_class_mutation_not_normalized",
+          "status_mutation_rejected",
+          "unplanned_claim_rejected",
+          "wrong_project_rejected"
+        ],
+        "execution": "Inspected direct-key and loop-tuple AST/source; not rerun under no-tests instruction."
+      }
+    },
+    {
+      "id": "native_comparer_has_full_prefix_marker_complete_append_and_named_field_guards",
+      "passed": true,
+      "evidence": [
+        "id",
+        "uuid",
+        "title",
+        "projectMilestone",
+        "priority",
+        "estimate",
+        "url",
+        "status",
+        "statusType",
+        "parentId",
+        "projectId"
+      ]
+    },
+    {
+      "id": "all55_original_scope_and_record_identities_exact",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "55_frozen_record_file_and_canonical_content_hashes_exact",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "id": "every_scope_story_problem_contract_hypothesis_boundary_and_release_allocation_exact",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "id": "all385_groups_needs_input_unassessed_zero_review_or_trust",
+      "passed": true,
+      "evidence": {
+        "errors": [],
+        "groups": 385
+      }
+    },
+    {
+      "id": "all24_original_inputs_and62_pm_members_unchanged",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "all2893_full_source_content_source_ids_parents_and_edges_preserved",
+      "passed": true,
+      "evidence": {
+        "errors": [],
+        "type_counts": {
+          "vision": 1,
+          "strategy": 5,
+          "roadmap": 1,
+          "release_goal": 5,
+          "epic": 54,
+          "user_story": 368,
+          "acceptance_criterion": 1328,
+          "technical_task": 1131
+        }
+      }
+    },
+    {
+      "id": "original_story_release_goal_ids_exist_in_preserved_canonical_hierarchy",
+      "passed": true,
+      "evidence": [
+        "RG-FOUNDATION",
+        "RG-LATER",
+        "RG-R1",
+        "RG-R2",
+        "RG-R3"
+      ]
+    },
+    {
+      "id": "56_requests20251_obligations_are_zero_actual_reviews",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "all55_readable_summary_sections_reconstruct_exactly_from_frozen_records",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "id": "summary_intro_is_proposal_no_research_owner_or_runtime_approval",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "ten_unique_initial_native_full_document_readbacks_match_source_plans",
+      "passed": true,
+      "evidence": {
+        "errors": [],
+        "documents": [
+          {
+            "id": "4e60d4fb-59b0-4a3e-b5da-1da1b493d63d",
+            "title": "Imprana Commons QA — Current test strategy — 11 October 2026",
+            "expected_sha256": "e48955f1d091acb784106aa184f615052f8d2dabba70f883bb002ae3fcda99d5",
+            "actual_sha256": "d5c6e48d4eb7a08a1111201bbb941e6ff20f5c102b07e9703eb1a0405879265c",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "f321736b-6449-4040-b316-bec1a282100e",
+            "title": "Imprana Commons QA — Release test plan — 11 October 2026",
+            "expected_sha256": "4b29c6112d5eb8ea39ba076fb68d47f33dd0e7a84c506b26a38216fb98ee37b1",
+            "actual_sha256": "c0b0c52d28f9d4d8d3e925249493bf2e5783bf2d92c8a906b80189b9ac0f43a8",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "8ed726e6-f594-4852-aed3-3b6620ca215c",
+            "title": "Imprana Commons QA — Test data and environments — 11 October 2026",
+            "expected_sha256": "7cc73199f9c54ca93c8a62fb077e058a973430db1788ff2c5d18124ddbae8c50",
+            "actual_sha256": "5f895b668f50d8b4e81a0b304aefc1ed31d8b0340fc82320c7208af9b141fd82",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "67cfbfc6-c652-4238-896d-57052721dc5a",
+            "title": "Imprana Commons QA — Execution and defect protocol — 11 October 2026",
+            "expected_sha256": "0d6d4048b94eff560863c2ec304f89a835c0b8e1509a69fd43d354b2f2f37c51",
+            "actual_sha256": "43f2cb7774aae61e20e7b12478ed1d9f1cddfbd03fbc526c03016bd0a84a8d4f",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "6d8f6b0a-4c91-43c2-afb8-bd012bf9eecd",
+            "title": "Imprana Commons QA — Specialist verification plans — 11 October 2026",
+            "expected_sha256": "a1e844677e5817fe4e07abb1353117058e3742fbca571a95450b27ef025956b3",
+            "actual_sha256": "8273f533d7b91adbfd11ef4a47eda1882a3649d12af17603c5bd6f3249d0eab7",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "3ed0dbfc-47df-40f1-8e1f-1b9d94d02633",
+            "title": "Imprana Commons — QA standards completion and adoption — 11 October 2026",
+            "expected_sha256": "d4916ba3f6d6cff1e4fab6d838bfa54be2757f71743a36b6523960f8fe4202ed",
+            "actual_sha256": "5cc4cb54650b8738526d1c4ad5823f85801fd3dcb9cf2371ab73073aa27e2b55",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "10991a34-5d41-4b5d-b565-047b8afced0c",
+            "title": "Imprana Commons — PM assurance continuation — 11 October 2026",
+            "expected_sha256": "639081b0db2b90c88eae591e6b686bed44407fdaf26ccdb34f72e217e0bc7684",
+            "actual_sha256": "e716278f071308e85449010aa8e58cfba275822ce15813475ae8b4c61c5c1e52",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "14ef9cbc-a97c-4a36-8bf2-f6df6fcc2fd4",
+            "title": "Imprana Commons — Shared PM intake summaries 1 of 3 — 11 October 2026",
+            "expected_sha256": "5a37079fbefa00d7ad85cf5ede4d3b6f5089d2a7c39aa322738d7a0224851a60",
+            "actual_sha256": "fb46ce75ceb5cdd92dac83e8bdd5626bcfdc02700090b4dc45c4391d89b18609",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "9ea7f27f-d883-4e94-bc7b-164bcb95affc",
+            "title": "Imprana Commons — Shared PM intake summaries 2 of 3 — 11 October 2026",
+            "expected_sha256": "496a634c8433299f7bc37e54ab8714d99c1dff382b99dca78a3a4dbd855f48f7",
+            "actual_sha256": "1127b0b30ead13cc27bbe2428687cc7443dcd30f579f1aff1cd5997338eb5eee",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          },
+          {
+            "id": "d35c65d1-dad5-4d4d-b1d5-3d45f9f3cf22",
+            "title": "Imprana Commons — Shared PM intake summaries 3 of 3 — 11 October 2026",
+            "expected_sha256": "45a83123037fd6c3a9a47b7a4fda5ac7daba3ff31a6d1c5ebd08bb9453485809",
+            "actual_sha256": "f972491dd54337584f2ed7452e1deff8947f712b7805dbc91c8326724a9832e0",
+            "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046"
+          }
+        ]
+      }
+    },
+    {
+      "id": "three_native_scoped_documents_18_18_19_cover_all55_full_exact_sections",
+      "passed": true,
+      "evidence": {
+        "record_counts": [
+          18,
+          18,
+          19
+        ],
+        "duplicates": []
+      }
+    },
+    {
+      "id": "pm_index_initial_false_composer_observation_retained_and_exact_native_baseline_reconciled",
+      "passed": true,
+      "evidence": {
+        "initial_verified": false,
+        "original_prefix_byte_exact": true,
+        "complete_append_normalized_equal": true,
+        "metadata_differences": [],
+        "qualification": "The first expected composer carried the draft's terminal newline into an internal separator. Use exact before native content plus authorized appendix; original prefix is byte-identical and entire readback equals planned append under observed cosmetics.",
+        "correct_expected_sha256": "d00efdc9dfcd3cbb05804ffe5b6c0cdb4414f56d5b6b378298be0802d1e098f2",
+        "actual_sha256": "b6a4267c38ded0fc85df3384227998d23779fd59d6fa202bb0f8336a4dc411be"
+      }
+    },
+    {
+      "id": "pm_index_append_links_exact_three_scoped_native_documents",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "final_fresh_ten_complete_native_documents_match_independently_reconstructed_sources",
+      "passed": true,
+      "evidence": {
+        "errors": [],
+        "final_expected_plan_ids_match": true
+      }
+    },
+    {
+      "id": "actual3786_structure_and3794_release_diagnostics_preserved",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "planned1328_never_upgrades_validated_zero_runs_zero_unknown1328",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "all25_source394_proposed375_case_frozen_artifacts_unchanged",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "id": "all368_native_story_plans_match_frozen1328_source_case_appendices",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "id": "all368_saved_fresh_full_story_prefixes_and_appendices_match_exact_contract",
+      "passed": true,
+      "evidence": {
+        "errors": [],
+        "targets": 368,
+        "issues": 1553,
+        "unselected_issues": 1185
+      }
+    },
+    {
+      "id": "full_target_named_metadata_preserved_without_absent_field_inference",
+      "passed": true,
+      "evidence": {
+        "compared_field_values": 11418,
+        "differences": [],
+        "assignment_cycle_captured": false
+      }
+    },
+    {
+      "id": "first_target_prior_complete_prefix_proof_exact_and_fresh_capture_limit_disclosed",
+      "passed": true,
+      "evidence": {
+        "id": "APL-332",
+        "prefix_sha256": "3fd741b3ef7bdcda012eb2dac43f2931edb777b8f927f4ec501fdf079d484500",
+        "prior_capture": "outputs/imprana-product-refinement-20261011/native-after/full-issues.json",
+        "disposition": "Exact full original prefix matched previous complete publication capture; initial list truncation observation preserved. Fresh pre-save full capture was not obtained for this first target."
+      }
+    },
+    {
+      "id": "root_report_explicit_limits_and13_historical_guards_honest",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "existing_overview_original7140_prefix_and_one_complete_exact_addition_preserved",
+      "passed": true,
+      "evidence": {
+        "old_prefix_sha256": "4ae3f792e52814ad7a68f6f138a107f870bf2414538667e38f81bcfd389f2204",
+        "expected_sha256": "a3ab096f29f943c70ca14dc7b218cc7acd3dc1ff8845ed0da82b250f1e031f3d",
+        "actual_sha256": "c630a85631e9c642d991223d5edebf85a06306ffc92c8fb22658e40c0e3a82cb",
+        "metadata_differences": []
+      }
+    },
+    {
+      "id": "overview_factual_qualifiers_match_actual_counts_and_capture_limits",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "readme_and_adoption_keep_authoring_scope_authority_bindings_and_enforcement_open",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "no_unrelated_product_scope_in_reviewed_documentation",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "publication_prose_capture_limits_no_product_or_human_certification",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "all1910_original_protected_tracked_sources_history_code_unchanged",
+      "passed": true,
+      "evidence": {
+        "baseline": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+        "protected_files": 1910,
+        "changed": []
+      }
+    },
+    {
+      "id": "actual_root_prepublication_receipt_is_limited_document_evidence",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "id": "all17_review_and_publication_copies_byte_exact_or_declared_compact_derivation",
+      "passed": true,
+      "evidence": {
+        "members": 17,
+        "errors": []
+      }
+    },
+    {
+      "id": "compact_overview_receipt_binds_actual_full_readback_hashes",
+      "passed": true,
+      "evidence": {
+        "record": "IMPRANA-CURRENT-OVERVIEW-APPEND-VERIFICATION",
+        "id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-framework-refinement-11-october-2026-0fefa9856f45",
+        "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+        "verified": true,
+        "original_prefix_byte_exact": true,
+        "marker_count": 1,
+        "before_sha256": "4ae3f792e52814ad7a68f6f138a107f870bf2414538667e38f81bcfd389f2204",
+        "after_sha256": "c630a85631e9c642d991223d5edebf85a06306ffc92c8fb22658e40c0e3a82cb",
+        "addition_sha256": "319e52e3ef6bc1f396f67c7bde5719de0b67fc4e78fa67221eef578cd41be77a",
+        "raw_evidence_sha256": "b51e8dad573303179aca3354adefb84e2e494817e79455f4b8cdc3e040c1ca6d",
+        "scope": "Existing overview original full prefix plus unique new authoring-evidence appendix; no old receipt/history rewrite.",
+        "qualification": "Complete source-bound Native documentation proof only; no product run, human trust/approval, readiness or release action."
+      }
+    },
+    {
+      "id": "all378_actual_doc_and_story_appendix_literal_code_projections_exact",
+      "passed": true,
+      "evidence": {
+        "documents": 10,
+        "stories": 368,
+        "differences": [],
+        "method": "Independent fence-length-aware and exact matching backtick-run projection of retained observations, not test fixtures."
+      }
+    },
+    {
+      "id": "publication21_distinct_actual_repair_story_count_matches_retained_lane_evidence",
+      "passed": true,
+      "evidence": {
+        "root_repaired_story": "APL-429",
+        "lane_c_repaired_stories": [
+          "APL-433",
+          "APL-436",
+          "APL-438",
+          "APL-440",
+          "APL-444",
+          "APL-447",
+          "APL-451",
+          "APL-455",
+          "APL-458"
+        ],
+        "lane_d_repaired_stories": [
+          "APL-607",
+          "APL-611",
+          "APL-613",
+          "APL-616",
+          "APL-618",
+          "APL-620",
+          "APL-648",
+          "APL-650",
+          "APL-652",
+          "APL-654",
+          "APL-721"
+        ],
+        "count": 21,
+        "qualification": "Actual concrete source failures/patches retained; whole final prefixes independently raw exact."
+      }
+    }
+  ],
+  "failed_checks": [],
+  "observations": [
+    {
+      "id": "PM_INDEX_FALSE_COMPOSER_HISTORY",
+      "disposition": "Retained genuine false observation; resolved only by composing actual pre-append Native baseline plus authorized appendix. No internal newline normalization waiver or prefix change."
+    },
+    {
+      "id": "DECLARED_FIRST_PREPUBLICATION_COPY_HISTORY",
+      "historical_source": "outputs/imprana-standards-completion-20261011/root-integration-history/first-published-root-prepublication-check.json",
+      "sha256": "3a0bc0f7521aa2a3bbe07074b6c56ceaf7acdfed911aa0731929ea5f71d195a6",
+      "disposition": "Original published prepublication proof remains exact against explicitly declared retained history; current later document-integrity proof is a different retained observation."
+    },
+    {
+      "id": "THIS_REVIEW_SECOND_ADAPTER_OBSERVATION",
+      "path": "outputs/imprana-standards-completion-20261011/final-independent-review/SECOND-REVIEWER-ADAPTER-OBSERVATION.json",
+      "sha256": "3f999d3cf7f8bf0257232459dfe96d28fc68a3be20e343c352376ca78e34029b",
+      "disposition": "Preserved reviewer schema/path assumption failures. Compact overview uses verified/original_prefix_byte_exact/marker_count and is now fully tied to actual hashes; dated first prepublication copy binds its explicitly declared immutable historical source rather than newer same-named active output. No shared source edits."
+    },
+    {
+      "id": "THIS_REVIEW_FIRST_ADAPTER_OBSERVATION",
+      "path": "outputs/imprana-standards-completion-20261011/final-independent-review/FIRST-REVIEWER-ADAPTER-OBSERVATION.json",
+      "sha256": "47222085bbbcf93d7fc7a821023deafc39718bbd2300ef9a92f1eac5afcf08da",
+      "disposition": "Preserved first review adapter failures: AST reader originally counted only ten direct keys, omitting three loop-declared corruption guard names; factual qualifier reader expected lowercase unselected where actual text correctly begins Unselected. Only reviewer helper was corrected; Native/repository sources unchanged."
+    }
+  ],
+  "source_pins": {
+    "outputs/imprana-standards-completion-20261011/review_native_publication.py": {
+      "sha256": "d70d9538bc9b9c9fb81a7bbecabe1c6780cb2ae56b8bcd62f00b7b26d7772dc9",
+      "bytes": 8281
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/RECORD-MANIFEST.json": {
+      "sha256": "f4b49b744cc86a9ce973a4b1646be269d97da10023478f9e4dd4e98e041d0216",
+      "bytes": 25003
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-CROSS-CUTTING.json": {
+      "sha256": "8ef05a8444ed7ab66243a923f4bbdf161b49446128d428223414578387c17ab1",
+      "bytes": 140820
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-AI-CAPABILITIES.json": {
+      "sha256": "4520e07f3274b11583f7dc7eb4f137ace629c55fda7b05367c4b9293449b56fc",
+      "bytes": 64544
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ACCESS-CONTROL.json": {
+      "sha256": "2f8ca6837f531d1a8e9c2992c8af9e950a7458cba427fc999377af15bbd0d9a3",
+      "bytes": 63056
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-ADOPT.json": {
+      "sha256": "876cb3ab72f5863f0af6087a331d215913852840caf08ab67e90c81600d2f89b",
+      "bytes": 60981
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-ASSESS.json": {
+      "sha256": "0a2572f590734c909bd8a5d7610b9bf517250821a0b1677b7ea1259229f2c632",
+      "bytes": 60696
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-DEPLOY.json": {
+      "sha256": "11979bce1716d9bf483c047594609030cb11def55771057c483be38127c8d94b",
+      "bytes": 60758
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE.json": {
+      "sha256": "ddb28624a54b40a6fcbdb4b80321d159df9faac250c65af00d7c18c9fbf2868a",
+      "bytes": 61643
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-DISCOVER.json": {
+      "sha256": "b9999a8f9b4e4e4f5b48b097c0a04ae763f44e91160dd74dd54d6d1c7e45b1a5",
+      "bytes": 60960
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-IMPROVE.json": {
+      "sha256": "985f23569a1744c684ba5fb0d81477ca769fad7bf9fd7accc2f307bed9ad151a",
+      "bytes": 61452
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-MAP.json": {
+      "sha256": "abb2ebdd70c1b7bb383d82bed0ef66bc1b36a39a40b47f597c0fa933d67ae1ea",
+      "bytes": 60960
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-ADOPTION-VALUE-CASE.json": {
+      "sha256": "b2dc1e86d6167f243449d0809fccc758ccb45423ec31719e64a1df84e08322f7",
+      "bytes": 61495
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-CALCULATIONS.json": {
+      "sha256": "7bc1afc061135ad0dd8595c0e911d717a2077f83ad3c8b230438ca1822b6a28e",
+      "bytes": 63796
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-COMMERCIAL-AND-BILLING.json": {
+      "sha256": "f6866894b34a45976486839c4796a2fdd5569e00eae97efca89037a5e900b9ff",
+      "bytes": 62065
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-DASHBOARDS-AND-ANALYSIS.json": {
+      "sha256": "571cd3868dbfd70a1e8731ff51b00d58e608e4b0b9d7d826706c31c78e1c9c9a",
+      "bytes": 62523
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-DATA-IMPORT-AND-MANAGEMENT.json": {
+      "sha256": "2d587e94d0c6fc43429da7125f20690f66ca0bc05ef0d24a39a9df2efb84df32",
+      "bytes": 63025
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-DATA-QUALITY.json": {
+      "sha256": "9803e3bcd0431ab1b3bf2e4c9722a880db1bb4149cc8acd116f9780ebe0ad2fe",
+      "bytes": 61931
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-EVALUATION.json": {
+      "sha256": "b8b3e1dffaae0766fc999b2d10a1e5609cc9c5462b7d79947dd7ed8d5895ab0e",
+      "bytes": 61925
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-EVIDENCE.json": {
+      "sha256": "741055fede524af1fcdeea4c325a8a0258ef355399153ded6d1866c71c78eeb8",
+      "bytes": 61917
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-FINANCE.json": {
+      "sha256": "d1a5d5552cc8c8902f562460126cef3cf6e9c95d0c8fbdb252bab10e7f7345c4",
+      "bytes": 61890
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-FORMS-AND-COLLECTION.json": {
+      "sha256": "a271a8cc0a3eaf89f0420c3bee46b892ed9e922fa4ddf1e91bba984a072eb3b0",
+      "bytes": 62547
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-FUNDER-PORTFOLIO.json": {
+      "sha256": "8fd7a0704a7c12ec7473c8cf10ed96f5e113a285fda503abe10a99f8e3736764",
+      "bytes": 60988
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-IDENTITY-AND-ACCOUNTS.json": {
+      "sha256": "e771d50d02ba9ce3e7fd3b2d8c19f540d18bc18aa3415d3676e1c0a3d3321070",
+      "bytes": 63832
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-INDICATORS.json": {
+      "sha256": "4e7a5eb3156de63d3dec7961e2f936acf942a2f14c4cce46d0db8c867d0bf3ea",
+      "bytes": 63414
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-INTEGRATIONS-AND-CONNECTORS.json": {
+      "sha256": "9c8973ee9fd6e3b1cdd28b581cf8608b7612a50868ac66fbe698e5c754c4a5f2",
+      "bytes": 62635
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-MIGRATION-AND-EXIT.json": {
+      "sha256": "d4a527fc138a4b7f89bd0343a3a591e2d46f659d36b1745eea2a132a7b2ecc14",
+      "bytes": 61957
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-AI-QUALITY.json": {
+      "sha256": "918f2f7a59315606ff9312aa99b4f21c8d1105f4da8f2280f80dcd63c3e0a7a6",
+      "bytes": 61286
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-AUDIT.json": {
+      "sha256": "55fa2fbae18fa54337e4a42a648405e6500d77dccbb83581751ef820db162198",
+      "bytes": 60198
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-AVAILABILITY.json": {
+      "sha256": "a8857cf912e80ca32df2353e7e96226cc112c004646d0f92489404e1918646bc",
+      "bytes": 60470
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-CAPACITY.json": {
+      "sha256": "8197aadf21d49e38f5b2700c4f4889d7305043fdb33d24550eeccce51a2ccd7a",
+      "bytes": 60327
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-COMPATIBILITY.json": {
+      "sha256": "8d6a11caf18033bc218e664260d8405aebc23235ad582a97805131da2d370014",
+      "bytes": 60174
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-COST.json": {
+      "sha256": "af62d6f40c252b469eab148f27f0d682cb9daf017ca317bf6e51d2421e706d6a",
+      "bytes": 60216
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-DATA-INTEGRITY.json": {
+      "sha256": "987dd425aa29d40c48f417749e38d2892324def797a3f8f82be23f2a3516abee",
+      "bytes": 60561
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-LOCALISATION.json": {
+      "sha256": "bd2077745f206c192ec9e5bca10d9cf113622ed86973f9d37b63406d3a9a3687",
+      "bytes": 60228
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-MAINTAINABILITY.json": {
+      "sha256": "e5322d7635e345a3680911716061f6c8876904bfc27f9e3c890bcfd4e4c8b720",
+      "bytes": 60265
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-OBSERVABILITY.json": {
+      "sha256": "b51041a6fd09f2433aa2ba3714b2916806e63c1fb603374b4d75c5cd22566ccc",
+      "bytes": 60192
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-PERFORMANCE.json": {
+      "sha256": "d9f511ce5f0cbdfcae1be86fa4fd29da582e439398f7aca66197d1c15fe4ef20",
+      "bytes": 61646
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-PORTABILITY.json": {
+      "sha256": "7aaedef9a217cdef33d91e8ec0474c54c821d1134067db2d22f0c252d03666cb",
+      "bytes": 60184
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-RECOVERY.json": {
+      "sha256": "64f088170c06798c991c2b6a73fb6a26d21559f9dd6a79754282b5733f79fbe7",
+      "bytes": 60689
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NFR-SUPPORT.json": {
+      "sha256": "1b428b609381005e2f9d64d27db61b1614055fd3cadb94e9eb2140db4ed8cb58",
+      "bytes": 60212
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-NON-FUNCTIONAL.json": {
+      "sha256": "dc407ab84b0548d44bc1f81f7772166abfe4732d4112d1da3386b6eadd708276",
+      "bytes": 60072
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-OFFLINE-COLLECTION.json": {
+      "sha256": "54903e5d2546cd6cd1cce0a935c8fb41a4af1f7244edec9201ef28b54ece6c02",
+      "bytes": 62256
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-OPERATORS.json": {
+      "sha256": "379004c06e57172fb468f8bfe54aeea891b3daf2424ca452c38bb0e18ed95257",
+      "bytes": 60329
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-PARTICIPANTS.json": {
+      "sha256": "bf2ad5747d1973bd181d65dc768f88f362d2c2ca30e217ae2ba2ecf1600f0361",
+      "bytes": 62038
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-PARTNERS.json": {
+      "sha256": "6d4ab50e55703265c11048ebad563d3fe8c25d0079282865a06ce675a7082743",
+      "bytes": 61426
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-PLATFORM.json": {
+      "sha256": "28d1d90de3e80be35fb3bcd0ee3c2cb09661fb99f2338eea1f129caae056fe47",
+      "bytes": 60151
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-PRIVACY.json": {
+      "sha256": "171a010921cd46fffcb2a50bc2a2fd001b37a9693b166e0e0058ccfe3b1bae92",
+      "bytes": 62757
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-PROGRAMMES.json": {
+      "sha256": "f2f1c8dbc88b69d9abf919b896dc9a0e44cae4c8612ebf12999d3aa692de0f75",
+      "bytes": 62342
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-REPORTING.json": {
+      "sha256": "19b20ae6adcadee81ac64d32ee1ccae54917b691cec53288334551c722d914bb",
+      "bytes": 62869
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-RESULTS-PLANNING.json": {
+      "sha256": "ddd1fe40914c012b45c1ba564e78211d089b1053f1f60b95a49de0597f59c052",
+      "bytes": 62404
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-SECURITY.json": {
+      "sha256": "b16542c16686944ab97aa232b8078dc91db146eda65e23c41a7221e9f891c075",
+      "bytes": 63994
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-SERVICE-OPERATIONS.json": {
+      "sha256": "f105ddd6df961e91cd3fadf0346d3d86268639f898532e063828d7e19d7d13f2",
+      "bytes": 62531
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-TENANCY-AND-ORGANISATION.json": {
+      "sha256": "7adc027ae7b7bb0b7fca904ceb00b1ae5b1dd0a24f80d8c9ec8fa8a74b9b163b",
+      "bytes": 62695
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-TRANSITION.json": {
+      "sha256": "53ba8200b4668d4e13a444657f30c636bac6a41b2466178d0ede5e90869e0e4a",
+      "bytes": 60945
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-USER-EXPERIENCE.json": {
+      "sha256": "b85dfb604222b7bb36736826e6d2265643bf632d48e513860b26e3c105d23948",
+      "bytes": 62933
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/assurance-records/AI-IMPRANA-EPIC-WORKFLOW-AND-REVIEW.json": {
+      "sha256": "2bb390fb90b9216267635ca4c364ef272827f7e1f08a214e1bed6238d62536a4",
+      "bytes": 62581
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/ARTIFACT-MANIFEST.json": {
+      "sha256": "3964cd4ffc3d39028bfd50b8679b3a393b35fc826b7ccc3c808f385440e4b713",
+      "bytes": 11698
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json": {
+      "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+      "bytes": 716206
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/STORY-REFINEMENT.json": {
+      "sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+      "bytes": 3236539
+    },
+    "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V4.json": {
+      "sha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+      "bytes": 63235675
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/ELEMENT-ASSURANCE-MAP.json": {
+      "sha256": "cb999b260a7bcfe9fa371c1dccc8bd2e5951ae37c1446e6aa6e4c62755c96be4",
+      "bytes": 6465273
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/REVIEW-REQUEST-CONTRACTS.json": {
+      "sha256": "0e5319da54c02acd3e42b50e0fffdb24fde70b176f4a2834d19209500d6d4ad6",
+      "bytes": 153129
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/SOURCE-PINS.json": {
+      "sha256": "446228889914c019c4fbcb258cb5a56bb76476e8a5630a86a0703f36a6ab4470",
+      "bytes": 6153
+    },
+    "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/PM-SCOPE-SUMMARIES-20261011.md": {
+      "sha256": "3a028b482833e2c7eadc254a8d5fa6c668cabc97b87e3b9e6eee8e36f9e5ec27",
+      "bytes": 145197
+    },
+    "outputs/imprana-standards-completion-20261011/native-qa-plan.json": {
+      "sha256": "a6564735d2311bf3334334bf16e961eb5aeebb6f0c4c6daa7635f3daf2b57d3c",
+      "bytes": 104871
+    },
+    "outputs/imprana-standards-completion-20261011/native-qa-save-readbacks.json": {
+      "sha256": "abd48044bbf3f2d5bab3af01c690c4eb3d906babe8979c2c18bb79bcf77ec448",
+      "bytes": 107083
+    },
+    "outputs/imprana-standards-completion-20261011/native-integrated-doc-plan.json": {
+      "sha256": "80adaec9cdecc44653df8d0cb060400a9f13988e3d6e53f55cc472755906f652",
+      "bytes": 36135
+    },
+    "outputs/imprana-standards-completion-20261011/native-integrated-doc-save-readbacks.json": {
+      "sha256": "252f1df6fbc90c4d92b004405868fd98cab72605b79e192a764e4164c5310ff9",
+      "bytes": 110128
+    },
+    "outputs/imprana-standards-completion-20261011/native-scoped-pm-plans.json": {
+      "sha256": "50e9bd63384526625137863cb4d9cf8d80e5cd44fc360d258af32a00b22e7fad",
+      "bytes": 148929
+    },
+    "outputs/imprana-standards-completion-20261011/native-scoped-pm-readbacks.json": {
+      "sha256": "fa661b1b0c42faaab6d03ad565c04c10891848c27b438fd7173cdaa03c40416e",
+      "bytes": 298368
+    },
+    "outputs/imprana-standards-completion-20261011/native-pm-index-link-append.json": {
+      "sha256": "511999b913b5c67b16830749301ff898ba8c3c9c038b8cae5db3f4a0db8f28d2",
+      "bytes": 33941
+    },
+    "outputs/imprana-standards-completion-20261011/native-pm-index-link-append-reconciliation.json": {
+      "sha256": "1bed6eb7b2aa2edde561da34a75165bb031d9d83df9ba04f7d460890e22221c7",
+      "bytes": 627
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-ten-document-expected.json": {
+      "sha256": "f1ddf31ff20d1b8b1ed0736b28902a799bd89c3c35226045046bc3159f24d888",
+      "bytes": 583780
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-ten-document-fresh.json": {
+      "sha256": "6be4a6652a392d4e673e0cad28c9dd7ce187c862554eae05e169c770d2a9af17",
+      "bytes": 584450
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/ACTUAL-COVERAGE-SUMMARY.json": {
+      "sha256": "3d51ca90566ea84cf2c2e663c6f72d51972170815744813a7800f26d32504452",
+      "bytes": 4266
+    },
+    "outputs/imprana-standards-completion-20261011/source/proposed-registers/structure.stdout.json": {
+      "sha256": "6ebdf15657d76f3bbc4c4c864ddeced4955d3f2bbcca1564aa77de6769fd8ef0",
+      "bytes": 518604
+    },
+    "outputs/imprana-standards-completion-20261011/source/proposed-registers/negative-release-record.stdout.json": {
+      "sha256": "bddfc2eb2dc669eecd65d677bbde6bbbd83135037805097ec2ff8c920d430696",
+      "bytes": 518956
+    },
+    "outputs/imprana-standards-completion-20261011/source/SOURCE-FREEZE-RECEIPT.json": {
+      "sha256": "0aa40c76febec3ce79c7bc61502aa1856770c0e717484521b03b27b63a44e832",
+      "bytes": 5068
+    },
+    "outputs/imprana-standards-completion-20261011/source/proposed-registers/FINAL-PROPOSED-REGISTER-FREEZE.json": {
+      "sha256": "a8b7de3c515b61f01693be09c936213c7c1c2eac83d3fea3721066df757aa7d3",
+      "bytes": 103582
+    },
+    "outputs/imprana-standards-completion-20261011/cases/ACTUAL-CASE-DESIGN-VALIDATION.json": {
+      "sha256": "2a90d77918173c4f781b181f4e6ffee743cf800e8ef8f3cdf51e466130945db9",
+      "bytes": 102537
+    },
+    "outputs/imprana-standards-completion-20261011/native-full-target-before.json": {
+      "sha256": "1bbd0cce430a74b92f67362b026bb2f4e3c40c575b56d4533a7705d5023f9eb7",
+      "bytes": 14666401
+    },
+    "outputs/imprana-standards-completion-20261011/native-story-full-plan.json": {
+      "sha256": "26906f844807856863b2e8e2e66fae0997c34c0fc7cadb4e9f22235512ae2ade",
+      "bytes": 10842246
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-full-targets.json": {
+      "sha256": "f789711471bbd6bd7ea46815e7d9e20155cdd8547191e8b1e248cac50f2818e1",
+      "bytes": 9116916
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-combined.json": {
+      "sha256": "761821f029968788a6aac99138539ef40b1015f2b54b086e13c1dd1269c80fd1",
+      "bytes": 10105916
+    },
+    "outputs/imprana-standards-completion-20261011/native-final-all-metadata.json": {
+      "sha256": "27a7725b0072d4bf64a2bf2a10f1f905e5a8a8ca7400cda7d0fbf4184b5a6692",
+      "bytes": 1841784
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/LINEAR-STORY-QA-APPENDS.json": {
+      "sha256": "d756eb781548eeca495b0c14cb46450ab3b52cae6b364943a796758483ec42c6",
+      "bytes": 2558022
+    },
+    "outputs/imprana-standards-completion-20261011/native-first-target-full-prefix-reconciliation.json": {
+      "sha256": "7bd5c9d50a6c30ad41f00aab48bd8b93b1349169115d3ccc8960062e9fc4940f",
+      "bytes": 15907
+    },
+    "outputs/imprana-product-refinement-20261011/native-after/full-issues.json": {
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe",
+      "bytes": 16822121
+    },
+    "outputs/imprana-standards-completion-20261011/ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json": {
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "bytes": 136035
+    },
+    "outputs/imprana-standards-completion-20261011/ACTUAL-TARGET-FULL-METADATA-COMPARISON.json": {
+      "sha256": "a6dd8f1603e3bdc3bcd19f6e8b36a2b258cd87f1f11ecace49efed89664d67f3",
+      "bytes": 257
+    },
+    "outputs/imprana-standards-completion-20261011/native-overview-final-append-readback.json": {
+      "sha256": "b51e8dad573303179aca3354adefb84e2e494817e79455f4b8cdc3e040c1ca6d",
+      "bytes": 33698
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/README.md": {
+      "sha256": "d7737763cb4b824018f6f12d3744282b0217c69ba63cd7ea54e2c14777f0944c",
+      "bytes": 6571
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/ADOPTION-CONTRACT.md": {
+      "sha256": "a5463d3af949b758a5a266b9c7e058e955fe4b5417e5b265a50f1c267fde18d8",
+      "bytes": 7803
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/README.md": {
+      "sha256": "d2b78673ca9d99b0d83dd777955f255b2529cd8b99e2aba664f29fb10f3a789d",
+      "bytes": 3100
+    },
+    "outputs/imprana-standards-completion-20261011/ROOT-INTEGRATION-PREPUBLICATION-CHECK.json": {
+      "sha256": "804091d4f14133ff5468b57801c3ba8a50ef39d785814d8454732f3070bc9390",
+      "bytes": 1378
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/REVIEW-COPY-MANIFEST.json": {
+      "sha256": "7b068b08cd2485193b8ee5ae9bfe501a5aa4611551a4796c52afb23ba7d8ba26",
+      "bytes": 2981
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/PUBLICATION-COPY-MANIFEST.json": {
+      "sha256": "478c40996016d257570132690414de870091d98cf7ae4b768663b165392232b9",
+      "bytes": 2409
+    },
+    "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-OVERVIEW-APPEND-VERIFICATION.json": {
+      "sha256": "36449a85f2dbfcfa90be2efc5c464909fa963b58f9846bc9a2643428d2ad244e",
+      "bytes": 995
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-c/FINAL-RECEIPT.json": {
+      "sha256": "80339f66e7caf9d879227558a1c62a0d7e49045876e134ca5c0dd07a59f46210",
+      "bytes": 55342
+    },
+    "outputs/imprana-standards-completion-20261011/native-lane-d/FINAL-JOURNAL.json": {
+      "sha256": "57ef3869ef10a0087a2040eed6ce23aadd7be31257acebbd4d0054e1ebd8294c",
+      "bytes": 5743813
+    },
+    "outputs/imprana-standards-completion-20261011/native-APL-429-auto-link-repair.json": {
+      "sha256": "a393051b90dbe1cf87d890a6b286a2fd0143fca8833115cdf71bc6e5e23ccb90",
+      "bytes": 57811
+    }
+  },
+  "copy_manifest_discovery": [
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/INDEPENDENT-PM-DRAFT-RECORD-REVIEW.json",
+      "sha256": "f528ee57afa5504ef3e6e00fd2214f8d6cb9cbf65f3cdf9209cf203890c1b22f",
+      "source": "cases/review/INDEPENDENT-PM-DRAFT-RECORD-REVIEW.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/INDEPENDENT-PROPOSED-REGISTER-REVIEW.json",
+      "sha256": "6df5543c5c5369ab039db5eccb3ba13b6171c47622ccb23b9f13c3b9bd795051",
+      "source": "cases/review/INDEPENDENT-PROPOSED-REGISTER-REVIEW.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/INDEPENDENT-CASE-AND-STORY-APPEND-REVIEW.json",
+      "sha256": "31d4d4895907968bbd10099f527ae6b04643f80ca5bdc70c87244d63a0616278",
+      "source": "source/review/INDEPENDENT-CASE-AND-STORY-APPEND-REVIEW.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/QA-INDEPENDENT-REVIEW-RECEIPT.json",
+      "sha256": "0620d6cf887b0b6b0ae1092928c59d4e1c6ed798e5b22d9d8a999ee3f8ff399c",
+      "source": "pm/review/QA-INDEPENDENT-REVIEW-RECEIPT.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/INDEPENDENT-FIVE-NATIVE-QA-DOC-REVIEW.json",
+      "sha256": "fc4b27602d481579944da6826af3b6ac2e2d8c3b6229df244618cc173b769b4b",
+      "source": "cases/review/INDEPENDENT-FIVE-NATIVE-QA-DOC-REVIEW.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/ACTUAL-CASE-DESIGN-VALIDATION.json",
+      "sha256": "2a90d77918173c4f781b181f4e6ffee743cf800e8ef8f3cdf51e466130945db9",
+      "source": "cases/ACTUAL-CASE-DESIGN-VALIDATION.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/SOURCE-FREEZE-RECEIPT.json",
+      "sha256": "0aa40c76febec3ce79c7bc61502aa1856770c0e717484521b03b27b63a44e832",
+      "source": "source/SOURCE-FREEZE-RECEIPT.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/PM-AUTHOR-FREEZE-RECEIPT.json",
+      "sha256": "bc0c5ecf6a7377876f43e450a02b0d2b76c4cb27c6fe1361c1ee4e6a6ba61206",
+      "source": "pm/PM-AUTHOR-FREEZE-RECEIPT.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/review/FINAL-PROPOSED-REGISTER-FREEZE.json",
+      "sha256": "a8b7de3c515b61f01693be09c936213c7c1c2eac83d3fea3721066df757aa7d3",
+      "source": "source/proposed-registers/FINAL-PROPOSED-REGISTER-FREEZE.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json",
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "source": "ACTUAL-FINAL-NATIVE-PUBLICATION-REVIEW.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-TARGET-FULL-METADATA-COMPARISON.json",
+      "sha256": "a6dd8f1603e3bdc3bcd19f6e8b36a2b258cd87f1f11ecace49efed89664d67f3",
+      "source": "ACTUAL-TARGET-FULL-METADATA-COMPARISON.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ROOT-INTEGRATION-PREPUBLICATION-CHECK.json",
+      "sha256": "3a0bc0f7521aa2a3bbe07074b6c56ceaf7acdfed911aa0731929ea5f71d195a6",
+      "source": "ROOT-INTEGRATION-PREPUBLICATION-CHECK.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ROOT-INTEGRATION-FIRST-LINK-ADAPTER-OBSERVATION.json",
+      "sha256": "ed6b9fc7fd663e79ba3039a3938a8f3d4bbb37406c66e39615a08358353e2e3e",
+      "source": "ROOT-INTEGRATION-FIRST-LINK-ADAPTER-OBSERVATION.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/native-pm-index-link-append-reconciliation.json",
+      "sha256": "1bed6eb7b2aa2edde561da34a75165bb031d9d83df9ba04f7d460890e22221c7",
+      "source": "native-pm-index-link-append-reconciliation.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/review_native_publication.py",
+      "sha256": "d70d9538bc9b9c9fb81a7bbecabe1c6780cb2ae56b8bcd62f00b7b26d7772dc9",
+      "source": "review_native_publication.py"
+    },
+    {
+      "compact": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-OVERVIEW-APPEND-VERIFICATION.json",
+      "fields": {
+        "record": "IMPRANA-CURRENT-OVERVIEW-APPEND-VERIFICATION",
+        "id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+        "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-framework-refinement-11-october-2026-0fefa9856f45",
+        "project_id": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+        "verified": true,
+        "original_prefix_byte_exact": true,
+        "marker_count": 1,
+        "before_sha256": "4ae3f792e52814ad7a68f6f138a107f870bf2414538667e38f81bcfd389f2204",
+        "after_sha256": "c630a85631e9c642d991223d5edebf85a06306ffc92c8fb22658e40c0e3a82cb",
+        "addition_sha256": "319e52e3ef6bc1f396f67c7bde5719de0b67fc4e78fa67221eef578cd41be77a",
+        "raw_evidence_sha256": "b51e8dad573303179aca3354adefb84e2e494817e79455f4b8cdc3e040c1ca6d",
+        "scope": "Existing overview original full prefix plus unique new authoring-evidence appendix; no old receipt/history rewrite.",
+        "qualification": "Complete source-bound Native documentation proof only; no product run, human trust/approval, readiness or release action."
+      }
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-OVERVIEW-APPEND-VERIFICATION.json",
+      "sha256": "36449a85f2dbfcfa90be2efc5c464909fa963b58f9846bc9a2643428d2ad244e",
+      "source": "native-overview-final-append-readback.json"
+    },
+    {
+      "destination": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/publication/ACTUAL-FINAL-DOCUMENT-INTEGRITY.json",
+      "sha256": "804091d4f14133ff5468b57801c3ba8a50ef39d785814d8454732f3070bc9390",
+      "source": "ACTUAL-FINAL-DOCUMENT-INTEGRITY.json"
+    }
+  ],
+  "helper": {
+    "path": "outputs/imprana-standards-completion-20261011/final-independent-review/review_final_documentation.py",
+    "sha256": "68b309d81d8bf63af4a36b7422c4c8066cebd6ff000272b842e074a2eade3889"
+  },
+  "limits": [
+    "Saved/fresh full captures are reviewed as actual retained observations; this reviewer made no new Native request and claims no later live-state freshness.",
+    "All PM scopes and QA case/binding/applicability decisions remain drafts/unknown. No qualified human/source-owner/trust/release approval is authenticated.",
+    "No package/product/runtime/CI/provider tests or regression guards were executed; the 13 historical corruption guard results were read and their source independently inspected.",
+    "Full source prefixes are raw byte exact; observed Markdown cosmetics are limited to nonliteral presentation of authorized appendices/documents. Generated autolinks are not normalized away.",
+    "Assignee/cycle were omitted in both captures and are not inferred as backend null; unselected complete descriptions/live all-task edges are not independently certified.",
+    "PASS means bounded source/document integrity only: not favorable assurance, runtime qualification, percentage, Ready/Done, deployment, new spend or export authority."
+  ]
+}

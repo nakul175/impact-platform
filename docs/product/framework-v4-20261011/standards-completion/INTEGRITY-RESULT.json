@@ -1,0 +1,448 @@
+{
+  "schema_version": "imprana.pm.document-integrity-result.v1",
+  "checked_at": "2026-10-11T05:48:01.366601+00:00",
+  "disposition": "PASS_DOCUMENT_INTEGRITY_ONLY",
+  "source_input_revision": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "validator": {
+    "path": "outputs/imprana-standards-completion-20261011/pm/validate_pm_completion.py",
+    "sha256": "5390e949c274ae2da3a22a4c0374546fe8a944460a186cbe0ba9734bf9c2b4e9"
+  },
+  "actual_scope": {
+    "elements": 2893,
+    "shared_draft_records": 55,
+    "planning_gate_type_contracts": 56,
+    "completion_edges": 779,
+    "design_edges": 5508,
+    "inputs_checked": 24,
+    "corruption_controls": 6
+  },
+  "core_checks": [
+    {
+      "id": "complete_exact_2893_item_population",
+      "passed": true
+    },
+    {
+      "id": "adapter_exact_input_digest",
+      "passed": true
+    },
+    {
+      "id": "55_unique_records_54_exact_epic_scopes",
+      "passed": true
+    },
+    {
+      "id": "all_original_item_sources_parents_and_dependencies_exact",
+      "passed": true
+    },
+    {
+      "id": "all_mapped_record_hashes_and_gates_exact",
+      "passed": true
+    },
+    {
+      "id": "779_original_completion_edges",
+      "passed": true
+    },
+    {
+      "id": "5508_original_design_edges",
+      "passed": true
+    },
+    {
+      "id": "record_content_hashes_all_exact",
+      "passed": true
+    },
+    {
+      "id": "no_favorable_group_status_trust_review_or_approval",
+      "passed": true
+    },
+    {
+      "id": "54_epic_specific_source_contracts_exact",
+      "passed": true
+    },
+    {
+      "id": "56_exact_package_gate_contracts",
+      "passed": true
+    },
+    {
+      "id": "20251_requests_zero_actual_reviews",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "input_checks": [
+    {
+      "path": "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V4.json",
+      "passed": true
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/ai-assurance.template.json",
+      "passed": true
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/AI-ASSURANCE.md",
+      "passed": true
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+      "passed": true
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/quality_checker.py",
+      "passed": true
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/STORY-REFINEMENT.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/quality/FINAL-CONSOLIDATED-REAL-QUALITY-SUMMARY.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+      "passed": true
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+      "passed": true
+    }
+  ],
+  "file_checks": [
+    {
+      "path": "assurance-records/AI-IMPRANA-CROSS-CUTTING.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-AI-CAPABILITIES.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ACCESS-CONTROL.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ADOPT.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-ASSESS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DEPLOY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DIAGNOSE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-DISCOVER.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-IMPROVE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-MAP.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-ADOPTION-VALUE-CASE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-CALCULATIONS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-COMMERCIAL-AND-BILLING.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DASHBOARDS-AND-ANALYSIS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-IMPORT-AND-MANAGEMENT.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-DATA-QUALITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVALUATION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-EVIDENCE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FINANCE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FORMS-AND-COLLECTION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-FUNDER-PORTFOLIO.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-IDENTITY-AND-ACCOUNTS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-INDICATORS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-INTEGRATIONS-AND-CONNECTORS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-MIGRATION-AND-EXIT.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AI-QUALITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AUDIT.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-AVAILABILITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-CAPACITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COMPATIBILITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-COST.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-DATA-INTEGRITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-LOCALISATION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-MAINTAINABILITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-OBSERVABILITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PERFORMANCE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-PORTABILITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-RECOVERY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NFR-SUPPORT.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-NON-FUNCTIONAL.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-OFFLINE-COLLECTION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-OPERATORS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTICIPANTS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PARTNERS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PLATFORM.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PRIVACY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-PROGRAMMES.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-REPORTING.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-RESULTS-PLANNING.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-SECURITY.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-SERVICE-OPERATIONS.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-TENANCY-AND-ORGANISATION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-TRANSITION.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-USER-EXPERIENCE.json",
+      "passed": true
+    },
+    {
+      "path": "assurance-records/AI-IMPRANA-EPIC-WORKFLOW-AND-REVIEW.json",
+      "passed": true
+    }
+  ],
+  "corruption_controls": [
+    {
+      "name": "delete_one_element",
+      "rejected": true,
+      "observed_errors": [
+        "complete_exact_2893_item_population",
+        "779_original_completion_edges",
+        "5508_original_design_edges"
+      ]
+    },
+    {
+      "name": "alter_record_reference_hash",
+      "rejected": true,
+      "observed_errors": [
+        "reference_scope_or_claim_changed:VISION-IMPRANA-01",
+        "all_mapped_record_hashes_and_gates_exact"
+      ]
+    },
+    {
+      "name": "remove_one_completion_dependency",
+      "rejected": true,
+      "observed_errors": [
+        "original_element_source_parent_dependency_changed:TASK-FR-SEC-008-02",
+        "all_original_item_sources_parents_and_dependencies_exact",
+        "779_original_completion_edges"
+      ]
+    },
+    {
+      "name": "change_exact_source_pin",
+      "rejected": true,
+      "observed_errors": [
+        "original_element_source_parent_dependency_changed:VISION-IMPRANA-01",
+        "all_original_item_sources_parents_and_dependencies_exact"
+      ]
+    },
+    {
+      "name": "invent_favorable_group_status",
+      "rejected": true,
+      "observed_errors": [
+        "record_content_hash_mismatch:AI-IMPRANA-CROSS-CUTTING",
+        "invented_group_assessment:AI-IMPRANA-CROSS-CUTTING",
+        "record_content_hashes_all_exact",
+        "no_favorable_group_status_trust_review_or_approval"
+      ]
+    },
+    {
+      "name": "invent_completed_review_count",
+      "rejected": true,
+      "observed_errors": [
+        "20251_requests_zero_actual_reviews"
+      ]
+    }
+  ],
+  "limitations": [
+    "Author integrity check, not independent source-owner approval.",
+    "No package semantic workflow rerun, actual reviews, external trust, runtime/product tests or certification.",
+    "Original full V3 / affected-four V4 needs_input results retained and not recounted."
+  ]
+}

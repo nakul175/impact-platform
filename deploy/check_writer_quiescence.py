@@ -22,6 +22,8 @@ def check(admin_dsn):
     with psycopg.connect(admin_dsn, connect_timeout=10, prepare_threshold=None) as connection:
         with connection.transaction():
             connection.execute("SET TRANSACTION READ ONLY")
+            connection.execute("SET LOCAL statement_timeout = '10s'")
+            connection.execute("SET LOCAL lock_timeout = '2s'")
             if not connection.execute("SELECT current_setting('is_superuser') = 'on'").fetchone()[0]:
                 raise QuiescenceError("Complete session visibility requires the existing administrator")
             sessions = connection.execute(
@@ -31,6 +33,12 @@ def check(admin_dsn):
             prepared = connection.execute(
                 "SELECT count(*) FROM pg_prepared_xacts WHERE database = current_database()"
             ).fetchone()[0]
+            # A surviving writer may hold the migration ledger lock. Refuse it
+            # before reading that ledger rather than waiting for its transaction.
+            if sessions or prepared:
+                raise QuiescenceError(
+                    f"Migration refused: {sessions} other client sessions, {prepared} prepared transactions"
+                )
             exists = connection.execute("SELECT to_regclass('impact.schema_migration')").fetchone()[0]
             schema = (
                 connection.execute(
@@ -39,10 +47,6 @@ def check(admin_dsn):
                 if exists
                 else 0
             )
-            if sessions or prepared:
-                raise QuiescenceError(
-                    f"Migration refused: {sessions} other client sessions, {prepared} prepared transactions"
-                )
             return {"other_client_sessions": 0, "prepared_transactions": 0, "schema_before": schema}
 
 

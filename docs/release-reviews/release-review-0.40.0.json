@@ -696,6 +696,27 @@
       "prepared_by": "Codex integration; separate supporting code and evidence reviews",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-21",
+      "change_id": "DX-Quiescence-Lock-Refusal",
+      "change": "Refuse surviving writers before querying locked migration ledger; bound probe statements and locks",
+      "paths": [
+        "deploy/check_writer_quiescence.py",
+        "qualification/test_deployment_quiescence_unit.py",
+        "qualification/test_deployment_sequence_unit.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH26"
+      ],
+      "summary": "Actual old probe hang reproduced with held native ledger lock; fixed check refuses before ledger. Four source-pinned native observations incl actual10s timeout/redactedfailure and recovery.127 affecteddeploymentunits0failure/skip; sandbox/collection failures retained. NoDocker/hosted/globalwriterfence/release/human/deployment acceptance;0/50.",
+      "prepared_by": "Codex integration; separate supporting code and evidence reviews",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

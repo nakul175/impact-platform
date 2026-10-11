@@ -1,0 +1,32 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "base_head": "86df63bcae4eadcd0d0fdfae2639fa134e839062",
+  "scope": "local deployment probe and actual Bash orchestration, no container deployment",
+  "defect_reproduction": "Actual surviving client held ACCESS EXCLUSIVE migration-ledger lock; old probe blocked beyond2s and child was killed. Reproduction exit0 is not a qualification pass.",
+  "native_fixed_observations": 4,
+  "native_fixed_source_pins_stable": true,
+  "native_fixed_cluster_stop_exit_code": 0,
+  "unit_counts": {
+    "tests": 127,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "failures_preserved": [
+    "sequence run1:5 sandbox redirection failures",
+    "combined run1:wrong retained test filename caused collection error"
+  ],
+  "source_hashes": {
+    "deploy/check_writer_quiescence.py": "8c2c285da3defc039ede325e6595fd8352eb5b95c281d00526c7d1e81d8cb050",
+    "qualification/test_deployment_quiescence_unit.py": "6a28835c1ba7a509a1479d9abbcfb661caf7b1f22498442edff76c4ddd6dfc03",
+    "qualification/test_deployment_sequence_unit.py": "f1b236832cd30d4c8f7667e4a504cf08b71e658185daa196435f0a05015aace5"
+  },
+  "code_review": "Separate supporting read-only review found no introduced defect; not human signoff.",
+  "evidence_review": "Separate supporting review verified127=95retained+27helpers+5sequence, four actual native observations, stable current working-diff pins, exit/cleanup0 and retained failures. Reviewed raw files had no matched credential URL/key/token patterns; not human signoff.",
+  "limits": [
+    "Original full application2626pass/28skip targets79b2316; unchanged application/schema bytes, not new full head qualification",
+    "No Docker/hosted CI/deployment or durable external-writer fence",
+    "Public export automatic review rejected previous push; explicit public export and paid CI questions pending",
+    "0/50 deployed"
+  ]
+}

@@ -1,0 +1,47 @@
+from pathlib import Path
+import os, sys, json, time, contextlib, io
+import psycopg
+root=Path(__file__).resolve().parents[2]/"work/imprana-diagnosis-20261011"
+sys.path[:0]=[str(root/"deploy"),str(root/"scripts")]
+import migrate
+import check_writer_quiescence as probe
+admin=os.environ["IMPACT_FIXTURE_DSN"]
+migrate.run(admin)
+with psycopg.connect(admin) as held:
+    held.execute("LOCK TABLE impact.schema_migration IN ACCESS EXCLUSIVE MODE")
+    started=time.monotonic()
+    try: probe.check(admin)
+    except probe.QuiescenceError as error:
+        assert "1 other client sessions" in str(error), str(error)
+    else: raise AssertionError("Locked surviving writer was accepted")
+    elapsed=time.monotonic()-started
+    assert elapsed<2, elapsed
+    print(json.dumps({"case":"locked surviving writer refused before ledger", "passed":True,"elapsed_seconds":elapsed}))
+assert probe.check(admin)["schema_before"]==47
+print(json.dumps({"case":"ledger readable after held transaction released","passed":True}))
+real_connect=psycopg.connect
+class TimedConnection:
+    def __init__(self, conn): self.conn=conn
+    def __enter__(self): self.conn.__enter__(); return self
+    def __exit__(self,*args): return self.conn.__exit__(*args)
+    def transaction(self): return self.conn.transaction()
+    def execute(self,sql):
+        if "pg_stat_activity" in sql:
+            settings=self.conn.execute("SELECT current_setting('statement_timeout'), current_setting('lock_timeout'), current_setting('transaction_read_only')").fetchone()
+            assert settings==('10s','2s','on'), settings
+            self.conn.execute("SELECT pg_sleep(11)")
+        return self.conn.execute(sql)
+probe.psycopg.connect=lambda *args,**kwargs:TimedConnection(real_connect(*args,**kwargs))
+os.environ['IMPACT_ADMIN_DSN']=admin
+stderr=io.StringIO(); stdout=io.StringIO(); started=time.monotonic()
+with contextlib.redirect_stderr(stderr), contextlib.redirect_stdout(stdout):
+    assert probe.main()==1
+elapsed=time.monotonic()-started
+assert 9<elapsed<13, elapsed
+assert stdout.getvalue()==''
+assert stderr.getvalue().strip()=="Writer quiescence probe failed; migration remains blocked"
+assert admin not in stderr.getvalue()
+print(json.dumps({"case":"actual statement timeout fails closed with redacted error","passed":True,"elapsed_seconds":elapsed}))
+probe.psycopg.connect=real_connect
+assert probe.check(admin)['schema_before']==47
+print(json.dumps({"case":"new transaction unaffected after timeout rollback","passed":True}))

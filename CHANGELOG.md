@@ -104,3 +104,12 @@ Current code full native integration gate is locally qualified. Supported diagno
 ### 0.40 local qualification follow-up — 11 October 2026
 
 Registered schema47 diagnosis regression: 2,626 native pass / 28 explicit skips, real restore/upgrade and separate database outage, provider18 and browser10/318 pass at79b2316. Bounded deployment writer stop/probe/fail-closed private checkpoint added for local qualification; external-writer maintenance and actual container/hosted/human gates remain. No deployment or story acceptance.
+
+
+## 11 October 2026 — locked-ledger deployment refusal qualification
+
+A real surviving native PostgreSQL client held an ACCESS EXCLUSIVE lock on the migration ledger. The previous deployment probe waited for that ledger before refusing the already-observed client; the retained reproduction killed the blocked child after two seconds. The probe now refuses other client/prepared counts before reading the ledger and applies transaction-local 10-second statement and 2-second lock timeouts in its read-only transaction.
+
+Actual source-pinned PostgreSQL qualification verifies prompt locked-client refusal, ledger read after release, real statement-timeout failure with redacted output, and a successful fresh transaction after rollback: four observations; cluster stopped. Actual deployment helper/orchestration and retained deployment regression tests:127 passed, zero failures/skips. Initial sandbox/collection failures remain preserved. Separate supporting code review found no introduced defect; independent evidence review is recorded in the receipt when complete. See `docs/evidence/candidate-0.40/deployment-lock-refusal-20261011/LOCK-REFUSAL-RECEIPT.json`.
+
+These are local candidate checks. External writers still need an accountable maintenance operator to keep them disconnected. Container behavior, exact-head hosted CI, financial/public-export authority and existing release/human gates remain held. Automatic review rejected the earlier public GitHub feature-branch export; the explicit public-export and paid-CI questions remain pending. No remote deployment occurred;0/50 delivered. Earlier receipts and all applied migration bytes remain unchanged.

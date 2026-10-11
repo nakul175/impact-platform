@@ -188,8 +188,9 @@ def test_probe_read_only_visibility_and_empty_database(monkeypatch, probe, exist
     }
     assert calls == [(("synthetic-private-dsn",), {"connect_timeout": 10, "prepare_threshold": None})]
     assert connection.calls[0] == "SET TRANSACTION READ ONLY"
-    assert "pid <> pg_backend_pid()" in connection.calls[2]
-    assert "backend_type = 'client backend'" in connection.calls[2]
+    activity_query = next(q for q in connection.calls if "pg_stat_activity" in q)
+    assert "pid <> pg_backend_pid()" in activity_query
+    assert "backend_type = 'client backend'" in activity_query
     assert not any("terminate" in q or "UPDATE" in q or "ALTER" in q for q in connection.calls)
 
 
@@ -202,7 +203,8 @@ def test_probe_refuses_incomplete_visibility_and_other_clients(monkeypatch, prob
     with pytest.raises(probe.QuiescenceError):
         probe.check("synthetic-private-dsn")
     if options.get("administrator") is False:
-        assert len(connection.calls) == 2
+        assert len(connection.calls) == 4
+    assert not any("schema_migration" in q for q in connection.calls)
 
 
 def test_probe_main_redacts_driver_errors_and_missing_config(monkeypatch, capsys, probe):

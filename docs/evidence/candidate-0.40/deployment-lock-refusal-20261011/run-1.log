@@ -1,0 +1,71 @@
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_actual_main_existing_healthy_commit_returns_without_writer_stop_or_migration _
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_existing_heal0')
+
+    def test_actual_main_existing_healthy_commit_returns_without_writer_stop_or_migration(tmp_path):
+        result, calls, state = sequence(tmp_path, "unchanged")
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource "$LIB"\nsource "$DEFINITIONS"\nDEPLOY_DIR="$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode
+
+qualification/test_deployment_sequence_unit.py:117: AssertionError
+_ test_actual_main_fresh_path_builds_then_stops_probes_migrates_starts_and_checks_health _
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_fresh_path_bu0')
+
+    def test_actual_main_fresh_path_builds_then_stops_probes_migrates_starts_and_checks_health(tmp_path):
+        result, calls, state = sequence(tmp_path, "fresh")
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource "$LIB"\nsource "$DEFINITIONS"\nDEPLOY_DIR="$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode
+
+qualification/test_deployment_sequence_unit.py:127: AssertionError
+_ test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[probe_failure] _
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_prestart_fail0')
+scenario = 'probe_failure'
+
+    @pytest.mark.parametrize("scenario", ["probe_failure", "migration_failure"])
+    def test_actual_main_prestart_failures_leave_writers_stopped_and_no_success(tmp_path, scenario):
+        result, calls, state = sequence(tmp_path, scenario)
+        assert result.returncode != 0
+>       assert "quiesce" in calls and "probe" in calls
+E       AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])
+
+qualification/test_deployment_sequence_unit.py:151: AssertionError
+_ test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[migration_failure] _
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_prestart_fail1')
+scenario = 'migration_failure'
+
+    @pytest.mark.parametrize("scenario", ["probe_failure", "migration_failure"])
+    def test_actual_main_prestart_failures_leave_writers_stopped_and_no_success(tmp_path, scenario):
+        result, calls, state = sequence(tmp_path, scenario)
+        assert result.returncode != 0
+>       assert "quiesce" in calls and "probe" in calls
+E       AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])
+
+qualification/test_deployment_sequence_unit.py:151: AssertionError
+_ test_actual_main_postmigration_readiness_failure_records_failure_not_success _
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_postmigration0')
+
+    def test_actual_main_postmigration_readiness_failure_records_failure_not_success(tmp_path):
+        result, calls, state = sequence(tmp_path, "health_failure")
+        assert result.returncode != 0
+>       assert "compose run --rm -T migrate" in calls
+E       AssertionError: assert 'compose run --rm -T migrate' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false']
+
+qualification/test_deployment_sequence_unit.py:166: AssertionError
+=========================== short test summary info ============================
+FAILED qualification/test_deployment_sequence_unit.py::test_actual_main_existing_healthy_commit_returns_without_writer_stop_or_migration
+FAILED qualification/test_deployment_sequence_unit.py::test_actual_main_fresh_path_builds_then_stops_probes_migrates_starts_and_checks_health
+FAILED qualification/test_deployment_sequence_unit.py::test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[probe_failure]
+FAILED qualification/test_deployment_sequence_unit.py::test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[migration_failure]
+FAILED qualification/test_deployment_sequence_unit.py::test_actual_main_postmigration_readiness_failure_records_failure_not_success

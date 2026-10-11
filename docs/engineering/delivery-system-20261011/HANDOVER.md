@@ -111,3 +111,13 @@ Exact implementation head96dd686696a0f9ec3175c46b67813e7241c98e89 passed2,504 na
 Both separate actual API restart phases, generic pg_dump/restore security/data checks and populated44-to45 upgrade passed. The28 skips remain individually recorded: live-provider, restored-only API, pooler/server-restart special modes and PGlite-only privileged-worker case are not counted as passes. The restored-only diagnosis case and worker read fence actually passed in the preceding source-bound recovery receipt, not in this full run. Nine historical generated evidence files were restored byte-exact after their new observations were saved separately; disposable cluster stopped.
 
 [Full native receipt](../../evidence/candidate-0.40/full-native-schema45-20261011/FULL-NATIVE-RECEIPT.json) binds source manifests, raw log/JUnit, native/restore/upgrade records and separate root-agent source/evidence review. This is local qualification, not human signoff, required hosted CI, container/deployed acceptance or completion of the broader SQL JSON/protected-evidence tasks. Live identity needs qualification against the current schema45 source. Release review stays passed=false; no requirement/storyDone/deployed count changed. Earlier suite results remain historical at their own heads.
+
+
+## Live identity schema45 — 11 October2026
+
+Current source head7cf03855984f768897e933cdd9fc0e09aff900ac passed18 live identity cases, zero failures/errors/skips, using actual private PostgreSQL17.10, pinned Keycloak26.7.4 and Java21. All17 existing provider checks and the diagnosis case are preserved. Actual provider MFA sign-in, diagnosis completion/history/exact replay, provider-role-only/foreign-tenant denial and logout-cookie replay refusal pass on schema45. All269 application/test/migration pins are unchanged; no new product/test/security setting was edited.
+
+[Current identity receipt](../../evidence/candidate-0.40/live-identity-schema45-20261011/IDENTITY-RECEIPT.json) retains raw log/JUnit/provider record, exact pins and separate root-agent code/evidence review. Two historical provider files restored byte-exact; disposable provider/API/cluster stopped. This closes current-schema local identity qualification, not browser/container/hosted CI/human acceptance. The candidate review pack describes remaining gates without inventing signoff. No remote push/deploy/spending or storyDone; fully delivered count stays0/50.
+
+
+[Concrete candidate/release review pack](CANDIDATE-REVIEW-PACK.md) is the entry point for owner/engineer review and the remaining hosted/financial gates.

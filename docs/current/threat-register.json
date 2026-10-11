@@ -1534,7 +1534,10 @@
         "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_actual_independent_diagnosis_erasure_cleans_bindings_preserves_history_and_source",
         "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_foreign_tenant_diagnosis_is_not_subject_data",
         "qualification/test_ai_diagnosis_privacy_candidate_native.py::test_actual_erasure_removes_insert_only_restricted_diagnosis_revision",
-        "qualification/test_ai_diagnosis_privacy_scope_unit.py::test_diagnosis_plan_budget_is_global_and_overflow_prevents_digest"
+        "qualification/test_ai_diagnosis_privacy_scope_unit.py::test_diagnosis_plan_budget_is_global_and_overflow_prevents_digest",
+        "qualification/test_ai_diagnosis_registered_linkage_upgrade_native.py::test_registered_populated_linkage_upgrade_preserves_history_and_checksum_noop",
+        "qualification/test_ai_diagnosis_registered_linkage_upgrade_native.py::test_registered_invalid_history_rolls_back_privacy_column_linkage_and_ledger",
+        "qualification/test_ai_diagnosis_registered_linkage_upgrade_native.py::test_registered_checksum_mismatch_refuses_without_applied_file_or_database_change"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [

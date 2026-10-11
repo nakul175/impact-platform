@@ -159,3 +159,6 @@ Current code full native integration gate is locally qualified. Supported diagno
 
 
 11October2026 diagnosis privacy candidate: optional owned diagnosis selectors and revision-bound independent erasure locally qualify130native/56separateunits,287stablepins. Exact receipt: docs/evidence/candidate-0.40/diagnosis-privacy-scope-20261011/FINAL-PRIVACY-SCOPE-RECEIPT.json. Unregistered projection-column/linkage candidates remain: schema46 alone cannot serve new selectors. Registration/checksum/upgrade/recovery/currenthead full/browser/provider/container/hosted/human/financial/export/release gates held;0/50 delivered. No requirement acceptance or production/deployed claim.
+
+
+Registered47 localcandidate/domain1.31: actual190native affected/56units PASS; earlier2metadatafailuresretained. Exactreceipt docs/evidence/candidate-0.40/registered-linkage-20261011/REGISTERED-LINKAGE-RECEIPT.json. Singleatomictypedlinkage+diagnosisprivacycolumn; all46priorSQLsealed. Registeredupgrade/checksum/noop/rollback/realrestore/replacementAPI proof locallyqualified. Currentheadfull/browser/provider/hosted/container/human/financial/export and quiescentdeployment gatesheld;0/50 delivered, noacceptedrequirement/deployment.

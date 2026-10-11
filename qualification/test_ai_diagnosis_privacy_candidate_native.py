@@ -2,7 +2,7 @@
 
 Owned diagnosis/source versions are synthetic preparation, not HTTP creation
 evidence. No grants, approvals, plan actions or deletion-ledger rows are fabricated.
-Actual run evidence is separate; this file claims neither schema 47 nor acceptance.
+Actual run evidence is separate; registration is checked, never acceptance.
 """
 
 from copy import deepcopy
@@ -18,6 +18,7 @@ import test_privacy_requests as privacy
 from impact_api.store import Context, load, write
 from test_ai_diagnosis_evidence_live import linked
 from test_ai_diagnosis_linkage_candidate_native import linkage  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import registered_linkage
 from test_ai_diagnosis_payload_native import insert_copy
 from test_live_application import cmd, expect
 
@@ -35,11 +36,16 @@ def diagnosis_privacy_scope(request, live):
         ROOT / "docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql"
     ).read_text()
     with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
-        c.execute(script)
+        registered = registered_linkage(c)
+        if not registered:
+            c.execute(script)
     try:
         yield
     finally:
         with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+            if registered:
+                assert registered_linkage(c)
+                return
             with c.transaction():
                 c.execute("SET LOCAL ROLE impact_owner")
                 c.execute("ALTER TABLE impact.privacy_case_current DROP COLUMN diagnosis_ids")

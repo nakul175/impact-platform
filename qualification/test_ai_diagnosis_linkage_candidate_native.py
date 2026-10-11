@@ -1,9 +1,10 @@
-"""Unregistered typed linkage candidate; actual restricted logins, no release claim."""
+"""Typed linkage qualification on registered storage or the retained schema46 candidate."""
 
 from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import ExitStack
 import os
+import hashlib
 from pathlib import Path
 import time
 from types import SimpleNamespace
@@ -25,6 +26,7 @@ from test_live_application import cmd
 from test_native_concurrency import sender
 
 ROOT = Path(__file__).resolve().parents[1]
+REGISTERED = ROOT / "infrastructure/migrations/0047_diagnosis_evidence_privacy.sql"
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
     reason="Native typed linkage requires restricted PostgreSQL logins",
@@ -43,10 +45,53 @@ def rows(live, row):
             ).fetchall()
 
 
+def registered_linkage(c):
+    """Fail closed on a partly installed or mismatched registered schema."""
+    with c.transaction():
+        c.execute("SET LOCAL ROLE impact_owner")
+        return _registered_linkage(c)
+
+
+def _registered_linkage(c):
+    registered = c.execute("SELECT sha256 FROM impact.schema_migration WHERE version=47").fetchone()
+    present = c.execute("SELECT to_regclass('impact.diagnosis_evidence_binding')").fetchone()[0]
+    if registered is None:
+        return False
+    assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (47,)
+    assert registered == (hashlib.sha256(REGISTERED.read_bytes()).hexdigest(),)
+    assert present is not None
+    columns = {
+        row[0]
+        for row in c.execute(
+            "SELECT column_name FROM information_schema.columns WHERE table_schema='impact' "
+            "AND table_name='diagnosis_evidence_binding'"
+        ).fetchall()
+    }
+    assert columns == {
+        "tenant_id",
+        "object_id",
+        "revision_id",
+        "diagnosis_kind",
+        "problem_id",
+        "reference_position",
+        "evidence_id",
+        "evidence_revision",
+        "evidence_kind",
+    }
+    assert c.execute(
+        "SELECT count(*) FROM information_schema.columns WHERE table_schema='impact' "
+        "AND table_name='privacy_case_current' AND column_name='diagnosis_ids'"
+    ).fetchone() == (1,)
+    return True
+
+
 @pytest.fixture(scope="module")
 def linkage(live):
-    # Historical fixture preparation before candidate installation, including a
-    # second tenant without depending on onboarding-directory completeness.
+    with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+        registered = registered_linkage(c)
+    # On schema46 this precedes candidate installation. Registered storage
+    # already populates these fresh rows; the separate legacy-upgrade tests
+    # retain actual backfill proof. Both include a second tenant.
     legacy = []
     for actor_name in ["admin", "other_tenant"]:
         actor = live.fixture["actors"][actor_name]
@@ -76,12 +121,16 @@ def linkage(live):
     script = (
         ROOT / "docs/engineering/delivery-system-20261011/diagnosis-evidence-linkage.CANDIDATE.sql"
     ).read_text()
-    with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
-        c.execute(script)
+    if not registered:
+        with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+            c.execute(script)
     try:
         yield legacy
     finally:
         with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+            if registered:
+                assert registered_linkage(c)
+                return
             with c.transaction():
                 c.execute("SET LOCAL ROLE impact_owner")
                 c.execute("DROP TRIGGER populate_diagnosis_bindings ON impact.object_revision")
@@ -113,7 +162,10 @@ def test_all_tenant_candidate_backfill_preserves_exact_history(linkage, live):
                 (tenant, row["object_id"]),
             ).fetchall()
             assert [x[0] for x in after] == [x["v"] for x in before]
-        assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (46,)
+        if REGISTERED.exists() and registered_linkage(c):
+            assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (47,)
+        else:
+            assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (46,)
 
 
 def test_new_links_completion_correction_and_exact_history_are_atomic(linkage, live):

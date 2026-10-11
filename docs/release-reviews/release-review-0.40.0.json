@@ -643,6 +643,36 @@
       "prepared_by": "Codex root integration and supporting code review; separate root evidence review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-19",
+      "change_id": "DX-REGISTERED-LINKAGE-PRIVACY",
+      "change": "Register atomic typed diagnosis linkage and explicit privacy scope with preserved candidate cores",
+      "paths": [
+        "infrastructure/migrations/0047_diagnosis_evidence_privacy.sql",
+        "VERSION.json",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py",
+        "qualification/test_ai_diagnosis_linkage_restore_native.py",
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py",
+        "qualification/test_ai_diagnosis_registered_linkage_upgrade_native.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "ai-module",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Registered47/domain1.31 atomicprivacycolumn+exactsealedlinkagecore.190native affected0fail/skip incl8registeredupgrade/noop/checksum/6faults\u00d72rollback;old46experimentsretained;registeredprivacy/RLS/worker/shape/payload/actualrestore47checksums/replacementAPI2processes.56separateunitsPASS after2metadatafailuresretained;289stablepins. Agentcode/root evidence reviews separate, nohuman signoff. LiveDDLquiescence/currentheadfull/browser/provider/hosted/container/export/financial/release gatesheld.0/50.",
+      "prepared_by": "Codex rootintegration/supporting source review; separate root evidence review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

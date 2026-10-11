@@ -1,4 +1,4 @@
-"""Actual replacement restored API; unregistered linkage, synthetic identity only."""
+"""Actual replacement restored API with checked linkage registration; synthetic identity only."""
 
 import json
 import os
@@ -14,7 +14,7 @@ import pytest
 import test_ai_diagnosis_recovery as recovery
 
 from test_ai_diagnosis_evidence_live import external, linked, source_access
-from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, registered_linkage  # noqa: F401
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
@@ -37,7 +37,13 @@ def test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_sou
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]
     base = "http://127.0.0.1:" + str(port)
-    result = {"schema_registered": 46, "candidate_registered": False, "api_phases": []}
+    with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"]) as c:
+        registered = registered_linkage(c)
+    result = {
+        "schema_registered": 47 if registered else 46,
+        "candidate_registered": registered,
+        "api_phases": [],
+    }
     api = None
     client = None
     source = external(live)
@@ -53,6 +59,10 @@ def test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_sou
                 keep=True,
             )
             assert drill["outcome"] == "PASS" and all(drill["checks"].values())
+            assert drill["migration"]["schema_version"] == (47 if registered else 46)
+            assert drill["migration"]["applied"] == []
+            with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
+                assert registered_linkage(c) is registered
             result["restore"] = drill
             config = dict(live.config)
             for key, name in [("app_dsn", "APP"), ("identity_dsn", "IDENTITY"), ("platform_dsn", "PLATFORM")]:

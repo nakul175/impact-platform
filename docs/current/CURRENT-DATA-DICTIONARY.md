@@ -6465,3 +6465,10 @@ COMMIT;
 
 
 Unregistered local diagnosis privacy projection candidate (not a schema migration): `docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql`, SHA256`4d789d420f900673abe3399e72c6e934bf798b0cbbd7aacc48a245e835db329d`. Nullable `privacy_case_current.diagnosis_ids` JSONarray; no new grant/table/definer. Actual130native candidate qualification includes install/remove; registered46migration bytes unchanged. Newoptional API selector requires registered promotion beforedeployment.
+
+
+Registered candidate migration `0047_diagnosis_evidence_privacy.sql`, SHA256 `57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7`: atomic nullable diagnosis_ids projection column; immutable typed tenant/object/revision/kind Evidence bindings; shapecheck,forcedRLS,narrowappSELECT/INSERT,invokerpopulation/guardedprivacycleanup,ownerpertenantbackfill. Sealedsourcecores copied byte-exact; earlier46migration bytesunchanged. Native registeredqualification pending; no deployed schema claim. Quiescentwriters requiredforliveDDL.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0047_diagnosis_evidence_privacy.sql | 57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7 |

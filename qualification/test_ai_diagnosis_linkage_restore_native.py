@@ -1,4 +1,4 @@
-"""Real backup/restore of unregistered linkage; not registration or API recovery."""
+"""Real backup/restore of registered linkage or retained schema46 candidate storage."""
 
 from copy import deepcopy
 import json
@@ -12,7 +12,7 @@ from psycopg.errors import ForeignKeyViolation, InsufficientPrivilege
 import pytest
 
 from test_ai_diagnosis_evidence_live import external, linked, source_access
-from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, rows  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, registered_linkage, rows  # noqa: F401
 from test_ai_diagnosis_live import action, action_body, save
 from test_ai_diagnosis_payload_native import insert_copy, payload
 from test_ai_diagnosis_upgrade_native import snapshot
@@ -29,6 +29,8 @@ def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(liv
     import restore_drill
 
     fixture = os.environ["IMPACT_FIXTURE_DSN"]
+    with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"]) as c:
+        registered = registered_linkage(c)
     target = restore_drill.conninfo_to_dict(fixture)["dbname"] + "_restored"
     restored = make_conninfo(fixture, dbname=target)
     source = external(live)
@@ -51,8 +53,10 @@ def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(liv
             (live.local / "diagnosis-linkage-restore.json").write_text(json.dumps(result, indent=2) + "\n")
             assert result["outcome"] == "PASS" and all(result["checks"].values())
             assert result["dump"]["bytes"] > 0 and result["restore"]["warnings"] is None
-            assert result["migration"]["schema_version"] == 46
+            assert result["migration"]["schema_version"] == (47 if registered else 46)
             assert result["migration"]["applied"] == []
+            with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
+                assert registered_linkage(c) is registered
             assert snapshot(restored, current["object_id"]) == original
             with psycopg.connect(
                 make_conninfo(os.environ["IMPACT_LOGIN_DSN_APP"], dbname=target), autocommit=True

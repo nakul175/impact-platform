@@ -1,5 +1,7 @@
 # Imprana Commons — diagnosis coding handover
 
+> Current navigation: read [CURRENT-CANDIDATE-STATUS.md](CURRENT-CANDIDATE-STATUS.md) first for the source-pinned schema47 checkpoint, latest qualification and remaining release gates. The original sections below are preserved chronological records; their older versions and pending statements describe their dated observations.
+
 Active story: US-DX-01a / [APL-361](https://linear.app/aplyd-sandbox/issue/APL-361/us-dx-01a-record-and-prioritise-the-organisations-problems). Local branch `feat/imprana-diagnosis-20261011`, based on documentation checkpoint `92341d6d81414be4627c5981363636580f7cbf52`. Build 0.40, domain API 1.29, platform API 1.11, schema 44. This handover contains only Imprana Commons.
 
 Read repository AGENTS.md and CLAUDE.md, then [implementation contract](US-DX-01a-IMPLEMENTATION.md), [release/evidence summary](../../RELEASE-0.40-ai-diagnosis.md), [actual receipt](../../evidence/candidate-0.40/QUALIFICATION-RECEIPT.json) and its tested-source manifest. Earlier framework/QA plans, sources, specifications, saved exports and migration history stay read-only. Their source criteria and 307 original requirement statuses are unchanged.

@@ -1,5 +1,7 @@
 # US-DX-01a candidate review pack
 
+> Current navigation: read [CURRENT-CANDIDATE-STATUS.md](CURRENT-CANDIDATE-STATUS.md) first for the source-pinned schema47 checkpoint, latest qualification and remaining release gates. The original sections below are preserved chronological records; their older versions and pending statements describe their dated observations.
+
 Imprana Commons only. One active story APL-361; no Done, no deployed story. Build0.40.0/domain1.29.0/platform1.11.0/schema46 on feat/imprana-diagnosis-20261011. Latest implementationa8597a7e9be9ffadda87daa32ccb3d28f681de60; current full-native2530-pass receipt is appended below. Earlier schema45 preservation7cf03855984f768897e933cdd9fc0e09aff900ac remains historical. Inspect actual head before external action; subsequent evidence-only commits do not make hosted exact-head checks green.
 
 ## Reviewable behavior

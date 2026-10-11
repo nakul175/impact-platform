@@ -1,5 +1,7 @@
 # Imprana Commons — manual problem diagnosis candidate
 
+> Current navigation: read [CURRENT-CANDIDATE-STATUS.md](CURRENT-CANDIDATE-STATUS.md) first for the source-pinned schema47 checkpoint, latest qualification and remaining release gates. The original sections below are preserved chronological records; their older versions and pending statements describe their dated observations.
+
 Nakul's 11 October request authorises local coding using the APLYD Delivery System 1.0 reference. One active story: US-DX-01a / APL-361, VISION-IMPRANA-01 → STR-02 → RG-R1 → EPIC-ADOPTION-DIAGNOSE. Source base: `92341d6d81414be4627c5981363636580f7cbf52`; original source `8a1e405f0086033dfb25ad834689a08bfe9f1eea`. Original two criteria and their exact Gherkin hash `6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73` stay unchanged. TASK-US-DX-01a-01 through -06 remain owning tasks; no parent Done or authenticated review is inferred.
 
 ## Bounded implementation choices

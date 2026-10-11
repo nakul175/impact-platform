@@ -500,6 +500,25 @@
       "prepared_on": "2026-10-11",
       "confirmed_by": null,
       "change_id": "DX-EVIDENCE-SELECTOR-UI"
+    },
+    {
+      "id": "IR-0.40-12",
+      "change_id": "DX-EVIDENCE-SELECTOR-NATIVE-BROWSER",
+      "change": "Qualify actual linked Evidence selection and source-read loss",
+      "paths": [
+        "tools/browser/ai-diagnosis-check.mjs"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Existing9 groups preserved; actual native linked source group adds changed-version refusal, keyboard selection/save/reload/completion/correction exact pins, current/historical404 and browser clearing after fresh bounded object-only fixture source grant narrows. All360 pins and46 migrations unchanged;10 groups316 assertions and9 bounded axe scans. Raw fixture sequencing failures retained. No default role/profile/ceiling or production changes, governed grant-flow or human approval credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

@@ -91,6 +91,12 @@ const suite = [
     "Responsive diagnosis accessibility and stable final evidence pins",
   ],
 ];
+suite.push([
+  "DX-B10",
+  "Actual Evidence choice, changed-version refusal, saved pins and source-access loss",
+  null,
+]);
+let sourceFixture = null;
 const results = [],
   accessibilityScans = [],
   externalRequests = [],
@@ -219,9 +225,11 @@ async function servedHashes() {
   return hashes;
 }
 
-// Only disposable fixture reads, real fresh-auth local HTTP and temporary purpose
-// narrowing/restoration of exact preexisting read grants are available here.
-// No identity, role, grant, ceiling, RLS or immutable-row creation/alteration.
+// Bounded disposable fixture reads and real fresh-auth local HTTP only.
+// Existing diagnosis grants narrow/restore; linked-source qualification adds one
+// fresh OBJECT_SET evidence.read fixture grant for one new synthetic source, then
+// narrows it in finally. No live/default role, profile, ceiling or RLS changes.
+// This is test preparation, not a governed grant-flow or human approval pass.
 const fixturePython = String.raw`
 import json,os,re,sys
 from pathlib import Path
@@ -232,7 +240,34 @@ args=json.load(sys.stdin);generator=live.__wrapped__();client=next(generator)
 try:
  assert client.fixture['allow_mutations'] is True
  tenant=client.fixture['tenant_a'];op=args['operation']
- if op=='api':
+ if op=='source_setup':
+  from test_ai_diagnosis_evidence_native import external
+  # Match the existing source_access bounded fixture body; final cleanup
+  # explicitly narrows this fresh fixture grant after browser qualification.
+  from impact_api.store import Context,write
+  from types import SimpleNamespace
+  from uuid import uuid4
+  row=external(client);actor=client.fixture['actors']['admin'];scope=str(uuid4())
+  ctx=Context(tenant,actor['principal_id'],actor['membership_id'],SimpleNamespace(natural_identity_id=actor['natural_identity_id']),0,0,[])
+  with client.db() as c:
+   c.execute("SELECT set_config('impact.tenant_id',%s,true)",(tenant,))
+   prior=c.execute("SELECT count(*) AS n FROM impact.grant_current WHERE tenant_id=%s AND subject_id=%s AND capability='evidence.read' AND purpose IS NULL",(tenant,actor['principal_id'])).fetchone()['n'];assert prior==0
+   predicate=c.execute('SELECT predicate_version FROM impact.scope_definition WHERE tenant_id=%s LIMIT 1',(tenant,)).fetchone()['predicate_version']
+   c.execute("INSERT INTO impact.scope_definition(tenant_id,scope_id,scope_type,predicate_version) VALUES(%s,%s,'OBJECT_SET',%s)",(tenant,scope,predicate))
+   c.execute('INSERT INTO impact.scope_member VALUES(%s,%s,%s)',(tenant,scope,row['object_id']))
+   grant=write(c,ctx,'Grant',{'subject_id':actor['principal_id'],'capability':'evidence.read','scope_id':scope,'starts_at':'2020-01-01T00:00:00Z','issuer_id':actor['principal_id']},'Active',track_author=False)
+  answer={'source':row,'grant_id':grant['object_id'],'scope_id':scope}
+ elif op=='source_update':
+  from test_live_application import cmd
+  response=client.request(client.path('evidence',args['object_id']),actor='author',method='PATCH',body=cmd({'source':'Synthetic updated source description'},args['revision_id']))
+  assert response.status_code==200;answer=response.json()
+ elif op=='source_narrow':
+  with client.db() as c:
+   c.execute("SELECT set_config('impact.tenant_id',%s,true)",(tenant,))
+   row=c.execute("SELECT g.object_id FROM impact.grant_current g JOIN impact.scope_member m ON m.tenant_id=g.tenant_id AND m.scope_id=g.scope_id WHERE g.tenant_id=%s AND g.object_id=%s AND g.subject_id=%s AND g.capability='evidence.read' AND m.object_id=%s",(tenant,args['grant_id'],client.fixture['actors']['admin']['principal_id'],args['source']['object_id'])).fetchone();assert row
+   c.execute("UPDATE impact.grant_current SET purpose='SYNTHETIC_BROWSER_SOURCE_ENDED' WHERE tenant_id=%s AND object_id=%s",(tenant,args['grant_id']))
+   answer={'narrowed':args['grant_id']}
+ elif op=='api':
   actor=args.get('actor','admin');method=args.get('method','GET');route=args['path']
   selected=client.fixture['tenant_b'] if actor=='other_tenant' else tenant
   allowed='/v1/tenants/'+selected+'/ai-enablement/diagnoses'
@@ -291,9 +326,11 @@ function setup(operation, args = {}) {
     scope:
       operation === "api"
         ? "Real loopback HTTP using a freshly signed existing fixture actor; no manufactured response"
-        : ["narrow_read", "restore"].includes(operation)
-          ? "Temporary narrowing/restoration of exact preexisting disposable diagnosis read grants; no role/ceiling/RLS/history change"
-          : "Read-only actual disposable migration, diagnosis effects or advisory-row counts",
+        : operation.startsWith("source_")
+          ? "One disposable synthetic Evidence object and fresh object-only evidence.read fixture grant, narrowed at teardown; real author HTTP source correction; no live/default role/profile/ceiling changes or governed grant-flow credit"
+          : ["narrow_read", "restore"].includes(operation)
+            ? "Temporary narrowing/restoration of exact preexisting disposable diagnosis read grants; no role/ceiling/RLS/history change"
+            : "Read-only actual disposable migration, diagnosis effects or advisory-row counts",
   });
   return JSON.parse(result.stdout);
 }
@@ -1533,6 +1570,162 @@ try {
       "Scope transitions and delayed reads do not save or overwrite a diagnosis",
     );
   });
+  await test(9, async () => {
+    sourceFixture = setup("source_setup");
+    await page.reload();
+    await openWorkspace();
+    await diagnosisButton("New diagnosis").click();
+    await diagnosisLabel("Diagnosis title").fill(
+      "Synthetic linked evidence diagnosis",
+    );
+    await diagnosisButton("Add problem").click();
+    await diagnosisLabel("Description for priority 1").fill(
+      "Synthetic evidence selection gap",
+    );
+    await diagnosisLabel(
+      "Area affected for Synthetic evidence selection gap",
+    ).fill("Delivery");
+    await diagnosisLabel(
+      "Supporting evidence for Synthetic evidence selection gap",
+    ).fill("Synthetic notes remain mandatory alongside this link.");
+    const choose = diagnosisButton(
+      "Choose saved evidence for Synthetic evidence selection gap",
+    );
+    await choose.click();
+    const selectOld = region().getByRole("button", {
+      name:
+        "Select ATTENDANCE_SHEET · version " + sourceFixture.source.revision_id,
+      exact: true,
+    });
+    await selectOld.waitFor();
+    await scan("Authorised Evidence picker desktop");
+    const revised = setup("source_update", sourceFixture.source);
+    await selectOld.click();
+    await region()
+      .getByText(
+        "This evidence changed. Reload the choices before selecting its new version.",
+        { exact: true },
+      )
+      .waitFor();
+    eq(
+      await region()
+        .getByRole("button", { name: /^Remove evidence link/ })
+        .count(),
+      0,
+      "Changed source version is not silently selected",
+    );
+    await diagnosisButton("Reload evidence choices").click();
+    const selection = region().getByRole("button", {
+      name: "Select ATTENDANCE_SHEET · version " + revised.revision_id,
+      exact: true,
+    });
+    await selection.waitFor();
+    await selection.focus();
+    await selection.press("Enter");
+    await region()
+      .getByText(
+        "Evidence version selected. Save the diagnosis to keep this link.",
+        { exact: true },
+      )
+      .waitFor();
+    const expected = [
+      { object_id: revised.object_id, revision_id: revised.revision_id },
+    ];
+    const saved = await writeFromUI(
+      "Save diagnosis draft",
+      diagnosisRoute,
+      "POST",
+      201,
+    );
+    const route = diagnosisRoute + "/" + saved.object_id;
+    const savedHead = api(route).body;
+    same(
+      savedHead.data.problems[0].evidence_references,
+      expected,
+      "Real save/readback stores exact object/revision pairs, no source labels/URLs",
+    );
+    await page.reload();
+    await openWorkspace();
+    const loaded = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === route &&
+        response.request().method() === "GET",
+    );
+    await diagnosisLabel("Saved diagnoses").selectOption(saved.object_id);
+    eq((await loaded).status(), 200);
+    await region()
+      .getByRole("button", {
+        name: "Remove evidence link 1 for Synthetic evidence selection gap",
+        exact: true,
+      })
+      .waitFor();
+    const completed = await writeFromUI(
+      "Complete diagnosis",
+      route + "/actions/complete",
+      "POST",
+    );
+    same(
+      api(route).body.data.problems[0].evidence_references,
+      expected,
+      "Completion retains exact pinned evidence",
+    );
+    await diagnosisLabel("Reason for diagnosis correction").fill(
+      "Synthetic correction retaining pinned evidence",
+    );
+    await writeFromUI(
+      "Create correction draft",
+      route + "/actions/revise",
+      "POST",
+    );
+    await region()
+      .getByText("Diagnosis draft saved and read back.", { exact: true })
+      .waitFor();
+    same(
+      api(route).body.data.problems[0].evidence_references,
+      expected,
+      "Correction round-trips pinned selectors",
+    );
+    const completedHistory = api(route + "/revisions/" + completed.revision_id);
+    eq(completedHistory.status, 200);
+    same(completedHistory.body.data.problems[0].evidence_references, expected);
+    const before = setup("state", { object_id: saved.object_id });
+    setup("source_narrow", sourceFixture);
+    eq(
+      api(route).status,
+      404,
+      "Fresh current diagnosis HTTP read refuses after source grant narrowing",
+    );
+    eq(
+      api(route + "/revisions/" + completed.revision_id).status,
+      404,
+      "Fresh historical HTTP read refuses after source grant narrowing",
+    );
+    const hidden = page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === route &&
+        response.request().method() === "GET",
+    );
+    await diagnosisLabel("Saved diagnoses").selectOption(saved.object_id);
+    eq(
+      (await hidden).status(),
+      404,
+      "New browser selection read refuses after source grant narrowing",
+    );
+    await diagnosisLabel("Diagnosis title").waitFor({ state: "detached" });
+    truth(
+      !(await region().innerText()).includes(revised.revision_id),
+      "Source read loss clears linked diagnosis selectors from browser",
+    );
+    observeEffects(
+      before,
+      setup("state", { object_id: saved.object_id }),
+      0,
+      "Source access loss/read refusal writes no diagnosis effects",
+    );
+    await page.reload();
+    await openWorkspace();
+    await openSaved();
+  });
   await test(8, async () => {
     await scan("Desktop correction draft");
     await page.setViewportSize({ width: 390, height: 844 });
@@ -1618,6 +1811,14 @@ try {
   }
 } finally {
   const cleanupFailures = [];
+  if (sourceFixture) {
+    try {
+      setup("source_narrow", sourceFixture);
+    } catch (error) {
+      cleanupFailures.push(safeMessage(error.message));
+      process.exitCode = 1;
+    }
+  }
   for (const change of [...narrowed].reverse()) {
     try {
       setup("restore", change);
@@ -1705,7 +1906,7 @@ try {
         captures_directory: captureDirectory,
         limitations: [
           "Synthetic disposable loopback data only; no nonprofit owner acceptance, production use or deployment claim.",
-          "Disposable preexisting read-grant purpose narrowing and restoration qualifies an actual refusal; it is not ordinary grant/role creation.",
+          "Disposable preexisting diagnosis read grants narrow/restore. One new object-only Evidence read fixture grant is narrowed on teardown; this is synthetic fixture preparation, not governed grant-flow, live account/role/profile/ceiling changes or human approval.",
           "PGlite fixture runs do not qualify native-role RLS/concurrency. Native qualification remains a separate gate.",
           "Outbox rows are transaction intents, not external messages or provider deliveries.",
           "Automated axe serious/critical results are bounded scans; incomplete findings are retained and manual assistive-technology acceptance is not inferred.",

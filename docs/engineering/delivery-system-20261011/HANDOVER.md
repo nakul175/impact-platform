@@ -244,3 +244,12 @@ Actual component-adapter10 passed separately from rebuilt native PostgreSQL/Chro
 Evidence: `docs/evidence/candidate-0.40/evidence-selector-ui-20261011/UI-RECEIPT.json`.
 
 Selector checkpoint review metadata correction: initial new IR-0.40-11 omitted required change_id; first fix used a release-style dotted ID that failed the change-ID pattern. Both failures retained in separate logs. Final DX-EVIDENCE-SELECTOR-UI passes structural review across the complete UI change set from ec891997. Review text and null human confirmation unchanged; release acceptance remains false.
+
+
+## Linked Evidence selector native browser — 11 October2026
+
+Actual native PostgreSQL/Chrome browser qualification now includes linked saved Evidence selection: changed source version refuses rather than silently repinning; keyboard selection of the fresh version, save/readback/reload, completion and correction retain exact selectors. Current and historical API reads refuse404 after the fresh object-only synthetic source-read fixture grant narrows; the subsequent browser refusal clears diagnosis/source details with no domain effects. This is synthetic fixture preparation, not governed grant-flow, default permission widening or human signoff.
+
+Final10 groups passed/316 assertions, zero failed/not-run;9 automated axe scans zero violations/incomplete findings. All360 source pins, served assets and46 applied migration bytes stable; cleanup succeeded and all3 clusters stopped. Two new-test failures remain raw: expected200 versus actual create201; then browser listener caught an earlier authorised correction readback200 while both fresh API reads already refused404. Corrected the new contract assertion and waited for actual readback before observing narrowing; no product authority weakening or old test changed. Intentional transport/refusal failures remain recorded.
+
+Positive selector browser/HTTP duty is locally qualified. Typed-linkage lifecycle/registered upgrade/recovery, source privacy/retention races, integrated full refresh and required external/financial/hosted/container/human/operational release gates remain. Build0.40/domain1.30/schema46;0/50 delivered/deployed, no next feature or remote action. Code/evidence reviews are separate self-review phases. Evidence: `docs/evidence/candidate-0.40/evidence-selector-browser-native-20261011/POSITIVE-SELECTOR-RECEIPT.json`.

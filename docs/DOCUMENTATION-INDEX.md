@@ -152,6 +152,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 
 ### engineering/delivery-system-20261011
 
+- [Diagnosis worker fence: bounded preparation](engineering/delivery-system-20261011/DIAGNOSIS-WORKER-FENCE-REVIEW.md)
 - [Imprana Commons — diagnosis coding handover](engineering/delivery-system-20261011/HANDOVER.md)
 - [Imprana Commons progress by work type](engineering/delivery-system-20261011/SEGMENTED-PROGRESS.md)
 - [US-DX-01a — task delivery and status reconciliation](engineering/delivery-system-20261011/TASK-DELIVERY-RECONCILIATION.md)

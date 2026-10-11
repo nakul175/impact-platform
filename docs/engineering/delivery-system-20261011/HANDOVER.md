@@ -83,3 +83,8 @@ Direct owner approval applied the reviewed seven-issue mapping: story APL-361 an
 ## Segmented Linear progress — 11 October 2026
 
 [Separate story/task/epic reports](SEGMENTED-PROGRESS.md) now link from the main native dashboard. Actual inventory is 368 stories (363 Backlog, one In Progress, four In Review), 1,131 tasks (1,125 Backlog, three In Progress, three In Review), and 54 Backlog epics. All three report readbacks were verified. These are dated reports; native saved charts remain blocked by unavailable browser admin-policy verification, with no bypass. No criteria/status/release changes or new runtime evidence in this checkpoint.
+
+
+## Worker diagnosis isolation preparation — 11 October 2026
+
+[Bounded worker fence review and unapplied SQL draft](DIAGNOSIS-WORKER-FENCE-REVIEW.md) inventories actual reminder/audit/export dependencies and prepares diagnosis-only restrictive policies without removing required table grants. No database/migration/role change or runtime test occurred; APL-666 remains In Progress. Real-role refusal, reminder/export, upgrade/restart/restore and security impact/authority gates remain before integration. Source pins and separate root-agent code/evidence review are in worker-fence-preparation-20261011.

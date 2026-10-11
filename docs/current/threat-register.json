@@ -1525,7 +1525,8 @@
         "qualification/test_ai_diagnosis_evidence_native.py::test_non_disclosing_native_selector_refusals",
         "qualification/test_ai_diagnosis_evidence_live.py::test_object_scoped_source_grant_does_not_authorize_another_evidence_selector",
         "qualification/test_ai_diagnosis_evidence_races_native.py::test_waiting_diagnosis_operation_rechecks_source_grant_before_disclosure_or_effect",
-        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants"
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_new_table_forces_tenant_fence_and_no_worker_platform_identity_grants",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure"
       ],
       "coverage": {
         "C-TENANT-CONTEXT": [
@@ -2365,7 +2366,8 @@
         "qualification/test_privacy_requests.py::test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers",
         "qualification/test_privacy_requests.py::test_erasure_reports_held_items_and_a_failed_object_store_deletion_until_retried",
         "qualification/test_privacy_requests.py::test_case_approval_requires_an_independent_natural_person",
-        "qualification/test_privacy_requests.py::test_erasure_of_a_named_import_batch_removes_its_raw_content"
+        "qualification/test_privacy_requests.py::test_erasure_of_a_named_import_batch_removes_its_raw_content",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure"
       ],
       "coverage": {
         "C-PRIVACY-STORE-INVENTORY": [

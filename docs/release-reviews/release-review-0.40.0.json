@@ -539,6 +539,25 @@
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-14",
+      "change_id": "DX-SOURCE-ERASURE-RACE",
+      "change": "Qualify actual source-erasure serialization with diagnosis requests",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Existing independent synthetic erasure API retains original assertions; delay-only disposable trigger observes actual erasure tenant lock with7queued diagnosis routes. Six404 denials and filtered list after actual source removal, exact history/bindings and no diagnosis/revision/receipt effects.124native passes twice,281stable pins. No role widening, manufactured plan, diagnosis cleanup credit or migration promotion.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

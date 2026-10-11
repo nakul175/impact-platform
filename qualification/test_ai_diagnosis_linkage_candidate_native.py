@@ -1,9 +1,11 @@
 """Unregistered typed linkage candidate; actual restricted logins, no release claim."""
 
 from copy import deepcopy
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import ExitStack
 import os
 from pathlib import Path
+import time
 from types import SimpleNamespace
 from uuid import uuid4
 
@@ -19,6 +21,8 @@ from test_ai_diagnosis_evidence_live import external, linked, source_access
 from test_ai_diagnosis_live import action, action_body, get, save
 from test_ai_diagnosis_native import login
 from test_ai_diagnosis_payload_native import insert_copy, payload
+from test_live_application import cmd
+from test_native_concurrency import sender
 
 ROOT = Path(__file__).resolve().parents[1]
 pytestmark = pytest.mark.skipif(
@@ -233,3 +237,130 @@ def test_existing_independent_source_erasure_preserves_links_but_refuses_disclos
 def test_existing_worker_duties_run_with_linkage_trigger_installed(linkage, live):
     worker_tests.test_authority_expiry_reminders_are_idempotent_per_threshold(live)
     exports.test_worker_renders_immutable_artifacts_whose_numbers_match_the_snapshot_and_html(live)
+
+
+def test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure(linkage, live, monkeypatch):
+    """Pause actual erasure under its tenant lock, never replace its approved plan.
+
+    The disposable trigger only delays removal of this one fresh Evidence row.
+    It grants no privilege and does not supply a diagnosis-removal approval.
+    """
+    original_source, original_execute = privacy.member_evidence, privacy.execute
+    captured = []
+    tenant = live.fixture["tenant_a"]
+    pause_key = str(uuid4())
+
+    def diagnosis_effects():
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+            return [
+                c.execute(query, (tenant,)).fetchone()["n"]
+                for query in [
+                    "SELECT count(*) AS n FROM impact.object_registry WHERE tenant_id=%s AND object_type='AIDiagnosis'",
+                    "SELECT count(*) AS n FROM impact.object_revision WHERE tenant_id=%s AND object_type='AIDiagnosis'",
+                    "SELECT count(*) AS n FROM impact.operation_receipt WHERE tenant_id=%s "
+                    "AND command_type IN ('create_ai_diagnosis','update_ai_diagnosis','complete_ai_diagnosis','revise_ai_diagnosis')",
+                ]
+            ]
+
+    def waiting(c, minimum):
+        deadline = time.monotonic() + 2
+        while time.monotonic() < deadline:
+            c.execute("SELECT pg_stat_clear_snapshot()")
+            count = c.execute(
+                "SELECT count(*) AS n FROM pg_stat_activity WHERE usename='impact_app_login' "
+                "AND wait_event_type='Lock' AND wait_event='advisory'"
+            ).fetchone()["n"]
+            if count >= minimum:
+                return
+            time.sleep(0.01)
+        pytest.fail(f"Actual PostgreSQL advisory wait count did not reach {minimum}")
+
+    with ExitStack() as grants:
+
+        def linked_source(*args, **kwargs):
+            evidence_id, upload_id, digest = original_source(*args, **kwargs)
+            with live.db() as c:
+                revision = str(
+                    c.execute(
+                        "SELECT head_revision FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
+                        (tenant, evidence_id),
+                    ).fetchone()["head_revision"]
+                )
+            source = {"object_id": evidence_id, "revision_id": revision}
+            grants.enter_context(source_access(live, source))
+            creation = cmd(linked(source))
+            row = save(live, body=creation)
+            captured.append((source, row, creation, payload(live, row), rows(live, row)))
+            return evidence_id, upload_id, digest
+
+        def paused_execute(*args, **kwargs):
+            source, row, creation, before, bindings = captured[-1]
+            with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+                with c.transaction():
+                    c.execute("SET LOCAL ROLE impact_owner")
+                    c.execute(
+                        "CREATE FUNCTION impact.test_pause_diagnosis_source_erasure() RETURNS trigger "
+                        "LANGUAGE plpgsql AS $$ BEGIN PERFORM pg_advisory_xact_lock(hashtextextended('"
+                        + pause_key
+                        + "',7)); RETURN NEW; END $$"
+                    )
+                    c.execute(
+                        "CREATE TRIGGER test_pause_diagnosis_source_erasure BEFORE UPDATE ON impact.object_revision "
+                        "FOR EACH ROW WHEN (OLD.object_id='"
+                        + source["object_id"]
+                        + "'::uuid AND NEW.restriction_state='REMOVED') "
+                        "EXECUTE FUNCTION impact.test_pause_diagnosis_source_erasure()"
+                    )
+            path = live.path("ai-enablement/diagnoses")
+            item = path + "/" + row["object_id"]
+            token = live.token("admin")
+            effects_before = diagnosis_effects()
+            calls = {
+                "current": sender(live, token, "GET", item),
+                "named": sender(live, token, "GET", item + "/revisions/" + row["revision_id"]),
+                "history": sender(live, token, "GET", item + "/revisions"),
+                "list": sender(live, token, "GET", path),
+                "create": sender(live, token, "POST", path, cmd(linked(source))),
+                "complete": sender(live, token, "POST", item + "/actions/complete", action_body(row)),
+                "replay": sender(live, token, "POST", path, creation),
+            }
+            try:
+                with ThreadPoolExecutor(max_workers=8) as pool:
+                    with live.db() as holder:
+                        holder.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,7))", (pause_key,))
+                        erasure = pool.submit(original_execute, *args, **kwargs)
+                        waiting(holder, 1)
+                        assert not erasure.done(), "Real erasure must still hold its tenant lock"
+                        queued = {name: pool.submit(call) for name, call in calls.items()}
+                        waiting(holder, 8)
+                        assert not erasure.done() and all(not f.done() for f in queued.values())
+                        holder.commit()
+                    receipt = erasure.result(timeout=10)
+                    results = {name: future.result(timeout=10) for name, future in queued.items()}
+                for name, result in results.items():
+                    if name == "list":
+                        assert result["status"] == 200, result
+                        assert row["object_id"] not in {item["object_id"] for item in result["body"]["items"]}
+                    else:
+                        assert result["status"] == 404, (name, result)
+                        assert result["body"]["code"] == "RESOURCE_UNAVAILABLE", (name, result)
+                assert payload(live, row) == before and rows(live, row) == bindings
+                assert diagnosis_effects() == effects_before
+                return receipt
+            finally:
+                with psycopg.connect(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], autocommit=True) as c:
+                    with c.transaction():
+                        c.execute("SET LOCAL ROLE impact_owner")
+                        c.execute(
+                            "DROP TRIGGER test_pause_diagnosis_source_erasure ON impact.object_revision"
+                        )
+                        c.execute("DROP FUNCTION impact.test_pause_diagnosis_source_erasure()")
+                        assert c.execute(
+                            "SELECT to_regproc('impact.test_pause_diagnosis_source_erasure')"
+                        ).fetchone() == (None,)
+
+        monkeypatch.setattr(privacy, "member_evidence", linked_source)
+        monkeypatch.setattr(privacy, "execute", paused_execute)
+        privacy.test_erasure_reaches_every_store_keeps_audit_and_never_alters_official_numbers(live)
+        assert len(captured) == 1

@@ -1,0 +1,101 @@
+{
+  "reviewer": "imprana_scope_audit",
+  "checked_at_utc": "2026-10-11T03:47:16.565773+00:00",
+  "result": "PASS",
+  "scope": "Read-only current actual v2 audit after exact narrowing of the metadata qualifier. Frozen v1 prefix and seveninputpins, first/final staged evidence remain intact. Captured fields only are certified; absent backend assignment/cycle values are not independently certified. No new Native write, product qualification, owner acceptance, Ready/Done, financial or release authority inferred.",
+  "checks": {
+    "all_seven_frozen_v1_pins_unchanged": true,
+    "first_v2_stage_artifacts_preserved": true,
+    "previous_final_v2_stage_artifacts_preserved": true,
+    "entire_frozen_v1_overview_prefix_raw_exact": true,
+    "one_current_declared_append_raw_exact": true,
+    "same_single_v2_marker_no_reappend": true,
+    "only_exact_metadata_scope_sentence_changed": true,
+    "current_scope_does_not_certify_connector_omitted_fields": true,
+    "actual_v1_snapshot_confirms_assignee_cycle_omitted_all1553": true,
+    "original_actual_timestamp_retained": true,
+    "all_captured_overview_nonvolatile_metadata_exact": true,
+    "all14_resource_ids_and13_others_exact": true,
+    "only_overview_resource_timestamp_tied_exact_full_capture_values": true,
+    "all_five_milestones_and_other_project_metadata_exact": true,
+    "root_current_actual_scoped_checker_pass_zero_errors": true,
+    "independent_current_actual_scoped_checker_rerun_pass_zero_errors": true,
+    "checker_unchanged_reviewed_d7a166d6": true,
+    "current_plan_and_readback_input_pins_exact": true,
+    "whole_v3_qualifier_still_exact_previously_reviewed_facts": true
+  },
+  "failed_checks": [],
+  "baseline_pins": {
+    "report": {
+      "path": "verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    "issues": {
+      "path": "native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe"
+    },
+    "documents": {
+      "path": "native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6"
+    },
+    "project": {
+      "path": "native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    "publication_plan": {
+      "path": "native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    },
+    "policy": {
+      "path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    "verifier": {
+      "path": "verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    }
+  },
+  "prior_review_pins": [
+    {
+      "path": "independent-final-review/INDEPENDENT-ACTUAL-V2-REVIEW.json",
+      "sha256": "fd350a3c3dfc6569809947e82d208a03804da84aac32b86e259a2ce8f63a7e88"
+    },
+    {
+      "path": "independent-final-review/INDEPENDENT-FINAL-ACTUAL-V2-AND-QUALIFIER-REVIEW.json",
+      "sha256": "d1a10df73f12638cb3db54e9953bd7d0efa3611911f767474dba2fc55262b4d9"
+    },
+    {
+      "path": "independent-final-review/WHOLE-V3-QUALIFIER-FACTS-REVIEW.json",
+      "sha256": "696aac39967613a5b592856d2591dbab10a2622609d263e821b21b1f17968571"
+    }
+  ],
+  "reviewed_current_artifacts": [
+    {
+      "path": "post-v1-overview/DECLARED-V2-CURRENT-OVERVIEW-PLAN.json",
+      "sha256": "a3b144b6a7242e5a9096681f78a2c5fd5796ce8eebc4ce6f94f9891379cbb70d"
+    },
+    {
+      "path": "post-v1-overview/current-overview.json",
+      "sha256": "2803848617c53dc85c09cc96b84d65acc4d7ceac634f16fb6886406e96e9ce32"
+    },
+    {
+      "path": "post-v1-overview/current-project.json",
+      "sha256": "74c630d828b8a747a8b5ea7561f498b55d6a55b293f68df20abcf2fce7f9edec"
+    },
+    {
+      "path": "post-v1-overview/CURRENT-POST-V1-ACTUAL-OVERVIEW-VERIFICATION.json",
+      "sha256": "870d51a3577abe040df7d3452f525290dd5055879e0154978657589f1a121b16"
+    }
+  ],
+  "independent_current_rerun": {
+    "path": "independent-final-review/CURRENT-POST-V2-INDEPENDENT-ACTUAL-RERUN.json",
+    "sha256": "05e18939672b69f24edd065a362c42f5f77a4def992be21a4e92ce51ac893cc8"
+  },
+  "counts": {
+    "declared_overview_receipt": 1,
+    "project_resources": 14,
+    "milestones": 5,
+    "frozen_v1_inputs": 7
+  },
+  "normalizations": []
+}

@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "scope": "Five synthetic post-v1checker guardgroups only; no Native v2 mutation/execution has happened in this lane.",
+  "files": [
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/verify_post_publication_overview.py",
+      "sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/test_verify_post_publication_overview.py",
+      "sha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/POST-V1-GUARD-TEST-RESULT.log",
+      "sha256": "35bc2daa59223b314af4787bbd9c5418cb052e39ed860c77b281577fc67990f2"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/POST-V1-CHECK-CONTRACT.md",
+      "sha256": "3db4a5c56bce42f4eabb3cbda4e888a9f94d04b36f5e0b189bbe5a5ced637a93"
+    }
+  ]
+}

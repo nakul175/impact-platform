@@ -256,10 +256,20 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [08-BACKLOG-CATALOGUE](product/framework-v4-20261011/08-BACKLOG-CATALOGUE.md)
 - [10-COMPLETE-BACKLOG-REFINEMENT](product/framework-v4-20261011/10-COMPLETE-BACKLOG-REFINEMENT.md)
 - [Imprana Commons — product documentation refinement, 11 October 2026](product/framework-v4-20261011/README.md)
+- [Imprana Commons — product and engineering continuation](product/framework-v4-20261011/START-HERE.md)
 
 ### product/framework-v4-20261011/epic-story-author
 
 - [Imprana Commons epic, story and criterion refinement](product/framework-v4-20261011/epic-story-author/GAP-ANALYSIS.md)
+
+### product/framework-v4-20261011/publication
+
+- [One separate post-verification receipt](product/framework-v4-20261011/publication/POST-V1-CHECK-CONTRACT.md)
+- [Actual native publication evidence](product/framework-v4-20261011/publication/README.md)
+
+### product/framework-v4-20261011/quality
+
+- [Actual framework checks](product/framework-v4-20261011/quality/README.md)
 
 ### product/framework-v4-20261011/task-author
 

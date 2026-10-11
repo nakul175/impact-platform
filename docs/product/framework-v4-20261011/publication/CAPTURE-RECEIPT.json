@@ -1,0 +1,306 @@
+{
+  "capturedAtUtc": "2026-10-11T03:20:35.773722+00:00",
+  "scope": "Fresh full GET of12Imprana projectdocuments and one project with milestones/resources. Read-only connector observation; no mutation or global1553issue completion claim.",
+  "project": {
+    "id": "P-APL-2",
+    "name": "Imprana Commons",
+    "idAliasInitialGet": "P-APL2 returned could-not-find; retried the exact protected-before project identifier P-APL-2 successfully.",
+    "milestoneCount": 5,
+    "milestones": [
+      {
+        "id": "ceef6ef6-bd96-4543-8145-ab7eb78f4e30",
+        "name": "Foundation",
+        "nameExact": true,
+        "targetDate": null,
+        "targetDateExact": true,
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "descriptionSha256": "b4a423f82ca3557352c63060bce5acd3578ee8f4ff08c5dc3278c54119382629"
+      },
+      {
+        "id": "bd62b22d-8817-47b3-84ff-c41489959050",
+        "name": "R1 Pilot",
+        "nameExact": true,
+        "targetDate": null,
+        "targetDateExact": true,
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "descriptionSha256": "9f608d6984f033360ccace1460a671fc70fab7694073f19c0133e4e5eecf7d24"
+      },
+      {
+        "id": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+        "name": "R2 Scale",
+        "nameExact": true,
+        "targetDate": null,
+        "targetDateExact": true,
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "descriptionSha256": "0b9c3f6d4c97bde379cb75f600e1175b9802251884066f1a2fb4a047ddc1c558"
+      },
+      {
+        "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+        "name": "R3 Ecosystem",
+        "nameExact": true,
+        "targetDate": null,
+        "targetDateExact": true,
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "descriptionSha256": "53483a9a421380c090ceb48d975227d810ca2b48adccac74480284b8d61b33f2"
+      },
+      {
+        "id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+        "name": "Later",
+        "nameExact": true,
+        "targetDate": null,
+        "targetDateExact": true,
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "descriptionSha256": "d06a57d6fc2e805508c4bf99eed6290996fcab0d4078e47f5c044eff15aa4897"
+      }
+    ],
+    "resourceCountReported": 14,
+    "resourcesReturned": 14,
+    "resourceTypes": {
+      "document": 12,
+      "link": 2
+    },
+    "documentResourcesExactlyExpected12": true,
+    "protectedProjectFieldsDifferences": [
+      "milestones"
+    ]
+  },
+  "documents": {
+    "fullGets": 12,
+    "fullRecordsCaptured": 12,
+    "everyFullContentIsString": true,
+    "uniqueIds": 12,
+    "original11PlusNewOverviewExact": true,
+    "allRecords": [
+      {
+        "id": "bc33da1e-7fae-4f4e-81a6-9ff5076c43df",
+        "title": "Imprana Commons product vision",
+        "contentBytes": 12555,
+        "contentSha256": "4a94e8265bdbe3890505f75aa0d731a5322f152a69ecf384916e879dde29f995",
+        "nativeUpdatedAt": "2026-10-11T02:18:41.393Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:22.718Z"
+      },
+      {
+        "id": "3520d765-ed97-4901-ae89-7996b8d15bd9",
+        "title": "Imprana Commons product strategy",
+        "contentBytes": 14908,
+        "contentSha256": "b64484fd03d4383869020f338ea7d09a9652f6ce07f8815707db188582b0ab27",
+        "nativeUpdatedAt": "2026-10-11T02:18:48.752Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.392Z"
+      },
+      {
+        "id": "41cf9cd4-17ef-4ebb-8f59-5a26504b2d5e",
+        "title": "Imprana Commons outcome roadmap",
+        "contentBytes": 10521,
+        "contentSha256": "909ccec1c29070ead24b258f18a892e4e4d04df32aab88e5dc47c17c7a645a73",
+        "nativeUpdatedAt": "2026-10-11T02:18:52.788Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.369Z"
+      },
+      {
+        "id": "f16e5ce3-5544-4b29-a5f7-7066ea29fea0",
+        "title": "Imprana Commons release goals",
+        "contentBytes": 16248,
+        "contentSha256": "d2c75fac5c5df7172df007885ccdf655f7740716dbef68825273416d04c208bb",
+        "nativeUpdatedAt": "2026-10-11T02:18:57.632Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.397Z"
+      },
+      {
+        "id": "37cd9321-6f7d-4df8-973d-557a199de68b",
+        "title": "Imprana Commons — Retained split-parent history",
+        "contentBytes": 5571,
+        "contentSha256": "25ef678bb289c4f990f74f41c86fb1d9dabcae73bba439e4e2507992137f315a",
+        "nativeUpdatedAt": "2026-10-10T09:29:01.188Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.403Z"
+      },
+      {
+        "id": "f5b2a111-e190-4dc5-81aa-8a98ff9a7939",
+        "title": "Imprana Commons — Complete backlog catalogue",
+        "contentBytes": 88182,
+        "contentSha256": "c42920f0a1a7734f7502ff85a66273a824276732968d4fc5e2f4607772336df1",
+        "nativeUpdatedAt": "2026-10-11T02:19:04.905Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.755Z"
+      },
+      {
+        "id": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+        "title": "Imprana Commons — Import status and Claude handover",
+        "contentBytes": 10904,
+        "contentSha256": "62e03d2a2195d059bcd07667d81194ff08639ed54a1226a5454321af31cf1bd8",
+        "nativeUpdatedAt": "2026-10-11T02:20:50.403Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.358Z"
+      },
+      {
+        "id": "2bd0cf2a-20cf-4e58-be47-5394bcc2dac5",
+        "title": "Imprana Commons — Linear integration and recovery",
+        "contentBytes": 9420,
+        "contentSha256": "5fbb11cd4c2236b061859f8f99573f095783b16cfc7d1c5bf25c49ccceaaf62a",
+        "nativeUpdatedAt": "2026-10-11T02:19:26.000Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:23.408Z"
+      },
+      {
+        "id": "346b4fa1-3d8f-436c-83be-ad8951aaea1e",
+        "title": "Imprana Commons — Proposed next-sprint refinement",
+        "contentBytes": 29630,
+        "contentSha256": "dd49daf6f4154ba6950928510e3eff08f36606ad7d146d2a9fa25cca12b12ec7",
+        "nativeUpdatedAt": "2026-10-11T02:19:30.454Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:24.542Z"
+      },
+      {
+        "id": "e76b87bb-1dae-4752-acbc-4f1ad7a779fd",
+        "title": "Imprana Commons — Story and task standard",
+        "contentBytes": 20110,
+        "contentSha256": "9c146fef363e3bf7a26d5e17ffc3acf13b212c7a28d542dc846cb76bbdc07ae2",
+        "nativeUpdatedAt": "2026-10-11T02:19:36.445Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:24.355Z"
+      },
+      {
+        "id": "6586ed0a-2090-4180-92b3-5eec159688c1",
+        "title": "Imprana Commons planning structure",
+        "contentBytes": 10339,
+        "contentSha256": "1fe8ea9b7b89a369496ff423df775a30566de721de545363adb51c19fbba6f68",
+        "nativeUpdatedAt": "2026-10-11T02:19:41.520Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:24.352Z"
+      },
+      {
+        "id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+        "title": "Imprana Commons framework refinement — 11 October 2026",
+        "contentBytes": 5461,
+        "contentSha256": "9f1a92dd50b7d804c33c1b895c37f841d0920d7523ac59518fd54f9825feafc4",
+        "nativeUpdatedAt": "2026-10-11T02:20:00.062Z",
+        "freshGetFinishedAtUtc": "2026-10-11T03:19:24.373Z"
+      }
+    ],
+    "protectedHistory": {
+      "id": "37cd9321-6f7d-4df8-973d-557a199de68b",
+      "entireFullCapturedRecordUnchanged": true,
+      "contentSha256": "25ef678bb289c4f990f74f41c86fb1d9dabcae73bba439e4e2507992137f315a"
+    },
+    "frozen10DocumentChecks": [
+      {
+        "id": "bc33da1e-7fae-4f4e-81a6-9ff5076c43df",
+        "title": "Imprana Commons product vision",
+        "fullContentBytes": 12555,
+        "contentSha256": "4a94e8265bdbe3890505f75aa0d731a5322f152a69ecf384916e879dde29f995",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "3520d765-ed97-4901-ae89-7996b8d15bd9",
+        "title": "Imprana Commons product strategy",
+        "fullContentBytes": 14908,
+        "contentSha256": "b64484fd03d4383869020f338ea7d09a9652f6ce07f8815707db188582b0ab27",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "41cf9cd4-17ef-4ebb-8f59-5a26504b2d5e",
+        "title": "Imprana Commons outcome roadmap",
+        "fullContentBytes": 10521,
+        "contentSha256": "909ccec1c29070ead24b258f18a892e4e4d04df32aab88e5dc47c17c7a645a73",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "f16e5ce3-5544-4b29-a5f7-7066ea29fea0",
+        "title": "Imprana Commons release goals",
+        "fullContentBytes": 16248,
+        "contentSha256": "d2c75fac5c5df7172df007885ccdf655f7740716dbef68825273416d04c208bb",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "f5b2a111-e190-4dc5-81aa-8a98ff9a7939",
+        "title": "Imprana Commons — Complete backlog catalogue",
+        "fullContentBytes": 88182,
+        "contentSha256": "c42920f0a1a7734f7502ff85a66273a824276732968d4fc5e2f4607772336df1",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+        "title": "Imprana Commons — Import status and Claude handover",
+        "fullContentBytes": 10904,
+        "contentSha256": "62e03d2a2195d059bcd07667d81194ff08639ed54a1226a5454321af31cf1bd8",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "2bd0cf2a-20cf-4e58-be47-5394bcc2dac5",
+        "title": "Imprana Commons — Linear integration and recovery",
+        "fullContentBytes": 9420,
+        "contentSha256": "5fbb11cd4c2236b061859f8f99573f095783b16cfc7d1c5bf25c49ccceaaf62a",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "346b4fa1-3d8f-436c-83be-ad8951aaea1e",
+        "title": "Imprana Commons — Proposed next-sprint refinement",
+        "fullContentBytes": 29630,
+        "contentSha256": "dd49daf6f4154ba6950928510e3eff08f36606ad7d146d2a9fa25cca12b12ec7",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "e76b87bb-1dae-4752-acbc-4f1ad7a779fd",
+        "title": "Imprana Commons — Story and task standard",
+        "fullContentBytes": 20110,
+        "contentSha256": "9c146fef363e3bf7a26d5e17ffc3acf13b212c7a28d542dc846cb76bbdc07ae2",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      },
+      {
+        "id": "6586ed0a-2090-4180-92b3-5eec159688c1",
+        "title": "Imprana Commons planning structure",
+        "fullContentBytes": 10339,
+        "contentSha256": "1fe8ea9b7b89a369496ff423df775a30566de721de545363adb51c19fbba6f68",
+        "sourcePrefixRawExact": true,
+        "exactFrozenExpectedWithoutFormatNormalization": false,
+        "protectedCapturedFieldsDifferences": []
+      }
+    ],
+    "overview": {
+      "id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+      "titleExact": true,
+      "exactFrozenContentWithoutFormatNormalization": false,
+      "contentSha256": "9f1a92dd50b7d804c33c1b895c37f841d0920d7523ac59518fd54f9825feafc4"
+    }
+  },
+  "artifacts": {
+    "native-after/full-documents.json": {
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6",
+      "bytes": 245754
+    },
+    "native-after/project.json": {
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819",
+      "bytes": 23772
+    },
+    "bundle-review/native-documents-project-fresh-capture-20261011/RAW-CAPTURE.json": {
+      "sha256": "fb23e2eea54395cc085793de7d6d756500f9b7e9ffe59318cafff1593441e089",
+      "bytes": 519040
+    }
+  },
+  "limitations": [
+    "Document/project/milestone native Markdown formatting differences are recorded without this capture lane declaring them accepted; parent independent strict policy verifies exact observed formatting.",
+    "No truncating list response used fordocument content.",
+    "Raw creator/updater/project account metadata remains in local output envelopes only; this compact receipt stores no private account values.",
+    "All1553 currentissue reconciliation and final human/product acceptance remain separate, unobserved by this capture."
+  ],
+  "mutations": {
+    "native": 0,
+    "repository": 0,
+    "newIssues": 0,
+    "externalMessages": 0
+  }
+}

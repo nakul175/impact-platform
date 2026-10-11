@@ -1,0 +1,170 @@
+{
+  "product": "Imprana Commons",
+  "completedAtUtc": "2026-10-11T03:42:29.383359+00:00",
+  "scope": "Actual genuine affected-four V4 planning-profile qualification only: four assessed tasks, 85 exact recursive contextual elements and 123 source snapshots. This is not the full V4 assessment or contextual-element certification.",
+  "fullV4InputSha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+  "scopedInputSha256": "099cf7d4a65ca233295e7b28e7a725d8f82826fbc3d577b32eaf869ad3026dff",
+  "assessedElementIds": [
+    "TASK-FR-IAM-003-02",
+    "TASK-FR-UX-003-02",
+    "TASK-FR-CAL-007-03",
+    "TASK-FR-OFF-006-03"
+  ],
+  "contextElementCount": 85,
+  "sourceSnapshots": 123,
+  "workflowExitCodes": {
+    "loop": 2,
+    "summary": 0,
+    "next": 0
+  },
+  "workflowElapsedSeconds": {
+    "loop": 1.391651,
+    "summary": 0.1339967499999999,
+    "next": 0.13192120800000007
+  },
+  "qualityState": {
+    "status": "needs_input",
+    "passed": 225,
+    "applicable": 254,
+    "exemptions": 0,
+    "counts": {
+      "passed": 225,
+      "not_applicable": 0,
+      "missing": 29,
+      "failed": 0,
+      "stale": 0,
+      "invalid": 0
+    },
+    "score": null,
+    "exitRule": "Every selected mandatory stage gate and integrity check must pass with current evidence and supplied review. Deferred/reference-sampled checks cannot certify the full catalogue. No averaging, timeout or iteration limit grants a pass.",
+    "certificationGranted": false
+  },
+  "assessmentCoverage": {
+    "assessmentMode": "profile",
+    "stage": "planning",
+    "selectedMandatoryReviewCount": 28,
+    "integrityChecksAlwaysRun": true,
+    "referenceCheckInstances": 1020,
+    "referenceChecksFullyAssessed": false,
+    "referenceInstancesDeferred": 1020,
+    "advisorySampleCount": 2,
+    "advisoryUnreviewedCount": 2,
+    "legacyDefaultWarning": null,
+    "conclusion": "Only the selected stage's seven mandatory gates per assessed item were checked. Advisory samples and deferred reference details do not count as passed."
+  },
+  "catalogueIdentity": {
+    "status": "matched",
+    "enginePinned": true,
+    "expectedCatalogueVersion": "3.0-generic",
+    "actualCatalogueVersion": "3.0-generic",
+    "expectedCanonicalHash": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+    "actualCanonicalHash": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe"
+  },
+  "unresolvedByResolutionKind": {
+    "author_repair_or_owner_decision": 5,
+    "independent_review_task": 24
+  },
+  "actualRemainingMissingReasons": {
+    "controlledAIAssuranceReference": 4,
+    "separatelySuppliedExternalTrust": 1,
+    "independentReviewTasks": 24
+  },
+  "fourPredecessorGates": [
+    {
+      "id": "TASK-FR-IAM-003-02:gate.technical_task.planning.05",
+      "elementId": "TASK-FR-IAM-003-02",
+      "checkId": "gate.technical_task.planning.05",
+      "status": "missing",
+      "reason": "Exactly one current review for this field/check is required.",
+      "missingFieldIds": [],
+      "requiredFieldIds": [
+        "technical_task.predecessors",
+        "technical_task.native_blockers",
+        "technical_task.work_steps"
+      ]
+    },
+    {
+      "id": "TASK-FR-UX-003-02:gate.technical_task.planning.05",
+      "elementId": "TASK-FR-UX-003-02",
+      "checkId": "gate.technical_task.planning.05",
+      "status": "missing",
+      "reason": "Exactly one current review for this field/check is required.",
+      "missingFieldIds": [],
+      "requiredFieldIds": [
+        "technical_task.predecessors",
+        "technical_task.native_blockers",
+        "technical_task.work_steps"
+      ]
+    },
+    {
+      "id": "TASK-FR-CAL-007-03:gate.technical_task.planning.05",
+      "elementId": "TASK-FR-CAL-007-03",
+      "checkId": "gate.technical_task.planning.05",
+      "status": "missing",
+      "reason": "Exactly one current review for this field/check is required.",
+      "missingFieldIds": [],
+      "requiredFieldIds": [
+        "technical_task.predecessors",
+        "technical_task.native_blockers",
+        "technical_task.work_steps"
+      ]
+    },
+    {
+      "id": "TASK-FR-OFF-006-03:gate.technical_task.planning.05",
+      "elementId": "TASK-FR-OFF-006-03",
+      "checkId": "gate.technical_task.planning.05",
+      "status": "missing",
+      "reason": "Exactly one current review for this field/check is required.",
+      "missingFieldIds": [],
+      "requiredFieldIds": [
+        "technical_task.predecessors",
+        "technical_task.native_blockers",
+        "technical_task.work_steps"
+      ]
+    }
+  ],
+  "presentationDisposition": "All four predecessor-field content gaps no longer appear in the actual affected-four owner questions; their exact source predecessor JSON is retained. Each gate still requires current independent review. No field is marked approved or delivered.",
+  "reviewerAuthentication": {
+    "status": "not_authenticated_offline",
+    "advisoryOnly": true,
+    "registryCanBeAuthorCreated": true,
+    "externalApprovalRequired": true
+  },
+  "readinessState": {
+    "status": "supplied_unverified",
+    "suppliedClaim": {
+      "reason": "All new adapter records are draft. Existing native workflow/acceptance state retained; no current owner/engineer/trust/Ready/sprint decision granted.",
+      "status": "not_assessed"
+    },
+    "assessedByChecker": false,
+    "authorizationGranted": false
+  },
+  "deliveryState": {
+    "status": "supplied_unverified",
+    "suppliedClaim": {
+      "reason": "No implementation/testing/CI/runtime/deployed-health/learning or delivery observed by this documentation adapter.",
+      "status": "not_assessed"
+    },
+    "assessedByChecker": false,
+    "deliveryObservedByChecker": false
+  },
+  "nextOwnerQuestionIds": [
+    "Q-5150b7c71aedf9d9e9cf",
+    "Q-a6689f614eea8f3d9ced",
+    "Q-6d9d0eaa1f2f18354cf7",
+    "Q-4cbdec366ddb4cd57168",
+    "Q-343255d437f771e8e94f"
+  ],
+  "reportSha256": "022ab7ba5f90f3de6620aaf194e5c421a1f6e9bd6429c6c6cb9c9dcc73c5ef5d",
+  "reportBytes": 2981547,
+  "workflowReceiptSha256": "da2a556945609439f6a92990b0ffb7e1bc87ca96aa6c4ddca97df92aaa51881e",
+  "invocationSha256": "b6f3019ed3f6bd6044ebb87c72dee5469fe40bc86e2148cf9a5edc23af7e0d71",
+  "summaryStdoutSha256": "39a7a5cb5f442047b38390abd0ec4d80ddb1b662ec4b10515895a63d1e0b2f16",
+  "nextStdoutSha256": "33289cbe9416f95e17046ff3a3f4a37b259e29218b85ab2663fa2632b07341ae",
+  "exactDeltaCoverageReceiptSha256": "d74460697bbc0d86d766cd8101a40b61355129ed6bed32a1c084f892032eee9f",
+  "allCheckerSourcePinsUnchanged": true,
+  "trustStore": null,
+  "allowSynthetic": false,
+  "repoNativeAppProviderMutations": false,
+  "limitation": "Only the actual 28 selected planning gates and integrity checks for four items are represented. All 1,020 deferred reference instances and two advisory samples remain unassessed; no whole V4, Ready/Done, acceptance or release authority is granted."
+}

@@ -1,0 +1,27 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:35:39.252363+00:00",
+  "previousIndependentReviewSha256": "c2a0a424b68dd07d6f85dc5e3f87a0e63fa53c25e423ba32f2a673436bdb4723",
+  "latestPostV1Checker": {
+    "path": "outputs/imprana-product-refinement-20261011/verification-author/verify_post_publication_overview.py",
+    "sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a"
+  },
+  "sourceCorrection": "main() now also protects the exact declared actual_observation_pin path against --output overwrite, before invoking verify or writing a report. Seven frozen v1 source pins and exactcontent/metadata/projection checks unchanged. No broad formatting rule added.",
+  "sourceFacts": {
+    "protectedObservationPathResolved": true,
+    "protectedOutputCheckedBeforeAndAfterFailure": true,
+    "sevenFrozenV1PinsRetained": true
+  },
+  "unchangedV1": {
+    "verify_refinement_publication.py": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a",
+    "DECLARED-ALL-OBJECT-FORMATTING-POLICY.json": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce",
+    "PUBLICATION-VERIFICATION-REPORT.json": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+  },
+  "authorActualGuardEvidence": {
+    "sourceSha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6",
+    "logSha256": "35bc2daa59223b314af4787bbd9c5418cb052e39ed860c77b281577fc67990f2",
+    "groups": 5,
+    "scope": "Author-run five synthetic corruptiongroups, not reviewer rerun or actual Native v2 execution."
+  },
+  "disposition": "No introduced sourceblocker found; this narrow safetycorrection is suitable for the separately declared v2readback check. Actualv2toolreadback/report and finalGitcandidate review remain required. No owner/productapproval granted.",
+  "repoOrNativeMutation": false
+}

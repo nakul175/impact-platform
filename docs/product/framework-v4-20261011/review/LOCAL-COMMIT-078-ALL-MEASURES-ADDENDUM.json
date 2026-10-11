@@ -1,0 +1,32 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:27:37.506108+00:00",
+  "subjectCommit": "078b395c8684d2f81f5f1edd1c4fa6c3d409f72a",
+  "measureContractSha256": "daf3ee76a691e48e7f41364cf62cf67f095066b48815f94686092308e79926f0",
+  "all368SourceBoundMeasureRecords": 368,
+  "all19MeasureFamilies": {
+    "policy": 44,
+    "transition": 4,
+    "AIevaluation": 17,
+    "authority": 31,
+    "evidence": 56,
+    "cost": 8,
+    "latency": 8,
+    "training": 4,
+    "learning": 6,
+    "handoff": 32,
+    "usable": 33,
+    "history": 44,
+    "delivery": 16,
+    "arithmetic": 24,
+    "reconciliation": 32,
+    "availability": 2,
+    "recovery": 3,
+    "capacity": 2,
+    "compatibility": 2
+  },
+  "checked": "Every primary/original Then clause, selected adverse source When/Then, full sourcecriterion population, baselineactualvalue null, unrun proposal state and noReady/Done state compared directly against exact annotation source records.",
+  "errors": [],
+  "passed": true,
+  "limitations": "Semantic measures remain source-backed recommendations, not userresearch or actual pilot/technical execution. Original source workload, denominators, exceptions and thresholds remain mandatory; family-level names cannot replace them.",
+  "nativeOrRepoMutations": false
+}

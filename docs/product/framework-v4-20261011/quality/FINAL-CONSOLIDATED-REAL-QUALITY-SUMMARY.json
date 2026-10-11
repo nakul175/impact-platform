@@ -1,0 +1,116 @@
+{
+  "product": "Imprana Commons",
+  "createdAtUtc": "2026-10-11T03:43:34.655197+00:00",
+  "disposition": "Draft documentation and actual selected planning-profile assessment complete. Quality remains needs_input; authenticated independent trust, current reviews and controlled AI assurance records remain outstanding.",
+  "fullV3Assessment": {
+    "inputSha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+    "elementCounts": {
+      "vision": 1,
+      "strategy": 5,
+      "roadmap": 1,
+      "release_goal": 5,
+      "epic": 54,
+      "user_story": 368,
+      "acceptance_criterion": 1328,
+      "technical_task": 1131
+    },
+    "totalElements": 2893,
+    "sourceSnapshots": 3253,
+    "taskPrerequisiteEdges": 779,
+    "stage": "planning",
+    "mode": "profile",
+    "workflowExitCodes": {
+      "loop": 2,
+      "summary": 0,
+      "next": 0
+    },
+    "status": "needs_input",
+    "checkCounts": {
+      "passed": 6159,
+      "not_applicable": 0,
+      "missing": 20252,
+      "failed": 0,
+      "stale": 0,
+      "invalid": 0
+    },
+    "mandatoryPlanningGateCount": 20251,
+    "referenceInstancesDeferred": 666574,
+    "independentReviewTasksMissing": 17354,
+    "controlledAIAssuranceReferencesMissing": 2893,
+    "separatelySuppliedExternalTrustMissing": 1,
+    "presentationOnlyPredecessorGapsInOriginalV3": 4,
+    "summaryPath": "outputs/imprana-product-refinement-20261011/bundle-review/FULL-V3-REAL-QUALITY-SUMMARY.json",
+    "summarySha256": "385ad7b8aca5e3b3eba5caa7c12589f3958210812ede9c11fd17fc712de17fdd",
+    "workflowReceiptSha256": "43c5c817d826f4ae6c83c10be13922091479d219b9a5888169ca81938e8265a3",
+    "rawReportSha256": "b67dd26c25c746352bbf0597ef5e426d826628323dca891a9b44238592c9e913",
+    "rawReportBytes": 1948924266,
+    "fullV3ReportPreservedUnchanged": true
+  },
+  "v4PresentationClarifications": {
+    "scope": "Exactly four technical_task.predecessors factual label prefixes; original JSON suffixes, all sources, IDs, parents, 779 edges, other 76,233 field records and every gate unchanged. Revision3→4 is the only other semantic change.",
+    "inputSha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+    "repairReceiptSha256": "f7b8c7d7732d54d614d75489ae30cf89b02236c967b3b591363f8bd97f31f3da",
+    "exactDeltaCoverageReceiptSha256": "d74460697bbc0d86d766cd8101a40b61355129ed6bed32a1c084f892032eee9f",
+    "wholeV4CheckerAssessment": "Not run; never infer its counts or certificate from the scoped result."
+  },
+  "affectedFourActualV4Assessment": {
+    "scope": "Only four assessed tasks; 85 contextual elements and 123 sources are exact closure, not separately qualified items.",
+    "assessedElementIds": [
+      "TASK-FR-IAM-003-02",
+      "TASK-FR-UX-003-02",
+      "TASK-FR-CAL-007-03",
+      "TASK-FR-OFF-006-03"
+    ],
+    "workflowExitCodes": {
+      "loop": 2,
+      "summary": 0,
+      "next": 0
+    },
+    "status": "needs_input",
+    "checkCounts": {
+      "passed": 225,
+      "not_applicable": 0,
+      "missing": 29,
+      "failed": 0,
+      "stale": 0,
+      "invalid": 0
+    },
+    "mandatoryPlanningGateCount": 28,
+    "referenceInstancesDeferred": 1020,
+    "predecessorContentGapsReported": 0,
+    "predecessorGateIndependentReviewsStillMissing": 4,
+    "controlledAIAssuranceReferencesMissing": 4,
+    "separatelySuppliedExternalTrustMissing": 1,
+    "independentReviewTasksMissing": 24,
+    "summarySha256": "28bdbf20a1fa3fb71e18d7e8f005e50649359e451dad1c3a91ec6a8931afa633",
+    "workflowReceiptSha256": "da2a556945609439f6a92990b0ffb7e1bc87ca96aa6c4ddca97df92aaa51881e",
+    "reportSha256": "022ab7ba5f90f3de6620aaf194e5c421a1f6e9bd6429c6c6cb9c9dcc73c5ef5d"
+  },
+  "remainingActionRecommendations": [
+    {
+      "kind": "External independent trust",
+      "action": "An actually authorised accountable reviewer must supply independently verified review profiles and a catalogue-pinned verification receipt. The drafting agent must not invent the registry, review independence or owner authority."
+    },
+    {
+      "kind": "Controlled AI assurance",
+      "action": "Attach current source-bound assurance records to the relevant planning items and record real uncertainty, tests, human oversight and accountable owners; execution/effectiveness is not inferred from draft documentation."
+    },
+    {
+      "kind": "Current independent reviews",
+      "action": "Use the genuine loop queues to obtain current review judgments pinned to the exact fields/gates and document/catalogue fingerprints. Local authorship and advisory receipts do not constitute external approval."
+    },
+    {
+      "kind": "Delivery and acceptance",
+      "action": "Retain native workflow/acceptance history. Ready/Done, sprint capacity, production, safety, CI, runtime and pilot acceptance must be decided and evidenced separately."
+    }
+  ],
+  "nonClaims": [
+    "No whole V4 quality pass or adjusted whole-V4 missing count.",
+    "No synthetic authority, owner approval, independent-review authentication, research result or efficacy evidence.",
+    "No app/provider test, hosted CI, financial action, deployment, merge or acceptance qualification by this checker workflow.",
+    "Native publication preservation is a separate exact-readback verification, not planning quality or business approval."
+  ],
+  "rawGitPolicy": "Keep 1.949GB full report, large full inputs, full state/questions and raw native/account records outside Git. Compact summaries, immutable workflow receipts and exact repair/coverage receipts may be saved for handover.",
+  "catalogueCanonicalHash": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+  "allCheckerSourcePinsUnchanged": true
+}

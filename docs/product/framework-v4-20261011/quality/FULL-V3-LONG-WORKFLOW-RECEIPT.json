@@ -1,0 +1,34 @@
+{
+  "completedAtUtc": "2026-10-11T03:37:05.860628+00:00",
+  "scope": "Full2,893actual elements /3,253exact sources /20,251mandatory planning gates",
+  "inputSha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+  "invocationSha256": "030cad85ad06b887a25267082266b106c1b1b77b1ece0174541d68669687abd9",
+  "commands": {
+    "loop": {
+      "exitCode": 2,
+      "timedOut": false,
+      "elapsedSeconds": 737.779642,
+      "stdoutSha256": "5847f6e75263006e5912a6ac2861beb083a9ec3c93ae9b40e331077dc0e542d8",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "summary": {
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 5.997261332999983,
+      "stdoutSha256": "3351ce17041912a5b1ef87b06135fa283e2c085b8f456692d7f8dec80c0f370b",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "next": {
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.17434587499997178,
+      "stdoutSha256": "4238bc9c7b257d4891a5a1949101d8dccbacd0649bfa2533dfce6edfab03189e",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "reportExists": true,
+  "reportSha256": "b67dd26c25c746352bbf0597ef5e426d826628323dca891a9b44238592c9e913",
+  "fullAssessmentCompleted": true,
+  "noAuthorisedExternalTrustOrIndependentReviewFabricated": true,
+  "limitations": "Local advisory checker only. No Ready/Done, delivery, product acceptance or quality PASS inferred. If full assessment is incomplete, only the separately completed partial56-gate report has an actual needs_input outcome."
+}

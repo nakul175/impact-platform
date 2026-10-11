@@ -1,0 +1,86 @@
+{
+  "result": "PASS",
+  "scope": "Actual complete offline native publication verifier,16 corruption guard groups,5 synthetic post-v1 guard groups. Post-v1 Native append and actual check have not run. No application acceptance/test execution/owner approval is inferred.",
+  "actual_time_utc": "2026-10-11T03:33:18.237560+00:00",
+  "publication_result": "PASS",
+  "publication_errors": [],
+  "counts": {
+    "issues_before": 1553,
+    "issues_after": 1553,
+    "issue_types": {
+      "epic": 54,
+      "story": 368,
+      "task": 1131
+    },
+    "original_scenarios": 1328,
+    "task_blocked_by_edges_before": 779,
+    "task_blocked_by_edges_after": 779,
+    "updated_documents": 10,
+    "protected_history_documents": 1,
+    "new_overview_documents": 1,
+    "milestones": 5,
+    "missing_given_supplements": 37,
+    "supplementary_assertion_classifications": 7,
+    "qualification_duty_supplements": 13,
+    "in_review_before": 4,
+    "in_review_after": 4,
+    "nonmissing_estimates_before": 10,
+    "nonmissing_estimates_after": 10
+  },
+  "publication_guard_groups": 16,
+  "post_v1_synthetic_guard_groups": 5,
+  "actual_duty_headings": 13,
+  "pending_duty_headings": 0,
+  "formatting": "Only independently observed fixed new-supplement presentation changes. Original source prefixes and Gherkin are never normalized.",
+  "project_resource_timestamp_rule": "Only10frozen planned document IDs: both before/after resource updatedAt must be present nonempty strings exactlyequal corresponding full-document updatedAt; all otherresourcefields exact. Historicaldoc+2links exact.",
+  "historical_first_complete_verification_red": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/history/final-full-readback-first-verification/PUBLICATION-VERIFICATION-REPORT.json",
+    "sha256": "5a154fa1bb319773b00a8534918a553f158a3600b3df0bad05e136df20d1de0d"
+  },
+  "single_failed_primary_get_reconciliation": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/final-full-get-20261011/reconciliation/APL-1397-RECONCILIATION-RECEIPT.json",
+    "sha256": "1b2e2db504799fa37add991026d2bc043083042ced06ffb617c1e4ee51670873"
+  },
+  "files": [
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/test_verify_refinement_publication.py",
+      "sha256": "df147474940d81cf7b80113faa5c42f4fd18358f922bf3af5450aeb232d045c5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/GUARD-TEST-RESULT.log",
+      "sha256": "664572663227837e85a45944d1c1f9d73dce89a7c49ea29a52b4325ce11d5e83"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/CURRENT-DUTY-HEADING-OBSERVATIONS.json",
+      "sha256": "8e57677d81087418e743953b3f0f75489f076d17730e3c91466fcd9be1264d66"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/ACTUAL-FINAL-CLASSIFICATION-HEADINGS-REVIEW.json",
+      "sha256": "1e21e1d1b9bd662725969aa78c070c13cb32a6e07ad4ff35d17a2cbb6b4dd3a1"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/verify_post_publication_overview.py",
+      "sha256": "b6682199995513b7dfd3e3da2e63df9f0556c15f162c3ec609c9da6468f6f8c7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/test_verify_post_publication_overview.py",
+      "sha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/POST-V1-GUARD-TEST-RESULT.log",
+      "sha256": "f412246e33ea8eda658276f55b856732ffffc9d239425dba3a5b561fba32e0da"
+    }
+  ]
+}

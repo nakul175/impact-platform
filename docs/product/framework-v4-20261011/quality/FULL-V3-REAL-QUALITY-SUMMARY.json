@@ -1,0 +1,232 @@
+{
+  "product": "Imprana Commons",
+  "completedAtUtc": "2026-10-11T03:37:05.860628+00:00",
+  "scope": "Actual completed full2,893element real planning-stage profile assessment with3,253exact protected source snapshots, all8hierarchytiers and779taskprerequisites. Full selectedplanningprofile, not exhaustive666574referencechecks or productacceptance.",
+  "input": {
+    "revision": 3,
+    "sha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+    "bytes": 59345772,
+    "originalElementCounts": {
+      "vision": 1,
+      "strategy": 5,
+      "roadmap": 1,
+      "release_goal": 5,
+      "epic": 54,
+      "user_story": 368,
+      "acceptance_criterion": 1328,
+      "technical_task": 1131
+    }
+  },
+  "workflowExitCodes": {
+    "loop": 2,
+    "summary": 0,
+    "next": 0
+  },
+  "workflowElapsedSeconds": {
+    "loop": 737.779642,
+    "summary": 5.997261332999983,
+    "next": 0.17434587499997178
+  },
+  "qualityState": {
+    "status": "needs_input",
+    "passed": 6159,
+    "applicable": 26411,
+    "exemptions": 0,
+    "counts": {
+      "passed": 6159,
+      "not_applicable": 0,
+      "missing": 20252,
+      "failed": 0,
+      "stale": 0,
+      "invalid": 0
+    },
+    "score": null,
+    "exitRule": "Every selected mandatory stage gate and integrity check must pass with current evidence and supplied review. Deferred/reference-sampled checks cannot certify the full catalogue. No averaging, timeout or iteration limit grants a pass.",
+    "certificationGranted": false
+  },
+  "assessmentCoverage": {
+    "assessmentMode": "profile",
+    "stage": "planning",
+    "selectedMandatoryReviewCount": 20251,
+    "integrityChecksAlwaysRun": true,
+    "referenceCheckInstances": 666574,
+    "referenceChecksFullyAssessed": false,
+    "referenceInstancesDeferred": 666574,
+    "advisorySampleCount": 16,
+    "advisoryUnreviewedCount": 16,
+    "legacyDefaultWarning": null,
+    "conclusion": "Only the selected stage's seven mandatory gates per assessed item were checked. Advisory samples and deferred reference details do not count as passed."
+  },
+  "unresolvedByResolutionKind": {
+    "author_repair_or_owner_decision": 2898,
+    "independent_review_task": 17354
+  },
+  "actualMissingReasonGroups": {
+    "controlledAIAssuranceReference": 2893,
+    "separatelySuppliedExternalTrust": 1,
+    "fourPredecessorPresentationFalsePlaceholderMatches": [
+      {
+        "id": "Q-a65b35dac20569cf7c85",
+        "elementId": "TASK-FR-IAM-003-02",
+        "checkId": "gate.technical_task.planning.05",
+        "reason": "Required stage details unresolved: technical_task.predecessors. Deferred reference details from other stages are not demanded.",
+        "status": "unanswered",
+        "resolutionKind": "author_repair_or_owner_decision"
+      },
+      {
+        "id": "Q-50e43092a1cffe1a8750",
+        "elementId": "TASK-FR-UX-003-02",
+        "checkId": "gate.technical_task.planning.05",
+        "reason": "Required stage details unresolved: technical_task.predecessors. Deferred reference details from other stages are not demanded.",
+        "status": "unanswered",
+        "resolutionKind": "author_repair_or_owner_decision"
+      },
+      {
+        "id": "Q-380388222cf742bf46af",
+        "elementId": "TASK-FR-CAL-007-03",
+        "checkId": "gate.technical_task.planning.05",
+        "reason": "Required stage details unresolved: technical_task.predecessors. Deferred reference details from other stages are not demanded.",
+        "status": "unanswered",
+        "resolutionKind": "author_repair_or_owner_decision"
+      },
+      {
+        "id": "Q-29e9932e0829aa86f4b6",
+        "elementId": "TASK-FR-OFF-006-03",
+        "checkId": "gate.technical_task.planning.05",
+        "reason": "Required stage details unresolved: technical_task.predecessors. Deferred reference details from other stages are not demanded.",
+        "status": "unanswered",
+        "resolutionKind": "author_repair_or_owner_decision"
+      }
+    ],
+    "independentReviewTasks": 17354
+  },
+  "predecessorPresentationFinding": "Exactlyfour otherwise source-backed predecessor fields serialize as bare JSONarrays whose real outputtitles contain pending/unknown. The unchanged package bracket-placeholder regex classifies those entire strings as unresolved. Actual predecessor IDs/contracts/779edges remain retained. Preserve this actualV3 report; a separately versioned factual prefix repair may address the inputpresentation without altering source bytes, relationships, checker, profile or trust requirements. No correctedV4actual result inferred.",
+  "reviewerAuthentication": {
+    "status": "not_authenticated_offline",
+    "advisoryOnly": true,
+    "registryCanBeAuthorCreated": true,
+    "externalApprovalRequired": true
+  },
+  "readinessState": {
+    "status": "supplied_unverified",
+    "suppliedClaim": {
+      "reason": "All new adapter records are draft. Existing native workflow/acceptance state retained; no current owner/engineer/trust/Ready/sprint decision granted.",
+      "status": "not_assessed"
+    },
+    "assessedByChecker": false,
+    "authorizationGranted": false
+  },
+  "deliveryState": {
+    "status": "supplied_unverified",
+    "suppliedClaim": {
+      "reason": "No implementation/testing/CI/runtime/deployed-health/learning or delivery observed by this documentation adapter.",
+      "status": "not_assessed"
+    },
+    "assessedByChecker": false,
+    "deliveryObservedByChecker": false
+  },
+  "nextOwnerQueue": [
+    {
+      "id": "Q-5150b7c71aedf9d9e9cf",
+      "groupId": "check:workspace:external_trust_catalogue",
+      "elementId": null,
+      "fieldId": null,
+      "checkId": "external_trust_catalogue",
+      "question": "For workspace, resolve external_trust_catalogue: Real mode requires separately supplied independent review profiles and a verification receipt pinned to this catalogue. What verified fact, explicit decision or evidence resolves this current gap? The decision owner is unresolved; identify the actual accountable decision owner if this requires a decision.",
+      "reason": "Real mode requires separately supplied independent review profiles and a verification receipt pinned to this catalogue.",
+      "decisionOwnerId": null,
+      "status": "unanswered",
+      "resolutionKind": "author_repair_or_owner_decision",
+      "occurrence": 1
+    },
+    {
+      "id": "Q-3577ddb18d957a1f993d",
+      "groupId": "profile:VISION-IMPRANA-01:gate.vision.planning.06",
+      "elementId": "VISION-IMPRANA-01",
+      "fieldId": null,
+      "checkId": "gate.vision.planning.06",
+      "question": "For VISION-IMPRANA-01, resolve common.context_profile, vision.principles, vision.non_goals, common.ai_assurance_reference: Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded. What verified fact, explicit decision or evidence resolves this current gap? The decision owner is unresolved; identify the actual accountable decision owner if this requires a decision.",
+      "reason": "Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded.",
+      "decisionOwnerId": null,
+      "status": "unanswered",
+      "resolutionKind": "author_repair_or_owner_decision",
+      "occurrence": 1
+    },
+    {
+      "id": "Q-c625dcfa3230669b7f9b",
+      "groupId": "profile:STR-01:gate.strategy.planning.06",
+      "elementId": "STR-01",
+      "fieldId": null,
+      "checkId": "gate.strategy.planning.06",
+      "question": "For STR-01, resolve common.context_profile, strategy.constraints, strategy.choices_tradeoffs, common.ai_assurance_reference: Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded. What verified fact, explicit decision or evidence resolves this current gap? The decision owner is unresolved; identify the actual accountable decision owner if this requires a decision.",
+      "reason": "Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded.",
+      "decisionOwnerId": null,
+      "status": "unanswered",
+      "resolutionKind": "author_repair_or_owner_decision",
+      "occurrence": 1
+    }
+  ],
+  "nextReviewerQueuePreview": [
+    {
+      "id": "VISION-IMPRANA-01:gate.vision.planning.01",
+      "elementId": "VISION-IMPRANA-01",
+      "fieldId": null,
+      "checkId": "gate.vision.planning.01",
+      "reason": {
+        "excerpt": "Exactly one current review for this field/check is required.",
+        "truncated": false,
+        "contentDigest": "c5fb005c1faebf69b85480bbb8228b97843a1fd83d5dd7cccc6c204421f88e9e"
+      },
+      "decisionOwnerId": null,
+      "status": "missing"
+    },
+    {
+      "id": "VISION-IMPRANA-01:gate.vision.planning.02",
+      "elementId": "VISION-IMPRANA-01",
+      "fieldId": null,
+      "checkId": "gate.vision.planning.02",
+      "reason": {
+        "excerpt": "Exactly one current review for this field/check is required.",
+        "truncated": false,
+        "contentDigest": "c5fb005c1faebf69b85480bbb8228b97843a1fd83d5dd7cccc6c204421f88e9e"
+      },
+      "decisionOwnerId": null,
+      "status": "missing"
+    },
+    {
+      "id": "VISION-IMPRANA-01:gate.vision.planning.03",
+      "elementId": "VISION-IMPRANA-01",
+      "fieldId": null,
+      "checkId": "gate.vision.planning.03",
+      "reason": {
+        "excerpt": "Exactly one current review for this field/check is required.",
+        "truncated": false,
+        "contentDigest": "c5fb005c1faebf69b85480bbb8228b97843a1fd83d5dd7cccc6c204421f88e9e"
+      },
+      "decisionOwnerId": null,
+      "status": "missing"
+    }
+  ],
+  "nextQueueCounts": {
+    "ownerQuestions": 2898,
+    "independentReviewTasks": 17354,
+    "authorRepairQueue": 0
+  },
+  "wholeProductDraftDocumentation": "Documentation/source inventory covers the wholepreservedproduct; actualframeworkstatus remains needs_input, no qualityPASS/Ready/Done/ownerauthority inferred. Missing actualreviewtrust, controlledassurance and relevant source-bound engineering/pilot evidence stay open.",
+  "reportSha256": "b67dd26c25c746352bbf0597ef5e426d826628323dca891a9b44238592c9e913",
+  "reportBytes": 1948924266,
+  "workflowReceiptSha256": "43c5c817d826f4ae6c83c10be13922091479d219b9a5888169ca81938e8265a3",
+  "summaryStdoutSha256": "3351ce17041912a5b1ef87b06135fa283e2c085b8f456692d7f8dec80c0f370b",
+  "nextStdoutSha256": "4238bc9c7b257d4891a5a1949101d8dccbacd0649bfa2533dfce6edfab03189e",
+  "catalogueIdentity": {
+    "status": "matched",
+    "enginePinned": true,
+    "expectedCatalogueVersion": "3.0-generic",
+    "actualCatalogueVersion": "3.0-generic",
+    "expectedCanonicalHash": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe",
+    "actualCanonicalHash": "a72502ce4dcfe5ec1e8537cd377f93e77ad32b9d998fdad62c252605089759fe"
+  },
+  "rawEvidenceLocation": "outputs/imprana-product-refinement-20261011/bundle-review/quality-full-v3-long-real-20261011",
+  "rawEvidenceGitPolicy": "Keep1.949GBrawreport,59.3MBinput,20.6MBloopstate/18.7MBquestions and rawsource/accountenvelopes outsideGit. This compactsummary and exactworkflowreceipt are safe planning evidence.",
+  "appTestsOrNativeWrites": false
+}

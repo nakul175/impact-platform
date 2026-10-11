@@ -1,0 +1,62 @@
+{
+  "result": "PASS",
+  "scope": "Read-only integrity and factual qualifier review of actual completed whole selected planning-profile workflow. Large rawreport was stream-hashed, not re-executed; no product tests or acceptance inferred.",
+  "checks": {
+    "whole_assessment_completed_not_timeout": true,
+    "actual_exit_codes_loop2_summary0_next0": true,
+    "all_workflow_artifact_hashes_and_sizes_exact": true,
+    "large_saved_report_hash_and_size_exact": true,
+    "actual_input_hash_and_size_exact": true,
+    "exact_2893_planning_elements_all_eight_tiers": true,
+    "all_3253_protected_source_envelopes_exact": true,
+    "profile_planning_selected_20251_gates": true,
+    "actual_needs_input_6159_passed_20252_missing_no_failure_stale_invalid": true,
+    "no_quality_certification_or_score": true,
+    "reference_checks_deferred_not_certified": true,
+    "no_synthetic_or_self_authored_reviews_as_approval": true,
+    "unchanged_package_source_and_catalogue_match_attachment": true,
+    "compact_quality_summary_matches_actual_stdout": true
+  },
+  "failed_checks": [],
+  "package_attachment_checks": [
+    {
+      "relative_path": "checker/quality_checker.py",
+      "zip_member": "product-management-agent-bundle-v4.2/checker/quality_checker.py",
+      "reference_file_exact": true,
+      "attachment_exact": true
+    },
+    {
+      "relative_path": "checker/quality_loop.py",
+      "zip_member": "product-management-agent-bundle-v4.2/checker/quality_loop.py",
+      "reference_file_exact": true,
+      "attachment_exact": true
+    },
+    {
+      "relative_path": "checker/quality_tools.py",
+      "zip_member": "product-management-agent-bundle-v4.2/checker/quality_tools.py",
+      "reference_file_exact": true,
+      "attachment_exact": true
+    },
+    {
+      "relative_path": "checker/catalogue.json",
+      "zip_member": "product-management-agent-bundle-v4.2/checker/catalogue.json",
+      "reference_file_exact": true,
+      "attachment_exact": true
+    }
+  ],
+  "source_hash_definition": "Canonical exact envelope of id,text,version,originality,approvalStatus,protected plus requiredBranches when present, per unchanged package source_hash; all original/proposed snapshot labels retained.",
+  "workflow_receipt_sha256": "43c5c817d826f4ae6c83c10be13922091479d219b9a5888169ca81938e8265a3",
+  "actual_summary_stdout_sha256": "3351ce17041912a5b1ef87b06135fa283e2c085b8f456692d7f8dec80c0f370b",
+  "compact_summary_sha256": "385ad7b8aca5e3b3eba5caa7c12589f3958210812ede9c11fd17fc712de17fdd",
+  "large_report_sha256": "b67dd26c25c746352bbf0597ef5e426d826628323dca891a9b44238592c9e913",
+  "input_sha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+  "counts": {
+    "elements": 2893,
+    "protected_sources": 3253,
+    "selected_mandatory_planning_gates": 20251,
+    "passed": 6159,
+    "missing": 20252,
+    "reference_instances_deferred": 666574
+  },
+  "actual_status": "needs_input"
+}

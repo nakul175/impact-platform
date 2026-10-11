@@ -1,0 +1,94 @@
+{
+  "reviewer": "imprana_scope_audit",
+  "checked_at_utc": "2026-10-11T03:45:10.135744+00:00",
+  "result": "PASS",
+  "scope": "Read-only final actual v2 receipt and quality-qualifier audit. One exact single-marker receipt remains appended to unchanged frozen v1 overview. Whole V3 selected planning-profile facts independently pinned; no quality PASS, owner acceptance, product test result, Ready/Done or release authority inferred. No Native writes performed.",
+  "checks": {
+    "all_seven_frozen_v1_pins_unchanged": true,
+    "first_v2_plan_readbacks_and_report_unchanged": true,
+    "entire_frozen_v1_overview_prefix_raw_exact": true,
+    "single_final_declared_append_raw_exact": true,
+    "same_v2_marker_once_no_reappend": true,
+    "only_quality_paragraph_changed_in_declared_receipt": true,
+    "original_actual_publication_timestamp_retained": true,
+    "all_captured_overview_nonvolatile_metadata_exact": true,
+    "all_14_resource_ids_and_13_others_exact": true,
+    "overview_resource_only_timestamp_changed_with_exact_full_capture_ties": true,
+    "all_five_milestones_and_other_project_metadata_exact": true,
+    "root_final_actual_scope_checker_pass_zero_errors": true,
+    "independent_final_actual_scope_checker_rerun_pass_zero_errors": true,
+    "final_checker_same_reviewed_d7a166d6": true,
+    "final_readbacks_and_declared_plan_raw_pins_exact": true,
+    "whole_v3_qualifier_facts_independently_reviewed_pass": true,
+    "qualifier_exact_factual_inventory_counts": true,
+    "needs_input_deferred_checks_and_acceptance_limitations_explicit": true
+  },
+  "failed_checks": [],
+  "baseline_pins": {
+    "report": {
+      "path": "verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    "issues": {
+      "path": "native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe"
+    },
+    "documents": {
+      "path": "native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6"
+    },
+    "project": {
+      "path": "native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    "publication_plan": {
+      "path": "native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    },
+    "policy": {
+      "path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    "verifier": {
+      "path": "verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    }
+  },
+  "first_v2_review_pin": {
+    "path": "independent-final-review/INDEPENDENT-ACTUAL-V2-REVIEW.json",
+    "sha256": "fd350a3c3dfc6569809947e82d208a03804da84aac32b86e259a2ce8f63a7e88"
+  },
+  "whole_v3_facts_review_pin": {
+    "path": "independent-final-review/WHOLE-V3-QUALIFIER-FACTS-REVIEW.json",
+    "sha256": "696aac39967613a5b592856d2591dbab10a2622609d263e821b21b1f17968571"
+  },
+  "reviewed_final_artifacts": [
+    {
+      "path": "post-v1-overview/DECLARED-V2-FINAL-OVERVIEW-PLAN.json",
+      "sha256": "cc7245b28229a497073bf70322f5a4cbc2686111d28e2f6ef59a0a926aa0d363"
+    },
+    {
+      "path": "post-v1-overview/final-overview.json",
+      "sha256": "7f2dfc664993599f6e664373e1add8c328a068dac00c53b5f1b4f896c6a7605c"
+    },
+    {
+      "path": "post-v1-overview/final-project.json",
+      "sha256": "b9179f8ff3f7e1e602806ee1c87eb082afe24e4a2826b79ac6f0a48ec21a28db"
+    },
+    {
+      "path": "post-v1-overview/FINAL-POST-V1-ACTUAL-OVERVIEW-VERIFICATION.json",
+      "sha256": "19d45b73fb8c173617ba3955e245df952b67e0c6a2aaf8c2fb2db1746691a0e3"
+    }
+  ],
+  "independent_final_rerun": {
+    "path": "independent-final-review/FINAL-POST-V2-INDEPENDENT-ACTUAL-RERUN.json",
+    "sha256": "70c9130a0b88e76d2eccb353de614e0b7595fee66e108ea54f086f7047da53e9"
+  },
+  "counts": {
+    "declared_overview_receipt": 1,
+    "project_resources": 14,
+    "milestones": 5,
+    "frozen_v1_inputs": 7
+  },
+  "normalizations": []
+}

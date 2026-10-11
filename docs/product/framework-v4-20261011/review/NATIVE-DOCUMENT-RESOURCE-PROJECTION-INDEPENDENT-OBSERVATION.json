@@ -1,0 +1,172 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:32:31.501108+00:00",
+  "scope": "Independent actual observed nativeproject resource updatedAt projection comparison; not globalissue verification or productapproval.",
+  "sourcePins": {
+    "native-before/project.json": "ea63127c89acf8931829ea44076570c47b575d8951c50f84063d0c3264f99735",
+    "native-after/project.json": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819",
+    "native-before/full-documents.json": "c35f10a06b85cc92be8b7ed1db39f3c4cc70dbd5882e0a2feebd5deaeeb1937a",
+    "native-after/full-documents.json": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6",
+    "native-publication-plan.json": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+  },
+  "rule": "Only exact10frozen amendeddocument IDs may differ in updatedAt, with BEFOREprojectprojection timestamp equal BEFOREfullDocupdatedAt and AFTERprojection equal freshly AFTERfullDocupdatedAt. Every other resourcefield rawexact; history/link resources wholeobjectexact. Missing/changed IDs, wrongtimestamps or othermetadata fail.",
+  "observedExistingResourceChecks": [
+    {
+      "resourceId": "37cd9321-6f7d-4df8-973d-557a199de68b",
+      "resourceType": "document",
+      "actualChangedKeys": [],
+      "fullObjectExact": true,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "f5b2a111-e190-4dc5-81aa-8a98ff9a7939",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "2bd0cf2a-20cf-4e58-be47-5394bcc2dac5",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "346b4fa1-3d8f-436c-83be-ad8951aaea1e",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "e76b87bb-1dae-4752-acbc-4f1ad7a779fd",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "f16e5ce3-5544-4b29-a5f7-7066ea29fea0",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "41cf9cd4-17ef-4ebb-8f59-5a26504b2d5e",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "3520d765-ed97-4901-ae89-7996b8d15bd9",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "bc33da1e-7fae-4f4e-81a6-9ff5076c43df",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "6586ed0a-2090-4180-92b3-5eec159688c1",
+      "resourceType": "document",
+      "actualChangedKeys": [
+        "updatedAt"
+      ],
+      "fullObjectExact": false,
+      "beforeProjectionTimestampMatchesFullDocument": true,
+      "afterProjectionTimestampMatchesFreshFullDocument": true,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "7d6cea16-6fe1-4216-a6b1-48e24ff388a1",
+      "resourceType": "link",
+      "actualChangedKeys": [],
+      "fullObjectExact": true,
+      "beforeProjectionTimestampMatchesFullDocument": null,
+      "afterProjectionTimestampMatchesFreshFullDocument": null,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    },
+    {
+      "resourceId": "b813e326-d48f-4404-9b70-7059e97fe1fa",
+      "resourceType": "link",
+      "actualChangedKeys": [],
+      "fullObjectExact": true,
+      "beforeProjectionTimestampMatchesFullDocument": null,
+      "afterProjectionTimestampMatchesFreshFullDocument": null,
+      "allFieldsExceptUpdatedAtExact": true,
+      "acceptedByProposedExactProjectionRule": true
+    }
+  ],
+  "existingResources": 13,
+  "amendedDocumentResources": 10,
+  "existingDocumentResources": 11,
+  "newResourceExactlyOverview": true,
+  "newOverviewTimestampMatchesFullDocument": true,
+  "allActualChecksPass": true,
+  "limitations": "The proposed rule still requires independent implementation/negativeguardreview before a globalverificationreceipt is accepted. No universal timestampignore approved.",
+  "repoOrNativeMutation": false
+}

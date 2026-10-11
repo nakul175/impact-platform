@@ -1,0 +1,43 @@
+{
+  "completedAtUtc": "2026-10-11T03:42:29.383359+00:00",
+  "scope": "Affected four task predecessor presentation fields only, exact recursive context and source closure. Not a whole V4 assessment or all-tier/product certificate.",
+  "fullV4InputSha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+  "scopedInputSha256": "099cf7d4a65ca233295e7b28e7a725d8f82826fbc3d577b32eaf869ad3026dff",
+  "invocationSha256": "b6f3019ed3f6bd6044ebb87c72dee5469fe40bc86e2148cf9a5edc23af7e0d71",
+  "assessedElementIds": [
+    "TASK-FR-IAM-003-02",
+    "TASK-FR-UX-003-02",
+    "TASK-FR-CAL-007-03",
+    "TASK-FR-OFF-006-03"
+  ],
+  "contextPopulation": 85,
+  "sourceSnapshots": 123,
+  "commands": {
+    "loop": {
+      "exitCode": 2,
+      "timedOut": false,
+      "elapsedSeconds": 1.391651,
+      "stdoutSha256": "5e71d400efdd3df811e89ad180ad5de3fbaf69f5e98f3b8070a8671db543bb35",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "summary": {
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.1339967499999999,
+      "stdoutSha256": "39a7a5cb5f442047b38390abd0ec4d80ddb1b662ec4b10515895a63d1e0b2f16",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "next": {
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.13192120800000007,
+      "stdoutSha256": "33289cbe9416f95e17046ff3a3f4a37b259e29218b85ab2663fa2632b07341ae",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "reportExists": true,
+  "reportSha256": "022ab7ba5f90f3de6620aaf194e5c421a1f6e9bd6429c6c6cb9c9dcc73c5ef5d",
+  "allCheckerPinsStillExact": true,
+  "noAuthorisedExternalTrustOrIndependentReviewFabricated": true,
+  "limitations": "The actual unchanged checker result and missing gates must be read before any conclusion. No Ready/Done, delivery, acceptance, whole V4 quality pass or authorised human approval is inferred."
+}

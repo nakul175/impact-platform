@@ -1,0 +1,52 @@
+{
+  "product": "Imprana Commons",
+  "subjectCommit": "078b395c8684d2f81f5f1edd1c4fa6c3d409f72a",
+  "scope": "Documentation-only candidate; app sources unchanged. Local tooling checks are separate from native publication, full catalogue review and product acceptance.",
+  "checks": [
+    {
+      "name": "ruff check apps/api scripts qualification deploy",
+      "result": {
+        "chunk_id": "c2e42a",
+        "wall_time_seconds": 0.000010792,
+        "exit_code": 0,
+        "original_token_count": 5,
+        "output": "All checks passed!\n"
+      }
+    },
+    {
+      "name": "ruff format --check apps/api scripts qualification deploy",
+      "result": {
+        "chunk_id": "af05e5",
+        "wall_time_seconds": 0.000005042,
+        "exit_code": 0,
+        "original_token_count": 7,
+        "output": "254 files already formatted\n"
+      }
+    },
+    {
+      "name": "Prettier check exact Makefile web/browser/dev-db targets",
+      "result": {
+        "chunk_id": "7180aa",
+        "wall_time_seconds": 0.963630917,
+        "exit_code": 0,
+        "original_token_count": 17,
+        "output": "Checking formatting...\nAll matched files use Prettier code style!\n"
+      }
+    },
+    {
+      "name": "release_review --check --base eb194fdbb6fc8247db8429fc23120aa0fe659ed8 after actual commit",
+      "result": {
+        "chunk_id": "fd0650",
+        "wall_time_seconds": 0.210229375,
+        "exit_code": 0,
+        "original_token_count": 73,
+        "output": "change set: 41 paths since eb194fdbb6fc8247db8429fc23120aa0fe659ed8 (eb194fdbb6fc)\nregister: 36 threats, 76 controls, 2 chains; open: 14 critical, 13 other, 2 chains\nopen critical: TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34\nrelease review check passed\n"
+      }
+    }
+  ],
+  "excludedFalseProof": "Initial release_review before committing examined zero paths; that preliminary result is not used as changed-scope proof.",
+  "limitations": [
+    "Release-review success is a tooling/impact check; its output still lists 14 open critical threats, 13 other open threats and two open chains.",
+    "No app unit, browser, native database, hosted CI, deployment or product acceptance execution is claimed."
+  ]
+}

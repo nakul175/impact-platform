@@ -1,0 +1,2886 @@
+{
+  "partition": [
+    300,
+    400
+  ],
+  "processed": 100,
+  "verified": 100,
+  "unresolved": [],
+  "historical_failures": [
+    {
+      "index": 308,
+      "canonical_id": "FR-UX-004",
+      "id": "APL-500",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-500",
+          "expected_raw_sha256": "278d865e3b88228051a2f0ebfb2af623e3cf21542c06e46f51b63e07281c4a21",
+          "observed_sha256": "65c1212a6905b44c5af87c28db609d6a20bf78390e76c1cae374d879a4becfa6"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 315,
+      "canonical_id": "FR-WFL-001",
+      "id": "APL-514",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-514",
+          "expected_raw_sha256": "dbf9a5ac16365b54963af0cc1b2e4a2332ceee49540533addbfd2080ad69cb6e",
+          "observed_sha256": "52bc76a8e55248a9ba343b54674d4338d26c9cc47787050e9d3fe3864b089bdb"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 317,
+      "canonical_id": "FR-WFL-003",
+      "id": "APL-519",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-519",
+          "expected_raw_sha256": "a06f2dd35434a9b89f41713f5d11786b656b5e404cb9bc7592dd31a9171fa326",
+          "observed_sha256": "8471cf178afd6eddea7bb4aa4934e07e9b278a5b4497d994629f148551aee5db"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 321,
+      "canonical_id": "FR-WFL-007",
+      "id": "APL-523",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-523",
+          "expected_raw_sha256": "135a7a265a0d7a6442c470a9813a7a72ed976dee7ec9c4e3f09bcc64d9fd268d",
+          "observed_sha256": "da63243a17ae9e13d83a0ec0252980ef6feb2c06e2a799183c6bb3d1d5f3485a"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 322,
+      "canonical_id": "FR-WFL-008",
+      "id": "APL-526",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-526",
+          "expected_raw_sha256": "234404c7f64c87f2ca4266a8fa9eac9369343cdfee442b53ac17be0fb3f11c43",
+          "observed_sha256": "22a2a462cac82d83751889660312e4fec3f32f32c763695c26a493073abaa429"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 336,
+      "canonical_id": "US-CM-05",
+      "id": "APL-429",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "ORIGINAL_PREFIX_CHANGED",
+          "kind": "issues",
+          "id": "APL-429",
+          "before_sha256": "4d66443184828cc9f1456ab6742c20a992c1a2fc3e2c89d5a374b3d9b768e5cf",
+          "actual_sha256": "bf3a301878e041622662067ed340f81ab47f6542bdd7d2c9061b5b4480bf2eb0"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 370,
+      "canonical_id": "US-PT-01",
+      "id": "APL-478",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-478",
+          "expected_raw_sha256": "e1054885afd3c13c477366b654e12397815a6fcd14410226e875084227dc93ce",
+          "observed_sha256": "4230624bbbdbfad9b399da71908b403f4a4057956688f2dcae5c732f7aef4263"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 379,
+      "canonical_id": "US-RT-05",
+      "id": "APL-337",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-337",
+          "expected_raw_sha256": "365e2dc8c03235063b6151a0e8c081c33fb7e558c69e6799c187d508597c014b",
+          "observed_sha256": "9cd36efa0dd2cc2809dd1f4a64b6ef722b3dee99ebd5a10fafd4eabf43adeeb3"
+        }
+      ],
+      "normalizations": []
+    },
+    {
+      "index": 383,
+      "canonical_id": "US-VC-04",
+      "id": "APL-575",
+      "mutation": "saved",
+      "verified": false,
+      "problems": [
+        {
+          "code": "APPEND_CONTENT_MISMATCH",
+          "kind": "issues",
+          "id": "APL-575",
+          "expected_raw_sha256": "81799a9085ee0a1e20fc08625710b04ebae9a617f582cb45fdd91b6bf3f29bca",
+          "observed_sha256": "429fbe328ee6599d370f4e73994f56529456a2bb4e510d058e9ec6dff8d33eba"
+        }
+      ],
+      "normalizations": []
+    }
+  ],
+  "historical_checkpoint": "native-after/partition-300-400/CHECKPOINT-400.json",
+  "recorded_mutations": {
+    "saved": 100,
+    "alreadyCurrent": 0
+  },
+  "policy_path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+  "policy_sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce",
+  "verifier_sha256": "cb4bf975114fa37ef97e33ef51a85b4b51269b45d652bd624b6578010a57ffeb",
+  "plan_sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b",
+  "before_sha256": "145e3cbf0e63a6c9fc0e985e9776918704a59eb8ad760b68267818c5ab888791",
+  "source_and_metadata_scope": "Original source prefix and original Gherkin remain byte exact; all nonvolatile metadata and relations compared. Only reviewed supplement presentation policy allowed.",
+  "acceptance": "Publication verification only; proposed decisions remain unaccepted; no status or readiness claim.",
+  "items": [
+    {
+      "index": 300,
+      "canonical_id": "FR-TEN-006",
+      "id": "APL-564",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-564",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "64a510564208f61c9f5da0c7dce7cc6b0ebb075971e78d0de75cd8049117ccb6",
+          "observed_sha256": "24faced742932174ee39a325f98a9d2fd15dc04836d88242a064c7afe2b02687",
+          "observed_suffix_sha256": "2fe72da5188d5636636f81454131410e3ed0676c75d0cd04e599215e883ff6b1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-TEN-006.json",
+      "raw_sha256": "ba2856f3077730c80f65f9439c81cb51a8849c1b870bdd576e3719a392232a23",
+      "description_sha256": "24faced742932174ee39a325f98a9d2fd15dc04836d88242a064c7afe2b02687",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 301,
+      "canonical_id": "FR-TEN-007",
+      "id": "APL-567",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-567",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "efd23b1762c1f77fba32d826387cd435abfb487ed4f836febe6300d3c230640f",
+          "observed_sha256": "297b018a8d8687033e01bece2aead6fbfb8f4ceabddbbf173a6bfcac85b32e70",
+          "observed_suffix_sha256": "1ec9eb52c3a2cbe9f01023e0f02f4851dfb97cb8fb0f2b6e15c5851825125705"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-TEN-007.json",
+      "raw_sha256": "daefe69979a06ac7eebcd6309052f021078acd9ef8e4e3f2972e5cfba9d1d4cb",
+      "description_sha256": "297b018a8d8687033e01bece2aead6fbfb8f4ceabddbbf173a6bfcac85b32e70",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 302,
+      "canonical_id": "FR-TEN-008",
+      "id": "APL-714",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-714",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "3be75cc93bf3246012495939430530cd9748c469db2c9fff643e2548d85e95c3",
+          "observed_sha256": "57f3870a5d3e022bd6b8687022ed41036fe03b9f34025c02ff7e2606f1fa0788",
+          "observed_suffix_sha256": "f38f8fc531c4734f6c9a8eb8b4c5a82a69b2976fce11249805697c38fb8488fe"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-TEN-008.json",
+      "raw_sha256": "1df97b74f0d84691e442cf5dfe46cbed1779f064c082090dc89e4ab60949c97d",
+      "description_sha256": "57f3870a5d3e022bd6b8687022ed41036fe03b9f34025c02ff7e2606f1fa0788",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 303,
+      "canonical_id": "FR-TEN-009",
+      "id": "APL-715",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-715",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "b111bb2f5f8c7195a3c136b26ad64293cd981758d18cc53ddc16c2bbefdf37c5",
+          "observed_sha256": "ad409cd551538e049fcaa414cd2c859452f4f599dec02545f670ee142b8c3820",
+          "observed_suffix_sha256": "8ccfeb699b926b3ee45e214d53fa79a3330a361a3132873853211f48070458a6"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-TEN-009.json",
+      "raw_sha256": "4745b2054343dba1c7c549c72c4c807fc3a5bb1abbe4080b8c155ea7b3ac7c1b",
+      "description_sha256": "ad409cd551538e049fcaa414cd2c859452f4f599dec02545f670ee142b8c3820",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 304,
+      "canonical_id": "FR-TEN-010",
+      "id": "APL-491",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-491",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "5b35bef45c29ce087e563e219915433c74a31783f276e111b6e82c3bcfddf5ca",
+          "observed_sha256": "fc455cdedff1dfd673c6e56949fa2e52c5c76f2971d2866076471f3989679b7b",
+          "observed_suffix_sha256": "31a0edd7756ed46b12a53b375e3f19ca179439a518000233aed722ee76982fe6"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-TEN-010.json",
+      "raw_sha256": "2e4bea9b4c06a7d7a3bb6b29ca947708541e3d4c0d2d6ab4df3479eb926bb18e",
+      "description_sha256": "fc455cdedff1dfd673c6e56949fa2e52c5c76f2971d2866076471f3989679b7b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 305,
+      "canonical_id": "FR-UX-001",
+      "id": "APL-494",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-494",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2dea60b7abccd9f943cbfdc7d84d21d8ce20f43f636123b9e15a1d478bd96b87",
+          "observed_sha256": "07e400bed68cce1a3e305c7a6637ac032bcee52ea8774c94689f555ef8b5a780",
+          "observed_suffix_sha256": "20f4cc9836252995cabd441104aacf4e8ecb5acf47b79f038faa4ebabd01cece"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-001.json",
+      "raw_sha256": "8393b7c01fa394388946cf8bf683ebe990ff7663a2d65d509c71e81c01bd0290",
+      "description_sha256": "07e400bed68cce1a3e305c7a6637ac032bcee52ea8774c94689f555ef8b5a780",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 306,
+      "canonical_id": "FR-UX-002",
+      "id": "APL-570",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-570",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "bfc4406d612aceb78228e1bb070b74b31fac36b8e27808e24919aeb166cac9d6",
+          "observed_sha256": "7141e21953f9afda65ae25a33ef71f1c52f69b06b33afbac17fd90c6080568cf",
+          "observed_suffix_sha256": "ce06594e1518c144434ec6817c7dcc68b1f591272add641498d924859c179278"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-002.json",
+      "raw_sha256": "c772eb5131a7ee5b095856c6b390d1ab5a2bd817d5ec70fe4cda85f095a4b8d8",
+      "description_sha256": "7141e21953f9afda65ae25a33ef71f1c52f69b06b33afbac17fd90c6080568cf",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 307,
+      "canonical_id": "FR-UX-003",
+      "id": "APL-497",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-497",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "6e3506ad627a68d40ce198358b191868df4181b7d71830d40559a109f9b1e4b3",
+          "observed_sha256": "36806233175c09fcbf1637c258ec689c7302d8d99348c281b8e3927d27c9d2ee",
+          "observed_suffix_sha256": "ca4d0071d01cf37f137b55e1831f2669f05378996342bc46c2d8f9f999c1c5a5"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-003.json",
+      "raw_sha256": "1ea0154208b86e1d36d6d5a6200f3cc72f0d19a57e1df6e223d74b588f241fc1",
+      "description_sha256": "36806233175c09fcbf1637c258ec689c7302d8d99348c281b8e3927d27c9d2ee",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 308,
+      "canonical_id": "FR-UX-004",
+      "id": "APL-500",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-500",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "278d865e3b88228051a2f0ebfb2af623e3cf21542c06e46f51b63e07281c4a21",
+          "observed_sha256": "65c1212a6905b44c5af87c28db609d6a20bf78390e76c1cae374d879a4becfa6",
+          "observed_suffix_sha256": "cbb974b15c7c2d8a16d3da649b518806b2bd052422ac0dfe911b94101a376d79"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-500.json",
+      "raw_sha256": "22d5fbfd9fa35409fe85333186bbf3d649e584caebc5aceef8cbda319afc27b6",
+      "description_sha256": "65c1212a6905b44c5af87c28db609d6a20bf78390e76c1cae374d879a4becfa6",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 309,
+      "canonical_id": "FR-UX-005",
+      "id": "APL-502",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-502",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "0f75c4d9d4b60e7eaf2e357461158c21c35df144903517eb7581e72ffce01a64",
+          "observed_sha256": "989839794f498b8b8e390d93d7aafad935d1347c3e8e37fc0201596df2218057",
+          "observed_suffix_sha256": "6a8790e23a04b8f01663aa793896d40f4b16632e8469fb4577902574893e1cb3"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-005.json",
+      "raw_sha256": "64f7ce7479680daaf929a56f3a4c666b41ea2c3b0602ffa1ffbba04120df9633",
+      "description_sha256": "989839794f498b8b8e390d93d7aafad935d1347c3e8e37fc0201596df2218057",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 310,
+      "canonical_id": "FR-UX-006",
+      "id": "APL-505",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-505",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "6748e2ace60bba9f9f79174592688b11d07621a7fa60681781f87a5cc2b8459f",
+          "observed_sha256": "7798aaf660fbd8301b346b2c136116a8d50a11c29988aeed629c9393214e30c2",
+          "observed_suffix_sha256": "195065f80de9e6f15daf7161bbd6fb1b780882a36445aeaf349bcd5cf47a828f"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-006.json",
+      "raw_sha256": "01dc8f526402073d7ed4f629c671afdc050b1bb43cf8d1d461b0f29bc8e4688c",
+      "description_sha256": "7798aaf660fbd8301b346b2c136116a8d50a11c29988aeed629c9393214e30c2",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 311,
+      "canonical_id": "FR-UX-007",
+      "id": "APL-716",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-716",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7194d9cf699ac96e0e2b3c319043ef8f57f6fa50899ba80cfad4324d44af544b",
+          "observed_sha256": "7e710772be0a3f450b8528a0beb8c329140ad6624ff73a67acb0d8b4f9a57891",
+          "observed_suffix_sha256": "80aafcbef5efbe1a0baa1ebf7832f888c7581113aed93b08d86ba5804c6789d5"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-007.json",
+      "raw_sha256": "ffe1de558b3ca206c3b8d294a634a003cf8d58d840ef293ce747d107031051f8",
+      "description_sha256": "7e710772be0a3f450b8528a0beb8c329140ad6624ff73a67acb0d8b4f9a57891",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 312,
+      "canonical_id": "FR-UX-008",
+      "id": "APL-573",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-573",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "ca154827432c79dfeab90f76fe60ea9983a80e975d5462dc5e197862a97cbb26",
+          "observed_sha256": "5928993300b8b692e23f84871af6b652f0ed4f5397b833b52d33e52bec99386d",
+          "observed_suffix_sha256": "7d66361be23b70f886d2c1a716133c902ae8fcba1be29575961d2340b072a907"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-008.json",
+      "raw_sha256": "c74251fb036ebc870218a60b87b1f15f74de2b9724e3975988957df5c3d079f4",
+      "description_sha256": "5928993300b8b692e23f84871af6b652f0ed4f5397b833b52d33e52bec99386d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 313,
+      "canonical_id": "FR-UX-009",
+      "id": "APL-508",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-508",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "bf35e02fa88e0b8bc33fe9d9879f7ba0e88d412b492bcc1de769456723407dd5",
+          "observed_sha256": "753eb155679da620be2af94a04aed8001c6f9f8cd26eb8f2c5301e00de51daaf",
+          "observed_suffix_sha256": "b4cb87967978559217dc3f8e09cddfa7979fa51a26f19fa477c9ff96b9112a51"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-009.json",
+      "raw_sha256": "b6db98ade12fc7b00910353ed77d013be0a6af8fff7b5ea20ba11b86cdebb394",
+      "description_sha256": "753eb155679da620be2af94a04aed8001c6f9f8cd26eb8f2c5301e00de51daaf",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 314,
+      "canonical_id": "FR-UX-010",
+      "id": "APL-577",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-577",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2a63e3b490716f2db2f8b7c2da7a485c380eecf87efaa26545dac574d23b7440",
+          "observed_sha256": "9825bbefc1dba35b7d2f38ce6d9fe37856f0cef4fff9271682d7f8712c7b9f2e",
+          "observed_suffix_sha256": "6426058c28ed57ff52d136ae021ba4f7b25b291ef1feeede112d4f24b1ebc0b2"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-UX-010.json",
+      "raw_sha256": "cc6de056797be8685e109c29245c89e01b85819b2c9c52030e52af9d08f0b75f",
+      "description_sha256": "9825bbefc1dba35b7d2f38ce6d9fe37856f0cef4fff9271682d7f8712c7b9f2e",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 315,
+      "canonical_id": "FR-WFL-001",
+      "id": "APL-514",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-514",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "dbf9a5ac16365b54963af0cc1b2e4a2332ceee49540533addbfd2080ad69cb6e",
+          "observed_sha256": "52bc76a8e55248a9ba343b54674d4338d26c9cc47787050e9d3fe3864b089bdb",
+          "observed_suffix_sha256": "259ff7a11f4ce75f51ce6ce7cf949db49ef0dcd9ed2726ab780748ae29dde604"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-514.json",
+      "raw_sha256": "5800f1bdeed2e95c2a5adaf33db956425350054fd74bab9e7a8410ae09473806",
+      "description_sha256": "52bc76a8e55248a9ba343b54674d4338d26c9cc47787050e9d3fe3864b089bdb",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 316,
+      "canonical_id": "FR-WFL-002",
+      "id": "APL-516",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-516",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2353d73a625487966a93e0b36c681e5ac5ed713ed01a484bdb1fb4b77f81b913",
+          "observed_sha256": "e1acc7e8b0ad3aca200b3d6559a268d029d42d7912d187ad4a8e5a7276f1ee19",
+          "observed_suffix_sha256": "a4492586e989755534ada967b0588fe39c84283166f8ff35d8321a3d37c87b62"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-002.json",
+      "raw_sha256": "8ea9ea8b5012c0dc641f5c3004fd28d492484aac8f152a438792fe2524180a72",
+      "description_sha256": "e1acc7e8b0ad3aca200b3d6559a268d029d42d7912d187ad4a8e5a7276f1ee19",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 317,
+      "canonical_id": "FR-WFL-003",
+      "id": "APL-519",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-519",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "a06f2dd35434a9b89f41713f5d11786b656b5e404cb9bc7592dd31a9171fa326",
+          "observed_sha256": "8471cf178afd6eddea7bb4aa4934e07e9b278a5b4497d994629f148551aee5db",
+          "observed_suffix_sha256": "4d75ee88a338327810ac2ade66514c03ae0a70948ba1d161463bca577293eeb3"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-519.json",
+      "raw_sha256": "26676e3ab5a427753f7e4683d654c9b865310620cb1c07ae50344015111d737b",
+      "description_sha256": "8471cf178afd6eddea7bb4aa4934e07e9b278a5b4497d994629f148551aee5db",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 318,
+      "canonical_id": "FR-WFL-004",
+      "id": "APL-588",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-588",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "55524709809600f3e04f90a704376d379d7a1b83589ad29382d30699a7de3b19",
+          "observed_sha256": "c2d886d21abf028516df2e88100001a4c9b16385ffe7a4ca0d74d835d34fc345",
+          "observed_suffix_sha256": "ca4bb37f1aa3f0a079aa4d17c8d99c01179518a0c603b578d709d6aea51520d2"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-004.json",
+      "raw_sha256": "eef37887df3ea3ce507e717473a3cfddc8c33e753a3c7dbd0a83ebded160c1ca",
+      "description_sha256": "c2d886d21abf028516df2e88100001a4c9b16385ffe7a4ca0d74d835d34fc345",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 319,
+      "canonical_id": "FR-WFL-005",
+      "id": "APL-591",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-591",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "dc873a5421ca44181446c01208d455f2394acede12e79ea9ea1463b1ebe6426c",
+          "observed_sha256": "dd70574f2d02cdc75444b8b813a7de9bc7f74254460f2536e6416d66a7519fd3",
+          "observed_suffix_sha256": "7a0e13cd3ea20945cf6e4e7e140b280b8bac8f9041cfa446f2d13bb285e4d637"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-005.json",
+      "raw_sha256": "f880d2d79a3d46341ff101e7e75ac03067f70e2c34458d4a426d83031394719d",
+      "description_sha256": "dd70574f2d02cdc75444b8b813a7de9bc7f74254460f2536e6416d66a7519fd3",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 320,
+      "canonical_id": "FR-WFL-006",
+      "id": "APL-594",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-594",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "d120376c66c93ec20f2c5051e95ee69b7f67230e6ed7dc34a43a5c11812ede4b",
+          "observed_sha256": "43599105193ce2879d56c405fdcdb3c09715e38630bc8325589ab1f5a520cc2b",
+          "observed_suffix_sha256": "5e85818e263fecf60407119a8336f218f31949797fa2497acdd726e0604d086c"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-006.json",
+      "raw_sha256": "3c3386aeb1265c873d4caa9698ee479cf87b995629048f802c59d8d4911bc435",
+      "description_sha256": "43599105193ce2879d56c405fdcdb3c09715e38630bc8325589ab1f5a520cc2b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 321,
+      "canonical_id": "FR-WFL-007",
+      "id": "APL-523",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-523",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "135a7a265a0d7a6442c470a9813a7a72ed976dee7ec9c4e3f09bcc64d9fd268d",
+          "observed_sha256": "da63243a17ae9e13d83a0ec0252980ef6feb2c06e2a799183c6bb3d1d5f3485a",
+          "observed_suffix_sha256": "627dfafd6a49af950b49d826974c69acf75c19a9dc1c3a75c9d3aeb27b601d3b"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-523.json",
+      "raw_sha256": "576d5452f9a0fd6b16e3d25eeda82f8b1cc1ddf7716e3fc27c1b8be156ca931f",
+      "description_sha256": "da63243a17ae9e13d83a0ec0252980ef6feb2c06e2a799183c6bb3d1d5f3485a",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 322,
+      "canonical_id": "FR-WFL-008",
+      "id": "APL-526",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-526",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "234404c7f64c87f2ca4266a8fa9eac9369343cdfee442b53ac17be0fb3f11c43",
+          "observed_sha256": "22a2a462cac82d83751889660312e4fec3f32f32c763695c26a493073abaa429",
+          "observed_suffix_sha256": "a103563c9834915888b4f31bb2f6f10fc14d977e2448d8327c760711fce1d852"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-526.json",
+      "raw_sha256": "3338def49b1500477450836c73bae4880be0a70bd0be19c9928da2ce4ef87f87",
+      "description_sha256": "22a2a462cac82d83751889660312e4fec3f32f32c763695c26a493073abaa429",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 323,
+      "canonical_id": "FR-WFL-009",
+      "id": "APL-717",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-717",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "cc8cdd783d66ed57aa16d36da3166924dec08859074b3f2867806523ad504e5b",
+          "observed_sha256": "d83c66d258752d9aff26e15a2fefa7026ca60a97be13def5237aeece0feda356",
+          "observed_suffix_sha256": "7496eb58bf3b4bca0979108e1def56aeabdc8be90d6cfac0553608f42e5dcc40"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-009.json",
+      "raw_sha256": "c0369526a035a78f22708df2d03718e78b2e2441b2dd1a5c6376f5a398c801d3",
+      "description_sha256": "d83c66d258752d9aff26e15a2fefa7026ca60a97be13def5237aeece0feda356",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 324,
+      "canonical_id": "FR-WFL-010",
+      "id": "APL-529",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-529",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "62765f0c94bc43a4486f29bba0531639dfb6d597490969ab76b8036114b51c53",
+          "observed_sha256": "dbb08d32058e4b740cf2dba2049e5bca64cb9364b86aeadef0f6fdec812c152f",
+          "observed_suffix_sha256": "8a6e291bc942141904f6bae285ec25011ded218b03cc21409bf780d2d891a2fc"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/FR-WFL-010.json",
+      "raw_sha256": "dcc8297c1cd518109f1b62cdc48e1768029b018d5b5386a3e8485928814924fc",
+      "description_sha256": "dbb08d32058e4b740cf2dba2049e5bca64cb9364b86aeadef0f6fdec812c152f",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 325,
+      "canonical_id": "NFR-08",
+      "id": "APL-596",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-596",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "de532dcf2457d511569d114ef1710c7b4e22f22c29a654315771b85dbb017730",
+          "observed_sha256": "2725a7335161d158bf463a97d0842935946ab6916cfe2c3856a287baf6dbfdd0",
+          "observed_suffix_sha256": "414916a194953f783c54a40aacb3a1b77ab3ec72a390154c695127b77d4a6cd6"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/NFR-08.json",
+      "raw_sha256": "28870a3c11c8a7fde9ce225f65cf1646734f5c3447c8ba53f45c5b8e605bd82d",
+      "description_sha256": "2725a7335161d158bf463a97d0842935946ab6916cfe2c3856a287baf6dbfdd0",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 326,
+      "canonical_id": "US-AD-01",
+      "id": "APL-355",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-355",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "86cf67f8b6a15cbd67ef44d3b70a0b6518a729cc7f285bfe89aab334ded79316",
+          "observed_sha256": "2d2421e11e60e0bcf1e20b2c51b3115fc3182a267a0aafc0b4a3f578d561f4c3",
+          "observed_suffix_sha256": "7a32d8c42ac13f30f9f1d7c65a047b13fdc2fd91ad816f0a8e403d199d0fe7d1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AD-01.json",
+      "raw_sha256": "5c3bcd82318d1f4b7863bd26bf1d010ac5652d74fa146b0d9d2ddfb8bceecff5",
+      "description_sha256": "2d2421e11e60e0bcf1e20b2c51b3115fc3182a267a0aafc0b4a3f578d561f4c3",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 327,
+      "canonical_id": "US-AD-02",
+      "id": "APL-356",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-356",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "bf5b696154eb15ba64c4be12a5504f6eae4045f343efd2b68a6e323a71aa6ead",
+          "observed_sha256": "23922025ac5456fcf16ccecbc81f21b239421daa77d10e8fc4159041fff24a19",
+          "observed_suffix_sha256": "66330e37c6f10fe9bb50399607aa3b0e219390344654f8abd8d26ab104e0962a"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AD-02.json",
+      "raw_sha256": "8f8cac3614710dc31c6c09582fae375121f77b7868fe7db51d7f98c11e5c871a",
+      "description_sha256": "23922025ac5456fcf16ccecbc81f21b239421daa77d10e8fc4159041fff24a19",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 328,
+      "canonical_id": "US-AD-03",
+      "id": "APL-558",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-558",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "a1eef7cf4d6aacfbc7444f072875be4c256d8b59dd33bdc11edcd7e6e4c33ca3",
+          "observed_sha256": "a0450ce31db5a2161a206c6565435e0bda9e55263d316fe89ff12dc08d965115",
+          "observed_suffix_sha256": "007784a4e5da50aef48cf7660910ea4edd9f63924b2cbaad5883ca041e1d177b"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AD-03.json",
+      "raw_sha256": "f57aa7283b974a9b2f598d694560117c8f50a62d1380c312226eb7b6f8ca1c81",
+      "description_sha256": "a0450ce31db5a2161a206c6565435e0bda9e55263d316fe89ff12dc08d965115",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 329,
+      "canonical_id": "US-AD-04",
+      "id": "APL-561",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-561",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "188dea53e0725bd0f995605c1eb4d24e50e67263dae3d032c972f305e1f837c2",
+          "observed_sha256": "4f805cdc166e4440ed444705625aea7cbe94f3da675bbbbc139d8e085d9f460b",
+          "observed_suffix_sha256": "09fc01665cad6ba6e1aa7619b93e9b894f9ed74aadb4921e38b7a518845f9fec"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AD-04.json",
+      "raw_sha256": "4d0f7ecb87eeaac2c5face5b96091010ae8357b8ac5b6c1810e48d9c5aa09673",
+      "description_sha256": "4f805cdc166e4440ed444705625aea7cbe94f3da675bbbbc139d8e085d9f460b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 330,
+      "canonical_id": "US-AS-01",
+      "id": "APL-357",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-357",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "ab32c871d5b53859c675dc06fcfaf3e50a3d398a3e312e0f56a61dc9eb4972c6",
+          "observed_sha256": "da5f953620c8c88fa301ab5fed4f97ff2b9486df2572f1d7b73526ee1fbd8272",
+          "observed_suffix_sha256": "fc0b9a88539ab0c447cf3667f97d1e0d65023bd7a6d74a9e8a9d4e2eda951b45"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AS-01.json",
+      "raw_sha256": "146b52ef9b6997cbc354a796c67f85f1a2d0b12fe9858bb74444f7b81f03cdf4",
+      "description_sha256": "da5f953620c8c88fa301ab5fed4f97ff2b9486df2572f1d7b73526ee1fbd8272",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 331,
+      "canonical_id": "US-AS-02",
+      "id": "APL-563",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-563",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "d1adcb1d1dc71ad1bd7f9d4d5c6191115342ba9a6c1c82cbc8f99dea4291249d",
+          "observed_sha256": "c0b1248669db80f3d548991fc21b7da9006e61b7587ddcab4851c32cda23c891",
+          "observed_suffix_sha256": "121bcac7ba4967ce23237041ab943a93188b03fa64c005ea8b738103666337e1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AS-02.json",
+      "raw_sha256": "3395377993e0c904dcf289b50cb70727993c12493cf87500dcea30b446eb04d6",
+      "description_sha256": "c0b1248669db80f3d548991fc21b7da9006e61b7587ddcab4851c32cda23c891",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 332,
+      "canonical_id": "US-AS-03",
+      "id": "APL-358",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-358",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "1bcf2aa0434aefbded5b4ea2c4ef944420995a26a784ee5a1b5336cb0aea8788",
+          "observed_sha256": "fc5df64495cba61a9ce643b6f5901a9b47f3faf17859f36f62d707e38d2b92ec",
+          "observed_suffix_sha256": "5ee7e2d97e3e92ab3719b7e803767fb09084c51cf6ce4b79eb4ecb7738277508"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-AS-03.json",
+      "raw_sha256": "04022ecb4c208938f82fa48d792ceadaef95e8771c6241e709496d058f1aa35b",
+      "description_sha256": "fc5df64495cba61a9ce643b6f5901a9b47f3faf17859f36f62d707e38d2b92ec",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 333,
+      "canonical_id": "US-CM-02",
+      "id": "APL-592",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-592",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "dc52a5784f106e5a54bf9e804fa6f5ad9e13961cb72bf2808c3cc874ccfe398a",
+          "observed_sha256": "3c20aab17fc48da979b15437baed30704c825f9ec0ada759f4c32225883c9f87",
+          "observed_suffix_sha256": "dd45ea985b5847fc3568ad08d9c50d741d1f306cf78f568a7e6d6bc6c3b96c45"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-02.json",
+      "raw_sha256": "6415b419f318d0553861d9b5bb83172ae6ceef1df5988d22e697b4e53cea04d2",
+      "description_sha256": "3c20aab17fc48da979b15437baed30704c825f9ec0ada759f4c32225883c9f87",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 334,
+      "canonical_id": "US-CM-03",
+      "id": "APL-595",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-595",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "0827c27a86d1919f313ddccac880474edc9ff23a9c4978e61be51b2e918f0625",
+          "observed_sha256": "1fb0aed808b6398e08e298b8f1ea4217cef846f47f1310be28390493bf8a5022",
+          "observed_suffix_sha256": "f6738c768a64d51b1a1b6e6245b32d9e493d042ca2ef5f380aedd32bd89fafef"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-03.json",
+      "raw_sha256": "21097a1320d9449630044d05b0f1fd0f81a29127f0b5161c0baf7de4039b89e8",
+      "description_sha256": "1fb0aed808b6398e08e298b8f1ea4217cef846f47f1310be28390493bf8a5022",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 335,
+      "canonical_id": "US-CM-04",
+      "id": "APL-426",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-426",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "572805e03e20650053b10bf799a7dcad5b29690018bbc04ebaae6166cfd878e8",
+          "observed_sha256": "3d5e8a1ce1d2e9264460d9995be64e5bc1582aad18766dc69765cdd5b529f00c",
+          "observed_suffix_sha256": "e896c4148f0c81f355b38033d6490f02ddaf8c3e6741e90833bbb55fa6f8fe35"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-04.json",
+      "raw_sha256": "f0595a5a72833c950fe2f950501a7f2c09d6e214c6cb88d2f4e868ebe3aa3786",
+      "description_sha256": "3d5e8a1ce1d2e9264460d9995be64e5bc1582aad18766dc69765cdd5b529f00c",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 336,
+      "canonical_id": "US-CM-05",
+      "id": "APL-429",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-429",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "404861cdd7d00c9470a7f6e973c0c54e0573a32a87f2616dbd418d4450949fe1",
+          "observed_sha256": "7c95f6cec7a13583bd4bbe621b786ad270c41a6732e3d320f6ec2d1f2a4f5f4b",
+          "observed_suffix_sha256": "743887a4ce4bb278995d5c4974f5f6d990cb1ec3f1e4a5be29be46e77a412079"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-429.json",
+      "raw_sha256": "41900942991838b7346d2bcd35a90b125a6ae4347f535cbf1383250cc85969c2",
+      "description_sha256": "7c95f6cec7a13583bd4bbe621b786ad270c41a6732e3d320f6ec2d1f2a4f5f4b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 337,
+      "canonical_id": "US-CM-06",
+      "id": "APL-598",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-598",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "164ede8e97c5b2127b38b8346af142a18717d8ac52c88b19b5adc954db0f32e2",
+          "observed_sha256": "1c2f3e190e8dcec48f97f4a127b3edff651b7869a3d2dd4479b4e29ee84e69e3",
+          "observed_suffix_sha256": "c7e51652fee967b7ff8642bcc0e7da07726308eef4c93d76b1cf644bb425fd97"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-06.json",
+      "raw_sha256": "ec99d3ac905cb363a2cd45e0c07bd2d8f5a3aafdb3db956355db372f124305af",
+      "description_sha256": "1c2f3e190e8dcec48f97f4a127b3edff651b7869a3d2dd4479b4e29ee84e69e3",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 338,
+      "canonical_id": "US-CM-07",
+      "id": "APL-604",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-604",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7c5a3740f15a96f895b022d2250447b8eaf6198031e44973ddab035e72365f53",
+          "observed_sha256": "6e599dede873e34057f51526dc00d6ab3866e58e0e9b87cc23cab64b1fde42f4",
+          "observed_suffix_sha256": "d2cae2118082f121a9b97d42e1ba383cc2e9465db1ee96859ed6665f4eb884d7"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-07.json",
+      "raw_sha256": "22b1db0a7faf8ec46b741e7bf3af2564c528087496d3930a4cd698629ea52a5e",
+      "description_sha256": "6e599dede873e34057f51526dc00d6ab3866e58e0e9b87cc23cab64b1fde42f4",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 339,
+      "canonical_id": "US-CM-08",
+      "id": "APL-608",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-608",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "ffbe263e7827fbc8f0ec604aa69d5b320913d0885a7798156410038e991c8fb1",
+          "observed_sha256": "9d8e55e0f6eda5a547525c9568ccd92ae2f11e0e0e8dce06517932d7b9fa0582",
+          "observed_suffix_sha256": "9af0970e2ca7218d799edec8e0909b9f586023fc6cc64f9d0311aeffe0d99984"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-08.json",
+      "raw_sha256": "b718aca7dd934ba7455bfa0883a0059689a52b6487715cd1d0fb0dad8c03b9c2",
+      "description_sha256": "9d8e55e0f6eda5a547525c9568ccd92ae2f11e0e0e8dce06517932d7b9fa0582",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 340,
+      "canonical_id": "US-CM-09",
+      "id": "APL-431",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-431",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "23a3e8da609fdec669f852f106491cda0d430911bdffa72b8fa12243b17bb011",
+          "observed_sha256": "631d8a8b7e018c0d3c7bfff9f3edcb94a54573b18dd571f1a5053d77bebee22a",
+          "observed_suffix_sha256": "6dc172980cfa0266f81ce0cd790205b2ccc65b9b4b3ed60a57143827dd4af9af"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-CM-09.json",
+      "raw_sha256": "7d07324f44655b601ce6f59d5c619a721c7359b6e7636f0fcc337056dcf23940",
+      "description_sha256": "631d8a8b7e018c0d3c7bfff9f3edcb94a54573b18dd571f1a5053d77bebee22a",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 341,
+      "canonical_id": "US-DC-01",
+      "id": "APL-367",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-367",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7fba2dfc065f995eeac7ec3988c1146fd8286ecb80b861eb4e23d1beddbec4b6",
+          "observed_sha256": "1979196227b763c212464f7440b05025b4f4aec9776dd25c3042d74a09bcac0b",
+          "observed_suffix_sha256": "64bc4797943dc56904b2691fef54b8d7773c989e349ec17751b768880707bf55"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DC-01.json",
+      "raw_sha256": "79f680752318e93dbaebecf1cb7f4e3d4f6c23ff91e38ee3345be3093c234b61",
+      "description_sha256": "1979196227b763c212464f7440b05025b4f4aec9776dd25c3042d74a09bcac0b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 342,
+      "canonical_id": "US-DC-02",
+      "id": "APL-368",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-368",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "538606163b92bc5e88362b2312133b69161c05d239ab6eab2c7760da22c9dc49",
+          "observed_sha256": "08dbd122e607f943f703a045fe83c412980501c8c8801d8b1435c2d583212f2d",
+          "observed_suffix_sha256": "de4c5ea65e11683fc60c4e7e7a76fd88aa37efca8c586d2b7d74e96ac3153b8a"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DC-02.json",
+      "raw_sha256": "2ad66162de5a3a1dcb81817ca4f5514a56791c1b5c38302aebb3ce9697e86383",
+      "description_sha256": "08dbd122e607f943f703a045fe83c412980501c8c8801d8b1435c2d583212f2d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 343,
+      "canonical_id": "US-DC-03",
+      "id": "APL-369",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-369",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "5732aa4a6cf3566af8b462dd5c0e8ff3818d99177ad153e6e964a2791caa6c00",
+          "observed_sha256": "fb1e553c9a5b8368306c2dadcdbcf5b59b657be9c38456a041d17fd2465dd7a8",
+          "observed_suffix_sha256": "71959f810ea811751301eb8d018ad1709467a5f38ff5642ec8de5db92075a6a8"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DC-03.json",
+      "raw_sha256": "1f7d74f4a35609ddb6b05d2e649e18cec3bc8300d699873059f589fe95b382c1",
+      "description_sha256": "fb1e553c9a5b8368306c2dadcdbcf5b59b657be9c38456a041d17fd2465dd7a8",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 344,
+      "canonical_id": "US-DC-04",
+      "id": "APL-370",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-370",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "362564fc6da11a6522b26cd0c2bd92e46f68159ed0c430c17499bf04b8c64a78",
+          "observed_sha256": "4ff33b072a6a423c3cc3fafa043e9b130f086debcefdaba68c0d91b6bd9f043e",
+          "observed_suffix_sha256": "82d84d6e928a5c7dde193855dfef32fccd30b4bffbf65b5dfde375c6ed22615a"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DC-04.json",
+      "raw_sha256": "c39d56ef637591cfe94d67e4c3f897896593460403f3c55a4cd6414388df8829",
+      "description_sha256": "4ff33b072a6a423c3cc3fafa043e9b130f086debcefdaba68c0d91b6bd9f043e",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 345,
+      "canonical_id": "US-DP-02",
+      "id": "APL-359",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-359",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "daf677cad52380ee87d0a6d5ecf55488a9529acb2043372534c4ba1e55a1fa87",
+          "observed_sha256": "f8f37f1d39e7d8353715446dfd3665d72fe8d17394ccb44447f3c0772dcee43d",
+          "observed_suffix_sha256": "a41490d21a82d8d3e72c0ab584df02d444e36504d8efdfcd5101e15557115392"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DP-02.json",
+      "raw_sha256": "c0b3bcf272369d7d35ad135cf0ea27093c9766df864a2fa5138a3073b38a9afc",
+      "description_sha256": "f8f37f1d39e7d8353715446dfd3665d72fe8d17394ccb44447f3c0772dcee43d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 346,
+      "canonical_id": "US-DP-03",
+      "id": "APL-360",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-360",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "9d8da74c8125175536bea61591dfebe45f177ccaba50867cb3e0bd6aa5fc5d1d",
+          "observed_sha256": "94541c7cf0052c37c7e33ed253918a9c69e37318029b18bc59236b9492207ccb",
+          "observed_suffix_sha256": "3d06c204622157ed73f9ab0b475fdca60b0b615ded36e1e07c05a0e479822ea7"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DP-03.json",
+      "raw_sha256": "6c60a198396ebcebcf02684b4718ad6d655e9aff7c8e57f62178c5419366b130",
+      "description_sha256": "94541c7cf0052c37c7e33ed253918a9c69e37318029b18bc59236b9492207ccb",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 347,
+      "canonical_id": "US-DP-04",
+      "id": "APL-566",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-566",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "772986caffbca993a50479aabf8f890a1ca15bc41ce25f39adeb663eb75cfad0",
+          "observed_sha256": "a83bf83cf9d6199dedb5ae21b0628f8a4bafe633a13bd3d07ef70ffe549d3dc5",
+          "observed_suffix_sha256": "57da400d5fde0fc96bbbd1cd1b8d1b330ec7ce6e9737632edf2e7b457d39a781"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DP-04.json",
+      "raw_sha256": "3bfdc3e35c796e57aa9030c6874cb278ad06ca5e24ed2f5a2fb6bb41783fdef9",
+      "description_sha256": "a83bf83cf9d6199dedb5ae21b0628f8a4bafe633a13bd3d07ef70ffe549d3dc5",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 348,
+      "canonical_id": "US-DX-01a",
+      "id": "APL-361",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-361",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "c87f62b394171b69c38e320bdbacefe7e11730fa689f62f0410a06239a1e7d74",
+          "observed_sha256": "fc691e0132c1e9c194ad0075745a1d6cee76dc4e37003a5d6359a97747d64932",
+          "observed_suffix_sha256": "290f9797b8ac29f390e6f290a4b5499142710f157edb02f573c50745a17b883c"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-01a.json",
+      "raw_sha256": "e945610660013e148e6a985222da8057eb2b24863356fe1dd5306d0ff0970995",
+      "description_sha256": "fc691e0132c1e9c194ad0075745a1d6cee76dc4e37003a5d6359a97747d64932",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 349,
+      "canonical_id": "US-DX-01b",
+      "id": "APL-362",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-362",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "3f43f364cd7584f6a9775ef5787d528d2bf99c529b8a2520de556ad111455894",
+          "observed_sha256": "1c8d3f97d215fb2431b6caabe74c345e7d06290d492dbec367d23c99c33bdde6",
+          "observed_suffix_sha256": "32dbfc068ef5728cbcd5336b0a7eb386bb555d2952fe8245b1afa547396f0cbe"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-01b.json",
+      "raw_sha256": "43a3f5c27529ca1b8e231e78593393af5073b1c1877ca370c8cc3902f4880495",
+      "description_sha256": "1c8d3f97d215fb2431b6caabe74c345e7d06290d492dbec367d23c99c33bdde6",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 350,
+      "canonical_id": "US-DX-02",
+      "id": "APL-363",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-363",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "c9af44da87d9c2b8316301b912e7403b5dd5a6b55c72d1b07d80f3d1752b9ca9",
+          "observed_sha256": "791ec5be022c55a53cdde821f2fc95e3a80cc2c341067bd29dedcadc4635fe94",
+          "observed_suffix_sha256": "fccd2b63c5d097fe728bc9e440205fdc22b9de6957901927ac6784987fdf4ce1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-02.json",
+      "raw_sha256": "4608812ca1c1154061aedab56ee92941df8ef6cbb5721e15b51642ec0d0a67df",
+      "description_sha256": "791ec5be022c55a53cdde821f2fc95e3a80cc2c341067bd29dedcadc4635fe94",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 351,
+      "canonical_id": "US-DX-03",
+      "id": "APL-364",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-364",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "d20be72884f2de9420538e11ee712ff2f9e644aba91d610759a1c6754069a009",
+          "observed_sha256": "904ad5ae779fac25d06fc37c8f9a1b8457e1c55e63a7df2da5701597d9f4d612",
+          "observed_suffix_sha256": "5f348a9667e8d43b54598b7a4fadd6771900ba145752ac6402b2315d51004ef1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-03.json",
+      "raw_sha256": "fbb9e1b7e3d43e7b2220f94aceb2be250df24189f3a40a66f5d1cce578bb08b3",
+      "description_sha256": "904ad5ae779fac25d06fc37c8f9a1b8457e1c55e63a7df2da5701597d9f4d612",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 352,
+      "canonical_id": "US-DX-04",
+      "id": "APL-365",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-365",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7e2adb11ec173db74866d9c2d6957d973293aa1f34b09d09c2e00d1bac06cf29",
+          "observed_sha256": "bd7a02fa972ed8b7e6a32441d8bea1b0d8a8b738395c7193d3d778b9f959bc8e",
+          "observed_suffix_sha256": "93e04206c6e8776b37c03df5b21199ccb9b1b26ab69f244375bf8799e577c9a4"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-04.json",
+      "raw_sha256": "6642523329ece21c9d81fa12aae63c3541967a68bdd2efaa182133586fbae346",
+      "description_sha256": "bd7a02fa972ed8b7e6a32441d8bea1b0d8a8b738395c7193d3d778b9f959bc8e",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 353,
+      "canonical_id": "US-DX-05",
+      "id": "APL-366",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-366",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "89938352a7a901e4a2926bc87cb8b5a6b0eeee4807e91102bab69f06a59fe6f2",
+          "observed_sha256": "271a30848ef3d254464dbfdd8399b1ea3bbe74a6abf22034b9f0bff285c6f637",
+          "observed_suffix_sha256": "960204c2adac6d127672c5f06ff5d278d959bdd951b50d5ae49a317f7b14b3c6"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-DX-05.json",
+      "raw_sha256": "434dc3af0f136a659c7800f35673d3d231160139464bd4d7b1c220f5c7698834",
+      "description_sha256": "271a30848ef3d254464dbfdd8399b1ea3bbe74a6abf22034b9f0bff285c6f637",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 354,
+      "canonical_id": "US-FP-01",
+      "id": "APL-480",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-480",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "1b387ba0ed6b2fdeb13b999ffc10a1bd78d0449b4ac4b78be7ac75cf694632db",
+          "observed_sha256": "dd5a78007ea2200fbfa0450f2f2fb033a25d711028f9d42bf41bee11e369131e",
+          "observed_suffix_sha256": "aefda1b00c3a2388b238e489aa546c9c1ed51bb9d98d6659bba6a2c3ea88c3f1"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-FP-01.json",
+      "raw_sha256": "52d315a229fd13dd676aa53e26ec6328385b007a02c884dbf2f62a4739964e27",
+      "description_sha256": "dd5a78007ea2200fbfa0450f2f2fb033a25d711028f9d42bf41bee11e369131e",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 355,
+      "canonical_id": "US-FP-02",
+      "id": "APL-655",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-655",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "30c6e1777b595ddbdb2c4c803240cfb984d0fa7b290903f74aa285c640877b5f",
+          "observed_sha256": "8e9e4d57a4d3ab5baa461a57146e92274c872b8511a61cff6a3c8acf58d2d5e5",
+          "observed_suffix_sha256": "1b742e22c8259f1ab5b6e2eaf2dfafc3360f638816827d7f9b6adda6ec4de754"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-FP-02.json",
+      "raw_sha256": "4f8db858e4b7b2e75ad732898369ec637bc8cdb255b6d87b5748e0316a4bc39a",
+      "description_sha256": "8e9e4d57a4d3ab5baa461a57146e92274c872b8511a61cff6a3c8acf58d2d5e5",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 356,
+      "canonical_id": "US-FP-03",
+      "id": "APL-482",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-482",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "811c19593ce7e733442365accbbfb9a2a11c706eaaf36cf6a699fd2c00600be6",
+          "observed_sha256": "f97bd48f8be42d984ffbc97e309e4740eb61b3e8d8a323e2c5ea25bb806f9032",
+          "observed_suffix_sha256": "8f9bacae8d6d5bddb28bcc809537f0397cab87fb99c0892cd873114ea8f7d28f"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-FP-03.json",
+      "raw_sha256": "e4b4383b7d29bc75dcf18d5d3cac9ea18b7b52f85638be77ebad8920393adf74",
+      "description_sha256": "f97bd48f8be42d984ffbc97e309e4740eb61b3e8d8a323e2c5ea25bb806f9032",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 357,
+      "canonical_id": "US-FP-04",
+      "id": "APL-656",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-656",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "5dbf02c6936b0c2a34efdff213dd90edfa9f4ece7c5d29b90780d9cf7ac9d2a8",
+          "observed_sha256": "9e71a32cbd93ab865d7d724e1977c70900907f74029211691c223e34c64e4e9d",
+          "observed_suffix_sha256": "67f7c64480e29f135a0e85a5f2e825fb9607bb6da6d8ddc962313842512e3528"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-FP-04.json",
+      "raw_sha256": "b64e620d3342c986155151a9ea2713512744f4c1f75c28ea483b91a4d78bbd50",
+      "description_sha256": "9e71a32cbd93ab865d7d724e1977c70900907f74029211691c223e34c64e4e9d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 358,
+      "canonical_id": "US-IM-01",
+      "id": "APL-371",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-371",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "66cc9d2613664d8fb02bf51cba6609dc48096cfa61a3bf32dc1f9f089292c505",
+          "observed_sha256": "5be87174b469ff327057ca266a1fc811a3b9a859046442c7a662dd56f1151f88",
+          "observed_suffix_sha256": "4c9ab64e250f02c2b3745ed0d5d29dc38163faf65e1163dc38e52830b2f03abb"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-IM-01.json",
+      "raw_sha256": "c993704ebe14141cd7e1918866b95b2f314edf285426214c0ff370006fa55339",
+      "description_sha256": "5be87174b469ff327057ca266a1fc811a3b9a859046442c7a662dd56f1151f88",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 359,
+      "canonical_id": "US-IM-02",
+      "id": "APL-372",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-372",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "a339cf373072ed866201fdb3042c93cf72467b57754084d4e6846303fa124422",
+          "observed_sha256": "56f7ca9dee5550f031a191b19d7b059c68d103472819dcd099e81be2e196d660",
+          "observed_suffix_sha256": "2fce8ab6170ba53be0113d0e79e330288a4a86358b538607896a00c3fd9412ef"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-IM-02.json",
+      "raw_sha256": "c3f209d7d32f8b879db9fc2cd34e01f170800a92731ad1215d8362a6462894a1",
+      "description_sha256": "56f7ca9dee5550f031a191b19d7b059c68d103472819dcd099e81be2e196d660",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 360,
+      "canonical_id": "US-IM-03",
+      "id": "APL-374",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-374",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "10179f77b3cd22a9499b579e85f4deb96797cc8af157dabff663539219e05d8e",
+          "observed_sha256": "8d41934bfee17086d67a01957282cda4cdc69a8e5430849ae7be802c249f3941",
+          "observed_suffix_sha256": "b9affab6466beec21aba15c86ef79cad01552186773cbad67ff52744e6f99c60"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-IM-03.json",
+      "raw_sha256": "ce21914540981ce5eca527bac268fa3f6ba3100b85cec7c84b78f161fd32dc70",
+      "description_sha256": "8d41934bfee17086d67a01957282cda4cdc69a8e5430849ae7be802c249f3941",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 361,
+      "canonical_id": "US-IM-04",
+      "id": "APL-569",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-569",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "d1db94e96b416ee06325b3016ddfd3c91163a0eabf13faa5d2396754ef2a9d62",
+          "observed_sha256": "cc7404c0e3de3254f530182ed9027537ccd18c1ca951d493dc26edad62c75341",
+          "observed_suffix_sha256": "f5666da4c7baaf94e8c7eeeb849f04bbea4d2b38d473a94728963f6cf1f7279b"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-IM-04.json",
+      "raw_sha256": "27524ee7c3fbf812230c0e86347545b8efb8cf2450dce4848354403ee9910a72",
+      "description_sha256": "cc7404c0e3de3254f530182ed9027537ccd18c1ca951d493dc26edad62c75341",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 362,
+      "canonical_id": "US-IM-05",
+      "id": "APL-572",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-572",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "dae8199aecf94dd4fb344c017b3028804bda074ee4496e0c96b5e0a5d292051c",
+          "observed_sha256": "cb5701a75003384442fca6442d6faaeffeb4c45c457b07fd470042047d0f2f78",
+          "observed_suffix_sha256": "c3687de9a495cee9bdf4e199c48f2ef86d39ca62668e18be1043cef2d25d20ef"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-IM-05.json",
+      "raw_sha256": "3f9276663cb8b297c52dc3f50465f192ce4c61fc0d9c6a4607114ba39f5987c9",
+      "description_sha256": "cb5701a75003384442fca6442d6faaeffeb4c45c457b07fd470042047d0f2f78",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 363,
+      "canonical_id": "US-MP-01",
+      "id": "APL-376",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-376",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "545937c2dfde46bdf5942f22b9b6900f9d5d0d0db5ed6fc6b9a3ce4e6a9cd97f",
+          "observed_sha256": "d8ad9555ca429c23ff430834e6223958268acd9336a532c035a4db455534a149",
+          "observed_suffix_sha256": "247f4be623bbf67b01c4091c34c16c3e0f5e4e32898997c82623a5bb3d36c9db"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-MP-01.json",
+      "raw_sha256": "6f93049543d873f57c109cf4f70afa7a797f8c653c539c5659567e41ca3e28fe",
+      "description_sha256": "d8ad9555ca429c23ff430834e6223958268acd9336a532c035a4db455534a149",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 364,
+      "canonical_id": "US-MP-02",
+      "id": "APL-378",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-378",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "30b20156bfd4ec58a0e147082bbecd0c3ef37f49ca4911e1b43139301e5e189d",
+          "observed_sha256": "4e2b5fb3f8fff45cfbef0a039b4e8dc68fa25f0e8080a2adcbc33e03a379e246",
+          "observed_suffix_sha256": "1869eef4928f09d5c584ca399177ce05d4dc7e975bc5f2cc7d4f133eca57d6c4"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-MP-02.json",
+      "raw_sha256": "3aad06e456ac4f3cb7d2da3119d3d8182a001b1804e9788dadb8b9c306aaf3d0",
+      "description_sha256": "4e2b5fb3f8fff45cfbef0a039b4e8dc68fa25f0e8080a2adcbc33e03a379e246",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 365,
+      "canonical_id": "US-MP-03",
+      "id": "APL-381",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-381",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "eb53d859a812b9dd3dc9aebb60a308cd167b6b7f191bb32a7dd4666a2f4b4533",
+          "observed_sha256": "ec3a52662317416b8093ece0c2b9586e10b33a2b1f6ebc41976c5e1ca7b6e0c6",
+          "observed_suffix_sha256": "afb41d33063abf7b813943e67dcf2145be505b3ec43f20cb04e240cece9d1129"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-MP-03.json",
+      "raw_sha256": "f3dee9e90aa47ee99401ab8c55e4a323d994bf071a87946fb8e42f12de04e87b",
+      "description_sha256": "ec3a52662317416b8093ece0c2b9586e10b33a2b1f6ebc41976c5e1ca7b6e0c6",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 366,
+      "canonical_id": "US-MP-04",
+      "id": "APL-383",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-383",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "22df364398223de6d13b972a2a2e904919abd808e69313afaea54c850a7d308a",
+          "observed_sha256": "0b37122cd0aa62659f60aff41a83fde4c95c366cd78f6f0c06706ef7e4623dce",
+          "observed_suffix_sha256": "47a31621e0e2025833f8b3e3afb6e30266c1d7d4f66b625fd6c211becfdeed98"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-MP-04.json",
+      "raw_sha256": "5b9948d8030f208c49f07b14778ce8d09a2901212e5778381dcb0256116f7809",
+      "description_sha256": "0b37122cd0aa62659f60aff41a83fde4c95c366cd78f6f0c06706ef7e4623dce",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 367,
+      "canonical_id": "US-OP-01",
+      "id": "APL-599",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-599",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "88ef6ab1ab80adbfc6a79996d9578f585e9ded0505e4b4952c4ee4a23b792676",
+          "observed_sha256": "5f68a4eef9874df5bb08b84a33da332c7a918d7d5a8d1b67b3ddcd204e44761a",
+          "observed_suffix_sha256": "539bd8f8f1c60acca9d0320719b9d85f74c2db7a7f81baf4bfa72752c10c8176"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-OP-01.json",
+      "raw_sha256": "5a263403fec592fb733e20fa4b0b4c617f5af896b8e7444982159e2ba31e4c6e",
+      "description_sha256": "5f68a4eef9874df5bb08b84a33da332c7a918d7d5a8d1b67b3ddcd204e44761a",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 368,
+      "canonical_id": "US-OP-02",
+      "id": "APL-600",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-600",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2547e0c24a804a68b003e5754ff56b18b773192f3ca0ccc62b82f70a1ff7c613",
+          "observed_sha256": "18cafabec0a1430ce5f6b0eb84b8281bb0cdd95b8a32bc86e2fd5b05bca4f289",
+          "observed_suffix_sha256": "d9df56f21556dc542f80d0adb28857fe29c2b2bc581e0dfb91926b55395f9c02"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-OP-02.json",
+      "raw_sha256": "f08e4212b55861c92a3aef9b1b9501f8e80f7a94ea4bca26240840485ed40b09",
+      "description_sha256": "18cafabec0a1430ce5f6b0eb84b8281bb0cdd95b8a32bc86e2fd5b05bca4f289",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 369,
+      "canonical_id": "US-PL-03",
+      "id": "APL-605",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-605",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "c49a39ad7f97d96be037073916470015686dbfc6fb10dbee45ea258c514c0397",
+          "observed_sha256": "239c58faba1ae8b085b715eef394fa219cfb0f6779f0d6445cec7144f5782a56",
+          "observed_suffix_sha256": "b0e0ea2c055537ea9add1fda9d233296e10970e373a7dc907ad28a4f2ed457fd"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PL-03.json",
+      "raw_sha256": "cfdc1b9e8d8c8628d6ca2499d5b8931158ef53044818e5fe8cbbd15d09c0f479",
+      "description_sha256": "239c58faba1ae8b085b715eef394fa219cfb0f6779f0d6445cec7144f5782a56",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 370,
+      "canonical_id": "US-PT-01",
+      "id": "APL-478",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-478",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "e1054885afd3c13c477366b654e12397815a6fcd14410226e875084227dc93ce",
+          "observed_sha256": "4230624bbbdbfad9b399da71908b403f4a4057956688f2dcae5c732f7aef4263",
+          "observed_suffix_sha256": "5e6b87b0904667c630af046e35181cc2c574a03bebdb71e2b3a1c8806a77dc3d"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-478.json",
+      "raw_sha256": "6953989673d21d339e2a55af28e8149f0e236d11e59ac5fb38f92e2d9ea1f445",
+      "description_sha256": "4230624bbbdbfad9b399da71908b403f4a4057956688f2dcae5c732f7aef4263",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 371,
+      "canonical_id": "US-PT-02",
+      "id": "APL-486",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-486",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "db1631e37cc6a3e38c6d8f96d26efe14561951e1d1ba22975da55d8722bf283c",
+          "observed_sha256": "e9ac4ac4075f8603ea3d26646696035b4b32d2b9d9c7dafc61e98cc064ac7aa9",
+          "observed_suffix_sha256": "0d6d7bcdc1b475be1bdaacc02c9e1dcf8d773acbc58991c8dae2fc60e729cf89"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PT-02.json",
+      "raw_sha256": "6aebd11c5d9af3b2ac4b22c5aa7d19c12c33ada3116c235d8006651fac68fd64",
+      "description_sha256": "e9ac4ac4075f8603ea3d26646696035b4b32d2b9d9c7dafc61e98cc064ac7aa9",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 372,
+      "canonical_id": "US-PT-03",
+      "id": "APL-489",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-489",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "ee54d97c826e8ea8822225fe3fe9d0ce787145741e975d5bfaf69d6dffe817d8",
+          "observed_sha256": "11633adb75af73aeabd2d03230ab4345bfcf8dbfb8ddeabd8f4d6ac2a96f4e9e",
+          "observed_suffix_sha256": "370a468830e75f9187681981f5e685f0b2417f48d71f48a64477bb2fc20c5686"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PT-03.json",
+      "raw_sha256": "17c040ef5589b9ab61cfd880a92c50baa601c48e10b4137a42be27750e84e1b8",
+      "description_sha256": "11633adb75af73aeabd2d03230ab4345bfcf8dbfb8ddeabd8f4d6ac2a96f4e9e",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 373,
+      "canonical_id": "US-PT-04",
+      "id": "APL-693",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-693",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "6395247b76ef18048f2e6c20211606b551e5ec78383043fe883eb37ae3553fe4",
+          "observed_sha256": "04642e2f9eaae7bdfe215dfc0fc429bd1c99aad657daa85d3fe0112a439da1aa",
+          "observed_suffix_sha256": "03c1b98eaa34b778467ba2fbc9242ed4b8d1393dcfce4fa9d61a278e39c1d1d4"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PT-04.json",
+      "raw_sha256": "5c283cfc92ae8623596b5452c7ceb40c8eb48abbd40fb0eb98d3f010cefe1e7e",
+      "description_sha256": "04642e2f9eaae7bdfe215dfc0fc429bd1c99aad657daa85d3fe0112a439da1aa",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 374,
+      "canonical_id": "US-PT-05",
+      "id": "APL-602",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-602",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "dd64c470f5aeddbed7b0208f781324d0d091a8e221984bfaf04bc48261866e20",
+          "observed_sha256": "a6d2ddcbcbf57ca24bde103e6437243295370a6ce08bf36ecd501176b920318d",
+          "observed_suffix_sha256": "e7487ee9bccc3646bd10e0ccad5f61d4662b23bc2bfc2356f78e32a5a66927ab"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PT-05.json",
+      "raw_sha256": "947e0a9dc3bf25d3d5917c5ad6eba24798a9a8afd49cf148918db4810ce334b6",
+      "description_sha256": "a6d2ddcbcbf57ca24bde103e6437243295370a6ce08bf36ecd501176b920318d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 375,
+      "canonical_id": "US-PT-06",
+      "id": "APL-493",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-493",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "199066d97d1076ae12016987f749668a1319baf48fcaf0d7765919ae0d03d9e0",
+          "observed_sha256": "42dd35895af93a61b59d51ac44de64074b0a622b097151df272846dc60fc2a40",
+          "observed_suffix_sha256": "d0ddc479787a60bebbcc51f0c67c93ea89d3467fb33db7ac33ffe5c1d400f44e"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-PT-06.json",
+      "raw_sha256": "6c37eada77de0ffcbc9ad4c26afcd7d3d1dab9ae7770ac86c8b0047fb532115f",
+      "description_sha256": "42dd35895af93a61b59d51ac44de64074b0a622b097151df272846dc60fc2a40",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 376,
+      "canonical_id": "US-RT-01",
+      "id": "APL-334",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-334",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7deb673d2183ba47df9198f797b97a40d758959e6f4f28ef1e781881a0cf9f7f",
+          "observed_sha256": "fd6458bbdd7858442d2b660142e88beec3932f9754e015965206717a67c09f61",
+          "observed_suffix_sha256": "e7f35144d901669b94ed6918857381e45f8e98165214cdbb2065a5234dbb186e"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-RT-01.json",
+      "raw_sha256": "d87fbbb8c8ca7372bbbf80c200e05ec4ece4e86bd1fc8bc20a5c3239508e9027",
+      "description_sha256": "fd6458bbdd7858442d2b660142e88beec3932f9754e015965206717a67c09f61",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 377,
+      "canonical_id": "US-RT-02",
+      "id": "APL-335",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-335",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2393bd62959c0ca7886478f17acdd7382fd45d04aeecea3776066334d15163c7",
+          "observed_sha256": "72e0594546fc4e5bc55d5a27a7d78240d6457a54f410d982c32fee69a1bb5585",
+          "observed_suffix_sha256": "0e1e05378456e6f01613212d7aa97ef795c2f44677eab7d7d08a1343c8439198"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-RT-02.json",
+      "raw_sha256": "dc02b7dce2351a3c67c6469cb30a786e00833af06f656de55b3e9b77c2ce6316",
+      "description_sha256": "72e0594546fc4e5bc55d5a27a7d78240d6457a54f410d982c32fee69a1bb5585",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 378,
+      "canonical_id": "US-RT-03",
+      "id": "APL-336",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-336",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "298afbf3afa3e668765750881024b470333e32bf508b0b35e9fa5d77cee08fdb",
+          "observed_sha256": "af70c1ca313995817e1e782774652e9100e27aaab1f13b4ab45f841d23973a12",
+          "observed_suffix_sha256": "bf68d21841e16bc33c5dcfcc65449154eea1f751d3a7c602fffe4ee1d714a0a2"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-RT-03.json",
+      "raw_sha256": "765845719736137676604c59ea01a2f7679336f0702f1fcdada393e3f8fe3c94",
+      "description_sha256": "af70c1ca313995817e1e782774652e9100e27aaab1f13b4ab45f841d23973a12",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 379,
+      "canonical_id": "US-RT-05",
+      "id": "APL-337",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-337",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "365e2dc8c03235063b6151a0e8c081c33fb7e558c69e6799c187d508597c014b",
+          "observed_sha256": "9cd36efa0dd2cc2809dd1f4a64b6ef722b3dee99ebd5a10fafd4eabf43adeeb3",
+          "observed_suffix_sha256": "92996d97b2819bf43c9f6cc46b9e8a187ab856df56817ae8d01ea1bbc6e1b522"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-337.json",
+      "raw_sha256": "76ce5246c8f0c98c45529515e8060629c8e1aa9a9d57b5d8be0928d0020730d0",
+      "description_sha256": "9cd36efa0dd2cc2809dd1f4a64b6ef722b3dee99ebd5a10fafd4eabf43adeeb3",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 380,
+      "canonical_id": "US-VC-01",
+      "id": "APL-385",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-385",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "ae424b2562ae249cecb29a5fe785073daccbe1b7728142cfd47d8fe794df2568",
+          "observed_sha256": "a12ec2adab51fadd0ce1e396c45c7f2663b40477648ac8fc3fa7b86c814d9dd2",
+          "observed_suffix_sha256": "f64ba92a0860862efb31173410bfbd44eea3ba4501e0829411cb7a69dca4075d"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-VC-01.json",
+      "raw_sha256": "3ab41b2e1aba374c87cb3815f0636a1be55bb9cadce35a95637a2a919370217f",
+      "description_sha256": "a12ec2adab51fadd0ce1e396c45c7f2663b40477648ac8fc3fa7b86c814d9dd2",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 381,
+      "canonical_id": "US-VC-02",
+      "id": "APL-387",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-387",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "15ff9bd37485678ca24f73d2d51cb32e0ee8d77d7c4bfec16aae56638404ebf5",
+          "observed_sha256": "c394d9db1c63268a7562b55f5946362f350bb9f3143c65ee0fe734a16921febb",
+          "observed_suffix_sha256": "00ce6b45725047a07eafa43e381c914a0edc8dbf20e94a7d876552020e8b3d84"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-VC-02.json",
+      "raw_sha256": "46be66756f90a09a3a603dea8732355d202e466451017eb58a54bb82f07f5931",
+      "description_sha256": "c394d9db1c63268a7562b55f5946362f350bb9f3143c65ee0fe734a16921febb",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 382,
+      "canonical_id": "US-VC-03",
+      "id": "APL-390",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-390",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "201274cf5f41b48c6eb6b849b8aa93cc7187ec7a90fa539057d36ac965d6a508",
+          "observed_sha256": "3be65ebcc26c05ffb3ab7e8e07fc0e5481fe869782a1ce7a076c435a208d26f0",
+          "observed_suffix_sha256": "80f569638dcffb643134baa776c88be90161649d680286c80c7500c45999f01e"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-VC-03.json",
+      "raw_sha256": "b0aa3930749ebf4b5036c2aa4b538d051a573436e681ec16e444d06d11f09b69",
+      "description_sha256": "3be65ebcc26c05ffb3ab7e8e07fc0e5481fe869782a1ce7a076c435a208d26f0",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 383,
+      "canonical_id": "US-VC-04",
+      "id": "APL-575",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-575",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf",
+            "observed_fixed_supplement_heading_code_serialization"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "81799a9085ee0a1e20fc08625710b04ebae9a617f582cb45fdd91b6bf3f29bca",
+          "observed_sha256": "429fbe328ee6599d370f4e73994f56529456a2bb4e510d058e9ec6dff8d33eba",
+          "observed_suffix_sha256": "ddf266d1cc87522773231bd197a9d7aff07613790bc177ea57a23378b7706197"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/reconciled/APL-575.json",
+      "raw_sha256": "5de382430159a025b552acb89e06e418fb44a88a215823c43a597f6d38dd2fd2",
+      "description_sha256": "429fbe328ee6599d370f4e73994f56529456a2bb4e510d058e9ec6dff8d33eba",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 384,
+      "canonical_id": "US-VC-05",
+      "id": "APL-392",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-392",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "f14e33adc6786b738d800e0de5046bb91a51c023acfce3a467852d41cce70c97",
+          "observed_sha256": "e07403b824c45e9116de14727b481bff6a7c38a7ab74c2c9d0e3f809da81bda3",
+          "observed_suffix_sha256": "6fec50ac55aaedb139b3d5ce9f261611e292619508af4579e4cfe787bfdae46e"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/US-VC-05.json",
+      "raw_sha256": "4f37ffb019684cf24a0021ac2c03f60f9e603ea17846c84710e1974823ab56c1",
+      "description_sha256": "e07403b824c45e9116de14727b481bff6a7c38a7ab74c2c9d0e3f809da81bda3",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 385,
+      "canonical_id": "VF-AIQ-001",
+      "id": "APL-550",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-550",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "1428aa62d3c31ba0a15da00160065fa8c2cfa64f0a6428b428ed3f83719aa56c",
+          "observed_sha256": "fef444520aa6266e3c24342e9a5aeb5b2dd7a64fbea2bf839d94681967bd8cf0",
+          "observed_suffix_sha256": "6afb2d760795032c5e836c3735fc0b4d01fbe161b31145bec0ec982d0949a1c3"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AIQ-001.json",
+      "raw_sha256": "ad342e73f576cc1b474975417da9686db74ef88e97a4d81e2429bb639ba288ae",
+      "description_sha256": "fef444520aa6266e3c24342e9a5aeb5b2dd7a64fbea2bf839d94681967bd8cf0",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 386,
+      "canonical_id": "VF-AIQ-002",
+      "id": "APL-552",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-552",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "8f9099aa85104cdb001d78b683a80fe2ddf434d29d4ce96b2bd7c86e481727d5",
+          "observed_sha256": "d92731f93a076a7407b29d5984ddce738419856d1ff9f32f544fabb96ab49daf",
+          "observed_suffix_sha256": "b0425da78321568306f2afe2d3f57ac17097f6a1dba978a3406533a4c5c67908"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AIQ-002.json",
+      "raw_sha256": "2018ba9a9d266d84914d0d9b4095e4d8be84a6c604553df1b323a328e758a7df",
+      "description_sha256": "d92731f93a076a7407b29d5984ddce738419856d1ff9f32f544fabb96ab49daf",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 387,
+      "canonical_id": "VF-AIQ-003",
+      "id": "APL-401",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-401",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "24e7e4f157da62fa9b999b4578ecdf182bc652c5d3551652ae60955e5e6b18b9",
+          "observed_sha256": "e5adb82f76a7089160bae9da1531dd7b1ff91a4dd471fcdc9d2cde1c0731c868",
+          "observed_suffix_sha256": "b4dcc1f3d4575a256f7fc1d34e1dcbc59d50d7577e04517227a97d2b1b55c0dd"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AIQ-003.json",
+      "raw_sha256": "f5fa550ca67d14c11fec772dd3af0a307c3e6d9119e07b6168b3053e1ea2a37d",
+      "description_sha256": "e5adb82f76a7089160bae9da1531dd7b1ff91a4dd471fcdc9d2cde1c0731c868",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 388,
+      "canonical_id": "VF-AIQ-004",
+      "id": "APL-556",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-556",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7215c30b16672f6b5127d80d9393c88f12561c41f2a5b84dab44ea8fd8fe5605",
+          "observed_sha256": "eac737d1560c7a7d5d6baa8daed736a83c08e02c8f7891e725bcd3f9ef77246b",
+          "observed_suffix_sha256": "c725f596e5c17bb80fdd1a0d1086da60218cd43101154b037372227491223bb2"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AIQ-004.json",
+      "raw_sha256": "d3a7625cc6b41fe0ef25a3554e9f45a26e025f0388bdebb87ed86bcbf33976cf",
+      "description_sha256": "eac737d1560c7a7d5d6baa8daed736a83c08e02c8f7891e725bcd3f9ef77246b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 389,
+      "canonical_id": "VF-AIQ-005",
+      "id": "APL-404",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-404",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "f3be5400f2038f872515812e0b65c949b279a7c1c561d56fc2cb4692c3fde8b7",
+          "observed_sha256": "b513f393ce36039735fcd75fedfa092763977fdf7e7a85dc0f79905b99f7bc75",
+          "observed_suffix_sha256": "c5107da094c6b1c0362a63d39988466776504feabb7b96d92bbb0cd773916139"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AIQ-005.json",
+      "raw_sha256": "e203697f1ffaad8e930c9b0bd42eb1e262dc8e763988a56b47c8f114e49eb0af",
+      "description_sha256": "b513f393ce36039735fcd75fedfa092763977fdf7e7a85dc0f79905b99f7bc75",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 390,
+      "canonical_id": "VF-AUD-001",
+      "id": "APL-562",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-562",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "04d2bb4a84b4c4078a18d14e8b739169abebc3f61c3a750117eb7d91d4567280",
+          "observed_sha256": "234091b0a21a43f8c157352c3b8f6a98c55de56858ff9f41db1501bc62742f36",
+          "observed_suffix_sha256": "019ea88d04f9821e7a9b3f7dc3ff028d32595f8353b1210ff12a26bc3f0e5de6"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AUD-001.json",
+      "raw_sha256": "740da4052b957e4675fd23dffcc6321069bb39610f10bba348c68dbc3c101266",
+      "description_sha256": "234091b0a21a43f8c157352c3b8f6a98c55de56858ff9f41db1501bc62742f36",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 391,
+      "canonical_id": "VF-AVL-001",
+      "id": "APL-565",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-565",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "53555a005d6358bd747ef030b67e7f7e6ab54096daebd77291353815926e5d37",
+          "observed_sha256": "7b58dade8707c1ccc90819980eea7ba6219cf21589a28919abd977642cf0dc3b",
+          "observed_suffix_sha256": "673f6245692dd423f913c1a0a3b8b62826f53c54d57f93b04c6afa5a79fc888b"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AVL-001.json",
+      "raw_sha256": "34bd66b44d04fe7eb84919059f1031ba38105ac3925573aa57b47244a623ffa0",
+      "description_sha256": "7b58dade8707c1ccc90819980eea7ba6219cf21589a28919abd977642cf0dc3b",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 392,
+      "canonical_id": "VF-AVL-002",
+      "id": "APL-568",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-568",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "bd27769cf8adfb624f3cba5b7b574ec44ec588dd8fbdc52babb0ba8767bea76d",
+          "observed_sha256": "049e2723e2c6270b09f762eecb63a83f91576e33a5f07b06c15ace2ae45a36e1",
+          "observed_suffix_sha256": "2159ec2ce3b6f4ed331e7e35d6a6f25738ea2c6ab9a9f660e6d0c42edaadb202"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-AVL-002.json",
+      "raw_sha256": "82d7d62a381379aa82f00f4768619a657cfb158641f0b18588a49da1d27d58fd",
+      "description_sha256": "049e2723e2c6270b09f762eecb63a83f91576e33a5f07b06c15ace2ae45a36e1",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 393,
+      "canonical_id": "VF-CAP-001",
+      "id": "APL-407",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-407",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "4cac6a1579cfef62dc255e7719a0b963770e46a2ec56476eee7d1843a131c008",
+          "observed_sha256": "3a7f2cdcafe5a8b2965ea24f2c8fc42ff33422134b12ccadf605f1473891bde9",
+          "observed_suffix_sha256": "4fddc1777f26058af865cec06c540beac0c70aa355d662041b87594db7d29562"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-CAP-001.json",
+      "raw_sha256": "91377ddcc190d2bba7922bb639c2e2f63860d0df3162c06aed53aaaa8fa6593b",
+      "description_sha256": "3a7f2cdcafe5a8b2965ea24f2c8fc42ff33422134b12ccadf605f1473891bde9",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 394,
+      "canonical_id": "VF-CAP-002",
+      "id": "APL-412",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-412",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "7322cd754c7dda53ef65de9bdf4a9d6ff55df4fe218ec130fe919b080328b2ae",
+          "observed_sha256": "4edfad5b20ac996e73508a533d7444b836b672b98ddf909b01adcfac361070f2",
+          "observed_suffix_sha256": "5e2b2e063d2bbb07e2613d29e722dac60416f74b2f08c2d007f2682ae19360f7"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-CAP-002.json",
+      "raw_sha256": "c2bdf3ea54bdf923013d0694b5cf8e5e6b60d0f6922d0b731852129a28a23f83",
+      "description_sha256": "4edfad5b20ac996e73508a533d7444b836b672b98ddf909b01adcfac361070f2",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 395,
+      "canonical_id": "VF-CMP-001",
+      "id": "APL-414",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-414",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "2d21cb1f96eaae6f726c7bf8b7df7c969d942bd28e34de293d4dfa1eb7621c57",
+          "observed_sha256": "ceb9cc0ab87d04ad45b85be05685fa58ac11af3dcb26a4adb2ec91177452df3f",
+          "observed_suffix_sha256": "5d962af41fd4255712976accee0ed5efc41bd3bbcb3553d4d5f7f11194bd1973"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-CMP-001.json",
+      "raw_sha256": "7276ec3b54f632e3c692622648e28cccff55517e047459c8ca0ed40abc91fc3e",
+      "description_sha256": "ceb9cc0ab87d04ad45b85be05685fa58ac11af3dcb26a4adb2ec91177452df3f",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 396,
+      "canonical_id": "VF-DIN-001",
+      "id": "APL-571",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-571",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "e955c714250aa7cfe6f74c88450213bf099832771ed48af6ad08266581bae6c1",
+          "observed_sha256": "82ed7004fa4e19d57104cfd5adc3ffd19d95da03cb47ee44bc1952be378b3b2d",
+          "observed_suffix_sha256": "44ad562e7a4bccd7d9d417b83f8b20b6c1b766003cec62de578fd3f8585544b9"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-DIN-001.json",
+      "raw_sha256": "44bbbd68bfb3072dd2fc4a9b329d1ee8a9dbcccf76568fc08d1fbbabc2b18f10",
+      "description_sha256": "82ed7004fa4e19d57104cfd5adc3ffd19d95da03cb47ee44bc1952be378b3b2d",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 397,
+      "canonical_id": "VF-DIN-002",
+      "id": "APL-574",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-574",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "77c3a06d79cb573c39e8d9fa5a4a926a3d51f92c9d86117513eb44e959e98a36",
+          "observed_sha256": "a2f5492a3d8ec2afd0a000a6ce11dd9a6ccdbf90016e10e8ecab7cd337a2d2c2",
+          "observed_suffix_sha256": "19aeb484483e230294cdbbfcae040d220e0bbbd555da9241cf6ed39a87704ce5"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-DIN-002.json",
+      "raw_sha256": "e0adaf61ed3a4c9e37e820d66ebb0b084a6f3f2be76e5fb94eef5be2182048c2",
+      "description_sha256": "a2f5492a3d8ec2afd0a000a6ce11dd9a6ccdbf90016e10e8ecab7cd337a2d2c2",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 398,
+      "canonical_id": "VF-DR-001",
+      "id": "APL-584",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-584",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "e712782368172456033f745b684e535cc5ae47a36d4400c0b1c9da1cc59ec177",
+          "observed_sha256": "a241037f8879294bd799ad6c74b18a642e3851ad88e6677f1379df9fe7fef242",
+          "observed_suffix_sha256": "634eed7089768e386f311fef256fde8c29570a8135e57ed12ce0f8ac278cff14"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-DR-001.json",
+      "raw_sha256": "44f35bf17dcb1c23f62bcdf24d958b5759c9e9d2f07265fa2c2eeb14dc331bdb",
+      "description_sha256": "a241037f8879294bd799ad6c74b18a642e3851ad88e6677f1379df9fe7fef242",
+      "original_prefix_exact": true
+    },
+    {
+      "index": 399,
+      "canonical_id": "VF-DR-002",
+      "id": "APL-587",
+      "verified": true,
+      "errors": [],
+      "normalizations": [
+        {
+          "kind": "issues",
+          "id": "APL-587",
+          "transforms": [
+            "publication_comment_heading_blankline",
+            "outside_fence_blankline_collapse",
+            "table_separator_three_to_two_dashes",
+            "remove_single_final_lf"
+          ],
+          "original_prefix_raw_exact": true,
+          "expected_raw_sha256": "cd009de7f5a2748f6223db6e3b24c5d35bb013ab1adb69f356215cb2919393df",
+          "observed_sha256": "f1e08bc65a7c544d70fb381a784cbe7cef59963366d4124d94a4e09bfc693941",
+          "observed_suffix_sha256": "abb5031a3a31bb5ae49e0e6c298e564f693c80799c64e53cd4c991cd90e86500"
+        }
+      ],
+      "raw_path": "native-after/partition-300-400/VF-DR-002.json",
+      "raw_sha256": "c379322b624b903e8cb700d280bd3616d30dc1bcdfab284baee146f5ff57aa2c",
+      "description_sha256": "f1e08bc65a7c544d70fb381a784cbe7cef59963366d4124d94a4e09bfc693941",
+      "original_prefix_exact": true
+    }
+  ]
+}

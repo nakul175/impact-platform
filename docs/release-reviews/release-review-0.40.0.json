@@ -370,6 +370,27 @@
       "prepared_by": "Codex root agent; source/evidence review phases are not human signoff",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-06",
+      "change_id": "US-DX-01a-evidence-resolver",
+      "change": "Prepare a native-qualified protected Evidence revision resolver without route integration",
+      "paths": [
+        "apps/api/impact_api/ai_diagnosis_evidence.py",
+        "qualification/test_ai_diagnosis_evidence_unit.py",
+        "qualification/test_ai_diagnosis_evidence_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Unintegrated helper validates recommended closed bounded canonical selectors and resolves fresh current Evidence authority under tenant lock using existing app capabilities and exact AVAILABLE revision identity. CLEAN/unpurged upload or nonempty external-source metadata required; never fetch content or return metadata. No route/DTO/capability/profile/migration/UI change, human approval or task completion. Caller must authenticate identity and perform diagnosis authorization. Native helper tests and shape tests do not supply API/read/history/replay/completion integration or release acceptance.",
+      "prepared_by": "Codex root agent; separate code/evidence self-review is not human signoff",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

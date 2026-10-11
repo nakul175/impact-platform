@@ -1,0 +1,59 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T13:48:58.160659+00:00",
+  "tested_base_head": "ef1c44340230bc301adba1a93d3bd057e7f010cd",
+  "tested_working_sources_sha256": {
+    "apps/api/impact_api/ai_diagnosis_evidence.py": "aa7a086880a6095fbdf7146b187c0d43495bc9f7ac47baa65de7f1f25b55b97e",
+    "qualification/test_ai_diagnosis_evidence_native.py": "5a709a767fb397ce3f33a4f71fe8078c1c23497aa772b68d34e619dca0dcbe30",
+    "qualification/test_ai_diagnosis_evidence_unit.py": "ab37ae01a4ab03ab2ee7db4ac0767a80aa1f1c3d56963984c81dcbcc6e7ea260"
+  },
+  "stage": "UNINTEGRATED_RESOLVER_FOUNDATION",
+  "actual_tests": {
+    "final_native_helper_cases_passed": 12,
+    "final_selector_shape_cases_passed": 12,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0,
+    "earlier_passed": 21,
+    "release_threat_unit_passed_separate": 46
+  },
+  "engine": "Actual local native PostgreSQL17.10 provisioned restricted APP login; helper called directly with synthetic existing actor identity, not HTTP/provider authentication qualification",
+  "source_pins_stable": 275,
+  "all46_applied_migrations_byte_exact": true,
+  "source_contract": "Recommended closed canonical object_id/revision_id selectors, at most5 per problem. No notes replacement or accepted cardinality decision. Context and evidence authorization freshly resolved under tenant lock. Exact AVAILABLE historical revision, CLEAN/unpurged upload or nonempty external reference metadata required; no fetch/download or metadata return.",
+  "observed_boundaries": [
+    "Available external source and actual CLEAN upload preserve exact selectors with no domain write",
+    "Missing object/revision, mismatched object/revision and wrong kind collapse to generic404",
+    "Foreign tenant case refuses current actor membership; not a separate dual-tenant authorised-reader RLS proof",
+    "Temporarily narrowed existing evidence.read purpose refuses repeated calls and restored purpose permits; synthetic narrowing restored, no account/grant creation",
+    "New append-only RESTRICTED/REMOVED history remains unavailable after a later AVAILABLE current head; old available revision exact",
+    "Malformed appended synthetic upload metadata/missing source returns generic404 with zero writes, no SQL adapter exception"
+  ],
+  "reviews": {
+    "code": "Separate inspection checked current-authority lock/context, per-object capability and exact tenant/object/revision/kind restriction filters; malformed upload UUID validation added before SQL. Caller must authenticate identity and enforce diagnosis permission, retention/privacy policy and atomic integration.",
+    "evidence": "Separate inspection parsed actual24 pass nodes, earlier21 pass, additional46 release/threat units, stable source hashes, untouched46 migrations and cleanup. Tests are helper calls under actual login, not API/UI integration or independent human review."
+  },
+  "initial_security_metadata_check": "New uncommitted impact entry used area contract rather than ai-module and exceeded change_id length; structural checker refused2 fields. Corrected metadata only, previous entries unchanged and confirmed_by null. Not a runtime test failure.",
+  "cleanup": "Runner ended and clusterstop0; prior evidence unmodified, synthetic authority narrowing restored",
+  "remaining": [
+    "No diagnosis DTO/API/history/list/receipt/replay/completion wiring or UI selector exists yet",
+    "Need compatible optional-field/storage linkage design, read/disclosure/authority under lock and exact-retry tests, current-source qualification after integration",
+    "Required hosted/container/financial/export/human/operational/owner release gates remain held"
+  ],
+  "deployed": false,
+  "human_signoff": false,
+  "new_spending": false,
+  "evidence_sha256": {
+    "run-1/RUN-RECEIPT.json": "d964b47eafd1a852d11650747dfae9607c5148ac600b5c1bdac5100f2178b2a5",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "49facf6fa603259d92cbbe8c7c7c5341e140818d1bb9b19a03c4842b8515306f",
+    "run-1/integrated-worker-fence.log": "0ad04834e1dab15ae586d899ac0214744a0e08b471fa0e9c265a3bc2cfad9248",
+    "run-2/RUN-RECEIPT.json": "d387dd803ce3d8e71c4eb2bbd50e94cfd8997249aa0a849ebb9bdec354f28cd6",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "015c1a5c9e5fcdea3845fc6b87a9b18f070e7074c6a04c23fc83261f97fab623",
+    "run-2/integrated-worker-fence.log": "0923a048d1b4a051e7caab88335f40ede84d727e657a66bfd620f9e998ff0ec1",
+    "run-2/release-unit-tests.xml": "6de6352885198b725046d73482fbbd78fe0dd711910f9af0231f2d49c1aa60a1",
+    "run-2/release-unit.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611"
+  }
+}

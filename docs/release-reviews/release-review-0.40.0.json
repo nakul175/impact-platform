@@ -498,7 +498,8 @@
       "summary": "Canonical exact selectors only; notes required and no default permission widening. Bounded current-authority Evidence metadata pages; source GET before selecting, changed-version refusal, late response invalidation, capability/session/tenant keyed remount. Actual adapter10 and native browser9 groups295 assertions scoped separately; positive selector browser path and external gates pending.",
       "prepared_by": "Codex root integration; separate code/evidence self-review",
       "prepared_on": "2026-10-11",
-      "confirmed_by": null
+      "confirmed_by": null,
+      "change_id": "IR-0.40-11"
     }
   ],
   "evidence": [

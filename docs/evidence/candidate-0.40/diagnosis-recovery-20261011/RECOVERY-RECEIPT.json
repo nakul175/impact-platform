@@ -1,0 +1,73 @@
+{
+  "phase": "completed evidence review after distinct source review",
+  "reviewer": "root agent; no independent agent/human signoff",
+  "parent_head": "38adf274e40ad552d2615838212c5168a6407e3f",
+  "tested_source_sha256": {
+    "qualification/test_native_restart.py": "1aeb282aff8506f8b0b6202147213f9baa108f30fb39d3ef5a58854d0437d348",
+    "qualification/test_ai_diagnosis_recovery.py": "0c4552c701367510de1e27d5926aef8cfa6a4f56ecad49c50efae0005d79d8ca"
+  },
+  "source_changes_during_run": [],
+  "native_focused": {
+    "passed": 10,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "skip": "Restored API case needs an actual restored API and is executed separately below"
+  },
+  "restart_phase_1": {
+    "passed": 1,
+    "skipped": 0
+  },
+  "restart_phase_2": {
+    "passed": 1,
+    "skipped": 0
+  },
+  "restored_api": {
+    "passed": 1,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "exact_versions_current_history_and_receipts": true,
+    "changed_payload_retry_refused": true,
+    "no_duplicate_domain_writes": true,
+    "runtime_requires_unprivileged_db": true
+  },
+  "generic_restore": "PASS",
+  "populated_upgrade_40_to_44": "PASS",
+  "private_cluster_stopped": true,
+  "restored_api_stopped": true,
+  "restored_clone_dropped": true,
+  "private_cookie_state_committed": false,
+  "historical_evidence_restored": [
+    "docs/evidence/native-application-tests.xml",
+    "docs/evidence/native-restore-drill.json",
+    "docs/evidence/native-qualification.json"
+  ],
+  "full_suite_after_this_patch": "NOT RERUN; prior full native suite at preceding checkpoint remains historical; affected native/restart/restored-API checks executed",
+  "remaining": [
+    "Live identity provider",
+    "Container stack",
+    "Exact-head hosted CI",
+    "Human security/accessibility and owner acceptance",
+    "Reviewed existing-tenant access upgrade"
+  ],
+  "story_done": false,
+  "next_story_started": false,
+  "remote_actions": false,
+  "artifact_hashes": {
+    "restored-api-check.log": "d907fec0e0445cfe67a7272e864304e81194b234052d6bdfcb6ec87c0b123e62",
+    "RUN-RECEIPT.json": "8ec87a180b3c89afc8ff5af84e64e06b4945c64d08fcd26d389540757fb6a8d2",
+    "cluster-start.log": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "restart-phase-1.xml": "9075cd21a2bbb76d92d588fff4f77f15991755f8f72bd6a414db41fb3d14052c",
+    "restart-phase-2.xml": "771993a8b26ffcb87521a0a06666dbd889cdb0d437b0c6158c101ab6066e3448",
+    "native-full.log": "e10cea24adb29fbc9523652b3463fa4c0a79307f732df4f3d064f6877762b3a9",
+    "local-orchestration-source.py": "0e051c254a695af367080abe6ee1b2aa3b96c1be74ad0dd128743e159dc22fae",
+    "SOURCE-REVIEW.json": "30e074f6516feabee29453e755ae4c4cb3fac9096aab12acf0bd2e5336f43def",
+    "restored-api-tests.xml": "5918157e0f2dace143b4f98c80db23d3a51bb6110d888ce139bee1f6a75ed50c",
+    "initdb.log": "9bb89fdf12e219c69d09880ea830825af01001f8cf2dcecc295fa51f2fd8792b",
+    "generated-evidence/native-application-tests.xml": "621f40530d63a5ad30859e43c15d533d8fb4a825d81201d44b0ceb319f2a6bff",
+    "generated-evidence/native-restore-drill.json": "8e900b5b49b30fbcfcf17ff09b49e5282d7f8039412103cfe7ca5afbb2d2e345",
+    "generated-evidence/native-qualification.json": "059003ac022a7c4d3d785920b0248d6912b12ac8c75e3ff9c625acca7ce049d1"
+  }
+}

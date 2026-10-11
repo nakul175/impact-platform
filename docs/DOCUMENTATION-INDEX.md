@@ -153,6 +153,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### engineering/delivery-system-20261011
 
 - [Imprana Commons — diagnosis coding handover](engineering/delivery-system-20261011/HANDOVER.md)
+- [US-DX-01a — task delivery and status reconciliation](engineering/delivery-system-20261011/TASK-DELIVERY-RECONCILIATION.md)
 - [Imprana Commons — manual problem diagnosis candidate](engineering/delivery-system-20261011/US-DX-01a-IMPLEMENTATION.md)
 
 ### governance

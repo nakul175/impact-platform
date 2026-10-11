@@ -1,0 +1,32 @@
+{
+  "phase": "source/task review",
+  "reviewer": "root agent, no human acceptance",
+  "observed_at": "2026-10-11T10:56:05.703805+00:00",
+  "candidate_head": "cc8b1c001f1f878ad7f1f5835a3d6eb89ad1d772",
+  "document_sha256": "7df303898f0075bb9601b937780369e450e9627d6810fc4b7b35915015651730",
+  "task_description_sha256": {
+    "APL-665": "752c604a388e020588f0cac0a85f693d7773772f00067dbbd1d53313131e1c7c",
+    "APL-666": "a9bb0a55446295f42603fad9fbb479c880026cc149f7ad09453f8b9b1b51d09a",
+    "APL-669": "297fa99071fe8e112883462a4ca334527f2a1976474353fbc78eff36b8cdb9a4",
+    "APL-671": "5d9ad23ac7572cb07a3b147e00ba0f23b1d659cbeb21275d6c8ff058afb69095",
+    "APL-675": "637785b4c94dfb1b46dc8130f7ab6806b3c106b1fdd51506a132b6cb9b09fcd1",
+    "APL-678": "944855eb8c0751a111ceb30ec779eb151d1be837bd5d2c2d51288d5d0d10d506"
+  },
+  "all_native_statuses": "Backlog",
+  "proposal_only": true,
+  "descriptions_criteria_labels_hierarchy_priority_changed": false,
+  "material_task_gaps": [
+    "Diagnosis-specific SQL payload constraints not implemented",
+    "Inherited worker registry/revision access not isolated",
+    "Protected evidence selectors excluded from notes-only candidate",
+    "Container/current-head hosted CI/human acceptance held"
+  ],
+  "source_paths": {
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0044_ai_diagnoses.sql": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+    "qualification/test_native_roles.py": "97faa1f3fc14778d23616187d71aaabd98261d64f55822cb0a339b6c382724d3",
+    "docs/engineering/delivery-system-20261011/US-DX-01a-IMPLEMENTATION.md": "d9d4c445468a1276a3aa7202f0c3f2de89b919638b8cad7f519a621826180673"
+  }
+}

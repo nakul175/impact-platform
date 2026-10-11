@@ -1,0 +1,42 @@
+{
+  "phase": "separate evidence reconciliation after source review",
+  "reviewer": "root agent; not independent human signoff",
+  "observed_at": "2026-10-11T10:56:39.105804+00:00",
+  "candidate_head": "cc8b1c001f1f878ad7f1f5835a3d6eb89ad1d772",
+  "document_sha256": "7df303898f0075bb9601b937780369e450e9627d6810fc4b7b35915015651730",
+  "task_descriptions_sha256": {
+    "APL-665": "752c604a388e020588f0cac0a85f693d7773772f00067dbbd1d53313131e1c7c",
+    "APL-666": "a9bb0a55446295f42603fad9fbb479c880026cc149f7ad09453f8b9b1b51d09a",
+    "APL-669": "297fa99071fe8e112883462a4ca334527f2a1976474353fbc78eff36b8cdb9a4",
+    "APL-671": "5d9ad23ac7572cb07a3b147e00ba0f23b1d659cbeb21275d6c8ff058afb69095",
+    "APL-675": "637785b4c94dfb1b46dc8130f7ab6806b3c106b1fdd51506a132b6cb9b09fcd1",
+    "APL-678": "944855eb8c0751a111ceb30ec779eb151d1be837bd5d2c2d51288d5d0d10d506"
+  },
+  "evidence_receipt_sha256": {
+    "full-regression-20261011/REGRESSION-RECEIPT.json": "4071f17b517ea661214eb00da1a394c52c495baed98ba5e543d44288f51140c7",
+    "native-20261011/NATIVE-QUALIFICATION-RECEIPT.json": "abd7c3e8af39da5c03522ffc3d096df5bde70cf3a1ef54db0dabea2de572ca9f",
+    "diagnosis-recovery-20261011/RECOVERY-RECEIPT.json": "43fa94a0ce3e08cabd36c5cf27db04e3eb01532c29be79c33f6eb28a71183cb5",
+    "live-identity-20261011/IDENTITY-QUALIFICATION-RECEIPT.json": "da00b3553d82cc8a64eb39d7c42223dc38db174859010c57bc2e6ecdc5453241",
+    "native-idempotency-races-20261011/IDEMPOTENCY-RACE-RECEIPT.json": "550c044e149261b982d867b61b3f32ee0ecdf828b4d9679f4e9fde3ffe2b310d"
+  },
+  "status_proposal": {
+    "APL-361": "In Progress",
+    "APL-665": "In Review",
+    "APL-666": "In Progress",
+    "APL-669": "In Review",
+    "APL-671": "In Progress",
+    "APL-675": "In Review",
+    "APL-678": "In Progress"
+  },
+  "proposal_applied": false,
+  "owner_status_sync_answer": "PENDING_DIRECT_ANSWER",
+  "original_criteria_or_native_issue_changes": false,
+  "release_accepted": false,
+  "new_runtime_tests": "NONE; documentation and source/evidence inspection only",
+  "scope_gaps_retained": [
+    "Diagnosis-specific SQL payload constraints not implemented",
+    "Inherited worker registry/revision access not isolated",
+    "Protected evidence selectors excluded from notes-only candidate",
+    "Container/current-head hosted CI/human acceptance held"
+  ]
+}

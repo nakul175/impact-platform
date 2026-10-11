@@ -307,6 +307,29 @@
       "prepared_by": "Codex root agent; advisory review by separate delivery controls agent",
       "prepared_on": "2026-10-11",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-03",
+      "change_id": "US-DX-01a",
+      "change": "Add diagnosis augmentation to existing contract generation and implemented API export",
+      "paths": [
+        "scripts/build_contracts.py",
+        "scripts/export_implemented_api.py",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "contracts"
+      ],
+      "threats": [
+        "TH03",
+        "TH06",
+        "TH30"
+      ],
+      "summary": "Post-commit structural review found that the existing two-line diagnosis import/augment wiring in scripts/build_contracts.py was not named in the initial impact record. This additive entry covers that already tested wiring and implemented-API export addition. The reviewed generated contracts add eight diagnosis operations and thirteen schemas including a separately closed AIDiagnosisError; all older published schemas and paths stay exact. No runtime authority, worker, credential, provider, database or spending change is introduced by this record. Actual local source pins and unit/API/browser outcomes stay unchanged. Prior impact entries, residual threat decisions and failure evidence are preserved; native/current-head CI and human security/release gates remain held.",
+      "prepared_by": "Codex root agent; local documentation correction, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
     }
   ],
   "evidence": [

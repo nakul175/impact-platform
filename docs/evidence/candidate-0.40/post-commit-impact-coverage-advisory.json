@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-11T09:07:30.148622+00:00",
+  "project": "Imprana Commons",
+  "story": "US-DX-01a",
+  "mode": "Independent documentation-only post-commit impact coverage advisory; no product or checker execution",
+  "implementation_commit": "2e9f7841175efea3c5fc7572c6402b1dc89ff811",
+  "source_base": "92341d6d81414be4627c5981363636580f7cbf52",
+  "current_head_observed": "2e9f7841175efea3c5fc7572c6402b1dc89ff811",
+  "outcome": "ADDITIVE_IMPACT_COVERAGE_CORRECTION_SOURCE_REVIEW_ACCEPTABLE_WITH_RELEASE_GATES_HELD",
+  "checks": {
+    "new_entry_only_IR03": true,
+    "earlier_IR_entries_exact": true,
+    "other_review_fields_exact": true,
+    "passed_remains_false": true,
+    "all_three_entries_unconfirmed": true,
+    "IR03_has_missing_generator_path_and_contracts_area": true,
+    "IR03_unknown_threats_absent": true,
+    "all_material_paths_have_correct_area_coverage": true,
+    "canonical_tracked_diff_documentation_only": true,
+    "handover_append_only_bytes": true,
+    "all356_tested_source_pins_exact": true,
+    "all356_tested_bytes_committed_in_implementation_head": true,
+    "prior_source_reviews_pins_exact": true,
+    "frozen_migrations_criteria_history_exact": true,
+    "retained_prior_advisory_and_failure_copies_exact": true,
+    "no_venv_tracked": true
+  },
+  "original_structural_problem": "Parent reported committed73-path structural review lacked material scripts/build_contracts.py impact path. This advisory verifies the proposed append from source and does not claim an executed final checker pass.",
+  "changed_documentation": {
+    "tracked_diff": [
+      "docs/engineering/delivery-system-20261011/HANDOVER.md",
+      "docs/release-reviews/release-review-0.40.0.json"
+    ],
+    "staged_paths_at_observation": [],
+    "release_review_prior_pin": {
+      "sha256": "c0fc5411542624fa8d02111f92f0e556e5f29581c8305db9567015a0363ab91b",
+      "bytes": 10449
+    },
+    "release_review_current_pin": {
+      "sha256": "3722e5e1131562560fce31f796aea00d04434f7a31fca425a8118c092aaf72ab",
+      "bytes": 11907
+    },
+    "handover_current_pin": {
+      "sha256": "67b179c144a39f2942e5b1e96cda3f43691d0187d72de08c41a4d4385fd858e7",
+      "bytes": 4683
+    }
+  },
+  "prior_impact_entries": {
+    "IR-0.40-01": {
+      "semantic_exact": true,
+      "raw_entry_bytes_exact": true,
+      "prior_raw_sha256": "d609e9e74372c686df6308b654770820e5a241e152dff221eac1d3fbf9358b25",
+      "current_raw_sha256": "d609e9e74372c686df6308b654770820e5a241e152dff221eac1d3fbf9358b25",
+      "confirmed_by": null
+    },
+    "IR-0.40-02": {
+      "semantic_exact": true,
+      "raw_entry_bytes_exact": true,
+      "prior_raw_sha256": "702071cf1f89a7faf40e36a87195208ccdac3482935a6c913296d84a158499e7",
+      "current_raw_sha256": "702071cf1f89a7faf40e36a87195208ccdac3482935a6c913296d84a158499e7",
+      "confirmed_by": null
+    }
+  },
+  "new_impact_entry": {
+    "id": "IR-0.40-03",
+    "change_id": "US-DX-01a",
+    "change": "Add diagnosis augmentation to existing contract generation and implemented API export",
+    "paths": [
+      "scripts/build_contracts.py",
+      "scripts/export_implemented_api.py",
+      "packages/contracts/openapi.json",
+      "packages/contracts/openapi-implemented.json"
+    ],
+    "areas": [
+      "contracts"
+    ],
+    "threats": [
+      "TH03",
+      "TH06",
+      "TH30"
+    ],
+    "summary": "Post-commit structural review found that the existing two-line diagnosis import/augment wiring in scripts/build_contracts.py was not named in the initial impact record. This additive entry covers that already tested wiring and implemented-API export addition. The reviewed generated contracts add eight diagnosis operations and thirteen schemas including a separately closed AIDiagnosisError; all older published schemas and paths stay exact. No runtime authority, worker, credential, provider, database or spending change is introduced by this record. Actual local source pins and unit/API/browser outcomes stay unchanged. Prior impact entries, residual threat decisions and failure evidence are preserved; native/current-head CI and human security/release gates remain held.",
+    "prepared_by": "Codex root agent; local documentation correction, no human confirmation",
+    "prepared_on": "2026-10-11",
+    "confirmed_by": null
+  },
+  "material_path_coverage": [
+    {
+      "path": "apps/api/impact_api/ai_diagnoses.py",
+      "required_areas": [
+        "ai-module"
+      ],
+      "entry_ids": [
+        "IR-0.40-01"
+      ],
+      "area_coverage": true
+    },
+    {
+      "path": "apps/api/impact_api/ai_diagnosis_contracts.py",
+      "required_areas": [
+        "ai-module",
+        "contracts"
+      ],
+      "entry_ids": [
+        "IR-0.40-01",
+        "IR-0.40-02"
+      ],
+      "area_coverage": true
+    },
+    {
+      "path": "infrastructure/migrations/0044_ai_diagnoses.sql",
+      "required_areas": [
+        "migration"
+      ],
+      "entry_ids": [
+        "IR-0.40-01"
+      ],
+      "area_coverage": true
+    },
+    {
+      "path": "packages/contracts/access-policy.json",
+      "required_areas": [
+        "access-policy"
+      ],
+      "entry_ids": [
+        "IR-0.40-01"
+      ],
+      "area_coverage": true
+    },
+    {
+      "path": "scripts/build_contracts.py",
+      "required_areas": [
+        "contracts"
+      ],
+      "entry_ids": [
+        "IR-0.40-03"
+      ],
+      "area_coverage": true
+    }
+  ],
+  "material_mapping_source": {
+    "path": "scripts/release_review.py",
+    "pin": {
+      "sha256": "79105a6f9944b341ad70fba8762c20ddd6cf01d7d70994ce5beccc9c21b5f88a",
+      "bytes": 52890
+    },
+    "method": "AST literal read of MATERIAL_AREAS plus stdlib fnmatch; no import, execution or alteration of product/checker code"
+  },
+  "tested_source_manifest": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/docs/evidence/candidate-0.40/tested-source-manifest.json",
+    "pin": {
+      "sha256": "cf75f4e09a0ca806034d4f561a44566bde8f5b2303fdc3e3c50f07aa021f3529",
+      "bytes": 40817
+    },
+    "count": 356,
+    "current_mismatches": [],
+    "implementation_commit_mismatches": []
+  },
+  "reviewed_wiring_source_pins": {
+    "scripts/build_contracts.py": {
+      "sha256": "df8be77d189d038590d4ff1ff34f6a3570bd60900d797066c96685dc3d7f181a",
+      "bytes": 10577
+    },
+    "scripts/export_implemented_api.py": {
+      "sha256": "1272c5186094f7504f859e1ff448cbc30cb2ec27f0b26651edb768b6e4d1eb15",
+      "bytes": 6307
+    },
+    "packages/contracts/openapi.json": {
+      "sha256": "17f1061ba9b8cd7af08d3ccfedebef802f1a378eb8de67ccad52c2dea0af1cf1",
+      "bytes": 2283112
+    },
+    "packages/contracts/openapi-implemented.json": {
+      "sha256": "968ccba6d10686d404f99ce94abfa9868161323f7151a0e5f99b6bd11e983497",
+      "bytes": 1879856
+    },
+    "apps/api/impact_api/ai_diagnosis_contracts.py": {
+      "sha256": "65748a7b44daf535cf68120f414cdad57bb905f8746e3675f3089a6701d05def",
+      "bytes": 7381
+    },
+    "apps/web/src/AIDiagnosis.tsx": {
+      "sha256": "2b45b4e29cf003982271d5bdd791c8f8ba90e90c2ad8e1790e1fced5e9866fc3",
+      "bytes": 40262
+    }
+  },
+  "earlier_final_code_advisory": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/final-code-review/FINAL-CODE-CLOSURE-ADVISORY.json",
+    "pin": {
+      "sha256": "66fde74c8db82c8f36694df44214dc20ac8df82f0d663b5a719df3322c871418",
+      "bytes": 16450
+    },
+    "source_pins_still_exact": true
+  },
+  "historical_bytes_preserved": {
+    "infrastructure/migrations": {
+      "base_file_count": 43,
+      "changed": [],
+      "all_byte_exact": true
+    },
+    "docs/backlog": {
+      "base_file_count": 57,
+      "changed": [],
+      "all_byte_exact": true
+    },
+    "docs/qa/standards-completion-20261011": {
+      "base_file_count": 835,
+      "changed": [],
+      "all_byte_exact": true
+    },
+    "docs/evidence": {
+      "base_file_count": 717,
+      "changed": [],
+      "all_byte_exact": true
+    },
+    "specification": {
+      "base_file_count": 66,
+      "changed": [],
+      "all_byte_exact": true
+    },
+    ".github/workflows": {
+      "base_file_count": 2,
+      "changed": [],
+      "all_byte_exact": true
+    }
+  },
+  "prior_receipts_and_failures_commit_exact": {
+    "docs/evidence/candidate-0.40/final-code-closure-advisory.json": true,
+    "docs/evidence/candidate-0.40/final-code-doc-oracle-supplement.json": true,
+    "docs/evidence/candidate-0.40/ui-initial-advisory.json": true,
+    "docs/evidence/candidate-0.40/ui-fix-reconciliation.json": true,
+    "docs/evidence/candidate-0.40/diagnosis-api-regression-first-failed.xml": true,
+    "docs/evidence/candidate-0.40/diagnosis-api-regression-second-failed.xml": true
+  },
+  "gates": {
+    "passed": false,
+    "G11": "Not passed",
+    "G12": "Not run",
+    "confirmed_impact_entries": 0,
+    "open_critical_count": 14,
+    "open_chains_count": 2,
+    "requirements_accepted": 0,
+    "human_security_confirmation": null,
+    "formal_engineering_workflow_activation": false,
+    "native_and_hosted_CI_and_owner_release_acceptance": "Held; documentation coverage correction does not clear them"
+  },
+  "no_canonical_edits_by_reviewer": true,
+  "product_or_CI_or_provider_execution_by_reviewer": false,
+  "external_actions_by_reviewer": false,
+  "required_next_preservation": "Root commits the coherent additive documentation correction locally and executes structural review on its final local head; retain original failure and actual final checker outcome separately. No remote push/merge/deploy approval inferred.",
+  "source_stable_during_review": true
+}

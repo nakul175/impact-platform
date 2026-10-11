@@ -21,3 +21,7 @@ Keep only this story active until its declared delivery gates are met; do not ma
 ## Continue safely
 
 Use this isolated checkout; root was sole writer and three advisory lanes stayed outside it. Reuse existing local dependencies only when locks match, or follow the normal setup after financial/network policy checks. Use unique ports and new evidence output paths. Do not rewrite old evidence: one archive regression helper still writes its migration observation into the historical path; preserve that generated observation elsewhere and restore its exact pre-run bytes. If new source changes, repeat only affected meaningful checks and refresh source/evidence review. Preserve future verified batches locally; no direct main push because main auto-deploys.
+
+## Local preservation follow-up
+
+Implementation and retained test evidence are preserved in local commit `2e9f7841175efea3c5fc7572c6402b1dc89ff811`. The post-commit structural review inspected all 73 changed paths and found one missing generator path in the impact-review record. Additive IR-0.40-03 documents the already tested contract import/augmentation wiring; prior IR entries and `passed=false` are retained. This record correction changes no tested implementation bytes and confers no release acceptance. The output checkpoint receipt records the final local head and actual structural-check result.

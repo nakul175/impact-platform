@@ -1,0 +1,51 @@
+{
+  "scope": "Post-local-commit structural review; not runtime acceptance",
+  "candidate_commit": "2e9f7841175efea3c5fc7572c6402b1dc89ff811",
+  "results": [
+    {
+      "i": 0,
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "833521",
+        "wall_time_seconds": 0.213796959,
+        "exit_code": 1,
+        "original_token_count": 204,
+        "output": "change set: 73 paths since 92341d6d81414be4627c5981363636580f7cbf52 (92341d6d8141)\n  material: apps/api/impact_api/ai_diagnoses.py (ai-module)\n  material: apps/api/impact_api/ai_diagnosis_contracts.py (ai-module, contracts)\n  material: infrastructure/migrations/0044_ai_diagnoses.sql (migration)\n  material: packages/contracts/access-policy.json (access-policy)\n  material: scripts/build_contracts.py (contracts)\nregister: 36 threats, 76 controls, 2 chains; open: 14 critical, 13 other, 2 chains\nopen critical: TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34\nFAIL impact review missing: the change set touches scripts/build_contracts.py (contracts); add an impact_reviews entry naming it to docs/release-reviews/release-review-0.40.0.json\nrelease review check failed: 1 problem(s)\n"
+      }
+    },
+    {
+      "i": 1,
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "910afb",
+        "wall_time_seconds": 0.000006083,
+        "exit_code": 0,
+        "original_token_count": 10,
+        "output": "docs/DOCUMENTATION-INDEX.md is current.\n"
+      }
+    },
+    {
+      "i": 2,
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "64541c",
+        "wall_time_seconds": 0.00000575,
+        "exit_code": 0,
+        "original_token_count": 3,
+        "output": "?? .venv\n"
+      }
+    },
+    {
+      "i": 3,
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "3356a6",
+        "wall_time_seconds": 0.000005667,
+        "exit_code": 0,
+        "original_token_count": 11,
+        "output": "2e9f7841175efea3c5fc7572c6402b1dc89ff811\n"
+      }
+    }
+  ],
+  "correction": "Additive unconfirmed IR-0.40-03 for already qualified contract generator wiring; no implementation edits or gate promotion."
+}

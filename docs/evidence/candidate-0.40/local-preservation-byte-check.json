@@ -1,0 +1,34 @@
+{
+  "scope": "Local byte-exact preservation; no release acceptance",
+  "implementation_commit": "2e9f7841175efea3c5fc7572c6402b1dc89ff811",
+  "preserved_base": "92341d6d81414be4627c5981363636580f7cbf52",
+  "protected_history": {
+    "docs/backlog": {
+      "files": 57,
+      "changed": []
+    },
+    "docs/qa/standards-completion-20261011": {
+      "files": 835,
+      "changed": []
+    },
+    "docs/evidence": {
+      "files": 717,
+      "changed": []
+    },
+    "specification": {
+      "files": 66,
+      "changed": []
+    },
+    ".github/workflows": {
+      "files": 2,
+      "changed": []
+    },
+    "infrastructure/migrations": {
+      "files": 43,
+      "changed": []
+    }
+  },
+  "source_pins_current_and_committed": 356,
+  "raw_failed_junit_whitespace": "Preserved byte-exact; excluded only from whitespace formatting check, not from tests or evidence review",
+  "runtime_dependencies_staged": false
+}

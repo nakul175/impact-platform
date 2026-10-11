@@ -225,3 +225,8 @@ See [0.40 release follow-up](RELEASE-0.40-ai-diagnosis.md) and its source-bound 
 ### Local schema46 diagnosis identity/order follow-up — 11 October2026
 
 Additive0046 enforces canonical unique problem IDs and member priority order; Draft partial order and SQL NULL removal storage shape remain valid. Actual158 focused native passes/one existing skip,28 version/access unit passes and56 recovery passes/one restored-mode skip followed by one restored-only API pass; real restart/restore/generic populated45-to46 upgrade passed. Earlier33 and8 failures preserved, no old test or prior migration changed. This is bounded local qualification, not full schema46 regression, independent human acceptance or deployment. See [candidate handover](engineering/delivery-system-20261011/HANDOVER.md) and [constraint receipt](evidence/candidate-0.40/diagnosis-order-schema46-20261011/CONSTRAINT-RECEIPT.json). Remaining protected-reference/access/hosted/container/human/release gates stay held,0 of50 delivered.
+
+
+### Full local native schema46 qualification — 11 October2026
+
+Exact a8597a7 source:2,530 passed/28 skipped/zero failures-errors, one unchanged IT_018 deselection and existing TestClient warning. Actual native login/restart/backup restore/generic populated45-to46 upgrade passed;271 source pins exact; historical generated evidence restored. [Current receipt](evidence/candidate-0.40/full-native-schema46-20261011/FULL-NATIVE-RECEIPT.json) records each skip and distinct source/evidence reviews. Earlier provider/browser results stay source-bound; current hosted/container/human/wider-task gates remain held, release passed=false,0/50 delivered, no remote action or spending.

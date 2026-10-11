@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="1.729" timestamp="2026-10-11T18:27:03.326600+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_diagnosis_upgrade_native" name="test_valid_legacy_diagnosis_upgrade_preserves_exact_all_revision_history" time="0.622"><failure message="psycopg.errors.NotNullViolation: null value in column &quot;created_at&quot; of relation &quot;object_registry&quot; violates not-null constraint&#10;DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 872a3ca8-6697-4587-b653-d8677762911b, AIDiagnosis, 27d1d1e9-cd44-41da-9f39-2f61b832bec3, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108dcfa70&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10a173cb0&gt;
+
+    def test_valid_legacy_diagnosis_upgrade_preserves_exact_all_revision_history(live, monkeypatch):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+&gt;           object_id = seed_history(fixture, live)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a271fd0&gt;
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '872a3ca8-6697-4587-b653-d8677762911b', '27d1d1e9-cd44-41da-9f39-2f61b832bec3', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 872a3ca8-6697-4587-b653-d8677762911b, AIDiagnosis, 27d1d1e9-cd44-41da-9f39-2f61b832bec3, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation</failure></testcase><testcase classname="qualification.test_ai_diagnosis_upgrade_native" name="test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[bad_id]" time="0.531"><failure message="psycopg.errors.NotNullViolation: null value in column &quot;created_at&quot; of relation &quot;object_registry&quot; violates not-null constraint&#10;DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, f9860286-ccb5-4429-9a6a-b5099e6d5577, AIDiagnosis, 16839275-5ea2-486f-9299-c014ffca644c, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108dcfa70&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10a266d20&gt;
+fault = 'bad_id'
+
+    @pytest.mark.parametrize("fault", ["bad_id", "duplicate_priority"])
+    def test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object(live, monkeypatch, fault):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+&gt;           object_id = seed_history(fixture, live, fault=fault)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a34a210&gt;
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'f9860286-ccb5-4429-9a6a-b5099e6d5577', '16839275-5ea2-486f-9299-c014ffca644c', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, f9860286-ccb5-4429-9a6a-b5099e6d5577, AIDiagnosis, 16839275-5ea2-486f-9299-c014ffca644c, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation</failure></testcase><testcase classname="qualification.test_ai_diagnosis_upgrade_native" name="test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[duplicate_priority]" time="0.502"><failure message="psycopg.errors.NotNullViolation: null value in column &quot;created_at&quot; of relation &quot;object_registry&quot; violates not-null constraint&#10;DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 2c25701e-274b-4d6e-8da4-0e2a57984d08, AIDiagnosis, d67ce095-e2d8-4693-adc7-a5708023eff1, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108dcfa70&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10a4064e0&gt;
+fault = 'duplicate_priority'
+
+    @pytest.mark.parametrize("fault", ["bad_id", "duplicate_priority"])
+    def test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object(live, monkeypatch, fault):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+&gt;           object_id = seed_history(fixture, live, fault=fault)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a0aaf90&gt;
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '2c25701e-274b-4d6e-8da4-0e2a57984d08', 'd67ce095-e2d8-4693-adc7-a5708023eff1', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 2c25701e-274b-4d6e-8da4-0e2a57984d08, AIDiagnosis, d67ce095-e2d8-4693-adc7-a5708023eff1, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation</failure></testcase></testsuite></testsuites>

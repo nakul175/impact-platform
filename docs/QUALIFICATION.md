@@ -428,3 +428,8 @@ Exact a8597a7 source:2,530 passed/28 skipped/zero failures-errors, one unchanged
 ### Current schema46 local provider qualification — 11 October2026
 
 Actual18 MFA/sign-in/logout/provider diagnosis cases passed, zero skips/failures/errors, at09ebf6c with271 exact source pins. Historical provider evidence restored; all disposable services stopped. [Identity receipt](evidence/candidate-0.40/live-identity-schema46-20261011/IDENTITY-RECEIPT.json). Browser/container/hosted/human delivery gates remain held; no production/remote/spending/Done claim.
+
+
+### Diagnosis-specific legacy45-to46 upgrade qualification
+
+Three native cases passed: exact3-revision history and worker-fence preservation; current malformed ID and earlier Completed duplicate-priority refusal with complete transactional rollback and repeat refusal. Initial3 missing-timestamp fixture failures retained. All46 migrations unchanged; disposable databases/services stopped. [Receipt](evidence/candidate-0.40/diagnosis-legacy-upgrade-20261011/UPGRADE-RECEIPT.json). Earlier full/provider scope pins stay exact; no invented aggregate/full-suite run, human acceptance, hosted check or deployed story.

@@ -1,0 +1,348 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5de2ef/passwords.json
+Ready at http://127.0.0.1:8295
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+___ test_valid_legacy_diagnosis_upgrade_preserves_exact_all_revision_history ___
+
+live = <conftest.live.<locals>.Client object at 0x108dcfa70>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10a173cb0>
+
+    def test_valid_legacy_diagnosis_upgrade_preserves_exact_all_revision_history(live, monkeypatch):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+>           object_id = seed_history(fixture, live)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a271fd0>
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '872a3ca8-6697-4587-b653-d8677762911b', '27d1d1e9-cd44-41da-9f39-2f61b832bec3', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 872a3ca8-6697-4587-b653-d8677762911b, AIDiagnosis, 27d1d1e9-cd44-41da-9f39-2f61b832bec3, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+----------------------------- Captured stdout call -----------------------------
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Loaded disposable acceptance fixture
+_ test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[bad_id] _
+
+live = <conftest.live.<locals>.Client object at 0x108dcfa70>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10a266d20>
+fault = 'bad_id'
+
+    @pytest.mark.parametrize("fault", ["bad_id", "duplicate_priority"])
+    def test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object(live, monkeypatch, fault):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+>           object_id = seed_history(fixture, live, fault=fault)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a34a210>
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', 'f9860286-ccb5-4429-9a6a-b5099e6d5577', '16839275-5ea2-486f-9299-c014ffca644c', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, f9860286-ccb5-4429-9a6a-b5099e6d5577, AIDiagnosis, 16839275-5ea2-486f-9299-c014ffca644c, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+----------------------------- Captured stdout call -----------------------------
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Loaded disposable acceptance fixture
+_ test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[duplicate_priority] _
+
+live = <conftest.live.<locals>.Client object at 0x108dcfa70>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10a4064e0>
+fault = 'duplicate_priority'
+
+    @pytest.mark.parametrize("fault", ["bad_id", "duplicate_priority"])
+    def test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object(live, monkeypatch, fault):
+        with legacy_database(monkeypatch) as (migrate, migration, fixture):
+>           object_id = seed_history(fixture, live, fault=fault)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_ai_diagnosis_upgrade_native.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_diagnosis_upgrade_native.py:75: in seed_history
+    c.execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10a0aaf90>
+query = "INSERT INTO impact.object_registry(tenant_id,object_id,object_type,head_revision,lifecycle_state,classification,owner_id,created_by) VALUES(%s,%s,'AIDiagnosis',%s,'Draft','INTERNAL',%s,%s)"
+params = ('ce56220a-32a5-5ca5-a45f-860dc3d9c958', '2c25701e-274b-4d6e-8da4-0e2a57984d08', 'd67ce095-e2d8-4693-adc7-a5708023eff1', '1ddc84bc-b994-566b-8e69-bd78fba85d13', '1ddc84bc-b994-566b-8e69-bd78fba85d13')
+prepare = None, binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -> Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.NotNullViolation: null value in column "created_at" of relation "object_registry" violates not-null constraint
+E           DETAIL:  Failing row contains (ce56220a-32a5-5ca5-a45f-860dc3d9c958, 2c25701e-274b-4d6e-8da4-0e2a57984d08, AIDiagnosis, d67ce095-e2d8-4693-adc7-a5708023eff1, Draft, INTERNAL, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null, 1ddc84bc-b994-566b-8e69-bd78fba85d13, null).
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: NotNullViolation
+----------------------------- Captured stdout call -----------------------------
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Loaded disposable acceptance fixture
+=========================== short test summary info ============================
+FAILED qualification/test_ai_diagnosis_upgrade_native.py::test_valid_legacy_diagnosis_upgrade_preserves_exact_all_revision_history
+FAILED qualification/test_ai_diagnosis_upgrade_native.py::test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[bad_id]
+FAILED qualification/test_ai_diagnosis_upgrade_native.py::test_invalid_legacy_diagnosis_refuses_upgrade_and_rolls_back_every_new_object[duplicate_priority]
+3 failed in 1.73s

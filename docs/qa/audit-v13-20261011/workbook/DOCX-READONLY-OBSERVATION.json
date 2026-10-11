@@ -1,0 +1,14 @@
+{
+  "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/current/Impact-Management-Test-Strategy-v1.1.docx",
+  "scope": "OOXML text inspection only; no rendering/edit/export/qualification",
+  "source_sha256_before": "73ee84a55a836fa4c651af1da5ce69af71ce4ac7ea3632de948da54953f0af81",
+  "source_sha256_after": "73ee84a55a836fa4c651af1da5ce69af71ce4ac7ea3632de948da54953f0af81",
+  "nonempty_paragraphs": 160,
+  "initial_paragraphs": [
+    "Impact Management PlatformTest Strategy",
+    "Version 1.1 | 27 September 2026 | Qualification and execution plan",
+    "This document defines how to verify the Impact Management Platform against its FSD, HLD and LLD. It provides the execution model for the accompanying 825-case workbook and the executable reference, integration and smoke harnesses. It is intended for QA, engineering, security, SRE, mobile, data, AI evaluation and product acceptance leads.",
+    "Build 0.12.0 now has a runnable development implementation and recorded application and browser checks. Current execution is described in the implementation reconciliation below. Full product acceptance and production deployment remain pending."
+  ],
+  "product_tests_executed": false
+}

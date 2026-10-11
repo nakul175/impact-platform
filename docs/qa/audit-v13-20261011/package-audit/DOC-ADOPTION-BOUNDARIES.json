@@ -1,0 +1,144 @@
+{
+  "scope": "Bounded package-adoption documentation comparison only; not root complete semantic/engineering audit",
+  "baseline_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "baseline_tree": "c15d52d24710a9c93905b6822838d168e9c7a5dc",
+  "definitions": {
+    "ALIGNED": "Sampled baseline documentation already states the package principle; not a runtime or complete acceptance claim.",
+    "PARTIAL": "Relevant documentation/design exists, but package-specific binding/schema/evidence is incomplete or requires reconciliation.",
+    "MISSING": "Explicit named documentation/artifact absent at the frozen baseline and inspected path; not a global platform absence.",
+    "NOT_VERIFIED": "Actual external configuration, identity, evidence execution or control was not verified by this offline audit."
+  },
+  "source_pins": {
+    "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md": {
+      "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+      "line_count": 111,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md"
+    },
+    "docs/nonprofit-ai/v1.0/06-TEST-SCENARIOS-AND-CASES.md": {
+      "sha256": "cb222097c8a19f75977d4fb66726d1bcb7596554358afbb4dbf4a4e165f93a70",
+      "line_count": 2245,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/nonprofit-ai/v1.0/06-TEST-SCENARIOS-AND-CASES.md"
+    },
+    "docs/nonprofit-ai/v1.0/test-run-template.csv": {
+      "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+      "line_count": 1,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/nonprofit-ai/v1.0/test-run-template.csv"
+    },
+    "docs/QUALIFICATION.md": {
+      "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+      "line_count": 408,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/QUALIFICATION.md"
+    },
+    "docs/product/framework-v4-20261011/README.md": {
+      "sha256": "91a86b5b336c62a887fadc513d71aabee8dd0067c03c43b44e3ac2d04f15a4a2",
+      "line_count": 36,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/product/framework-v4-20261011/README.md"
+    },
+    "docs/current/TRACEABILITY.csv": {
+      "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db",
+      "line_count": 308,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:docs/current/TRACEABILITY.csv"
+    },
+    "AGENTS.md": {
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "line_count": 129,
+      "git_source": "b01a628e9a5463c92609fc7c7221fff82fd1feb2:AGENTS.md"
+    }
+  },
+  "baseline_docs_qa_tree": [],
+  "findings": [
+    {
+      "id": "B-01",
+      "documentation_status": "ALIGNED",
+      "area": "Evidence/authority separation",
+      "observed_source": "Baseline strategy lines5,11\u201315,101\u2013111 and frameworkREADME7\u201329 distinguish proposed cases, local/native limits, pending acceptance and exact-source pins.",
+      "boundary_and_followup": "No current product pass, approval or release readiness inferred."
+    },
+    {
+      "id": "B-02",
+      "documentation_status": "ALIGNED",
+      "area": "Synthetic data and protected invariants",
+      "observed_source": "Baseline strategy49\u201357/71\u201377 protects synthetic-only fixtures, independent natural persons, tenant/current authority, deterministic official results, non-mutating denied actions.",
+      "boundary_and_followup": "Applicability/complete-case adequacy still requires scoped review."
+    },
+    {
+      "id": "B-03",
+      "documentation_status": "PARTIAL",
+      "area": "Typed execution/freshness schema",
+      "observed_source": "Baseline strategy21\u201323 uses SPECIFIED_NOT_RUN and NOT_STARTED plus related evidence states; old runtemplate header differs from the8 normalized v1.3 registers.",
+      "boundary_and_followup": "Keep historical statuses exact; explicit future adapter/migration needed, never silent reinterpretation."
+    },
+    {
+      "id": "B-04",
+      "documentation_status": "PARTIAL",
+      "area": "Whole-product test traceability",
+      "observed_source": "Existing nonprofit catalogue is50scenarios/108cases/40FRs; framework edition has368stories/1328source scenarios and task evaluation plans.",
+      "boundary_and_followup": "Different inventories/aliases require reconciliation;108cases cannot certify1328scenario population."
+    },
+    {
+      "id": "B-05",
+      "documentation_status": "MISSING",
+      "area": "Normalized v1.3 register deployment at frozen baseline",
+      "observed_source": "git ls-tree at b01a628 has0 tracked docs/qa paths; no declared adopted normalized8-register/scope population in that path.",
+      "boundary_and_followup": "Bounded absence at baseline only; root current additive docs are not an adoption deployment."
+    },
+    {
+      "id": "B-06",
+      "documentation_status": "PARTIAL",
+      "area": "Canonical denominator/source review binding",
+      "observed_source": "Preserved product source/scenario hashes and alias map exist; not a frozen independently reviewed operating-candidate v1.3 criteria export with scope pins.",
+      "boundary_and_followup": "Complete source population and actual review authority remain release-dependent; checker consistency cannot establish them."
+    },
+    {
+      "id": "B-07",
+      "documentation_status": "NOT_VERIFIED",
+      "area": "Actual source/pin/control governance",
+      "observed_source": "No actual repository branch/ruleset/code-owner enforcement was inspected or changed in this offline audit.",
+      "boundary_and_followup": "Package template/control state cannot be substituted for verified repository setup; release reliance remains unresolved."
+    },
+    {
+      "id": "B-08",
+      "documentation_status": "PARTIAL",
+      "area": "Defect/retest/severity history",
+      "observed_source": "Baseline strategy79\u201397 retains failures and meaningful fix boundaries; no claim its historical narrative contains normalized per-event severity-downshift review and same-case/candidate closure for every defect.",
+      "boundary_and_followup": "Need reviewed defect-event adapter and actual retest evidence, not invented defect records."
+    },
+    {
+      "id": "B-09",
+      "documentation_status": "PARTIAL",
+      "area": "AI dataset/repetition/calibrated rubric",
+      "observed_source": "Baseline strategy43/55/63\u201367 proposes mock vs live quality boundaries and owner decisions; future corpus/rubric/live funding remains unresolved.",
+      "boundary_and_followup": "Pin current model/prompt/corpus/splits/slices and predeclared repetition before any dependent qualification; do not fabricate dataset/owner pass."
+    },
+    {
+      "id": "B-10",
+      "documentation_status": "NOT_VERIFIED",
+      "area": "Current manual/specialist/operational evidence",
+      "observed_source": "Baseline strategy40\u201343/97/103\u2013105 states accessibility/manual/UAT/performance/recovery and exact-candidate requirements; historical qualification records are retained, not rerun.",
+      "boundary_and_followup": "No current domain conformance, native concurrency, provider eligibility, restore/time target or real-user acceptance certified here."
+    },
+    {
+      "id": "B-11",
+      "documentation_status": "PARTIAL",
+      "area": "Threshold and provisional-target governance",
+      "observed_source": "Baseline strategy41/63/105 records unresolved owner-approved service/quality criteria; package gives a bounded provisional-target approach.",
+      "boundary_and_followup": "Actual approved metric/population/window/uncertainty/expiry needed before numeric gate pass. Threshold/data CSVs are outside qa_lint schema."
+    },
+    {
+      "id": "B-12",
+      "documentation_status": "NOT_VERIFIED",
+      "area": "CI execution and merge enforcement",
+      "observed_source": "Baseline AGENTS names checks and four required jobs plus money/owner controls; no current exact-candidate CI or actual enforcement qualification executed in this audit.",
+      "boundary_and_followup": "Document gate expression/trusted source/bypass and safe tests as follow-up, without changing CI/settings now."
+    },
+    {
+      "id": "B-13",
+      "documentation_status": "PARTIAL",
+      "area": "Operating release and learning dossier",
+      "observed_source": "Baseline strategy99\u2013111 includes candidate/review/business gate separation; a distinct deployable candidate/cohort/digest and actual rollout/learning/approval dossier not created by this audit.",
+      "boundary_and_followup": "Planning release goals remain separate from operating release; no deployment or learning outcome claim."
+    }
+  ],
+  "no_current_repo_adoption_or_runtime_mutation": true,
+  "package_run_scope": "57 actual checker regressions; CLI examples explicitly fictional/empty, never live qualification registers."
+}

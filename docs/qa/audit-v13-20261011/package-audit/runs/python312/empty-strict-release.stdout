@@ -1,0 +1,58 @@
+{
+  "mode": "RELEASE_RECORD_GATE",
+  "errors": [
+    "release: evidence_root must be configured or overridden",
+    "release criteria pin: missing criteria_source_ref",
+    "release criteria pin: missing criteria_source_sha256",
+    "release criteria pin: missing expected_ac_ids_sha256",
+    "release criteria pin: missing criteria_source_review_ref",
+    "release: missing canonical criteria source snapshot",
+    "release scope: missing build_sha",
+    "release scope: missing artifact_digest",
+    "release scope: missing environment",
+    "release scope: missing config_version",
+    "release scope: missing data_version",
+    "release scope: missing assessment_time",
+    "release: no applicable AC population"
+  ],
+  "warnings": [],
+  "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+  "result_counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "NOT_RUN": 0,
+    "SKIPPED": 0,
+    "NOT_APPLICABLE": 0
+  },
+  "freshness_counts": {
+    "CURRENT": 0,
+    "STALE": 0,
+    "UNASSESSED": 0
+  },
+  "historical_qualification_counts": {},
+  "selected_unique_runs": 0,
+  "unknown_applicability": 0,
+  "planned_coverage": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "validated_coverage": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "required_completion": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "selected_pass_rate": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/registers",
+  "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+}

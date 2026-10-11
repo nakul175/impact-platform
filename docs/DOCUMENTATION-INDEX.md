@@ -2,6 +2,8 @@
 
 For Imprana Commons product direction and planning, start with [product planning](product/README.md): vision, strategy, roadmap, release goals and the [Linear integration](product/linear/README.md).
 
+For the 11 October 2026 comparison against the owner-supplied APLYD QA v1.3 package, see the [testing documentation audit](qa/APLYD-v1.3-AUDIT-20261011.md) and [proposed reconciliation sequence](qa/APLYD-v1.3-RECONCILIATION-20261011.md). These document gaps and bounded checker/source observations; they do not replace historical test editions or establish current product qualification.
+
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](HANDOVER.md); `VERSION.json` is the source for the version numbers. Every build has a release note in this directory (`RELEASE-0.N*.md`; the latest is [RELEASE-0.36-procurement-preview.md](RELEASE-0.36-procurement-preview.md)).
 
 Start with the [current documentation index](current/DOCUMENTATION-INDEX.md); a newcomer should read the [engineering guide](current/ENGINEERING-GUIDE.md) first. Edition 1.1 is reconciled to application 0.12.0; builds 0.13.0 to 0.18.0 are recorded in [RELEASE-0.13.md](RELEASE-0.13.md), [RELEASE-0.14.md](RELEASE-0.14.md) (native PostgreSQL qualification), [RELEASE-0.15.md](RELEASE-0.15.md) (live identity provider), [RELEASE-0.16.md](RELEASE-0.16.md) (worker runtime, outbox dispatcher and email adapter: 405 PGlite and 437 native application checks, 16 + 16 live-provider checks, 143 reference, 93 browser and 2 live-provider browser checks; schema 18; platform API 1.4.0; ledger 76 PARTIAL, 231 PENDING, 0 accepted), and [RELEASE-0.18.md](RELEASE-0.18.md) (results framework and planning, built ahead of v0.17: 441 PGlite and 474 native application checks, 16 + 16 live-provider checks, 143 reference, 100 browser and 2 live-provider browser checks; schema 19; domain API 1.11.0; ledger 81 PARTIAL, 226 PENDING, 0 accepted) and the sequenced plan in [DELIVERY-PLAN.md](DELIVERY-PLAN.md); builds 0.19.0 to 0.36.0 have their own `RELEASE-0.N*.md` notes, listed in the [current documentation index](current/DOCUMENTATION-INDEX.md). Original editable documents and archives are retained in [history/v1.0](history/v1.0/).
@@ -278,6 +280,29 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 ### product/linear
 
 - [Imprana Commons Linear integration](product/linear/README.md)
+
+### qa
+
+- [Imprana Commons testing documentation — APLYD QA v1.3 audit](qa/APLYD-v1.3-AUDIT-20261011.md)
+- [Imprana Commons QA v1.3 reconciliation plan](qa/APLYD-v1.3-RECONCILIATION-20261011.md)
+- [Imprana Commons testing documentation](qa/README.md)
+
+### qa/audit-v13-20261011
+
+- [QA v1.3 documentation audit records](qa/audit-v13-20261011/README.md)
+
+### qa/audit-v13-20261011/package-audit
+
+- [APLYD QA v1.3 — package audit facts for Imprana Commons](qa/audit-v13-20261011/package-audit/PACKAGE-AUDIT-FACTS.md)
+- [QA v1.3 package requirements audit — Imprana Commons](qa/audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.md)
+
+### qa/audit-v13-20261011/repo-domain-audit
+
+- [Imprana Commons QA documentation audit — 11 October 2026](qa/audit-v13-20261011/repo-domain-audit/SUMMARY.md)
+
+### qa/audit-v13-20261011/traceability-audit
+
+- [Imprana Commons: QA v1.3 traceability/source audit](qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.md)
 
 ### sprints
 

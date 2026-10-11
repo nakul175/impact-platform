@@ -1,0 +1,85 @@
+{
+  "scope": "Preliminary exact crosswalk structural and boundary review; cannot seal while known factual defect remains",
+  "inputs": {
+    "package-audit/QA-V13-REQUIREMENTS-MATRIX.json": "3322e84d44a90af6efdf20fe3bcbca8ccaf51892fcd582e8250f25caa7bcef06",
+    "repo-domain-audit/package-to-repo-alignment-54.json": "a540d4a8ca900be6859c4c62bd7ec1460bb1fa5df986ee1ccb0a39adb34a449a",
+    "repo-domain-audit/requirement-matrix.json": "9e8f7fd12e079e4f4cdb266d0b4987167b5d4b289c2a6e425671025f978ed7a7",
+    "traceability-audit/SOURCE-TRACEABILITY-INVENTORY.json": "85cc832ae7f56885aa067b91ce3e0a6ffcf7187663e1b42c2e13c8cf6f30bab3"
+  },
+  "checks": {
+    "package54unique": true,
+    "crosswalk54uniquecomplete": true,
+    "declared54count": true,
+    "package_inventory_pin": true,
+    "repository_head_all_same": true,
+    "valid_statuses": true,
+    "counts_match": true,
+    "exact_package_requirements": true,
+    "exact_package_source_refs": true,
+    "all_domain_ids_exist": true,
+    "reciprocal_domain_mapping": true,
+    "all_source_integrity_checks": true,
+    "all_original_scenarios_notrun": true,
+    "all_repository_citation_paths_and_ranges_exist_at_head": true
+  },
+  "structural_check_errors": [],
+  "preliminary_findings": [
+    {
+      "id": "CW-F01",
+      "severity": "documentation_factual_correction_required",
+      "finding": "docs/CODEOWNERS exists at pinned HEAD; blanket no-CODEOWNERS claim false. Live branch/ruleset human/code-owner/fresh-review/trusted-check/bypass enforcement remains NOT_VERIFIED.",
+      "affected_package_rows": [
+        {
+          "id": "QA13-017",
+          "text": "Repositoryread shows no CODEOWNERS file; GitHubrulesets/humanreview enforcement and sourceauthority are external. Existing agent/preservation checks cannot authenticate them; no networkconfiguration inspected."
+        },
+        {
+          "id": "QA13-018",
+          "text": "Repositoryread shows no CODEOWNERS file; GitHubrulesets/humanreview enforcement and sourceauthority are external. Existing agent/preservation checks cannot authenticate them; no networkconfiguration inspected."
+        },
+        {
+          "id": "QA13-019",
+          "text": "Repositoryread shows no CODEOWNERS file; GitHubrulesets/humanreview enforcement and sourceauthority are external. Existing agent/preservation checks cannot authenticate them; no networkconfiguration inspected."
+        },
+        {
+          "id": "QA13-049",
+          "text": "Repositoryread shows no CODEOWNERS file; GitHubrulesets/humanreview enforcement and sourceauthority are external. Existing agent/preservation checks cannot authenticate them; no networkconfiguration inspected."
+        }
+      ],
+      "affected_domain_row": "QA-41",
+      "status": "AWAITING_AUTHOR_CORRECTION"
+    }
+  ],
+  "actual_quantities": {
+    "active_stories": 368,
+    "epics": 54,
+    "original_criteria": 1328,
+    "proposed_tasks": 1131,
+    "task_dependency_edges": 779,
+    "backlog_rows_including_two_historical_split_records": 370,
+    "criterion_alias_records": 1328,
+    "criterion_execution_state_counts": {
+      "Not run": 1328
+    }
+  },
+  "status_counts": {
+    "PARTIAL": 45,
+    "ALIGNED": 3,
+    "NOT_VERIFIED": 5,
+    "MISSING": 1
+  },
+  "preserved_limits": [
+    "No product tests, test collection, CI, provider, browser, native database, performance or package checker execution occurred in this lane.",
+    "No repository, sources, history, Linear or external-system modifications.",
+    "Governance owner labels and agent-drafted reviewed dates are not authenticated human approval.",
+    "No latest product PASS, acceptance percentage, production readiness or deployed-state claim.",
+    "Current default runner reports are mutable; dated source-bound evidence must be assessed for applicability/freshness before release reuse.",
+    "OOXML observations are imported from root structural evidence; no rendering/formula recalculation claimed.",
+    "A bounded source search cannot prove no undiscovered document exists; missing fields state the inspected inventory boundary.",
+    "Package standards are proposed adoption guidance; original criteria, quantitative targets and repository policy remain intact.",
+    "Original b01a628 baseline is graded; root newly authored docs/qa addendum is excluded from baseline alignment."
+  ],
+  "product_test_execution": false,
+  "native_or_repo_writes": false,
+  "conclusion": "Structural coverage complete and supplied counts match; provisional semantic review requires F01 correction before final approval."
+}

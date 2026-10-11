@@ -1,0 +1,2239 @@
+{
+  "schema_version": 1,
+  "audit_id": "IMPRANA-QA-V13-DOCUMENTATION-AUDIT-20261011",
+  "created_at_utc": "2026-10-11T04:28:07.290390+00:00",
+  "product": "Imprana Commons / impact-platform",
+  "repository": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011",
+  "reference_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "actual_local_version": {
+    "build": "0.39.0",
+    "domain_api": "1.28.0",
+    "platform_api": "1.11.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "migration_file_count": 43,
+  "mode": "READ_ONLY_DOCUMENTATION_AND_SOURCE_INVENTORY",
+  "status_semantics": {
+    "MET": "The cited documentation/process requirement is substantially covered. Does not mean implementation, execution, approval or product conformance.",
+    "PARTIAL": "Useful documented coverage exists but specified current fields, records or scope reconciliation remain incomplete.",
+    "MISSING": "Specified record not found in the bounded inspected current inventory, or source explicitly declares none.",
+    "UNKNOWN": "Requires unavailable/external evidence; absence of a local record does not certify external state."
+  },
+  "alignment_aliases": {
+    "MET": "ALIGNED",
+    "UNKNOWN": "NOT_VERIFIED"
+  },
+  "assessment_counts": {
+    "PARTIAL": 37,
+    "MET": 7,
+    "MISSING": 2,
+    "UNKNOWN": 2
+  },
+  "requirements": [
+    {
+      "id": "QA-01",
+      "domain": "authority",
+      "requirement": "Current product/build scope and source precedence",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/strategy.md",
+          "line_start": 2,
+          "line_end": 9
+        },
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 2,
+          "line_end": 3
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 13,
+          "line_end": 23
+        },
+        {
+          "path": "docs/HANDOVER.md",
+          "line_start": 7,
+          "line_end": 20
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 40,
+          "line_end": 60
+        }
+      ],
+      "finding": "New product handover pins build0.39/schema43 correctly; the engineering status table says0.36/schema40 and the core strategy current interpretation says0.12 with increments through0.18. Keep those dated records, but add an explicit current QA edition/precedence statement.",
+      "missing_or_unresolved_fields": [
+        "current QA strategy version/build/schema",
+        "authoritative scope snapshot",
+        "superseded-section markers",
+        "actual strategy reviewer/date"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-001",
+        "QA13-004",
+        "QA13-054"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-02",
+      "domain": "strategy",
+      "requirement": "Quality objectives, risk-based test portfolio and automation/manual rationale",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/strategy.md",
+          "line_start": 6,
+          "line_end": 17
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 92,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 27,
+          "line_end": 45
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 69,
+          "line_end": 77
+        }
+      ],
+      "finding": "Portfolio and layer limits are well described. No single current0.39 strategy binds the current roadmap/story population, released platform/language scope, delivery capacity and reviewed domain applicability.",
+      "missing_or_unresolved_fields": [
+        "current release scope/capabilities/platforms/locales",
+        "risk-to-layer allocation per candidate",
+        "actual responsible owners/capacity",
+        "review cadence and version"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-002"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-03",
+      "domain": "release-plan",
+      "requirement": "Candidate-specific release test plan",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/release-test-plan.md",
+          "line_start": 6,
+          "line_end": 15
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 99,
+          "line_end": 111
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        }
+      ],
+      "finding": "Release gate table and0.39 security/AI review exist, but are not a complete candidate test plan. Latest review explicitly reports G11 Notpassed and G12 Notrun.",
+      "missing_or_unresolved_fields": [
+        "candidate artifact/config/scope pin",
+        "included/excluded story and AC version sets",
+        "execution order/dates/budgets/owners",
+        "threshold/stop rules",
+        "rollout cohort and post-release learning window"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-002",
+        "QA13-032"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-04",
+      "domain": "risk",
+      "requirement": "Versioned risk register with impact, likelihood, residual decision and required cases",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/risk.md",
+          "line_start": 6,
+          "line_end": 11
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 69,
+          "line_end": 71
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 71,
+          "line_end": 75
+        }
+      ],
+      "finding": "Threats have stable IDs, impact, verification and proposal decisions; priorities are explicitly not accepted severity. The package general risk contract is not complete across all QA domains.",
+      "missing_or_unresolved_fields": [
+        "likelihood/evidence per nonsecurity failure",
+        "risk tier and override rationale",
+        "required case/version links",
+        "expiry and authenticated owner/reviewer decision"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-005",
+        "QA13-006",
+        "QA13-007"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-05",
+      "domain": "lifecycle",
+      "requirement": "Ready/Done boundaries separate from release acceptance",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 14,
+          "line_end": 21
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "line_start": 17,
+          "line_end": 32
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 25,
+          "line_end": 29
+        }
+      ],
+      "finding": "Existing Ready/Done criteria require scoped scenarios, dependencies, independent review and actual owner acceptance; proposed plans do not confer Ready/Done.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-003"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-06",
+      "domain": "cases",
+      "requirement": "Versioned scenario/case records with full oracle and automation locator",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/scenario.md",
+          "line_start": 6,
+          "line_end": 12
+        },
+        {
+          "path": "templates/case.md",
+          "line_start": 6,
+          "line_end": 20
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 84,
+          "line_end": 90
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 7,
+          "line_end": 15
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+          "line_start": 1,
+          "line_end": 3
+        }
+      ],
+      "finding": "Baseline825 cases, nonprofit108 designed cases and1328 original scenario-task proposals have useful source/oracle links. They are distinct populations; their count is not a validated denominator. Case versions, risk/gate and cleanup bindings are not consistently normalized.",
+      "missing_or_unresolved_fields": [
+        "case_version/scenario version",
+        "AC revision and required gate",
+        "risk ID/tier",
+        "dataset version/hash and cleanup",
+        "reviewed applicability"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-027"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-07",
+      "domain": "criteria-source",
+      "requirement": "Complete independently reviewed AC denominator and source pins",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 4,
+          "line_end": 24
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 17,
+          "line_end": 23
+        }
+      ],
+      "finding": "1328 original scenarios are preserved with hashes and separate clarifications, but this is not an adopted QA AC/version/applicability export with independent source completeness review.",
+      "missing_or_unresolved_fields": [
+        "scope_id/source_id/source_version",
+        "AC versions and YES/NO/UNKNOWN applicability",
+        "review_ref authenticated outside checker",
+        "expected AC count/identity hash/source hash bound to QA scope"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-011",
+        "QA13-015",
+        "QA13-016"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-08",
+      "domain": "traceability",
+      "requirement": "Separate AC-case links, immutable runs and selected current coverage",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "line_start": 2,
+          "line_end": 13
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/TRACEABILITY.csv",
+          "line_start": 1,
+          "line_end": 2
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        }
+      ],
+      "finding": "307-requirement traceability and proposed scenario/task map are preserved. The execution CSV combines dated automated identities/results; no dedicated coverage-selection register selects current qualifying case runs for each required AC mapping.",
+      "missing_or_unresolved_fields": [
+        "normalized AC/version-to-case/version required links",
+        "selected qualification run per mapping",
+        "freshness/applicability dimensions",
+        "explicit numerator/denominator and partial/unknown coverage"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-011",
+        "QA13-012",
+        "QA13-013",
+        "QA13-014"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-09",
+      "domain": "statuses",
+      "requirement": "Typed execution, freshness, applicability and governance dimensions",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "standards/STATUS-MODEL.md",
+          "line_start": 1,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 90,
+          "line_end": 90
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 21,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 1
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "finding": "Documents distinguish planning/execution/acceptance, but vocabularies differ: Notrun/Inprogress versus SPECIFIED_NOT_RUN/NOT_STARTED and historical LocalPass/PendingCI. No explicit package-compatible mapping/freshness field exists.",
+      "missing_or_unresolved_fields": [
+        "reviewed vocabulary mapping without rewriting historical rows",
+        "CURRENT/STALE/UNASSESSED",
+        "QUALIFICATION/DIAGNOSTIC",
+        "applicability and approval separate from execution"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-021"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-10",
+      "domain": "evidence",
+      "requirement": "Immutable execution identity and reproducible full run fields",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/run-evidence.md",
+          "line_start": 6,
+          "line_end": 16
+        },
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 23,
+          "line_end": 26
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 122,
+          "line_end": 126
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 23,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 1
+        },
+        {
+          "path": "scripts/run.py",
+          "line_start": 645,
+          "line_end": 701
+        }
+      ],
+      "finding": "Run formats are specified and dated release records retain failures, but the central CSV lacks required version/config/digest/reviewer fields. Default runner overwrites fixed application/native report paths; immutable archival is an explicit operational step, not guaranteed by that runner.",
+      "missing_or_unresolved_fields": [
+        "case/AC version",
+        "artifact/config/tool/data pins",
+        "start/end and procedure/protocol",
+        "executor/reviewer record",
+        "parent/original attempt",
+        "immutable archive/digest and freshness"
+      ],
+      "actual_tool_locations": [
+        "scripts/run.py:645-701",
+        "docs/QUALIFICATION.md:3-23"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-022",
+        "QA13-023"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-11",
+      "domain": "evidence-root",
+      "requirement": "Confined portable evidence store and reference validation",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/EVIDENCE-ROOT.md",
+          "line_start": 1,
+          "line_end": 18
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 53,
+          "line_end": 57
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 39,
+          "line_end": 41
+        }
+      ],
+      "finding": "Sensitive raw evidence is kept outside Git and public-safe receipts retained. No QA scope evidence_root, root-confined reference/symlink enforcement, evidence access owner or retention declaration is adopted for these registers.",
+      "missing_or_unresolved_fields": [
+        "portable evidence_root",
+        "allowed reference policy and escape checks",
+        "immutable store/access control",
+        "retention/redaction owner"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-020"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-12",
+      "domain": "defects",
+      "requirement": "Stable defect event chains, severity review and same-case current retest closure",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/defect.md",
+          "line_start": 6,
+          "line_end": 20
+        },
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 31,
+          "line_end": 34
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 215,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        },
+        {
+          "path": "docs/QA-DEGRADATION-2026-10.md",
+          "line_start": 29,
+          "line_end": 33
+        }
+      ],
+      "finding": "Expected/actual/reproduction/owner/independent retest policy exists and original failures are retained. Dated slice defect labels are not an immutable cross-release defect-event register with authenticated downgrade and same-case current-build closure fields.",
+      "missing_or_unresolved_fields": [
+        "defect/event/predecessor IDs",
+        "severity-change rationale/review_ref",
+        "case ID/version and candidate/config/data linkage",
+        "same-case PASS/CURRENT retest",
+        "closure authority and reopen trigger"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-023",
+        "QA13-029",
+        "QA13-030"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-13",
+      "domain": "exceptions",
+      "requirement": "Versioned eligible exceptions with expiry and stop conditions",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/exception.md",
+          "line_start": 6,
+          "line_end": 13
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 40,
+          "line_end": 49
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 105,
+          "line_end": 105
+        }
+      ],
+      "finding": "Controls cannot be silently waived and exclusions require authorized scope decisions. No QA exception record template/register captures every package expiry/exposure/retest/decision field.",
+      "missing_or_unresolved_fields": [
+        "exception ID/scope/build/gate",
+        "eligibility/nonwaivable assessment",
+        "observed compensating controls",
+        "exposure limit/remediation owner",
+        "expiry/retest/rollback triggers",
+        "actual approval record"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-008",
+        "QA13-031",
+        "QA13-034"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-14",
+      "domain": "regression",
+      "requirement": "Dependency-driven regression selection without weakened assertions",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 28,
+          "line_end": 29
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 69,
+          "line_end": 77
+        },
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "line_start": 27,
+          "line_end": 30
+        }
+      ],
+      "finding": "Changes to authority/schema/history/provider/UI invoke named affected portfolio; original assertions and independence rules remain mandatory.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [
+        "Makefile:17-41",
+        "qualification/",
+        "tools/browser/"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-005",
+        "QA13-025"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-15",
+      "domain": "repetition",
+      "requirement": "Preserved failures and predeclared qualification versus diagnostic rerun groups",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/REPETITION-POLICY.md",
+          "line_start": 1,
+          "line_end": 6
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 157,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 213
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        }
+      ],
+      "finding": "No-rerun-until-green and failure preservation are explicit. Attempt_group/protocol/seeds/repeat count/aggregate decision rule and diagnostic selection exclusions are not normalized in the central records.",
+      "missing_or_unresolved_fields": [
+        "protocol_ref",
+        "purpose/attempt_group/original-run link",
+        "predeclared repetitions and aggregate decision rule",
+        "all-attempt denominator/flake reporting"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-023",
+        "QA13-024",
+        "QA13-025",
+        "QA13-034"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-16",
+      "domain": "functional",
+      "requirement": "Positive/negative/boundary/state/concurrency source-derived test design",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 2,
+          "line_end": 2
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 88,
+          "line_end": 88
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 131,
+          "line_end": 145
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 25,
+          "line_end": 25
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        }
+      ],
+      "finding": "Required normal/failure variants and meaningful observable oracles are documented, including malformed fields, stale revisions, same-key changed-intent and natural-person controls. Proposed test status stays unrun.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-007",
+        "QA13-026"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-17",
+      "domain": "API",
+      "requirement": "Current route/contract/version matrix including refusal side effects",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 4,
+          "line_end": 4
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 139,
+          "line_end": 149
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 33,
+          "line_end": 39
+        }
+      ],
+      "finding": "API design covers closed schemas, authority, pagination, replay and concurrency, with actual test/source inventory. A complete current implemented-operation-to-case matrix and compatibility/rate/timeout coverage disposition remain absent from the inspected QA records.",
+      "missing_or_unresolved_fields": [
+        "current method/route/DTO-to-case mapping",
+        "rate limit/backcompat/version cases or reviewed exclusions",
+        "no-side-effect/error-leak oracle per denial",
+        "real-provider versus mock evidence pin"
+      ],
+      "actual_tool_locations": [
+        "qualification/test_live_application.py",
+        "qualification/test_listing_visibility_live.py",
+        "specification/reference-v1/tests/test_integration.py",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-026"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-18",
+      "domain": "unit",
+      "requirement": "Independent rule/property oracles, critical invariants and limits",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 2,
+          "line_end": 2
+        },
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 5,
+          "line_end": 12
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 129,
+          "line_end": 137
+        },
+        {
+          "path": "Makefile",
+          "line_start": 30,
+          "line_end": 41
+        }
+      ],
+      "finding": "Pure rule boundaries, independent fixtures, property-test rationale and limited design-reference scope are explicit. The90% branch target is proposed, not an achieved metric.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [
+        "Makefile:30-41",
+        "qualification/test_golden.py",
+        "qualification/test_unit.py",
+        "specification/reference-v1/run_tests.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-19",
+      "domain": "native-integration",
+      "requirement": "Real roles, transactions, concurrency and mock boundary",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 4,
+          "line_end": 4
+        },
+        {
+          "path": "domains/RELIABILITY.md",
+          "line_start": 4,
+          "line_end": 4
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 141,
+          "line_end": 149
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 31,
+          "line_end": 35
+        },
+        {
+          "path": "Makefile",
+          "line_start": 19,
+          "line_end": 26
+        }
+      ],
+      "finding": "Native login/RLS/race/restart requirements are explicit and PGlite/service fakes never substitute for native evidence.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [
+        "qualification/test_native_roles.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_sessions.py",
+        "scripts/run.py:645-701"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-007"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-20",
+      "domain": "smoke",
+      "requirement": "Narrow read-only smoke and controlled vertical post-deployment journey",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "line_start": 10,
+          "line_end": 10
+        },
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "line_start": 8,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 151,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 108,
+          "line_end": 112
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 37,
+          "line_end": 37
+        }
+      ],
+      "finding": "12 readonly baseline checks and synthetic AI smoke are defined; complete create-to-publication vertical smoke is explicitly a required plan. Current candidate vertical-scope case/run, operator and rollback result remain unresolved.",
+      "missing_or_unresolved_fields": [
+        "candidate-specific vertical-smoke cases/run",
+        "approved synthetic target and external sink",
+        "failure/reconciliation/rollback evidence"
+      ],
+      "actual_tool_locations": [
+        "scripts/smoke.py",
+        ".github/workflows/qualification.yml:297-298",
+        "specification/reference-v1/tests/test_smoke.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-21",
+      "domain": "E2E",
+      "requirement": "Current critical-journey role/device/network/state matrix",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 6,
+          "line_end": 6
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 159,
+          "line_end": 165
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 36,
+          "line_end": 36
+        },
+        {
+          "path": "Makefile",
+          "line_start": 42,
+          "line_end": 78
+        }
+      ],
+      "finding": "Actual browser suite locations cover persistence/races and target AT journeys exist. Current released role/device/locale/network matrix, meaningful visual-baseline review and complete criterion-to-run mapping are not reconciled.",
+      "missing_or_unresolved_fields": [
+        "current supported matrix and reviewed exclusions",
+        "case/version-to-browser group mapping",
+        "visual baseline reviewer/change policy",
+        "complete current cross-module journey scope"
+      ],
+      "actual_tool_locations": [
+        "scripts/run.py:68-100",
+        "tools/browser/"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-026"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-22",
+      "domain": "exploratory",
+      "requirement": "Versioned timeboxed exploratory charters and observations",
+      "status": "MISSING",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 8,
+          "line_end": 8
+        },
+        {
+          "path": "templates/exploratory-charter.md",
+          "line_start": 6,
+          "line_end": 11
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 92,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 27,
+          "line_end": 45
+        }
+      ],
+      "finding": "No dedicated exploratory charter or charter register was located in the bounded current QA/governance/product document inventory. Scripted tests and incident diagnostics are not automatically exploratory sessions.",
+      "missing_or_unresolved_fields": [
+        "charter ID/scope/risk/mission",
+        "timebox/tester/build/data/authorization",
+        "heuristics/notes/evidence",
+        "findings/follow-up owner/decision"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-048"
+      ],
+      "alignment_status": "MISSING"
+    },
+    {
+      "id": "QA-23",
+      "domain": "UAT",
+      "requirement": "Representative user/task/consent evidence distinct from release signoff",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 8,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/UAT-PACK.md",
+          "line_start": 1,
+          "line_end": 32
+        },
+        {
+          "path": "docs/current/UAT-PACK.md",
+          "line_start": 397,
+          "line_end": 426
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 165,
+          "line_end": 165
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 42,
+          "line_end": 42
+        }
+      ],
+      "finding": "Useful22-scenario UAT pack with track/build/tester and blank signoff exists. Its0.25 scenario body has0.26/0.27 dated corrections; no completed representative-cohort consent/recruitment record or actual acceptance is supplied.",
+      "missing_or_unresolved_fields": [
+        "current candidate scripts and hosted/local applicability",
+        "participant relevance/consent/data boundary",
+        "cohort/sample/task-completion denominator",
+        "actual outcomes/facilitator assistance",
+        "qualified acceptance authority"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-048"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-24",
+      "domain": "security",
+      "requirement": "Versioned threats/abuse chains/findings and residual risk",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "line_start": 2,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 21,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 51,
+          "line_end": 71
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        }
+      ],
+      "finding": "Current machine-readable threat register supersedes narrative state;0.39 reports14 unresolved critical threats and bothchains BLOCK. Residual decisions are explicitly agent proposals, not independently confirmed.",
+      "missing_or_unresolved_fields": [
+        "actual threat/impact review",
+        "candidate-linked complete retest evidence",
+        "authenticated residual decisions",
+        "authorized independent security assessment"
+      ],
+      "actual_tool_locations": [
+        "scripts/release_review.py",
+        "qualification/test_threat_chains_unit.py",
+        "qualification/test_security_privacy.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-007",
+        "QA13-008",
+        "QA13-041"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-25",
+      "domain": "security-standard",
+      "requirement": "Pinned standard requirement-to-test mapping",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "line_start": 2,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 175,
+          "line_end": 175
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 401,
+          "line_end": 405
+        },
+        {
+          "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+          "line_start": 25,
+          "line_end": 32
+        }
+      ],
+      "finding": "ASVS5.0 Level2 is the target, but compliance mapping says unassessed and supplies themes rather than complete selected requirement IDs and test/run outcomes.",
+      "missing_or_unresolved_fields": [
+        "selected ASVS requirement IDs/version",
+        "scope/applicability rationale",
+        "case/run/build mapping",
+        "independent review and residual findings"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-041"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-26",
+      "domain": "supply-chain",
+      "requirement": "Dependency/build/secret assessment and provenance",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "line_start": 4,
+          "line_end": 4
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 33
+        }
+      ],
+      "finding": "Locked dependencies and CycloneDX inventories exist; source document explicitly records no vulnerability/SAST/secret/container scan, no image provenance/signing and no human review. An inventory is not scanner or release-provenance evidence.",
+      "missing_or_unresolved_fields": [
+        "approved scanner scope/tool versions and finding triage",
+        "candidate-produced SBOM/provenance digest",
+        "dependency/license/security reviewer",
+        "fix verification/residual decision"
+      ],
+      "actual_tool_locations": [
+        "docs/governance/sbom/",
+        ".github/workflows/checks.yml",
+        ".github/workflows/qualification.yml"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-041"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-27",
+      "domain": "privacy",
+      "requirement": "Data lifecycle/deletion/restore/vendor/legal applicability",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "line_start": 6,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/DATA-GOVERNANCE.md",
+          "line_start": 3,
+          "line_end": 35
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 169,
+          "line_end": 175
+        },
+        {
+          "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+          "line_start": 5,
+          "line_end": 27
+        }
+      ],
+      "finding": "Minimization, tenant-marker negatives, deletion propagation, holds and restored restrictions are planned and draft governance records exist; legal/processor/retention approvals and current complete derivative-store tests are unresolved.",
+      "missing_or_unresolved_fields": [
+        "current reviewed processing inventory/jurisdiction/source references",
+        "derivative/index/cache/processor coverage",
+        "retention/backup exception expiry",
+        "current complete rights/restore retest and qualified reviewer"
+      ],
+      "actual_tool_locations": [
+        "qualification/test_privacy_requests.py",
+        "qualification/test_retention.py",
+        "qualification/test_ai_policy_live.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-042"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-28",
+      "domain": "test-data",
+      "requirement": "Controlled dataset inventory, provenance, hashes and expiry",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/TEST-DATA.md",
+          "line_start": 2,
+          "line_end": 8
+        },
+        {
+          "path": "templates/data-environment.md",
+          "line_start": 6,
+          "line_end": 12
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 108,
+          "line_end": 127
+        },
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 49,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 47,
+          "line_end": 57
+        }
+      ],
+      "finding": "Synthetic defaults, deterministicfixture/clock, tenant separation, no livecredentials, controlled reset and immutable cleanup are strong. No unified current dataset register supplies all package ownership/retention/provenance/hash fields; old fixture-clock literals are explicitly historical.",
+      "missing_or_unresolved_fields": [
+        "dataset version/hash/schema/provenance",
+        "access owner/allowed environment/expiry",
+        "generator seed/labels/licensing where applicable",
+        "current fixture-clock and cleanup validation"
+      ],
+      "actual_tool_locations": [
+        "qualification/conftest.py",
+        "scripts/redate_fixture.py",
+        "specification/reference-v1/fixtures/"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-047"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-29",
+      "domain": "environment",
+      "requirement": "Manifested environment/build/config/tool/device/network boundaries",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/TEST-DATA.md",
+          "line_start": 8,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 110,
+          "line_end": 127
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 57,
+          "line_end": 57
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 14,
+          "line_end": 14
+        },
+        {
+          "path": "docs/QA-PERFORMANCE-2026-10.md",
+          "line_start": 3,
+          "line_end": 12
+        }
+      ],
+      "finding": "Dated checks declare concrete runtime/browser/hardware and isolation limits. A single current candidate environment record including flags/config/artifact dependency versions and production differences is not bound to selected QA runs.",
+      "missing_or_unresolved_fields": [
+        "environment ID/config/infrastructure/artifact digest",
+        "current dependency/flag/secrets-reference versions",
+        "OS/browser/device/network matrix",
+        "production differences/drift disposition"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-004",
+        "QA13-047"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-30",
+      "domain": "accessibility",
+      "requirement": "Criterion-based automated/manual keyboard/AT evidence and limitations",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/ACCESSIBILITY.md",
+          "line_start": 2,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 189,
+          "line_end": 197
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 3,
+          "line_end": 14
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 27,
+          "line_end": 44
+        }
+      ],
+      "finding": "WCAG2.2AA target, automated scan and one keyboard journey are documented as partial. Statement explicitly lacks screenreaders, otherbrowsers, zoom/reflow/manual criteria/liveIdP/artifacts/users; current all-journey criterion register is missing.",
+      "missing_or_unresolved_fields": [
+        "criterion ID/applicability/method/expected/observed/result",
+        "current browser/AT/device matrix",
+        "manual critical-process evidence",
+        "reviewed exception scope/authority"
+      ],
+      "actual_tool_locations": [
+        "tools/browser/a11y-check.mjs",
+        "scripts/run.py:94",
+        "qualification/test_release_review_unit.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-043"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-31",
+      "domain": "performance",
+      "requirement": "Versioned latency/capacity budgets, sample rules and source owner",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/PERFORMANCE.md",
+          "line_start": 2,
+          "line_end": 6
+        },
+        {
+          "path": "templates/provisional-target.md",
+          "line_start": 2,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 177,
+          "line_end": 187
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 5,
+          "line_end": 19
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 63
+        }
+      ],
+      "finding": "Original numerical targets are retained, with sandbox breaches and unmeasured boundaries openly stated. Nonprofitservicelevels remain owner decisions. No current threshold register ties metric population/sample/window/error/confidence/version/approval to a release scope.",
+      "missing_or_unresolved_fields": [
+        "threshold ID/version/source/owner",
+        "latency boundary/population/sample/window/error budget",
+        "approval/expiry/exposure",
+        "confidence/generator limitations"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-009",
+        "QA13-010",
+        "QA13-044"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-32",
+      "domain": "performance",
+      "requirement": "Representative offered load/peak/burst/soak and raw tail/errors",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/PERFORMANCE.md",
+          "line_start": 4,
+          "line_end": 6
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 179,
+          "line_end": 185
+        },
+        {
+          "path": "docs/QA-PERFORMANCE-2026-10.md",
+          "line_start": 5,
+          "line_end": 12
+        },
+        {
+          "path": "scripts/perf.py",
+          "line_start": 39,
+          "line_end": 56
+        },
+        {
+          "path": "qualification/perf_harness.py",
+          "line_start": 319,
+          "line_end": 329
+        }
+      ],
+      "finding": "Native harness exists with retained rawerrors and closed-loop profiles. Original target externally-paced200ops/s,400burst,60minutepeak,8hoursoak and100Mdata profile are not represented by default120s/600s closed-loop sandbox. Existing shorter measurements must stay bounded; do not lower original targets.",
+      "missing_or_unresolved_fields": [
+        "offered/completed arrival counts vs original target",
+        "generator saturation validation",
+        "full data/background-work/coldwarm/cohort scope",
+        "explicit shortened-run nonqualification",
+        "current uncontended full-target evidence"
+      ],
+      "actual_tool_locations": [
+        "scripts/perf.py",
+        "qualification/perf_harness.py",
+        "qualification/perf_support.py",
+        "qualification/test_perf_unit.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-044"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-33",
+      "domain": "reliability",
+      "requirement": "Faults/restart/retry/migrations preserve acknowledged data and authority",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "line_start": 2,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 116,
+          "line_end": 120
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 145,
+          "line_end": 149
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 187,
+          "line_end": 187
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 57
+        }
+      ],
+      "finding": "Target fault points and receipt/data/current-authority invariants are detailed; real restart versus proxy/providerfake boundary is explicit in dated degradation evidence.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [
+        "qualification/test_native_restart.py",
+        "qualification/test_native_degradation.py",
+        "qualification/test_native_nonfunctional.py",
+        "scripts/native_upgrade_check.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-045"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-34",
+      "domain": "recovery",
+      "requirement": "Actual representative restore and RPO/RTO qualification",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "line_start": 6,
+          "line_end": 8
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/BACKUP-DR.md",
+          "line_start": 19,
+          "line_end": 44
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 15,
+          "line_end": 19
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 34,
+          "line_end": 34
+        }
+      ],
+      "finding": "Small native/CI restore checks are distinct from real-hostdrills; governance reports zero real-hostentries, nightlyRPOup24h andRTOunmeasured. Off-server/region/key/object/governance replay evidence remains required.",
+      "missing_or_unresolved_fields": [
+        "representative restored-data and elapsed-time record",
+        "current deletion/grant replay before reopening",
+        "off-server/region/object/key/config coverage",
+        "qualified RPO/RTO and operator recovery record"
+      ],
+      "actual_tool_locations": [
+        "scripts/restore_drill.py",
+        "deploy/restore-drill.sh",
+        "qualification/test_ops_unit.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-046"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-35",
+      "domain": "operations",
+      "requirement": "Bounded fault alerts, routing/on-call/runbooks and learning",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "line_start": 6,
+          "line_end": 8
+        },
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "line_start": 6,
+          "line_end": 10
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 19,
+          "line_end": 46
+        }
+      ],
+      "finding": "Alertcodes/runbooks and CI readinessexercise exist; governance explicitly says no paging/ack/escalation, namedoncall or metric history. No current release-cohort learning/errorbudget record.",
+      "missing_or_unresolved_fields": [
+        "actual routing/ack/escalation/on-call",
+        "bounded fault blast/stop/recovery authority",
+        "monthly journey/cohort SLO/errorbudget",
+        "incident/learning window and follow-up"
+      ],
+      "actual_tool_locations": [
+        "deploy/ops_alerts.py",
+        "deploy/readiness-exercise.sh",
+        "docs/current/SUPPORT-RUNBOOK.md"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-046",
+        "QA13-050"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-36",
+      "domain": "AI-boundary",
+      "requirement": "AI applicability, human authority, prohibited actions and mechanics limits",
+      "status": "MET",
+      "package_evidence": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "line_start": 2,
+          "line_end": 5
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/AI-MODEL-CARD.md",
+          "line_start": 16,
+          "line_end": 41
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 7,
+          "line_end": 36
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 43,
+          "line_end": 55
+        }
+      ],
+      "finding": "Advisory model, deterministicfeatures, intended human review and forbiddenofficial/arbitraryactions are clearly distinguished. Synthetic provider mechanics explicitly do not prove modelquality.",
+      "missing_or_unresolved_fields": [],
+      "actual_tool_locations": [
+        "qualification/test_ai_advisory_provider.py:28-78",
+        "qualification/test_ai_enablement_live.py",
+        "qualification/test_ai_policy_live.py"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-037"
+      ],
+      "alignment_status": "ALIGNED"
+    },
+    {
+      "id": "QA-37",
+      "domain": "AI-evaluation",
+      "requirement": "Pinned held-out corpus/rubric/slices/repetition/confidence evidence",
+      "status": "MISSING",
+      "package_evidence": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "line_start": 4,
+          "line_end": 19
+        },
+        {
+          "path": "templates/ai-evaluation.md",
+          "line_start": 6,
+          "line_end": 15
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 16,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 199,
+          "line_end": 205
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 13,
+          "line_end": 16
+        }
+      ],
+      "finding": "Source explicitly says evaluation set/metrics/threshold/red-teamrecord none/TBD andG12Notrun. Planned original200case/20%adversarial contracts are not actual evaluation data, labels or results.",
+      "missing_or_unresolved_fields": [
+        "EVAL ID/version/canonicalassurance link",
+        "provider/model revision/prompts/tools/corpus hashes",
+        "dataset provenance/splits/leakage/labels/rubric",
+        "population/slices/sample rationale",
+        "baseline/threshold/CI method/repeats/seeds",
+        "calibrated judge/inter-rater records",
+        "per-sample/per-slice evidence and actual reviewer"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-038",
+        "QA13-039"
+      ],
+      "alignment_status": "MISSING"
+    },
+    {
+      "id": "QA-38",
+      "domain": "AI-safety",
+      "requirement": "Adversarial safety/fallback and irreversible-action refusal evaluation",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "line_start": 21,
+          "line_end": 22
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 205,
+          "line_end": 205
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 18,
+          "line_end": 36
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 2066,
+          "line_end": 2110
+        }
+      ],
+      "finding": "Injection/tenant/secret/officialnumber/tool restrictions have detailed designs and synthetic mechanics. No systematic live-model/human-workflow multilingual/adversarial/OOD safety corpus or fallback effectiveness qualification exists.",
+      "missing_or_unresolved_fields": [
+        "versioned multilingual/adversarial/OOD corpus",
+        "end-to-end exfiltration/tool/fallback oracles",
+        "live-provider and human escalation evidence",
+        "unwaivable critical-invariant disposition"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-040"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-39",
+      "domain": "AI-regression",
+      "requirement": "Pinned baseline/slice comparison and drift/cost/rollback ownership",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "line_start": 24,
+          "line_end": 25
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 205,
+          "line_end": 205
+        },
+        {
+          "path": "docs/governance/AI-MODEL-CARD.md",
+          "line_start": 39,
+          "line_end": 41
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 23,
+          "line_end": 40
+        }
+      ],
+      "finding": "Change triggers and testedrollback target are described; no pinned same-corpus baselinecomparison, monitored quality/harm/cost drift or actual kill-switch/feedback-label owner evidence is documented.",
+      "missing_or_unresolved_fields": [
+        "candidate/baseline same-corpus slice comparison",
+        "provider-version residual controls/revalidation",
+        "minimized quality/cost/harm monitoring",
+        "feedback labeling/escalation/kill-switch owner"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-025",
+        "QA13-038"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-40",
+      "domain": "release-decision",
+      "requirement": "Separate quality/approval/readiness/deployment/learning decision",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/release-decision.md",
+          "line_start": 6,
+          "line_end": 20
+        },
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "line_start": 2,
+          "line_end": 13
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "finding": "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists.",
+      "missing_or_unresolved_fields": [
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-002",
+        "QA13-008",
+        "QA13-010",
+        "QA13-049",
+        "QA13-050"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-41",
+      "domain": "source-protection",
+      "requirement": "Enforced independent criteria/pins and validation-control protection",
+      "status": "UNKNOWN",
+      "package_evidence": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "line_start": 1,
+          "line_end": 16
+        },
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 18,
+          "line_end": 24
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/CODEOWNERS",
+          "line_start": 1,
+          "line_end": 6
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 25,
+          "line_end": 28
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 5,
+          "line_end": 11
+        }
+      ],
+      "finding": "Ownership configuration exists at docs/CODEOWNERS: the wildcard and listed deployment/infrastructure/governance paths name @nakul175. Its location is a supported CODEOWNERS location. Actual required code-owner review, fresh-review/ruleset/bypass enforcement and authenticated source-review authority remain external and were not queried. File presence or agent/preservation checks do not prove enforcement.",
+      "missing_or_unresolved_fields": [
+        "actual branch/ruleset required-review and fresh-review configuration",
+        "verified protection of source/pins/checker/export logic",
+        "safe-PR narrowing/control-change enforcement evidence",
+        "trusted external reconciliation if used and bypass review"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-017",
+        "QA13-018",
+        "QA13-019",
+        "QA13-049"
+      ],
+      "alignment_status": "NOT_VERIFIED"
+    },
+    {
+      "id": "QA-42",
+      "domain": "edition-divergence",
+      "requirement": "Consistent current Markdown/DOCX/XLSX source edition",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/strategy.md",
+          "line_start": 2,
+          "line_end": 4
+        },
+        {
+          "path": "templates/case.md",
+          "line_start": 6,
+          "line_end": 7
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 44,
+          "line_end": 52
+        },
+        {
+          "path": "docs/current/DOCUMENTATION-INDEX.md",
+          "line_start": 45,
+          "line_end": 65
+        }
+      ],
+      "finding": "Strategy says Word/workbook unchanged; parent OOXML observation pins workbookbuild0.12 and825case rows, DOCX0.12. CurrentCSV/0.39 source/proposed1328scenarios are distinct. Label preservedbaseline versus currentedition; do not silently regenerate historicalexpectedoutcomes.",
+      "missing_or_unresolved_fields": [
+        "current edition/candidate crossformat manifest",
+        "baseline-to-current case and scenario identity mapping",
+        "dated regeneration/review scope",
+        "preserved original bytes/results"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-43",
+      "domain": "CI",
+      "requirement": "Documented stage triggers, commands, environments, budget and current candidate gates",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "line_start": 4,
+          "line_end": 19
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 1,
+          "line_end": 66
+        },
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 45
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 28
+        }
+      ],
+      "finding": "Four qualification jobs plus small always-on checks have explicit triggers/timeouts/permissions. Docs-only qualification is filtered, and pooled subset is advisory. Actual required-check enforcement, safe failure blocking and deployable digest reuse remain unverified.",
+      "missing_or_unresolved_fields": [
+        "current gate expression and risk selection",
+        "artifact/config scope and retention",
+        "trusted required-check configuration",
+        "authorized safe failure/blocking proof"
+      ],
+      "actual_tool_locations": [
+        ".github/workflows/qualification.yml",
+        ".github/workflows/checks.yml"
+      ],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-018",
+        "QA13-032",
+        "QA13-035"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-44",
+      "domain": "CI-aggregator",
+      "requirement": "Always-run aggregator distinguishes nonexecuted required child checks",
+      "status": "UNKNOWN",
+      "package_evidence": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "line_start": 13,
+          "line_end": 19
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 23
+        },
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 6,
+          "line_end": 22
+        }
+      ],
+      "finding": "Small checks always run but are not a child-result aggregator. No aggregator is defined in the two inspected workflow files; actual branch required-check/bypass/mergequeue policy is external and not inspected.",
+      "missing_or_unresolved_fields": [
+        "aggregator required-child manifest/conclusion logic",
+        "missing/skipped/neutral/cancelled/timeout/unavailable refusal",
+        "trusted reporting source",
+        "actual mergequeue events if used",
+        "safe enforcement evidence"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-033"
+      ],
+      "alignment_status": "NOT_VERIFIED"
+    },
+    {
+      "id": "QA-45",
+      "domain": "record-gate-adoption",
+      "requirement": "Package structural record gate is subordinate, configured and exact-scope",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "line_start": 21,
+          "line_end": 25
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 15,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "finding": "b01a628 contains PM planning/source/publication checks, not installed APLYDQA v1.3 checker/registers. The root new docs/qa audit addendum is outside this baseline and does not install/register/adopt an enforced QA gate.",
+      "missing_or_unresolved_fields": [
+        "controlled QA register/schema/runner adoption decision",
+        "actual scope/criteria/run-selection pins",
+        "strict record-gate integration and exclusion policy",
+        "separate independent source protection"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-036",
+        "QA13-054"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-46",
+      "domain": "PM-adapter",
+      "requirement": "QA-to-PM binding preserves authority and reviewed actual catalogue compatibility",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "line_start": 2,
+          "line_end": 9
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 15,
+          "line_end": 29
+        }
+      ],
+      "finding": "Current PMhierarchy/canonical IDs and proposed criterion-task map are available. No adopted product-specific QA operating-release/case/run adapter binding to shared Ready/Done and assurance is present at this baseline; package membership checker is a separate root-owned scope.",
+      "missing_or_unresolved_fields": [
+        "installed PM catalogue/edition/hash binding",
+        "shared Ready/Done/assurance versions",
+        "operating candidate below releasegoal",
+        "explicit QA case/run/defect/decision relationships",
+        "semantic adapter review"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-011",
+        "QA13-052",
+        "QA13-053"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-47",
+      "domain": "reporting",
+      "requirement": "Full scoped result/freshness/coverage/first-attempt/exception denominators",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "templates/test-report.md",
+          "line_start": 6,
+          "line_end": 16
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 107,
+          "line_end": 111
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/QUALIFICATION.md",
+          "line_start": 3,
+          "line_end": 23
+        }
+      ],
+      "finding": "Narrative reports distinguish overlaps/native/local/planned/acceptance and preserve dated failures. Central CSV does not compute selected required ACmapping counts, currentfreshness, firstattempt/flake and reviewedexception denominators.",
+      "missing_or_unresolved_fields": [
+        "all six typed execution outcome counts",
+        "required mapping completion vs unique/historical tests",
+        "validated AC/version coverage and unknown applicability",
+        "firstattempt/rerun/quarantine stats",
+        "stale/exception expiry/domain slice reporting"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-013",
+        "QA13-014",
+        "QA13-051"
+      ],
+      "alignment_status": "PARTIAL"
+    },
+    {
+      "id": "QA-48",
+      "domain": "automation-and-concurrency",
+      "requirement": "Discoverable versioned case locators and serialized register integration",
+      "status": "PARTIAL",
+      "package_evidence": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 2,
+          "line_end": 11
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 13,
+          "line_end": 15
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 24,
+          "line_end": 26
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        }
+      ],
+      "finding": "Test code names and source locations are discoverable; isolated branches/ports/integrator are mandated. No uniform case-version marker/manual procedure binding or serialized immutable QA register mutation contract maps the new PMscenario population.",
+      "missing_or_unresolved_fields": [
+        "case ID/version marker or explicit legacy mapping",
+        "AUTO locator and MANUAL procedure",
+        "per-agent record IDs/change files",
+        "duplicate rejection and reviewed register/case invalidation"
+      ],
+      "actual_tool_locations": [],
+      "assessment_basis": "Documentation/process coverage only; no new execution, owner approval or product conformance inferred.",
+      "matched_package_requirements": [
+        "QA13-027",
+        "QA13-028",
+        "QA13-054"
+      ],
+      "alignment_status": "PARTIAL"
+    }
+  ],
+  "limitations": [
+    "No product tests, test collection, CI, provider, browser, native database, performance or package checker execution occurred in this lane.",
+    "No repository, sources, history, Linear or external-system modifications.",
+    "Governance owner labels and agent-drafted reviewed dates are not authenticated human approval.",
+    "No latest product PASS, acceptance percentage, production readiness or deployed-state claim.",
+    "Current default runner reports are mutable; dated source-bound evidence must be assessed for applicability/freshness before release reuse.",
+    "OOXML observations are imported from root structural evidence; no rendering/formula recalculation claimed.",
+    "A bounded source search cannot prove no undiscovered document exists; missing fields state the inspected inventory boundary.",
+    "Package standards are proposed adoption guidance; original criteria, quantitative targets and repository policy remain intact.",
+    "Original b01a628 baseline is graded; root newly authored docs/qa addendum is excluded from baseline alignment."
+  ]
+}

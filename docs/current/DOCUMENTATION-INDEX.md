@@ -1,5 +1,7 @@
 # Impact Platform documentation index
 
+**Testing documentation comparison — 11 October 2026:** [APLYD QA v1.3 audit](../qa/APLYD-v1.3-AUDIT-20261011.md) identifies current-edition, traceability, execution-history and domain-protocol gaps; [reconciliation plan](../qa/APLYD-v1.3-RECONCILIATION-20261011.md) proposes the follow-up. Earlier test editions and results below retain their historical scope; this audit establishes no current product PASS or release approval.
+
 **Native planning refinement — 10 October 2026:** [Complete refinement](../product/10-COMPLETE-BACKLOG-REFINEMENT.md), [Linear continuation](../product/07-LINEAR-IMPORT-STATUS.md) and [full read-back evidence](../product/refinement/readback-verification.json) record 1,553 unique native project issues, 1,131 proposed tasks and 368 additive story plans covering all 1,328 original scenarios. Original criteria and historical checkpoints remain preserved; this is completed planning integration, not product execution or acceptance. The optional additional overview document upload remains separately pending.
 
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](../HANDOVER.md); `VERSION.json` is the source for the version numbers. The dated paragraphs below record earlier candidates with the figures of their time; the index tables that follow name the build each document was last reconciled to.

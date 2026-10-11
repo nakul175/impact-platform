@@ -1,0 +1,400 @@
+{
+  "scope": "Unchanged bundled offline checker regressions and authored teaching examples only",
+  "declared_python_support": "3.10+",
+  "actual_python": "Python 3.12.15",
+  "supported_runtime": true,
+  "supersedes_scope": "Runtime qualification only; initial Python3.9.6 run retained separately, never deleted",
+  "commands": [
+    {
+      "name": "regression",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "checker/tests",
+        "-v"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.197772+00:00",
+      "finished_at": "2026-10-11T04:20:28.523718+00:00",
+      "duration_seconds": 0.325819,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "cb42c802119aa86f5b11b9824cbd4a6e2e64d455a8d0ec9287a297d662d95e27",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "regression_count": 57,
+      "regression_ok": true
+    },
+    {
+      "name": "fictional-structure",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/qa_lint.py",
+        "--registers",
+        "examples/lifecycle/registers"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.523885+00:00",
+      "finished_at": "2026-10-11T04:20:28.567681+00:00",
+      "duration_seconds": 0.0438,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "cc05643f83cd895fa011272b7e1bf8874f4a9f074f4d5e2ff2d4fa5a56f02273",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "mode": "STRUCTURE_AND_REPORT",
+        "errors": [],
+        "warnings": [],
+        "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+        "result_counts": {
+          "PASS": 1,
+          "FAIL": 1,
+          "BLOCKED": 0,
+          "NOT_RUN": 0,
+          "SKIPPED": 0,
+          "NOT_APPLICABLE": 0
+        },
+        "freshness_counts": {
+          "CURRENT": 2,
+          "STALE": 0,
+          "UNASSESSED": 0
+        },
+        "historical_qualification_counts": {
+          "FAIL": 2,
+          "PASS": 1
+        },
+        "selected_unique_runs": 2,
+        "unknown_applicability": 0,
+        "planned_coverage": {
+          "numerator": 2,
+          "denominator": 2,
+          "ratio": 1.0
+        },
+        "validated_coverage": {
+          "numerator": 1,
+          "denominator": 2,
+          "ratio": 0.5
+        },
+        "required_completion": {
+          "numerator": 2,
+          "denominator": 2,
+          "ratio": 1.0
+        },
+        "selected_pass_rate": {
+          "numerator": 1,
+          "denominator": 2,
+          "ratio": 0.5
+        },
+        "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/examples/lifecycle",
+        "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+      }
+    },
+    {
+      "name": "fictional-strict-release",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/qa_lint.py",
+        "--registers",
+        "examples/lifecycle/registers",
+        "--release"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.567726+00:00",
+      "finished_at": "2026-10-11T04:20:28.604894+00:00",
+      "duration_seconds": 0.037174,
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "stdout_sha256": "00592044e6d87be72095fe5ef4bbc5f91a9d6680a7160f5413b13bfaeca8e849",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "mode": "RELEASE_RECORD_GATE",
+        "errors": [
+          "release: incomplete validated AC coverage",
+          "release: required mapping not PASS/CURRENT"
+        ],
+        "warnings": [],
+        "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+        "result_counts": {
+          "PASS": 1,
+          "FAIL": 1,
+          "BLOCKED": 0,
+          "NOT_RUN": 0,
+          "SKIPPED": 0,
+          "NOT_APPLICABLE": 0
+        },
+        "freshness_counts": {
+          "CURRENT": 2,
+          "STALE": 0,
+          "UNASSESSED": 0
+        },
+        "historical_qualification_counts": {
+          "FAIL": 2,
+          "PASS": 1
+        },
+        "selected_unique_runs": 2,
+        "unknown_applicability": 0,
+        "planned_coverage": {
+          "numerator": 2,
+          "denominator": 2,
+          "ratio": 1.0
+        },
+        "validated_coverage": {
+          "numerator": 1,
+          "denominator": 2,
+          "ratio": 0.5
+        },
+        "required_completion": {
+          "numerator": 2,
+          "denominator": 2,
+          "ratio": 1.0
+        },
+        "selected_pass_rate": {
+          "numerator": 1,
+          "denominator": 2,
+          "ratio": 0.5
+        },
+        "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/examples/lifecycle",
+        "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+      }
+    },
+    {
+      "name": "empty-structure",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/qa_lint.py",
+        "--registers",
+        "registers"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.604942+00:00",
+      "finished_at": "2026-10-11T04:20:28.636669+00:00",
+      "duration_seconds": 0.031732,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "013fc6ae9832a5836d4b48a7487f1490d75c5665c577c947391445da569e86e8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "mode": "STRUCTURE_AND_REPORT",
+        "errors": [],
+        "warnings": [],
+        "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+        "result_counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "BLOCKED": 0,
+          "NOT_RUN": 0,
+          "SKIPPED": 0,
+          "NOT_APPLICABLE": 0
+        },
+        "freshness_counts": {
+          "CURRENT": 0,
+          "STALE": 0,
+          "UNASSESSED": 0
+        },
+        "historical_qualification_counts": {},
+        "selected_unique_runs": 0,
+        "unknown_applicability": 0,
+        "planned_coverage": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "validated_coverage": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "required_completion": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "selected_pass_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/registers",
+        "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+      }
+    },
+    {
+      "name": "empty-strict-release",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/qa_lint.py",
+        "--registers",
+        "registers",
+        "--release"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.636712+00:00",
+      "finished_at": "2026-10-11T04:20:28.669161+00:00",
+      "duration_seconds": 0.032453,
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "stdout_sha256": "6d8033e0d66ab5b83eb2d54ed4f1a7f595697880413a17a7c83be40e63c5a02d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "mode": "RELEASE_RECORD_GATE",
+        "errors": [
+          "release: evidence_root must be configured or overridden",
+          "release criteria pin: missing criteria_source_ref",
+          "release criteria pin: missing criteria_source_sha256",
+          "release criteria pin: missing expected_ac_ids_sha256",
+          "release criteria pin: missing criteria_source_review_ref",
+          "release: missing canonical criteria source snapshot",
+          "release scope: missing build_sha",
+          "release scope: missing artifact_digest",
+          "release scope: missing environment",
+          "release scope: missing config_version",
+          "release scope: missing data_version",
+          "release scope: missing assessment_time",
+          "release: no applicable AC population"
+        ],
+        "warnings": [],
+        "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+        "result_counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "BLOCKED": 0,
+          "NOT_RUN": 0,
+          "SKIPPED": 0,
+          "NOT_APPLICABLE": 0
+        },
+        "freshness_counts": {
+          "CURRENT": 0,
+          "STALE": 0,
+          "UNASSESSED": 0
+        },
+        "historical_qualification_counts": {},
+        "selected_unique_runs": 0,
+        "unknown_applicability": 0,
+        "planned_coverage": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "validated_coverage": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "required_completion": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "selected_pass_rate": {
+          "numerator": 0,
+          "denominator": 0,
+          "ratio": null
+        },
+        "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/registers",
+        "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+      }
+    },
+    {
+      "name": "pm-index-mapping",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/check_pm_mapping.py"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.669202+00:00",
+      "finished_at": "2026-10-11T04:20:28.694955+00:00",
+      "duration_seconds": 0.025757,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "3f696ee7340df81f80b9a2cf867dab4207246d48970990ef84043ec3c813460b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "errors": [],
+        "catalogue": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/pm-catalogue-index.json",
+        "mode": "EXTRACTED_INDEX",
+        "disclaimer": "Field membership validation; no product scope or approval authentication"
+      }
+    },
+    {
+      "name": "installed-full-pm-mapping",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/check_pm_mapping.py",
+        "--catalogue",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.694987+00:00",
+      "finished_at": "2026-10-11T04:20:28.724525+00:00",
+      "duration_seconds": 0.029542,
+      "actual_exit": 0,
+      "expected_exit": null,
+      "stdout_sha256": "c623484c95be032342c40169114b196865b15aa81c79c576fb42052c2feaac41",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "report": {
+        "errors": [],
+        "catalogue": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+        "mode": "FULL_CATALOGUE",
+        "disclaimer": "Field membership validation; no product scope or approval authentication"
+      }
+    },
+    {
+      "name": "fictional-candidate-pins",
+      "command": [
+        "/Users/athena/.local/bin/python3.12",
+        "-B",
+        "checker/criteria_pin.py",
+        "--source",
+        "examples/lifecycle/criteria-source.json"
+      ],
+      "cwd": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3",
+      "started_at": "2026-10-11T04:20:28.724560+00:00",
+      "finished_at": "2026-10-11T04:20:28.751318+00:00",
+      "duration_seconds": 0.026761,
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout_sha256": "0492af109fc0ab785fcc6b0c87d59373ceebb96e820efc675c26dfde86aa2cf2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "product_test": false,
+      "exit_matches_demonstration_contract": true,
+      "report": {
+        "expected_ac_count": 2,
+        "expected_ac_ids_sha256": "0de580fb4366d2f812c7a5269f49dcbe02087d3d8a999e3daf3724564ad47800",
+        "criteria_source_sha256": "962b2a2517dd50b923244bf17a9e93cdfd938943815d2a6e3b6d43e76c4b8a83",
+        "criteria_source_review_ref": "RECORDS.md#requirement",
+        "scope_id": "REL-DEMO-01",
+        "notice": "Candidate values only; source completeness/authority must be independently reviewed. This helper does not modify scope."
+      }
+    }
+  ],
+  "reference_changed_paths": [],
+  "reference_new_files": [],
+  "source_review": "Read checker and test sources before execution; no network imports/calls; assess reads local files; regression copies fixtures into dedicated temporary directories; bytecode disabled",
+  "product_tests_executed": false,
+  "live_governance_inspected": false,
+  "approvals_authenticated": false,
+  "new_dependencies_installed": false,
+  "network_actions": false
+}

@@ -1,0 +1,7 @@
+{
+  "sourceSha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+  "sourceUnchanged": true,
+  "overview": "{\"kind\":\"region\",\"sheet\":\"Overview\",\"address\":\"A6:H6\",\"rows\":1,\"cols\":8,\"nonEmpty\":8,\"text\":8,\"maxTextLength\":14,\"preview\":[[\"Suite\",\"Designed\",\"Pass\",\"Fail\",\"Blocked\",\"Not run\",\"In progress\",\"Not applicable\"]],\"previewAddress\":\"A6:H6\",\"previewRows\":1,\"previewCols\":8}",
+  "execution": "{\"kind\":\"region\",\"sheet\":\"Execution records\",\"address\":\"A6:H6\",\"rows\":1,\"cols\":8,\"nonEmpty\":8,\"text\":8,\"maxTextLength\":26,\"preview\":[[\"Run ID\",\"Suite\",\"Test or workflow\",\"Result\",\"Evidence file\",\"Assessed requirement links\",\"Scope limit\",\"Recorded run date\"]],\"previewAddress\":\"A6:H6\",\"previewRows\":1,\"previewCols\":8}",
+  "scope": "Read-only imported cell inspection. No export, source edits, formula recalculation or new product execution."
+}

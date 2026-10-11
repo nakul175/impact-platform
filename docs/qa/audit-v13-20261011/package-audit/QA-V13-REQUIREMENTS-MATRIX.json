@@ -1,0 +1,1213 @@
+{
+  "scope": "Authoritative unchanged QA v1.3 package requirements interpreted for proposed Imprana documentation adoption only",
+  "package_version": "1.3",
+  "package_zip_sha256": "26c64346226f660f6a648e5cebcaf2ee893750e1fb8fe50b13821aae631b5e5a",
+  "requirements": [
+    {
+      "id": "QA13-001",
+      "area": "Authority",
+      "requirement": "Treat the package as proposed policy subordinate to existing requirements, rights, repository rules and authorised task scope.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 2,
+          "line_end": 3,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "README.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/README.md",
+          "line_start": 5,
+          "line_end": 6,
+          "sha256": "007b43c194e2486047d9dc3fea35da1370112df9559dd7a5504b8011e8dfce52"
+        }
+      ],
+      "checker_boundary": "Not enforced by qa_lint; a record cannot grant authority.",
+      "imprana_adoption_recommendation": "Keep Imprana engineering invariants and existing release/spending authority. Adapt docs without implying new permission.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-002",
+      "area": "Authority",
+      "requirement": "Record actual product, engineering, QA, specialist and release decision authorities; agents collect evidence but cannot manufacture approval.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 3,
+          "line_end": 3,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 15,
+          "line_end": 15,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "checker_boundary": "Review/approval references are syntactically checked only, not identity or authority authenticated.",
+      "imprana_adoption_recommendation": "Map actual owners from confirmed source records; leave unconfirmed specialist/signoff ownership unresolved.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-003",
+      "area": "Lifecycle",
+      "requirement": "Keep discovery/planning/Ready/delivery/learning separate; a plan is not implementation validation.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 14,
+          "line_end": 21,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        }
+      ],
+      "checker_boundary": "Freeform lifecycle checklist semantics are not parsed.",
+      "imprana_adoption_recommendation": "Bind existing PM shared Ready/Done and AI assurance by version/hash rather than creating a second authority.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-004",
+      "area": "Context",
+      "requirement": "Resolve only facts necessary for the current action; unknown is not no. Exact build/environment/data/permissions are needed before dependent execution.",
+      "source_refs": [
+        {
+          "path": "PRODUCT-CONTEXT.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/PRODUCT-CONTEXT.md",
+          "line_start": 22,
+          "line_end": 34,
+          "sha256": "0fa99715e1ffa1c60bda03f29b4724dee78bc92c489bbe613b816d97ceff1deb"
+        }
+      ],
+      "checker_boundary": "Scope pin presence/equality checks only; action permission and context truth external.",
+      "imprana_adoption_recommendation": "Allow docs inventory now; mark dependent runtime/provider/production qualification blocked until actual boundaries exist.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-005",
+      "area": "Routing",
+      "requirement": "Low-tier fast path requires documented Low risk, bounded reversible change, no critical contract/authorisation/data/AI/safety/migration or protected requirement effect.",
+      "source_refs": [
+        {
+          "path": "workflow/TASK-ROUTING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TASK-ROUTING.md",
+          "line_start": 13,
+          "line_end": 16,
+          "sha256": "eef7f29fb03486d0e845f14af24aeb9494392893c6c33176d5d022920d8635c2"
+        }
+      ],
+      "checker_boundary": "No change-risk classifier or eligibility checker.",
+      "imprana_adoption_recommendation": "Use focused meaningful docs checks for eligible changes; assess any QA-control/source changes separately because their release effect can raise risk.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-006",
+      "area": "Risk",
+      "requirement": "Assess each failure mode with impact and likelihood 1\u20134; impact4 is Critical regardless of product score; unknown likelihood is provisional/conservative.",
+      "source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 162,
+          "line_end": 169,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Checker validates score range/minimum inherent tier, not likelihood evidence, residual safety or override sufficiency.",
+      "imprana_adoption_recommendation": "Classify tenant disclosure, independent authority, official arithmetic, audit/recovery and AI irreversible action as proposed critical failure families using actual threat sources.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-007",
+      "area": "Risk",
+      "requirement": "High/Critical depth includes boundaries/negative/abuse/isolation/fallback/recovery and independent relevant specialist review; medium/low checks remain proportionate.",
+      "source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 4,
+          "line_end": 11,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "checker_boundary": "Required-case flags are counted; adequacy of domain depth/review is external.",
+      "imprana_adoption_recommendation": "Reuse existing API/native/browser/security tests and add only source-backed missing checks; do not duplicate every unit with E2E.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-008",
+      "area": "Risk",
+      "requirement": "Critical invariant failures block release irrespective of average pass rate; mandatory rights cannot be waived by a low score.",
+      "source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 13,
+          "line_end": 18,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        }
+      ],
+      "checker_boundary": "Strict mode requires all applicable ACs current validated and rejects openD3/D4; it cannot classify nonwaivable obligations.",
+      "imprana_adoption_recommendation": "Keep cross-tenant denial, natural-person independence, deterministic official results, immutable history/current authority as nonwaivable sourced invariants.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-009",
+      "area": "Targets",
+      "requirement": "Predeclare numeric metric, unit, direction/value, population/slices, denominator/window/workload/sample, uncertainty, baseline/source/version and actual approval.",
+      "source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 18,
+          "line_end": 21,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "domains/PERFORMANCE.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/PERFORMANCE.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "5b9f4fcdeb98c25a477fed6cc1b010596d2e22f17d26dfb9adb0669dc4d7acd4"
+        }
+      ],
+      "checker_boundary": "No numeric/statistical threshold evaluator; threshold-register.csv not in checker schema.",
+      "imprana_adoption_recommendation": "Preserve sourced arithmetic oracles; propose performance/AI targets only with assumptions and owner-decision gates, never universal invented percentages.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-010",
+      "area": "Targets",
+      "requirement": "A first-release provisional target needs harm/source rationale, actual pre-execution approval, cohort/exposure/expiry/monitoring and baseline-establishment plan; it cannot waive invariants.",
+      "source_refs": [
+        {
+          "path": "standards/PROVISIONAL-TARGETS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/PROVISIONAL-TARGETS.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "7c412880c11936e38224ef74702db6241158b99ee87ad181a8c00ca5f4800476"
+        }
+      ],
+      "checker_boundary": "Not evaluated/authenticated by qa_lint.",
+      "imprana_adoption_recommendation": "Where baselines are unknown, retain proposed bounded target records, planning feasible; qualification does not pass an undefined or unapproved target.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-011",
+      "area": "Traceability",
+      "requirement": "Preserve canonical vision\u2192strategy\u2192roadmap\u2192releasegoal\u2192operatingrelease\u2192epic\u2192story\u2192AC\u2192task\u2192case\u2192run\u2192defect\u2192decision IDs; a deployable operating candidate is distinct from a planning release goal.",
+      "source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 2,
+          "line_end": 2,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "workflow/LINEAR-GITHUB.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/LINEAR-GITHUB.md",
+          "line_start": 4,
+          "line_end": 12,
+          "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+        }
+      ],
+      "checker_boundary": "Checker validates AC/case/risk mapping endpoints, not every narrative hierarchy ancestor.",
+      "imprana_adoption_recommendation": "Reuse native P-APL-2/54epics/368stories/1131tasks and original criteria identities; do not rename source IDs or treat release goal as deployed artifact.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-012",
+      "area": "Traceability",
+      "requirement": "AC register is independent complete denominator; traceability contains links only; run register contains immutable execution; coverage selection explicitly chooses run per mapping.",
+      "source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "standards/register-schema.json",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/register-schema.json",
+          "line_start": 1,
+          "line_end": 119,
+          "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+        }
+      ],
+      "checker_boundary": "Exact headers, identifiers, duplicates and AC/case/risk/run references enforced.",
+      "imprana_adoption_recommendation": "Create an adapter from preserved PM source, not from test inventory; keep historical run captures and QA design separate.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-013",
+      "area": "Coverage",
+      "requirement": "Planned coverage counts applicable ACs with required mappings; validated coverage requires every required mapping selected PASS/CURRENT/QUALIFICATION on matching candidate. UNKNOWN remains denominator; NO needs rationale/review;0/0=null.",
+      "source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 254,
+          "line_end": 291,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Exact mechanical fractions enforced for supplied rows.",
+      "imprana_adoption_recommendation": "Report numerator/denominator scoped to preserved AC population, with exclusions/unknown separately; never planning completeness as product pass.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-014",
+      "area": "Coverage",
+      "requirement": "Selected result counts are required AC-to-case mappings, not unique test functions; report historical qualification and unique selected runs separately.",
+      "source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 8,
+          "line_end": 10,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 286,
+          "line_end": 292,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Mechanical units/counts provided.",
+      "imprana_adoption_recommendation": "Do not compare1553planningissues/1328originalscenarios to test function totals as the same denominator; retain explicit mappings.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-015",
+      "area": "Source pins",
+      "requirement": "Export all canonical in-scope ACs independently of tests/QA rows, including YES/NO/UNKNOWN; recordsource/revision/scope/review before pinning.",
+      "source_refs": [
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        }
+      ],
+      "checker_boundary": "Checker compares supplied export/register but cannot discover omitted canonical source criteria.",
+      "imprana_adoption_recommendation": "Freeze a complete Imprana source export for each operating candidate; require actual completeness/applicability review instead of self-derived source pins.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-016",
+      "area": "Source pins",
+      "requirement": "Pin exact source-byteSHA, all-record count and sorted[ACid,ACversion] canonical identity-setSHA; source/version/applicability changes require approved newsource and invalidate affected results.",
+      "source_refs": [
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 7,
+          "line_end": 16,
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 89,
+          "line_end": 129,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        },
+        {
+          "path": "checker/criteria_pin.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/criteria_pin.py",
+          "line_start": 6,
+          "line_end": 17,
+          "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+        }
+      ],
+      "checker_boundary": "Count/substitution/duplicate/source-byte/applicability drift checked against supplied pins.",
+      "imprana_adoption_recommendation": "Keep original1328scenarios intact; approve/reconcile AC-export adapter identity/version mapping before release use. Helper emits candidate values only.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-017",
+      "area": "Source governance",
+      "requirement": "Actual human CODEOWNER review must cover source+pins plus source/export logic,CODEOWNERS,workflow/checker/schema controls; account for later overriding patterns/uncovered paths.",
+      "source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 4,
+          "line_end": 8,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "path": "adoption/github/CODEOWNERS.template",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/adoption/github/CODEOWNERS.template",
+          "line_start": 1,
+          "line_end": 12,
+          "sha256": "180c83d429fb14924bcf0f7ecce3aa0303c4b2a191415666778694a395068338"
+        }
+      ],
+      "checker_boundary": "No live GitHub configuration or reviewer authentication; suppliedtemplate inactive.",
+      "imprana_adoption_recommendation": "Document required ownership paths and actual unresolved owners; do not claim protection from file presence or add bots as sole authoritative reviewer.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-018",
+      "area": "Source governance",
+      "requirement": "Require real code-owner PR review,fresh-review/latest-push settings,trusted required checks and inspected bypass/direct/forcepush settings; verify safe source-narrowing and control-change PRs remain unmergeable without realreview.",
+      "source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 7,
+          "line_end": 11,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "path": "templates/source-protection-verification.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/source-protection-verification.md",
+          "line_start": 2,
+          "line_end": 17,
+          "sha256": "8dca833229a688d52d22c75ecd7728935d26bf9e94e46ef528640e7bd1d2495d"
+        }
+      ],
+      "checker_boundary": "Outside offlinechecker; safe tests/config evidence required.",
+      "imprana_adoption_recommendation": "Record NOT_CONFIGURED until actual repository control evidence is obtained; this audit neither changes protection nor performs testPRs.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-019",
+      "area": "Source governance",
+      "requirement": "Alternative is trusted independent read-only canonical PM reconciliation with separately controlled selection/workflow/credentials, approved scope changes and failclosed unavailability.",
+      "source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 13,
+          "line_end": 16,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        }
+      ],
+      "checker_boundary": "No live exportconnector included.",
+      "imprana_adoption_recommendation": "Propose independently reviewed source-export gate reusing canonical Linear scope; do not use candidate self-authored export as authority.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-020",
+      "area": "Evidence root",
+      "requirement": "Configure portable package:/repo:/relative root; canonical criteria snapshot must be local inside root. Local references reject absolute paths,traversal and symlink escapes; absolutebase only explicitoverride.",
+      "source_refs": [
+        {
+          "path": "workflow/EVIDENCE-ROOT.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/EVIDENCE-ROOT.md",
+          "line_start": 2,
+          "line_end": 18,
+          "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 51,
+          "line_end": 88,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Point-in-time resolved containment checks;HTTPS/record refs warn unauthenticated, fragmentsnotparsed.",
+      "imprana_adoption_recommendation": "Use an immutable approved evidence store and repository-relative portable references. Do not assume a URL exists or an anchor proves the oracle.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-021",
+      "area": "Results",
+      "requirement": "PASS/FAIL require actual identified execution/predeclared oracle; BLOCKED,NOT_RUN,SKIPPED,NOT_APPLICABLE are separate outcomes; STALE/UNASSESSED are freshness and never currentpass.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 23,
+          "line_end": 26,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "standards/STATUS-MODEL.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/STATUS-MODEL.md",
+          "line_start": 2,
+          "line_end": 10,
+          "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7"
+        }
+      ],
+      "checker_boundary": "Enums and evidence-field presence; actualexecution truth/authentication external.",
+      "imprana_adoption_recommendation": "For documentation-createdcases useNOT_RUN/no fabricated run; mark existing evidence freshness against currentcandidate explicitly.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-022",
+      "area": "Evidence pins",
+      "requirement": "Immutable eachrun records scope/AC/caseversions,build/artifact/config/environment/tools/times/timezone,data/model/prompt/corpus,procedure,expected/observed,evidence,executor/reviewer.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 26,
+          "line_end": 26,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "templates/run-evidence.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/run-evidence.md",
+          "line_start": 6,
+          "line_end": 16,
+          "sha256": "f87e6ccd4f0a0bef84da89be737f35e19b80dcde7b2a5271b44e43dc365f28c4"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 178,
+          "line_end": 193,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "PASS/FAIL require selected basicfields and valid timestamps; digest/source/reviewer truth and allmodelpins not independently checked.",
+      "imprana_adoption_recommendation": "Bind retained native/PGlite/browser/IDP/recovery evidence to exactscope; do not assign currentresult from historical product version.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-023",
+      "area": "History",
+      "requirement": "Append newruns/defectevents; retain initial failure and diagnostic attempts; snapshot selection uses pins rather than latest timestamp.",
+      "source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "path": "checker/README.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/README.md",
+          "line_start": 23,
+          "line_end": 26,
+          "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+        }
+      ],
+      "checker_boundary": "In-current-input predecessor cycles/forks checked; no priorGit append-only comparison.",
+      "imprana_adoption_recommendation": "Preserve existing historical evidence and add new captures separately; do not overwrite or restore over source/history to getgreen.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-024",
+      "area": "Repetition",
+      "requirement": "Predeclare qualificationgroup purpose,count,seeds/sampling and aggregate rule; preserve allsamples; extraunplanned attempts areDIAGNOSTIC and cannot rescue deterministicgate by majority vote.",
+      "source_refs": [
+        {
+          "path": "workflow/REPETITION-POLICY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/REPETITION-POLICY.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "b4c46d231ecfc8a8fc623c1b1a8cfbf2321d1996603aea2a2e9c781a29c5e4bd"
+        }
+      ],
+      "checker_boundary": "QUALIFICATION vsDIAGNOSTIC selected purpose enforced; protocol validity/statisticalrule not evaluated.",
+      "imprana_adoption_recommendation": "Reuse meaningful deterministic invariants; for future stochasticAI assays versionprotocol beforeheldout run and preserve distributions, not retry-untilgreen.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-025",
+      "area": "Freshness",
+      "requirement": "Analyze changed requirements/code/dependencies/data/model/prompt/corpus/infrastructure and invalidate/rerun affected checks pluscriticalsmoke; reuse needs documented relevance/freshness.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 29,
+          "line_end": 29,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 14,
+          "line_end": 14,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "checker_boundary": "CURRENT label and scopeequality checked; dependency-impact classification external.",
+      "imprana_adoption_recommendation": "Use Imprana source/task dependencies and changeimpact records; no autoCurrent for oldnative,provider orUI evidence afterchange.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-026",
+      "area": "Case design",
+      "requirement": "Derive externally meaningful positive/negative/boundary/state/failure/concurrency/deniedsideeffect cases fromsourceAC+risk; persisted outcome, not onlysuccess toast.",
+      "source_refs": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "b04934113725756a75cd23ba4a0e8061b7b97898d71489bbe63f3e24988ca105"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "checker_boundary": "Marker presence/file location only; assertionadequacy not checked.",
+      "imprana_adoption_recommendation": "Assert selectorsnotproof,denialnoeffect,exactretry/changedpayload/conflict,currentauthority and persistedrevision using existing testconventions.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-027",
+      "area": "Case IDs",
+      "requirement": "Use stablecollision-resistantQAIDs/explicitversions; AUTO locators remain reporelative with discoverablecase marker; preserve canonicalIDs, never allocate rowcount;MANUAL needs procedure.",
+      "source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 149,
+          "line_end": 161,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "UniqueID/version,mode,locator/marker enforcedwhenroot; symbolsemantics/testexecution not checked.",
+      "imprana_adoption_recommendation": "Build an adapter to existingqualification IDs first. Addmarkers only in owned implementation work with appropriate tests; currentaudit doesnot editcode.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-028",
+      "area": "Concurrency",
+      "requirement": "Assign separate per-agentrecords/branches; serialize register integration and reviewedversionchanges; never overwrite duplicate rows.",
+      "source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 6,
+          "line_end": 6,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        }
+      ],
+      "checker_boundary": "DuplicateIDs rejected, but concurrent writer ownershipnotenforced.",
+      "imprana_adoption_recommendation": "Oneintegrator owns liveQA registers; audit agentswrite disjointoutputproposals only.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-029",
+      "area": "Defects",
+      "requirement": "Retain defect/case identity through append-onlypredecessorchain; severitydecrease requires nonemptyrationale+actualindependent triage review,not agent gatebypass.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 31,
+          "line_end": 34,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 210,
+          "line_end": 240,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Chains/caseidentity/rationale/referencepresence checked; reviewertruth outsidechecker.",
+      "imprana_adoption_recommendation": "Map existing severitycodesexplicitlyD1minor\u2192D4severeharm; preserve historical labels and independently reviewdowngrades.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-030",
+      "area": "Defects",
+      "requirement": "Closed defect needs samecase currentPASSqualification retest on closed-event build with evidence;release closure matches fullcandidatepins; unrelatedpass cannot close.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 34,
+          "line_end": 34,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 229,
+          "line_end": 235,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Samecase/build/purpose/result/freshness and releasepins compared.",
+      "imprana_adoption_recommendation": "Link eachreal fix/closureto actualsamecase run; keep originalfailed case evenif regressionplanchanges.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-031",
+      "area": "Exceptions",
+      "requirement": "Eligibility/nonwaivable obligation review,scope,risk,observedcontrols,authority,approval,expiry/retesttrigger required; exception never turnsFAILintoPASS or grantsdeployment.",
+      "source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 28,
+          "line_end": 29,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "templates/exception.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/exception.md",
+          "line_start": 6,
+          "line_end": 13,
+          "sha256": "4f4079d638d6f5c83eae1fd54ece9d097ea60f2830f2bbf8fd5fcfaa975ad081"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 241,
+          "line_end": 246,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Approvedrecord requiredfields+expiry checked; no semanticeligible-control/authority judgement;strictmode auto-waivesnone.",
+      "imprana_adoption_recommendation": "Keep proposedexceptions distinct until actualauthority; tenant/independence/history invariants preserved.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-032",
+      "area": "CI",
+      "requirement": "Gateplan includeslocal/PR/integration/release/deploy/observation stages; requiredchecks mustexecute on exactcandidate/integration artifact and actualrepositoryenforcement verified.",
+      "source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "checker_boundary": "Package no installedpipeline, noGitHubcalls.",
+      "imprana_adoption_recommendation": "Map existing checks/fourjob releasegates without replacing currentpolicy; auditrecord cannot certifybranchprotection orCIgreen.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-033",
+      "area": "CI",
+      "requirement": "Always-run aggregator distinguishes success frommissing,skipped,neutral,cancelled,timeout,unavailable childchecks;trustedreportingsource andmergequeue integration eventswhereused.",
+      "source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 13,
+          "line_end": 15,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "checker_boundary": "qa_lint is subordinate recordgate,not aggregator.",
+      "imprana_adoption_recommendation": "Document proposed gate expression and safeverification scope; no claim greenUI establishes allrequiredjobs executed.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-034",
+      "area": "CI",
+      "requirement": "Quarantine requires defect/owner/scope/expiry/replacementvalidation; requiredquarantinedcheck stillblocks unless eligibleactualexception; preservefirstattempt/flakeevidence.",
+      "source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 17,
+          "line_end": 19,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "checker_boundary": "No runtime CIquarantine/flake evaluator.",
+      "imprana_adoption_recommendation": "Infrastructure orfinancialunavailability remainsBLOCKED; do not weaken assertions/requiredgates.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-035",
+      "area": "CI",
+      "requirement": "Pipeline stage records trigger,commands,selection,checkname,environment,budget/permissions,retention,gateexpression; deliberatefailure mustblockmerge in safeauthorisedtest.",
+      "source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 19,
+          "line_end": 25,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "checker_boundary": "No configured protectioninstalledbypackage.",
+      "imprana_adoption_recommendation": "Retain existing budgetpermission and mergeconfirmation; schedule enforcementqualification onlywith actualauthorised boundary.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-036",
+      "area": "Strict recordgate",
+      "requirement": "Use structuralmode for plans;--release requires frozencriteria/sourcepins,fullcurrentrequiredmappedPASS,knownapplicability,no openD3/D4 and verifiedAUTOlocators.",
+      "source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 21,
+          "line_end": 22,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 278,
+          "line_end": 292,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "checker_boundary": "Actual bounded release-record contract enforced; exceptions/domain/operational/approval checks external.",
+      "imprana_adoption_recommendation": "Do not run--release against unexecuted productplan then claimfailureiscodebug; report recordgate separatefrom release-readiness.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-037",
+      "area": "AI",
+      "requirement": "AI applicability includes model/classifier/ranking/retrieval/agenttools;canonicalassurance defines usecase,population,authority,prohibitedaction,humanreview,failurecost/fallback.",
+      "source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 2,
+          "line_end": 5,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        },
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        }
+      ],
+      "checker_boundary": "Assurance contentnotparsedbymarkdownchecker.",
+      "imprana_adoption_recommendation": "Link canonicalImprana AIassurance; distinguish deterministicadvice/no-providerfeatures from futureprovider qualification and authoringAI.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-038",
+      "area": "AI",
+      "requirement": "Pinprovider/model/version/params/prompts/tools/corpus/index/code/data; providermutationcan invalidateevenwithout codechange; unavailableversionpin needs controls/revalidation/residualdecision.",
+      "source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 5,
+          "line_end": 7,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        },
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 25,
+          "line_end": 25,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "checker_boundary": "Model/corpus providertruth and versioncontrol external.",
+      "imprana_adoption_recommendation": "Record hostedproviderchecksNOT_RUN until authorisedcredential/budget and bounded pinning exist; preserve officialarithmetic outsideAI.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-039",
+      "area": "AI",
+      "requirement": "Separatedevelopment/validation/heldoutsets with provenance/licensing/labelrubric/revieweragreement/representativeness/duplicates/exclusions; syntheticdoesnotprove real-worldrepresentativeness.",
+      "source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 7,
+          "line_end": 19,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "checker_boundary": "No data/label/calibration/statistical evaluator.",
+      "imprana_adoption_recommendation": "Propose versioned multilingual nonprofit tasks and meaningfulslices without fabricatedresearch/realuserinput; noqualification from authored examples.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-040",
+      "area": "AI",
+      "requirement": "Evaluate injection/exfiltration/toolpermissions/argumentvalidation/cross-tenantretrieval/unsupportedclaims/refusal/humanescalation/duplicatetoolactions/denialsideeffects; criticalunauthorisedactionsblock.",
+      "source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 21,
+          "line_end": 25,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "checker_boundary": "Casecount consistencydoesnotestablish safetycoverage.",
+      "imprana_adoption_recommendation": "Reuse denybydefault/currentauthority/tenantfence/receipt invariants; addscoped adverseAI tests onlywhere deliveredAI behaviorrequires.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-041",
+      "area": "Security/privacy",
+      "requirement": "Pin threatmodel/selectedverificationstandard;verify auth/session/recovery/objecttenantaccess/injection/files/secrets/dependency/transport/ratelimit/audit/logleak/supplychain/privilegedsafe defaults.",
+      "source_refs": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        },
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 10,
+          "line_end": 10,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        }
+      ],
+      "checker_boundary": "No securityscan/exploitreview executes.",
+      "imprana_adoption_recommendation": "Link existingthreatregister/releaseimpactreviews and realroleRLSnative negatives; PGlite cannot substitute nativeconcurrency/securityproof.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-042",
+      "area": "Security/privacy",
+      "requirement": "Verify minimisation/purpose/access/correction/deletion/retention/export/transfers/redaction and deletionpropagation; use syntheticidentities; legalreview depends currentjurisdiction/data/releasedate.",
+      "source_refs": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 6,
+          "line_end": 10,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        }
+      ],
+      "checker_boundary": "No legalorprivacycertification.",
+      "imprana_adoption_recommendation": "Preserve privatecleanup/audit/history rights; currentlegalapplicability and qualifiedreview remain requiredactualownerinputs beforedependentrelease.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-043",
+      "area": "Accessibility",
+      "requirement": "WCAG2.2AA is proposedsubjectto obligations/scope; combineautomated with keyboard/focus/screenreader/error/contrast/reflow/authentication/timing/manualcriticaljourneys; no scan-onlyconformance.",
+      "source_refs": [
+        {
+          "path": "domains/ACCESSIBILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/ACCESSIBILITY.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "41fbd2e1eeaecbfa3792f844716ec30f7d34ced10d56a90943f760860ecf2216"
+        }
+      ],
+      "checker_boundary": "No accessibility/ATtestingexecutedbychecker.",
+      "imprana_adoption_recommendation": "Create screen/journey/criterion/browser/AT evidenceplan and ownerdecisiongate; retain unrunmanualcases, do not inferwholeconformance.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-044",
+      "area": "Performance",
+      "requirement": "Derive journeybudgets from needs/SLO/contracts; representative load/stress/spike/soak with offered/completedload/counts/tail/errors/queues/capacity/clientserverboundary/AIcostcaps.",
+      "source_refs": [
+        {
+          "path": "domains/PERFORMANCE.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/PERFORMANCE.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "5b9f4fcdeb98c25a477fed6cc1b010596d2e22f17d26dfb9adb0669dc4d7acd4"
+        }
+      ],
+      "checker_boundary": "No performanceexecution or numerical gateassessment.",
+      "imprana_adoption_recommendation": "Use existingharness/sourceexpectations as references; environment/budget-approved execution and baselines needed before metricpass.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-045",
+      "area": "Recovery",
+      "requirement": "Test outages/timeouts/boundedretries/duplicateidempotency/partialfailure/concurrency/restart/backlog/offlineresume/migration/compensation; assertno data loss/corruption/unauthorisedeffects.",
+      "source_refs": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/RELIABILITY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "0a6b36f7a83b8fc5b5aa011d972af69a8d700a75d36647342d07be39bee9a589"
+        }
+      ],
+      "checker_boundary": "No operationalrecovery tests inQAchecker.",
+      "imprana_adoption_recommendation": "Map existingnativeupgrade/restart/restore browser-IDP-stackproof sources; no short uptime or in-memoryrun as fullreliabilityproof.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-046",
+      "area": "Recovery",
+      "requirement": "Exercise actual backuprestoration with recovereddata/elapsedRPO/RTO; representative syntheticmigrationvolumes and rollback/compensation;safealerts/runbooks; faultinjection needsboundedapprovedtarget.",
+      "source_refs": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/RELIABILITY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "0a6b36f7a83b8fc5b5aa011d972af69a8d700a75d36647342d07be39bee9a589"
+        }
+      ],
+      "checker_boundary": "No livebackups/migrations/chaosrun.",
+      "imprana_adoption_recommendation": "Retain immutable historicalrestore evidence with limits; plan futureexactcandidate native+container qualification; do not performunauthorisedproduction/paidactions.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-047",
+      "area": "Data/environment",
+      "requirement": "Use syntheticorvalidatedapproveddeidentifieddata;maintainversion/hash/provenance/classification/allowedenv/owner/retention/license/seed/oracles/cleanup; neverembedcredentials.",
+      "source_refs": [
+        {
+          "path": "domains/TEST-DATA.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/TEST-DATA.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "f44972af1fe7e1d43262ea443b8c8bb1a746bfff57cc03d30a866e759f1e73f3"
+        }
+      ],
+      "checker_boundary": "Standalone data-register.csv not in checked schema;privacy/provenance/cleanuptruth external.",
+      "imprana_adoption_recommendation": "Preserve repositorysynthetic-onlyrule and controlledfixtureidentities; record exactdependency/browser/config/hardware/flags/environmentdifferences.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-048",
+      "area": "Manual/UAT",
+      "requirement": "Exploration records purpose/risk/timebox/build/data/notes/findings; UAT recordsrelevantparticipants/scenarios/consent/outcomes/actualacceptanceauthority; userapproval\u2260technicalpass.",
+      "source_refs": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 8,
+          "line_end": 8,
+          "sha256": "b04934113725756a75cd23ba4a0e8061b7b97898d71489bbe63f3e24988ca105"
+        },
+        {
+          "path": "templates/exploratory-charter.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/exploratory-charter.md",
+          "line_start": 6,
+          "line_end": 11,
+          "sha256": "f5e2daaf34c1ddde9dfcdaf3ba96be3e281ae53aae14af46db6f017b93c9112f"
+        }
+      ],
+      "checker_boundary": "Manualprocedurefile presence only;participantconsent/approval notauthenticated.",
+      "imprana_adoption_recommendation": "Draft meaningful Imprana donor/programme/reviewer/operatorjourneys; no invented interviews/useracceptance and no patient/productscope leakage.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-049",
+      "area": "Readiness",
+      "requirement": "READY requirescurrentapplicableAC/domainproof,realreviews/approval,closedblockers,feasiblerollout/rollback andoperationalowner;NOT_CONFIGUREDrequiredsourcegovernanceblocksrealrelease.",
+      "source_refs": [
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/RELEASE-READINESS.md",
+          "line_start": 2,
+          "line_end": 13,
+          "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a"
+        }
+      ],
+      "checker_boundary": "Offlineexit0 doesnotgrant readiness/deployment.",
+      "imprana_adoption_recommendation": "Keep quality/approval/readiness/delivery/learning distinct, draftNOT_READY until fullactualcandidate gates exist.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-050",
+      "area": "Rollout/learning",
+      "requirement": "Predeclare cohort/exposure/window/latencyerrorharm/stoprollbackowner; smokebasichealthnotallAC;code rollbackmaynotundodata/externalactions;afterwindowactualbaseline/denominator/uncertainty/incidentsdecision.",
+      "source_refs": [
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/RELEASE-READINESS.md",
+          "line_start": 6,
+          "line_end": 10,
+          "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a"
+        }
+      ],
+      "checker_boundary": "No live deployment/monitoring/useroutcomes.",
+      "imprana_adoption_recommendation": "Link exactdeployedbuildonlyafteractualauthorisedverification; do not claim productoutcomesfrom docsor localchecker.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-051",
+      "area": "Reporting",
+      "requirement": "Report scope/build,all6outcomes,freshness,firstattempt/reruns,requiredcompletion,ACcoverage,critical/high/exclusions/defects/expiry/slices and limitations; no percentagewithoutpopulation/window/denominator.",
+      "source_refs": [
+        {
+          "path": "workflow/REPORTING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/REPORTING.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "a8780050d47d9b45d21e5954d46e68237d95cecef989012f274fa502a999b6a3"
+        }
+      ],
+      "checker_boundary": "Mechanical supplied-recordcounts only; interpretationexternal.",
+      "imprana_adoption_recommendation": "Currentdocumentationauditreportspackagechecks separately from NOT_RUN Impranaapplicationchecks; no inventedcompletionpercentage.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-052",
+      "area": "Linear/GitHub",
+      "requirement": "Canonical requirement/priorityauthority inPM/Linear,code+CIinGitHub,durabletestdesign/evidenceinrepodocs;stablebidirectionallinks; conflictsneedsourceowner;packagegivesno externalwriteauthority.",
+      "source_refs": [
+        {
+          "path": "workflow/LINEAR-GITHUB.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/LINEAR-GITHUB.md",
+          "line_start": 14,
+          "line_end": 23,
+          "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+        }
+      ],
+      "checker_boundary": "No nativeconnector/statussynchronisation.",
+      "imprana_adoption_recommendation": "Use existingproject hierarchy andappend proposalsonlythrough separatelyauthorised publication; no automaticReady/Done/acceptance transitions.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-053",
+      "area": "PM adapter",
+      "requirement": "QA PMmapping is referenceadapter,not machinecompatiblePMinput;validate canonicalfieldmembership,aliases andstagegateprefixes against actualinstalledfullcataloguebytes/edition.",
+      "source_refs": [
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 2,
+          "line_end": 9,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        },
+        {
+          "path": "checker/check_pm_mapping.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/check_pm_mapping.py",
+          "line_start": 7,
+          "line_end": 35,
+          "sha256": "24d1629d8608ce723f64baabb02e2d1b80aef98650c8ba0d2b13958275fedf80"
+        }
+      ],
+      "checker_boundary": "Actual mapping exit0 proveslistedfieldmembership/hash/edition/prefixes only; no allhierarchy/readiness compatibility.",
+      "imprana_adoption_recommendation": "Installed v4.2 archive stillcontains3.0-generic cataloguecec6bc14\u2026; pinnedfullmappingpassed. Keep semantic adapterreview separate.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    },
+    {
+      "id": "QA13-054",
+      "area": "Adoption",
+      "requirement": "Inventory existingtests/toolingevidence beforeaddingdependencies; merge QAinstructionsscopewithout replacingrepoAGENTS;pilot requiredsourcegovernance/normalisedregisters/codeIDsin relevantauthorisedwork.",
+      "source_refs": [
+        {
+          "path": "ADOPTION-CHECKLIST.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/ADOPTION-CHECKLIST.md",
+          "line_start": 2,
+          "line_end": 51,
+          "sha256": "bd652fafd7a9f93a87f965d59f136e490eded3ae4e548c8773976638a71bf66d"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 7,
+          "line_end": 7,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "checker_boundary": "Package emptyadoptionregisters structuralpass; no liveprotection or productimplementation installed.",
+      "imprana_adoption_recommendation": "Documentation first binds existingImprana qualification; framework/runtimemutation remains out of thisaudit scope.",
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "product_execution": "NOT_RUN"
+    }
+  ],
+  "requirements_count": 54,
+  "source_review": "All relevant package standards, workflows, domain guides, templates, schemas, checker/testcode and inactive governance template read; no outside claims from link destinations",
+  "scope_limit": "No repository adoption, native write, CI, runtime, legal finding, real protection/config review, product test, acceptance or deployment approval"
+}

@@ -1,0 +1,61 @@
+{
+  "separate_code_review": true,
+  "separate_evidence_review": true,
+  "runs": [
+    {
+      "passed": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "source_pins": 302,
+      "worker_hash_matches_final": false
+    },
+    {
+      "passed": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "source_pins": 302,
+      "worker_hash_matches_final": true
+    }
+  ],
+  "takeover": {
+    "one_sent_five_leased_before_fast": true,
+    "slow_sends": 1,
+    "fast_sends": 5,
+    "unique_sends": 6,
+    "total_sends": 6,
+    "generations": [
+      2,
+      1,
+      2,
+      2,
+      2,
+      2
+    ],
+    "actual_database_clock_expiry": true,
+    "lease_SQL_or_timestamps_edited": false,
+    "production_worker_changed": false
+  },
+  "restores": {
+    "tables_per_clone": 193,
+    "rows_per_clone": [
+      4365,
+      4422,
+      4479
+    ],
+    "checksums": 47,
+    "differences": 0,
+    "erasure_and_replacement_API_copies_dropped": true,
+    "generic_linkage_report_dropped_field": false,
+    "whole_cluster_stopped": true,
+    "not_pre_erasure_TH27": true
+  },
+  "credential_pattern_hits": 0,
+  "artifacts_scanned": 19,
+  "historical_evidence_unchanged": true,
+  "initial_optional_PyYAML_parser": "UNAVAILABLE_NO_PASS_CREDIT",
+  "workflow_package_install_execution": "NOT_LOCALLY_PROVEN_REQUIRES_FRESH_CI",
+  "human_signoff": false,
+  "staging_deployed": false
+}

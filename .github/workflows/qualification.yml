@@ -126,6 +126,8 @@ jobs:
       # run database assertions; scripts/run.py never hands it to the API process.
       IMPACT_ADMIN_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test
       IMPACT_FIXTURE_DSN: postgresql://postgres:disposable-ci-only@127.0.0.1:5432/impact_test
+      # Diagnosis clone-restore cases run inside the full suite, not only the later drill.
+      IMPACT_PG_BIN: /usr/lib/postgresql/17/bin
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -140,6 +142,30 @@ jobs:
             echo "::add-mask::$value"
             echo "IMPACT_LOGIN_PASSWORD_$name=$value" >> "$GITHUB_ENV"
           done
+      - name: Install PostgreSQL 17 client tools from the PGDG repository
+        # The service container runs PostgreSQL 17 while the runner image ships the 16 client;
+        # pg_dump refuses a server newer than itself, so the drill uses the 17 binaries. The
+        # downloaded signing key is trusted only if its primary fingerprint is the published PGDG
+        # one (B97B0AFC AA1A47F0 44F244A0 7FCC7D46 ACCC4CF8); the package is major-version pinned.
+        env:
+          PGDG_KEY_FINGERPRINT: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+        run: |
+          set -euo pipefail
+          key=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl --fail --silent --show-error -o "$key" https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          gpg --show-keys --with-fingerprint "$key"
+          actual=$(gpg --show-keys --with-fingerprint --with-colons "$key" | awk -F: '$1=="fpr"{print $10; exit}')
+          if [ "$actual" != "$PGDG_KEY_FINGERPRINT" ]; then
+            echo "PGDG signing key fingerprint mismatch: got '$actual', expected '$PGDG_KEY_FINGERPRINT'" >&2
+            sudo rm -f "$key"
+            exit 1
+          fi
+          echo "deb [signed-by=$key] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client-17
+          /usr/lib/postgresql/17/bin/pg_dump --version
+          /usr/lib/postgresql/17/bin/pg_restore --version
       - name: Provision the login roles as the postgres superuser
         run: .venv/bin/python scripts/provision_logins.py
       - name: Qualification suite on the provisioned login roles, then the API restart check
@@ -166,31 +192,6 @@ jobs:
               if lines:
                   print("::error title=API log " + log + "::" + " | ".join(l[:200] for l in lines[-12:]).replace("%", "%25"))
           PY
-      - name: Install PostgreSQL 17 client tools from the PGDG repository
-        # The service container runs PostgreSQL 17 while the runner image ships the 16 client;
-        # pg_dump refuses a server newer than itself, so the drill uses the 17 binaries. The
-        # downloaded signing key is trusted only if its primary fingerprint is the published PGDG
-        # one (B97B0AFC AA1A47F0 44F244A0 7FCC7D46 ACCC4CF8); the package is major-version pinned.
-        if: always()
-        env:
-          PGDG_KEY_FINGERPRINT: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
-        run: |
-          set -euo pipefail
-          key=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
-          sudo install -d /usr/share/postgresql-common/pgdg
-          sudo curl --fail --silent --show-error -o "$key" https://www.postgresql.org/media/keys/ACCC4CF8.asc
-          gpg --show-keys --with-fingerprint "$key"
-          actual=$(gpg --show-keys --with-fingerprint --with-colons "$key" | awk -F: '$1=="fpr"{print $10; exit}')
-          if [ "$actual" != "$PGDG_KEY_FINGERPRINT" ]; then
-            echo "PGDG signing key fingerprint mismatch: got '$actual', expected '$PGDG_KEY_FINGERPRINT'" >&2
-            sudo rm -f "$key"
-            exit 1
-          fi
-          echo "deb [signed-by=$key] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends postgresql-client-17
-          /usr/lib/postgresql/17/bin/pg_dump --version
-          /usr/lib/postgresql/17/bin/pg_restore --version
       - name: Backup and restore drill of the database the suite used
         if: always()
         env:

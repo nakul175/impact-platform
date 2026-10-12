@@ -39,7 +39,33 @@ def wait_for(condition, timeout=30, interval=0.2):
     raise AssertionError("Condition not met within " + str(timeout) + " s")
 
 
-def start(live, name, **overrides):
+BETWEEN_MESSAGE_DRIVER = r"""
+import json,os,time
+from pathlib import Path
+from impact_api.worker import Worker,main
+config=Path(os.environ['IMPACT_WORKER_CONFIG_FILE'])
+assert json.loads(config.read_text())['environment']=='test'
+gate=json.loads(Path(os.environ['IMPACT_TEST_BETWEEN_MESSAGE_GATE']).read_text())
+assert set(gate)=={'events','ready','release'}
+original=Worker.process
+paused=False
+def process(self,tenant,row,summary):
+    global paused
+    original(self,tenant,row,summary)
+    if not paused and str(row['event_id']) in gate['events']:
+        paused=True
+        Path(gate['ready']).touch(mode=0o600)
+        deadline=time.monotonic()+180
+        while not Path(gate['release']).exists():
+            if time.monotonic()>=deadline:
+                raise RuntimeError('Test-only between-message gate timed out')
+            time.sleep(0.05)
+Worker.process=process
+raise SystemExit(main())
+"""
+
+
+def start(live, name, *, between_message_gate=None, **overrides):
     """One `python -m impact_api.worker` process: its configuration file, a few overrides, and no
     other IMPACT_* variable, connection string or libpq variable from the test environment."""
     env = {k: v for k, v in os.environ.items() if not k.startswith(("IMPACT_", "PG"))}
@@ -51,8 +77,14 @@ def start(live, name, **overrides):
     )
     env.update({"IMPACT_" + key.upper(): str(value) for key, value in overrides.items()})
     log = live.local / (name + ".log")
+    command = [sys.executable, "-m", "impact_api.worker", "--worker-id", name]
+    if between_message_gate is not None:
+        # Only this disposable test driver pauses BETWEEN completed deliveries;
+        # the production handler and real role/lease transactions remain unchanged.
+        env["IMPACT_TEST_BETWEEN_MESSAGE_GATE"] = str(between_message_gate)
+        command = [sys.executable, "-c", BETWEEN_MESSAGE_DRIVER, "--worker-id", name]
     process = subprocess.Popen(
-        [sys.executable, "-m", "impact_api.worker", "--worker-id", name],
+        command,
         cwd=ROOT,
         env=env,
         stdout=open(log, "w"),
@@ -353,21 +385,29 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     drain(live)
     receipts = [invitation(live)[1] for _ in range(6)]
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
+    name = "native-batch-a-" + uuid4().hex[:6]
+    ready, release = live.local / (name + "-ready"), live.local / (name + "-release")
+    gate = live.local / (name + "-gate.json")
+    gate.write_text(json.dumps({"events": sorted(events), "ready": str(ready), "release": str(release)}))
+    gate.chmod(0o600)
     slow = start(
         live,
-        "native-batch-a-" + uuid4().hex[:6],
+        name,
+        between_message_gate=gate,
         batch_size=6,
         synthetic_delay=2,
         lease_seconds=5,
         smtp_timeout=1,
     )
     try:
-        wait_for(
-            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
-            # The first pass walks every tenant of the shared database before it reaches this one; a
-            # loaded runner needs far longer than the 2 s per-row send, so the wait is not the claim.
-            timeout=90,
-        )
+        wait_for(ready.exists, timeout=90)
+        rows = [deliveries(live, r["object_id"])[0] for r in receipts]
+        assert sum(row["state"] == "SENT" for row in rows) == 1
+        assert sum(row["state"] == "LEASED" for row in rows) == 5
+        assert all(row["lease_owner"] == slow.name for row in rows if row["state"] == "LEASED")
+        # The original process is paused after a committed send, outside every
+        # transaction. Leases expire on the real database clock while the normal
+        # second process walks all tenants and takes over the remaining rows.
         fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
         try:
             wait_for(
@@ -376,7 +416,10 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
             )
         finally:
             assert stop(fast) == 0
+        release.touch(mode=0o600)
+        wait_for(lambda: "skipped: lease expired" in slow.log.read_text(), timeout=30)
     finally:
+        release.touch(mode=0o600)
         assert stop(slow) == 0
     sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
     assert sorted(sent) == sorted(events), sent
@@ -384,3 +427,25 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     # The scenario really happened: some rows were taken over from the first worker.
     assert max(generations) >= 2 and [m["event_id"] for m in sink(fast) if m["event_id"] in events]
     assert "skipped: lease expired" in slow.log.read_text()
+    (live.local / "native-batch-takeover.json").write_text(
+        json.dumps(
+            {
+                "scenario": "Actual native lease expiry during a test-only between-message pause",
+                "before_fast_states": [row["state"] for row in rows],
+                "before_fast_leased_by_slow": sum(
+                    row["state"] == "LEASED" and row["lease_owner"] == slow.name for row in rows
+                ),
+                "final_states": [deliveries(live, r["object_id"])[0]["state"] for r in receipts],
+                "lease_generations": generations,
+                "slow_sends": len([m for m in sink(slow) if m["event_id"] in events]),
+                "fast_sends": len([m for m in sink(fast) if m["event_id"] in events]),
+                "unique_sends": len(set(sent)),
+                "total_sends": len(sent),
+                "slow_stale_lease_refusal": True,
+                "timestamps_or_lease_SQL_modified": False,
+                "production_worker_changed": False,
+            },
+            indent=2,
+        )
+        + "\n"
+    )

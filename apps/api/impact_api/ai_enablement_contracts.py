@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.40.0"
+VERSION = "1.41.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -32,6 +32,7 @@ IMPLEMENTED = [
     ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals"),
     ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply"),
     ("post", "ai-enablement/evidence-questions"),
+    ("post", "ai-enablement/numeric-analysis"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -69,6 +70,7 @@ USE_CASES = [
     "INDICATOR_DESIGN",
     "IMPORT_CLEANING",
     "EVIDENCE_QUESTION",
+    "NUMERIC_ANALYSIS",
 ]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -660,6 +662,108 @@ def augment(spec, policy):
             "fabricated_citations",
         ],
     )
+    analysis_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+        },
+        ["object_id", "revision_id"],
+    )
+    analysis_plan = closed(
+        {
+            "measure": {"const": "POOLED_PERCENTAGE"},
+            "sources": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": analysis_source,
+            },
+            "filters": closed({}),
+            "period_id": {"type": "string", "format": "uuid"},
+            "period_revision_id": {"type": "string", "format": "uuid"},
+            "dimensions": {
+                "type": "array",
+                "maxItems": 0,
+                "uniqueItems": True,
+                "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$"},
+            },
+            "source_mode": {"enum": ["OFFICIAL", "PROVISIONAL"]},
+            "permitted_operation": {"const": "POOL_RATIO"},
+        },
+        [
+            "measure",
+            "sources",
+            "filters",
+            "period_id",
+            "period_revision_id",
+            "dimensions",
+            "source_mode",
+            "permitted_operation",
+        ],
+    )
+    schemas["AINumericAnalysisRequest"] = closed(
+        {
+            "question": {"type": "string", "minLength": 1, "maxLength": 2000, "pattern": r"\S"},
+            "plan": analysis_plan,
+            "drafted_claim": {"type": ["string", "null"], "maxLength": 500},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["question", "plan", "drafted_claim", "policy_version", "language"],
+    )
+    schemas["AINumericAnalysisResult"] = closed(
+        {
+            "state": {"const": "ANSWERED"},
+            "plan": analysis_plan,
+            "answer": {"type": "string", "maxLength": 500},
+            "value": {"type": "string", "pattern": "^-?[0-9]+\\.[0-9]{2}$"},
+            "unit": {"const": "percent"},
+            "numerator": {"type": "string"},
+            "denominator": {"type": "string"},
+            "result_references": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                        "numerator": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+                        "denominator": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+                    },
+                    ["object_id", "revision_id", "numerator", "denominator"],
+                ),
+            },
+            "calculation_receipt": closed(
+                {
+                    "receipt_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                    "tool": {"const": "governed.pool_ratio.v1"},
+                    "precision_digits": {"const": 100},
+                    "rounding_rule": {"const": "HALF_UP"},
+                    "operation": {"const": "POOL_RATIO"},
+                },
+                ["receipt_id", "tool", "precision_digits", "rounding_rule", "operation"],
+            ),
+            "model_recomputed": {"const": False},
+            "arbitrary_query_executed": {"const": False},
+            "official_claim_matches_tool": {"const": True},
+        },
+        [
+            "state",
+            "plan",
+            "answer",
+            "value",
+            "unit",
+            "numerator",
+            "denominator",
+            "result_references",
+            "calculation_receipt",
+            "model_recomputed",
+            "arbitrary_query_executed",
+            "official_claim_matches_tool",
+        ],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -995,6 +1099,58 @@ def augment(spec, policy):
             "path": question_path,
             "capability": "ai.advisory.request",
             "role_templates": ["PROGRAMME_MANAGER", "MEL_ADMIN"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )
+    analysis_path = "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis"
+    spec["paths"][analysis_path] = {
+        "parameters": [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ],
+        "post": {
+            "operationId": "execute_ai_numeric_analysis",
+            "summary": "execute governed numeric analysis",
+            "x-capability": "calculated-results.read",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AINumericAnalysisRequest"}}
+                },
+            },
+            "responses": {
+                "200": {
+                    "description": "Deterministic typed analysis result",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AINumericAnalysisResult"}
+                        }
+                    },
+                },
+                **{
+                    status: {
+                        "description": "Request refused",
+                        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+                    }
+                    for status in ["400", "401", "403", "404", "409", "422", "503"]
+                },
+            },
+        },
+    }
+    policy["operations"].append(
+        {
+            "operation_id": "execute_ai_numeric_analysis",
+            "method": "POST",
+            "path": analysis_path,
+            "capability": "calculated-results.read",
+            "role_templates": ["ANALYST", "MEL_ADMIN"],
             "purpose_required": False,
             "fresh_assurance_seconds": None,
             "audit": False,

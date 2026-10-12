@@ -3,6 +3,7 @@ import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
 import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
 import { AIOpportunityRanking } from "./AIRanking";
 import { AIEvidenceQuestions } from "./AIEvidenceQuestions";
+import { AINumericAnalysis } from "./AINumericAnalysis";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -240,6 +241,7 @@ export function AIEnablementPanel({
   const policyGeneration = useRef(0);
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
+  const canAnalyse = capabilities.includes("calculated-results.read");
   const canDesignIndicator = capabilities.includes(
     "indicator-definitions.draft.create",
   );
@@ -738,6 +740,13 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            <AINumericAnalysis
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canAnalyse={canAnalyse}
+              request={request}
+              explain={explain}
+            />
             {advisoryJob && (
               <section aria-labelledby="ai-advisory-job" aria-live="polite">
                 <h3 id="ai-advisory-job">AI advisory job</h3>
@@ -1197,6 +1206,9 @@ export function AIEnablementPanel({
                       </option>
                       <option value="EVIDENCE_QUESTION">
                         Evidence questions
+                      </option>
+                      <option value="NUMERIC_ANALYSIS">
+                        Governed numerical analysis
                       </option>
                     </select>
                   </label>

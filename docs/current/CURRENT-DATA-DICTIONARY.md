@@ -7078,3 +7078,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0087_ai_evidence_question_policy.sql | 27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595 |
+
+## Migration0088 — reserved numerical-analysis AI policy label (local1.04 coding candidate)
+
+`0088_ai_numeric_analysis_policy.sql` SHA256 `7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea`. Schema88 extends only the closed `ai_use_case_policy.use_case` vocabulary with `NUMERIC_ANALYSIS`. Current application policy validation and the runtime gate keep that use case reserved-disabled. No policy row, governed result, calculation receipt or official value is rewritten. All0001–0087 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0088_ai_numeric_analysis_policy.sql | 7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea |

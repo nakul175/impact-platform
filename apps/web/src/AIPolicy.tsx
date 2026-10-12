@@ -48,6 +48,7 @@ const USE_CASE_NAMES: Record<string, string> = {
   INDICATOR_DESIGN: "indicator design",
   IMPORT_CLEANING: "import mapping and cleaning",
   EVIDENCE_QUESTION: "evidence questions",
+  NUMERIC_ANALYSIS: "governed numerical analysis",
 };
 const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {

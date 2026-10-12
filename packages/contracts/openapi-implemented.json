@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.93.0",
+    "version": "1.94.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -32686,7 +32686,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32787,7 +32787,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32865,7 +32865,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32975,7 +32975,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -33076,7 +33076,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33196,7 +33196,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33307,7 +33307,7 @@
         "operationId": "create_ai_indicator_proposal",
         "summary": "create ai indicator proposal",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33418,7 +33418,7 @@
         "operationId": "create_ai_indicator_draft",
         "summary": "create ai indicator draft",
         "x-capability": "indicator-definitions.draft.create",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33547,7 +33547,7 @@
         "operationId": "create_ai_import_proposals",
         "summary": "create ai import proposals",
         "x-capability": "imports.read",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33676,7 +33676,7 @@
         "operationId": "apply_ai_import_proposals",
         "summary": "apply ai import proposals",
         "x-capability": "imports.draft.edit",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33787,7 +33787,7 @@
         "operationId": "answer_ai_evidence_question",
         "summary": "answer evidence question",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33872,6 +33872,117 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "execute_ai_numeric_analysis",
+        "summary": "execute governed numeric analysis",
+        "x-capability": "calculated-results.read",
+        "x-contract-version": "1.41.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AINumericAnalysisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deterministic typed analysis result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AINumericAnalysisResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/forecasts": {
       "parameters": [
         {
@@ -33888,7 +33999,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -33997,7 +34108,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34096,7 +34207,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34195,7 +34306,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34276,7 +34387,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34377,7 +34488,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34488,7 +34599,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34589,7 +34700,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34700,7 +34811,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -34820,7 +34931,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -34930,7 +35041,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.40.0",
+        "x-contract-version": "1.41.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -77193,7 +77304,8 @@
               "CHAT",
               "INDICATOR_DESIGN",
               "IMPORT_CLEANING",
-              "EVIDENCE_QUESTION"
+              "EVIDENCE_QUESTION",
+              "NUMERIC_ANALYSIS"
             ]
           },
           "enabled": {
@@ -77279,7 +77391,7 @@
         "properties": {
           "use_cases": {
             "type": "array",
-            "maxItems": 7,
+            "maxItems": 8,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -77366,7 +77478,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 7,
+            "maxItems": 8,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -77412,7 +77524,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 7,
+            "maxItems": 8,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -77439,7 +77551,8 @@
                 "CHAT",
                 "INDICATOR_DESIGN",
                 "IMPORT_CLEANING",
-                "EVIDENCE_QUESTION"
+                "EVIDENCE_QUESTION",
+                "NUMERIC_ANALYSIS"
               ]
             }
           }
@@ -79739,6 +79852,301 @@
           "official_number_guessed",
           "protected_resource_confirmed",
           "fabricated_citations"
+        ]
+      },
+      "AINumericAnalysisRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "plan": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "measure": {
+                "const": "POOLED_PERCENTAGE"
+              },
+              "sources": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "filters": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              },
+              "period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "period_revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "dimensions": {
+                "type": "array",
+                "maxItems": 0,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                }
+              },
+              "source_mode": {
+                "enum": [
+                  "OFFICIAL",
+                  "PROVISIONAL"
+                ]
+              },
+              "permitted_operation": {
+                "const": "POOL_RATIO"
+              }
+            },
+            "required": [
+              "measure",
+              "sources",
+              "filters",
+              "period_id",
+              "period_revision_id",
+              "dimensions",
+              "source_mode",
+              "permitted_operation"
+            ]
+          },
+          "drafted_claim": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 500
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "question",
+          "plan",
+          "drafted_claim",
+          "policy_version",
+          "language"
+        ]
+      },
+      "AINumericAnalysisResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "state": {
+            "const": "ANSWERED"
+          },
+          "plan": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "measure": {
+                "const": "POOLED_PERCENTAGE"
+              },
+              "sources": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "filters": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              },
+              "period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "period_revision_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "dimensions": {
+                "type": "array",
+                "maxItems": 0,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                }
+              },
+              "source_mode": {
+                "enum": [
+                  "OFFICIAL",
+                  "PROVISIONAL"
+                ]
+              },
+              "permitted_operation": {
+                "const": "POOL_RATIO"
+              }
+            },
+            "required": [
+              "measure",
+              "sources",
+              "filters",
+              "period_id",
+              "period_revision_id",
+              "dimensions",
+              "source_mode",
+              "permitted_operation"
+            ]
+          },
+          "answer": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^-?[0-9]+\\.[0-9]{2}$"
+          },
+          "unit": {
+            "const": "percent"
+          },
+          "numerator": {
+            "type": "string"
+          },
+          "denominator": {
+            "type": "string"
+          },
+          "result_references": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "numerator": {
+                  "type": "string",
+                  "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+                },
+                "denominator": {
+                  "type": "string",
+                  "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id",
+                "numerator",
+                "denominator"
+              ]
+            }
+          },
+          "calculation_receipt": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "receipt_id": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "tool": {
+                "const": "governed.pool_ratio.v1"
+              },
+              "precision_digits": {
+                "const": 100
+              },
+              "rounding_rule": {
+                "const": "HALF_UP"
+              },
+              "operation": {
+                "const": "POOL_RATIO"
+              }
+            },
+            "required": [
+              "receipt_id",
+              "tool",
+              "precision_digits",
+              "rounding_rule",
+              "operation"
+            ]
+          },
+          "model_recomputed": {
+            "const": false
+          },
+          "arbitrary_query_executed": {
+            "const": false
+          },
+          "official_claim_matches_tool": {
+            "const": true
+          }
+        },
+        "required": [
+          "state",
+          "plan",
+          "answer",
+          "value",
+          "unit",
+          "numerator",
+          "denominator",
+          "result_references",
+          "calculation_receipt",
+          "model_recomputed",
+          "arbitrary_query_executed",
+          "official_claim_matches_tool"
         ]
       },
       "AITaskPracticeData": {

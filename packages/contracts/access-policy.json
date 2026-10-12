@@ -1,5 +1,5 @@
 {
-  "version": "1.93.0",
+  "version": "1.94.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7024,6 +7024,19 @@
       "capability": "ai.advisory.request",
       "role_templates": [
         "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "execute_ai_numeric_analysis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "ANALYST",
         "MEL_ADMIN"
       ],
       "purpose_required": false,

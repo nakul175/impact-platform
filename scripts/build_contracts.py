@@ -28,6 +28,7 @@ from impact_api.ai_diagnosis_contracts import augment as augment_ai_diagnosis  #
 from impact_api.ai_diagnosis_contribution_contracts import (  # noqa: E402
     augment as augment_ai_diagnosis_contributions,
 )
+from impact_api.ai_diagnosis_review_contracts import augment as augment_ai_diagnosis_reviews  # noqa: E402
 from impact_api.ai_problem_baseline_contracts import augment as augment_ai_problem_baseline  # noqa: E402
 from impact_api.ai_content_contracts import augment as augment_ai_content  # noqa: E402
 from impact_api.ai_impact_reference_contracts import augment as augment_ai_impact  # noqa: E402
@@ -168,6 +169,7 @@ augment_ai_planning(spec, policy)
 augment_ai_adoption(spec, policy)
 augment_ai_diagnosis(spec, policy)
 augment_ai_diagnosis_contributions(spec, policy)
+augment_ai_diagnosis_reviews(spec, policy)
 augment_ai_problem_baseline(spec, policy)
 augment_ai_content(spec, policy)
 augment_ai_impact(spec, policy)

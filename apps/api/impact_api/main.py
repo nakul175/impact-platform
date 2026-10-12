@@ -42,6 +42,7 @@ from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
 from .ai_diagnoses import AIDiagnoses
 from .ai_diagnosis_contributions import AIDiagnosisContributions
+from .ai_diagnosis_reviews import AIDiagnosisReviews
 from .ai_problem_baselines import AIProblemBaselines
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
@@ -117,6 +118,7 @@ def create_app():
     ai_plans = AIAdoptionPlans(service)
     ai_diagnoses = AIDiagnoses(service)
     ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
+    ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
@@ -795,6 +797,41 @@ def create_app():
             request.state.correlation,
             "REJECTED",
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/advisor-reviews", status_code=201)
+    async def ai_diagnosis_review_request(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisReviewRequest", body)
+        return await run_in_threadpool(ai_diagnosis_reviews.request, auth.resolve(request), uuid(tenant), uuid(obj), body, request.state.correlation)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/advisor-reviews")
+    def ai_diagnosis_review_list(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_reviews.list_for_diagnosis(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnosis-review-queue")
+    def ai_diagnosis_review_queue(request: Request, tenant: str):
+        return ai_diagnosis_reviews.queue(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}")
+    def ai_diagnosis_review_get(request: Request, tenant: str, review_id: str):
+        return ai_diagnosis_reviews.get(auth.resolve(request), uuid(tenant), uuid(review_id))
+
+    async def diagnosis_review_action(request, tenant, review_id, schema, kind):
+        body = await strict_body(request)
+        validate(schema, body)
+        return await run_in_threadpool(ai_diagnosis_reviews.act, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation, kind)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/start")
+    async def ai_diagnosis_review_start(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewAction", "STARTED")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/comments")
+    async def ai_diagnosis_review_comment(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewComment", "COMMENTED")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate")
+    async def ai_diagnosis_review_validate(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewAction", "VALIDATED")
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines")
     def ai_problem_baseline_list(

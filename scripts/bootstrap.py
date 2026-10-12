@@ -118,6 +118,7 @@ def bootstrap(local, idp=None):
                 "ai.diagnosis.manage",
                 "ai.diagnosis.contribute",
                 "ai.diagnosis.contributors.manage",
+                "ai.diagnosis.review",
                 "ai.problem-baseline.read",
                 "ai.problem-baseline.manage",
                 "ai.advisory.request",

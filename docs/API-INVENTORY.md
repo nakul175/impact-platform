@@ -23,6 +23,8 @@
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}` | `ai.diagnosis.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete` | `ai.diagnosis.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise` | `ai.diagnosis.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/advisor-reviews` | `ai.diagnosis.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/advisor-reviews` | `ai.diagnosis.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions` | `ai.diagnosis.contributors.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions` | `ai.diagnosis.contribute` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/accept` | `ai.diagnosis.contributors.manage` |
@@ -31,6 +33,11 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations` | `ai.diagnosis.contributors.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}` | `ai.diagnosis.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-review-queue` | `ai.diagnosis.review` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/start` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/comments` | `ai.diagnosis.review` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/human-advice` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/eligible-peers` | `ai.enablement.manage` |

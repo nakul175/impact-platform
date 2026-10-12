@@ -13,6 +13,9 @@ from impact_api.ai_diagnosis_contracts import IMPLEMENTED as AI_DIAGNOSIS_ROUTES
 from impact_api.ai_diagnosis_contribution_contracts import (  # noqa: E402
     IMPLEMENTED as AI_DIAGNOSIS_CONTRIBUTION_ROUTES,
 )
+from impact_api.ai_diagnosis_review_contracts import (  # noqa: E402
+    IMPLEMENTED as AI_DIAGNOSIS_REVIEW_ROUTES,
+)
 from impact_api.ai_problem_baseline_contracts import (  # noqa: E402
     IMPLEMENTED as AI_PROBLEM_BASELINE_ROUTES,
 )
@@ -88,6 +91,10 @@ allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in
 allowed.update(
     (method, "/v1/tenants/{tenant_id}/" + route)
     for method, route in AI_DIAGNOSIS_CONTRIBUTION_ROUTES
+)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route)
+    for method, route in AI_DIAGNOSIS_REVIEW_ROUTES
 )
 allowed.update(
     (method, "/v1/tenants/{tenant_id}/" + route)

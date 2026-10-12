@@ -6,6 +6,7 @@ import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { AIEnablementPanel } from "./AIEnablement";
 import { AIDiagnosisPanel } from "./AIDiagnosis";
+import { AIDiagnosisReviewQueue } from "./AIDiagnosisReviewQueue";
 import { AIProblemBaselinesPanel } from "./AIProblemBaselines";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
@@ -1059,6 +1060,12 @@ function Workspace({
                 base={base}
                 principalId={access.principal_id || ""}
                 sessionIdentity={session.identity_id}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIDiagnosisReviewQueue
+                base={base}
                 request={api}
                 explain={explain}
                 capabilities={access.capabilities}

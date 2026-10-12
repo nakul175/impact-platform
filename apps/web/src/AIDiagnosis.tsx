@@ -1,5 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import "./ai-diagnosis.css";
+import { AIDiagnosisReviewStatus } from "./AIDiagnosisReviewQueue";
 
 type EvidenceReference = { object_id: string; revision_id: string };
 type EvidenceChoice = EvidenceReference & {
@@ -1307,6 +1308,17 @@ function DiagnosisWorkspace({
               )}
               canContribute={capabilities.includes("ai.diagnosis.contribute")}
               refresh={() => void selectDiagnosis(head.object_id)}
+            />
+          )}
+          {head && (
+            <AIDiagnosisReviewStatus
+              base={base}
+              request={guardedRequest}
+              explain={explain}
+              capabilities={capabilities}
+              diagnosisId={head.object_id}
+              diagnosisRevision={head.revision_id}
+              completed={head.business_state === "Completed"}
             />
           )}
           {(canManage || head) && (

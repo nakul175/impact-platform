@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.42.0",
+    "version": "1.43.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -66838,6 +66838,50 @@
           "summary"
         ]
       },
+      "AIDiagnosisInputLink": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field": {
+            "enum": [
+              "description",
+              "affected_area"
+            ]
+          }
+        },
+        "required": [
+          "problem_id",
+          "field"
+        ]
+      },
+      "AIOpportunityRationale": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "plain_language": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "diagnosis_input_links": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisInputLink"
+            }
+          }
+        },
+        "required": [
+          "plain_language",
+          "diagnosis_input_links"
+        ]
+      },
       "AIOpportunity": {
         "type": "object",
         "additionalProperties": false,
@@ -66880,6 +66924,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "rationale": {
+            "$ref": "#/components/schemas/AIOpportunityRationale"
           }
         },
         "required": [
@@ -66888,7 +66935,8 @@
           "title",
           "description",
           "real_world_examples",
-          "match_basis"
+          "match_basis",
+          "rationale"
         ]
       },
       "AIProblemOpportunityMap": {

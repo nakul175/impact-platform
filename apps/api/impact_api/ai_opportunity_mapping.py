@@ -140,6 +140,24 @@ def _validate_library():
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="PATTERN_LIBRARY_INVALID")
 
 
+def _rationale(problem, pattern, basis):
+    description = problem["description"].strip()
+    area = problem["affected_area"].strip()
+    if not description or not area or not basis:
+        raise DomainError("SERVICE_UNAVAILABLE", 503, reason="OPPORTUNITY_RATIONALE_INVALID")
+    return {
+        "plain_language": (
+            f"This pattern is suggested because the priority problem in {area} uses "
+            f"the matching terms {', '.join(basis)}. Review the linked problem inputs and "
+            "source example before deciding whether it fits."
+        ),
+        "diagnosis_input_links": [
+            {"problem_id": problem["problem_id"], "field": "description"},
+            {"problem_id": problem["problem_id"], "field": "affected_area"},
+        ],
+    }
+
+
 def map_diagnosis(diagnosis):
     """Return an edition-pinned map; never invent a generic match to force completion."""
     _validate_library()
@@ -161,6 +179,7 @@ def map_diagnosis(diagnosis):
                 item.pop("match_terms")
                 item["real_world_examples"] = list(item["real_world_examples"])
                 item["match_basis"] = basis
+                item["rationale"] = _rationale(problem, pattern, basis)
                 matches.append(item)
         matches.sort(key=lambda item: (-len(item["match_basis"]), item["pattern_id"]))
         if not matches:

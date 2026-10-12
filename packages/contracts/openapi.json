@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.42.0",
+    "version": "1.43.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -80842,6 +80842,50 @@
           "summary"
         ]
       },
+      "AIDiagnosisInputLink": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field": {
+            "enum": [
+              "description",
+              "affected_area"
+            ]
+          }
+        },
+        "required": [
+          "problem_id",
+          "field"
+        ]
+      },
+      "AIOpportunityRationale": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "plain_language": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "diagnosis_input_links": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisInputLink"
+            }
+          }
+        },
+        "required": [
+          "plain_language",
+          "diagnosis_input_links"
+        ]
+      },
       "AIOpportunity": {
         "type": "object",
         "additionalProperties": false,
@@ -80884,6 +80928,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "rationale": {
+            "$ref": "#/components/schemas/AIOpportunityRationale"
           }
         },
         "required": [
@@ -80892,7 +80939,8 @@
           "title",
           "description",
           "real_world_examples",
-          "match_basis"
+          "match_basis",
+          "rationale"
         ]
       },
       "AIProblemOpportunityMap": {

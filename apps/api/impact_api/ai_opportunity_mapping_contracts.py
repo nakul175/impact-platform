@@ -3,7 +3,7 @@
 from copy import deepcopy
 from .measurement_contracts import closed
 
-VERSION = "1.42.0"
+VERSION = "1.43.0"
 ROOT = "ai-enablement/diagnoses/{object_id}/opportunity-map"
 RANK_ROOT = "ai-enablement/diagnoses/{object_id}/opportunity-ranking"
 IMPLEMENTED = [("get", ROOT), ("post", RANK_ROOT)]
@@ -21,6 +21,22 @@ def augment(spec, policy):
         "summary": {"type": "string", "minLength": 1, "maxLength": 500},
     }
     schemas["AIOpportunityExample"] = closed(example, list(example))
+    input_link = {
+        "problem_id": deepcopy(uid),
+        "field": {"enum": ["description", "affected_area"]},
+    }
+    schemas["AIDiagnosisInputLink"] = closed(input_link, list(input_link))
+    rationale = {
+        "plain_language": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "diagnosis_input_links": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": True,
+            "items": {"$ref": "#/components/schemas/AIDiagnosisInputLink"},
+        },
+    }
+    schemas["AIOpportunityRationale"] = closed(rationale, list(rationale))
     opportunity = {
         "pattern_id": {"type": "string", "minLength": 1, "maxLength": 100},
         "kind": {"enum": ["AI_ASSISTED", "TECHNOLOGY", "PROCESS_FIX"]},
@@ -39,6 +55,7 @@ def augment(spec, policy):
             "uniqueItems": True,
             "items": {"type": "string"},
         },
+        "rationale": {"$ref": "#/components/schemas/AIOpportunityRationale"},
     }
     schemas["AIOpportunity"] = closed(opportunity, list(opportunity))
     problem = {

@@ -16,6 +16,13 @@ type Opportunity = {
   description: string;
   match_basis: string[];
   real_world_examples: Example[];
+  rationale: {
+    plain_language: string;
+    diagnosis_input_links: {
+      problem_id: string;
+      field: "description" | "affected_area";
+    }[];
+  };
 };
 type Mapping = {
   diagnosis_id: string;
@@ -91,7 +98,9 @@ export function AIOpportunityMap(props: {
           <ol>
             {mapping.problems.map((item) => (
               <li key={item.problem_id}>
-                <h4>{names.get(item.problem_id) || "Priority problem"}</h4>
+                <h4 id={`diagnosis-problem-${item.problem_id}`}>
+                  {names.get(item.problem_id) || "Priority problem"}
+                </h4>
                 {!item.opportunities.length ? (
                   <p>No verified pattern-library opportunity.</p>
                 ) : (
@@ -110,6 +119,24 @@ export function AIOpportunityMap(props: {
                         </span>
                         <p>{opportunity.description}</p>
                         <p>Matched on: {opportunity.match_basis.join(", ")}</p>
+                        <p>
+                          <strong>Why recommended:</strong>{" "}
+                          {opportunity.rationale.plain_language}{" "}
+                          {opportunity.rationale.diagnosis_input_links.map(
+                            (link, index) => (
+                              <React.Fragment
+                                key={`${link.problem_id}-${link.field}`}
+                              >
+                                {index > 0 ? ", " : ""}
+                                <a
+                                  href={`#diagnosis-problem-${link.problem_id}`}
+                                >
+                                  diagnosis {link.field.replace("_", " ")}
+                                </a>
+                              </React.Fragment>
+                            ),
+                          )}
+                        </p>
                         <ul>
                           {opportunity.real_world_examples.map((example) => (
                             <li key={example.example_id}>

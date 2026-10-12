@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.90.0",
+    "version": "1.91.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46690,7 +46690,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46791,7 +46791,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46869,7 +46869,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46979,7 +46979,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -47080,7 +47080,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47200,7 +47200,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47295,6 +47295,228 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/proposals": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_indicator_proposal",
+        "summary": "create ai indicator proposal",
+        "x-capability": "ai.advisory.request",
+        "x-contract-version": "1.38.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIIndicatorProposalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Governed indicator design result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIIndicatorProposal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/drafts": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_indicator_draft",
+        "summary": "create ai indicator draft",
+        "x-capability": "indicator-definitions.draft.create",
+        "x-contract-version": "1.38.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIIndicatorDraftRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Governed indicator design result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIIndicatorDraftReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/forecasts": {
       "parameters": [
         {
@@ -47311,7 +47533,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47420,7 +47642,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47519,7 +47741,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47618,7 +47840,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47699,7 +47921,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47800,7 +48022,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47911,7 +48133,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48012,7 +48234,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48123,7 +48345,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -48243,7 +48465,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -48353,7 +48575,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.37.0",
+        "x-contract-version": "1.38.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -90613,7 +90835,8 @@
               "ADVISORY_DRAFT",
               "EXTRACTION",
               "REPORT_DRAFT",
-              "CHAT"
+              "CHAT",
+              "INDICATOR_DESIGN"
             ]
           },
           "enabled": {
@@ -90699,7 +90922,7 @@
         "properties": {
           "use_cases": {
             "type": "array",
-            "maxItems": 4,
+            "maxItems": 5,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -90786,7 +91009,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 4,
+            "maxItems": 5,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -90832,7 +91055,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 4,
+            "maxItems": 5,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -90856,7 +91079,8 @@
                 "ADVISORY_DRAFT",
                 "EXTRACTION",
                 "REPORT_DRAFT",
-                "CHAT"
+                "CHAT",
+                "INDICATOR_DESIGN"
               ]
             }
           }
@@ -92578,6 +92802,198 @@
             }
           },
           "domain_objects_changed": {
+            "const": false
+          }
+        },
+        "required": []
+      },
+      "AIIndicatorProposalRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "library_definition_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "library_definition_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "programme_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "programme_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          },
+          "proxy_basis": {
+            "enum": [
+              "DIRECT",
+              "PROXY"
+            ]
+          }
+        },
+        "required": [
+          "library_definition_id",
+          "library_definition_revision_id",
+          "programme_id",
+          "programme_revision_id",
+          "policy_version",
+          "language",
+          "proxy_basis"
+        ]
+      },
+      "AIIndicatorProposal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "library_definition_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "library_definition_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "proposed_fields": {
+            "type": "object"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "programme_context": {
+            "type": "object"
+          },
+          "model_confidence": {
+            "type": "null"
+          },
+          "can_approve": {
+            "const": false
+          },
+          "standard_mapping_created": {
+            "const": false
+          }
+        },
+        "required": []
+      },
+      "AIIndicatorDraftRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "library_definition_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "library_definition_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "programme_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "programme_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          },
+          "proxy_basis": {
+            "enum": [
+              "DIRECT",
+              "PROXY"
+            ]
+          },
+          "selected_fields": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "library_definition_id",
+          "library_definition_revision_id",
+          "programme_id",
+          "programme_revision_id",
+          "policy_version",
+          "language",
+          "proxy_basis",
+          "selected_fields"
+        ]
+      },
+      "AIIndicatorDraftReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Draft"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlation_id": {
+            "type": "string"
+          },
+          "source_definition_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "programme_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "submit_ready": {
+            "type": "boolean"
+          },
+          "standard_mapping_created": {
             "const": false
           }
         },

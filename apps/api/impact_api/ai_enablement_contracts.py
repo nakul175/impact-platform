@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.37.0"
+VERSION = "1.38.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -27,6 +27,8 @@ IMPLEMENTED = [
     ("post", "ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery"),
     ("post", "ai-enablement/extractions"),
     ("post", "ai-enablement/extractions/{draft_id}/actions/apply"),
+    ("post", "ai-enablement/indicator-design/proposals"),
+    ("post", "ai-enablement/indicator-design/drafts"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -56,7 +58,7 @@ POLICY_CAPABILITY = "ai.policy.manage"
 RANKING_MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
 # The four criteria: each has a weight and, per ranked opportunity, a score.
 WEIGHT_FIELDS = ["impact", "effort", "cost", "readiness"]
-USE_CASES = ["ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT"]
+USE_CASES = ["ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT", "INDICATOR_DESIGN"]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
 # the CHECK constraint of migration 0041; a tenant policy starts with no destination selected.
@@ -443,6 +445,60 @@ def augment(spec, policy):
             "domain_objects_changed": {"const": False},
         }
     )
+    indicator_source = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        "library_definition_id": {"type": "string", "format": "uuid"},
+        "library_definition_revision_id": {"type": "string", "format": "uuid"},
+        "programme_id": {"type": "string", "format": "uuid"},
+        "programme_revision_id": {"type": "string", "format": "uuid"},
+        "policy_version": {"type": "integer", "minimum": 1},
+        "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        "proxy_basis": {"enum": ["DIRECT", "PROXY"]},
+    }
+    schemas["AIIndicatorProposalRequest"] = closed(
+        {key: value for key, value in indicator_source.items() if key != "operation_id"},
+        [key for key in indicator_source if key != "operation_id"],
+    )
+    schemas["AIIndicatorProposal"] = closed(
+        {
+            "library_definition_id": {"type": "string", "format": "uuid"},
+            "library_definition_revision_id": {"type": "string", "format": "uuid"},
+            "proposed_fields": {"type": "object"},
+            "warnings": {"type": "array", "items": {"type": "string"}},
+            "programme_context": {"type": "object"},
+            "model_confidence": {"type": "null"},
+            "can_approve": {"const": False},
+            "standard_mapping_created": {"const": False},
+        }
+    )
+    schemas["AIIndicatorDraftRequest"] = closed(
+        {
+            **indicator_source,
+            "selected_fields": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 100},
+            },
+        },
+        [*indicator_source, "selected_fields"],
+    )
+    schemas["AIIndicatorDraftReceipt"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "business_state": {"const": "Draft"},
+            "saved_at": {"type": "string", "format": "date-time"},
+            "correlation_id": {"type": "string"},
+            "source_definition_revision_id": {"type": "string", "format": "uuid"},
+            "programme_revision_id": {"type": "string", "format": "uuid"},
+            "warnings": {"type": "array", "items": {"type": "string"}},
+            "submit_ready": {"type": "boolean"},
+            "standard_mapping_created": {"const": False},
+        }
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -605,6 +661,67 @@ def augment(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": False,
+            }
+        )
+    indicator_base = "/v1/tenants/{tenant_id}/ai-enablement/indicator-design"
+    for path, operation, request, response, capability in [
+        (
+            indicator_base + "/proposals",
+            "create_ai_indicator_proposal",
+            "AIIndicatorProposalRequest",
+            "AIIndicatorProposal",
+            "ai.advisory.request",
+        ),
+        (
+            indicator_base + "/drafts",
+            "create_ai_indicator_draft",
+            "AIIndicatorDraftRequest",
+            "AIIndicatorDraftReceipt",
+            "indicator-definitions.draft.create",
+        ),
+    ]:
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": capability,
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            },
+            "responses": {
+                "200": {
+                    "description": "Governed indicator design result",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            ],
+            "post": entry,
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": capability,
+                "role_templates": ["MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": operation == "create_ai_indicator_draft",
             }
         )
     forecast_base = "/v1/tenants/{tenant_id}/ai-enablement/forecasts"

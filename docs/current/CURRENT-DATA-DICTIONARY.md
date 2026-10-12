@@ -7054,3 +7054,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0084_ai_extraction_drafts.sql | 0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09 |
+
+## Migration0085 — reserved indicator-design AI policy label (local1.01 coding candidate)
+
+`0085_ai_indicator_design_policy.sql` SHA256 `a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834`. Schema85 extends only the closed `ai_use_case_policy.use_case` vocabulary with `INDICATOR_DESIGN`. The existing `ai_use_case_reserved` constraint remains byte-semantically unchanged and still permits only `ADVISORY_DRAFT` to be enabled, so this candidate cannot activate indicator-design execution. No historical policy row or domain object is rewritten. All0001–0084 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0085_ai_indicator_design_policy.sql | a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834 |

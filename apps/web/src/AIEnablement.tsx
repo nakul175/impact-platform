@@ -201,6 +201,25 @@ export function AIEnablementPanel({
     state: string;
     unresolved_fields: string[];
   } | null>(null);
+  const [indicatorDesignSource, setIndicatorDesignSource] = useState({
+    library_definition_id: "",
+    library_definition_revision_id: "",
+    programme_id: "",
+    programme_revision_id: "",
+    proxy_basis: "DIRECT",
+  });
+  const [indicatorProposal, setIndicatorProposal] = useState<{
+    proposed_fields: Record<string, unknown>;
+    warnings: string[];
+    can_approve: boolean;
+    standard_mapping_created: boolean;
+  } | null>(null);
+  const [indicatorFields, setIndicatorFields] = useState<string[]>([]);
+  const [indicatorDraft, setIndicatorDraft] = useState<{
+    object_id: string;
+    submit_ready: boolean;
+    warnings: string[];
+  } | null>(null);
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -220,6 +239,9 @@ export function AIEnablementPanel({
   const policyGeneration = useRef(0);
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
+  const canDesignIndicator = capabilities.includes(
+    "indicator-definitions.draft.create",
+  );
   const canManagePolicy = capabilities.includes("ai.policy.manage");
   // US-MP-03: the ranking weights are changed by holders of ai.enablement.manage.
   const canManageWeights = capabilities.includes("ai.enablement.manage");
@@ -758,6 +780,137 @@ export function AIEnablementPanel({
             )}
             {canAdvise && (
               <details>
+                <summary>
+                  Design an indicator draft from the approved library
+                </summary>
+                <p className="muted">
+                  This use remains reserved until policy activation is reviewed.
+                  Proposals cannot approve an indicator or create a standard
+                  mapping.
+                </p>
+                {[
+                  ["library_definition_id", "Approved definition ID"],
+                  [
+                    "library_definition_revision_id",
+                    "Exact definition revision ID",
+                  ],
+                  ["programme_id", "Programme ID"],
+                  ["programme_revision_id", "Exact programme revision ID"],
+                ].map(([field, title]) => (
+                  <label key={field}>
+                    {title}
+                    <input
+                      value={
+                        indicatorDesignSource[
+                          field as keyof typeof indicatorDesignSource
+                        ]
+                      }
+                      onChange={(event) =>
+                        setIndicatorDesignSource({
+                          ...indicatorDesignSource,
+                          [field]: event.target.value,
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+                <label>
+                  Measurement basis
+                  <select
+                    value={indicatorDesignSource.proxy_basis}
+                    onChange={(event) =>
+                      setIndicatorDesignSource({
+                        ...indicatorDesignSource,
+                        proxy_basis: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="DIRECT">Direct measure</option>
+                    <option value="PROXY">Proxy requiring review</option>
+                  </select>
+                </label>
+                <button
+                  type="button"
+                  disabled={!policy}
+                  onClick={async () => {
+                    const result = await request(
+                      base + "ai-enablement/indicator-design/proposals",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          ...indicatorDesignSource,
+                          policy_version: policy!.policy_version,
+                          language: "en",
+                        }),
+                      },
+                    );
+                    setIndicatorProposal(result);
+                    setIndicatorFields([]);
+                    setIndicatorDraft(null);
+                  }}
+                >
+                  Propose measurement contract
+                </button>
+                {indicatorProposal && (
+                  <section aria-label="Indicator proposal review">
+                    <Items items={indicatorProposal.warnings} />
+                    {Object.entries(indicatorProposal.proposed_fields).map(
+                      ([field, value]) => (
+                        <label key={field}>
+                          <input
+                            type="checkbox"
+                            checked={indicatorFields.includes(field)}
+                            onChange={(event) =>
+                              setIndicatorFields(
+                                event.target.checked
+                                  ? [...indicatorFields, field]
+                                  : indicatorFields.filter(
+                                      (selected) => selected !== field,
+                                    ),
+                              )
+                            }
+                          />
+                          {label(field)}: {JSON.stringify(value)}
+                        </label>
+                      ),
+                    )}
+                    {canDesignIndicator && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const receipt = await request(
+                            base + "ai-enablement/indicator-design/drafts",
+                            {
+                              method: "POST",
+                              body: JSON.stringify({
+                                operation_id: crypto.randomUUID(),
+                                ...indicatorDesignSource,
+                                policy_version: policy!.policy_version,
+                                language: "en",
+                                selected_fields: indicatorFields,
+                              }),
+                            },
+                          );
+                          setIndicatorDraft(receipt);
+                        }}
+                      >
+                        Create selected-field draft
+                      </button>
+                    )}
+                    {indicatorDraft && (
+                      <p role="status">
+                        Draft {indicatorDraft.object_id} ·{" "}
+                        {indicatorDraft.submit_ready
+                          ? "ready for ordinary submission checks"
+                          : "incomplete; submission remains blocked"}
+                      </p>
+                    )}
+                  </section>
+                )}
+              </details>
+            )}
+            {canAdvise && (
+              <details>
                 <summary>Extract proposal fields for review</summary>
                 <p className="muted">
                   Clean UTF-8 text Evidence only. No framework or target is
@@ -1030,6 +1183,7 @@ export function AIEnablementPanel({
                       <option value="REPORT_DRAFT">Report draft</option>
                       <option value="EXTRACTION">Extraction</option>
                       <option value="CHAT">Chat</option>
+                      <option value="INDICATOR_DESIGN">Indicator design</option>
                     </select>
                   </label>
                 ) : shutdown.scope_kind === "DESTINATION" ? (

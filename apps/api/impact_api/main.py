@@ -41,6 +41,7 @@ from .ai_jobs import AIJobs
 from .ai_forecasts import AIForecasts
 from .ai_safety import AISafety
 from .ai_extraction import AIExtraction
+from .ai_indicator_design import AIIndicatorDesign
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -144,6 +145,9 @@ def create_app():
     ai_forecasts = AIForecasts(service)
     ai_safety = AISafety(service)
     ai_extraction = AIExtraction(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_indicator_design = AIIndicatorDesign(
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
     )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
@@ -1462,6 +1466,20 @@ def create_app():
         body = await strict_body(request)
         validate("AIExtractionApplyRequest", body)
         return ai_extraction.apply(auth.resolve(request), uuid(tenant), uuid(draft), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/indicator-design/proposals")
+    async def create_ai_indicator_proposal(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIIndicatorProposalRequest", body)
+        return ai_indicator_design.propose(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/indicator-design/drafts")
+    async def create_ai_indicator_draft(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIIndicatorDraftRequest", body)
+        return ai_indicator_design.create_draft(
+            auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

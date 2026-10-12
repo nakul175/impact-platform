@@ -1,5 +1,5 @@
 {
-  "version": "1.90.0",
+  "version": "1.91.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6966,6 +6966,30 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "create_ai_indicator_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/proposals",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_indicator_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/drafts",
+      "capability": "indicator-definitions.draft.create",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "create_ai_forecast",

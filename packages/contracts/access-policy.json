@@ -1,5 +1,5 @@
 {
-  "version": "1.52.0",
+  "version": "1.53.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6830,6 +6830,30 @@
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}",
       "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_outcome_observation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcome-observations",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_outcome_dashboard",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard",
+      "capability": "ai.enablement.read",
       "role_templates": [
         "TENANT_ADMIN"
       ],

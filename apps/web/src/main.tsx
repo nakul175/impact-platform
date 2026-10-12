@@ -8,6 +8,7 @@ import { AIEnablementPanel } from "./AIEnablement";
 import { AIDiagnosisPanel } from "./AIDiagnosis";
 import { AIDiagnosisReviewQueue } from "./AIDiagnosisReviewQueue";
 import { AIProblemBaselinesPanel } from "./AIProblemBaselines";
+import { AIOutcomeDashboardPanel } from "./AIOutcomeDashboard";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -1071,6 +1072,12 @@ function Workspace({
                 capabilities={access.capabilities}
               />
               <AIProblemBaselinesPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIOutcomeDashboardPanel
                 base={base}
                 request={api}
                 explain={explain}

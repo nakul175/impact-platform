@@ -6835,3 +6835,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0055_ai_champion_appointment_kind.sql | 7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003 |
+
+## Migration0056 — current outcome observation kind (local0.62 coding candidate)
+
+`0056_ai_current_outcome_observations.sql` SHA256 `a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a`. Schema56 extends the registry object-type check with `AICurrentOutcomeObservation` and adds restrictive registry/revision worker policies because observations contain organizational usage and outcome measures. Observations use immutable generic revisions and existing forced tenant RLS. The application pins the current completed plan revision, deployment attestation, exact locked baseline revision, diagnosis problem and mapped opportunity edition. All0001–0055 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0056_ai_current_outcome_observations.sql | a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a |

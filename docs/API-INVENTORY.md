@@ -55,6 +55,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/respond` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions/{revision_id}` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/outcome-observations` | `ai.enablement.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |

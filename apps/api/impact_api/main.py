@@ -47,6 +47,7 @@ from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
 from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
+from .ai_outcome_observations import AIOutcomeObservations
 from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
@@ -127,6 +128,7 @@ def create_app():
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
     ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
+    ai_outcome_observations = AIOutcomeObservations(service, ai_diagnoses, ai_problem_baselines)
     ai_value_cases = AIValueCaseVersions(service)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
@@ -874,6 +876,34 @@ def create_app():
         request: Request, tenant: str, limit: int = 50, cursor: str | None = None
     ):
         return ai_problem_baselines.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/outcome-observations", status_code=201)
+    async def ai_outcome_observation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AICurrentOutcomeObservationCreate", body)
+        return await run_in_threadpool(
+            ai_outcome_observations.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/outcomes-dashboard")
+    def ai_outcomes_dashboard_get(
+        request: Request,
+        tenant: str,
+        plan_id: str,
+        baseline_object_id: str,
+        opportunity_id: str,
+    ):
+        return ai_outcome_observations.dashboard(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(plan_id),
+            uuid(baseline_object_id),
+            opportunity_id,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
     def ai_opportunity_map_get(

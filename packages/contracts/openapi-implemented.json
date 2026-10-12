@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.52.0",
+    "version": "1.53.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -34513,6 +34513,105 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/outcome-observations": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_outcome_observation",
+        "summary": "Record self-reported current outcomes",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.53.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AICurrentOutcomeObservationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Immutable observation receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AICurrentOutcomeObservationReceipt"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "plan_id",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "baseline_object_id",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "opportunity_id",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_outcome_dashboard",
+        "summary": "Compare current outcomes with the exact locked baseline",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.53.0",
+        "responses": {
+          "200": {
+            "description": "Self-reported locked-baseline comparison",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOutcomesDashboard"
                 }
               }
             }
@@ -70356,6 +70455,333 @@
           "object_id",
           "items",
           "next_cursor"
+        ]
+      },
+      "AICurrentOutcomeMeasure": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "pattern": "^-?(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "observed_from": {
+            "type": "string",
+            "format": "date"
+          },
+          "observed_to": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "value",
+          "unit",
+          "basis",
+          "observed_from",
+          "observed_to"
+        ]
+      },
+      "AICurrentOutcomeMetrics": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "time": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+          },
+          "reach": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+          }
+        },
+        "required": [
+          "time",
+          "cost",
+          "quality",
+          "reach",
+          "usage"
+        ]
+      },
+      "AICurrentOutcomeObservationCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "deployment_attestation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseline_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseline_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/AICurrentOutcomeMetrics"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "operation_id",
+          "plan_id",
+          "plan_revision",
+          "deployment_attestation_id",
+          "baseline_object_id",
+          "baseline_revision",
+          "opportunity_id",
+          "metrics",
+          "notes"
+        ]
+      },
+      "AICurrentOutcomeObservationReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Recorded"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "selectors": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "plan_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "plan_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "deployment_attestation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "baseline_object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "baseline_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "opportunity_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "plan_id",
+              "plan_revision",
+              "deployment_attestation_id",
+              "baseline_object_id",
+              "baseline_revision",
+              "opportunity_id"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "saved_at",
+          "operation_id",
+          "correlation_id",
+          "selectors"
+        ]
+      },
+      "AIOutcomeComparison": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "metric": {
+            "enum": [
+              "time",
+              "cost",
+              "quality",
+              "reach",
+              "usage"
+            ]
+          },
+          "baseline": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AICurrentOutcomeMeasure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "COMPARABLE",
+              "INCOMPATIBLE",
+              "NOT_RECORDED",
+              "BASELINE_NOT_RECORDED"
+            ]
+          },
+          "delta": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "metric",
+          "baseline",
+          "current",
+          "status",
+          "delta"
+        ]
+      },
+      "AIOutcomesDashboard": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "deployment_attestation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "deployed_solution_id": {
+            "type": "string"
+          },
+          "baseline_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseline_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string"
+          },
+          "pattern_edition": {
+            "type": "string"
+          },
+          "observation_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "observation_revision": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "reporting_basis": {
+            "const": "SELF_REPORTED"
+          },
+          "comparisons": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/AIOutcomeComparison"
+            }
+          },
+          "disclaimer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_id",
+          "plan_revision",
+          "deployment_attestation_id",
+          "deployed_solution_id",
+          "baseline_object_id",
+          "baseline_revision",
+          "opportunity_id",
+          "pattern_edition",
+          "observation_id",
+          "observation_revision",
+          "reporting_basis",
+          "comparisons",
+          "disclaimer"
         ]
       },
       "AIOpportunityExample": {

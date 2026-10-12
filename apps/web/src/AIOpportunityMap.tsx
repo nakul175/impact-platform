@@ -1,0 +1,137 @@
+import React, { useEffect, useState } from "react";
+
+type Example = {
+  example_id: string;
+  organisation: string;
+  title: string;
+  source_url: string;
+  checked_on: string;
+  summary: string;
+};
+type Opportunity = {
+  pattern_id: string;
+  kind: "AI_ASSISTED" | "TECHNOLOGY";
+  title: string;
+  description: string;
+  match_basis: string[];
+  real_world_examples: Example[];
+};
+type Mapping = {
+  diagnosis_id: string;
+  diagnosis_revision: string;
+  pattern_edition: string;
+  mapping_rule_version: string;
+  mapping_state: "COMPLETE" | "INCOMPLETE";
+  problems: { problem_id: string; opportunities: Opportunity[] }[];
+  unmapped_problem_ids: string[];
+  disclaimer: string;
+};
+type Problem = { problem_id: string; description: string };
+
+export function AIOpportunityMap(props: {
+  base: string;
+  diagnosisId: string;
+  revisionId: string;
+  problems: Problem[];
+  request: (path: string, options?: RequestInit) => Promise<any>;
+  explain: (error: unknown) => string;
+}) {
+  const [mapping, setMapping] = useState<Mapping | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    setMapping(null);
+    setError("");
+  }, [props.diagnosisId, props.revisionId]);
+  const names = new Map(
+    props.problems.map((problem) => [problem.problem_id, problem.description]),
+  );
+  async function load() {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await props.request(
+        `${props.base}/ai-enablement/diagnoses/${props.diagnosisId}/opportunity-map?revision_id=${props.revisionId}`,
+      );
+      setMapping(result as Mapping);
+    } catch (value) {
+      setError(props.explain(value));
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <section
+      aria-labelledby="opportunity-map-title"
+      className="ai-opportunity-map"
+    >
+      <h3 id="opportunity-map-title">Problem-to-opportunity map</h3>
+      <p>Map priority problems to the current source-backed pattern library.</p>
+      <button type="button" disabled={busy} onClick={load}>
+        {busy ? "Mapping…" : "Map opportunities"}
+      </button>
+      {error && <p role="alert">{error}</p>}
+      {mapping && (
+        <>
+          <p>
+            <strong>
+              {mapping.mapping_state === "COMPLETE"
+                ? "Complete mapping"
+                : "Incomplete mapping"}
+            </strong>{" "}
+            · Pattern edition {mapping.pattern_edition}
+          </p>
+          {mapping.mapping_state === "INCOMPLETE" && (
+            <p role="status">
+              {mapping.unmapped_problem_ids.length} priority problem(s) have no
+              verified library match. This mapping is not accepted as complete.
+            </p>
+          )}
+          <ol>
+            {mapping.problems.map((item) => (
+              <li key={item.problem_id}>
+                <h4>{names.get(item.problem_id) || "Priority problem"}</h4>
+                {!item.opportunities.length ? (
+                  <p>No verified pattern-library opportunity.</p>
+                ) : (
+                  <ul>
+                    {item.opportunities.map((opportunity) => (
+                      <li key={opportunity.pattern_id}>
+                        <strong>{opportunity.title}</strong>{" "}
+                        <span>
+                          (
+                          {opportunity.kind === "AI_ASSISTED"
+                            ? "AI assisted"
+                            : "Technology"}
+                          )
+                        </span>
+                        <p>{opportunity.description}</p>
+                        <p>Matched on: {opportunity.match_basis.join(", ")}</p>
+                        <ul>
+                          {opportunity.real_world_examples.map((example) => (
+                            <li key={example.example_id}>
+                              <a
+                                href={example.source_url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {example.title}
+                              </a>{" "}
+                              — {example.organisation}. {example.summary} Source
+                              checked {example.checked_on}.
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ol>
+          <p className="muted">{mapping.disclaimer}</p>
+        </>
+      )}
+    </section>
+  );
+}

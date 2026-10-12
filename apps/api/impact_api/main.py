@@ -45,6 +45,7 @@ from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
 from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
+from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
@@ -122,6 +123,7 @@ def create_app():
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
     ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
+    ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
@@ -861,6 +863,17 @@ def create_app():
         request: Request, tenant: str, limit: int = 50, cursor: str | None = None
     ):
         return ai_problem_baselines.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
+    def ai_opportunity_map_get(
+        request: Request, tenant: str, obj: str, revision_id: str | None = None
+    ):
+        return ai_opportunity_mapping.get(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision_id) if revision_id is not None else None,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")
     def ai_problem_baseline_get(request: Request, tenant: str, obj: str):

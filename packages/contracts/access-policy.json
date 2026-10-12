@@ -1,5 +1,5 @@
 {
-  "version": "1.39.0",
+  "version": "1.40.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6657,6 +6657,18 @@
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}",
       "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_opportunity_map",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-map",
+      "capability": "ai.diagnosis.read",
       "role_templates": [
         "TENANT_ADMIN"
       ],

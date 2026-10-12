@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.39.0",
+    "version": "1.40.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -47201,6 +47201,54 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-map": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "revision_id",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_opportunity_map",
+        "summary": "Map a completed diagnosis to source-backed opportunities",
+        "x-capability": "ai.diagnosis.read",
+        "responses": {
+          "200": {
+            "description": "Current or exact-revision mapping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOpportunityMapping"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance": {
       "get": {
         "operationId": "get_ai_adoption_guidance",
@@ -80700,6 +80748,179 @@
           "object_id",
           "items",
           "next_cursor"
+        ]
+      },
+      "AIOpportunityExample": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "example_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "organisation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "checked_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "example_id",
+          "organisation",
+          "title",
+          "source_url",
+          "checked_on",
+          "summary"
+        ]
+      },
+      "AIOpportunity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pattern_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "kind": {
+            "enum": [
+              "AI_ASSISTED",
+              "TECHNOLOGY"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "real_world_examples": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/AIOpportunityExample"
+            }
+          },
+          "match_basis": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "pattern_id",
+          "kind",
+          "title",
+          "description",
+          "real_world_examples",
+          "match_basis"
+        ]
+      },
+      "AIProblemOpportunityMap": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunities": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AIOpportunity"
+            }
+          }
+        },
+        "required": [
+          "problem_id",
+          "opportunities"
+        ]
+      },
+      "AIOpportunityMapping": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "diagnosis_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pattern_edition": {
+            "type": "string"
+          },
+          "mapping_rule_version": {
+            "type": "string"
+          },
+          "mapping_state": {
+            "enum": [
+              "COMPLETE",
+              "INCOMPLETE"
+            ]
+          },
+          "problems": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AIProblemOpportunityMap"
+            }
+          },
+          "unmapped_problem_ids": {
+            "type": "array",
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "disclaimer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "diagnosis_id",
+          "diagnosis_revision",
+          "pattern_edition",
+          "mapping_rule_version",
+          "mapping_state",
+          "problems",
+          "unmapped_problem_ids",
+          "disclaimer"
         ]
       },
       "AIArchivedCatalogV1": {

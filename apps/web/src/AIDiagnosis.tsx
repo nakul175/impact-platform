@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import "./ai-diagnosis.css";
 import { AIDiagnosisReviewStatus } from "./AIDiagnosisReviewQueue";
+import { AIOpportunityMap } from "./AIOpportunityMap";
 
 type EvidenceReference = { object_id: string; revision_id: string };
 type EvidenceChoice = EvidenceReference & {
@@ -1687,6 +1688,16 @@ function DiagnosisWorkspace({
                     <p className="ai-diagnosis-text">
                       Previous correction reason: {head.data.correction_reason}
                     </p>
+                  )}
+                  {head && (
+                    <AIOpportunityMap
+                      base={base}
+                      diagnosisId={head.object_id}
+                      revisionId={head.revision_id}
+                      problems={head.data.problems}
+                      request={request}
+                      explain={explain}
+                    />
                   )}
                   {canManage && (
                     <fieldset disabled={editingBlocked}>

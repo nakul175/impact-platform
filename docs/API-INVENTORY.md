@@ -33,6 +33,7 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/reject` | `ai.diagnosis.contributors.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations` | `ai.diagnosis.contributors.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations` | `ai.diagnosis.contributors.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-map` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-review-queue` | `ai.diagnosis.review` |

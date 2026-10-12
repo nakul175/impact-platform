@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.75.0",
+    "version": "1.76.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -54214,7 +54214,7 @@
         "operationId": "create_ai_value_case_version",
         "summary": "create ai value case version",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -54336,7 +54336,7 @@
         "operationId": "get_ai_value_case_version",
         "summary": "get ai value case version",
         "x-capability": "ai.value-case.read",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": false,
         "parameters": [
           {
@@ -54457,7 +54457,7 @@
         "operationId": "get_ai_value_case_revision",
         "summary": "get ai value case revision",
         "x-capability": "ai.value-case.read",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": false,
         "parameters": [
           {
@@ -54587,7 +54587,7 @@
         "operationId": "approve_ai_value_case",
         "summary": "approve ai value case",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -54718,7 +54718,7 @@
         "operationId": "lock_ai_value_case_baseline",
         "summary": "lock ai value case baseline",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -54849,7 +54849,7 @@
         "operationId": "revise_ai_value_case",
         "summary": "revise ai value case",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {

@@ -9,6 +9,7 @@ from psycopg.types.json import Jsonb
 from .ai_value_case import calculate_value_case
 from .ai_diagnosis_evidence import resolve_references
 from .domain import DomainError
+from .independence import require_object_independence
 from .store import audit, authorize, context, hash_data, load, write
 
 KIND = "AIValueCase"
@@ -143,10 +144,12 @@ class AIValueCaseVersions:
             elif action == "approve":
                 if previous["payload"]["version_state"] != "Draft":
                     raise DomainError("STATE_TRANSITION_DENIED", 409, reason="VALUE_CASE_NOT_DRAFT")
-                if previous["payload"].get("draft_author_natural_id") == str(
-                    ctx.identity.natural_identity_id
-                ):
-                    raise DomainError("INDEPENDENCE_REQUIRED", 409, reason="VALUE_CASE_SELF_APPROVAL")
+                require_object_independence(
+                    c,
+                    ctx,
+                    previous["object_id"],
+                    DomainError("INDEPENDENCE_REQUIRED", 409, reason="VALUE_CASE_SELF_APPROVAL"),
+                )
                 payload = deepcopy(previous["payload"])
                 payload.update(
                     version_state="Approved",

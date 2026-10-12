@@ -4,7 +4,7 @@ from copy import deepcopy
 
 from .measurement_contracts import closed
 
-VERSION = "1.47.0"
+VERSION = "1.76.0"
 ROOT = "ai-enablement/value-cases"
 ROUTES = [
     ("post", "", "create_ai_value_case_version", "AIValueCaseVersionCreate", "AIValueCaseVersionReceipt"),

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.75.0",
+    "version": "1.76.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -40210,7 +40210,7 @@
         "operationId": "create_ai_value_case_version",
         "summary": "create ai value case version",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -40332,7 +40332,7 @@
         "operationId": "get_ai_value_case_version",
         "summary": "get ai value case version",
         "x-capability": "ai.value-case.read",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": false,
         "parameters": [
           {
@@ -40453,7 +40453,7 @@
         "operationId": "get_ai_value_case_revision",
         "summary": "get ai value case revision",
         "x-capability": "ai.value-case.read",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": false,
         "parameters": [
           {
@@ -40583,7 +40583,7 @@
         "operationId": "approve_ai_value_case",
         "summary": "approve ai value case",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -40714,7 +40714,7 @@
         "operationId": "lock_ai_value_case_baseline",
         "summary": "lock ai value case baseline",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {
@@ -40845,7 +40845,7 @@
         "operationId": "revise_ai_value_case",
         "summary": "revise ai value case",
         "x-capability": "ai.value-case.manage",
-        "x-contract-version": "1.47.0",
+        "x-contract-version": "1.76.0",
         "x-audit-required": true,
         "parameters": [
           {

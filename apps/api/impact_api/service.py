@@ -54,6 +54,7 @@ from .store import (
     hash_data,
     canonical,
 )
+from .independence import require_workflow_independence
 
 LIST_SCAN_BATCH = 100
 LIST_SCAN_BUDGET = 5000
@@ -1219,12 +1220,7 @@ class Service:
             or workflow["candidate_revision"] != data["candidate_revision"]
         ):
             raise DomainError("CONFLICT_VERSION", 409)
-        authors = c.execute(
-            "SELECT 1 FROM impact.workflow_author WHERE tenant_id=%s AND workflow_id=%s AND candidate_revision=%s AND natural_identity_id=%s",
-            (ctx.tenant_id, row["object_id"], data["candidate_revision"], ctx.identity.natural_identity_id),
-        ).fetchone()
-        if authors:
-            raise DomainError("POLICY_DENIED", 403, reason="INDEPENDENCE_REQUIRED")
+        require_workflow_independence(c, ctx, row["object_id"], data["candidate_revision"])
         stages = workflow.get("stages", [])
         if len(stages) != 1 or stages[0]["required_approvals"] != 1 or not stages[0]["independent"]:
             raise DomainError("INVALID_STATE", 409, reason="UNSUPPORTED_WORKFLOW")

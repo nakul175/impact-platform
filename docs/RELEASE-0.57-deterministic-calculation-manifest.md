@@ -1,0 +1,11 @@
+# Release 0.57 coding candidate: deterministic calculation manifest
+
+FR-CAL-001 / APL-396 (frozen feature SHA-256 `4cad981212e71909b5519606b4666c19054157996d047cbc3b7224dc6b81514a`; frozen story Gherkin SHA-256 `cbe5b143413b0d625af29c40739bd45a719f6b0a04298e71cc3906ff7ceb7ddb`) completes the calculation record that accompanies the existing deterministic decimal engine.
+
+Each successful run now freezes the indicator and approved definition revisions, period, optional approved plan revision, exact source-revision digest, execution identity, executor, formula method, measurement type, time semantic, unit, display precision, rounding rule and empty filter set. Its bounded contribution list identifies every source object/revision and records whether it was included or excluded, with a stable reason code. The same dispositions are written to the existing lineage-edge table.
+
+The result binds its existing `lineage_manifest_id` to that immutable manifest, states the 100-digit calculation precision, repeats the frozen formula and filter metadata, and retains the existing raw 12-place decimal plus display rounded half-up from that raw value. The pre-existing typed `rule_version` and `input_snapshot_id` fields remain reserved for actual `CalculationRule` and `Snapshot` objects and are not repurposed. A reader with current result and lineage authority can therefore recompute a frozen ratio and trace each contribution to its original revision.
+
+The calculation path continues to accept only governed approved observations under an approved indicator definition. AI content is not an input to the calculation command or manifest. A validation or arithmetic failure aborts the transaction, so it creates no zero result, manifest, job or receipt and cannot overwrite a prior immutable result. Existing dependency-change invalidation continues to expose an affected prior result as stale. A distinct durable failed-attempt record for a failure with otherwise unchanged dependencies is not implemented in this increment and remains a disclosed criterion gap.
+
+This increment does not add hierarchy, unit conversion, weighting, population overlap, dimension crosswalks or workload qualification. It is a coding-only candidate. Tests, CI, merge, staging deployment and owner acceptance are intentionally deferred to the combined qualification phase.

@@ -6803,3 +6803,11 @@ REVOKE ALL ON FUNCTION impact.guard_ai_solution_fit_immutable() FROM PUBLIC;
 CREATE TRIGGER ai_solution_fit_immutable BEFORE UPDATE OR DELETE ON impact.ai_solution_fit_score FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_solution_fit_immutable();
 COMMIT;
 ```
+
+## Migration0052 — deterministic calculation provenance (local0.57 coding candidate)
+
+`0052_calculation_provenance.sql` SHA256 `142930422fd39e5a3648654b77eebe82ed3e3a252081a43ceaa95cfb72f34684`. Schema52 adds only three optional projection columns to `calculated_result_current`: the fixed 100-digit calculation precision, a closed formula record and a closed filter record. The immutable generic `LineageManifest` revision carries execution, approved definition, period, formula and per-source inclusion/exclusion metadata; it has no mutable projection table. Existing typed `rule_version` and `input_snapshot_id` columns remain reserved for actual `CalculationRule` and `Snapshot` objects. All0001–0051 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0052_calculation_provenance.sql | 142930422fd39e5a3648654b77eebe82ed3e3a252081a43ceaa95cfb72f34684 |

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.47.0",
+    "version": "1.48.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -54447,6 +54447,62 @@
                 "reason_code"
               ]
             }
+          },
+          "calculation_precision_digits": {
+            "type": "integer",
+            "const": 100
+          },
+          "formula": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "method": {
+                "enum": [
+                  "SUM",
+                  "POOLED_RATIO",
+                  "COUNT",
+                  "LAST_VALID",
+                  "MEAN",
+                  "MEDIAN",
+                  "MIN",
+                  "MAX"
+                ]
+              },
+              "measurement_type": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "time_semantic": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "unit": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "display_decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "rounding_rule": {
+                "const": "HALF_UP"
+              }
+            },
+            "required": [
+              "method",
+              "measurement_type",
+              "time_semantic",
+              "unit",
+              "display_decimals",
+              "rounding_rule"
+            ]
+          },
+          "filters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
           }
         },
         "required": [],
@@ -67423,6 +67479,75 @@
           "plan_revision": {
             "type": "string",
             "format": "uuid"
+          },
+          "execution_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "executed_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "formula": {
+            "$ref": "#/components/schemas/CalculatedResultData/properties/formula"
+          },
+          "filters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
+          },
+          "contributions": {
+            "type": "array",
+            "maxItems": 10000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "source_object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "source_revision": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "disposition": {
+                  "enum": [
+                    "INCLUDED",
+                    "EXCLUDED"
+                  ]
+                },
+                "reason_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "source_object_id",
+                "source_revision",
+                "disposition",
+                "reason_code"
+              ]
+            }
           }
         }
       },

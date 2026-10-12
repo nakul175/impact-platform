@@ -302,6 +302,34 @@ class Service:
                         "Source revisions or the approved collection plan changed since this calculation."
                     )
         if row["object_type"] == "LineageManifest":
+            if row["payload"].get("indicator_revision"):
+                pinned_indicator = revision(
+                    c,
+                    ctx,
+                    row["payload"]["indicator_revision"],
+                    "IndicatorInstance",
+                    "indicator-instances.read",
+                )
+                if str(pinned_indicator["object_id"]) != row["payload"].get("indicator_id"):
+                    unavailable()
+            elif row["payload"].get("indicator_id"):
+                load(
+                    c,
+                    ctx,
+                    row["payload"]["indicator_id"],
+                    "IndicatorInstance",
+                    "indicator-instances.read",
+                )
+            if row["payload"].get("definition_revision"):
+                revision(
+                    c,
+                    ctx,
+                    row["payload"]["definition_revision"],
+                    "IndicatorDefinition",
+                    "indicator-definitions.read",
+                )
+            if row["payload"].get("period_id"):
+                load(c, ctx, row["payload"]["period_id"], "Period", "periods.read")
             for rev in row["payload"].get("source_revisions", []):
                 revision(c, ctx, rev, "Observation", "observations.read")
             if row["payload"].get("plan_revision"):
@@ -1025,15 +1053,72 @@ class Service:
         breakdown = disaggregate(definition["payload"], sources)
         now = cutoff.isoformat()
         plan_pin = {"plan_revision": str(plan["head_revision"])} if plan else {}
+        run = str(uuid4())
+        formula = {
+            "method": definition["payload"]["combination_rule"],
+            "measurement_type": definition["payload"]["measurement_type"],
+            "time_semantic": definition["payload"]["time_semantic"],
+            "unit": definition["payload"]["unit"],
+            "display_decimals": definition["payload"].get("display_decimals", 2),
+            "rounding_rule": "HALF_UP",
+        }
+        excepted_keys = {
+            (item["source_namespace"], item["source_key"])
+            for item in (plan["payload"]["obligations"] if plan else [])
+            if item.get("eligibility", "REQUIRED") == "EXCEPTED"
+        }
+        contributions = []
+        for row in rows:
+            included = (
+                row["payload"].get("approval_state") == "APPROVED"
+                and row["payload"].get("value_state") == "PRESENT"
+            )
+            if included_revisions is not None:
+                included = str(row["head_revision"]) in included_revisions
+            reason = (
+                "APPROVED_ELIGIBLE_SOURCE"
+                if included
+                else "APPROVED_OBLIGATION_EXCLUSION"
+                if (
+                    row["payload"].get("source_namespace"),
+                    row["payload"].get("source_key"),
+                )
+                in excepted_keys
+                else "NOT_ELIGIBLE_UNDER_PLAN"
+                if plan
+                else "NOT_APPROVED_PRESENT"
+            )
+            contributions.append(
+                {
+                    "source_object_id": str(row["object_id"]),
+                    "source_revision": str(row["head_revision"]),
+                    "disposition": "INCLUDED" if included else "EXCLUDED",
+                    "reason_code": reason,
+                }
+            )
+        lineage_payload = {
+            "source_revisions": [str(r["head_revision"]) for r in rows],
+            "digest": digest,
+            "execution_id": run,
+            "executed_by": str(ctx.principal_id),
+            "indicator_id": str(indicator["object_id"]),
+            "indicator_revision": str(indicator["head_revision"]),
+            "definition_revision": str(definition["revision_id"]),
+            "period_id": data["period_id"],
+            "formula": formula,
+            "filters": {},
+            "contributions": contributions,
+            **plan_pin,
+        }
+        validate("LineageManifestData", lineage_payload)
         lineage = write(
             c,
             ctx,
             "LineageManifest",
-            {"source_revisions": [str(r["head_revision"]) for r in rows], "digest": digest, **plan_pin},
+            lineage_payload,
             "Recorded",
             track_author=False,
         )
-        run = str(uuid4())
         scope = next(
             g["scope_id"]
             for g in ctx.grants
@@ -1065,6 +1150,9 @@ class Service:
             indicator_version=indicator["payload"]["definition_version"],
             period_id=data["period_id"],
             dimensions={},
+            calculation_precision_digits=100,
+            formula=formula,
+            filters={},
             **({"disaggregation": breakdown} if definition["payload"].get("disaggregation") else {}),
             run_id=run,
             mode="PROVISIONAL",
@@ -1089,18 +1177,7 @@ class Service:
             lineage_manifest_id=lineage["object_id"],
         )
         receipt = write(c, ctx, "CalculatedResult", result, "Calculated", track_author=False)
-        excepted_keys = {
-            (item["source_namespace"], item["source_key"])
-            for item in (plan["payload"]["obligations"] if plan else [])
-            if item.get("eligibility", "REQUIRED") == "EXCEPTED"
-        }
-        for row in rows:
-            included = (
-                row["payload"].get("approval_state") == "APPROVED"
-                and row["payload"].get("value_state") == "PRESENT"
-            )
-            if included_revisions is not None:
-                included = str(row["head_revision"]) in included_revisions
+        for row, contribution in zip(rows, contributions, strict=True):
             c.execute(
                 "INSERT INTO impact.lineage_edge VALUES(%s,%s,%s,%s,%s,%s)",
                 (
@@ -1108,18 +1185,8 @@ class Service:
                     receipt["revision_id"],
                     row["head_revision"],
                     str(row["object_id"]),
-                    "INCLUDED" if included else "EXCLUDED",
-                    None
-                    if included
-                    else "APPROVED_OBLIGATION_EXCLUSION"
-                    if (
-                        row["payload"].get("source_namespace"),
-                        row["payload"].get("source_key"),
-                    )
-                    in excepted_keys
-                    else "NOT_ELIGIBLE_UNDER_PLAN"
-                    if plan
-                    else "NOT_APPROVED_PRESENT",
+                    contribution["disposition"],
+                    None if contribution["disposition"] == "INCLUDED" else contribution["reason_code"],
                 ),
             )
         c.execute(

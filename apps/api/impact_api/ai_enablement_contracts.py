@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.34.0"
+VERSION = "1.35.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -17,6 +17,10 @@ IMPLEMENTED = [
     ("post", "ai-enablement/advisory-jobs"),
     ("get", "ai-enablement/advisory-jobs/{job_id}"),
     ("post", "ai-enablement/advisory-jobs/{job_id}/actions/cancel"),
+    ("post", "ai-enablement/forecasts"),
+    ("get", "ai-enablement/forecasts/{scenario_id}"),
+    ("get", "ai-enablement/forecasts/{scenario_id}/export"),
+    ("post", "ai-enablement/forecasts/{scenario_id}/versions/{version}/actions/request-adoption"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -214,6 +218,161 @@ def augment(spec, policy):
             "can_publish_final",
         ],
     )
+    forecast_input = closed(
+        {
+            "ordinal": {"type": "integer", "minimum": 1},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "value": {"type": "string"},
+        }
+    )
+    forecast_point = closed(
+        {
+            "step": {"type": "integer", "minimum": 1, "maximum": 24},
+            "value": {"type": "string"},
+            "lower": {"type": "string"},
+            "upper": {"type": "string"},
+        }
+    )
+    schemas["AIForecastRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "scenario_id": {"type": ["string", "null"], "format": "uuid"},
+            "label": {"type": "string", "minLength": 1, "maxLength": 220, "pattern": r"\S"},
+            "horizon": {"type": "integer", "minimum": 1, "maximum": 24},
+            "method": {"const": "LINEAR_TREND_V1"},
+            "assumptions": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "input_result_revisions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 24,
+                "uniqueItems": True,
+                "items": {"type": "string", "format": "uuid"},
+            },
+        }
+    )
+    schemas["AIForecast"] = closed(
+        {
+            "scenario_id": {"type": "string", "format": "uuid"},
+            "version": {"type": "integer", "minimum": 1},
+            "label": {"type": "string"},
+            "status": {"enum": ["EXPLORATORY", "PROJECTION"]},
+            "horizon": {"type": "integer"},
+            "method": {"const": "LINEAR_TREND_V1"},
+            "assumptions": {"type": "array"},
+            "validation_history": {"type": "object"},
+            "unit": {"type": "string"},
+            "inputs": {"type": "array", "items": forecast_input},
+            "projections": {"type": "array", "items": forecast_point},
+            "can_request_adoption": {"type": "boolean"},
+            "targets_changed": {"const": False},
+            "created_at": {"type": "string", "format": "date-time"},
+        }
+    )
+    schemas["AIForecastExport"] = closed(
+        {
+            "scenario_id": {"type": "string", "format": "uuid"},
+            "version": {"type": "integer"},
+            "series": {"type": "array", "minItems": 2, "maxItems": 2},
+            "approved_targets_changed": {"const": False},
+        }
+    )
+    schemas["AIForecastAdoptionReview"] = closed(
+        {
+            "review_id": {"type": "string", "format": "uuid"},
+            "state": {"const": "PENDING"},
+            "targets_changed": {"const": False},
+        }
+    )
+    forecast_base = "/v1/tenants/{tenant_id}/ai-enablement/forecasts"
+    forecast_ops = [
+        ("post", forecast_base, "create_ai_forecast", "AIForecastRequest", "AIForecast"),
+        ("get", forecast_base + "/{scenario_id}", "get_ai_forecast", None, "AIForecast"),
+        ("get", forecast_base + "/{scenario_id}/export", "export_ai_forecast", None, "AIForecastExport"),
+        (
+            "post",
+            forecast_base + "/{scenario_id}/versions/{version}/actions/request-adoption",
+            "request_ai_forecast_adoption",
+            None,
+            "AIForecastAdoptionReview",
+        ),
+    ]
+    for method, path, operation, request, response in forecast_ops:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{scenario_id}" in path:
+            parameters.append(
+                {
+                    "name": "scenario_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        if "{version}" in path:
+            parameters.append(
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "integer", "minimum": 1},
+                }
+            )
+        elif method == "get":
+            parameters.append(
+                {
+                    "name": "version",
+                    "in": "query",
+                    "required": False,
+                    "schema": {"type": "integer", "minimum": 1},
+                }
+            )
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "responses": {
+                "200": {
+                    "description": "Versioned forecast planning artifact",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
     for method, route, op, cap, request, response, roles in [
         (
             "get",

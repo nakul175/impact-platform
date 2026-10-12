@@ -1,5 +1,5 @@
 {
-  "version": "1.87.0",
+  "version": "1.88.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6887,6 +6887,62 @@
       "purpose_required": false,
       "field_filter_required": false,
       "state_guard": "Identifiers, codes and correlation ids only; never a payload or secret.",
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_forecast",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_forecast",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "export_ai_forecast",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}/export",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "request_ai_forecast_adoption",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}/versions/{version}/actions/request-adoption",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
       "audit": false
     },
     {

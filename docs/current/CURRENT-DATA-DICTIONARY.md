@@ -7028,3 +7028,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0081_ai_advisory_job_execution.sql | ef5e0f1f6ea9ff666d5659ddb40e4c388d15c865e1dffce69b9d63b8514d42b4 |
+
+
+## Migration0082 — versioned forecast scenarios (local0.98 coding candidate)
+
+`0082_ai_forecast_scenarios.sql` SHA256 `77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd`. Schema82 adds immutable scenario versions, exact CalculatedResult input-revision pins and pending-only adoption reviews. Actual and projection series remain distinct; no table path updates approved targets. Exploratory scenarios are structurally labelled separately from sufficient projections. All0001–0081 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0082_ai_forecast_scenarios.sql | 77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd |

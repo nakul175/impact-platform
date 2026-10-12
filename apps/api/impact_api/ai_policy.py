@@ -231,7 +231,7 @@ def _covers(languages, language):
     return any(tag.split("-")[0].lower() == primary for tag in languages)
 
 
-def require(policy, use_case, version, data_class, destination, language, tools=()):
+def require(policy, use_case, version, data_class, destination, language, tools=(), purpose=None):
     """Refuse an AI request the policy in force does not allow. Raises; returns the rule otherwise.
 
     Order: a request made against another policy version (409 AI_POLICY_CHANGED), a use case that is
@@ -257,8 +257,8 @@ def require(policy, use_case, version, data_class, destination, language, tools=
         problems.append(data_class.lower() + " data is above the highest allowed data class")
     if destination not in rule["destinations"]:
         problems.append("the configured AI provider is not an allowed destination")
-    if not rule["purposes"]:
-        problems.append("no approved purpose is recorded")
+    if not purpose or purpose not in rule["purposes"]:
+        problems.append("the requested purpose is not approved")
     if not _covers(rule["languages"], language):
         problems.append("the draft language (" + language + ") is not covered")
     if rule["review_mode"] not in REVIEW_MODES:

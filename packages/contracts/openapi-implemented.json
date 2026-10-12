@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.81.0",
+    "version": "1.82.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -75201,6 +75201,9 @@
           "consent": {
             "const": true
           },
+          "purpose": {
+            "const": "AI_ADOPTION_ADVISORY"
+          },
           "policy_version": {
             "type": "integer",
             "minimum": 0,
@@ -75220,7 +75223,8 @@
           "operation_id",
           "profile",
           "consent",
-          "policy_version"
+          "policy_version",
+          "purpose"
         ]
       },
       "AIUseCasePolicy": {

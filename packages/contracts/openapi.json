@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.81.0",
+    "version": "1.82.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -89205,6 +89205,9 @@
           "consent": {
             "const": true
           },
+          "purpose": {
+            "const": "AI_ADOPTION_ADVISORY"
+          },
           "policy_version": {
             "type": "integer",
             "minimum": 0,
@@ -89224,7 +89227,8 @@
           "operation_id",
           "profile",
           "consent",
-          "policy_version"
+          "policy_version",
+          "purpose"
         ]
       },
       "AIUseCasePolicy": {

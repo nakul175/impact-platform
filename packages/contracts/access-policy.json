@@ -1,5 +1,5 @@
 {
-  "version": "1.81.0",
+  "version": "1.82.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6956,7 +6956,7 @@
         "MEL_ADMIN",
         "PROGRAMME_MANAGER"
       ],
-      "purpose_required": false,
+      "purpose_required": true,
       "fresh_assurance_seconds": null,
       "audit": true
     },

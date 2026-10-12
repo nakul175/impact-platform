@@ -12,6 +12,7 @@ from cryptography.exceptions import InvalidTag
 import psycopg
 
 from . import ai_policy
+from .ai_data_handling import prepare as prepare_transmission
 from .ai_execution_boundary import runtime_tools, untrusted_envelope
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
@@ -29,7 +30,7 @@ DISCLAIMER = "AI advisory draft: staff must verify claims and approve decisions.
 USE_CASE = "ADVISORY_DRAFT"
 # The advisory instructions and the workspace are English; the policy must cover this language.
 DRAFT_LANGUAGE = "en"
-REQUEST_FIELDS = {"operation_id", "profile", "consent", "policy_version"}
+REQUEST_FIELDS = {"operation_id", "profile", "consent", "policy_version", "purpose"}
 TOOL = re.compile(TOOL_PATTERN)
 LOG = logging.getLogger("impact")
 
@@ -271,6 +272,10 @@ class AIEnablement:
                 getattr(self.provider, "destination", None),
                 DRAFT_LANGUAGE,
                 tools,
+                body["purpose"],
+            )
+            minimized_profile, handling = prepare_transmission(
+                body["profile"], getattr(self.provider, "destination", None), body["purpose"]
             )
             # Policy permission never creates a runtime tool. This advisory runtime deliberately
             # exposes an empty server-owned catalogue, so document/model text cannot execute one.
@@ -290,6 +295,7 @@ class AIEnablement:
                     "status": "RESERVED",
                     "use_case": USE_CASE,
                     "policy_version": policy["version"],
+                    "data_handling": handling,
                 },
                 "Recorded",
             )
@@ -322,7 +328,8 @@ class AIEnablement:
         # The claim has committed. Never call the provider while holding a database transaction.
         output, failure = None, None
         try:
-            generated = self.provider.generate(body["profile"], assessment)
+            # Only the minimized copy and its separately recomputed assessment cross the boundary.
+            generated = self.provider.generate(minimized_profile, assess(minimized_profile))
             if (
                 not isinstance(generated, dict)
                 or not isinstance(generated.get("text"), str)

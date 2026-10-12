@@ -37,8 +37,8 @@ def unavailable(reason="AI_PROVIDER_UNAVAILABLE"):
 class OpenAIAdvisory:
     # The closed AI policy destination this adapter sends to (FR-AI-001): OpenAI's global
     # api.openai.com endpoint with no regional data-residency project, labelled United States.
-    # The label is the product's working assumption until the DPIA confirms provider region and
-    # retention. A tenant policy must list this destination or every request is refused.
+    # The versioned server-side handling catalogue supplies the reviewed region, no-store and
+    # no-training decision. A tenant policy must list this destination or every request is refused.
     destination = "openai-us"
 
     def __init__(self, api_key, model="gpt-5-mini", client=None):

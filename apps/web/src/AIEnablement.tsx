@@ -267,6 +267,7 @@ export function AIEnablementPanel({
         operation_id: crypto.randomUUID(),
         profile,
         consent: true,
+        purpose: "AI_ADOPTION_ADVISORY",
         policy_version: policy!.policy_version,
       });
     }

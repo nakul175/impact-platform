@@ -76,6 +76,7 @@ def augment(spec, policy):
             "operation_id": {"type": "string", "format": "uuid"},
             "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
             "consent": {"const": True},
+            "purpose": {"const": "AI_ADOPTION_ADVISORY"},
             # The policy version shown to the requester ("Policy in force"); a request made against
             # any other version is refused with 409 AI_POLICY_CHANGED before any reservation.
             "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
@@ -88,7 +89,7 @@ def augment(spec, policy):
                 "items": {"type": "string", "pattern": TOOL_PATTERN},
             },
         },
-        ["operation_id", "profile", "consent", "policy_version"],
+        ["operation_id", "profile", "consent", "policy_version", "purpose"],
     )
     policy_schemas(schemas)
     ranking_schemas(schemas)
@@ -201,7 +202,7 @@ def augment(spec, policy):
                 "path": path,
                 "capability": cap,
                 "role_templates": deepcopy(roles),
-                "purpose_required": False,
+                "purpose_required": op == "create_ai_advisory",
                 "fresh_assurance_seconds": None,
                 "audit": op == "create_ai_advisory",
             }

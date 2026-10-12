@@ -6899,3 +6899,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0063_hierarchical_aggregation.sql | 949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d |
+
+## Migration0064 — dimension crosswalks (local0.71 coding candidate)
+
+`0064_dimension_crosswalk.sql` SHA256 `eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0`. Schema64 adds revisioned `DimensionCrosswalk` definitions that pin exact approved source and target indicator-definition revisions and dimension codes. Mapping rows distinguish exact, many-to-one pooling and reviewed proportional estimation while preserving information-loss, suppression and estimation metadata. The projection is forced-tenant-RLS protected and its registry/revision payloads are fenced from workers. All0001–0063 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0064_dimension_crosswalk.sql | eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0 |

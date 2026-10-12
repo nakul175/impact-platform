@@ -148,6 +148,12 @@
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions` | `decisions.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions/{object_id}` | `decisions.read` |
+| GET | `/v1/tenants/{tenant_id}/dimension-crosswalks` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/dimension-crosswalks` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}` | `calculated-results.read` |
+| PATCH | `/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}/actions/submit` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}/preview` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/disclosure-requests` | `disclosure.request` |
 | GET | `/v1/tenants/{tenant_id}/disclosures` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | `disclosures.read` |

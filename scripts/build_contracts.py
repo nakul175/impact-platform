@@ -11,6 +11,7 @@ from impact_api.programme_setup_contracts import augment as augment_programme_se
 from impact_api.discoverability_contracts import augment as augment_discoverability  # noqa: E402
 from impact_api.population_overlap_contracts import augment as augment_population_overlap  # noqa: E402
 from impact_api.hierarchical_aggregation_contracts import augment as augment_hierarchical_aggregation  # noqa: E402
+from impact_api.dimension_crosswalk_contracts import augment as augment_dimension_crosswalk  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
 from impact_api.reporting_contracts import augment as augment_reporting  # noqa: E402
@@ -172,6 +173,7 @@ augment_programme_setup(spec, policy)
 augment_discoverability(spec, policy)
 augment_population_overlap(spec, policy)
 augment_hierarchical_aggregation(spec, policy)
+augment_dimension_crosswalk(spec, policy)
 augment_changes(spec, policy)
 augment_periods(spec, policy)
 augment_reporting(spec, policy)

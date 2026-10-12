@@ -733,5 +733,19 @@
     "contract_version": "1.61.0",
     "draft_schema": "AggregationHierarchyDraftData",
     "output_schema": "AggregationHierarchyData"
+  },
+  {
+    "entity": "DimensionCrosswalk",
+    "route": "dimension-crosswalks",
+    "owner": "C05",
+    "fsd_id": "FR-CAL-007",
+    "fields": "title:text source_definition_revision:uuid source_dimension_code:code target_definition_revision:uuid target_dimension_code:code mapping_type:code information_loss:code estimation_method:text mappings:array",
+    "source_required_fields": "title:text source_definition_revision:uuid source_dimension_code:code target_definition_revision:uuid target_dimension_code:code mapping_type:code information_loss:code mappings:array",
+    "invariant": "Exact approved definition revisions and dimension categories; broad-to-narrow splits require reviewed proportional estimation; unknown never silently remaps.",
+    "server_owned": [],
+    "patch_allowed": true,
+    "contract_version": "1.62.0",
+    "draft_schema": "DimensionCrosswalkDraftData",
+    "output_schema": "DimensionCrosswalkData"
   }
 ]

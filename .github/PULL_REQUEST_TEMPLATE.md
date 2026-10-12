@@ -12,7 +12,7 @@
 - [ ] Product owner accepted at sprint review
 
 ## Kind of change
-- [ ] Documentation only (`docs/**` or `**.md`; starts no CI)
+- [ ] Documentation only (`docs/**` or `**.md`; starts the small `checks` job only, not the four paid qualification jobs)
 - [ ] Code (affected checks listed below)
 - [ ] Migration (next number is 0041; applied migrations are never edited)
 - [ ] Contract or capability change (regenerated contracts and onboarding profile)

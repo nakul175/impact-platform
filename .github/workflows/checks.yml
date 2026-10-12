@@ -1,57 +1,99 @@
 name: checks
-# A small job that always runs: lint, the database-free unit tests, the release security review
-# check and the web client's type check. It has no path filter, so a documentation-only pull
-# request and a pull request of more than 300 files (GitHub evaluates path filters on the first
-# 300 files of a diff only) still get one check. The paid four-job qualification stays in qualification.yml with its own filter.
+# The status check named "checks" is what a documentation-only pull request reports (recent
+# docs pull requests #91 and #92 merged with this check alone). It therefore has no
+# workflow-level path filter: a filter would skip the run, and a required check that never
+# reports stays pending. Draft pull requests do not start it. Marking the draft ready runs
+# it (ready_for_review). A documentation-only change still runs the steps that read docs
+# (documentation index, release security review, database-free unit tests) and skips the
+# web install, lint and type check.
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
   workflow_dispatch:
-# One in-flight run per pull request, and one per branch for a main push or a manual run; a
-# newer commit cancels the run it replaces (the job is cheap and only the latest result matters).
+# One in-flight run per pull request, and one per branch for a main push or a manual run.
+# A newer pull-request or non-main commit cancels the run it replaces. A main push is left
+# to finish: that run is the record of what landed.
 concurrency:
   group: checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref != 'refs/heads/main' }}
 permissions:
   contents: read
 jobs:
   checks:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     # Local timings on 8 October 2026: pip install 27 s, npm ci 6 s, make lint 17 s, make unit
-    # 39 s, tsc 5 s. 15 stops a hang well short of the 6-hour default.
+    # 39 s, tsc 5 s. A hosted run on 12 October 2026 finished in under a minute and still
+    # bills one minute (GitHub rounds up). 15 stops a hang well short of the 6-hour default.
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
           # Two commits, so the release review can diff the change set against the first parent:
           # on a pull request that is the base branch of the test merge commit, on a main push the
-          # previous main commit.
+          # previous main commit. The same parent is what the docs-only decision below uses.
           fetch-depth: 2
+      - name: Decide whether this change needs the web install, lint and type check
+        id: scope
+        run: |
+          set -euo pipefail
+          # A manual run always does the full check. Anything we cannot classify does too.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run_full=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! git rev-parse --verify --quiet HEAD^1 >/dev/null; then
+            echo "run_full=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          run_full=false
+          found=false
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            found=true
+            case "$f" in
+              docs/*|*.md) ;;
+              *) run_full=true ;;
+            esac
+          done < <(git diff --name-only --diff-filter=ACDMRTUXB HEAD^1 HEAD)
+          if [ "$found" = false ]; then
+            run_full=true
+          fi
+          echo "run_full=$run_full" >> "$GITHUB_OUTPUT"
+      - name: Documentation index is current
+        run: python3 scripts/doc_index.py --check
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.lock
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: apps/web/package-lock.json
       - name: Install the Python toolchain (requirements.lock, as make setup does)
         run: |
           python -m venv .venv
           .venv/bin/pip install -r requirements.lock
+      - name: Release security review (threat register, chains, open critical threats, impact reviews)
+        # The register and the review files live under docs/, so a documentation-only change
+        # can fail this step. It stays on the short path.
+        run: .venv/bin/python scripts/release_review.py --check --base HEAD^1
+      - name: Unit tests without a database
+        # Unit tests read the threat register, the data dictionary and the release reviews.
+        # Skipping them on a documentation-only change would weaken this check.
+        run: make unit
+      - uses: actions/setup-node@v6
+        if: steps.scope.outputs.run_full == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
       - name: Install the web client dependencies (prettier for make lint, tsc)
+        if: steps.scope.outputs.run_full == 'true'
         run: npm ci --prefix apps/web
       - name: Lint (ruff check, ruff format --check, prettier --check)
+        if: steps.scope.outputs.run_full == 'true'
         run: make lint
-      - name: Documentation index is current
-        run: python3 scripts/doc_index.py --check
-      - name: Unit tests without a database
-        run: make unit
-      - name: Release security review (threat register, chains, open critical threats, impact reviews)
-        run: .venv/bin/python scripts/release_review.py --check --base HEAD^1
       - name: Web client type check
+        if: steps.scope.outputs.run_full == 'true'
         run: npx tsc --noEmit
         working-directory: apps/web

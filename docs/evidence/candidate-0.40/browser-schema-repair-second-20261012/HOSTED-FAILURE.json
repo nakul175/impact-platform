@@ -1,0 +1,14 @@
+{
+  "candidate": "a3d96a67875083ada6fe1a6b8ec5737f891c7044",
+  "run_id": 38205317460,
+  "job_id": 114667450681,
+  "failed_step": "Browser groups",
+  "mode": "ai-walkthrough-browser",
+  "actual": "47 != 43",
+  "first_three_repaired_modes_passed_in_hosted_run": true,
+  "remaining_stale_owning_schema_checks": [
+    "ai-walkthrough",
+    "tola-ai-extension"
+  ],
+  "not_billing": true
+}

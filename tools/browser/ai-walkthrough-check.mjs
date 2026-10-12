@@ -109,8 +109,27 @@ function applicationSnapshot() {
     );
   return JSON.parse(result.stdout);
 }
+const migrationFiles = (
+  await fs.readdir(path.join(repository, "infrastructure/migrations"))
+)
+  .filter((name) => /^\d{4}_[a-z0-9_]+\.sql$/.test(name))
+  .sort();
+assert(migrationFiles.length > 0 && migrationFiles.length <= 1000);
+extraSources.push(
+  ...migrationFiles.map((name) => "infrastructure/migrations/" + name),
+);
 const applicationBefore = applicationSnapshot();
-assert.equal(applicationBefore.applied_migrations.length, 43);
+assert.equal(
+  applicationBefore.applied_migrations.length,
+  migrationFiles.length,
+);
+assert.deepEqual(
+  applicationBefore.applied_migrations.map((row) => row.version),
+  migrationFiles.map((name, index) => {
+    assert.equal(Number(name.slice(0, 4)), index + 1);
+    return index + 1;
+  }),
+);
 for (const row of applicationBefore.applied_migrations) {
   const migration = (
     await fs.readdir(path.join(repository, "infrastructure/migrations"))
@@ -601,6 +620,12 @@ try {
     }
   });
 } finally {
+  assert.deepEqual(
+    (await fs.readdir(path.join(repository, "infrastructure/migrations")))
+      .filter((name) => /^\d{4}_[a-z0-9_]+\.sql$/.test(name))
+      .sort(),
+    migrationFiles,
+  );
   const applicationAfter = applicationSnapshot();
   const stateUnchanged =
     JSON.stringify(applicationBefore) === JSON.stringify(applicationAfter);

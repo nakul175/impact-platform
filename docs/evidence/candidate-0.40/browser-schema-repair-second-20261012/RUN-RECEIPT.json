@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-12T05:04:20.743824+00:00",
+  "baseline": "a3d96a67875083ada6fe1a6b8ec5737f891c7044",
+  "new_source_hashes": {
+    "ai-walkthrough": "f76a83d0abd3b56dba945f74c784250618b73e45873ec276bc88885a4d05be11",
+    "tola-ai-extension": "87a9c8713db9cd8a53fe48e2d47cd1436f37f500e415a00ea3c796b51f5a1164"
+  },
+  "sources_stable": true,
+  "results": [
+    {
+      "mode": "ai-walkthrough",
+      "exit_code": 0
+    },
+    {
+      "mode": "tola-ai-extension",
+      "exit_code": 0
+    }
+  ],
+  "historical_files_restored": [],
+  "not_hosted_or_deployed": true,
+  "separate_code_review": "No assertion weakening; bounded exactinventory, contiguousledger/everychecksum, SQLsourcepins and finalinventory checks retained/strengthened.",
+  "separate_evidence_review": {
+    "groups_passed": [
+      16,
+      28
+    ],
+    "source_pins": [
+      66,
+      94
+    ],
+    "source_hashes_stable": true,
+    "exact_47_versions_and_checksums": true,
+    "walkthrough_193_table_fingerprints_unchanged": true,
+    "axe_scans": [
+      15,
+      9
+    ],
+    "violations": 0,
+    "incomplete": 0,
+    "extension_console_observations_retained": 12,
+    "credential_pattern_hits": 0,
+    "temporary_environment_link_absent": true,
+    "api_listeners_absent": true,
+    "historical_evidence_unchanged": true,
+    "not_hosted_native_human_deployed": true
+  }
+}

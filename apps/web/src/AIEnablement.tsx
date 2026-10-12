@@ -147,6 +147,10 @@ export function AIEnablementPanel({
     progress: number;
     can_cancel: boolean;
     cancellation_requested: boolean;
+    outcome: "SUCCEEDED" | "TIMED_OUT" | "CANCELLED" | "FAILED" | null;
+    complete: boolean | null;
+    label: "Advisory draft" | "Incomplete draft" | null;
+    can_publish_final: boolean;
   } | null>(null);
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
@@ -662,6 +666,13 @@ export function AIEnablementPanel({
                   {label(advisoryJob.state)} · {advisoryJob.progress}% ·{" "}
                   {advisoryJob.estimated_units} unit reserved
                 </p>
+                {advisoryJob.label && (
+                  <p className={advisoryJob.complete ? "muted" : "ai-notice"}>
+                    {advisoryJob.label}
+                    {!advisoryJob.can_publish_final &&
+                      " — this partial result cannot be published as final."}
+                  </p>
+                )}
                 <div className="actions">
                   <button
                     type="button"

@@ -37,6 +37,11 @@ One process per worker login (`impact_worker_login` -> `impact_worker`). Each it
    the schedule of `impact_api.retention`, writes one insert-only `retention_proof` row per data
    class and records Succeeded, all fenced on the lease generation: a stale holder's sweep rolls
    back and leaves neither deletions nor proof.
+9. AI advisory jobs (v0.97) are claimed with the shared generation fence and a persisted 20-minute
+   deadline. Provider I/O occurs outside a transaction. Terminal recording settles the reservation;
+   a cancelled or timed-out response is retained only as an `Incomplete draft` which cannot be
+   published as final. Source-dependent jobs fail closed because this worker never impersonates a
+   requester's current authority.
 
 Failures back off exponentially with jitter (BACKOFF_BASE_SECONDS doubling up to BACKOFF_CAP_SECONDS,
 multiplied by a uniform factor in [0.5, 1.0)) and become DEAD after `max_attempts` claims or at once
@@ -76,6 +81,10 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from . import keyring
+from .ai_advisory_provider import OpenAIAdvisory
+from .ai_data_handling import prepare as prepare_ai_transmission
+from .ai_enablement_catalog import assess as assess_ai_profile
+from .ai_jobs import _binding as ai_request_binding, _key as ai_key, output_binding as ai_output_binding
 from .mail_rate import EmailRateLimiter
 from .delivery import (
     channel_code,
@@ -100,7 +109,7 @@ LOOPBACK = {"127.0.0.1", "::1", "localhost"}
 PRE_START = ("Requested", "Validating", "Queued")
 # SMTP replies that mean "authenticate first" or "authentication failed": configuration, not message.
 AUTHENTICATION_CODES = {530, 534, 535, 538}
-BOOLEAN = {"require_unprivileged_db"}
+BOOLEAN = {"require_unprivileged_db", "ai_enabled"}
 INTEGER = {
     "smtp_port",
     "synthetic_failures",
@@ -112,6 +121,7 @@ INTEGER = {
     "email_rate_limit",
     "email_tenant_rate_limit",
     "email_rate_window_seconds",
+    "ai_job_timeout_seconds",
 }
 FLOAT = {"smtp_timeout", "synthetic_delay", "poll_seconds"}
 # STARTTLS policy of the SMTP adapter: `auto` upgrades (and verifies) every non-loopback host and
@@ -177,6 +187,10 @@ class WorkerSettings:
     scan_seconds: int = 60
     # A tenant's next retention sweep is queued once its last one completed this long ago.
     retention_seconds: int = 86400
+    ai_enabled: bool = False
+    ai_api_key: str = field(default="", repr=False)
+    ai_model: str = "gpt-5-mini"
+    ai_job_timeout_seconds: int = 1200
 
     @property
     def unprivileged_db_required(self):
@@ -188,6 +202,8 @@ class WorkerSettings:
         overrides. The worker never reads the API configuration or its connection strings."""
         path = os.environ.get("IMPACT_WORKER_CONFIG_FILE")
         data = json.loads(Path(path).read_text()) if path else {}
+        if os.environ.get("OPENAI_API_KEY"):
+            data["ai_api_key"] = os.environ["OPENAI_API_KEY"]
         for entry in fields(cls):
             value = os.environ.get("IMPACT_" + entry.name.upper())
             if value is not None:
@@ -239,6 +255,10 @@ class WorkerSettings:
             raise ConfigurationError("LEASE_SHORTER_THAN_SMTP_TIMEOUT")
         if not 60 <= self.retention_seconds <= 31 * 86400:
             raise ConfigurationError("INVALID_LIMITS")
+        if not 60 <= self.ai_job_timeout_seconds <= 86400:
+            raise ConfigurationError("INVALID_AI_JOB_TIMEOUT")
+        if self.ai_enabled and (not self.ai_api_key or not self.ai_model):
+            raise ConfigurationError("AI_WORKER_CREDENTIALS_REQUIRED")
         if self.smtp_starttls not in STARTTLS_MODES:
             raise ConfigurationError("INVALID_SMTP_STARTTLS")
         if self.smtp_ca_file and not os.access(self.smtp_ca_file, os.R_OK):
@@ -393,13 +413,15 @@ class StaleLease(Exception):
 
 def empty_summary():
     keys = ["tenants", "claimed", "sent", "retried", "dead", "superseded", "stale_refused", "released"]
-    return dict.fromkeys(
+    summary = dict.fromkeys(
         keys
         + ["reminders", "cancelled", "refused_cancellations", "tenant_failures"]
         + EXPORT_KEYS
         + RETENTION_KEYS,
         0,
     )
+    summary.update(dict.fromkeys(["ai_claimed", "ai_succeeded", "ai_incomplete", "ai_failed"], 0))
+    return summary
 
 
 class Worker:
@@ -423,6 +445,7 @@ class Worker:
         # Email send rate limits (v0.27): applied at claim time, so a deferred intent keeps its
         # attempts and can never become DEAD because of them (mail_rate.py).
         self.email_limiter = EmailRateLimiter.from_settings(s)
+        self.ai_provider = OpenAIAdvisory(s.ai_api_key, s.ai_model) if s.ai_enabled else None
         self.stop_event = threading.Event()
         self.connection = None
         self.last_scan = None
@@ -492,6 +515,10 @@ class Worker:
                 str(row["tenant_id"]): row["due_exports"]
                 for row in c.execute("SELECT * FROM impact.worker_export_tenants(%s)", (at,)).fetchall()
             }
+            ai_jobs = {
+                str(row["tenant_id"]): row["due_jobs"]
+                for row in c.execute("SELECT * FROM impact.worker_ai_tenants(%s)", (at,)).fetchall()
+            }
         scan = self.last_scan is None or (at - self.last_scan).total_seconds() >= self.s.scan_seconds
         for row in tenants:
             if self.stopping:
@@ -503,6 +530,13 @@ class Worker:
                     self.dispatch(tenant, summary)
                 if exports.get(tenant) and row["lifecycle_state"] == "Active" and not self.stopping:
                     self.run_exports(tenant, summary)
+                if (
+                    self.ai_provider
+                    and ai_jobs.get(tenant)
+                    and row["lifecycle_state"] == "Active"
+                    and not self.stopping
+                ):
+                    self.run_ai_jobs(tenant, summary)
                 if scan and row["lifecycle_state"] == "Active" and not self.stopping:
                     self.remind(tenant, summary)
                     self.cancel_jobs(tenant, summary)
@@ -884,6 +918,165 @@ class Worker:
                     LOG.warning("delivery %s outcome refused: lease generation superseded", row["event_id"])
                 return
         self.record(tenant, row, summary, outcome, reason)
+
+    # -- bounded AI advisory jobs ---------------------------------------------------------------
+
+    def run_ai_jobs(self, tenant, summary):
+        for row in self.claim_ai_jobs(tenant):
+            summary["ai_claimed"] += 1
+            self.process_ai_job(tenant, row, summary)
+
+    def claim_ai_jobs(self, tenant):
+        with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
+            jobs = c.execute(
+                "WITH due AS (SELECT j.job_id FROM impact.job j JOIN impact.ai_advisory_job a "
+                "ON a.tenant_id=j.tenant_id AND a.job_id=j.job_id WHERE j.tenant_id=%(tenant)s "
+                "AND j.job_class='AI_ADVISORY' AND a.attempts<%(max)s AND "
+                "((j.state='Queued' AND j.cancellation_requested_at IS NULL) OR "
+                "(j.state='Running' AND j.lease_expires_at<=%(at)s)) ORDER BY a.requested_at,j.job_id "
+                "LIMIT %(limit)s FOR UPDATE OF j SKIP LOCKED) UPDATE impact.job j SET state='Running',"
+                "lease_generation=j.lease_generation+1,lease_expires_at=%(expires)s FROM due "
+                "WHERE j.tenant_id=%(tenant)s AND j.job_id=due.job_id RETURNING j.job_id,j.lease_generation",
+                {
+                    "tenant": tenant,
+                    "at": at,
+                    "max": self.s.max_attempts,
+                    "limit": min(self.s.batch_size, 4),
+                    "expires": at + timedelta(seconds=max(self.s.lease_seconds, 60)),
+                },
+            ).fetchall()
+            rows = []
+            for job in jobs:
+                row = c.execute(
+                    "UPDATE impact.ai_advisory_job SET lease_owner=%s,attempts=attempts+1,"
+                    "started_at=COALESCE(started_at,%s),deadline_at=COALESCE(deadline_at,%s) "
+                    "WHERE tenant_id=%s AND job_id=%s RETURNING *",
+                    (
+                        self.worker_id,
+                        at,
+                        at + timedelta(seconds=self.s.ai_job_timeout_seconds),
+                        tenant,
+                        job["job_id"],
+                    ),
+                ).fetchone()
+                rows.append({**row, "lease_generation": job["lease_generation"]})
+        return rows
+
+    def process_ai_job(self, tenant, row, summary):
+        generated, error = None, None
+        try:
+            if not self.ai_provider or not self.ai_provider.configured:
+                raise DeliveryError("AI_WORKER_NOT_CONFIGURED", permanent=True)
+            keys = keyring.ring(self.s, "delivery")
+            body = json.loads(
+                keys.unseal(ai_key, row["sealed_request"], ai_request_binding(tenant, row["job_id"]))
+            )
+            # A worker has no user identity with which to re-prove source authority. Such a job is
+            # refused rather than running from stale access; source-free minimized jobs remain safe.
+            if body.get("source_dependencies"):
+                raise DeliveryError("SOURCE_AUTHORITY_RECHECK_REQUIRED", permanent=True)
+            profile, _handling = prepare_ai_transmission(
+                body["profile"], self.ai_provider.destination, body["purpose"]
+            )
+            if self.probe:
+                self.probe(self)
+            generated = self.ai_provider.generate(profile, assess_ai_profile(profile))
+        except ConfigurationError:
+            raise
+        except DeliveryError as exc:
+            error = exc.error_class
+        except (InvalidTag, ValueError, TypeError, KeyError, json.JSONDecodeError):
+            error = "AI_REQUEST_UNREADABLE"
+        except Exception:
+            error = "AI_PROVIDER_UNAVAILABLE"
+        self.record_ai_job(tenant, row, generated, error, summary)
+
+    def record_ai_job(self, tenant, row, generated, error, summary):
+        with self.transaction(tenant, lock=True) as c:
+            at = self.now(c)
+            current = c.execute(
+                "SELECT j.state,j.cancellation_requested_at,j.lease_generation,a.deadline_at "
+                "FROM impact.job j JOIN impact.ai_advisory_job a ON a.tenant_id=j.tenant_id AND a.job_id=j.job_id "
+                "WHERE j.tenant_id=%s AND j.job_id=%s AND a.lease_owner=%s FOR UPDATE OF j",
+                (tenant, row["job_id"], self.worker_id),
+            ).fetchone()
+            if not current or current["lease_generation"] != row["lease_generation"]:
+                summary["stale_refused"] += 1
+                return
+            cancelled = current["cancellation_requested_at"] is not None
+            timed_out = at >= current["deadline_at"]
+            if cancelled or timed_out:
+                outcome, state, complete = (
+                    ("CANCELLED", "Cancelled", False) if cancelled else ("TIMED_OUT", "Failed", False)
+                )
+                error = "AI_JOB_CANCELLED" if cancelled else "AI_JOB_TIMED_OUT"
+            elif generated is not None and error is None:
+                outcome, state, complete = "SUCCEEDED", "Succeeded", True
+            else:
+                outcome, state, complete = "FAILED", "Failed", False
+            label = "Advisory draft" if complete else "Incomplete draft"
+            output = None
+            model = None
+            digest = None
+            if generated and isinstance(generated.get("text"), str):
+                payload = {
+                    "status": "DRAFT" if complete else "INCOMPLETE",
+                    "label": label,
+                    "text": generated["text"],
+                    "model": generated.get("model"),
+                    "can_publish_final": complete,
+                }
+                raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+                output = keyring.ring(self.s, "delivery").seal(
+                    ai_key, raw, ai_output_binding(tenant, row["job_id"])
+                )
+                digest = hashlib.sha256(raw).digest()
+                model = generated.get("model")
+            c.execute(
+                "INSERT INTO impact.ai_advisory_job_output VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                    tenant,
+                    row["job_id"],
+                    outcome,
+                    complete,
+                    label,
+                    output,
+                    digest,
+                    model,
+                    1 if generated else 0,
+                    at,
+                ),
+            )
+            manifest = {
+                "outcome": outcome,
+                "complete": complete,
+                "label": label,
+                "can_publish_final": complete,
+                "error_class": error,
+            }
+            c.execute(
+                "UPDATE impact.job SET state=%s,lease_expires_at=NULL,output_manifest=%s "
+                "WHERE tenant_id=%s AND job_id=%s",
+                (state, Jsonb(manifest), tenant, row["job_id"]),
+            )
+            c.execute(
+                "UPDATE impact.ai_advisory_job SET completed_at=%s,lease_owner=NULL,last_error_class=%s "
+                "WHERE tenant_id=%s AND job_id=%s",
+                (at, error, tenant, row["job_id"]),
+            )
+            c.execute(
+                "UPDATE impact.ai_budget_reservation SET state='SETTLED',actual_units=%s,settled_at=%s "
+                "WHERE tenant_id=%s AND job_id=%s AND state='RESERVED'",
+                (1 if generated else 0, at, tenant, row["job_id"]),
+            )
+        summary[
+            "ai_succeeded"
+            if complete
+            else "ai_incomplete"
+            if outcome in {"TIMED_OUT", "CANCELLED"}
+            else "ai_failed"
+        ] += 1
 
     # -- report exports (job class REPORT_EXPORT) -----------------------------------------------
 

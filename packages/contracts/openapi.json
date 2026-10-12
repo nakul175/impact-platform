@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.86.0",
+    "version": "1.87.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46690,7 +46690,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -46791,7 +46791,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -46902,7 +46902,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47003,7 +47003,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47114,7 +47114,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -47234,7 +47234,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -47344,7 +47344,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.33.0",
+        "x-contract-version": "1.34.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -90919,6 +90919,39 @@
           },
           "can_cancel": {
             "type": "boolean"
+          },
+          "outcome": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "SUCCEEDED",
+              "TIMED_OUT",
+              "CANCELLED",
+              "FAILED",
+              null
+            ]
+          },
+          "complete": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "label": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "Advisory draft",
+              "Incomplete draft",
+              null
+            ]
+          },
+          "can_publish_final": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -90929,7 +90962,11 @@
           "requested_at",
           "cancellation_requested",
           "progress",
-          "can_cancel"
+          "can_cancel",
+          "outcome",
+          "complete",
+          "label",
+          "can_publish_final"
         ]
       },
       "AITaskPracticeData": {

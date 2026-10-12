@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "release": "0.97.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Codex integration",
+  "prepared_on": "2026-10-13",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "Review started; no independent assessment recorded."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No AI evaluation recorded for this build."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH36",
+      "title": "Undisclosed commercial influence on tool listings",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.96-01",
+      "change_id": "FR-AI-016a",
+      "change": "FR-AI-016a durable advisory jobs and atomic budget reservation",
+      "paths": [
+        "infrastructure/migrations/0080_ai_advisory_jobs.sql",
+        "apps/api/impact_api/ai_jobs.py",
+        "apps/api/impact_api/main.py",
+        "apps/api/impact_api/ai_enablement_contracts.py",
+        "apps/web/src/AIEnablement.tsx"
+      ],
+      "areas": [
+        "budget",
+        "job-lifecycle",
+        "privacy",
+        "authorization",
+        "idempotency"
+      ],
+      "threats": [
+        "TH06",
+        "TH20",
+        "TH23",
+        "TH24",
+        "TH26"
+      ],
+      "summary": "A 202 job submission atomically reserves a server-estimated unit against the exact policy version and stores the request sealed. Requester-only status and cancellation expose bounded progress; queued cancellation releases the reservation. Core MEL commands remain independent.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-13",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/current/threat-register.json",
+    "docs/RELEASE-0.97-ai-job-execution.md",
+    "infrastructure/migrations/0081_ai_advisory_job_execution.sql"
+  ],
+  "notes": [
+    "Coding-only candidate for FR-AI-016b / APL-346. Bounded worker execution, terminal settlement and incomplete-draft enforcement are implemented. Tests, CI, independent review, merge, staging and acceptance were not run."
+  ]
+}

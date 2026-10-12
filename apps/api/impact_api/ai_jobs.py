@@ -30,6 +30,10 @@ def _binding(tenant, job):
     return f"impact-ai-advisory-job-v1:{tenant}:{job}".encode()
 
 
+def output_binding(tenant, job):
+    return f"impact-ai-advisory-job-output-v1:{tenant}:{job}".encode()
+
+
 class AIJobs:
     def __init__(self, service, enablement):
         self.service = service
@@ -163,8 +167,10 @@ class AIJobs:
     @staticmethod
     def _row(c, tenant, job, principal, lock=False):
         row = c.execute(
-            "SELECT a.*,j.state,j.cancellation_requested_at,j.output_manifest FROM impact.ai_advisory_job a "
+            "SELECT a.*,j.state,j.cancellation_requested_at,j.output_manifest,o.outcome,o.complete,o.label "
+            "FROM impact.ai_advisory_job a "
             "JOIN impact.job j ON j.tenant_id=a.tenant_id AND j.job_id=a.job_id "
+            "LEFT JOIN impact.ai_advisory_job_output o ON o.tenant_id=a.tenant_id AND o.job_id=a.job_id "
             "WHERE a.tenant_id=%s AND a.job_id=%s AND a.requester_id=%s"
             + (" FOR UPDATE OF j" if lock else ""),
             (tenant, job, principal),
@@ -184,6 +190,10 @@ class AIJobs:
             "cancellation_requested": row.get("cancellation_requested_at") is not None,
             "progress": 100 if row["state"] in TERMINAL else 0,
             "can_cancel": row["state"] not in TERMINAL,
+            "outcome": row.get("outcome"),
+            "complete": row.get("complete"),
+            "label": row.get("label"),
+            "can_publish_final": row.get("complete") is True,
         }
 
     def _validate(self, body):

@@ -7019,3 +7019,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0080_ai_advisory_jobs.sql | b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152 |
+
+
+## Migration0081 — bounded AI advisory-job execution (local0.97 coding candidate)
+
+`0081_ai_advisory_job_execution.sql` SHA256 `ef5e0f1f6ea9ff666d5659ddb40e4c388d15c865e1dffce69b9d63b8514d42b4`. Schema81 adds worker-owned attempt/deadline metadata, immutable terminal outputs and a restricted due-tenant enumerator. A successful output is complete and labelled `Advisory draft`; every timed-out, cancelled or failed output is incomplete, labelled `Incomplete draft`, and cannot be represented as publishable final. Budget reservations settle with non-negative actual units. All0001–0080 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0081_ai_advisory_job_execution.sql | ef5e0f1f6ea9ff666d5659ddb40e4c388d15c865e1dffce69b9d63b8514d42b4 |

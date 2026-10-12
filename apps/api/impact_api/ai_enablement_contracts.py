@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.33.0"
+VERSION = "1.34.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -191,6 +191,13 @@ def augment(spec, policy):
             "cancellation_requested": {"type": "boolean"},
             "progress": {"type": "integer", "minimum": 0, "maximum": 100},
             "can_cancel": {"type": "boolean"},
+            "outcome": {
+                "type": ["string", "null"],
+                "enum": ["SUCCEEDED", "TIMED_OUT", "CANCELLED", "FAILED", None],
+            },
+            "complete": {"type": ["boolean", "null"]},
+            "label": {"type": ["string", "null"], "enum": ["Advisory draft", "Incomplete draft", None]},
+            "can_publish_final": {"type": "boolean"},
         },
         [
             "job_id",
@@ -201,6 +208,10 @@ def augment(spec, policy):
             "cancellation_requested",
             "progress",
             "can_cancel",
+            "outcome",
+            "complete",
+            "label",
+            "can_publish_final",
         ],
     )
     for method, route, op, cap, request, response, roles in [

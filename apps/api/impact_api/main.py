@@ -58,6 +58,7 @@ from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
 from .sponsored_access import SponsoredAccess
+from .entitlement_view import EntitlementView
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
@@ -143,6 +144,7 @@ def create_app():
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
     sponsored_access = SponsoredAccess(service)
+    entitlement_view = EntitlementView(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
@@ -1744,6 +1746,10 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/sponsored-access")
     def sponsored_access_list(request: Request, tenant: str):
         return sponsored_access.active(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/effective-entitlements")
+    def effective_entitlement_list(request: Request, tenant: str):
+        return entitlement_view.read(auth.resolve(request), uuid(tenant))
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

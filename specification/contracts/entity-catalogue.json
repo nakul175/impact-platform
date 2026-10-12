@@ -797,5 +797,24 @@
     "contract_version": "1.65.0",
     "draft_schema": "SponsoredCohortCreate",
     "output_schema": "SponsoredCohort"
+  },
+  {
+    "entity": "EffectiveEntitlementView",
+    "route": "effective-entitlements",
+    "owner": "C14",
+    "fsd_id": "US-CM-03",
+    "fields": "entitlement:code sources:array charge_count:int charge_source_id:uuid duplicate_charge_prevented:boolean",
+    "source_required_fields": "Current direct subscriptions and accepted unexpired sponsorship enrolments",
+    "invariant": "Every entitlement exposes all sources; one effective entitlement has at most one charge source.",
+    "server_owned": [
+      "sources",
+      "charge_count",
+      "charge_source_id",
+      "duplicate_charge_prevented"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.66.0",
+    "draft_schema": null,
+    "output_schema": "EffectiveEntitlementList"
   }
 ]

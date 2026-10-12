@@ -1,5 +1,5 @@
 {
-  "version": "1.65.0",
+  "version": "1.66.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5395,6 +5395,21 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "list_effective_entitlements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/effective-entitlements",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every effective entitlement has explicit direct/sponsor sources; one entitlement has at most one charge source."
     },
     {
       "operation_id": "list_measurement_changes",

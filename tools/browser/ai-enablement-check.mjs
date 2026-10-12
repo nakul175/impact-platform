@@ -482,11 +482,14 @@ try {
   assert.equal(runtime.api_version, version.domain_api);
   assert.equal(runtime.mutation_tests_allowed, true);
   appliedMigrations = setup("runtime").migrations;
-  assert.equal(appliedMigrations.length, 43);
-  assert.equal(runtime.schema_version, "43");
+  const migrationFiles = Object.keys(qualifiedSources).filter((file) =>
+    /^infrastructure\/migrations\/\d{4}_.*\.sql$/.test(file),
+  );
+  assert.equal(appliedMigrations.length, migrationFiles.length);
+  assert.equal(runtime.schema_version, String(migrationFiles.length));
   assert.deepEqual(
     appliedMigrations.map((row) => row.version),
-    Array.from({ length: 43 }, (_, index) => index + 1),
+    Array.from({ length: migrationFiles.length }, (_, index) => index + 1),
   );
   for (const row of appliedMigrations) {
     const files = Object.keys(qualifiedSources).filter(

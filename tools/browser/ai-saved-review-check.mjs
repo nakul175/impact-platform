@@ -516,13 +516,24 @@ try {
       assert.equal(observed.api_version, version.domain_api);
       assert.equal(observed.mutation_tests_allowed, true);
       const applied = setup("runtime").migrations;
-      assert.equal(applied.at(-1).version, 43);
-      assert.equal(observed.schema_version, String(applied.length));
-      const migration = Object.keys(qualifiedSources).find((file) =>
-        /^infrastructure\/migrations\/0043_.*\.sql$/.test(file),
+      const migrationFiles = Object.keys(qualifiedSources).filter((file) =>
+        /^infrastructure\/migrations\/\d{4}_.*\.sql$/.test(file),
       );
-      assert(migration);
-      assert.equal(applied.at(-1).sha256, qualifiedSources[migration]);
+      assert.equal(applied.length, migrationFiles.length);
+      assert.equal(observed.schema_version, String(migrationFiles.length));
+      assert.deepEqual(
+        applied.map((row) => row.version),
+        Array.from({ length: migrationFiles.length }, (_, index) => index + 1),
+      );
+      for (const row of applied) {
+        const matches = migrationFiles.filter((file) =>
+          file.startsWith(
+            `infrastructure/migrations/${String(row.version).padStart(4, "0")}_`,
+          ),
+        );
+        assert.equal(matches.length, 1);
+        assert.equal(row.sha256, qualifiedSources[matches[0]]);
+      }
       runtime = { ...observed, applied_migrations: applied };
     },
     "Authenticated actual HTTP runtime and read-only applied database ledger before browser creation",

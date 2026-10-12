@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-12T04:46:52.194643+00:00",
+  "baseline": "d165ef088444ce50b473b571dc2a041a870a129f",
+  "new_source_hashes": {
+    "ai-enablement": "a4ee291e24b41d121e9de845524526e4249f54a6811705d108e855ce954255a4",
+    "ai-saved-review": "17e829a61de2c383124975a830c2129edb43d4dba03664461cfba8d2fdf3b618",
+    "ai-plan-export": "d645ade1b7e5c79bd1fe8dc2b825c57f927b99131de053234b0a44fb72968f3a"
+  },
+  "sources_stable": true,
+  "results": [
+    {
+      "mode": "ai-enablement",
+      "exit_code": 0
+    },
+    {
+      "mode": "ai-saved-review",
+      "exit_code": 0
+    },
+    {
+      "mode": "ai-plan-export",
+      "exit_code": 0
+    }
+  ],
+  "historical_files_restored": [],
+  "not_hosted_or_deployed": true,
+  "code_review": "Separate supporting read-only review: original invariants retained; exact sequence/every-checksum oracles strengthened; no product/API/migration changes.",
+  "evidence_review": {
+    "groups_passed": [
+      14,
+      16,
+      16
+    ],
+    "source_pins": [
+      377,
+      380,
+      379
+    ],
+    "applied_versions": "Exact1to47/every source SQL checksum",
+    "scoped_axe_scans": [
+      8,
+      3,
+      3
+    ],
+    "axe_violations": 0,
+    "axe_incomplete": 0,
+    "console_observations_retained": {
+      "saved_review": 3,
+      "export": 11
+    },
+    "credential_pattern_hits": 0,
+    "historical_evidence_unchanged": true,
+    "temporary_environment_link_removed": true,
+    "api_listeners_absent": [
+      46231,
+      46232,
+      46233
+    ],
+    "not_native_hosted_human_deployment_acceptance": true
+  }
+}

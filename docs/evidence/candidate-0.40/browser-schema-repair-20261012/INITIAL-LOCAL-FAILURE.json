@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-12T04:45:32.747835+00:00",
+  "baseline": "d165ef088444ce50b473b571dc2a041a870a129f",
+  "new_source_hashes": {
+    "ai-enablement": "a4ee291e24b41d121e9de845524526e4249f54a6811705d108e855ce954255a4",
+    "ai-saved-review": "17e829a61de2c383124975a830c2129edb43d4dba03664461cfba8d2fdf3b618",
+    "ai-plan-export": "d645ade1b7e5c79bd1fe8dc2b825c57f927b99131de053234b0a44fb72968f3a"
+  },
+  "sources_stable": true,
+  "results": [
+    {
+      "mode": "ai-enablement",
+      "exit_code": 1
+    }
+  ],
+  "historical_files_restored": [],
+  "not_hosted_or_deployed": true
+}

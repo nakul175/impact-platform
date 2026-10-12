@@ -1,0 +1,12 @@
+{
+  "candidate": "d165ef088444ce50b473b571dc2a041a870a129f",
+  "run_id": 38204076609,
+  "job_id": 114663573887,
+  "job": "local-reference-and-browser",
+  "failed_step": "Browser groups",
+  "mode": "ai-enablement-browser",
+  "actual": "47 != 43",
+  "cause": "Obsolete hardcoded schema43 oracle; current registered schema47",
+  "code": 2,
+  "not_billing_failure": true
+}

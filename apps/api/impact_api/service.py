@@ -36,6 +36,7 @@ from .privacy import Privacy
 from .work import WorkCenter
 from .calculation_compatibility import CalculationCompatibility
 from .population_overlap import PopulationOverlap
+from .hierarchical_aggregation import HierarchicalAggregation, validate_hierarchy
 from .keyring import ring
 from .store import (
     context,
@@ -76,6 +77,7 @@ READ_ROUTES = {
     "notifications",
     "saved-views",
     "population-matching-scopes",
+    "aggregation-hierarchies",
     "workflow-templates",
     "lineage-manifests",
     *READS,
@@ -120,6 +122,7 @@ WRITE_ROUTES = {
     "assignments",
     "saved-views",
     "population-matching-scopes",
+    "aggregation-hierarchies",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -132,6 +135,7 @@ READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route
     "collection-rounds": "CollectionRound",
     "saved-views": "SavedView",
     "population-matching-scopes": "PopulationMatchingScope",
+    "aggregation-hierarchies": "AggregationHierarchy",
 }
 ACTIONS = {
     "observations": {"submit"},
@@ -139,6 +143,7 @@ ACTIONS = {
     "workflows": {"approve", "return", "reject"},
     "indicator-instances": {"calculate", "activate"},
     "population-matching-scopes": {"submit"},
+    "aggregation-hierarchies": {"submit"},
     "programmes": {"ready", "activate", "revise"},
     "collection-plans": {"submit"},
     "measurement-changes": {"submit"},
@@ -207,6 +212,7 @@ class Service:
         self.privacy = Privacy(self)
         self.calculation_compatibility = CalculationCompatibility(self)
         self.population_overlap = PopulationOverlap(self)
+        self.hierarchical_aggregation = HierarchicalAggregation(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -617,6 +623,8 @@ class Service:
     def validate_data(self, c, ctx, kind, data, owner_id=None):
         validate(kind + "Data", data)
         references(c, ctx, kind, data)
+        if kind == "AggregationHierarchy":
+            validate_hierarchy(data)
         if kind in PLANNING_KINDS:
             self.planning.validate(c, ctx, kind, data, owner_id)
         if kind == "MeasurementChange":

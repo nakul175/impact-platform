@@ -6891,3 +6891,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0062_population_overlap.sql | 1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2 |
+
+## Migration0063 — hierarchical aggregation (local0.70 coding candidate)
+
+`0063_hierarchical_aggregation.sql` SHA256 `949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d`. Schema63 adds revisioned `AggregationHierarchy` definitions and immutable `HierarchicalAggregationResult` records. Hierarchy drafts persist explicit contribution, combination rule and attribution scope per edge. Runtime validation rejects cycles, disconnected graphs, ambiguous repeated additive sources, inconsistent unique-source values, and weighted parents without exact non-negative reconciliation. Both kinds inherit forced tenant RLS and restrictive worker fences. All0001–0062 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0063_hierarchical_aggregation.sql | 949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d |

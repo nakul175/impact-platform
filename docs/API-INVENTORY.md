@@ -18,6 +18,11 @@
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/reject` | `grant.approve` |
 | GET | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.read` |
 | POST | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.create` |
+| GET | `/v1/tenants/{tenant_id}/aggregation-hierarchies` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/aggregation-hierarchies` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}` | `calculated-results.read` |
+| PATCH | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}/actions/submit` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
@@ -178,6 +183,7 @@
 | POST | `/v1/tenants/{tenant_id}/group-change-requests` | `groups.request` |
 | POST | `/v1/tenants/{tenant_id}/group-change-requests/{object_id}/actions/approve` | `groups.approve` |
 | POST | `/v1/tenants/{tenant_id}/group-change-requests/{object_id}/actions/reject` | `groups.approve` |
+| POST | `/v1/tenants/{tenant_id}/hierarchical-aggregation/compute` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/imports` | `imports.read` |
 | POST | `/v1/tenants/{tenant_id}/imports` | `imports.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/imports/{object_id}` | `imports.read` |

@@ -719,5 +719,19 @@
     "contract_version": "1.60.0",
     "draft_schema": "PopulationMatchingScopeDraftData",
     "output_schema": "PopulationMatchingScopeData"
+  },
+  {
+    "entity": "AggregationHierarchy",
+    "route": "aggregation-hierarchies",
+    "owner": "C05",
+    "fsd_id": "FR-CAL-006",
+    "fields": "title:text unit:code root_node:code edges:array",
+    "source_required_fields": "title:text unit:code root_node:code edges:array",
+    "invariant": "Acyclic connected DAG with explicit contribution, combination rule and attribution scope on every edge; weights reconcile exactly.",
+    "server_owned": [],
+    "patch_allowed": true,
+    "contract_version": "1.61.0",
+    "draft_schema": "AggregationHierarchyDraftData",
+    "output_schema": "AggregationHierarchyData"
   }
 ]

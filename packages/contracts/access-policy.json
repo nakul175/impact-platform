@@ -1,5 +1,5 @@
 {
-  "version": "1.60.0",
+  "version": "1.61.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -4987,6 +4987,102 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "list_aggregation_hierarchies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "create_aggregation_hierarchies",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "get_aggregation_hierarchies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "patch_aggregation_hierarchies",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "submit_aggregation_hierarchy",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "compute_hierarchical_aggregation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/hierarchical-aggregation/compute",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
     },
     {
       "operation_id": "list_measurement_changes",

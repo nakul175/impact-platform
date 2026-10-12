@@ -6472,3 +6472,18 @@ Registered candidate migration `0047_diagnosis_evidence_privacy.sql`, SHA256 `57
 | Migration | SHA-256 |
 | --- | --- |
 | 0047_diagnosis_evidence_privacy.sql | 57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7 |
+
+## Migration0048 — immutable diagnosis problem baselines (local0.41 coding candidate)
+
+`0048_ai_problem_baselines.sql` SHA256 `38f31daa80efa0e171bf52f8e24f12ab9df6ec9c1cbb95f1d6528f42b7ee8941`.
+Schema48 derives from48 contiguous additive migrations; all0001–0047 remain byte-exact. The
+`problem_baseline_lock` register is forced-RLS and tenant-fenced. It binds one
+`AIProblemBaseline` locked revision to the exact `AIDiagnosis` revision and stable problem ID,
+with server-owned principal/time metadata. The runtime app receives SELECT/INSERT only. A guard
+trigger refuses update/delete and refuses inserts whose selectors or actor do not match the
+immutable locked revision payload. This is a self-reported baseline lock, not independent approval
+or an official MEL result. It is untested, unreviewed, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0048_ai_problem_baselines.sql | 38f31daa80efa0e171bf52f8e24f12ab9df6ec9c1cbb95f1d6528f42b7ee8941 |

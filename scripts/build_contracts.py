@@ -25,6 +25,7 @@ from impact_api.retention_contracts import augment as augment_retention  # noqa:
 from impact_api.ai_enablement_contracts import augment as augment_ai_enablement  # noqa: E402
 from impact_api.ai_adoption_contracts import augment as augment_ai_adoption  # noqa: E402
 from impact_api.ai_diagnosis_contracts import augment as augment_ai_diagnosis  # noqa: E402
+from impact_api.ai_problem_baseline_contracts import augment as augment_ai_problem_baseline  # noqa: E402
 from impact_api.ai_content_contracts import augment as augment_ai_content  # noqa: E402
 from impact_api.ai_impact_reference_contracts import augment as augment_ai_impact  # noqa: E402
 from impact_api.human_advice_contracts import augment as augment_human_advice  # noqa: E402
@@ -163,6 +164,7 @@ augment_ai_enablement(spec, policy)
 augment_ai_planning(spec, policy)
 augment_ai_adoption(spec, policy)
 augment_ai_diagnosis(spec, policy)
+augment_ai_problem_baseline(spec, policy)
 augment_ai_content(spec, policy)
 augment_ai_impact(spec, policy)
 augment_human_advice(spec, policy)

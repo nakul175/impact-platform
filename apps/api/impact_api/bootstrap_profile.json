@@ -13,6 +13,8 @@
       "ai.enablement.manage",
       "ai.enablement.read",
       "ai.policy.manage",
+      "ai.problem-baseline.manage",
+      "ai.problem-baseline.read",
       "connections.read",
       "grant.approve",
       "grant.request",

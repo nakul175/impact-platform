@@ -51,6 +51,13 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.policy.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy/revisions` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines` | `ai.problem-baseline.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines` | `ai.problem-baseline.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}` | `ai.problem-baseline.read` |
+| PUT | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}` | `ai.problem-baseline.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/actions/lock` | `ai.problem-baseline.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions` | `ai.problem-baseline.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}` | `ai.problem-baseline.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |

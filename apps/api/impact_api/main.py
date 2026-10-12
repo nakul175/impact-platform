@@ -41,6 +41,7 @@ from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
 from .ai_diagnoses import AIDiagnoses
+from .ai_problem_baselines import AIProblemBaselines
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
@@ -114,6 +115,7 @@ def create_app():
     ai_ranking = AIRanking(service)
     ai_plans = AIAdoptionPlans(service)
     ai_diagnoses = AIDiagnoses(service)
+    ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
@@ -706,6 +708,75 @@ def create_app():
             request.state.correlation,
             uuid(obj),
             "revise",
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines")
+    def ai_problem_baseline_list(
+        request: Request, tenant: str, limit: int = 50, cursor: str | None = None
+    ):
+        return ai_problem_baselines.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")
+    def ai_problem_baseline_get(request: Request, tenant: str, obj: str):
+        return ai_problem_baselines.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions")
+    def ai_problem_baseline_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return ai_problem_baselines.history(
+            auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor
+        )
+
+    @app.get(
+        "/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions/{revision_id}"
+    )
+    def ai_problem_baseline_revision(
+        request: Request, tenant: str, obj: str, revision_id: str
+    ):
+        return ai_problem_baselines.get(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id)
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/problem-baselines", status_code=201)
+    async def ai_problem_baseline_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineCreate", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")
+    async def ai_problem_baseline_update(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineUpdate", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/actions/lock"
+    )
+    async def ai_problem_baseline_lock(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineLock", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            "lock",
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans")

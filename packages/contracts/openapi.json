@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.77.0",
+    "version": "1.78.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39777,6 +39777,109 @@
           },
           "404": {
             "description": "Derivative or a source is unavailable"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/external-shares": {
+      "post": {
+        "operationId": "create_external_share",
+        "summary": "Share an exact derivative revision with one authenticated principal for at most seven days",
+        "x-capability": "reports.share",
+        "x-contract-version": "1.78.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalShareRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Versioned share"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/external-shares/{share_id}": {
+      "get": {
+        "operationId": "read_external_share",
+        "summary": "Read an unexpired share as its named audience",
+        "x-capability": "reports.read",
+        "x-contract-version": "1.78.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "share_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Currently authorised shared derivative"
+          },
+          "404": {
+            "description": "Unavailable without artifact preview"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation": {
+      "post": {
+        "operationId": "revoke_external_share",
+        "summary": "Revoke an owned share immediately",
+        "x-capability": "reports.share",
+        "x-contract-version": "1.78.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "share_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Revoked"
           }
         }
       }
@@ -81765,6 +81868,53 @@
           "kind",
           "disclosure_mode",
           "sources"
+        ]
+      },
+      "ExternalShareRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "derivative_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "audience_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "read",
+                "download"
+              ]
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "derivative_id",
+          "revision_id",
+          "audience_principal_id",
+          "actions",
+          "reason",
+          "expires_at"
         ]
       },
       "AITrialCreate": {

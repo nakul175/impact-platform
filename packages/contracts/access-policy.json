@@ -1,5 +1,5 @@
 {
-  "version": "1.77.0",
+  "version": "1.78.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5593,6 +5593,49 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Every immutable source dependency is rechecked against current authority before disclosure."
+    },
+    {
+      "operation_id": "create_external_share",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-shares",
+      "capability": "reports.share",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact revision, active audience, actions, owner, reason and expiry no later than seven days are mandatory."
+    },
+    {
+      "operation_id": "read_external_share",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/external-shares/{share_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_MEMBER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Audience, expiry, revocation and every source are revalidated; failure returns no preview."
+    },
+    {
+      "operation_id": "revoke_external_share",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation",
+      "capability": "reports.share",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Only the current owner can revoke; repetition is idempotent."
     },
     {
       "operation_id": "list_ai_option_trials",

@@ -66,6 +66,7 @@ from .access_checks import AccessChecks
 from .fine_grained_access import FineGrainedAccess
 from .effective_access import EffectiveAccess
 from .permission_safe_derivatives import PermissionSafeDerivatives
+from .external_shares import ExternalShares
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -161,6 +162,7 @@ def create_app():
     fine_grained_access = FineGrainedAccess(service)
     effective_access = EffectiveAccess(service)
     permission_safe_derivatives = PermissionSafeDerivatives(service)
+    external_shares = ExternalShares(service, permission_safe_derivatives)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -1933,6 +1935,23 @@ def create_app():
             uuid(tenant),
             str(uuid(derivative_id)),
             str(uuid(revision_id)),
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-shares")
+    async def create_external_share(tenant: str, request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(external_shares.create, auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/external-shares/{share_id}")
+    async def read_external_share(tenant: str, share_id: str, request: Request):
+        return await run_in_threadpool(
+            external_shares.read, auth.resolve(request), uuid(tenant), str(uuid(share_id))
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-shares/{share_id}/revocation")
+    async def revoke_external_share(tenant: str, share_id: str, request: Request):
+        return await run_in_threadpool(
+            external_shares.revoke, auth.resolve(request), uuid(tenant), str(uuid(share_id))
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")

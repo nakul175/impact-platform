@@ -440,6 +440,8 @@ class AIAdoptionPlans:
                 payload["planning"] = deepcopy(previous["payload"]["planning"])
             if previous and "deployment" in previous["payload"]:
                 payload["deployment"] = deepcopy(previous["payload"]["deployment"])
+            if previous and "training_deployment" in previous["payload"]:
+                payload["training_deployment"] = deepcopy(previous["payload"]["training_deployment"])
             if payload.get("planning", {}).get("task_practice") is not None:
                 from .ai_task_practice import CONTENT_VERSION as PRACTICE_VERSION
 
@@ -463,6 +465,7 @@ class AIAdoptionPlans:
                 for milestone in payload["deployment"]["milestones"]:
                     milestone["progress"] = "NOT_STARTED"
                     milestone["progress_note"] = ""
+                payload.pop("training_deployment", None)
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning)
@@ -526,9 +529,7 @@ class AIAdoptionPlans:
             payload = deepcopy(previous["payload"])
             if action == "generate":
                 if not payload.get("solution_ids"):
-                    raise DomainError(
-                        "STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_SOLUTION_REQUIRED"
-                    )
+                    raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_SOLUTION_REQUIRED")
                 if "deployment" in payload:
                     raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_ALREADY_GENERATED")
                 owners = body["owners"]
@@ -598,6 +599,91 @@ class AIAdoptionPlans:
             validate_deployment(payload["deployment"])
             state = "Completed" if action == "complete" else "Draft"
             receipt = write(c, ctx, KIND, payload, state, previous=previous)
+            receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
+            ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning=True)
+            audit(c, ctx, operation, receipt, correlation)
+            c.execute(
+                "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
+                (
+                    tenant,
+                    ctx.principal_id,
+                    operation,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(receipt),
+                    now + timedelta(days=7),
+                ),
+            )
+            return receipt
+
+    def attest_deployment(self, identity, tenant, object_id, body, correlation):
+        _uuid(object_id)
+        if not isinstance(body, dict) or set(body) != {
+            "operation_id",
+            "expected_revision",
+            "solution_id",
+            "deployed_at",
+            "deployment_reference",
+        }:
+            _invalid("DEPLOYMENT_ATTESTATION_INVALID")
+        _uuid(body.get("operation_id"))
+        _uuid(body.get("expected_revision"))
+        if body.get("solution_id") not in SOLUTION_IDS:
+            _invalid("DEPLOYMENT_SOLUTION_INVALID")
+        _text(body.get("deployed_at"), 40, required=True)
+        _text(body.get("deployment_reference"), 500, required=True)
+        try:
+            deployed_at = datetime.fromisoformat(body["deployed_at"].replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            _invalid("DEPLOYMENT_DATE_INVALID")
+        if deployed_at.tzinfo is None or deployed_at > datetime.now(timezone.utc):
+            _invalid("DEPLOYMENT_DATE_INVALID")
+        operation = "attest_ai_solution_deployment"
+        fingerprint = hash_data([operation, object_id, body])
+        now = datetime.now(timezone.utc)
+        with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            ctx = context(c, identity, tenant, write=True)
+            authorize(c, ctx, operation, object_id, hidden=True)
+            authorize(c, ctx, "get_ai_adoption_plan", object_id, hidden=True)
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,1))", (body["operation_id"],))
+            old = c.execute(
+                "SELECT * FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s "
+                "AND command_type=%s AND operation_id=%s",
+                (tenant, ctx.principal_id, operation, body["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != fingerprint:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= now:
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
+                authorize(c, ctx, operation, old["outcome"]["object_id"], hidden=True)
+                return old["outcome"]
+            previous = load(c, ctx, object_id, KIND, READ_CAP, lock=True)
+            if str(previous["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
+            deployment = previous["payload"].get("deployment")
+            if (
+                previous["lifecycle_state"] != "Completed"
+                or not deployment
+                or deployment["state"] != "COMPLETE"
+            ):
+                raise DomainError("STATE_TRANSITION_DENIED", 409, reason="COMPLETED_DEPLOYMENT_PLAN_REQUIRED")
+            if body["solution_id"] not in previous["payload"].get("solution_ids", []):
+                raise DomainError("STATE_TRANSITION_DENIED", 409, reason="SELECTED_SOLUTION_REQUIRED")
+            if previous["payload"].get("training_deployment"):
+                raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_ALREADY_ATTESTED")
+            payload = deepcopy(previous["payload"])
+            payload["training_deployment"] = {
+                "attestation_id": str(UUID(body["operation_id"])),
+                "solution_id": body["solution_id"],
+                "deployed_at": deployed_at.isoformat(),
+                "deployment_reference": body["deployment_reference"].strip(),
+                "attested_by": ctx.principal_id,
+                "attested_at": now.isoformat(),
+            }
+            receipt = write(c, ctx, KIND, payload, "Completed", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning=True)
             audit(c, ctx, operation, receipt, correlation)

@@ -3,6 +3,8 @@
 from copy import deepcopy
 from types import MappingProxyType
 
+TRAINING_CONTENT_VERSION = "role-training-2026-10-12.1"
+
 # These original positional keys keep their published meaning. Never derive aliases
 # from the current lesson order, or reuse a retired key for different material.
 LEGACY_LESSON_ALIASES = MappingProxyType(
@@ -187,6 +189,37 @@ _LESSONS = {
 def lesson_keys():
     """Currently available identifiers, attached to meaning rather than position."""
     return frozenset(lesson[0] for lessons in _LESSONS.values() for lesson in lessons)
+
+
+# Server-owned assignments. Completion is learner- and deployed-solution-specific;
+# these role maps never turn general editorial learning flags into certification.
+ROLE_TRAINING_MODULES = MappingProxyType(
+    {
+        "AUTHOR": (
+            "foundations:safe-practice-task",
+            "foundations:verify-claims",
+            "foundations:data-boundary",
+        ),
+        "REVIEWER": (
+            "foundations:verify-claims",
+            "pilot_design:test-difficult-cases",
+            "pilot_design:review-and-stop-rule",
+        ),
+        "PROGRAMME_MANAGER": (
+            "pilot_design:problem-and-owner",
+            "pilot_design:measure-baseline",
+            "pilot_design:review-and-stop-rule",
+        ),
+    }
+)
+
+
+def lesson_by_key(key):
+    for lessons in _LESSONS.values():
+        for lesson in lessons:
+            if lesson[0] == key:
+                return lesson
+    return None
 
 
 def canonical_lesson_key(key):

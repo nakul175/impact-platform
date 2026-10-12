@@ -6819,3 +6819,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0053_calculation_failures.sql | cea6f86bc18ecd90fd709695416ce9c16df3f266916fb989af0a1443c959f348 |
+
+## Migration0054 — role-training completion kind (local0.60 coding candidate)
+
+`0054_ai_training_completion_kind.sql` SHA256 `1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253`. Schema54 extends only the existing registry object-type check with `AITrainingCompletion`. Completion payloads remain immutable generic revisions protected by the existing forced tenant RLS and runtime grants; the migration creates no table and grants no additional authority. All0001–0053 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0054_ai_training_completion_kind.sql | 1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253 |

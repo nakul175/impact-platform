@@ -40,6 +40,7 @@ from .ai_enablement import AIEnablement
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
+from .ai_role_training import AIRoleTraining
 from .ai_diagnoses import AIDiagnoses
 from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
@@ -118,6 +119,7 @@ def create_app():
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
+    ai_role_training = AIRoleTraining(service)
     ai_diagnoses = AIDiagnoses(service)
     ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
@@ -1049,6 +1051,47 @@ def create_app():
             body,
             request.state.correlation,
             "complete",
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/attest")
+    async def ai_deployment_attest(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AITrainingDeploymentAttest", body)
+        return await run_in_threadpool(
+            ai_plans.attest_deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/role-training")
+    async def ai_role_training_get(request: Request, tenant: str, obj: str, solution_id: str):
+        return await run_in_threadpool(
+            ai_role_training.get,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            solution_id,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/role-training/modules/{module_key}/actions/complete"
+    )
+    async def ai_role_training_complete(
+        request: Request, tenant: str, obj: str, module_key: str
+    ):
+        body = await strict_body(request)
+        validate("AIRoleTrainingComplete", body)
+        return await run_in_threadpool(
+            ai_role_training.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            module_key,
+            body,
+            request.state.correlation,
         )
 
     @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")

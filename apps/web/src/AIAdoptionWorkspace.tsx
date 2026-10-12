@@ -14,6 +14,7 @@ import { AIImpactEvidence } from "./AIImpactEvidence";
 import { AIHumanAdvice } from "./AIHumanAdvice";
 import { AIPlanPortability } from "./AIPlanPortability";
 import { AILearningLesson } from "./AILearningLesson";
+import { AIRoleTrainingPanel } from "./AIRoleTrainingPanel";
 import {
   AIDisclosureLabel,
   AIToolComparison,
@@ -48,6 +49,14 @@ type DeploymentPlan = {
   template_version: "accountable-rollout-2026-10-12.1";
   state: "ACTIVE" | "COMPLETE";
   milestones: DeploymentMilestone[];
+};
+type TrainingDeployment = {
+  attestation_id: string;
+  solution_id: string;
+  deployed_at: string;
+  deployment_reference: string;
+  attested_by: string;
+  attested_at: string;
 };
 type ContentCompatibility = {
   current_versions: { catalog: string; solutions: string };
@@ -134,6 +143,7 @@ type Plan = {
   data: Omit<PlanData, "planning"> & {
     planning?: Planning;
     deployment?: DeploymentPlan;
+    training_deployment?: TrainingDeployment;
     content_versions?: {
       catalog: string;
       solutions: string;
@@ -309,7 +319,7 @@ export function AIAdoptionWorkspace({
     method: string;
     body: string;
     objectId: string;
-    action: "generate" | "progress" | "complete";
+    action: "generate" | "progress" | "complete" | "attest";
     milestone?: DeploymentMilestone["code"];
   } | null>(null);
   const abort = useRef<AbortController | null>(null);
@@ -645,7 +655,7 @@ export function AIAdoptionWorkspace({
   }
   async function deploymentCommand(
     event: React.FormEvent<HTMLFormElement>,
-    action: "generate" | "progress" | "complete",
+    action: "generate" | "progress" | "complete" | "attest",
     milestone?: DeploymentMilestone["code"],
   ) {
     event.preventDefault();
@@ -693,6 +703,13 @@ export function AIAdoptionWorkspace({
         method = "PUT";
         body.progress = String(values.get("progress") || "");
         body.progress_note = String(values.get("progress_note") || "");
+      } else if (action === "attest") {
+        const deployedAt = String(values.get("deployed_at") || "");
+        body.solution_id = String(values.get("solution_id") || "");
+        body.deployed_at = new Date(deployedAt).toISOString();
+        body.deployment_reference = String(
+          values.get("deployment_reference") || "",
+        );
       }
       deploymentPending.current = {
         path,
@@ -732,6 +749,8 @@ export function AIAdoptionWorkspace({
       setNotice(
         captured.action === "generate"
           ? "Accountable deployment plan generated from the fixed template."
+          : captured.action === "attest"
+            ? "Actual solution deployment attestation recorded for role training."
           : captured.action === "complete"
             ? "Deployment plan completed after every milestone was accepted."
             : "Milestone progress saved by its named owner.",
@@ -1877,6 +1896,24 @@ export function AIAdoptionWorkspace({
             learning steps recorded complete. Save your plan to keep this
             progress.
           </p>
+          {head &&
+            plans
+              .find((plan) => plan.object_id === head.object_id)
+              ?.data.training_deployment && (
+              <AIRoleTrainingPanel
+                key={`${sessionIdentity}:${principalId}:${head.revision_id}:role-training`}
+                base={base}
+                contextKey={`${base}:${sessionIdentity}:${principalId}`}
+                canRead={canRead}
+                planId={head.object_id}
+                solutionId={
+                  plans.find((plan) => plan.object_id === head.object_id)!.data
+                    .training_deployment!.solution_id
+                }
+                request={request}
+                explain={explain}
+              />
+            )}
         </section>
       )}
       {activeTab === "practice" && (
@@ -2244,6 +2281,68 @@ export function AIAdoptionWorkspace({
                       : "Complete accountable deployment plan"}
                   </button>
                 </form>
+              )}
+              {draft.deployment.state === "COMPLETE" &&
+                !plans.find((plan) => plan.object_id === head?.object_id)?.data
+                  .training_deployment && (
+                  <form
+                    onSubmit={(event) =>
+                      void deploymentCommand(event, "attest")
+                    }
+                  >
+                    <h5>Record the actual deployed solution</h5>
+                    <p className="muted">
+                      A completed plan does not prove deployment. An authorised
+                      manager must record the selected solution, deployment
+                      time and accountable reference before role training is
+                      available.
+                    </p>
+                    <label>
+                      Deployed solution
+                      <select name="solution_id" required>
+                        {draft.solution_ids.map((solutionId) => (
+                          <option key={solutionId} value={solutionId}>
+                            {selected.find((item) => item.id === solutionId)
+                              ?.name || solutionId}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Deployed at
+                      <input name="deployed_at" type="datetime-local" required />
+                    </label>
+                    <label>
+                      Deployment reference
+                      <input
+                        name="deployment_reference"
+                        maxLength={500}
+                        required
+                        placeholder="Change record, rollout ticket or accountable internal reference"
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      className="primary"
+                      disabled={!canManage || busy || evidenceMutation}
+                    >
+                      {hasDeploymentPending &&
+                      deploymentPending.current?.action === "attest"
+                        ? "Retry pending deployment attestation"
+                        : "Record actual deployment"}
+                    </button>
+                  </form>
+                )}
+              {plans.find((plan) => plan.object_id === head?.object_id)?.data
+                .training_deployment && (
+                <p role="status" className="ai-notice">
+                  Actual deployment recorded for solution{" "}
+                  {
+                    plans.find((plan) => plan.object_id === head?.object_id)!
+                      .data.training_deployment!.solution_id
+                  }
+                  . Data Authors can now open their role training.
+                </p>
               )}
             </>
           )}

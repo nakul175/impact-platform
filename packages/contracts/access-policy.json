@@ -1,5 +1,5 @@
 {
-  "version": "1.50.0",
+  "version": "1.51.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6338,6 +6338,47 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "attest_ai_solution_deployment",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/attest",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
+    },
+    {
+      "operation_id": "get_ai_role_training",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
+    },
+    {
+      "operation_id": "complete_ai_role_training_module",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
     },
     {
       "operation_id": "list_ai_diagnoses",

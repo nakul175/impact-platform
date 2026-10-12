@@ -233,6 +233,7 @@ class AIImpactReferences:
                 for milestone in payload["deployment"]["milestones"]:
                     milestone["progress"] = "NOT_STARTED"
                     milestone["progress_note"] = ""
+                payload.pop("training_deployment", None)
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             _inherit_guidance(c, ctx, previous, receipt)

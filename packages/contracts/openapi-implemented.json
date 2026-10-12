@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.50.0",
+    "version": "1.51.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -28995,7 +28995,7 @@
         "operationId": "list_ai_adoption_plans",
         "summary": "list ai adoption plans",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29121,7 +29121,7 @@
         "operationId": "create_ai_adoption_plan",
         "summary": "create ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29242,7 +29242,7 @@
         "operationId": "get_ai_adoption_plan",
         "summary": "get ai adoption plan",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29360,7 +29360,7 @@
         "operationId": "update_ai_adoption_plan",
         "summary": "update ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29490,7 +29490,7 @@
         "operationId": "generate_ai_deployment_plan",
         "summary": "generate ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29610,7 +29610,7 @@
         "operationId": "update_ai_deployment_milestone",
         "summary": "update ai deployment milestone",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29742,7 +29742,7 @@
         "operationId": "complete_ai_deployment_plan",
         "summary": "complete ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.50.0",
+        "x-contract-version": "1.51.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29780,6 +29780,376 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/attest": {
+      "post": {
+        "operationId": "attest_ai_solution_deployment",
+        "summary": "attest actual solution deployment",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.51.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AITrainingDeploymentAttest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deployment attestation revision receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training": {
+      "get": {
+        "operationId": "get_ai_role_training",
+        "summary": "get learner role training",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.51.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "solution_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current learner role modules and completion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRoleTraining"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete": {
+      "post": {
+        "operationId": "complete_ai_role_training_module",
+        "summary": "record learner module completion",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.51.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "module_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIRoleTrainingComplete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Learner-scoped role training state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRoleTraining"
                 }
               }
             }
@@ -66496,6 +66866,46 @@
           "milestones"
         ]
       },
+      "AITrainingDeploymentAttestation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "attestation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "deployed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deployment_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "attested_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "attested_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "attestation_id",
+          "solution_id",
+          "deployed_at",
+          "deployment_reference",
+          "attested_by",
+          "attested_at"
+        ]
+      },
       "AIAdoptionPlanningInputs": {
         "type": "object",
         "additionalProperties": false,
@@ -66666,6 +67076,9 @@
           },
           "deployment": {
             "$ref": "#/components/schemas/AIDeploymentPlan"
+          },
+          "training_deployment": {
+            "$ref": "#/components/schemas/AITrainingDeploymentAttestation"
           },
           "content_versions": {
             "type": "object",
@@ -66963,6 +67376,160 @@
         "required": [
           "operation_id",
           "expected_revision"
+        ]
+      },
+      "AITrainingDeploymentAttest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "deployed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deployment_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "solution_id",
+          "deployed_at",
+          "deployment_reference"
+        ]
+      },
+      "AIRoleTraining": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "deployment_attestation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "role": {
+            "const": "AUTHOR"
+          },
+          "content_version": {
+            "const": "role-training-2026-10-12.1"
+          },
+          "modules": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "version": {
+                  "const": "role-training-2026-10-12.1"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "lesson": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4000
+                },
+                "exercise": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "completed_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "key",
+                "version",
+                "title",
+                "lesson",
+                "exercise",
+                "completed",
+                "completed_at"
+              ]
+            }
+          }
+        },
+        "required": [
+          "plan_id",
+          "plan_revision",
+          "solution_id",
+          "deployment_attestation_id",
+          "role",
+          "content_version",
+          "modules"
+        ]
+      },
+      "AIRoleTrainingComplete": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "module_version": {
+            "const": "role-training-2026-10-12.1"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_plan_revision",
+          "solution_id",
+          "module_version"
         ]
       },
       "AIDiagnosisError": {

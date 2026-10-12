@@ -60,6 +60,7 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/attest` | `ai.enablement.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete` | `ai.enablement.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate` | `ai.enablement.manage` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}` | `ai.enablement.manage` |
@@ -68,6 +69,8 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/exports` | `ai.enablement.export` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.policy.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy/revisions` | `ai.enablement.read` |

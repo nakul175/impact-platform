@@ -6843,3 +6843,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0056_ai_current_outcome_observations.sql | a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a |
+
+## Migration0057 — sponsor value report kind (local0.63 coding candidate)
+
+`0057_ai_sponsor_value_report_kind.sql` SHA256 `75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012`. Schema57 extends the registry object-type check with `AISponsorValueReport` and adds restrictive registry/revision worker policies because reports contain sponsor-bound realised financial and outcome values. Reports use immutable generic revisions and existing forced tenant RLS. Creation pins one current locked value-case revision, one current locked-baseline outcome observation and one active named external sponsor membership. The downloadable artifact contains only selected report items and mandatory context; internal source, recipient and source-note selectors remain outside the sponsor response. All0001–0056 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0057_ai_sponsor_value_report_kind.sql | 75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012 |

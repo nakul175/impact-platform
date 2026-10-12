@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.53.0",
+    "version": "1.54.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -34612,6 +34612,87 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AIOutcomesDashboard"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_sponsor_value_report",
+        "summary": "Generate an organisation-selected sponsor value report",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.54.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AISponsorValueReportCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Immutable recipient-bound report receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISponsorValueReportReceipt"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_sponsor_value_report",
+        "summary": "Read one report as its named sponsor recipient",
+        "x-capability": "publication.download",
+        "x-contract-version": "1.54.0",
+        "responses": {
+          "200": {
+            "description": "Selected report fields only",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISponsorValueReport"
                 }
               }
             }
@@ -70782,6 +70863,293 @@
           "reporting_basis",
           "comparisons",
           "disclaimer"
+        ]
+      },
+      "AISponsorRealisedValues": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{3}$"
+          },
+          "observed_from": {
+            "type": "string",
+            "format": "date"
+          },
+          "observed_to": {
+            "type": "string",
+            "format": "date"
+          },
+          "realised_benefit": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "realised_cost": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "source_note": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "currency",
+          "observed_from",
+          "observed_to",
+          "realised_benefit",
+          "realised_cost",
+          "source_note"
+        ]
+      },
+      "AISponsorValueReportCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sponsor_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "value_case_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value_case_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "realised": {
+            "$ref": "#/components/schemas/AISponsorRealisedValues"
+          },
+          "selected_items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "ROI_PERCENT",
+                "NET_BENEFIT",
+                "REALISED_BENEFIT",
+                "REALISED_COST",
+                "USAGE",
+                "TIME",
+                "COST",
+                "QUALITY",
+                "REACH"
+              ]
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "sponsor_membership_id",
+          "expires_at",
+          "title",
+          "value_case_object_id",
+          "value_case_revision",
+          "outcome_observation_id",
+          "outcome_observation_revision",
+          "realised",
+          "selected_items"
+        ]
+      },
+      "AISponsorValueReportReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Published"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "saved_at",
+          "operation_id",
+          "correlation_id"
+        ]
+      },
+      "AISponsorValueReport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Published"
+          },
+          "title": {
+            "type": "string"
+          },
+          "selected_items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "ROI_PERCENT",
+                "NET_BENEFIT",
+                "REALISED_BENEFIT",
+                "REALISED_COST",
+                "USAGE",
+                "TIME",
+                "COST",
+                "QUALITY",
+                "REACH"
+              ]
+            }
+          },
+          "items": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "ROI_PERCENT",
+                "NET_BENEFIT",
+                "REALISED_BENEFIT",
+                "REALISED_COST",
+                "USAGE",
+                "TIME",
+                "COST",
+                "QUALITY",
+                "REACH"
+              ]
+            },
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            }
+          },
+          "currency": {
+            "type": "string"
+          },
+          "observed_from": {
+            "type": "string",
+            "format": "date"
+          },
+          "observed_to": {
+            "type": "string",
+            "format": "date"
+          },
+          "reporting_basis": {
+            "const": "SELF_REPORTED_REALISED"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "disclaimer": {
+            "type": "string"
+          },
+          "manifest": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "renderer_version": {
+                "const": "ai-sponsor-value-report-v1"
+              },
+              "media_type": {
+                "const": "application/json"
+              },
+              "content_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "size_bytes": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "renderer_version",
+              "media_type",
+              "content_sha256",
+              "size_bytes"
+            ]
+          },
+          "content_base64": {
+            "type": "string",
+            "contentEncoding": "base64"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "title",
+          "selected_items",
+          "items",
+          "currency",
+          "observed_from",
+          "observed_to",
+          "reporting_basis",
+          "generated_at",
+          "expires_at",
+          "disclaimer",
+          "manifest",
+          "content_base64"
         ]
       },
       "AIOpportunityExample": {

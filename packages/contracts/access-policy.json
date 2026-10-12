@@ -1,5 +1,5 @@
 {
-  "version": "1.53.0",
+  "version": "1.54.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6860,6 +6860,30 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "create_ai_sponsor_value_report",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_sponsor_value_report",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports/{object_id}",
+      "capability": "publication.download",
+      "role_templates": [
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "get_ai_opportunity_map",

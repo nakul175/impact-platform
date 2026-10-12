@@ -23,6 +23,7 @@ from impact_api.ai_problem_baseline_contracts import (  # noqa: E402
     IMPLEMENTED as AI_PROBLEM_BASELINE_ROUTES,
 )
 from impact_api.ai_outcome_observation_contracts import IMPLEMENTED as AI_OUTCOME_OBSERVATION_ROUTES  # noqa: E402
+from impact_api.ai_sponsor_value_report_contracts import IMPLEMENTED as AI_SPONSOR_VALUE_REPORT_ROUTES  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
 )
@@ -82,6 +83,7 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EVIDENCE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PRIVACY_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_OUTCOME_OBSERVATION_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_SPONSOR_VALUE_REPORT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AUDIT_EXPORT_ROUTES)

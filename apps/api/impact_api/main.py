@@ -48,6 +48,7 @@ from .ai_diagnosis_reviews import AIDiagnosisReviews
 from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
 from .ai_outcome_observations import AIOutcomeObservations
+from .ai_sponsor_value_reports import AISponsorValueReports
 from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
@@ -129,6 +130,7 @@ def create_app():
     ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_outcome_observations = AIOutcomeObservations(service, ai_diagnoses, ai_problem_baselines)
+    ai_sponsor_value_reports = AISponsorValueReports(service, ai_outcome_observations)
     ai_value_cases = AIValueCaseVersions(service)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
@@ -904,6 +906,22 @@ def create_app():
             uuid(baseline_object_id),
             opportunity_id,
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/sponsor-value-reports", status_code=201)
+    async def ai_sponsor_value_report_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AISponsorValueReportCreate", body)
+        return await run_in_threadpool(
+            ai_sponsor_value_reports.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/sponsor-value-reports/{obj}")
+    def ai_sponsor_value_report_get(request: Request, tenant: str, obj: str):
+        return ai_sponsor_value_reports.get(auth.resolve(request), uuid(tenant), uuid(obj))
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
     def ai_opportunity_map_get(

@@ -3,7 +3,7 @@
 from copy import deepcopy
 from .measurement_contracts import closed
 
-VERSION = "1.40.0"
+VERSION = "1.41.0"
 ROOT = "ai-enablement/diagnoses/{object_id}/opportunity-map"
 IMPLEMENTED = [("get", ROOT)]
 
@@ -22,7 +22,7 @@ def augment(spec, policy):
     schemas["AIOpportunityExample"] = closed(example, list(example))
     opportunity = {
         "pattern_id": {"type": "string", "minLength": 1, "maxLength": 100},
-        "kind": {"enum": ["AI_ASSISTED", "TECHNOLOGY"]},
+        "kind": {"enum": ["AI_ASSISTED", "TECHNOLOGY", "PROCESS_FIX"]},
         "title": {"type": "string", "minLength": 1, "maxLength": 200},
         "description": {"type": "string", "minLength": 1, "maxLength": 500},
         "real_world_examples": {

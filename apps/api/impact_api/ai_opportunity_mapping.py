@@ -79,6 +79,40 @@ _PATTERNS = (
             },
         ),
     },
+    {
+        "pattern_id": "review-and-localize-information",
+        "kind": "PROCESS_FIX",
+        "title": "Create a reviewed, localized information routine",
+        "description": "Assign content owners, localize approved answers and schedule review without requiring a new technology purchase.",
+        "match_terms": ("communication", "information", "question", "support", "health", "awareness"),
+        "real_world_examples": (
+            {
+                "example_id": "unicef-ureport-content-localization",
+                "organisation": "UNICEF",
+                "title": "U-Report COVID-19 content localization",
+                "source_url": "https://www.unicef.org/innovation/ureportCOVID19",
+                "checked_on": "2026-10-12",
+                "summary": "UNICEF describes content and navigation review plus localization for specific contexts and groups; the reusable process is independent of buying a new tool.",
+            },
+        ),
+    },
+    {
+        "pattern_id": "staff-practice-and-review",
+        "kind": "PROCESS_FIX",
+        "title": "Build staff practice and human review into the workflow",
+        "description": "Use short practice, explicit review responsibilities and feedback before considering additional technology.",
+        "match_terms": ("education", "learning", "student", "teacher", "training", "curriculum", "skill"),
+        "real_world_examples": (
+            {
+                "example_id": "world-bank-peru-practice-support",
+                "organisation": "World Bank",
+                "title": "Practice-oriented teacher and principal support in Peru",
+                "source_url": "https://www.worldbank.org/en/results/2026/07/02/artificial-intelligence-in-action-in-latin-america-s-schools-evidence-from-peru",
+                "checked_on": "2026-10-12",
+                "summary": "The World Bank reports that practical training and ongoing human support accompanied adoption, and warns that technology alone rarely changes outcomes.",
+            },
+        ),
+    },
 )
 
 
@@ -89,7 +123,11 @@ def pattern_library():
 def _validate_library():
     seen = set()
     for pattern in _PATTERNS:
-        if pattern["pattern_id"] in seen or pattern["kind"] not in {"AI_ASSISTED", "TECHNOLOGY"}:
+        if pattern["pattern_id"] in seen or pattern["kind"] not in {
+            "AI_ASSISTED",
+            "TECHNOLOGY",
+            "PROCESS_FIX",
+        }:
             raise DomainError("SERVICE_UNAVAILABLE", 503, reason="PATTERN_LIBRARY_INVALID")
         seen.add(pattern["pattern_id"])
         examples = pattern.get("real_world_examples")

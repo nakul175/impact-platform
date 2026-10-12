@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.40.0",
+    "version": "1.41.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -66801,7 +66801,8 @@
           "kind": {
             "enum": [
               "AI_ASSISTED",
-              "TECHNOLOGY"
+              "TECHNOLOGY",
+              "PROCESS_FIX"
             ]
           },
           "title": {

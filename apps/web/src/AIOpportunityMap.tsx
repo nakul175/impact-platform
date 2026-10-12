@@ -10,7 +10,7 @@ type Example = {
 };
 type Opportunity = {
   pattern_id: string;
-  kind: "AI_ASSISTED" | "TECHNOLOGY";
+  kind: "AI_ASSISTED" | "TECHNOLOGY" | "PROCESS_FIX";
   title: string;
   description: string;
   match_basis: string[];
@@ -100,9 +100,11 @@ export function AIOpportunityMap(props: {
                         <strong>{opportunity.title}</strong>{" "}
                         <span>
                           (
-                          {opportunity.kind === "AI_ASSISTED"
-                            ? "AI assisted"
-                            : "Technology"}
+                          {opportunity.kind === "PROCESS_FIX"
+                            ? "Process fix — no technology purchase required"
+                            : opportunity.kind === "AI_ASSISTED"
+                              ? "AI assisted"
+                              : "Technology"}
                           )
                         </span>
                         <p>{opportunity.description}</p>

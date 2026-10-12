@@ -14,6 +14,9 @@ from impact_api.work_contracts import augment as augment_work  # noqa: E402
 from impact_api.publication_contracts import augment as augment_publication  # noqa: E402
 from impact_api.planning_contracts import augment as augment_planning  # noqa: E402
 from impact_api.calculation_contracts import augment as augment_calculation  # noqa: E402
+from impact_api.calculation_compatibility_contracts import (  # noqa: E402
+    augment as augment_calculation_compatibility,
+)
 from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
 from impact_api.import_contracts import augment as augment_imports  # noqa: E402
 from impact_api.evidence_contracts import augment as augment_evidence  # noqa: E402
@@ -163,6 +166,7 @@ augment_work(spec, policy)
 augment_publication(spec, policy)
 augment_planning(spec, policy)
 augment_calculation(spec, policy)
+augment_calculation_compatibility(spec, policy)
 augment_forms(spec, policy)
 augment_imports(spec, policy)
 augment_evidence(spec, policy)

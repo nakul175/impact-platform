@@ -1,0 +1,9 @@
+# Release 0.58 coding candidate: calculation compatibility preview
+
+FR-CAL-002 / APL-399 (frozen story Gherkin SHA-256 `f819cda59c5f8d8c28f439564696a6ffd97ad1ca5f8bda3e6097704d0282c5c7`) adds a bounded calculation preview that compares semantics before arithmetic. Every input and the target must reference the current approved revision of an indicator definition the caller can read. The service compares measurement type, population definition, time semantic and the exact dimension codes, versions, category codes and selection rules. Names and labels are deliberately absent from the compatibility signature, so similar wording cannot establish compatibility.
+
+Equal units pass through unchanged. Different units are refused unless the request pins an approved, direction-specific conversion version from the sealed platform catalogue. The initial catalogue contains only `area-acre-to-hectare-2026-10-12.1`, with exact factor `0.40468564224`, precision 11 and `HALF_UP` rounding. The response shows every original value/unit, converted value/target unit and the full conversion record before returning the deterministic sum. People and households, different time semantics, different measurement types and different dimension schemes are refused even when their labels look alike.
+
+The preview uses the existing `calculated-results.read` authority and separately rechecks current read authority for every exact definition revision under the tenant lock. It writes an audit event but does not create an official result or mutate a definition. The initial conversion catalogue is a provisional platform-governed source constant; tenant-authored conversion approval, currency conversions, population conversions, affine conversions and non-SUM combination rules remain outside this increment.
+
+This is a coding-only candidate. Tests, CI, merge, staging deployment and owner acceptance are intentionally deferred to the combined qualification phase.

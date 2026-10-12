@@ -103,6 +103,7 @@
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | `evidence.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction` | `lineage-manifests.read` |
+| POST | `/v1/tenants/{tenant_id}/calculation-compatibility/preview` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/collection-plans` | `collection-plans.read` |
 | POST | `/v1/tenants/{tenant_id}/collection-plans` | `collection-plans.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/collection-plans/{object_id}` | `collection-plans.read` |

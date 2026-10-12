@@ -1392,6 +1392,17 @@ def create_app():
             auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
         )
 
+    @app.post("/v1/tenants/{tenant}/calculation-compatibility/preview")
+    async def calculation_compatibility_preview(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.calculation_compatibility.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):
         return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))

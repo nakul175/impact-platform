@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.48.0",
+    "version": "1.49.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -37573,6 +37573,128 @@
         "x-contract-version": "1.1.0"
       }
     },
+    "/v1/tenants/{tenant_id}/calculation-compatibility/preview": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "preview_calculation_compatibility",
+        "summary": "Preview a semantically compatible calculation",
+        "description": "Compares measurement type, population, time semantics and dimension versions before combining inputs. Different units require an exact approved conversion version.",
+        "x-capability": "calculated-results.read",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "STATE_TRANSITION_DENIED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Compatible normalized inputs and deterministic combined value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationCompatibilityPreview"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculationCompatibilityPreviewRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.49.0",
+        "x-audit-required": true
+      }
+    },
     "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct": {
       "parameters": [
         {
@@ -74112,6 +74234,290 @@
           "stored",
           "recomputed",
           "exact_match"
+        ]
+      },
+      "CalculationCompatibilityInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "conversion_version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 120
+          }
+        },
+        "required": [
+          "definition_revision",
+          "value"
+        ]
+      },
+      "CalculationCompatibilityPreviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "target_definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "inputs": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/CalculationCompatibilityInput"
+            }
+          }
+        },
+        "required": [
+          "target_definition_revision",
+          "inputs"
+        ]
+      },
+      "ApprovedUnitConversion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "approval_state": {
+            "const": "APPROVED"
+          },
+          "source_unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "target_unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "direction": {
+            "const": "SOURCE_TO_TARGET"
+          },
+          "factor": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "precision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12
+          },
+          "rounding_rule": {
+            "const": "HALF_UP"
+          },
+          "catalogue_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "version",
+          "approval_state",
+          "source_unit",
+          "target_unit",
+          "direction",
+          "factor",
+          "precision",
+          "rounding_rule",
+          "catalogue_version"
+        ]
+      },
+      "CalculationCompatibilityNormalizedInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "original_value": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "original_unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "converted_value": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "target_unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "conversion": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ApprovedUnitConversion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "definition_revision",
+          "original_value",
+          "original_unit",
+          "converted_value",
+          "target_unit",
+          "conversion"
+        ]
+      },
+      "CalculationCompatibilitySignature": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measurement_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "population": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "inclusion": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "exclusion": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "method": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "time_semantic": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "dimensions": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "multiselect": {
+                  "type": "boolean"
+                },
+                "exhaustive": {
+                  "type": "boolean"
+                },
+                "categories": {
+                  "type": "array",
+                  "maxItems": 50,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "\\S"
+                  }
+                }
+              },
+              "required": [
+                "code",
+                "version",
+                "multiselect",
+                "exhaustive",
+                "categories"
+              ]
+            }
+          }
+        },
+        "required": [
+          "measurement_type",
+          "population",
+          "inclusion",
+          "exclusion",
+          "method",
+          "time_semantic",
+          "dimensions"
+        ]
+      },
+      "CalculationCompatibilityPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "compatible": {
+            "const": true
+          },
+          "target_definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "compatibility": {
+            "$ref": "#/components/schemas/CalculationCompatibilitySignature"
+          },
+          "inputs": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/CalculationCompatibilityNormalizedInput"
+            }
+          },
+          "combined_value": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "compatible",
+          "target_definition_revision",
+          "compatibility",
+          "inputs",
+          "combined_value",
+          "unit"
         ]
       },
       "FormTranslation": {

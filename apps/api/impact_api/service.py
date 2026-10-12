@@ -34,6 +34,7 @@ from .import_contracts import ASYNC_THRESHOLD
 from .evidence import Evidence
 from .privacy import Privacy
 from .work import WorkCenter
+from .calculation_compatibility import CalculationCompatibility
 from .keyring import ring
 from .store import (
     context,
@@ -196,6 +197,7 @@ class Service:
         self.planning = Planning(self)
         self.evidence = Evidence(self)
         self.privacy = Privacy(self)
+        self.calculation_compatibility = CalculationCompatibility(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:

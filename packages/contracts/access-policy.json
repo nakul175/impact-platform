@@ -1,5 +1,5 @@
 {
-  "version": "1.48.0",
+  "version": "1.49.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5216,6 +5216,24 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only."
+    },
+    {
+      "operation_id": "preview_calculation_compatibility",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/calculation-compatibility/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for every exact definition revision; labels never establish compatibility."
     },
     {
       "operation_id": "action_submissions_correct",

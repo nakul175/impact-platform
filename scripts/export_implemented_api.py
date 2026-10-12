@@ -44,6 +44,9 @@ from impact_api.reporting_contracts import SPECIAL_READS as REPORTING_READS  # n
 from impact_api.planning_contracts import SPECIAL_READS as PLANNING_READS  # noqa: E402
 from impact_api.planning_contracts import LOGFRAME_READS  # noqa: E402
 from impact_api.calculation_contracts import SPECIAL_READS as CALCULATION_READS  # noqa: E402
+from impact_api.calculation_compatibility_contracts import (  # noqa: E402
+    IMPLEMENTED as CALCULATION_COMPATIBILITY_ROUTES,
+)
 from impact_api.forms_contracts import SPECIAL_READS as FORMS_READS  # noqa: E402
 from impact_api.evidence_contracts import (  # noqa: E402
     SPECIAL_READS as EVIDENCE_READS,
@@ -65,6 +68,10 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in REPORTIN
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PLANNING_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in LOGFRAME_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in CALCULATION_READS)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route)
+    for method, route in CALCULATION_COMPATIBILITY_ROUTES
+)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in FORMS_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EXPORT_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in DASHBOARD_READS)

@@ -8,7 +8,14 @@ from .domain import DomainError
 
 DECIMAL = re.compile(r"(?:0|[1-9][0-9]{0,25})(?:\.[0-9]{1,12})?")
 ROOT_FIELDS = {"opportunity_id", "horizon_years", "currency", "baseline", "trial", "costs", "assumptions"}
-SOURCE_FIELDS = {"source_label", "annual_operating_cost"}
+SOURCE_FIELDS = {
+    "source_label",
+    "annual_operating_cost",
+    "annual_staff_hours",
+    "annual_beneficiaries",
+    "data_quality_percent",
+    "annual_reach",
+}
 COST_FIELDS = {"licences_annual", "setup_one_off", "training_one_off", "staff_time_annual"}
 DISCLAIMER = (
     "Self-reported planning calculation only. Amounts, attribution and assumptions require human "
@@ -60,6 +67,12 @@ def validate_value_case(body):
         ):
             _invalid("AI_VALUE_CASE_SOURCE_REQUIRED")
         _amount(source["annual_operating_cost"])
+        for field in ("annual_staff_hours", "annual_beneficiaries", "data_quality_percent", "annual_reach"):
+            _amount(source[field])
+        if _amount(source["annual_beneficiaries"]) == 0:
+            _invalid("AI_VALUE_CASE_BENEFICIARIES_REQUIRED")
+        if _amount(source["data_quality_percent"]) > 100:
+            _invalid("AI_VALUE_CASE_DATA_QUALITY_INVALID")
     costs = body["costs"]
     if not isinstance(costs, dict) or set(costs) != COST_FIELDS:
         _invalid("AI_VALUE_CASE_COST_COMPONENTS_REQUIRED")
@@ -74,6 +87,7 @@ def calculate_value_case(body):
     with localcontext(Context(prec=100, rounding=ROUND_HALF_UP, Emin=-999999, Emax=999999)):
         baseline_total = _amount(body["baseline"]["annual_operating_cost"]) * years
         trial_total = _amount(body["trial"]["annual_operating_cost"]) * years
+        baseline, trial = body["baseline"], body["trial"]
         costs = {field: _amount(body["costs"][field]) for field in COST_FIELDS}
         components = {
             "licences": costs["licences_annual"] * years,
@@ -102,6 +116,23 @@ def calculate_value_case(body):
             "net_benefit": _display(net_benefit),
             "roi_percent": _display(roi),
             "cost_benefit_ratio": _display(ratio),
+            "sector_benefits": {
+                "staff_hours_saved": _display(
+                    (_amount(baseline["annual_staff_hours"]) - _amount(trial["annual_staff_hours"])) * years
+                ),
+                "baseline_cost_per_beneficiary": _display(
+                    _amount(baseline["annual_operating_cost"]) / _amount(baseline["annual_beneficiaries"])
+                ),
+                "trial_cost_per_beneficiary": _display(
+                    _amount(trial["annual_operating_cost"]) / _amount(trial["annual_beneficiaries"])
+                ),
+                "data_quality_change_points": _display(
+                    _amount(trial["data_quality_percent"]) - _amount(baseline["data_quality_percent"])
+                ),
+                "reach_change": _display(
+                    (_amount(trial["annual_reach"]) - _amount(baseline["annual_reach"])) * years
+                ),
+            },
             "assumptions": deepcopy(body["assumptions"]),
             "disclaimer": DISCLAIMER,
         }

@@ -10,6 +10,13 @@ type Result = {
   net_benefit: string;
   roi_percent: string;
   cost_benefit_ratio: string;
+  sector_benefits: {
+    staff_hours_saved: string;
+    baseline_cost_per_beneficiary: string;
+    trial_cost_per_beneficiary: string;
+    data_quality_change_points: string;
+    reach_change: string;
+  };
   disclaimer: string;
 };
 const blank = {
@@ -19,6 +26,14 @@ const blank = {
   setup: "",
   training: "",
   staff: "",
+  baselineHours: "",
+  trialHours: "",
+  baselineBeneficiaries: "",
+  trialBeneficiaries: "",
+  baselineQuality: "",
+  trialQuality: "",
+  baselineReach: "",
+  trialReach: "",
 };
 
 export function AIValueCase(props: {
@@ -72,10 +87,18 @@ export function AIValueCase(props: {
             baseline: {
               source_label: baselineLabel,
               annual_operating_cost: values.baseline,
+              annual_staff_hours: values.baselineHours,
+              annual_beneficiaries: values.baselineBeneficiaries,
+              data_quality_percent: values.baselineQuality,
+              annual_reach: values.baselineReach,
             },
             trial: {
               source_label: trialLabel,
               annual_operating_cost: values.trial,
+              annual_staff_hours: values.trialHours,
+              annual_beneficiaries: values.trialBeneficiaries,
+              data_quality_percent: values.trialQuality,
+              annual_reach: values.trialReach,
             },
             costs: {
               licences_annual: values.licences,
@@ -143,6 +166,10 @@ export function AIValueCase(props: {
           />
         </label>
         {field("baseline", "Baseline annual operating cost")}
+        {field("baselineHours", "Baseline annual staff hours")}
+        {field("baselineBeneficiaries", "Baseline annual beneficiaries")}
+        {field("baselineQuality", "Baseline data quality percent")}
+        {field("baselineReach", "Baseline annual reach")}
         <label>
           Trial source label
           <input
@@ -152,6 +179,10 @@ export function AIValueCase(props: {
           />
         </label>
         {field("trial", "Trial annual operating cost")}
+        {field("trialHours", "Trial annual staff hours")}
+        {field("trialBeneficiaries", "Trial annual beneficiaries")}
+        {field("trialQuality", "Trial data quality percent")}
+        {field("trialReach", "Trial annual reach")}
         {field("licences", "Annual licences")}
         {field("setup", "One-off setup")}
         {field("training", "One-off training")}
@@ -198,6 +229,28 @@ export function AIValueCase(props: {
             {result.costs.setup}; training {result.costs.training}; staff time{" "}
             {result.costs.staff_time}.
           </p>
+          <h6>Benefits in sector terms</h6>
+          <dl>
+            <dt>Staff hours saved</dt>
+            <dd>{result.sector_benefits.staff_hours_saved}</dd>
+            <dt>Baseline cost per beneficiary</dt>
+            <dd>
+              {result.currency}{" "}
+              {result.sector_benefits.baseline_cost_per_beneficiary}
+            </dd>
+            <dt>Trial cost per beneficiary</dt>
+            <dd>
+              {result.currency}{" "}
+              {result.sector_benefits.trial_cost_per_beneficiary}
+            </dd>
+            <dt>Data quality change</dt>
+            <dd>
+              {result.sector_benefits.data_quality_change_points} percentage
+              points
+            </dd>
+            <dt>Reach change</dt>
+            <dd>{result.sector_benefits.reach_change}</dd>
+          </dl>
           <p className="muted">{result.disclaimer}</p>
         </div>
       )}

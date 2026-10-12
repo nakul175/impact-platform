@@ -3,7 +3,7 @@
 from copy import deepcopy
 from .measurement_contracts import closed
 
-VERSION = "1.44.0"
+VERSION = "1.45.0"
 ROOT = "ai-enablement/value-case"
 IMPLEMENTED = [("post", ROOT)]
 
@@ -15,6 +15,10 @@ def augment(spec, policy):
     source = {
         "source_label": {"type": "string", "minLength": 1, "maxLength": 200},
         "annual_operating_cost": deepcopy(amount),
+        "annual_staff_hours": deepcopy(amount),
+        "annual_beneficiaries": {**deepcopy(amount), "pattern": r"^[1-9][0-9]{0,25}$"},
+        "data_quality_percent": deepcopy(amount),
+        "annual_reach": deepcopy(amount),
     }
     schemas["AIValueCaseSource"] = closed(source, list(source))
     cost_input = {
@@ -39,6 +43,17 @@ def augment(spec, policy):
     schemas["AIValueCaseRequest"] = closed(request, list(request))
     cost_output = {field: deepcopy(signed) for field in ("licences", "setup", "training", "staff_time")}
     schemas["AIValueCaseCosts"] = closed(cost_output, list(cost_output))
+    benefits = {
+        field: deepcopy(signed)
+        for field in (
+            "staff_hours_saved",
+            "baseline_cost_per_beneficiary",
+            "trial_cost_per_beneficiary",
+            "data_quality_change_points",
+            "reach_change",
+        )
+    }
+    schemas["AIValueCaseSectorBenefits"] = closed(benefits, list(benefits))
     result = {
         "status": {"const": "COMPLETE_SELF_REPORTED_DRAFT"},
         "opportunity_id": deepcopy(request["opportunity_id"]),
@@ -58,6 +73,7 @@ def augment(spec, policy):
                 "cost_benefit_ratio",
             )
         },
+        "sector_benefits": {"$ref": "#/components/schemas/AIValueCaseSectorBenefits"},
         "assumptions": deepcopy(request["assumptions"]),
         "disclaimer": {"type": "string", "minLength": 1, "maxLength": 500},
     }

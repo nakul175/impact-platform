@@ -1,5 +1,5 @@
 {
-  "version": "1.91.0",
+  "version": "1.92.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6985,6 +6985,32 @@
       "path": "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/drafts",
       "capability": "indicator-definitions.draft.create",
       "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "create_ai_import_proposals",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals",
+      "capability": "imports.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "apply_ai_import_proposals",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply",
+      "capability": "imports.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD",
         "MEL_ADMIN"
       ],
       "purpose_required": false,

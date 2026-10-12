@@ -82,6 +82,9 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [tick, setTick] = useState(0);
+  const [policyVersion, setPolicyVersion] = useState<number | null>(null);
+  const [aiProposals, setAIProposals] = useState<any[] | null>(null);
+  const [selectedAIProposals, setSelectedAIProposals] = useState<string[]>([]);
   const pending = usePendingOperations();
   const createId = useRef(crypto.randomUUID());
 
@@ -101,6 +104,9 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
     request(base + "workflow-templates?limit=10")
       .then((t) => setTemplate(t.items[0]?.revision_id || ""))
       .catch(() => setTemplate(""));
+    request(base + "ai-enablement/policy")
+      .then((value) => setPolicyVersion(value.policy_version))
+      .catch(() => setPolicyVersion(null));
   }, [base]);
   useEffect(() => {
     if (!programme) return;
@@ -574,6 +580,110 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
               )}
           </div>
         )}
+        {batch &&
+          ["Draft", "Previewed"].includes(batch.lifecycle_state) &&
+          allowed("imports.read") && (
+            <details className="import-preview">
+              <summary>Mapping and cleaning proposals</summary>
+              <p className="muted">
+                This reserved assistance proposes only column links and typed
+                date patterns. Raw rows, identities and approved actuals cannot
+                be changed here.
+              </p>
+              <button
+                className="secondary"
+                disabled={policyVersion === null}
+                onClick={async () => {
+                  try {
+                    const result = await request(
+                      base +
+                        "ai-enablement/import-assistance/" +
+                        batch.object_id +
+                        "/revisions/" +
+                        batch.revision_id +
+                        "/proposals",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          policy_version: policyVersion,
+                          language: "en",
+                        }),
+                      },
+                    );
+                    setAIProposals(result.proposals);
+                    setSelectedAIProposals([]);
+                    setError("");
+                  } catch (e) {
+                    setError(explain(e));
+                  }
+                }}
+              >
+                Review proposed mappings
+              </button>
+              {aiProposals?.map((proposal) => (
+                <label className="checkbox" key={proposal.proposal_id}>
+                  <input
+                    type="checkbox"
+                    checked={selectedAIProposals.includes(proposal.proposal_id)}
+                    onChange={(event) =>
+                      setSelectedAIProposals(
+                        event.target.checked
+                          ? [...selectedAIProposals, proposal.proposal_id]
+                          : selectedAIProposals.filter(
+                              (value) => value !== proposal.proposal_id,
+                            ),
+                      )
+                    }
+                  />{" "}
+                  {proposal.kind === "MAP_COLUMN"
+                    ? `${proposal.source_column} → ${proposal.destination.indicator_id} (${proposal.destination.value_role})`
+                    : `${proposal.source_column}: use ${proposal.destination.date_pattern}`}
+                  {` · ${proposal.confidence.toLowerCase()}`}
+                  {(proposal.affected_samples || []).map((sample: any) => (
+                    <span key={sample.row_number}>
+                      {` · row ${sample.row_number}: ${sample.before} → ${sample.after}`}
+                    </span>
+                  ))}
+                </label>
+              ))}
+              {aiProposals && allowed("imports.draft.edit") && (
+                <button
+                  className="primary"
+                  disabled={!selectedAIProposals.length}
+                  onClick={async () => {
+                    try {
+                      await request(
+                        base +
+                          "ai-enablement/import-assistance/" +
+                          batch.object_id +
+                          "/revisions/" +
+                          batch.revision_id +
+                          "/actions/apply",
+                        {
+                          method: "POST",
+                          body: JSON.stringify({
+                            operation_id: crypto.randomUUID(),
+                            policy_version: policyVersion,
+                            language: "en",
+                            selected_proposal_ids: selectedAIProposals,
+                          }),
+                        },
+                      );
+                      setAIProposals(null);
+                      setSelectedAIProposals([]);
+                      refresh(
+                        "Selected deterministic proposals saved to a new mapping draft.",
+                      );
+                    } catch (e) {
+                      setError(explain(e));
+                    }
+                  }}
+                >
+                  Apply selected proposals to draft
+                </button>
+              )}
+            </details>
+          )}
       </section>
     </>
   );

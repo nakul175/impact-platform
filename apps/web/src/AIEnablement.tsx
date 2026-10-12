@@ -1184,6 +1184,9 @@ export function AIEnablementPanel({
                       <option value="EXTRACTION">Extraction</option>
                       <option value="CHAT">Chat</option>
                       <option value="INDICATOR_DESIGN">Indicator design</option>
+                      <option value="IMPORT_CLEANING">
+                        Import mapping and cleaning
+                      </option>
                     </select>
                   </label>
                 ) : shutdown.scope_kind === "DESTINATION" ? (

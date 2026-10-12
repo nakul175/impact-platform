@@ -42,6 +42,7 @@ from .ai_forecasts import AIForecasts
 from .ai_safety import AISafety
 from .ai_extraction import AIExtraction
 from .ai_indicator_design import AIIndicatorDesign
+from .ai_import_assistance import AIImportAssistance
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -148,6 +149,9 @@ def create_app():
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
     )
     ai_indicator_design = AIIndicatorDesign(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_import_assistance = AIImportAssistance(
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
     )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
@@ -1479,6 +1483,29 @@ def create_app():
         validate("AIIndicatorDraftRequest", body)
         return ai_indicator_design.create_draft(
             auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/import-assistance/{batch}/revisions/{revision}/proposals")
+    async def create_ai_import_proposals(request: Request, tenant: str, batch: str, revision: str):
+        body = await strict_body(request)
+        validate("AIImportProposalRequest", body)
+        return ai_import_assistance.propose(
+            auth.resolve(request), uuid(tenant), uuid(batch), uuid(revision), body
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/import-assistance/{batch}/revisions/{revision}/actions/apply"
+    )
+    async def apply_ai_import_proposals(request: Request, tenant: str, batch: str, revision: str):
+        body = await strict_body(request)
+        validate("AIImportApplyRequest", body)
+        return ai_import_assistance.apply(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(batch),
+            uuid(revision),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")

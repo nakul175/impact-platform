@@ -77,6 +77,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/actions/respond` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/human-advice/{object_id}/revisions/{revision_id}` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply` | `imports.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals` | `imports.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/indicator-design/drafts` | `indicator-definitions.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/indicator-design/proposals` | `ai.advisory.request` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/next-opportunities` | `ai.diagnosis.read` |

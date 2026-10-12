@@ -10,7 +10,14 @@ SENSITIVE = re.compile(
     r"(?i)(?:bearer\s+[a-z0-9._~-]+|(?:api[_ -]?key|password|secret)\s*[:=]|\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b|\+?\d[\d ()-]{7,}\d)"
 )
 CONFIGURATION = re.compile(r"^[0-9a-f]{64}$")
-USE_CASES = {"ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT", "INDICATOR_DESIGN"}
+USE_CASES = {
+    "ADVISORY_DRAFT",
+    "EXTRACTION",
+    "REPORT_DRAFT",
+    "CHAT",
+    "INDICATOR_DESIGN",
+    "IMPORT_CLEANING",
+}
 DESTINATIONS = {"openai-us"}
 
 

@@ -38,8 +38,8 @@ OPERATION = "update_ai_policy"
 # Configuration and execution remain separate gates. A tenant may explicitly approve any named use
 # case, but only an implemented runtime can execute it, and every runtime must call require() with the
 # exact use case and requested tools before content leaves the authorised boundary.
-ACTIVE_USE_CASES = tuple(USE_CASES)
-RESERVED_USE_CASES = ()
+RESERVED_USE_CASES = ("INDICATOR_DESIGN", "IMPORT_CLEANING")
+ACTIVE_USE_CASES = tuple(case for case in USE_CASES if case not in RESERVED_USE_CASES)
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}
 # Allowed data classes are a ceiling: a request passes when its class is at or below the highest
 # class the rule lists (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED). An advisory brief is at least
@@ -131,6 +131,11 @@ def validate_policy(data):
         seen.add(use_case)
         if type(item["enabled"]) is not bool:
             _invalid()
+        if item["enabled"] and use_case in RESERVED_USE_CASES:
+            _invalid(
+                "AI_USE_CASE_RESERVED",
+                "This AI use case is reserved for a later reviewed activation.",
+            )
         if (
             not isinstance(item["tools"], list)
             or len(item["tools"]) > 20
@@ -243,6 +248,13 @@ def require(policy, use_case, version, data_class, destination, language, tools=
             409,
             message="Your organisation's AI policy changed. Reload the policy in force before requesting AI.",
             reason="AI_POLICY_CHANGED",
+        )
+    if use_case in RESERVED_USE_CASES:
+        raise DomainError(
+            "SERVICE_UNAVAILABLE",
+            503,
+            message="This AI use case is reserved for a later reviewed activation.",
+            reason="AI_USE_CASE_DISABLED",
         )
     rule = policy["use_cases"].get(use_case)
     if not rule or not rule["enabled"]:

@@ -7057,8 +7057,16 @@ COMMIT;
 
 ## Migration0085 — reserved indicator-design AI policy label (local1.01 coding candidate)
 
-`0085_ai_indicator_design_policy.sql` SHA256 `a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834`. Schema85 extends only the closed `ai_use_case_policy.use_case` vocabulary with `INDICATOR_DESIGN`. The existing `ai_use_case_reserved` constraint remains byte-semantically unchanged and still permits only `ADVISORY_DRAFT` to be enabled, so this candidate cannot activate indicator-design execution. No historical policy row or domain object is rewritten. All0001–0084 remain byte-exact. Candidate is untested, unmerged and undeployed.
+`0085_ai_indicator_design_policy.sql` SHA256 `a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834`. Schema85 extends only the closed `ai_use_case_policy.use_case` vocabulary with `INDICATOR_DESIGN`. Current application policy validation and the runtime gate keep that use case reserved-disabled, so this candidate cannot activate indicator-design execution. No historical policy row or domain object is rewritten. All0001–0084 remain byte-exact. Candidate is untested, unmerged and undeployed.
 
 | Migration | SHA256 |
 |---|---|
 | 0085_ai_indicator_design_policy.sql | a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834 |
+
+## Migration0086 — reserved import-cleaning AI policy label (local1.02 coding candidate)
+
+`0086_ai_import_cleaning_policy.sql` SHA256 `eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4`. Schema86 extends only the closed `ai_use_case_policy.use_case` vocabulary with `IMPORT_CLEANING`. Current application policy validation and the runtime gate keep that use case reserved-disabled, so this candidate cannot activate import-cleaning execution. No historical policy row, import content or approved observation is rewritten. All0001–0085 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0086_ai_import_cleaning_policy.sql | eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4 |

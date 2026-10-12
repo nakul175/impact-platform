@@ -1,0 +1,7 @@
+# Release 1.02 coding candidate — non-destructive import assistance
+
+FR-AI-004 / APL-535 adds a reserved import-mapping and cleaning use case. An authorised data steward can request deterministic proposals against one exact current Draft or Previewed `ImportJob` revision. The candidate matches normalized source headers to current, available non-ratio indicator definitions and proposes explicit date patterns from bounded sample rows. Every proposal starts unselected; ambiguous alternatives remain separate and require an explicit steward choice.
+
+Applying selected proposals rechecks the exact source revision, current authority, policy version and safety state. It creates a new ordinary import draft revision through the existing import service, invalidates any previous preview, records the exact before/after mapping and returns a replay-safe operation receipt. Raw content and its SHA-256 remain unchanged. The path cannot delete raw rows, merge identities, commit observations or change approved actuals.
+
+Migration 0086 adds `IMPORT_CLEANING` to the closed policy vocabulary. Current policy validation, the runtime gate and the policy UI keep it reserved-disabled, so a tenant cannot activate it in this candidate; activation requires a later reviewed application change and owner decision. No provider call, merge, deployment or spend is introduced. Tests and CI remain deferred by owner request.

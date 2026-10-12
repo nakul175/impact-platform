@@ -45,6 +45,8 @@ const USE_CASE_NAMES: Record<string, string> = {
   EXTRACTION: "extraction",
   REPORT_DRAFT: "report drafting",
   CHAT: "chat",
+  INDICATOR_DESIGN: "indicator design",
+  IMPORT_CLEANING: "import mapping and cleaning",
 };
 const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {
@@ -344,6 +346,7 @@ function AIPolicyEditor({
   const current =
     drafts.find((item) => item.use_case === selectedUseCase) ||
     blankRule(selectedUseCase);
+  const reserved = policy.reserved_use_cases.includes(selectedUseCase);
   const update = (change: Partial<UseCasePolicy>) =>
     setDrafts((items) =>
       items.map((item) =>
@@ -442,10 +445,17 @@ function AIPolicyEditor({
             <input
               type="checkbox"
               checked={current.enabled}
+              disabled={reserved}
               onChange={(e) => update({ enabled: e.target.checked })}
             />
             Allow {USE_CASE_NAMES[selectedUseCase]}
           </label>
+          {reserved && (
+            <p className="muted">
+              Reserved for a later reviewed activation. Its policy remains
+              disabled in this candidate.
+            </p>
+          )}
           <fieldset>
             <legend>Data classes that may be sent</legend>
             <p className="muted">

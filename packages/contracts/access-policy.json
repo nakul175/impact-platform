@@ -5202,6 +5202,22 @@
       "audit": false
     },
     {
+      "operation_id": "get_calculated_result_reproduction",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only."
+    },
+    {
       "operation_id": "action_submissions_correct",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct",

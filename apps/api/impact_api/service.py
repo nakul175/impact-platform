@@ -359,6 +359,98 @@ class Service:
             authorize(c, ctx, operation(route, "get"), obj, hidden=True)
             return self.result(c, ctx, load(c, ctx, obj, READ_KINDS[route]))
 
+    def reproduce_calculation(self, identity, tenant, obj, correlation):
+        with self.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, "get_calculated_result_reproduction", obj, hidden=True)
+            result = load(c, ctx, obj, "CalculatedResult", "calculated-results.read")
+            manifest = load(
+                c,
+                ctx,
+                result["payload"]["lineage_manifest_id"],
+                "LineageManifest",
+                "lineage-manifests.read",
+            )
+            data = manifest["payload"]
+            indicator = revision(
+                c, ctx, data["indicator_revision"], "IndicatorInstance", "indicator-instances.read"
+            )
+            if str(indicator["object_id"]) != data["indicator_id"]:
+                unavailable()
+            definition = revision(
+                c, ctx, data["definition_revision"], "IndicatorDefinition", "indicator-definitions.read"
+            )
+            load(c, ctx, data["period_id"], "Period", "periods.read")
+            dispositions = {item["source_revision"]: item for item in data["contributions"]}
+            exported = []
+            included = []
+            for source_revision in data["source_revisions"]:
+                source = revision(c, ctx, source_revision, "Observation", "observations.read")
+                contribution = dispositions.get(source_revision)
+                if not contribution or str(source["object_id"]) != contribution["source_object_id"]:
+                    unavailable()
+                arithmetic = {
+                    key: source["payload"].get(key)
+                    for key in (
+                        "approval_state",
+                        "value_state",
+                        "value",
+                        "numerator",
+                        "denominator",
+                        "event_at",
+                    )
+                }
+                exported.append(
+                    {
+                        "object_id": str(source["object_id"]),
+                        "revision_id": str(source["revision_id"]),
+                        "disposition": contribution["disposition"],
+                        "reason_code": contribution["reason_code"],
+                        "arithmetic_input": arithmetic,
+                    }
+                )
+                if contribution["disposition"] == "INCLUDED":
+                    included.append(source["payload"])
+            recomputed_full = calculate(definition["payload"], included)
+            fields = ("value_state", "value", "numerator", "denominator", "displayed_value")
+            stored = {key: result["payload"].get(key) for key in fields}
+            recomputed = {key: recomputed_full.get(key) for key in fields}
+            response = {
+                "result_id": str(result["object_id"]),
+                "result_revision": str(result["head_revision"]),
+                "lineage_manifest_id": str(manifest["object_id"]),
+                "execution_id": data["execution_id"],
+                "formula": data["formula"],
+                "filters": data["filters"],
+                "definition_revision": data["definition_revision"],
+                "indicator_revision": data["indicator_revision"],
+                "period_id": data["period_id"],
+                "sources": exported,
+                "stored": stored,
+                "recomputed": recomputed,
+                "exact_match": stored == recomputed,
+            }
+            validate("CalculationReproduction", response)
+            observed = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
+            write(
+                c,
+                ctx,
+                "AuditEvent",
+                {
+                    "real_actor_id": str(ctx.principal_id),
+                    "effective_actor_id": str(ctx.principal_id),
+                    "action_type": "calculation.reproduction.read",
+                    "object_reference": str(result["object_id"]),
+                    "outcome": "SUCCEEDED",
+                    "occurred_at": observed.isoformat(),
+                    "correlation_id": correlation,
+                    "specification_ref": "FR-CAL-001",
+                },
+                "Recorded",
+                track_author=False,
+            )
+            return response
+
     def cursor_binding(self, ctx, route):
         return hash_data(
             [
@@ -639,6 +731,17 @@ class Service:
                     if failed["expires_at"] <= now:
                         raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                     load(c, ctx, failed["indicator_id"], "IndicatorInstance", "indicator-instances.read")
+                    frozen = failed["input_manifest"]
+                    load(c, ctx, frozen["period_id"], "Period", "periods.read")
+                    revision(
+                        c,
+                        ctx,
+                        frozen["definition_revision"],
+                        "IndicatorDefinition",
+                        "indicator-definitions.read",
+                    )
+                    for source_revision in frozen["source_revisions"]:
+                        revision(c, ctx, source_revision, "Observation", "observations.read")
                     raise DomainError(
                         failed["error_code"],
                         failed["error_status"],
@@ -693,6 +796,8 @@ class Service:
                         "error_status": exc.status,
                         "error_message": exc.message,
                         "reason_code": exc.reason,
+                        "input_manifest": getattr(exc, "calculation_failure_manifest", None),
+                        "attempted_at": getattr(exc, "calculation_attempted_at", None),
                     }
                     raise
             elif action in {"ready", "activate", "revise"}:
@@ -790,6 +895,13 @@ class Service:
                 failure["indicator_id"],
                 hidden=True,
             )
+            if not any(
+                grant["capability"] == "indicator.calculate"
+                and grant["scope_type"] == "TENANT"
+                and grant["purpose"] is None
+                for grant in ctx.grants
+            ):
+                raise DomainError("POLICY_DENIED", 403, reason="DERIVED_SCOPE_NOT_IMPLEMENTED")
             c.execute(
                 "SELECT pg_advisory_xact_lock(hashtextextended(%s,1))",
                 (failure["operation_id"],),
@@ -803,6 +915,17 @@ class Service:
                 if bytes(old["payload_hash"]) != failure["payload_hash"]:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return
+            succeeded = c.execute(
+                "SELECT payload_hash FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s "
+                "AND command_type='action_indicator_instances_calculate' AND operation_id=%s",
+                (tenant, ctx.principal_id, failure["operation_id"]),
+            ).fetchone()
+            if succeeded:
+                if bytes(succeeded["payload_hash"]) != failure["payload_hash"]:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                return
+            if not failure["input_manifest"] or not failure["attempted_at"]:
+                return
             indicator = load(
                 c,
                 ctx,
@@ -813,23 +936,16 @@ class Service:
             )
             if str(indicator["head_revision"]) != failure["expected_revision"]:
                 return
-            period = load(c, ctx, failure["period_id"], "Period", "periods.read")
-            definition = revision(
-                c,
-                ctx,
-                indicator["payload"]["definition_version"],
-                "IndicatorDefinition",
-                "indicator-definitions.read",
+            manifest = failure["input_manifest"]
+            if manifest["indicator_revision"] != str(indicator["head_revision"]):
+                return
+            load(c, ctx, manifest["period_id"], "Period", "periods.read")
+            revision(
+                c, ctx, manifest["definition_revision"], "IndicatorDefinition", "indicator-definitions.read"
             )
-            rows = source_rows(c, ctx, indicator["object_id"], period["payload"])
+            for source_revision in manifest["source_revisions"]:
+                revision(c, ctx, source_revision, "Observation", "observations.read")
             observed = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
-            manifest = {
-                "indicator_revision": str(indicator["head_revision"]),
-                "definition_revision": str(definition["revision_id"]),
-                "period_id": failure["period_id"],
-                "source_revisions": [str(row["head_revision"]) for row in rows],
-                "source_digest": source_digest(rows),
-            }
             c.execute(
                 "INSERT INTO impact.calculation_failure(tenant_id,operation_id,actor_id,indicator_id,"
                 "indicator_revision,period_id,definition_revision,payload_hash,input_manifest,error_code,"
@@ -841,17 +957,17 @@ class Service:
                     ctx.principal_id,
                     indicator["object_id"],
                     indicator["head_revision"],
-                    failure["period_id"],
-                    definition["revision_id"],
+                    manifest["period_id"],
+                    manifest["definition_revision"],
                     failure["payload_hash"],
                     Jsonb(manifest),
                     failure["error_code"],
                     failure["error_status"],
                     failure["error_message"],
                     failure["reason_code"],
-                    observed,
+                    failure["attempted_at"],
                     failure["correlation_id"],
-                    observed + timedelta(days=7),
+                    failure["attempted_at"] + timedelta(days=7),
                 ),
             )
             write(
@@ -1184,17 +1300,29 @@ class Service:
         numeric_rows = [
             r for r in rows if included_revisions is None or str(r["head_revision"]) in included_revisions
         ]
-        for row in rows:
-            # Codes were checked at submission against this pinned, immutable definition; checked again
-            # so that no contribution can enter a category the approved scheme does not declare. Only an
-            # approved row must be complete: a draft may still lack an exhaustive code.
-            validate_dimensions(
-                definition["payload"],
-                row["payload"],
-                complete=row["payload"].get("approval_state") == "APPROVED",
-            )
-        sources = [r["payload"] for r in numeric_rows]
-        result = calculate(definition["payload"], sources)
+        failure_manifest = {
+            "indicator_revision": str(indicator["head_revision"]),
+            "definition_revision": str(definition["revision_id"]),
+            "period_id": data["period_id"],
+            "source_revisions": [str(row["head_revision"]) for row in rows],
+            "source_digest": digest,
+        }
+        try:
+            for row in rows:
+                # Codes were checked at submission against this pinned, immutable definition; checked again
+                # so that no contribution can enter a category the approved scheme does not declare. Only an
+                # approved row must be complete: a draft may still lack an exhaustive code.
+                validate_dimensions(
+                    definition["payload"],
+                    row["payload"],
+                    complete=row["payload"].get("approval_state") == "APPROVED",
+                )
+            sources = [r["payload"] for r in numeric_rows]
+            result = calculate(definition["payload"], sources)
+        except DomainError as exc:
+            exc.calculation_failure_manifest = failure_manifest
+            exc.calculation_attempted_at = cutoff
+            raise
         breakdown = disaggregate(definition["payload"], sources)
         now = cutoff.isoformat()
         plan_pin = {"plan_revision": str(plan["head_revision"])} if plan else {}

@@ -8,8 +8,10 @@ CREATE TABLE impact.calculation_failure(
  actor_id uuid NOT NULL,
  indicator_id uuid NOT NULL,
  indicator_revision uuid NOT NULL,
+ indicator_kind text GENERATED ALWAYS AS ('IndicatorInstance') STORED,
  period_id uuid NOT NULL,
  definition_revision uuid NOT NULL,
+ definition_kind text GENERATED ALWAYS AS ('IndicatorDefinition') STORED,
  payload_hash bytea NOT NULL CHECK(octet_length(payload_hash)=32),
  input_manifest jsonb NOT NULL CHECK(jsonb_typeof(input_manifest)='object'),
  error_code varchar(64) NOT NULL CHECK(error_code ~ '^[A-Z][A-Z0-9_]{0,63}$'),
@@ -22,9 +24,10 @@ CREATE TABLE impact.calculation_failure(
  PRIMARY KEY(tenant_id,actor_id,operation_id),
  FOREIGN KEY(tenant_id,actor_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
  FOREIGN KEY(tenant_id,indicator_id) REFERENCES impact.indicator_instance_current(tenant_id,object_id),
- FOREIGN KEY(tenant_id,indicator_revision) REFERENCES impact.object_revision(tenant_id,revision_id),
+ FOREIGN KEY(tenant_id,indicator_id,indicator_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,indicator_revision,indicator_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
  FOREIGN KEY(tenant_id,period_id) REFERENCES impact.period_current(tenant_id,object_id),
- FOREIGN KEY(tenant_id,definition_revision) REFERENCES impact.object_revision(tenant_id,revision_id)
+ FOREIGN KEY(tenant_id,definition_revision,definition_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type)
 );
 CREATE INDEX calculation_failure_latest
  ON impact.calculation_failure(tenant_id,indicator_id,period_id,failed_at DESC);

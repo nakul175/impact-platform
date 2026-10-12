@@ -1,11 +1,13 @@
-"""Additive calculation contracts (v0.19): the approved method catalogue, the disaggregation scheme a
-definition pins, and the category breakdown a calculated result carries. Build-time only."""
+"""Additive calculation contracts: governed methods, deterministic provenance and reproduction."""
+
+from copy import deepcopy
 
 CODE = {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"}
 CATEGORY = {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"}
 NUMBER = {"type": ["string", "null"], "pattern": r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"}
 UUID = {"type": "string", "format": "uuid"}
 METHODS = ["SUM", "POOLED_RATIO", "COUNT", "LAST_VALID", "MEAN", "MEDIAN", "MIN", "MAX"]
+SPECIAL_READS = {"calculated-results/{object_id}/reproduction"}
 
 
 def text(maximum=200):
@@ -68,7 +70,7 @@ BREAKDOWN = {
 
 
 def augment(spec, policy):
-    schemas = spec["components"]["schemas"]
+    schemas, paths = spec["components"]["schemas"], spec["paths"]
     for name in ["IndicatorDefinitionData", "IndicatorDefinitionDraftData"]:
         properties = schemas[name]["properties"]
         rules = properties["combination_rule"]["enum"]
@@ -116,5 +118,89 @@ def augment(spec, policy):
             "error_code": text(64),
             "reason_code": {"type": ["string", "null"], "maxLength": 64},
             "failed_at": {"type": "string", "format": "date-time"},
+        }
+    )
+    schemas["CalculationReproduction"] = closed(
+        {
+            "result_id": UUID,
+            "result_revision": UUID,
+            "lineage_manifest_id": UUID,
+            "execution_id": UUID,
+            "formula": {"$ref": "#/components/schemas/CalculatedResultData/properties/formula"},
+            "filters": closed({}),
+            "definition_revision": UUID,
+            "indicator_revision": UUID,
+            "period_id": UUID,
+            "sources": {
+                "type": "array",
+                "maxItems": 10000,
+                "items": closed(
+                    {
+                        "object_id": UUID,
+                        "revision_id": UUID,
+                        "disposition": {"enum": ["INCLUDED", "EXCLUDED"]},
+                        "reason_code": text(64),
+                        "arithmetic_input": closed(
+                            {
+                                "approval_state": {"type": "string", "maxLength": 64},
+                                "value_state": {"type": "string", "maxLength": 64},
+                                "value": NUMBER,
+                                "numerator": NUMBER,
+                                "denominator": NUMBER,
+                                "event_at": {"type": ["string", "null"], "format": "date-time"},
+                            }
+                        ),
+                    }
+                ),
+            },
+            "stored": closed(
+                {
+                    "value_state": {"type": "string", "maxLength": 64},
+                    "value": NUMBER,
+                    "numerator": NUMBER,
+                    "denominator": NUMBER,
+                    "displayed_value": {"type": "string", "maxLength": 64},
+                }
+            ),
+            "recomputed": closed(
+                {
+                    "value_state": {"type": "string", "maxLength": 64},
+                    "value": NUMBER,
+                    "numerator": NUMBER,
+                    "denominator": NUMBER,
+                    "displayed_value": {"type": "string", "maxLength": 64},
+                }
+            ),
+            "exact_match": {"type": "boolean"},
+        }
+    )
+    prefix = "/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction"
+    template = deepcopy(paths["/v1/tenants/{tenant_id}/calculated-results/{object_id}"])
+    get = template["get"]
+    get["operationId"] = "get_calculated_result_reproduction"
+    get["summary"] = "Reproduce a calculated result from its frozen inputs"
+    get["description"] = (
+        "Returns a bounded arithmetic bundle only after current authority is rechecked for the result, "
+        "indicator, definition, period, lineage manifest and every source revision."
+    )
+    get["x-capability"] = "lineage-manifests.read"
+    get["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/CalculationReproduction"
+    }
+    paths[prefix] = {"parameters": template["parameters"], "get": get}
+    policy["operations"] = [
+        row for row in policy["operations"] if row["operation_id"] != "get_calculated_result_reproduction"
+    ]
+    policy["operations"].append(
+        {
+            "operation_id": "get_calculated_result_reproduction",
+            "method": "GET",
+            "path": prefix,
+            "capability": "lineage-manifests.read",
+            "role_templates": ["AUTHOR", "REVIEWER", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": True,
+            "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only.",
         }
     )

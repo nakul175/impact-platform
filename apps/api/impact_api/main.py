@@ -1386,6 +1386,12 @@ def create_app():
             auth.resolve(request), uuid(tenant), "CalculatedResult", uuid(obj)
         )
 
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/reproduction")
+    def result_reproduction(request: Request, tenant: str, obj: str):
+        return service.reproduce_calculation(
+            auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
+        )
+
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):
         return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))

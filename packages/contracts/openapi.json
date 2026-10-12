@@ -37462,6 +37462,117 @@
         ]
       }
     },
+    "/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_calculated_result_reproduction",
+        "summary": "Reproduce a calculated result from its frozen inputs",
+        "description": "Returns a bounded arithmetic bundle only after current authority is rechecked for the result, indicator, definition, period, lineage manifest and every source revision.",
+        "x-capability": "lineage-manifests.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationReproduction"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.1.0"
+      }
+    },
     "/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct": {
       "parameters": [
         {
@@ -73762,6 +73873,238 @@
           "framework",
           "rows",
           "next_cursor"
+        ]
+      },
+      "CalculationReproduction": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "result_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lineage_manifest_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "execution_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "formula": {
+            "$ref": "#/components/schemas/CalculatedResultData/properties/formula"
+          },
+          "filters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
+          },
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "indicator_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sources": {
+            "type": "array",
+            "maxItems": 10000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "disposition": {
+                  "enum": [
+                    "INCLUDED",
+                    "EXCLUDED"
+                  ]
+                },
+                "reason_code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "arithmetic_input": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "approval_state": {
+                      "type": "string",
+                      "maxLength": 64
+                    },
+                    "value_state": {
+                      "type": "string",
+                      "maxLength": 64
+                    },
+                    "value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "numerator": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "denominator": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "event_at": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "approval_state",
+                    "value_state",
+                    "value",
+                    "numerator",
+                    "denominator",
+                    "event_at"
+                  ]
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id",
+                "disposition",
+                "reason_code",
+                "arithmetic_input"
+              ]
+            }
+          },
+          "stored": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "value_state": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "numerator": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "denominator": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "displayed_value": {
+                "type": "string",
+                "maxLength": 64
+              }
+            },
+            "required": [
+              "value_state",
+              "value",
+              "numerator",
+              "denominator",
+              "displayed_value"
+            ]
+          },
+          "recomputed": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "value_state": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "numerator": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "denominator": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "displayed_value": {
+                "type": "string",
+                "maxLength": 64
+              }
+            },
+            "required": [
+              "value_state",
+              "value",
+              "numerator",
+              "denominator",
+              "displayed_value"
+            ]
+          },
+          "exact_match": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "result_id",
+          "result_revision",
+          "lineage_manifest_id",
+          "execution_id",
+          "formula",
+          "filters",
+          "definition_revision",
+          "indicator_revision",
+          "period_id",
+          "sources",
+          "stored",
+          "recomputed",
+          "exact_match"
         ]
       },
       "FormTranslation": {

@@ -43,6 +43,7 @@ from .ai_adoption_plans import AIAdoptionPlans
 from .ai_diagnoses import AIDiagnoses
 from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
+from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
@@ -119,6 +120,7 @@ def create_app():
     ai_diagnoses = AIDiagnoses(service)
     ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
+    ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
@@ -646,6 +648,15 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/ai-enablement/solution-shortlist")
     def ai_solution_shortlist(request: Request, tenant: str, opportunity_id: str, expanded: bool = False):
         return ai_enablement.solution_shortlist(auth.resolve(request), uuid(tenant), opportunity_id, expanded)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores")
+    def ai_solution_fit_score_list(request: Request, tenant: str, opportunity_id: str):
+        return ai_solution_fit_scores.list(auth.resolve(request), uuid(tenant), opportunity_id)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores", status_code=201)
+    async def ai_solution_fit_score_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return ai_solution_fit_scores.create(auth.resolve(request), uuid(tenant), body, request.state.correlation)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
     def ai_task_templates(request: Request, tenant: str):

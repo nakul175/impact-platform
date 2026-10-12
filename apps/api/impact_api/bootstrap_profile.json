@@ -222,6 +222,7 @@
       "ai.diagnosis.contribute",
       "ai.diagnosis.review",
       "ai.enablement.read",
+      "ai.solution-fit.score",
       "assignments.read",
       "calculated-results.read",
       "collection-plans.read",

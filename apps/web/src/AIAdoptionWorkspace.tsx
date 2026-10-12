@@ -67,6 +67,28 @@ type Shortlist = {
     opportunity_id: string;
   }[];
 };
+const fitDimensions = [
+  ["size", "Organisation size"],
+  ["budget", "Budget"],
+  ["context", "Operating context"],
+  ["language", "Language"],
+  ["data_sensitivity", "Data sensitivity"],
+  ["existing_systems", "Existing systems"],
+] as const;
+type FitDimension = (typeof fitDimensions)[number][0];
+type FitScore = {
+  score_id: string;
+  solution_id: string;
+  status: "COMPLETE" | "INCOMPLETE";
+  rubric_version: "pilot-fit-v1";
+  advisor_membership_id: string;
+  dimensions: Record<FitDimension, { score: number; explanation: string }>;
+  scored_at: string;
+};
+const blankFit = () =>
+  Object.fromEntries(
+    fitDimensions.map(([name]) => [name, { score: 3, explanation: "" }]),
+  ) as Record<FitDimension, { score: number; explanation: string }>;
 type PlanDraft = {
   title: string;
   solution_ids: string[];
@@ -182,6 +204,7 @@ export function AIAdoptionWorkspace({
   const canRead = capabilities.includes("ai.enablement.read");
   const canManage = capabilities.includes("ai.enablement.manage");
   const canExport = capabilities.includes("ai.enablement.export");
+  const canScoreFit = capabilities.includes("ai.solution-fit.score");
   const [solutions, setSolutions] = useState<Solutions | null>(null);
   const [shortlistOpportunity, setShortlistOpportunity] = useState(
     catalog.use_cases[0]?.id || "",
@@ -189,6 +212,10 @@ export function AIAdoptionWorkspace({
   const [shortlistExpanded, setShortlistExpanded] = useState(false);
   const [shortlist, setShortlist] = useState<Shortlist | null>(null);
   const [shortlistError, setShortlistError] = useState("");
+  const [fitScores, setFitScores] = useState<Record<string, FitScore>>({});
+  const [fitSolution, setFitSolution] = useState("");
+  const [fitDraft, setFitDraft] = useState(blankFit);
+  const [fitError, setFitError] = useState("");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [draft, setDraft] = useState<PlanDraft>(blankDraft);
@@ -804,6 +831,53 @@ export function AIAdoptionWorkspace({
       });
     return () => controller.abort();
   }, [base, canRead, shortlistOpportunity, shortlistExpanded]);
+  async function loadFitScores() {
+    if (!canRead || !shortlistOpportunity) return;
+    try {
+      const value = await request(
+        base +
+          "ai-enablement/solution-fit-scores?opportunity_id=" +
+          encodeURIComponent(shortlistOpportunity),
+      );
+      setFitScores(
+        Object.fromEntries(
+          (value.items as FitScore[]).map((item) => [item.solution_id, item]),
+        ),
+      );
+      setFitError("");
+    } catch (cause) {
+      setFitScores({});
+      setFitError(explain(cause));
+    }
+  }
+  useEffect(() => {
+    void loadFitScores();
+  }, [base, canRead, shortlistOpportunity]);
+  async function saveFitScore() {
+    if (!fitSolution) return;
+    if (fitDimensions.some(([name]) => !fitDraft[name].explanation.trim())) {
+      setFitError("Explain every dimension before saving the fit score.");
+      return;
+    }
+    try {
+      await request(base + "ai-enablement/solution-fit-scores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          opportunity_id: shortlistOpportunity,
+          solution_id: fitSolution,
+          rubric_version: "pilot-fit-v1",
+          dimensions: fitDraft,
+        }),
+      });
+      setFitSolution("");
+      setFitDraft(blankFit());
+      await loadFitScores();
+    } catch (cause) {
+      setFitError(explain(cause));
+    }
+  }
   return (
     <section className="ai-adoption" aria-labelledby="ai-adoption-tool">
       <header className="ai-section-title">
@@ -858,9 +932,111 @@ export function AIAdoptionWorkspace({
                     disclosure={solution.commercial_disclosure}
                   />
                   <AIToolSources solution={solution} />
+                  {fitScores[solution.id] ? (
+                    <div
+                      role="group"
+                      aria-label={"Advisor fit for " + solution.name}
+                    >
+                      <p>
+                        <strong>Advisor-scored pilot fit · Complete</strong>
+                      </p>
+                      <dl>
+                        {fitDimensions.map(([name, label]) => (
+                          <React.Fragment key={name}>
+                            <dt>{label}</dt>
+                            <dd>
+                              {fitScores[solution.id].dimensions[name].score}/5
+                              {" — "}
+                              {
+                                fitScores[solution.id].dimensions[name]
+                                  .explanation
+                              }
+                            </dd>
+                          </React.Fragment>
+                        ))}
+                      </dl>
+                      <p className="muted">
+                        Rubric {fitScores[solution.id].rubric_version}; scored
+                        by assigned advisor membership. This is pilot advice,
+                        not automated scoring or purchase approval.
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="muted">
+                      Incomplete — no complete six-dimension advisor fit score
+                      is available.
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
+            {fitError && <p role="alert">{fitError}</p>}
+            {canScoreFit && (
+              <section aria-labelledby="advisor-fit-score-form">
+                <h5 id="advisor-fit-score-form">Record advisor pilot fit</h5>
+                <label>
+                  Vetted option
+                  <select
+                    value={fitSolution}
+                    onChange={(event) => setFitSolution(event.target.value)}
+                  >
+                    <option value="">Choose an option</option>
+                    {shortlist.items.map(({ solution }) => (
+                      <option key={solution.id} value={solution.id}>
+                        {solution.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {fitDimensions.map(([name, label]) => (
+                  <fieldset key={name}>
+                    <legend>{label}</legend>
+                    <label>
+                      Score from 1 to 5
+                      <select
+                        value={fitDraft[name].score}
+                        onChange={(event) =>
+                          setFitDraft((current) => ({
+                            ...current,
+                            [name]: {
+                              ...current[name],
+                              score: Number(event.target.value),
+                            },
+                          }))
+                        }
+                      >
+                        {[1, 2, 3, 4, 5].map((score) => (
+                          <option key={score}>{score}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Advisor explanation
+                      <textarea
+                        maxLength={1000}
+                        value={fitDraft[name].explanation}
+                        onChange={(event) =>
+                          setFitDraft((current) => ({
+                            ...current,
+                            [name]: {
+                              ...current[name],
+                              explanation: event.target.value,
+                            },
+                          }))
+                        }
+                      />
+                    </label>
+                  </fieldset>
+                ))}
+                <button
+                  type="button"
+                  disabled={!fitSolution}
+                  onClick={() => void saveFitScore()}
+                >
+                  Save complete advisor fit score
+                </button>
+              </section>
+            )}
             {!shortlist.expanded && shortlist.total_vetted > 3 && (
               <button type="button" onClick={() => setShortlistExpanded(true)}>
                 Show more vetted options

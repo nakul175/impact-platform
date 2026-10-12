@@ -1,5 +1,5 @@
 {
-  "version": "1.36.0",
+  "version": "1.37.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6548,6 +6548,37 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "list_ai_solution_fit_scores",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_solution_fit_score",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
     },
     {
       "operation_id": "list_ai_problem_baselines",

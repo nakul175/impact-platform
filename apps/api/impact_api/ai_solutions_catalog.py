@@ -536,6 +536,24 @@ def vetting_publication(reviews=None):
         item["id"]: {"status": "EDITORIAL_REVIEW_PENDING", "last_reviewed_on": CHECKED_ON}
         for item in _SOLUTIONS
     }
+
+
+def public_disclosures():
+    """Public disclosure directory built only after the whole catalogue validates."""
+    catalogue = solutions_catalog()
+    return {
+        "content_version": catalogue["content_version"],
+        "meaning": "Commercial disclosure reports Imprana's known relationship with a provider. It is not a neutrality certificate, endorsement or purchase approval.",
+        "listings": [
+            {
+                "solution_id": item["id"],
+                "solution_name": item["name"],
+                "provider": item["provider"],
+                "commercial_disclosure": deepcopy(item["commercial_disclosure"]),
+            }
+            for item in catalogue["solutions"]
+        ],
+    }
     ids = {item["id"] for item in _SOLUTIONS}
     if not isinstance(reviews, dict) or set(reviews) != ids:
         raise SolutionsCatalogInvalid("vetting status coverage must exactly match published listings")

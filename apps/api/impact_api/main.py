@@ -653,6 +653,10 @@ def create_app():
     def public_ai_vetting_criteria():
         return ai_enablement.public_vetting()
 
+    @app.get("/v1/public/ai-solution-disclosures")
+    def public_ai_solution_disclosures():
+        return ai_enablement.public_disclosures()
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores")
     def ai_solution_fit_score_list(request: Request, tenant: str, opportunity_id: str):
         return ai_solution_fit_scores.list(auth.resolve(request), uuid(tenant), opportunity_id)

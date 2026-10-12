@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.38.0",
+    "version": "1.39.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46255,7 +46255,7 @@
         "operationId": "get_public_ai_vetting_criteria",
         "summary": "Read public solution vetting criteria and listing states",
         "x-capability": "public",
-        "x-contract-version": "1.38.0",
+        "x-contract-version": "1.39.0",
         "responses": {
           "200": {
             "description": "Public vetting criteria",
@@ -46269,6 +46269,36 @@
           },
           "503": {
             "description": "Publication metadata invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/ai-solution-disclosures": {
+      "get": {
+        "operationId": "get_public_ai_solution_disclosures",
+        "summary": "Read commercial disclosure for every published solution",
+        "x-capability": "public",
+        "x-contract-version": "1.39.0",
+        "responses": {
+          "200": {
+            "description": "Public commercial disclosure directory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AICommercialDisclosurePublication"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "A listing is missing a valid disclosure",
             "content": {
               "application/json": {
                 "schema": {
@@ -80194,6 +80224,95 @@
           "criteria_edition",
           "meaning",
           "criteria",
+          "listings"
+        ]
+      },
+      "AICommercialDisclosurePublication": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string"
+          },
+          "meaning": {
+            "type": "string"
+          },
+          "listings": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "solution_id": {
+                  "type": "string"
+                },
+                "solution_name": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "commercial_disclosure": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "NONE_KNOWN",
+                        "DISCLOSED"
+                      ]
+                    },
+                    "relationship_types": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "enum": [
+                          "referral_fee",
+                          "revenue_share",
+                          "reseller",
+                          "sponsorship",
+                          "ownership"
+                        ]
+                      }
+                    },
+                    "statement": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000
+                    },
+                    "declared_on": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "editorial_confirmation": {
+                      "enum": [
+                        "PENDING",
+                        "CONFIRMED"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "relationship_types",
+                    "statement",
+                    "declared_on",
+                    "editorial_confirmation"
+                  ]
+                }
+              },
+              "required": [
+                "solution_id",
+                "solution_name",
+                "provider",
+                "commercial_disclosure"
+              ]
+            }
+          }
+        },
+        "required": [
+          "content_version",
+          "meaning",
           "listings"
         ]
       },

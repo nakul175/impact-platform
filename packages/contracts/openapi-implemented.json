@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.41.0",
+    "version": "1.42.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -33238,6 +33238,55 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AIOpportunityMapping"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-ranking": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "rank_mapped_ai_opportunities",
+        "summary": "Rank exact mapped opportunities with the organisation weights",
+        "x-capability": "ai.enablement.read",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIMappedOpportunityRankingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edition- and revision-pinned ranking",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIMappedOpportunityRanking"
                 }
               }
             }
@@ -66918,6 +66967,95 @@
           "problems",
           "unmapped_problem_ids",
           "disclaimer"
+        ]
+      },
+      "AIMappedOpportunityRankingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/AIEnablementProfile"
+          }
+        },
+        "required": [
+          "revision_id",
+          "profile"
+        ]
+      },
+      "AIMappedOpportunityRanking": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "const": "WEIGHTED_EDITORIAL_SCORES"
+          },
+          "content_version": {
+            "type": "string"
+          },
+          "score_version": {
+            "type": "string"
+          },
+          "score_status": {
+            "type": "string"
+          },
+          "weights": {
+            "$ref": "#/components/schemas/AIRankingWeightsData"
+          },
+          "weights_source": {
+            "enum": [
+              "DEFAULT",
+              "SAVED"
+            ]
+          },
+          "weights_revision_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIRankedOpportunity"
+            }
+          },
+          "unranked": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIUnrankedOpportunity"
+            }
+          },
+          "diagnosis_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pattern_edition": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "method",
+          "content_version",
+          "score_version",
+          "score_status",
+          "weights",
+          "weights_source",
+          "weights_revision_id",
+          "items",
+          "unranked",
+          "diagnosis_id",
+          "diagnosis_revision",
+          "pattern_edition"
         ]
       },
       "AIArchivedCatalogV1": {

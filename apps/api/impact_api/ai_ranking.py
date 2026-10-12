@@ -30,7 +30,9 @@ from psycopg.types.json import Jsonb
 
 from .ai_enablement_contracts import WEIGHT_FIELDS as CRITERIA_IN_ORDER
 from .ai_enablement_catalog import (
+    AI_PRACTICE_GAP,
     CONTENT_VERSION,
+    DATA_FOUNDATION_GAP,
     SENSITIVE_DATA_GAP,
     SMALL_TEAM_GAP,
     assess,
@@ -53,6 +55,7 @@ KIND = "AIRankingWeights"
 OPERATION = "update_ai_ranking_weights"
 READ_OPERATION = "get_ai_ranking_weights"
 RANK_OPERATION = "rank_ai_opportunities"
+MAPPED_RANK_OPERATION = "rank_mapped_ai_opportunities"
 AUDIT_ACTION = "ai_ranking_weights.changed"
 METHOD = "WEIGHTED_EDITORIAL_SCORES"
 WEIGHT_FIELDS = tuple(CRITERIA_IN_ORDER)
@@ -165,6 +168,55 @@ def rank(profile, weights, table=None):
     }
 
 
+def rank_mapped(profile, mapping, weights, table=None):
+    """Rank only the exact opportunities returned by a completed diagnosis mapping."""
+    weights = validate_weights(weights)
+    validate_profile(profile)
+    table = scores() if table is None else validate_table(table)
+    assessment = assess(profile)
+    organisation_gaps = assessment["capacity_gaps"]
+    opportunities = {}
+    for problem in mapping["problems"]:
+        for opportunity in problem["opportunities"]:
+            opportunities.setdefault(opportunity["pattern_id"], opportunity)
+    ranked, unranked = [], []
+    for pattern_id, opportunity in opportunities.items():
+        editorial = table.get(pattern_id) or {}
+        missing = [criterion for criterion in CRITERIA if criterion not in editorial]
+        if missing:
+            unranked.append({"use_case_id": pattern_id, "missing_scores": missing})
+            continue
+        relevant = []
+        if SMALL_TEAM_GAP in organisation_gaps:
+            relevant.append(SMALL_TEAM_GAP)
+        if opportunity["kind"] == "AI_ASSISTED":
+            relevant.extend(
+                gap
+                for gap in (AI_PRACTICE_GAP, DATA_FOUNDATION_GAP, SENSITIVE_DATA_GAP)
+                if gap in organisation_gaps
+            )
+        readiness_score = max(MINIMUM, MAXIMUM - len(relevant))
+        score_set = {criterion: editorial[criterion] for criterion in CRITERIA}
+        score_set["readiness"] = readiness_score
+        numerator, total = weighted_total(score_set, weights)
+        ranked.append(
+            (
+                (-numerator, pattern_id),
+                {
+                    "use_case_id": pattern_id,
+                    "scores": score_set,
+                    "weighted_total": total,
+                    "readiness_gaps": relevant,
+                },
+            )
+        )
+    ranked.sort(key=lambda pair: pair[0])
+    return {
+        "items": [{"rank": position, **item} for position, (_, item) in enumerate(ranked, 1)],
+        "unranked": sorted(unranked, key=lambda item: item["use_case_id"]),
+    }
+
+
 def _request(body):
     if not isinstance(body, dict) or set(body) != {"operation_id", "expected_revision", "data"}:
         _invalid()
@@ -187,9 +239,9 @@ def _iso(value):
 class AIRanking:
     """GET/PUT .../ai-enablement/ranking-weights and POST .../ai-enablement/ranking."""
 
-    def __init__(self, service, table=None):
+    def __init__(self, service, table=None, mappings=None):
         # `table` replaces the editorial scores (qualification only); None reads the current table.
-        self.service, self.table = service, table
+        self.service, self.mappings, self.table = service, mappings, table
 
     @staticmethod
     def _current(c, tenant, lock=False):
@@ -256,6 +308,37 @@ class AIRanking:
             "weights": view["weights"],
             "weights_source": view["source"],
             "weights_revision_id": view["revision_id"],
+            **result,
+        }
+
+    def rank_mapping(self, identity, tenant, diagnosis_id, revision_id, profile):
+        if self.mappings is None:
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="OPPORTUNITY_MAPPING_UNAVAILABLE")
+        try:
+            validate_profile(profile)
+        except ValueError:
+            raise DomainError("VALIDATION_FAILED", reason="AI_PROFILE_INVALID") from None
+        mapping = self.mappings.get(identity, tenant, diagnosis_id, revision_id)
+        if mapping["mapping_state"] != "COMPLETE":
+            raise DomainError("VALIDATION_FAILED", reason="OPPORTUNITY_MAPPING_INCOMPLETE")
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, MAPPED_RANK_OPERATION, hidden=True)
+            view = self._view(self._current(c, tenant))
+        if view["source"] == "UNREADABLE":
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_RANKING_WEIGHTS_UNREADABLE")
+        result = rank_mapped(profile, mapping, view["weights"], self.table)
+        return {
+            "method": METHOD,
+            "content_version": mapping["pattern_edition"],
+            "score_version": SCORE_VERSION,
+            "score_status": STATUS,
+            "weights": view["weights"],
+            "weights_source": view["source"],
+            "weights_revision_id": view["revision_id"],
+            "diagnosis_id": mapping["diagnosis_id"],
+            "diagnosis_revision": mapping["diagnosis_revision"],
+            "pattern_edition": mapping["pattern_edition"],
             **result,
         }
 

@@ -20,7 +20,7 @@ ranked; it is listed as "Not ranked: scores incomplete". Changing any value mean
 
 from copy import deepcopy
 
-SCORE_VERSION = "imprana-opportunity-scores-2026-10-09.1"
+SCORE_VERSION = "imprana-opportunity-scores-2026-10-12.2"
 STATUS = "EDITORIAL_DRAFT_PENDING_ADVISOR_REVIEW"
 CRITERIA = ("impact", "effort", "cost")
 MINIMUM, MAXIMUM = 1, 5
@@ -36,6 +36,12 @@ _SCORES = {
     "livelihood_resources": {"impact": 3, "effort": 2, "cost": 2},
     "environment_briefs": {"impact": 2, "effort": 2, "cost": 2},
     "mel_narratives": {"impact": 4, "effort": 3, "cost": 2},
+    "public-information-assistant": {"impact": 3, "effort": 2, "cost": 2},
+    "learning-support": {"impact": 4, "effort": 3, "cost": 2},
+    "record-quality-review": {"impact": 4, "effort": 4, "cost": 3},
+    "rapid-image-assessment": {"impact": 4, "effort": 5, "cost": 4},
+    "review-and-localize-information": {"impact": 3, "effort": 2, "cost": 1},
+    "staff-practice-and-review": {"impact": 4, "effort": 2, "cost": 1},
 }
 
 

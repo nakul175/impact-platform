@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { AIMappedRanking } from "./AIMappedRanking";
 
 type Example = {
   example_id: string;
@@ -132,6 +133,16 @@ export function AIOpportunityMap(props: {
             ))}
           </ol>
           <p className="muted">{mapping.disclaimer}</p>
+          {mapping.mapping_state === "COMPLETE" && (
+            <AIMappedRanking
+              key={props.revisionId}
+              base={props.base}
+              diagnosisId={props.diagnosisId}
+              revisionId={props.revisionId}
+              request={props.request}
+              explain={props.explain}
+            />
+          )}
         </>
       )}
     </section>

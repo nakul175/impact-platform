@@ -3,9 +3,10 @@
 from copy import deepcopy
 from .measurement_contracts import closed
 
-VERSION = "1.41.0"
+VERSION = "1.42.0"
 ROOT = "ai-enablement/diagnoses/{object_id}/opportunity-map"
-IMPLEMENTED = [("get", ROOT)]
+RANK_ROOT = "ai-enablement/diagnoses/{object_id}/opportunity-ranking"
+IMPLEMENTED = [("get", ROOT), ("post", RANK_ROOT)]
 
 
 def augment(spec, policy):
@@ -69,6 +70,18 @@ def augment(spec, policy):
         "disclaimer": {"type": "string", "minLength": 1, "maxLength": 500},
     }
     schemas["AIOpportunityMapping"] = closed(mapping, list(mapping))
+    rank_request = {
+        "revision_id": deepcopy(uid),
+        "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
+    }
+    schemas["AIMappedOpportunityRankingRequest"] = closed(rank_request, list(rank_request))
+    ranked = deepcopy(schemas["AIOpportunityRanking"]["properties"])
+    ranked.update(
+        diagnosis_id=deepcopy(uid),
+        diagnosis_revision=deepcopy(uid),
+        pattern_edition={"type": "string", "minLength": 1},
+    )
+    schemas["AIMappedOpportunityRanking"] = closed(ranked, list(ranked))
     path = "/v1/tenants/{tenant_id}/" + ROOT
     spec["paths"][path] = {
         "parameters": [
@@ -96,6 +109,48 @@ def augment(spec, policy):
             "method": "GET",
             "path": path,
             "capability": "ai.diagnosis.read",
+            "role_templates": ["TENANT_ADMIN"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )
+    rank_path = "/v1/tenants/{tenant_id}/" + RANK_ROOT
+    spec["paths"][rank_path] = {
+        "parameters": [
+            {"name": "tenant_id", "in": "path", "required": True, "schema": deepcopy(uid)},
+            {"name": "object_id", "in": "path", "required": True, "schema": deepcopy(uid)},
+        ],
+        "post": {
+            "operationId": "rank_mapped_ai_opportunities",
+            "summary": "Rank exact mapped opportunities with the organisation weights",
+            "x-capability": "ai.enablement.read",
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {"$ref": "#/components/schemas/AIMappedOpportunityRankingRequest"}
+                    }
+                },
+            },
+            "responses": {
+                "200": {
+                    "description": "Edition- and revision-pinned ranking",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AIMappedOpportunityRanking"}
+                        }
+                    },
+                }
+            },
+        },
+    }
+    policy["operations"].append(
+        {
+            "operation_id": "rank_mapped_ai_opportunities",
+            "method": "POST",
+            "path": rank_path,
+            "capability": "ai.enablement.read",
             "role_templates": ["TENANT_ADMIN"],
             "purpose_required": False,
             "fresh_assurance_seconds": None,

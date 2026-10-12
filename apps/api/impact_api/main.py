@@ -116,7 +116,6 @@ def create_app():
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
-    ai_ranking = AIRanking(service)
     ai_plans = AIAdoptionPlans(service)
     ai_diagnoses = AIDiagnoses(service)
     ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
@@ -124,6 +123,7 @@ def create_app():
     ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
+    ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
@@ -873,6 +873,19 @@ def create_app():
             uuid(tenant),
             uuid(obj),
             uuid(revision_id) if revision_id is not None else None,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-ranking")
+    async def ai_mapped_opportunity_ranking(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIMappedOpportunityRankingRequest", body)
+        return await run_in_threadpool(
+            ai_ranking.rank_mapping,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(body["revision_id"]),
+            body["profile"],
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")

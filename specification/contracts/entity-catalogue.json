@@ -761,5 +761,19 @@
     "contract_version": "1.63.0",
     "draft_schema": "FormulaDefinitionDraftData",
     "output_schema": "FormulaDefinitionData"
+  },
+  {
+    "entity": "PortfolioAllocationView",
+    "route": "portfolio-allocation-views",
+    "owner": "C05",
+    "fsd_id": "FR-CAL-014",
+    "fields": "title:text portfolios:array allocations:array remainder_policy:code nonadditive:boolean nonadditive_label:text",
+    "source_required_fields": "title:text portfolios:array allocations:array remainder_policy:code nonadditive:boolean",
+    "invariant": "Membership is view-only; organisation count deduplicates project identity; approved shares expose basis/remainder and never causal ownership.",
+    "server_owned": [],
+    "patch_allowed": true,
+    "contract_version": "1.64.0",
+    "draft_schema": "PortfolioAllocationViewDraftData",
+    "output_schema": "PortfolioAllocationViewData"
   }
 ]

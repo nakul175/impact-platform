@@ -1,5 +1,5 @@
 {
-  "version": "1.63.0",
+  "version": "1.64.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5263,6 +5263,96 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+    },
+    {
+      "operation_id": "list_portfolio_allocation_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "create_portfolio_allocation_views",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "get_portfolio_allocation_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "patch_portfolio_allocation_views",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "submit_portfolio_allocation_view",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "preview_portfolio_attribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
     },
     {
       "operation_id": "list_measurement_changes",

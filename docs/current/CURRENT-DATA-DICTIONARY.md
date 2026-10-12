@@ -6915,3 +6915,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0065_formula_definitions.sql | f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72 |
+
+## Migration0066 — cross-portfolio allocation views (local0.73 coding candidate)
+
+`0066_portfolio_allocation_views.sql` SHA256 `9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa`. Schema66 adds revisioned `PortfolioAllocationView` objects with bounded portfolio membership, exact result-revision allocation shares, an explicit basis and a remainder policy. Runtime validation ties each result lineage to its project, rejects duplicate allocations and requires explicit nonadditive labelling before total shares may exceed one. Preview filters hidden projects and dependent results before calculating the organisation-wide unique project count. Funding allocation never asserts causal ownership. Forced tenant RLS and restrictive worker policies apply. All0001–0065 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0066_portfolio_allocation_views.sql | 9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa |

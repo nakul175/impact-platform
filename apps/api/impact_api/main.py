@@ -1704,6 +1704,18 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/portfolio-allocation-views/{obj}/preview")
+    async def portfolio_attribution_preview(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.portfolio_attribution.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):
         return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))

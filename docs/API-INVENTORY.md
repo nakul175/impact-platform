@@ -241,6 +241,12 @@
 | GET | `/v1/tenants/{tenant_id}/periods/{object_id}` | `periods.read` |
 | POST | `/v1/tenants/{tenant_id}/periods/{object_id}/actions/close` | `period.close` |
 | POST | `/v1/tenants/{tenant_id}/periods/{object_id}/actions/restate` | `period.restate` |
+| GET | `/v1/tenants/{tenant_id}/population-matching-scopes` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/population-matching-scopes` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}` | `calculated-results.read` |
+| PATCH | `/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}/actions/submit` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/population-overlap/compute` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.read` |
 | POST | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | `privacy-cases.read` |

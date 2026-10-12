@@ -705,5 +705,19 @@
     "contract_version": "1.1.0",
     "draft_schema": "SupportRequestDraftData",
     "output_schema": "SupportRequestData"
+  },
+  {
+    "entity": "PopulationMatchingScope",
+    "route": "population-matching-scopes",
+    "owner": "C05",
+    "fsd_id": "FR-CAL-004",
+    "fields": "title:text entity_type:code population:text project_id:uuid window_start:time window_end:time matching_method:code",
+    "source_required_fields": "title:text entity_type:code population:text project_id:uuid window_start:time window_end:time matching_method:code",
+    "invariant": "One tenant/project, bounded window and EXACT_STABLE_PSEUDONYM only; current approved revision required for calculation.",
+    "server_owned": [],
+    "patch_allowed": true,
+    "contract_version": "1.60.0",
+    "draft_schema": "PopulationMatchingScopeDraftData",
+    "output_schema": "PopulationMatchingScopeData"
   }
 ]

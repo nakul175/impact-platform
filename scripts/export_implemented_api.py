@@ -31,6 +31,7 @@ from impact_api.ai_outcome_evidence_contracts import (  # noqa: E402
     PLATFORM_IMPLEMENTED as AI_OUTCOME_EVIDENCE_PLATFORM_ROUTES,
 )
 from impact_api.discoverability_contracts import IMPLEMENTED as DISCOVERABILITY_ROUTES  # noqa: E402
+from impact_api.population_overlap_contracts import IMPLEMENTED as POPULATION_OVERLAP_ROUTES  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
 )
@@ -103,6 +104,7 @@ allowed.update(
 )
 allowed.update(AI_OUTCOME_EVIDENCE_PLATFORM_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in DISCOVERABILITY_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in POPULATION_OVERLAP_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AUDIT_EXPORT_ROUTES)

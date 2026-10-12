@@ -6883,3 +6883,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0061_saved_view_kind.sql | 28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33 |
+
+## Migration0062 — governed population overlap (local0.69 coding candidate)
+
+`0062_population_overlap.sql` SHA256 `1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2`. Schema62 adds `PopulationMatchingScope` and `PopulationReachResult` to the immutable registry/revision model. Both remain tenant-fenced by forced RLS and restrictive worker policies. Matching scopes declare one exact programme/project, entity type, population, time window and exact-pseudonym method. Results preserve the exact approved scope and source revisions, reach kind, count and either the computed overlap or literal `UNKNOWN`. All0001–0061 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0062_population_overlap.sql | 1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2 |

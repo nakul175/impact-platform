@@ -35,6 +35,7 @@ from .evidence import Evidence
 from .privacy import Privacy
 from .work import WorkCenter
 from .calculation_compatibility import CalculationCompatibility
+from .population_overlap import PopulationOverlap
 from .keyring import ring
 from .store import (
     context,
@@ -74,6 +75,7 @@ READ_ROUTES = {
     "work-items",
     "notifications",
     "saved-views",
+    "population-matching-scopes",
     "workflow-templates",
     "lineage-manifests",
     *READS,
@@ -117,6 +119,7 @@ WRITE_ROUTES = {
     "collection-rounds",
     "assignments",
     "saved-views",
+    "population-matching-scopes",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -128,12 +131,14 @@ READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route
     # v0.27: a registry kind of 0002 without a projection, like CollectionPlan.
     "collection-rounds": "CollectionRound",
     "saved-views": "SavedView",
+    "population-matching-scopes": "PopulationMatchingScope",
 }
 ACTIONS = {
     "observations": {"submit"},
     "indicator-definitions": {"submit"},
     "workflows": {"approve", "return", "reject"},
     "indicator-instances": {"calculate", "activate"},
+    "population-matching-scopes": {"submit"},
     "programmes": {"ready", "activate", "revise"},
     "collection-plans": {"submit"},
     "measurement-changes": {"submit"},
@@ -201,6 +206,7 @@ class Service:
         self.evidence = Evidence(self)
         self.privacy = Privacy(self)
         self.calculation_compatibility = CalculationCompatibility(self)
+        self.population_overlap = PopulationOverlap(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:

@@ -1,5 +1,5 @@
 {
-  "version": "1.59.0",
+  "version": "1.60.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -4891,6 +4891,102 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "list_population_matching_scopes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "create_population_matching_scopes",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "get_population_matching_scopes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "patch_population_matching_scopes",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "submit_population_matching_scope",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "compute_population_overlap",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-overlap/compute",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
     },
     {
       "operation_id": "list_measurement_changes",

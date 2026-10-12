@@ -1659,6 +1659,17 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/population-overlap/compute")
+    async def population_overlap_compute(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.population_overlap.compute,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):
         return service.exports.listing(auth.resolve(request), uuid(tenant), uuid(obj))

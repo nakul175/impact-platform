@@ -2,6 +2,7 @@
 
 | Method | Path | Capability |
 |---|---|---|
+| GET | `/v1/public/ai-vetting-criteria` | `public` |
 | GET | `/v1/tenants/{tenant_id}/access-denials` | `access-denials.read` |
 | GET | `/v1/tenants/{tenant_id}/access-groups` | `groups.read` |
 | POST | `/v1/tenants/{tenant_id}/access-groups` | `groups.manage` |

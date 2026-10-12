@@ -14,7 +14,7 @@ import psycopg
 from . import ai_policy
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
-from .ai_solutions_catalog import SolutionsCatalogInvalid, solutions_catalog
+from .ai_solutions_catalog import SolutionsCatalogInvalid, solutions_catalog, vetting_publication
 from .domain import DomainError
 from .keyring import ring
 from .store import audit, authorize, context, write
@@ -103,6 +103,13 @@ class AIEnablement:
                 # catalogue is not served at all, never served with that listing unlabelled.
                 LOG.error("AI solutions catalogue refused: %s", error)
                 raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
+
+    @staticmethod
+    def public_vetting():
+        try:
+            return vetting_publication()
+        except SolutionsCatalogInvalid:
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_VETTING_PUBLICATION_INVALID") from None
 
     def solution_shortlist(self, identity, tenant, opportunity_id, expanded=False):
         if not isinstance(opportunity_id, str) or not opportunity_id.strip() or len(opportunity_id) > 120 or type(expanded) is not bool:

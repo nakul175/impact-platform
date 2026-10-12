@@ -67,6 +67,16 @@ type Shortlist = {
     opportunity_id: string;
   }[];
 };
+type VettingPublication = {
+  criteria_edition: string;
+  meaning: string;
+  criteria: { id: string; label: string; description: string }[];
+  listings: {
+    solution_id: string;
+    status: "EDITORIAL_REVIEW_PENDING" | "VETTED_FOR_PILOT" | "WITHDRAWN";
+    last_reviewed_on: string;
+  }[];
+};
 const fitDimensions = [
   ["size", "Organisation size"],
   ["budget", "Budget"],
@@ -212,6 +222,7 @@ export function AIAdoptionWorkspace({
   const [shortlistExpanded, setShortlistExpanded] = useState(false);
   const [shortlist, setShortlist] = useState<Shortlist | null>(null);
   const [shortlistError, setShortlistError] = useState("");
+  const [vetting, setVetting] = useState<VettingPublication | null>(null);
   const [fitScores, setFitScores] = useState<Record<string, FitScore>>({});
   const [fitSolution, setFitSolution] = useState("");
   const [fitDraft, setFitDraft] = useState(blankFit);
@@ -831,6 +842,13 @@ export function AIAdoptionWorkspace({
       });
     return () => controller.abort();
   }, [base, canRead, shortlistOpportunity, shortlistExpanded]);
+  useEffect(() => {
+    const controller = new AbortController();
+    request("/v1/public/ai-vetting-criteria", { signal: controller.signal })
+      .then((value) => setVetting(value))
+      .catch(() => setVetting(null));
+    return () => controller.abort();
+  }, [request]);
   async function loadFitScores() {
     if (!canRead || !shortlistOpportunity) return;
     try {
@@ -899,6 +917,20 @@ export function AIAdoptionWorkspace({
           More appear only after your explicit request. Source-backed does not
           mean endorsed or approved for purchase.
         </p>
+        {vetting && (
+          <details>
+            <summary>What “vetted” means</summary>
+            <p>{vetting.meaning}</p>
+            <p className="muted">Criteria edition {vetting.criteria_edition}</p>
+            <ul>
+              {vetting.criteria.map((criterion) => (
+                <li key={criterion.id}>
+                  <strong>{criterion.label}:</strong> {criterion.description}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
         <label>
           Opportunity
           <select
@@ -926,6 +958,27 @@ export function AIAdoptionWorkspace({
               {shortlist.items.map(({ solution }) => (
                 <article key={solution.id}>
                   <h5>{solution.name}</h5>
+                  {vetting?.listings.find(
+                    (item) => item.solution_id === solution.id,
+                  ) ? (
+                    <p className="muted">
+                      Vetting status:{" "}
+                      {vetting.listings
+                        .find((item) => item.solution_id === solution.id)!
+                        .status.replaceAll("_", " ")}
+                      {" · Last reviewed "}
+                      {
+                        vetting.listings.find(
+                          (item) => item.solution_id === solution.id,
+                        )!.last_reviewed_on
+                      }
+                    </p>
+                  ) : (
+                    <p role="alert">
+                      Listing unavailable: vetting status or review date is
+                      missing.
+                    </p>
+                  )}
                   <p>{solution.description}</p>
                   <AIDisclosureLabel
                     name={solution.name}

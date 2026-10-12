@@ -22,6 +22,14 @@ DISCLOSURE_STATUSES = ("NONE_KNOWN", "DISCLOSED")
 EDITORIAL_CONFIRMATIONS = ("PENDING", "CONFIRMED")
 # The closed set of relationship types a DISCLOSED listing names (at least one).
 RELATIONSHIP_TYPES = ("referral_fee", "revenue_share", "reseller", "sponsorship", "ownership")
+VETTING_CRITERIA_EDITION = "pilot-vetting-2026-10-12.1"
+VETTING_STATUSES = ("EDITORIAL_REVIEW_PENDING", "VETTED_FOR_PILOT", "WITHDRAWN")
+VETTING_CRITERIA = [
+    {"id": "source_evidence", "label": "Source evidence", "description": "Published provider or authoritative product sources support the listing claims."},
+    {"id": "use_case_mapping", "label": "Use-case mapping", "description": "Imprana editorial maps the option only to stated nonprofit opportunities; the mapping is not a performance claim."},
+    {"id": "data_review", "label": "Data review", "description": "The listing states questions that must be resolved before sensitive data is used."},
+    {"id": "commercial_disclosure", "label": "Commercial disclosure", "description": "The listing states any known Imprana commercial relationship and its editorial confirmation state."},
+]
 STATEMENT_MAX = 1000
 CATEGORIES = frozenset(
     {
@@ -520,6 +528,36 @@ def solutions_catalog():
             "comparison_criteria": deepcopy(_COMPARISON_CRITERIA),
         }
     )
+
+
+def vetting_publication(reviews=None):
+    """Public criteria plus complete listing coverage; missing status/date refuses publication."""
+    reviews = reviews if reviews is not None else {
+        item["id"]: {"status": "EDITORIAL_REVIEW_PENDING", "last_reviewed_on": CHECKED_ON}
+        for item in _SOLUTIONS
+    }
+    ids = {item["id"] for item in _SOLUTIONS}
+    if not isinstance(reviews, dict) or set(reviews) != ids:
+        raise SolutionsCatalogInvalid("vetting status coverage must exactly match published listings")
+    for solution_id, review in reviews.items():
+        if not isinstance(review, dict) or set(review) != {"status", "last_reviewed_on"}:
+            raise SolutionsCatalogInvalid(f"listing {solution_id!r}: vetting status or last-review date is missing")
+        if review["status"] not in VETTING_STATUSES:
+            raise SolutionsCatalogInvalid(f"listing {solution_id!r}: vetting status is invalid")
+        try:
+            if date.fromisoformat(review["last_reviewed_on"]).isoformat() != review["last_reviewed_on"]:
+                raise ValueError
+        except (TypeError, ValueError):
+            raise SolutionsCatalogInvalid(f"listing {solution_id!r}: last-review date is invalid") from None
+    return {
+        "criteria_edition": VETTING_CRITERIA_EDITION,
+        "meaning": "Vetted means checked against these published editorial criteria. It is not an endorsement, warranty, purchase approval or measured performance claim.",
+        "criteria": deepcopy(VETTING_CRITERIA),
+        "listings": [
+            {"solution_id": item["id"], **deepcopy(reviews[item["id"]])}
+            for item in _SOLUTIONS
+        ],
+    }
 
 
 def validate_solution_ids(value):

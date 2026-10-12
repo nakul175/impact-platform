@@ -649,6 +649,10 @@ def create_app():
     def ai_solution_shortlist(request: Request, tenant: str, opportunity_id: str, expanded: bool = False):
         return ai_enablement.solution_shortlist(auth.resolve(request), uuid(tenant), opportunity_id, expanded)
 
+    @app.get("/v1/public/ai-vetting-criteria")
+    def public_ai_vetting_criteria():
+        return ai_enablement.public_vetting()
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores")
     def ai_solution_fit_score_list(request: Request, tenant: str, opportunity_id: str):
         return ai_solution_fit_scores.list(auth.resolve(request), uuid(tenant), opportunity_id)

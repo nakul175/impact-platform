@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.37.0",
+    "version": "1.38.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46250,6 +46250,36 @@
         }
       }
     },
+    "/v1/public/ai-vetting-criteria": {
+      "get": {
+        "operationId": "get_public_ai_vetting_criteria",
+        "summary": "Read public solution vetting criteria and listing states",
+        "x-capability": "public",
+        "x-contract-version": "1.38.0",
+        "responses": {
+          "200": {
+            "description": "Public vetting criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIVettingPublication"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Publication metadata invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines": {
       "get": {
         "operationId": "list_ai_problem_baselines",
@@ -80093,6 +80123,78 @@
         },
         "required": [
           "items"
+        ]
+      },
+      "AIVettingPublication": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "criteria_edition": {
+            "type": "string"
+          },
+          "meaning": {
+            "type": "string"
+          },
+          "criteria": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "description"
+              ]
+            }
+          },
+          "listings": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "solution_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "EDITORIAL_REVIEW_PENDING",
+                    "VETTED_FOR_PILOT",
+                    "WITHDRAWN"
+                  ]
+                },
+                "last_reviewed_on": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": [
+                "solution_id",
+                "status",
+                "last_reviewed_on"
+              ]
+            }
+          }
+        },
+        "required": [
+          "criteria_edition",
+          "meaning",
+          "criteria",
+          "listings"
         ]
       },
       "AIProblemBaselineMeasure": {

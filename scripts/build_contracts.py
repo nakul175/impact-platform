@@ -31,6 +31,7 @@ from impact_api.ai_diagnosis_contribution_contracts import (  # noqa: E402
 from impact_api.ai_diagnosis_review_contracts import augment as augment_ai_diagnosis_reviews  # noqa: E402
 from impact_api.ai_solution_shortlist_contracts import augment as augment_ai_solution_shortlist  # noqa: E402
 from impact_api.ai_solution_fit_score_contracts import augment as augment_ai_solution_fit_scores  # noqa: E402
+from impact_api.ai_vetting_contracts import augment as augment_ai_vetting  # noqa: E402
 from impact_api.ai_problem_baseline_contracts import augment as augment_ai_problem_baseline  # noqa: E402
 from impact_api.ai_content_contracts import augment as augment_ai_content  # noqa: E402
 from impact_api.ai_impact_reference_contracts import augment as augment_ai_impact  # noqa: E402
@@ -174,6 +175,7 @@ augment_ai_diagnosis_contributions(spec, policy)
 augment_ai_diagnosis_reviews(spec, policy)
 augment_ai_solution_shortlist(spec, policy)
 augment_ai_solution_fit_scores(spec, policy)
+augment_ai_vetting(spec, policy)
 augment_ai_problem_baseline(spec, policy)
 augment_ai_content(spec, policy)
 augment_ai_impact(spec, policy)

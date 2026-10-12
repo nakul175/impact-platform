@@ -38,7 +38,7 @@ OPERATION = "update_ai_policy"
 # Configuration and execution remain separate gates. A tenant may explicitly approve any named use
 # case, but only an implemented runtime can execute it, and every runtime must call require() with the
 # exact use case and requested tools before content leaves the authorised boundary.
-RESERVED_USE_CASES = ("INDICATOR_DESIGN", "IMPORT_CLEANING")
+RESERVED_USE_CASES = ("INDICATOR_DESIGN", "IMPORT_CLEANING", "EVIDENCE_QUESTION")
 ACTIVE_USE_CASES = tuple(case for case in USE_CASES if case not in RESERVED_USE_CASES)
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}
 # Allowed data classes are a ceiling: a request passes when its class is at or below the highest

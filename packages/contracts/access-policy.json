@@ -1,5 +1,5 @@
 {
-  "version": "1.92.0",
+  "version": "1.93.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7016,6 +7016,19 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "answer_ai_evidence_question",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/evidence-questions",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "create_ai_forecast",

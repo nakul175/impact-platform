@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.92.0",
+    "version": "1.93.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46690,7 +46690,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46791,7 +46791,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46869,7 +46869,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46979,7 +46979,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -47080,7 +47080,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47200,7 +47200,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47311,7 +47311,7 @@
         "operationId": "create_ai_indicator_proposal",
         "summary": "create ai indicator proposal",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47422,7 +47422,7 @@
         "operationId": "create_ai_indicator_draft",
         "summary": "create ai indicator draft",
         "x-capability": "indicator-definitions.draft.create",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47551,7 +47551,7 @@
         "operationId": "create_ai_import_proposals",
         "summary": "create ai import proposals",
         "x-capability": "imports.read",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47680,7 +47680,7 @@
         "operationId": "apply_ai_import_proposals",
         "summary": "apply ai import proposals",
         "x-capability": "imports.draft.edit",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47775,6 +47775,107 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/evidence-questions": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "answer_ai_evidence_question",
+        "summary": "answer evidence question",
+        "x-capability": "ai.advisory.request",
+        "x-contract-version": "1.40.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIEvidenceQuestionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cited answer, clarification or bounded abstention",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIEvidenceQuestionAnswer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/forecasts": {
       "parameters": [
         {
@@ -47791,7 +47892,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47900,7 +48001,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47999,7 +48100,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48098,7 +48199,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48179,7 +48280,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48280,7 +48381,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48391,7 +48492,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48492,7 +48593,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48603,7 +48704,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -48723,7 +48824,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -48833,7 +48934,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.39.0",
+        "x-contract-version": "1.40.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -91095,7 +91196,8 @@
               "REPORT_DRAFT",
               "CHAT",
               "INDICATOR_DESIGN",
-              "IMPORT_CLEANING"
+              "IMPORT_CLEANING",
+              "EVIDENCE_QUESTION"
             ]
           },
           "enabled": {
@@ -91181,7 +91283,7 @@
         "properties": {
           "use_cases": {
             "type": "array",
-            "maxItems": 6,
+            "maxItems": 7,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -91268,7 +91370,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 6,
+            "maxItems": 7,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -91314,7 +91416,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 6,
+            "maxItems": 7,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -91340,7 +91442,8 @@
                 "REPORT_DRAFT",
                 "CHAT",
                 "INDICATOR_DESIGN",
-                "IMPORT_CLEANING"
+                "IMPORT_CLEANING",
+                "EVIDENCE_QUESTION"
               ]
             }
           }
@@ -93393,6 +93496,254 @@
           }
         },
         "required": []
+      },
+      "AIEvidenceQuestionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "programme_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "programme_revision_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "period_revision_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "source_mode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "SELECTED_GOVERNED_RESULTS",
+              null
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "question",
+          "programme_id",
+          "programme_revision_id",
+          "period_id",
+          "period_revision_id",
+          "source_mode",
+          "sources",
+          "policy_version",
+          "language"
+        ]
+      },
+      "AIEvidenceQuestionAnswer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "state": {
+            "enum": [
+              "ANSWERED",
+              "CLARIFICATION_REQUIRED",
+              "ABSTAINED"
+            ]
+          },
+          "answer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 12000
+          },
+          "clarification_fields": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "type": "string"
+            }
+          },
+          "claims": {
+            "type": "array",
+            "maxItems": 160,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "maxLength": 500
+                },
+                "citation_numbers": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "material": {
+                  "const": true
+                }
+              },
+              "required": [
+                "text",
+                "citation_numbers",
+                "material"
+              ]
+            }
+          },
+          "citations": {
+            "type": "array",
+            "maxItems": 160,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "object_type": {
+                  "const": "CalculatedResult"
+                },
+                "location": {
+                  "type": "string",
+                  "pattern": "^/"
+                }
+              },
+              "required": [
+                "number",
+                "object_id",
+                "revision_id",
+                "object_type",
+                "location"
+              ]
+            }
+          },
+          "missing_evidence": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            }
+          },
+          "contradictions": {
+            "type": "array",
+            "maxItems": 80,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "indicator_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "values": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 20,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 500
+                  }
+                }
+              },
+              "required": [
+                "field",
+                "indicator_id",
+                "values"
+              ]
+            }
+          },
+          "official_number_guessed": {
+            "const": false
+          },
+          "protected_resource_confirmed": {
+            "const": false
+          },
+          "fabricated_citations": {
+            "const": false
+          }
+        },
+        "required": [
+          "state",
+          "answer",
+          "clarification_fields",
+          "claims",
+          "citations",
+          "missing_evidence",
+          "contradictions",
+          "official_number_guessed",
+          "protected_resource_confirmed",
+          "fabricated_citations"
+        ]
       },
       "AITaskPracticeData": {
         "type": "object",

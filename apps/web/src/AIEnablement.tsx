@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
 import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
 import { AIOpportunityRanking } from "./AIRanking";
+import { AIEvidenceQuestions } from "./AIEvidenceQuestions";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -730,6 +731,13 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            <AIEvidenceQuestions
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canAsk={canAdvise}
+              request={request}
+              explain={explain}
+            />
             {advisoryJob && (
               <section aria-labelledby="ai-advisory-job" aria-live="polite">
                 <h3 id="ai-advisory-job">AI advisory job</h3>
@@ -1186,6 +1194,9 @@ export function AIEnablementPanel({
                       <option value="INDICATOR_DESIGN">Indicator design</option>
                       <option value="IMPORT_CLEANING">
                         Import mapping and cleaning
+                      </option>
+                      <option value="EVIDENCE_QUESTION">
+                        Evidence questions
                       </option>
                     </select>
                   </label>

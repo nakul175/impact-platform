@@ -17,6 +17,7 @@ USE_CASES = {
     "CHAT",
     "INDICATOR_DESIGN",
     "IMPORT_CLEANING",
+    "EVIDENCE_QUESTION",
 }
 DESTINATIONS = {"openai-us"}
 

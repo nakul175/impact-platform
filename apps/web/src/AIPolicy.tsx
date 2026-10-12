@@ -47,6 +47,7 @@ const USE_CASE_NAMES: Record<string, string> = {
   CHAT: "chat",
   INDICATOR_DESIGN: "indicator design",
   IMPORT_CLEANING: "import mapping and cleaning",
+  EVIDENCE_QUESTION: "evidence questions",
 };
 const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {

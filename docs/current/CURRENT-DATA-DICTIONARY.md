@@ -7070,3 +7070,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0086_ai_import_cleaning_policy.sql | eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4 |
+
+## Migration0087 — reserved evidence-question AI policy label (local1.03 coding candidate)
+
+`0087_ai_evidence_question_policy.sql` SHA256 `27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595`. Schema87 extends only the closed `ai_use_case_policy.use_case` vocabulary with `EVIDENCE_QUESTION`. Current application policy validation and the runtime gate keep that use case reserved-disabled. No policy row, governed result, evidence object or official value is rewritten. All0001–0086 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0087_ai_evidence_question_policy.sql | 27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595 |

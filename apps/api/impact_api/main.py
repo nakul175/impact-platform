@@ -43,6 +43,7 @@ from .ai_safety import AISafety
 from .ai_extraction import AIExtraction
 from .ai_indicator_design import AIIndicatorDesign
 from .ai_import_assistance import AIImportAssistance
+from .ai_evidence_questions import AIEvidenceQuestions
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -152,6 +153,9 @@ def create_app():
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
     )
     ai_import_assistance = AIImportAssistance(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_evidence_questions = AIEvidenceQuestions(
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
     )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
@@ -1507,6 +1511,12 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/evidence-questions")
+    async def answer_ai_evidence_question(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIEvidenceQuestionRequest", body)
+        return ai_evidence_questions.answer(auth.resolve(request), uuid(tenant), body)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

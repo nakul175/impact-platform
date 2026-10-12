@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.39.0"
+VERSION = "1.40.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -31,6 +31,7 @@ IMPLEMENTED = [
     ("post", "ai-enablement/indicator-design/drafts"),
     ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals"),
     ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply"),
+    ("post", "ai-enablement/evidence-questions"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -67,6 +68,7 @@ USE_CASES = [
     "CHAT",
     "INDICATOR_DESIGN",
     "IMPORT_CLEANING",
+    "EVIDENCE_QUESTION",
 ]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -555,6 +557,109 @@ def augment(spec, policy):
             "approved_actuals_changed": {"const": False},
         }
     )
+    schemas["AIEvidenceQuestionRequest"] = closed(
+        {
+            "question": {"type": "string", "minLength": 1, "maxLength": 2000, "pattern": r"\S"},
+            "programme_id": {"type": ["string", "null"], "format": "uuid"},
+            "programme_revision_id": {"type": ["string", "null"], "format": "uuid"},
+            "period_id": {"type": ["string", "null"], "format": "uuid"},
+            "period_revision_id": {"type": ["string", "null"], "format": "uuid"},
+            "source_mode": {"type": ["string", "null"], "enum": ["SELECTED_GOVERNED_RESULTS", None]},
+            "sources": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                    },
+                    ["object_id", "revision_id"],
+                ),
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "question",
+            "programme_id",
+            "programme_revision_id",
+            "period_id",
+            "period_revision_id",
+            "source_mode",
+            "sources",
+            "policy_version",
+            "language",
+        ],
+    )
+    evidence_claim = closed(
+        {
+            "text": {"type": "string", "maxLength": 500},
+            "citation_numbers": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "integer", "minimum": 1},
+            },
+            "material": {"const": True},
+        },
+        ["text", "citation_numbers", "material"],
+    )
+    evidence_citation = closed(
+        {
+            "number": {"type": "integer", "minimum": 1},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "object_type": {"const": "CalculatedResult"},
+            "location": {"type": "string", "pattern": "^/"},
+        },
+        ["number", "object_id", "revision_id", "object_type", "location"],
+    )
+    evidence_contradiction = closed(
+        {
+            "field": {"type": "string", "maxLength": 100},
+            "indicator_id": {"type": "string", "format": "uuid"},
+            "values": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 500},
+            },
+        },
+        ["field", "indicator_id", "values"],
+    )
+    schemas["AIEvidenceQuestionAnswer"] = closed(
+        {
+            "state": {"enum": ["ANSWERED", "CLARIFICATION_REQUIRED", "ABSTAINED"]},
+            "answer": {"type": ["string", "null"], "maxLength": 12000},
+            "clarification_fields": {"type": "array", "maxItems": 8, "items": {"type": "string"}},
+            "claims": {"type": "array", "maxItems": 160, "items": evidence_claim},
+            "citations": {"type": "array", "maxItems": 160, "items": evidence_citation},
+            "missing_evidence": {"type": "array", "maxItems": 20, "items": {"type": "string"}},
+            "contradictions": {
+                "type": "array",
+                "maxItems": 80,
+                "items": evidence_contradiction,
+            },
+            "official_number_guessed": {"const": False},
+            "protected_resource_confirmed": {"const": False},
+            "fabricated_citations": {"const": False},
+        },
+        [
+            "state",
+            "answer",
+            "clarification_fields",
+            "claims",
+            "citations",
+            "missing_evidence",
+            "contradictions",
+            "official_number_guessed",
+            "protected_resource_confirmed",
+            "fabricated_citations",
+        ],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -843,6 +948,58 @@ def augment(spec, policy):
                 "audit": operation == "apply_ai_import_proposals",
             }
         )
+    question_path = "/v1/tenants/{tenant_id}/ai-enablement/evidence-questions"
+    spec["paths"][question_path] = {
+        "parameters": [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ],
+        "post": {
+            "operationId": "answer_ai_evidence_question",
+            "summary": "answer evidence question",
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AIEvidenceQuestionRequest"}}
+                },
+            },
+            "responses": {
+                "200": {
+                    "description": "Cited answer, clarification or bounded abstention",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AIEvidenceQuestionAnswer"}
+                        }
+                    },
+                },
+                **{
+                    status: {
+                        "description": "Request refused",
+                        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+                    }
+                    for status in ["400", "401", "403", "409", "422", "503"]
+                },
+            },
+        },
+    }
+    policy["operations"].append(
+        {
+            "operation_id": "answer_ai_evidence_question",
+            "method": "POST",
+            "path": question_path,
+            "capability": "ai.advisory.request",
+            "role_templates": ["PROGRAMME_MANAGER", "MEL_ADMIN"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )
     forecast_base = "/v1/tenants/{tenant_id}/ai-enablement/forecasts"
     forecast_ops = [
         ("post", forecast_base, "create_ai_forecast", "AIForecastRequest", "AIForecast"),

@@ -6947,3 +6947,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0069_partner_revenue_statements.sql | 7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2 |
+
+
+## Migration0070 — local-currency tax invoices (local0.78 coding candidate)
+
+`0070_local_currency_tax_invoices.sql` SHA256 `dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9`. Schema70 adds the active billing-market catalogue, a forced-RLS tenant billing profile and an immutable issue snapshot on commercial invoices. India launches with INR and positive GST; issuance refuses missing/inactive markets, a market/invoice currency mismatch, empty invoices and INR without GST. Issued invoices pin subtotal, tax name/rate/amount, total, issuer and time so later configuration cannot rewrite them. All0001–0069 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0070_local_currency_tax_invoices.sql | dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9 |

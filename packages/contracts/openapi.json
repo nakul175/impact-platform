@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.67.0",
+    "version": "1.68.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39323,6 +39323,137 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServicePackagePurchaseResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/billing-profile": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "configure_billing_profile",
+        "summary": "Configure an active billing market",
+        "x-capability": "subscription.admin",
+        "x-contract-version": "1.68.0",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingProfileResult"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingProfileConfigure"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "invoice_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "issue_commercial_invoice",
+        "summary": "Issue an invoice with a pinned local tax snapshot",
+        "x-capability": "subscription.admin",
+        "x-contract-version": "1.68.0",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommercialInvoiceIssued"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommercialInvoiceIssue"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "invoice_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_commercial_invoice",
+        "summary": "Read an issued local-currency tax invoice",
+        "x-capability": "subscriptions.read",
+        "x-contract-version": "1.68.0",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommercialInvoiceIssued"
                 }
               }
             }
@@ -80330,6 +80461,125 @@
           "currency",
           "quantity",
           "separate_invoice_created"
+        ]
+      },
+      "BillingProfileConfigure": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "country_code": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          }
+        },
+        "required": [
+          "operation_id",
+          "country_code"
+        ]
+      },
+      "BillingProfileResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "tax_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "tax_rate": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,2})(?:\\.[0-9]{1,5})?$"
+          },
+          "configured_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "country_code",
+          "currency",
+          "tax_name",
+          "tax_rate",
+          "configured_at"
+        ]
+      },
+      "CommercialInvoiceIssue": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id"
+        ]
+      },
+      "CommercialInvoiceIssued": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "country_code": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "subtotal": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "tax_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "tax_rate": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,2})(?:\\.[0-9]{1,5})?$"
+          },
+          "tax_amount": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "total": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "invoice_id",
+          "currency",
+          "country_code",
+          "subtotal",
+          "tax_name",
+          "tax_rate",
+          "tax_amount",
+          "total",
+          "issued_at"
         ]
       },
       "MeasurementChangeData": {

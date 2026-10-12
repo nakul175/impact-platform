@@ -1,5 +1,5 @@
 {
-  "version": "1.67.0",
+  "version": "1.68.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5437,6 +5437,46 @@
       "fresh_assurance_seconds": 300,
       "audit": true,
       "state_guard": "Only code-owned packages with nonblank scope and positive fixed price; purchase line uses the active subscription's single open invoice."
+    },
+    {
+      "operation_id": "configure_billing_profile",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/billing-profile",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "issue_commercial_invoice",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "read_commercial_invoice",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
     },
     {
       "operation_id": "list_measurement_changes",

@@ -129,6 +129,7 @@
 | GET | `/v1/tenants/{tenant_id}/audit-events` | `audit-events.read` |
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | `audit-events.read` |
 | POST | `/v1/tenants/{tenant_id}/audit-exports` | `audit.export` |
+| POST | `/v1/tenants/{tenant_id}/billing-profile` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | `evidence.read` |
@@ -144,6 +145,8 @@
 | GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | `collection-rounds.read` |
 | PATCH | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}` | `collection-rounds.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/collection-rounds/{object_id}/coverage` | `collection-rounds.read` |
+| GET | `/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}` | `subscriptions.read` |
+| POST | `/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/connections` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions` | `decisions.read` |

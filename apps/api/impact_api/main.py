@@ -60,6 +60,7 @@ from .human_advice import HumanAdviceCases
 from .sponsored_access import SponsoredAccess
 from .entitlement_view import EntitlementView
 from .service_packages import ServicePackages
+from .tax_invoicing import TaxInvoicing
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
@@ -148,6 +149,7 @@ def create_app():
     sponsored_access = SponsoredAccess(service)
     entitlement_view = EntitlementView(service)
     service_packages = ServicePackages(service)
+    tax_invoicing = TaxInvoicing(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     partner_revenue = PartnerRevenue(lifecycle)
@@ -1787,6 +1789,33 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.post("/v1/tenants/{tenant}/billing-profile")
+    async def billing_profile_configure(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            tax_invoicing.configure,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/commercial-invoices/{invoice}/actions/issue")
+    async def commercial_invoice_issue(request: Request, tenant: str, invoice: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            tax_invoicing.issue,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(invoice),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/commercial-invoices/{invoice}")
+    def commercial_invoice_read(request: Request, tenant: str, invoice: str):
+        return tax_invoicing.read(auth.resolve(request), uuid(tenant), uuid(invoice))
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

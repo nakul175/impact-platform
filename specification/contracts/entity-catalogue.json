@@ -860,5 +860,29 @@
     "contract_version": "1.12.0",
     "draft_schema": "PartnerStatementGenerate",
     "output_schema": "PartnerMonthlyStatement"
+  },
+  {
+    "entity": "CommercialTaxInvoice",
+    "route": "commercial-invoices",
+    "owner": "C14",
+    "fsd_id": "US-CM-08",
+    "fields": "invoice_id:uuid currency:code country_code:code subtotal:decimal tax_name:code tax_rate:decimal tax_amount:decimal total:decimal issued_at:time",
+    "source_required_fields": "Active tenant billing market and positive open invoice lines in the same local currency",
+    "invariant": "Issuance pins one active market tax snapshot; INR cannot issue without positive GST and unregistered market currency cannot issue.",
+    "server_owned": [
+      "currency",
+      "country_code",
+      "subtotal",
+      "tax_name",
+      "tax_rate",
+      "tax_amount",
+      "total",
+      "issued_at",
+      "issued_by"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.68.0",
+    "draft_schema": "CommercialInvoiceIssue",
+    "output_schema": "CommercialInvoiceIssued"
   }
 ]

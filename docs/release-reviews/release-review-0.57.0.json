@@ -349,6 +349,27 @@
       ],
       "summary": "Follow-up correction preserves absent draft approval/value states as null in reproduction output and refuses pre-provenance manifests with a bounded domain error instead of indexing missing immutable-history fields.",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.57-05",
+      "change_id": "FR-CAL-001-failure-boundary-contract",
+      "paths": [
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "disaggregation failure preservation",
+        "idempotency-expiry error contract"
+      ],
+      "threats": [
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Follow-up correction attaches the frozen attempt record to disaggregation failures and admits the existing bounded IDEMPOTENCY_EXPIRED response in the generated error contract.",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -360,6 +381,7 @@
     "A failed run with unchanged dependencies does not yet create a durable failed-attempt record; the prior result remains immutable but this part of AC-FR-CAL-001-004 is incomplete.",
     "The post-rollback failure record is attempted before returning the original domain error; an infrastructure failure is logged while the original error remains authoritative.",
     "Direct calculated-result reads include failed-attempt freshness; aggregate dashboard propagation is outside this bounded increment.",
-    "Coding-only candidate: tests, CI, independent review, merge and deployment were not run."
+    "Coding-only candidate: tests, CI, independent review, merge and deployment were not run.",
+    "The earlier IR-0.57-01 planning note about an absent unchanged-dependency failure record is superseded by append-only IR-0.57-02 through IR-0.57-05; the coding remains untested and post-rollback persistence can still fail with its dependency."
   ]
 }

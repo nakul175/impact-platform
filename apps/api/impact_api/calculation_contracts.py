@@ -71,6 +71,9 @@ BREAKDOWN = {
 
 def augment(spec, policy):
     schemas, paths = spec["components"]["schemas"], spec["paths"]
+    error_codes = schemas["Error"]["properties"]["code"]["enum"]
+    if "IDEMPOTENCY_EXPIRED" not in error_codes:
+        error_codes.append("IDEMPOTENCY_EXPIRED")
     for name in ["IndicatorDefinitionData", "IndicatorDefinitionDraftData"]:
         properties = schemas[name]["properties"]
         rules = properties["combination_rule"]["enum"]

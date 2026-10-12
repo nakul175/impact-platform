@@ -50872,7 +50872,8 @@
               "DEPENDENCY_UNAVAILABLE",
               "SERVICE_UNAVAILABLE",
               "QUARANTINED",
-              "EXPIRED_GRANT"
+              "EXPIRED_GRANT",
+              "IDEMPOTENCY_EXPIRED"
             ],
             "description": "SERVICE_UNAVAILABLE is the code sent for every dependency failure (HTTP 503, retryable), with reason_code DATABASE_UNAVAILABLE, IDENTITY_PROVIDER_UNAVAILABLE, OBJECT_STORE_FULL, OBJECT_STORE_UNAVAILABLE, OBJECT_MISSING or PLATFORM_NOT_CONFIGURED when the cause is known. DEPENDENCY_UNAVAILABLE is the design name for the same condition and is never sent."
           },
@@ -80036,8 +80037,8 @@
               "DEPENDENCY_UNAVAILABLE",
               "QUARANTINED",
               "EXPIRED_GRANT",
-              "INVALID_CURSOR",
-              "IDEMPOTENCY_EXPIRED"
+              "IDEMPOTENCY_EXPIRED",
+              "INVALID_CURSOR"
             ]
           },
           "message": {

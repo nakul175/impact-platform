@@ -1344,11 +1344,11 @@ class Service:
                 )
             sources = [r["payload"] for r in numeric_rows]
             result = calculate(definition["payload"], sources)
+            breakdown = disaggregate(definition["payload"], sources)
         except DomainError as exc:
             exc.calculation_failure_manifest = failure_manifest
             exc.calculation_attempted_at = cutoff
             raise
-        breakdown = disaggregate(definition["payload"], sources)
         now = cutoff.isoformat()
         plan_pin = {"plan_revision": str(plan["head_revision"])} if plan else {}
         run = str(uuid4())

@@ -79,8 +79,8 @@ def augment(spec, policy):
             # The policy version shown to the requester ("Policy in force"); a request made against
             # any other version is refused with 409 AI_POLICY_CHANGED before any reservation.
             "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
-            # Tools are never implicit: a tool the use case's policy does not list is refused with
-            # 422 AI_POLICY_BLOCKED. No policy can list a tool in this build.
+            # Tools are never implicit: policy must list each tool and the concrete runtime must
+            # independently expose it from a server-owned catalogue with scoped arguments.
             "tools": {
                 "type": "array",
                 "maxItems": 10,

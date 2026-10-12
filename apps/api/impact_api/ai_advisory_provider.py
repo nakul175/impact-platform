@@ -13,6 +13,7 @@ import json
 import httpx
 
 from .domain import DomainError
+from .ai_execution_boundary import untrusted_envelope
 
 PROVIDER_DEADLINE_SECONDS = 45
 MAX_RESPONSE_BYTES = 256 * 1024
@@ -52,12 +53,13 @@ class OpenAIAdvisory:
     def generate(self, profile, assessment):
         if not self.configured:
             raise unavailable("AI_NOT_CONFIGURED")
+        envelope, _ = untrusted_envelope(organization_brief=profile, assessment=assessment)
         payload = {
             "model": self.model,
             "instructions": INSTRUCTIONS,
-            "input": json.dumps(
-                {"organization_brief": profile, "assessment": assessment}, ensure_ascii=False
-            ),
+            # Structured source data is explicitly untrusted and separated from server instructions.
+            # This runtime exposes no provider tool definitions, credentials, retrieval or export.
+            "input": json.dumps(envelope, ensure_ascii=False),
             "store": False,
             "max_output_tokens": 2048,
             "reasoning": {"effort": "low"},

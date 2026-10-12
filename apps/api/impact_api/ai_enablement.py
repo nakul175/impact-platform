@@ -12,9 +12,15 @@ from cryptography.exceptions import InvalidTag
 import psycopg
 
 from . import ai_policy
+from .ai_execution_boundary import runtime_tools, untrusted_envelope
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
-from .ai_solutions_catalog import SolutionsCatalogInvalid, public_disclosures, solutions_catalog, vetting_publication
+from .ai_solutions_catalog import (
+    SolutionsCatalogInvalid,
+    public_disclosures,
+    solutions_catalog,
+    vetting_publication,
+)
 from .domain import DomainError
 from .keyring import ring
 from .store import audit, authorize, context, write
@@ -116,10 +122,17 @@ class AIEnablement:
         try:
             return public_disclosures()
         except SolutionsCatalogInvalid:
-            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_DISCLOSURE_PUBLICATION_INVALID") from None
+            raise DomainError(
+                "SERVICE_UNAVAILABLE", 503, reason="AI_DISCLOSURE_PUBLICATION_INVALID"
+            ) from None
 
     def solution_shortlist(self, identity, tenant, opportunity_id, expanded=False):
-        if not isinstance(opportunity_id, str) or not opportunity_id.strip() or len(opportunity_id) > 120 or type(expanded) is not bool:
+        if (
+            not isinstance(opportunity_id, str)
+            or not opportunity_id.strip()
+            or len(opportunity_id) > 120
+            or type(expanded) is not bool
+        ):
             raise DomainError("VALIDATION_FAILED", 400, reason="AI_SHORTLIST_INVALID")
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "get_ai_solution_shortlist")
@@ -136,7 +149,14 @@ class AIEnablement:
                 "expanded": expanded,
                 "default_limit": 3,
                 "total_vetted": len(matches),
-                "items": [{"solution": item, "vetting_basis": "SOURCE_BACKED_EDITORIAL_EDITION", "opportunity_id": opportunity_id} for item in shown],
+                "items": [
+                    {
+                        "solution": item,
+                        "vetting_basis": "SOURCE_BACKED_EDITORIAL_EDITION",
+                        "opportunity_id": opportunity_id,
+                    }
+                    for item in shown
+                ],
             }
 
     def cost_comparison(self, identity, tenant, body):
@@ -210,9 +230,8 @@ class AIEnablement:
         try:
             assessment = assess(body["profile"])
         except ValueError:
-            raise DomainError(
-                "SERVICE_UNAVAILABLE", 503, reason="AI_MATURITY_FRAMEWORK_INVALID"
-            ) from None
+            raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_MATURITY_FRAMEWORK_INVALID") from None
+        _, embedded_attempts = untrusted_envelope(organization_brief=body["profile"], assessment=assessment)
         fingerprint = hashlib.sha256(_json(body)).digest()
         keys = self._keys()
         with self.service.db.transaction(tenant) as c:
@@ -253,6 +272,9 @@ class AIEnablement:
                 DRAFT_LANGUAGE,
                 tools,
             )
+            # Policy permission never creates a runtime tool. This advisory runtime deliberately
+            # exposes an empty server-owned catalogue, so document/model text cannot execute one.
+            runtime_tools({}, tools)
             count = c.execute(
                 "SELECT count(*) AS n FROM impact.ai_advisory_request WHERE tenant_id=%s AND reserved_at > statement_timestamp()-interval '24 hours'",
                 (tenant,),
@@ -284,6 +306,19 @@ class AIEnablement:
                 ),
             )
             audit(c, ctx, "create_ai_advisory", receipt, correlation)
+            if embedded_attempts:
+                audit(
+                    c,
+                    ctx,
+                    "ai_untrusted_instruction_observed",
+                    {
+                        "object_id": receipt["object_id"],
+                        "revision_id": receipt["revision_id"],
+                        "categories": embedded_attempts,
+                        "executed_actions": 0,
+                    },
+                    correlation,
+                )
         # The claim has committed. Never call the provider while holding a database transaction.
         output, failure = None, None
         try:

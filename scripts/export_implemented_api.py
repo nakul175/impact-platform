@@ -36,6 +36,7 @@ from impact_api.hierarchical_aggregation_contracts import IMPLEMENTED as HIERARC
 from impact_api.dimension_crosswalk_contracts import IMPLEMENTED as DIMENSION_CROSSWALK_ROUTES  # noqa: E402
 from impact_api.formula_authoring_contracts import IMPLEMENTED as FORMULA_AUTHORING_ROUTES  # noqa: E402
 from impact_api.portfolio_attribution_contracts import IMPLEMENTED as PORTFOLIO_ATTRIBUTION_ROUTES  # noqa: E402
+from impact_api.sponsored_access_contracts import IMPLEMENTED as SPONSORED_ACCESS_ROUTES  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
 )
@@ -115,6 +116,7 @@ allowed.update(
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in DIMENSION_CROSSWALK_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in FORMULA_AUTHORING_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PORTFOLIO_ATTRIBUTION_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in SPONSORED_ACCESS_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AUDIT_EXPORT_ROUTES)

@@ -1,5 +1,5 @@
 {
-  "version": "1.64.0",
+  "version": "1.65.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5353,6 +5353,48 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "create_sponsored_cohort",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/sponsored-cohorts",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "accept_sponsored_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/sponsored-access/{enrolment_id}/actions/accept",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "list_sponsored_access",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/sponsored-access",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
     },
     {
       "operation_id": "list_measurement_changes",

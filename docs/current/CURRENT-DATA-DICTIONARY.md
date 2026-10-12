@@ -6923,3 +6923,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0066_portfolio_allocation_views.sql | 9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa |
+
+## Migration0067 — sponsored cohort access (local0.74 coding candidate)
+
+`0067_sponsored_cohorts.sql` SHA256 `9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014`. Schema67 adds sponsor-owned cohort terms, cross-tenant grantee enrolments and append-only acceptance events. Sponsor creation requires duration and positive budget; invited enrolments confer no access. Only the named grantee tenant can accept, and a trigger freezes sponsor, grantee, terms, budget and duration while deriving the bounded access interval. Accepted access is always no-charge and creates no data grant. Tables use forced RLS with explicit sponsor/grantee command policies. All0001–0066 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0067_sponsored_cohorts.sql | 9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014 |

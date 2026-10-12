@@ -57,6 +57,7 @@ from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
+from .sponsored_access import SponsoredAccess
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
@@ -141,6 +142,7 @@ def create_app():
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
+    sponsored_access = SponsoredAccess(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
@@ -1715,6 +1717,33 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.post("/v1/tenants/{tenant}/sponsored-cohorts", status_code=201)
+    async def sponsored_cohort_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            sponsored_access.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/sponsored-access/{enrolment}/actions/accept")
+    async def sponsored_access_accept(request: Request, tenant: str, enrolment: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            sponsored_access.accept,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(enrolment),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/sponsored-access")
+    def sponsored_access_list(request: Request, tenant: str):
+        return sponsored_access.active(auth.resolve(request), uuid(tenant))
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

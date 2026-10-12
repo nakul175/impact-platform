@@ -775,5 +775,27 @@
     "contract_version": "1.64.0",
     "draft_schema": "PortfolioAllocationViewDraftData",
     "output_schema": "PortfolioAllocationViewData"
+  },
+  {
+    "entity": "SponsoredCohort",
+    "route": "sponsored-cohorts",
+    "owner": "C14",
+    "fsd_id": "US-CM-02",
+    "fields": "title:text duration_days:int budget:decimal currency:code terms_version:code grantee_tenant_ids:array",
+    "source_required_fields": "title:text duration_days:int budget:decimal currency:code terms_version:code grantee_tenant_ids:array",
+    "invariant": "No access before exact terms acceptance; accepted access is bounded to the sponsored duration, no-charge and independent of data authority.",
+    "server_owned": [
+      "cohort_id",
+      "enrolment_id",
+      "accepted_by",
+      "accepted_at",
+      "access_starts_at",
+      "access_ends_at",
+      "no_charge"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.65.0",
+    "draft_schema": "SponsoredCohortCreate",
+    "output_schema": "SponsoredCohort"
   }
 ]

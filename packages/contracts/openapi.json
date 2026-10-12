@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.64.0",
+    "version": "1.65.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39094,6 +39094,128 @@
         ],
         "x-contract-version": "1.64.0",
         "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/sponsored-cohorts": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_sponsored_cohort",
+        "summary": "Create a named sponsored cohort",
+        "x-capability": "subscription.admin",
+        "x-contract-version": "1.65.0",
+        "responses": {
+          "200": {
+            "description": "Succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SponsoredCohort"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SponsoredCohortCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/sponsored-access/{enrolment_id}/actions/accept": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "enrolment_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "accept_sponsored_access",
+        "summary": "Accept exact sponsorship terms",
+        "x-capability": "subscription.admin",
+        "x-contract-version": "1.65.0",
+        "responses": {
+          "200": {
+            "description": "Succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SponsoredAccessEntitlement"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SponsoredAccessAccept"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/sponsored-access": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_sponsored_access",
+        "summary": "List current accepted no-charge access",
+        "x-capability": "subscriptions.read",
+        "x-contract-version": "1.65.0",
+        "responses": {
+          "200": {
+            "description": "Succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SponsoredAccessList"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/tenants/{tenant_id}/measurement-changes": {
@@ -79677,6 +79799,201 @@
           "nonadditive",
           "label",
           "causal_ownership"
+        ]
+      },
+      "SponsoredCohortCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "duration_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3660
+          },
+          "budget": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "terms_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "grantee_tenant_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "title",
+          "duration_days",
+          "budget",
+          "currency",
+          "terms_version",
+          "grantee_tenant_ids"
+        ]
+      },
+      "SponsoredAccessAccept": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "terms_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "operation_id",
+          "terms_version"
+        ]
+      },
+      "SponsoredCohort": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cohort_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "\\S"
+          },
+          "duration_days": {
+            "type": "integer"
+          },
+          "budget": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "terms_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "enrolments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enrolment_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "grantee_tenant_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "status": {
+                  "const": "INVITED"
+                }
+              },
+              "required": [
+                "enrolment_id",
+                "grantee_tenant_id",
+                "status"
+              ]
+            }
+          }
+        },
+        "required": [
+          "cohort_id",
+          "title",
+          "duration_days",
+          "budget",
+          "currency",
+          "terms_version",
+          "enrolments"
+        ]
+      },
+      "SponsoredAccessEntitlement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enrolment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sponsor_tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "const": "ACCEPTED"
+          },
+          "access_starts_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "access_ends_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "no_charge": {
+            "const": true
+          },
+          "data_authority_granted": {
+            "const": false
+          }
+        },
+        "required": [
+          "enrolment_id",
+          "sponsor_tenant_id",
+          "status",
+          "access_starts_at",
+          "access_ends_at",
+          "no_charge",
+          "data_authority_granted"
+        ]
+      },
+      "SponsoredAccessList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "$ref": "#/components/schemas/SponsoredAccessEntitlement"
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "MeasurementChangeData": {

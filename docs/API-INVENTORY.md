@@ -346,6 +346,9 @@
 | PATCH | `/v1/tenants/{tenant_id}/saved-views/{object_id}` | `work-items.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots/{object_id}` | `snapshots.read` |
+| GET | `/v1/tenants/{tenant_id}/sponsored-access` | `subscriptions.read` |
+| POST | `/v1/tenants/{tenant_id}/sponsored-access/{enrolment_id}/actions/accept` | `subscription.admin` |
+| POST | `/v1/tenants/{tenant_id}/sponsored-cohorts` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/submissions` | `submissions.read` |
 | POST | `/v1/tenants/{tenant_id}/submissions` | `submissions.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.read` |

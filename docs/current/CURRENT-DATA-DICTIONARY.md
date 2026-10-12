@@ -7037,3 +7037,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0082_ai_forecast_scenarios.sql | 77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd |
+
+
+## Migration0083 — AI safety feedback and scoped shutdown (local0.99 coding candidate)
+
+`0083_ai_safety_shutdown.sql` SHA256 `2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed`. Schema83 adds tenant-fenced payload-minimal feedback and append-only scoped shutdown events. Disable carries no source payload and re-enable structurally requires an exact fix-evidence revision plus a regression approver. Only AI execution reads the worker grant; independent core tables and workflows receive no new shutdown dependency. All0001–0082 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0083_ai_safety_shutdown.sql | 2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed |

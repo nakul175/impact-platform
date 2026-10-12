@@ -13,6 +13,7 @@ from .ai_data_handling import prepare as prepare_transmission
 from .ai_enablement import DRAFT_LANGUAGE, USE_CASE, _key
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_evaluation_gate import require_exposure
+from .ai_safety import configuration_id, require_available as require_safety_available
 from .domain import DomainError
 from .store import authorize, context
 
@@ -76,6 +77,13 @@ class AIJobs:
                 tools,
                 body["purpose"],
             )
+            require_safety_available(
+                c,
+                tenant,
+                USE_CASE,
+                self.enablement.provider.destination,
+                self.enablement.provider.evaluation_configuration,
+            )
             prepare_transmission(body["profile"], self.enablement.provider.destination, body["purpose"])
             for source in sources:
                 self.enablement._check_source(c, ctx, source)
@@ -94,7 +102,13 @@ class AIJobs:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             job = str(uuid4())
             sealed = keys.seal(_key, _json(body), _binding(tenant, job))
-            manifest = {"use_case": USE_CASE, "estimated_units": ESTIMATED_UNITS, "input": "SEALED"}
+            manifest = {
+                "use_case": USE_CASE,
+                "destination": self.enablement.provider.destination,
+                "configuration_id": configuration_id(self.enablement.provider.evaluation_configuration),
+                "estimated_units": ESTIMATED_UNITS,
+                "input": "SEALED",
+            }
             row = c.execute(
                 "INSERT INTO impact.job(tenant_id,job_id,job_class,requester_id,scope_id,state,input_manifest) "
                 "VALUES(%s,%s,%s,%s,%s,'Queued',%s) RETURNING statement_timestamp() AS requested_at,state",

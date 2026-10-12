@@ -118,6 +118,10 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/safety-feedback` | `ai.advisory.request` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns` | `ai.policy.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns` | `ai.policy.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery` | `ai.policy.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores` | `ai.solution-fit.score` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist` | `ai.enablement.read` |

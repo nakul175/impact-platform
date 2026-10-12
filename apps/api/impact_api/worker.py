@@ -85,6 +85,8 @@ from .ai_advisory_provider import OpenAIAdvisory
 from .ai_data_handling import prepare as prepare_ai_transmission
 from .ai_enablement_catalog import assess as assess_ai_profile
 from .ai_jobs import _binding as ai_request_binding, _key as ai_key, output_binding as ai_output_binding
+from .ai_safety import require_available as require_ai_safety_available
+from .domain import DomainError
 from .mail_rate import EmailRateLimiter
 from .delivery import (
     channel_code,
@@ -976,6 +978,14 @@ class Worker:
             # refused rather than running from stale access; source-free minimized jobs remain safe.
             if body.get("source_dependencies"):
                 raise DeliveryError("SOURCE_AUTHORITY_RECHECK_REQUIRED", permanent=True)
+            with self.transaction(tenant) as c:
+                require_ai_safety_available(
+                    c,
+                    tenant,
+                    "ADVISORY_DRAFT",
+                    self.ai_provider.destination,
+                    self.ai_provider.evaluation_configuration,
+                )
             profile, _handling = prepare_ai_transmission(
                 body["profile"], self.ai_provider.destination, body["purpose"]
             )
@@ -984,6 +994,8 @@ class Worker:
             generated = self.ai_provider.generate(profile, assess_ai_profile(profile))
         except ConfigurationError:
             raise
+        except DomainError as exc:
+            error = "AI_SAFETY_SHUTDOWN" if exc.reason == "AI_SAFETY_SHUTDOWN" else "AI_REQUEST_REFUSED"
         except DeliveryError as exc:
             error = exc.error_class
         except (InvalidTag, ValueError, TypeError, KeyError, json.JSONDecodeError):

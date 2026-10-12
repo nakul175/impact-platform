@@ -39,6 +39,7 @@ from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_jobs import AIJobs
 from .ai_forecasts import AIForecasts
+from .ai_safety import AISafety
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -140,6 +141,7 @@ def create_app():
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
     ai_jobs = AIJobs(service, ai_enablement)
     ai_forecasts = AIForecasts(service)
+    ai_safety = AISafety(service)
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
     ai_role_training = AIRoleTraining(service)
@@ -1416,6 +1418,28 @@ def create_app():
     )
     def request_ai_forecast_adoption(request: Request, tenant: str, scenario: str, version: int):
         return ai_forecasts.request_adoption(auth.resolve(request), uuid(tenant), uuid(scenario), version)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-feedback")
+    async def create_ai_safety_feedback(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AISafetyFeedbackRequest", body)
+        return ai_safety.feedback(auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns")
+    def get_ai_safety_shutdowns(request: Request, tenant: str):
+        return ai_safety.status(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns")
+    async def manage_ai_safety_shutdown(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIShutdownRequest", body)
+        return ai_safety.change(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns/{event}/actions/approve-recovery")
+    async def approve_ai_safety_recovery(request: Request, tenant: str, event: str):
+        body = await strict_body(request)
+        validate("AIRecoveryApprovalRequest", body)
+        return ai_safety.approve_recovery(auth.resolve(request), uuid(tenant), uuid(event), body)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

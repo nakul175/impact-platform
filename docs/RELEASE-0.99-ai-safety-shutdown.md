@@ -1,0 +1,7 @@
+# 0.99 AI safety feedback and scoped shutdown
+
+FR-AI-018 / APL-347 adds payload-minimal safety feedback tied to an owned advisory, advisory-job output or forecast scenario. Feedback records a closed category, safe detail, submitter and active human reviewer. Email, phone, bearer token and credential-shaped detail is refused; source payloads are not accepted or copied.
+
+Tenant administrators can append an immediate shutdown event for one named use case, the reviewed provider destination or one exact configuration hash. New synchronous and queued advisory execution checks the latest shutdown before provider I/O. Queued affected jobs are cancelled and their reservations released; running jobs receive cancellation requests. Saved advisory artifacts are listed by opaque ID for review. The shutdown path changes only AI tables and AI jobs and explicitly reports that manual workflows remain enabled.
+
+Re-enable is refused unless the scope is currently disabled and a different administrator has recorded regression approval against an exact currently readable Evidence revision. The disabling actor cannot approve recovery, and the approval must still belong to the latest disabled event. Shutdown history and recovery approval are append-only. This is a coding candidate only; tests, CI, independent review, merge, staging deployment and owner acceptance remain pending for combined qualification.

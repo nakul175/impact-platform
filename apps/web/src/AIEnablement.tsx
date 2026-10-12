@@ -152,6 +152,31 @@ export function AIEnablementPanel({
     label: "Advisory draft" | "Incomplete draft" | null;
     can_publish_final: boolean;
   } | null>(null);
+  const [safetyFeedback, setSafetyFeedback] = useState({
+    output_kind: "ADVISORY_JOB",
+    output_id: "",
+    category: "OTHER",
+    safe_detail: "",
+    reviewer_id: "",
+  });
+  const [safetyReceipt, setSafetyReceipt] = useState("");
+  const [shutdown, setShutdown] = useState({
+    scope_kind: "USE_CASE",
+    scope_value: "ADVISORY_DRAFT",
+    action: "DISABLE",
+    reason_category: "OTHER",
+    fix_evidence_object_id: "",
+    fix_evidence_revision_id: "",
+    disabled_event_id: "",
+  });
+  const [shutdownResult, setShutdownResult] = useState<{
+    state: string;
+    queued_jobs_stopped: string[];
+    running_jobs_cancellation_requested: string[];
+    affected_artifacts: unknown[];
+    manual_workflows_enabled: boolean;
+  } | null>(null);
+  const [recoveryApproval, setRecoveryApproval] = useState("");
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -706,6 +731,289 @@ export function AIEnablementPanel({
                   )}
                 </div>
               </section>
+            )}
+            {canAdvise && (
+              <details>
+                <summary>Report an AI safety concern</summary>
+                <label>
+                  Output type
+                  <select
+                    value={safetyFeedback.output_kind}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        output_kind: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="ADVISORY">Advisory</option>
+                    <option value="ADVISORY_JOB">Advisory job</option>
+                    <option value="FORECAST">Forecast scenario</option>
+                  </select>
+                </label>
+                <label>
+                  Output ID
+                  <input
+                    value={safetyFeedback.output_id}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        output_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Concern category
+                  <select
+                    value={safetyFeedback.category}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        category: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="SENSITIVE_CITATION">
+                      Sensitive citation
+                    </option>
+                    <option value="HARMFUL_CONTENT">Harmful content</option>
+                    <option value="UNSUPPORTED_CLAIM">Unsupported claim</option>
+                    <option value="UNAUTHORISED_ACTION">
+                      Unauthorised action
+                    </option>
+                    <option value="OTHER">Other</option>
+                  </select>
+                </label>
+                <label>
+                  Safe supporting detail (do not include source payloads or
+                  personal data)
+                  <textarea
+                    maxLength={1000}
+                    value={safetyFeedback.safe_detail}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        safe_detail: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Independent reviewer ID
+                  <input
+                    value={safetyFeedback.reviewer_id}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        reviewer_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const receipt = await request(
+                      base + "ai-enablement/safety-feedback",
+                      {
+                        method: "POST",
+                        body: JSON.stringify(safetyFeedback),
+                      },
+                    );
+                    setSafetyReceipt(receipt.feedback_id);
+                  }}
+                >
+                  Submit safety feedback
+                </button>
+                {safetyReceipt && (
+                  <p role="status">Feedback recorded: {safetyReceipt}</p>
+                )}
+              </details>
+            )}
+            {canManagePolicy && (
+              <details>
+                <summary>AI safety shutdown</summary>
+                <label>
+                  Action
+                  <select
+                    value={shutdown.action}
+                    onChange={(event) =>
+                      setShutdown({ ...shutdown, action: event.target.value })
+                    }
+                  >
+                    <option value="DISABLE">Disable immediately</option>
+                    <option value="REENABLE">Re-enable after review</option>
+                  </select>
+                </label>
+                <label>
+                  Shutdown scope
+                  <select
+                    value={shutdown.scope_kind}
+                    onChange={(event) =>
+                      setShutdown({
+                        ...shutdown,
+                        scope_kind: event.target.value,
+                        scope_value:
+                          event.target.value === "USE_CASE"
+                            ? "ADVISORY_DRAFT"
+                            : event.target.value === "DESTINATION"
+                              ? "openai-us"
+                              : "",
+                      })
+                    }
+                  >
+                    <option value="USE_CASE">Use case</option>
+                    <option value="DESTINATION">Provider destination</option>
+                    <option value="CONFIGURATION">
+                      Exact configuration ID
+                    </option>
+                  </select>
+                </label>
+                {shutdown.scope_kind === "USE_CASE" ? (
+                  <label>
+                    Use case
+                    <select
+                      value={shutdown.scope_value}
+                      onChange={(event) =>
+                        setShutdown({
+                          ...shutdown,
+                          scope_value: event.target.value,
+                        })
+                      }
+                    >
+                      <option value="ADVISORY_DRAFT">Advisory draft</option>
+                      <option value="REPORT_DRAFT">Report draft</option>
+                      <option value="EXTRACTION">Extraction</option>
+                      <option value="CHAT">Chat</option>
+                    </select>
+                  </label>
+                ) : shutdown.scope_kind === "DESTINATION" ? (
+                  <label>
+                    Provider destination
+                    <select value={shutdown.scope_value} disabled>
+                      <option value="openai-us">OpenAI US</option>
+                    </select>
+                  </label>
+                ) : (
+                  <label>
+                    Configuration ID (SHA-256)
+                    <input
+                      value={shutdown.scope_value}
+                      onChange={(event) =>
+                        setShutdown({
+                          ...shutdown,
+                          scope_value: event.target.value,
+                        })
+                      }
+                    />
+                  </label>
+                )}
+                {shutdown.action === "REENABLE" && (
+                  <>
+                    <label>
+                      Disabled shutdown event ID
+                      <input
+                        value={shutdown.disabled_event_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            disabled_event_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Fix evidence object ID
+                      <input
+                        value={shutdown.fix_evidence_object_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            fix_evidence_object_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Fix evidence revision ID
+                      <input
+                        value={shutdown.fix_evidence_revision_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            fix_evidence_revision_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await request(
+                          base +
+                            "ai-enablement/safety-shutdowns/" +
+                            shutdown.disabled_event_id +
+                            "/actions/approve-recovery",
+                          {
+                            method: "POST",
+                            body: JSON.stringify({
+                              fix_evidence_object_id:
+                                shutdown.fix_evidence_object_id,
+                              fix_evidence_revision_id:
+                                shutdown.fix_evidence_revision_id,
+                            }),
+                          },
+                        );
+                        setRecoveryApproval(
+                          "Independent regression approval recorded",
+                        );
+                      }}
+                    >
+                      Approve recovery independently
+                    </button>
+                    {recoveryApproval && (
+                      <p role="status">{recoveryApproval}</p>
+                    )}
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const result = await request(
+                      base + "ai-enablement/safety-shutdowns",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          scope_kind: shutdown.scope_kind,
+                          scope_value: shutdown.scope_value,
+                          action: shutdown.action,
+                          reason_category:
+                            shutdown.action === "REENABLE"
+                              ? "OTHER"
+                              : shutdown.reason_category,
+                          disabled_event_id: shutdown.disabled_event_id || null,
+                        }),
+                      },
+                    );
+                    setShutdownResult(result);
+                  }}
+                >
+                  {shutdown.action === "DISABLE"
+                    ? "Disable affected AI"
+                    : "Request re-enable"}
+                </button>
+                {shutdownResult && (
+                  <p role="status">
+                    {label(shutdownResult.state)} ·{" "}
+                    {shutdownResult.queued_jobs_stopped.length} queued stopped ·{" "}
+                    {shutdownResult.running_jobs_cancellation_requested.length}{" "}
+                    running cancellation requested ·{" "}
+                    {shutdownResult.affected_artifacts.length} artifacts listed.
+                    Manual workflows remain available.
+                  </p>
+                )}
+              </details>
             )}
             {advisory && (
               <section aria-labelledby="ai-advisory">

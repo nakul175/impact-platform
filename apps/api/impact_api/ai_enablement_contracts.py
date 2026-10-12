@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.35.0"
+VERSION = "1.36.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -21,6 +21,10 @@ IMPLEMENTED = [
     ("get", "ai-enablement/forecasts/{scenario_id}"),
     ("get", "ai-enablement/forecasts/{scenario_id}/export"),
     ("post", "ai-enablement/forecasts/{scenario_id}/versions/{version}/actions/request-adoption"),
+    ("post", "ai-enablement/safety-feedback"),
+    ("get", "ai-enablement/safety-shutdowns"),
+    ("post", "ai-enablement/safety-shutdowns"),
+    ("post", "ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -289,6 +293,178 @@ def augment(spec, policy):
             "targets_changed": {"const": False},
         }
     )
+    category = {
+        "enum": [
+            "SENSITIVE_CITATION",
+            "HARMFUL_CONTENT",
+            "UNSUPPORTED_CLAIM",
+            "UNAUTHORISED_ACTION",
+            "OTHER",
+        ]
+    }
+    schemas["AISafetyFeedbackRequest"] = closed(
+        {
+            "output_kind": {"enum": ["ADVISORY", "ADVISORY_JOB", "FORECAST"]},
+            "output_id": {"type": "string", "format": "uuid"},
+            "category": category,
+            "safe_detail": {"type": "string", "minLength": 1, "maxLength": 1000, "pattern": r"\S"},
+            "reviewer_id": {"type": "string", "format": "uuid"},
+        }
+    )
+    schemas["AISafetyFeedback"] = closed(
+        {
+            "feedback_id": {"type": "string", "format": "uuid"},
+            "output_kind": {"enum": ["ADVISORY", "ADVISORY_JOB", "FORECAST"]},
+            "output_id": {"type": "string", "format": "uuid"},
+            "category": category,
+            "reviewer_id": {"type": "string", "format": "uuid"},
+            "submitted_at": {"type": "string", "format": "date-time"},
+            "source_payload_retained": {"const": False},
+        }
+    )
+    schemas["AIShutdownRequest"] = closed(
+        {
+            "scope_kind": {"enum": ["USE_CASE", "CONFIGURATION", "DESTINATION"]},
+            "scope_value": {"type": "string", "minLength": 1, "maxLength": 300},
+            "action": {"enum": ["DISABLE", "REENABLE"]},
+            "reason_category": category,
+            "disabled_event_id": {"type": ["string", "null"], "format": "uuid"},
+        }
+    )
+    schemas["AIShutdownResult"] = closed(
+        {
+            "event_id": {"type": "string", "format": "uuid"},
+            "scope_kind": {"enum": ["USE_CASE", "CONFIGURATION", "DESTINATION"]},
+            "scope_value": {"type": "string"},
+            "state": {"enum": ["DISABLED", "ENABLED"]},
+            "queued_jobs_stopped": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+            "running_jobs_cancellation_requested": {
+                "type": "array",
+                "items": {"type": "string", "format": "uuid"},
+            },
+            "affected_artifacts": {"type": "array"},
+            "manual_workflows_enabled": {"const": True},
+            "source_payload_retained": {"const": False},
+            "occurred_at": {"type": "string", "format": "date-time"},
+        }
+    )
+    schemas["AIShutdownStatus"] = closed(
+        {
+            "shutdowns": {"type": "array"},
+            "affected_artifacts": {"type": "array"},
+            "manual_workflows_enabled": {"const": True},
+        }
+    )
+    schemas["AIRecoveryApprovalRequest"] = closed(
+        {
+            "fix_evidence_object_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_revision_id": {"type": "string", "format": "uuid"},
+        }
+    )
+    schemas["AIRecoveryApproval"] = closed(
+        {
+            "shutdown_event_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_object_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_revision_id": {"type": "string", "format": "uuid"},
+            "approved_by": {"type": "string", "format": "uuid"},
+            "state": {"const": "REGRESSION_APPROVED"},
+        }
+    )
+    safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
+    safety_ops = [
+        (
+            "post",
+            safety_base + "/safety-feedback",
+            "create_ai_safety_feedback",
+            "ai.advisory.request",
+            "AISafetyFeedbackRequest",
+            "AISafetyFeedback",
+            ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+        ),
+        (
+            "get",
+            safety_base + "/safety-shutdowns",
+            "get_ai_safety_shutdowns",
+            "ai.policy.manage",
+            None,
+            "AIShutdownStatus",
+            ["TENANT_ADMIN"],
+        ),
+        (
+            "post",
+            safety_base + "/safety-shutdowns",
+            "manage_ai_safety_shutdown",
+            "ai.policy.manage",
+            "AIShutdownRequest",
+            "AIShutdownResult",
+            ["TENANT_ADMIN"],
+        ),
+        (
+            "post",
+            safety_base + "/safety-shutdowns/{event_id}/actions/approve-recovery",
+            "approve_ai_safety_recovery",
+            "ai.policy.manage",
+            "AIRecoveryApprovalRequest",
+            "AIRecoveryApproval",
+            ["TENANT_ADMIN"],
+        ),
+    ]
+    for method, path, operation, capability, request, response, roles in safety_ops:
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": capability,
+            "x-contract-version": VERSION,
+            "responses": {
+                "200": {
+                    "description": "AI safety containment record",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{event_id}" in path:
+            parameters.append(
+                {
+                    "name": "event_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        node = spec["paths"].setdefault(path, {"parameters": parameters})
+        node[method] = entry
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": capability,
+                "role_templates": roles,
+                "purpose_required": False,
+                "fresh_assurance_seconds": 300
+                if operation in {"manage_ai_safety_shutdown", "approve_ai_safety_recovery"}
+                else None,
+                "audit": False,
+            }
+        )
     forecast_base = "/v1/tenants/{tenant_id}/ai-enablement/forecasts"
     forecast_ops = [
         ("post", forecast_base, "create_ai_forecast", "AIForecastRequest", "AIForecast"),

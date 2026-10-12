@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.88.0",
+    "version": "1.89.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46674,6 +46674,396 @@
         "x-contract-version": "1.17.0"
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/safety-feedback": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_safety_feedback",
+        "summary": "create ai safety feedback",
+        "x-capability": "ai.advisory.request",
+        "x-contract-version": "1.36.0",
+        "responses": {
+          "200": {
+            "description": "AI safety containment record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISafetyFeedback"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AISafetyFeedbackRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_ai_safety_shutdowns",
+        "summary": "get ai safety shutdowns",
+        "x-capability": "ai.policy.manage",
+        "x-contract-version": "1.36.0",
+        "responses": {
+          "200": {
+            "description": "AI safety containment record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIShutdownStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "manage_ai_safety_shutdown",
+        "summary": "manage ai safety shutdown",
+        "x-capability": "ai.policy.manage",
+        "x-contract-version": "1.36.0",
+        "responses": {
+          "200": {
+            "description": "AI safety containment record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIShutdownResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIShutdownRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "event_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "approve_ai_safety_recovery",
+        "summary": "approve ai safety recovery",
+        "x-capability": "ai.policy.manage",
+        "x-contract-version": "1.36.0",
+        "responses": {
+          "200": {
+            "description": "AI safety containment record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIRecoveryApproval"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIRecoveryApprovalRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/forecasts": {
       "parameters": [
         {
@@ -46690,7 +47080,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -46799,7 +47189,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -46898,7 +47288,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -46997,7 +47387,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -47078,7 +47468,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47179,7 +47569,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47290,7 +47680,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47391,7 +47781,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -47502,7 +47892,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -47622,7 +48012,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -47732,7 +48122,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.35.0",
+        "x-contract-version": "1.36.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -91542,6 +91932,237 @@
           },
           "targets_changed": {
             "const": false
+          }
+        },
+        "required": []
+      },
+      "AISafetyFeedbackRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "output_kind": {
+            "enum": [
+              "ADVISORY",
+              "ADVISORY_JOB",
+              "FORECAST"
+            ]
+          },
+          "output_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "category": {
+            "enum": [
+              "SENSITIVE_CITATION",
+              "HARMFUL_CONTENT",
+              "UNSUPPORTED_CLAIM",
+              "UNAUTHORISED_ACTION",
+              "OTHER"
+            ]
+          },
+          "safe_detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "pattern": "\\S"
+          },
+          "reviewer_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": []
+      },
+      "AISafetyFeedback": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "feedback_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "output_kind": {
+            "enum": [
+              "ADVISORY",
+              "ADVISORY_JOB",
+              "FORECAST"
+            ]
+          },
+          "output_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "category": {
+            "enum": [
+              "SENSITIVE_CITATION",
+              "HARMFUL_CONTENT",
+              "UNSUPPORTED_CLAIM",
+              "UNAUTHORISED_ACTION",
+              "OTHER"
+            ]
+          },
+          "reviewer_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_payload_retained": {
+            "const": false
+          }
+        },
+        "required": []
+      },
+      "AIShutdownRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "scope_kind": {
+            "enum": [
+              "USE_CASE",
+              "CONFIGURATION",
+              "DESTINATION"
+            ]
+          },
+          "scope_value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "action": {
+            "enum": [
+              "DISABLE",
+              "REENABLE"
+            ]
+          },
+          "reason_category": {
+            "enum": [
+              "SENSITIVE_CITATION",
+              "HARMFUL_CONTENT",
+              "UNSUPPORTED_CLAIM",
+              "UNAUTHORISED_ACTION",
+              "OTHER"
+            ]
+          },
+          "disabled_event_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": []
+      },
+      "AIShutdownResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope_kind": {
+            "enum": [
+              "USE_CASE",
+              "CONFIGURATION",
+              "DESTINATION"
+            ]
+          },
+          "scope_value": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "DISABLED",
+              "ENABLED"
+            ]
+          },
+          "queued_jobs_stopped": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "running_jobs_cancellation_requested": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "affected_artifacts": {
+            "type": "array"
+          },
+          "manual_workflows_enabled": {
+            "const": true
+          },
+          "source_payload_retained": {
+            "const": false
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": []
+      },
+      "AIShutdownStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "shutdowns": {
+            "type": "array"
+          },
+          "affected_artifacts": {
+            "type": "array"
+          },
+          "manual_workflows_enabled": {
+            "const": true
+          }
+        },
+        "required": []
+      },
+      "AIRecoveryApprovalRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fix_evidence_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fix_evidence_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": []
+      },
+      "AIRecoveryApproval": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "shutdown_event_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fix_evidence_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fix_evidence_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "approved_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "REGRESSION_APPROVED"
           }
         },
         "required": []

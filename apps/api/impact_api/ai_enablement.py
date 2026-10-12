@@ -15,6 +15,7 @@ from . import ai_policy
 from .ai_data_handling import prepare as prepare_transmission
 from .ai_execution_boundary import runtime_tools, untrusted_envelope
 from .ai_evaluation_gate import require_exposure
+from .ai_safety import require_available as require_safety_available
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
 from .ai_solutions_catalog import (
@@ -314,6 +315,9 @@ class AIEnablement:
                 DRAFT_LANGUAGE,
                 tools,
                 body["purpose"],
+            )
+            require_safety_available(
+                c, tenant, USE_CASE, self.provider.destination, self.provider.evaluation_configuration
             )
             minimized_profile, handling = prepare_transmission(
                 body["profile"], getattr(self.provider, "destination", None), body["purpose"]

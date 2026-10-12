@@ -116,6 +116,8 @@ def bootstrap(local, idp=None):
                 # Synthetic explicit diagnosis grants; no live membership or ceiling changes.
                 "ai.diagnosis.read",
                 "ai.diagnosis.manage",
+                "ai.diagnosis.contribute",
+                "ai.diagnosis.contributors.manage",
                 "ai.problem-baseline.read",
                 "ai.problem-baseline.manage",
                 "ai.advisory.request",

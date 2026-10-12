@@ -1,5 +1,5 @@
 {
-  "version": "1.33.0",
+  "version": "1.34.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6355,6 +6355,92 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "list_ai_diagnosis_contributor_invitations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_diagnosis_contributor_invitation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnosis_contributions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "submit_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions",
+      "capability": "ai.diagnosis.contribute",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "accept_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/accept",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "reject_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/reject",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
     },
     {
       "operation_id": "list_ai_problem_baselines",

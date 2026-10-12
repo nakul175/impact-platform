@@ -10,6 +10,9 @@ from impact_api.contracts import SPEC  # noqa: E402
 from impact_api.ai_enablement_contracts import IMPLEMENTED as AI_ENABLEMENT_ROUTES  # noqa: E402
 from impact_api.ai_adoption_contracts import IMPLEMENTED as AI_ADOPTION_ROUTES  # noqa: E402
 from impact_api.ai_diagnosis_contracts import IMPLEMENTED as AI_DIAGNOSIS_ROUTES  # noqa: E402
+from impact_api.ai_diagnosis_contribution_contracts import (  # noqa: E402
+    IMPLEMENTED as AI_DIAGNOSIS_CONTRIBUTION_ROUTES,
+)
 from impact_api.ai_problem_baseline_contracts import (  # noqa: E402
     IMPLEMENTED as AI_PROBLEM_BASELINE_ROUTES,
 )
@@ -82,6 +85,10 @@ spec = json.loads(json.dumps(SPEC))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ENABLEMENT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ADOPTION_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_DIAGNOSIS_ROUTES)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route)
+    for method, route in AI_DIAGNOSIS_CONTRIBUTION_ROUTES
+)
 allowed.update(
     (method, "/v1/tenants/{tenant_id}/" + route)
     for method, route in AI_PROBLEM_BASELINE_ROUTES

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.33.0",
+    "version": "1.34.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -44277,6 +44277,780 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations": {
+      "get": {
+        "operationId": "list_ai_diagnosis_contributor_invitations",
+        "summary": "list ai diagnosis contributor invitations",
+        "x-capability": "ai.diagnosis.contributors.manage",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContributorInvitationList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_ai_diagnosis_contributor_invitation",
+        "summary": "create ai diagnosis contributor invitation",
+        "x-capability": "ai.diagnosis.contributors.manage",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContributorInvitation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDiagnosisContributorInvitationCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions": {
+      "get": {
+        "operationId": "list_ai_diagnosis_contributions",
+        "summary": "list ai diagnosis contributions",
+        "x-capability": "ai.diagnosis.contributors.manage",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContributionList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "submit_ai_diagnosis_contribution",
+        "summary": "submit ai diagnosis contribution",
+        "x-capability": "ai.diagnosis.contribute",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContribution"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDiagnosisContributionSubmit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/accept": {
+      "post": {
+        "operationId": "accept_ai_diagnosis_contribution",
+        "summary": "accept ai diagnosis contribution",
+        "x-capability": "ai.diagnosis.contributors.manage",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "contribution_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContributionDecisionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDiagnosisContributionDecision"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/reject": {
+      "post": {
+        "operationId": "reject_ai_diagnosis_contribution",
+        "summary": "reject ai diagnosis contribution",
+        "x-capability": "ai.diagnosis.contributors.manage",
+        "x-contract-version": "1.34.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "contribution_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Governed assignment, contribution or immutable decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisContributionDecisionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDiagnosisContributionRejection"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines": {
       "get": {
         "operationId": "list_ai_problem_baselines",
@@ -76913,6 +77687,420 @@
           "object_id",
           "items",
           "next_cursor"
+        ]
+      },
+      "AIDiagnosisContributorInvitation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "member_invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contribution_role": {
+            "enum": [
+              "PROBLEM_OWNER",
+              "EVIDENCE_CONTRIBUTOR",
+              "PRIORITISATION_CONTRIBUTOR"
+            ]
+          },
+          "problem_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "PROBLEM_DESCRIPTION",
+                "AFFECTED_AREA",
+                "SUPPORTING_EVIDENCE",
+                "PRIORITY_ORDER"
+              ]
+            }
+          },
+          "delivery_state": {
+            "enum": [
+              "QUEUED",
+              "DELIVERED",
+              "FAILED",
+              "EXPIRED",
+              "REVOKED",
+              "ACCEPTED"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "assignment_id",
+          "diagnosis_id",
+          "diagnosis_revision",
+          "member_invitation_id",
+          "contribution_role",
+          "problem_ids",
+          "sections",
+          "delivery_state",
+          "created_at"
+        ]
+      },
+      "AIDiagnosisContributorInvitationCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "member_invitation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contribution_role": {
+            "enum": [
+              "PROBLEM_OWNER",
+              "EVIDENCE_CONTRIBUTOR",
+              "PRIORITISATION_CONTRIBUTOR"
+            ]
+          },
+          "problem_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "PROBLEM_DESCRIPTION",
+                "AFFECTED_AREA",
+                "SUPPORTING_EVIDENCE",
+                "PRIORITY_ORDER"
+              ]
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_diagnosis_revision",
+          "member_invitation_id",
+          "contribution_role",
+          "problem_ids",
+          "sections"
+        ]
+      },
+      "AIDiagnosisContributorInvitationList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisContributorInvitation"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "AIDiagnosisContributionProblemPatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string",
+                "maxLength": 1000
+              },
+              "affected_area": {
+                "type": "string",
+                "maxLength": 150
+              },
+              "supporting_evidence": {
+                "type": "string",
+                "maxLength": 4000
+              },
+              "evidence_references": {
+                "type": "array",
+                "maxItems": 5,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              }
+            },
+            "required": []
+          }
+        },
+        "required": [
+          "problem_id",
+          "fields"
+        ]
+      },
+      "AIDiagnosisContributionPatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem_updates": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisContributionProblemPatch"
+            }
+          },
+          "priority_order": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "problem_updates",
+          "priority_order"
+        ]
+      },
+      "AIDiagnosisContributionSubmit": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assignment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "patch": {
+            "$ref": "#/components/schemas/AIDiagnosisContributionPatch"
+          }
+        },
+        "required": [
+          "operation_id",
+          "assignment_id",
+          "expected_diagnosis_revision",
+          "patch"
+        ]
+      },
+      "AIDiagnosisContribution": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contribution_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assignment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "base_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contribution_role": {
+            "enum": [
+              "PROBLEM_OWNER",
+              "EVIDENCE_CONTRIBUTOR",
+              "PRIORITISATION_CONTRIBUTOR"
+            ]
+          },
+          "patch": {
+            "$ref": "#/components/schemas/AIDiagnosisContributionPatch"
+          },
+          "submitted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "decision": {
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "contribution_id",
+          "assignment_id",
+          "diagnosis_id",
+          "base_revision",
+          "contribution_role",
+          "patch",
+          "submitted_at",
+          "decision"
+        ]
+      },
+      "AIDiagnosisContributionList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIDiagnosisContribution"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "AIDiagnosisContributionDecision": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_diagnosis_revision"
+        ]
+      },
+      "AIDiagnosisContributionRejection": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_diagnosis_revision",
+          "reason"
+        ]
+      },
+      "AIDiagnosisContributionDecisionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contribution_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "ACCEPTED",
+              "REJECTED"
+            ]
+          },
+          "diagnosis_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "diagnosis_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "operation_id",
+          "contribution_id",
+          "decision",
+          "diagnosis_id",
+          "diagnosis_revision",
+          "saved_at"
         ]
       },
       "AIProblemBaselineMeasure": {

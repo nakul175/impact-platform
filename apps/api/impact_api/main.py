@@ -41,6 +41,7 @@ from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
 from .ai_diagnoses import AIDiagnoses
+from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_problem_baselines import AIProblemBaselines
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
@@ -115,6 +116,7 @@ def create_app():
     ai_ranking = AIRanking(service)
     ai_plans = AIAdoptionPlans(service)
     ai_diagnoses = AIDiagnoses(service)
+    ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
@@ -708,6 +710,90 @@ def create_app():
             request.state.correlation,
             uuid(obj),
             "revise",
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations")
+    def ai_diagnosis_contributor_invitations(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_contributions.list_invitations(
+            auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations",
+        status_code=201,
+    )
+    async def ai_diagnosis_contributor_invitation_create(
+        request: Request, tenant: str, obj: str
+    ):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributorInvitationCreate", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.create_invitation,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions")
+    def ai_diagnosis_contributions_list(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_contributions.list_contributions(
+            auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions",
+        status_code=201,
+    )
+    async def ai_diagnosis_contribution_submit(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionSubmit", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.submit,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/accept"
+    )
+    async def ai_diagnosis_contribution_accept(
+        request: Request, tenant: str, obj: str, contribution_id: str
+    ):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionDecision", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.decide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(contribution_id),
+            body,
+            request.state.correlation,
+            "ACCEPTED",
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/reject"
+    )
+    async def ai_diagnosis_contribution_reject(
+        request: Request, tenant: str, obj: str, contribution_id: str
+    ):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionRejection", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.decide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(contribution_id),
+            body,
+            request.state.correlation,
+            "REJECTED",
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines")

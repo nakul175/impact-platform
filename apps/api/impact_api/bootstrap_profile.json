@@ -7,6 +7,8 @@
       "access-scopes.create",
       "access-scopes.read",
       "ai.advisory.request",
+      "ai.diagnosis.contribute",
+      "ai.diagnosis.contributors.manage",
       "ai.diagnosis.manage",
       "ai.diagnosis.read",
       "ai.enablement.export",
@@ -51,6 +53,8 @@
     ],
     "MEL_ADMIN": [
       "ai.advisory.request",
+      "ai.diagnosis.contribute",
+      "ai.diagnosis.contributors.manage",
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",
@@ -132,6 +136,7 @@
       "workflows.read"
     ],
     "AUTHOR": [
+      "ai.diagnosis.contribute",
       "ai.enablement.read",
       "assignments.read",
       "calculated-results.read",
@@ -212,6 +217,7 @@
       "workflows.read"
     ],
     "REVIEWER": [
+      "ai.diagnosis.contribute",
       "ai.enablement.read",
       "assignments.read",
       "calculated-results.read",
@@ -255,6 +261,8 @@
     ],
     "PROGRAMME_MANAGER": [
       "ai.advisory.request",
+      "ai.diagnosis.contribute",
+      "ai.diagnosis.contributors.manage",
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",

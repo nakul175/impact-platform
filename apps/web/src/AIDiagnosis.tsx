@@ -225,6 +225,267 @@ function completionErrors(data: DiagnosisDraft): string[] {
   return errors;
 }
 
+type ContributorAssignment = {
+  assignment_id: string;
+  member_invitation_id: string;
+  contribution_role: string;
+  delivery_state: string;
+  problem_ids: string[];
+  sections: string[];
+};
+type DiagnosisContribution = {
+  contribution_id: string;
+  assignment_id: string;
+  contribution_role: string;
+  decision: "PENDING" | "ACCEPTED" | "REJECTED";
+  patch: unknown;
+};
+
+function DiagnosisCollaboration({
+  endpoint,
+  diagnosis,
+  problems,
+  request,
+  explain,
+  canManage,
+  canContribute,
+  refresh,
+}: {
+  endpoint: string;
+  diagnosis: Diagnosis;
+  problems: DiagnosisProblem[];
+  request: Props["request"];
+  explain: Props["explain"];
+  canManage: boolean;
+  canContribute: boolean;
+  refresh: () => void;
+}) {
+  const root = `${endpoint}/${diagnosis.object_id}`;
+  const [assignments, setAssignments] = useState<ContributorAssignment[]>([]);
+  const [contributions, setContributions] = useState<DiagnosisContribution[]>(
+    [],
+  );
+  const [invitationId, setInvitationId] = useState("");
+  const [assignmentId, setAssignmentId] = useState("");
+  const [role, setRole] = useState("PROBLEM_OWNER");
+  const [description, setDescription] = useState("");
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState(false);
+  const sections: Record<string, string[]> = {
+    PROBLEM_OWNER: ["PROBLEM_DESCRIPTION", "AFFECTED_AREA"],
+    EVIDENCE_CONTRIBUTOR: ["SUPPORTING_EVIDENCE"],
+    PRIORITISATION_CONTRIBUTOR: ["PRIORITY_ORDER"],
+  };
+  async function load() {
+    if (!canManage) return;
+    try {
+      const [assignmentPage, contributionPage] = await Promise.all([
+        request(root + "/contributor-invitations"),
+        request(root + "/contributions"),
+      ]);
+      setAssignments(
+        Array.isArray(assignmentPage?.items) ? assignmentPage.items : [],
+      );
+      setContributions(
+        Array.isArray(contributionPage?.items) ? contributionPage.items : [],
+      );
+    } catch (cause) {
+      setMessage(explain(cause));
+    }
+  }
+  useEffect(() => {
+    void load();
+  }, [diagnosis.revision_id, canManage]);
+  async function createAssignment() {
+    if (!UUID.test(invitationId) || busy) return;
+    setBusy(true);
+    try {
+      await request(root + "/contributor-invitations", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_diagnosis_revision: diagnosis.revision_id,
+          member_invitation_id: invitationId.toLowerCase(),
+          contribution_role: role,
+          problem_ids: problems.map((problem) => problem.problem_id),
+          sections: sections[role],
+        }),
+      });
+      setInvitationId("");
+      setMessage(
+        "Contributor scope saved against the existing member invitation.",
+      );
+      await load();
+    } catch (cause) {
+      setMessage(explain(cause));
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function submitContribution() {
+    if (!UUID.test(assignmentId) || !problems[0] || busy) return;
+    setBusy(true);
+    try {
+      await request(root + "/contributions", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          assignment_id: assignmentId.toLowerCase(),
+          expected_diagnosis_revision: diagnosis.revision_id,
+          patch: {
+            problem_updates: description.trim()
+              ? [
+                  {
+                    problem_id: problems[0].problem_id,
+                    fields: { description },
+                  },
+                ]
+              : [],
+            priority_order: null,
+          },
+        }),
+      });
+      setDescription("");
+      setMessage("Contribution submitted for lead review.");
+    } catch (cause) {
+      setMessage(explain(cause));
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function decide(
+    item: DiagnosisContribution,
+    decision: "accept" | "reject",
+  ) {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await request(
+        `${root}/contributions/${item.contribution_id}/actions/${decision}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            operation_id: crypto.randomUUID(),
+            expected_diagnosis_revision: diagnosis.revision_id,
+            ...(decision === "reject"
+              ? { reason: "Lead declined this scoped proposal." }
+              : {}),
+          }),
+        },
+      );
+      setMessage(
+        decision === "accept"
+          ? "Contribution merged into this diagnosis."
+          : "Contribution rejected.",
+      );
+      await load();
+      refresh();
+    } catch (cause) {
+      setMessage(explain(cause));
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <section aria-label="Diagnosis contributors">
+      <h4>Diagnosis contributors</h4>
+      <p className="muted">
+        Contributors propose scoped changes. A lead merges an exact-version
+        proposal into this diagnosis.
+      </p>
+      {message && <p role="status">{message}</p>}
+      {canManage && (
+        <>
+          <label>
+            Existing member invitation ID
+            <input
+              value={invitationId}
+              onChange={(event) => setInvitationId(event.target.value)}
+            />
+          </label>
+          <label>
+            Contribution role
+            <select
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <option>PROBLEM_OWNER</option>
+              <option>EVIDENCE_CONTRIBUTOR</option>
+              <option>PRIORITISATION_CONTRIBUTOR</option>
+            </select>
+          </label>
+          <button
+            type="button"
+            disabled={busy || !problems.length || !UUID.test(invitationId)}
+            onClick={() => void createAssignment()}
+          >
+            Add contributor
+          </button>
+          <ul>
+            {assignments.map((item) => (
+              <li key={item.assignment_id}>
+                {item.contribution_role} · {item.delivery_state} ·{" "}
+                {item.assignment_id}
+              </li>
+            ))}
+          </ul>
+          <ul>
+            {contributions.map((item) => (
+              <li key={item.contribution_id}>
+                {item.contribution_role} · {item.decision}
+                {item.decision === "PENDING" && (
+                  <span className="ai-actions">
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void decide(item, "accept")}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void decide(item, "reject")}
+                    >
+                      Reject
+                    </button>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {canContribute && (
+        <>
+          <label>
+            Your assignment ID
+            <input
+              value={assignmentId}
+              onChange={(event) => setAssignmentId(event.target.value)}
+            />
+          </label>
+          <label>
+            Proposed description for the first assigned problem
+            <textarea
+              maxLength={1000}
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+            />
+          </label>
+          <button
+            type="button"
+            disabled={busy || !description.trim() || !UUID.test(assignmentId)}
+            onClick={() => void submitContribution()}
+          >
+            Submit proposal
+          </button>
+        </>
+      )}
+    </section>
+  );
+}
+
 // A scope or capability change remounts all ephemeral data immediately, before an effect can run.
 // The server still resolves current authority for every read, write and receipt replay.
 export function AIDiagnosisPanel(props: Props) {
@@ -1033,6 +1294,20 @@ function DiagnosisWorkspace({
                 : ""}
               {dirty ? " · unsaved changes" : ""}
             </p>
+          )}
+          {head && head.business_state === "Draft" && (
+            <DiagnosisCollaboration
+              endpoint={endpoint}
+              diagnosis={head}
+              problems={draft.problems}
+              request={guardedRequest}
+              explain={explain}
+              canManage={capabilities.includes(
+                "ai.diagnosis.contributors.manage",
+              )}
+              canContribute={capabilities.includes("ai.diagnosis.contribute")}
+              refresh={() => void selectDiagnosis(head.object_id)}
+            />
           )}
           {(canManage || head) && (
             <>

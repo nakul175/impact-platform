@@ -153,7 +153,7 @@ def create_app():
     service_packages = ServicePackages(service)
     tax_invoicing = TaxInvoicing(service)
     agreement_coverage = AgreementCoverage(service)
-    ai_trials = AITrials(service)
+    ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     partner_revenue = PartnerRevenue(lifecycle)
@@ -1850,6 +1850,16 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/trials/{trial_id}/results", status_code=201)
+    async def ai_trial_result_create(request: Request, tenant: str, trial_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(ai_trials.record_result, auth.resolve(request), uuid(tenant), str(uuid(trial_id)), body, request.state.correlation)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/from-trial", status_code=201)
+    async def ai_value_case_from_trial(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(ai_trials.build_value_case, auth.resolve(request), uuid(tenant), body, request.state.correlation)
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

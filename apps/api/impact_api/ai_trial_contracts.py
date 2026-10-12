@@ -6,7 +6,12 @@ from .measurement_contracts import closed
 VERSION = "1.70.0"
 UUID = {"type": "string", "format": "uuid"}
 ROUTE = "ai-enablement/trials"
-IMPLEMENTED = [("get", ROUTE), ("post", ROUTE)]
+IMPLEMENTED = [
+    ("get", ROUTE),
+    ("post", ROUTE),
+    ("post", ROUTE + "/{trial_id}/results"),
+    ("post", "ai-enablement/value-cases/from-trial"),
+]
 
 
 def augment(spec, policy):
@@ -74,6 +79,37 @@ def augment(spec, policy):
         {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/components/schemas/AITrial"}}},
         ["items"],
     )
+    source = {"$ref": "#/components/schemas/AIValueCaseSource"}
+    result_create = {
+        "operation_id": deepcopy(UUID),
+        "trial_source": source,
+        "evidence_reference": {"oneOf": [reference, {"type": "null"}]},
+    }
+    s["AITrialResultCreate"] = closed(result_create, list(result_create))
+    result = {
+        "result_id": deepcopy(UUID),
+        "trial_id": deepcopy(UUID),
+        "opportunity_id": common["opportunity_id"],
+        "trial_source": source,
+        "evidence_reference": result_create["evidence_reference"],
+        "recorded_at": {"type": "string", "format": "date-time"},
+    }
+    s["AITrialResult"] = closed(result, list(result))
+    from_trial = {
+        "operation_id": deepcopy(UUID),
+        "trial_id": deepcopy(UUID),
+        "horizon_years": {"type": "integer", "enum": [1, 2, 3]},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "baseline": source,
+        "costs": {"$ref": "#/components/schemas/AIValueCaseCostInput"},
+        "assumptions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {"type": "string", "minLength": 1, "maxLength": 500},
+        },
+    }
+    s["AIValueCaseFromTrialCreate"] = closed(from_trial, list(from_trial))
     path = "/v1/tenants/{tenant_id}/" + ROUTE
     params = [{"name": "tenant_id", "in": "path", "required": True, "schema": deepcopy(UUID)}]
     spec["paths"][path] = {
@@ -101,6 +137,28 @@ def augment(spec, policy):
             "AITrial",
             params,
         ),
+    }
+    trial_result_path = path + "/{trial_id}/results"
+    spec["paths"][trial_result_path] = {
+        "post": _operation(
+            "record_ai_trial_result",
+            "Record immutable completed-trial results",
+            "ai.solution-fit.score",
+            "AITrialResultCreate",
+            "AITrialResult",
+            params + [{"name": "trial_id", "in": "path", "required": True, "schema": deepcopy(UUID)}],
+        )
+    }
+    from_trial_path = "/v1/tenants/{tenant_id}/ai-enablement/value-cases/from-trial"
+    spec["paths"][from_trial_path] = {
+        "post": _operation(
+            "create_ai_value_case_from_trial",
+            "Build a value case from the matching recorded trial",
+            "ai.value-case.manage",
+            "AIValueCaseFromTrialCreate",
+            "AIValueCaseVersionReceipt",
+            params,
+        )
     }
     policy["operations"].extend(
         [
@@ -136,6 +194,30 @@ def augment(spec, policy):
             },
         ]
     )
+    policy["operations"].extend(
+        [
+            {
+                "operation_id": "record_ai_trial_result",
+                "method": "POST",
+                "path": trial_result_path,
+                "capability": "ai.solution-fit.score",
+                "role_templates": ["REVIEWER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": 300,
+                "audit": True,
+            },
+            {
+                "operation_id": "create_ai_value_case_from_trial",
+                "method": "POST",
+                "path": from_trial_path,
+                "capability": "ai.value-case.manage",
+                "role_templates": ["TENANT_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": True,
+            },
+        ]
+    )
 
 
 def _operation(operation_id, summary, capability, request, response, parameters):
@@ -146,7 +228,7 @@ def _operation(operation_id, summary, capability, request, response, parameters)
         "x-contract-version": VERSION,
         "parameters": parameters,
         "responses": {
-            "200": {
+            "201" if request else "200": {
                 "description": "Success",
                 "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
             }

@@ -5,14 +5,16 @@ from uuid import uuid4
 from psycopg.types.json import Jsonb
 from .ai_diagnosis_evidence import resolve_references
 from .ai_solution_fit_scores import AISolutionFitScores
+from .ai_value_case import validate_value_case
 from .contracts import validate
 from .domain import DomainError
 from .store import audit, authorize, context, hash_data
 
 
 class AITrials:
-    def __init__(self, service):
+    def __init__(self, service, value_cases):
         self.service = service
+        self.value_cases = value_cases
 
     @staticmethod
     def _result(row, today=None):
@@ -156,3 +158,117 @@ class AITrials:
                         continue
                 items.append(self._result(row, today))
             return {"items": items}
+
+    def record_result(self, identity, tenant, trial_id, body, correlation):
+        validate("AITrialResultCreate", body)
+        name = "record_ai_trial_result"
+        fingerprint = hash_data([name, trial_id, body])
+        with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            ctx = context(c, identity, tenant, write=True)
+            authorize(c, ctx, name, hidden=True)
+            now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
+            old = c.execute(
+                "SELECT * FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                (tenant, ctx.principal_id, name, body["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != fingerprint:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= now:
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                return old["outcome"]
+            trial = c.execute(
+                "SELECT * FROM impact.ai_option_trial WHERE tenant_id=%s AND trial_id=%s FOR SHARE",
+                (tenant, trial_id),
+            ).fetchone()
+            if not trial or trial["ends_on"] > now.date():
+                raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            existing = c.execute(
+                "SELECT 1 FROM impact.ai_trial_result WHERE tenant_id=%s AND trial_id=%s",
+                (tenant, trial_id),
+            ).fetchone()
+            if existing:
+                raise DomainError("STATE_TRANSITION_DENIED", 409, reason="TRIAL_RESULT_ALREADY_RECORDED")
+            evidence = body.get("evidence_reference")
+            if evidence:
+                resolve_references(c, identity, tenant, [evidence])
+            result_id = str(uuid4())
+            c.execute(
+                "INSERT INTO impact.ai_trial_result VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                    tenant,
+                    result_id,
+                    trial_id,
+                    trial["opportunity_id"],
+                    Jsonb(body["trial_source"]),
+                    evidence["object_id"] if evidence else None,
+                    evidence["revision_id"] if evidence else None,
+                    ctx.principal_id,
+                    now,
+                ),
+            )
+            outcome = {
+                "result_id": result_id,
+                "trial_id": trial_id,
+                "opportunity_id": trial["opportunity_id"],
+                "trial_source": body["trial_source"],
+                "evidence_reference": evidence,
+                "recorded_at": now.isoformat(),
+            }
+            audit(c, ctx, name, {"object_id": result_id, "business_state": "Recorded"}, correlation)
+            c.execute(
+                "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
+                (
+                    tenant,
+                    ctx.principal_id,
+                    name,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(outcome),
+                    now + timedelta(days=7),
+                ),
+            )
+            return outcome
+
+    def build_value_case(self, identity, tenant, body, correlation):
+        validate("AIValueCaseFromTrialCreate", body)
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, "get_ai_value_case_version", hidden=True)
+            row = c.execute(
+                "SELECT r.* FROM impact.ai_trial_result r WHERE r.tenant_id=%s AND r.trial_id=%s",
+                (tenant, body["trial_id"]),
+            ).fetchone()
+            if not row:
+                raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            evidence = (
+                {"object_id": str(row["evidence_object_id"]), "revision_id": str(row["evidence_revision_id"])}
+                if row["evidence_object_id"]
+                else None
+            )
+            if evidence:
+                resolve_references(c, identity, tenant, [evidence])
+            value_case = {
+                "opportunity_id": row["opportunity_id"],
+                "horizon_years": body["horizon_years"],
+                "currency": body["currency"],
+                "baseline": body["baseline"],
+                "trial": row["result_source"],
+                "costs": body["costs"],
+                "assumptions": body["assumptions"],
+            }
+            validate_value_case(value_case)
+            reference = {
+                "trial_id": str(row["trial_id"]),
+                "result_id": str(row["result_id"]),
+                "opportunity_id": row["opportunity_id"],
+                "evidence_reference": evidence,
+            }
+        return self.value_cases.command(
+            identity,
+            tenant,
+            {"operation_id": body["operation_id"], "value_case": value_case},
+            correlation,
+            trial_result_reference=reference,
+        )

@@ -117,9 +117,11 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.solution-fit.score` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/trials/{trial_id}/results` | `ai.solution-fit.score` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case/export` | `ai.enablement.export` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases` | `ai.value-case.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/from-trial` | `ai.value-case.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}` | `ai.value-case.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/approve` | `ai.value-case.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock` | `ai.value-case.manage` |

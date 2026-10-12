@@ -54,6 +54,28 @@ def augment(spec, policy):
         "baseline_revision": {"oneOf": [deepcopy(uid), {"type": "null"}]},
         "approved_at": {"type": ["string", "null"], "format": "date-time"},
         "approved_by": {"oneOf": [deepcopy(uid), {"type": "null"}]},
+        "trial_result_reference": {
+            "oneOf": [
+                closed(
+                    {
+                        "trial_id": deepcopy(uid),
+                        "result_id": deepcopy(uid),
+                        "opportunity_id": {"type": "string", "minLength": 1, "maxLength": 120},
+                        "evidence_reference": {
+                            "oneOf": [
+                                closed(
+                                    {"object_id": deepcopy(uid), "revision_id": deepcopy(uid)},
+                                    ["object_id", "revision_id"],
+                                ),
+                                {"type": "null"},
+                            ]
+                        },
+                    },
+                    ["trial_id", "result_id", "opportunity_id", "evidence_reference"],
+                ),
+                {"type": "null"},
+            ]
+        },
         "value_case": {"$ref": "#/components/schemas/AIValueCase"},
     }
     schemas["AIValueCaseVersion"] = closed(result, list(result))

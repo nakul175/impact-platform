@@ -926,5 +926,24 @@
     "contract_version": "1.70.0",
     "draft_schema": "AITrialCreate",
     "output_schema": "AITrial"
+  },
+  {
+    "entity": "AITrialResult",
+    "route": "ai-enablement/trials/{trial_id}/results",
+    "owner": "C09",
+    "fsd_id": "US-AS-03",
+    "fields": "result_id:uuid trial_id:uuid opportunity_id:code trial_source:AIValueCaseSource evidence_reference:selector recorded_at:datetime",
+    "source_required_fields": "Completed tenant trial and one complete self-reported trial source; optional currently permitted exact Evidence revision",
+    "invariant": "One immutable result per trial; opportunity is copied from the trial and value-case reuse injects both opportunity and source server-side.",
+    "server_owned": [
+      "result_id",
+      "opportunity_id",
+      "recorded_by",
+      "recorded_at"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.71.0",
+    "draft_schema": "AITrialResultCreate",
+    "output_schema": "AITrialResult"
   }
 ]

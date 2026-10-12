@@ -7,6 +7,7 @@ from uuid import UUID
 from psycopg.types.json import Jsonb
 
 from .ai_value_case import calculate_value_case
+from .ai_diagnosis_evidence import resolve_references
 from .domain import DomainError
 from .store import audit, authorize, context, hash_data, load, write
 
@@ -48,6 +49,7 @@ def _result(object_id, revision_id, payload):
         "baseline_revision": str(revision_id) if state == "Locked" else payload["locked_baseline_revision"],
         "approved_at": payload["approved_at"],
         "approved_by": payload["approved_by"],
+        "trial_result_reference": deepcopy(payload.get("trial_result_reference")),
         "value_case": deepcopy(payload["value_case"]),
     }
 
@@ -73,7 +75,9 @@ class AIValueCaseVersions:
             payload = current["payload"] if revision_id is None else _revision(c, tenant, object_id, selected)
             return _result(object_id, selected, payload)
 
-    def command(self, identity, tenant, body, correlation, object_id=None, action=None):
+    def command(
+        self, identity, tenant, body, correlation, object_id=None, action=None, trial_result_reference=None
+    ):
         if action not in (None, "approve", "lock", "revise") or (action and not object_id):
             _invalid()
         required = {"operation_id"}
@@ -93,12 +97,14 @@ class AIValueCaseVersions:
             "lock": "lock_ai_value_case_baseline",
             "revise": "revise_ai_value_case",
         }[action]
-        fingerprint = hash_data([operation, object_id, body])
+        fingerprint = hash_data([operation, object_id, body, trial_result_reference])
         with self.service.db.transaction(tenant) as c:
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
             ctx = context(c, identity, tenant, write=True)
             authorize(c, ctx, operation, hidden=True)
             authorize(c, ctx, "get_ai_value_case_version", hidden=True)
+            if trial_result_reference and trial_result_reference.get("evidence_reference"):
+                resolve_references(c, identity, tenant, [trial_result_reference["evidence_reference"]])
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,1))", (body["operation_id"],))
             observed = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
             old = c.execute(
@@ -115,6 +121,11 @@ class AIValueCaseVersions:
                 _revision(c, tenant, old["outcome"]["object_id"], old["outcome"]["revision_id"])
                 return old["outcome"]
             previous = load(c, ctx, object_id, KIND, READ_CAP, lock=True) if object_id else None
+            inherited_trial_reference = (
+                previous["payload"].get("trial_result_reference") if previous else None
+            )
+            if inherited_trial_reference and inherited_trial_reference.get("evidence_reference"):
+                resolve_references(c, identity, tenant, [inherited_trial_reference["evidence_reference"]])
             if previous and str(previous["head_revision"]) != body["expected_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
             if action is None:
@@ -125,6 +136,7 @@ class AIValueCaseVersions:
                     "draft_author_natural_id": str(ctx.identity.natural_identity_id),
                     "approved_at": None,
                     "approved_by": None,
+                    "trial_result_reference": deepcopy(trial_result_reference),
                     "value_case": result,
                 }
                 state = "Draft"
@@ -160,6 +172,11 @@ class AIValueCaseVersions:
                     "draft_author_natural_id": str(ctx.identity.natural_identity_id),
                     "approved_at": None,
                     "approved_by": None,
+                    "trial_result_reference": deepcopy(
+                        trial_result_reference
+                        if trial_result_reference is not None
+                        else previous["payload"].get("trial_result_reference")
+                    ),
                     "value_case": result,
                 }
                 state = "Draft"

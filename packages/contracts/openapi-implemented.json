@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.70.0",
+    "version": "1.71.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -25573,7 +25573,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -25590,6 +25590,97 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AITrialCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/trials/{trial_id}/results": {
+      "post": {
+        "operationId": "record_ai_trial_result",
+        "summary": "Record immutable completed-trial results",
+        "x-capability": "ai.solution-fit.score",
+        "x-contract-version": "1.70.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "trial_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AITrialResult"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AITrialResultCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/from-trial": {
+      "post": {
+        "operationId": "create_ai_value_case_from_trial",
+        "summary": "Build a value case from the matching recorded trial",
+        "x-capability": "ai.value-case.manage",
+        "x-contract-version": "1.70.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersionReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseFromTrialCreate"
               }
             }
           }
@@ -67136,6 +67227,159 @@
           "items"
         ]
       },
+      "AITrialResultCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trial_source": {
+            "$ref": "#/components/schemas/AIValueCaseSource"
+          },
+          "evidence_reference": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "object_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "object_id",
+                  "revision_id"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "trial_source",
+          "evidence_reference"
+        ]
+      },
+      "AITrialResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trial_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "trial_source": {
+            "$ref": "#/components/schemas/AIValueCaseSource"
+          },
+          "evidence_reference": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "object_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "object_id",
+                  "revision_id"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "result_id",
+          "trial_id",
+          "opportunity_id",
+          "trial_source",
+          "evidence_reference",
+          "recorded_at"
+        ]
+      },
+      "AIValueCaseFromTrialCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trial_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "horizon_years": {
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/AIValueCaseSource"
+          },
+          "costs": {
+            "$ref": "#/components/schemas/AIValueCaseCostInput"
+          },
+          "assumptions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "trial_id",
+          "horizon_years",
+          "currency",
+          "baseline",
+          "costs",
+          "assumptions"
+        ]
+      },
       "MeasurementChangeData": {
         "oneOf": [
           {
@@ -81559,6 +81803,63 @@
               }
             ]
           },
+          "trial_result_reference": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "trial_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "result_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "opportunity_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                  },
+                  "evidence_reference": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "object_id",
+                          "revision_id"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "trial_id",
+                  "result_id",
+                  "opportunity_id",
+                  "evidence_reference"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "value_case": {
             "$ref": "#/components/schemas/AIValueCase"
           }
@@ -81570,6 +81871,7 @@
           "baseline_revision",
           "approved_at",
           "approved_by",
+          "trial_result_reference",
           "value_case"
         ]
       },
@@ -81621,6 +81923,63 @@
               }
             ]
           },
+          "trial_result_reference": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "trial_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "result_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "opportunity_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                  },
+                  "evidence_reference": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "object_id",
+                          "revision_id"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "trial_id",
+                  "result_id",
+                  "opportunity_id",
+                  "evidence_reference"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "operation_id": {
             "type": "string",
             "format": "uuid"
@@ -81641,6 +82000,7 @@
           "baseline_revision",
           "approved_at",
           "approved_by",
+          "trial_result_reference",
           "operation_id",
           "correlation_id",
           "saved_at"

@@ -6974,3 +6974,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0072_ai_option_trials.sql | cdf1e2936d220d8f612d30f823425ddab05a9dc2622085915f653e1422b12ebf |
+
+
+## Migration0073 — opportunity-bound trial results (local0.81 coding candidate)
+
+`0073_ai_trial_results.sql` SHA256 `fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118`. Schema73 stores one immutable result per completed advisor-led trial, pins its opportunity and optional exact governed Evidence revision, and exposes no update/delete grant. The value-case-from-trial command selects this server-owned result by trial, supplies its opportunity and trial source without manual re-entry, and records the exact result pointer in the immutable value-case revision. Cross-opportunity substitution is structurally unavailable. All0001–0072 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0073_ai_trial_results.sql | fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118 |

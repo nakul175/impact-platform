@@ -1,5 +1,5 @@
 {
-  "version": "1.70.0",
+  "version": "1.71.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5536,6 +5536,30 @@
       "fresh_assurance_seconds": 300,
       "audit": true,
       "state_guard": "Current natural-person advisor; option is catalogue-mapped; own data is one currently authorised exact Evidence revision or the fixed synthetic sample; duration is1-28days and immutable."
+    },
+    {
+      "operation_id": "record_ai_trial_result",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials/{trial_id}/results",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "create_ai_value_case_from_trial",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/from-trial",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "list_measurement_changes",

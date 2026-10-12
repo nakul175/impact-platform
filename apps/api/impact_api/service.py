@@ -374,6 +374,21 @@ class Service:
                 "lineage-manifests.read",
             )
             data = manifest["payload"]
+            required_manifest = {
+                "execution_id",
+                "indicator_id",
+                "indicator_revision",
+                "definition_revision",
+                "period_id",
+                "source_revisions",
+                "formula",
+                "filters",
+                "contributions",
+            }
+            if not required_manifest <= set(data):
+                raise DomainError(
+                    "INCOMPATIBLE_MEASURE", reason="REPRODUCTION_MANIFEST_UNSUPPORTED"
+                )
             indicator = revision(
                 c, ctx, data["indicator_revision"], "IndicatorInstance", "indicator-instances.read"
             )

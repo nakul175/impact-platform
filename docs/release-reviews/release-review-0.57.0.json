@@ -328,6 +328,27 @@
       ],
       "summary": "Follow-up correction serializes the reproduction bundle with tenant writes and rechecks current authority for an optional frozen collection-plan revision before exposing arithmetic inputs.",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.57-04",
+      "change_id": "FR-CAL-001-reproduction-legacy-and-draft-safety",
+      "paths": [
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "nullable excluded-draft provenance",
+        "bounded legacy-manifest refusal"
+      ],
+      "threats": [
+        "TH22",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Follow-up correction preserves absent draft approval/value states as null in reproduction output and refuses pre-provenance manifests with a bounded domain error instead of indexing missing immutable-history fields.",
+      "confirmed_by": null
     }
   ],
   "evidence": [

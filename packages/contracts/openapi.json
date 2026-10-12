@@ -73948,11 +73948,17 @@
                   "additionalProperties": false,
                   "properties": {
                     "approval_state": {
-                      "type": "string",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "maxLength": 64
                     },
                     "value_state": {
-                      "type": "string",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "maxLength": 64
                     },
                     "value": {

@@ -142,8 +142,8 @@ def augment(spec, policy):
                         "reason_code": text(64),
                         "arithmetic_input": closed(
                             {
-                                "approval_state": {"type": "string", "maxLength": 64},
-                                "value_state": {"type": "string", "maxLength": 64},
+                                "approval_state": {"type": ["string", "null"], "maxLength": 64},
+                                "value_state": {"type": ["string", "null"], "maxLength": 64},
                                 "value": NUMBER,
                                 "numerator": NUMBER,
                                 "denominator": NUMBER,

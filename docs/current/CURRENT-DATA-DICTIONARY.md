@@ -6956,3 +6956,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0070_local_currency_tax_invoices.sql | dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9 |
+
+
+## Migration0071 — organisation agreement coverage (local0.79 coding candidate)
+
+`0071_organisation_agreement_coverage.sql` SHA256 `e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69`. Schema71 adds immutable tenant agreement revisions, one current master-agreement/DPA pointer and per-deployment coverage pinned to the exact agreement revision. New deployment attestations record master-agreement flow-down and server-owned false separate-contract/DPA flags in the same tenant-locked transaction. Tenant tables use composite tenant keys and forced RLS. All0001–0070 remain byte-exact. Candidate is untested, unmerged and undeployed; references and authorised confirmation are records, not legal approval.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0071_organisation_agreement_coverage.sql | e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69 |

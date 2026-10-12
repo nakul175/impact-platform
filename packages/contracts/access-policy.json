@@ -1,5 +1,5 @@
 {
-  "version": "1.68.0",
+  "version": "1.69.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5477,6 +5477,33 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "configure_organisation_agreement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/agreements",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
+    },
+    {
+      "operation_id": "read_organisation_agreements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/agreements",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
     },
     {
       "operation_id": "list_measurement_changes",

@@ -12,6 +12,7 @@ from .ai_enablement_catalog import validate_profile
 from .ai_learning_content import LEGACY_LESSON_ALIASES, canonical_lesson_key, lesson_keys
 from .ai_solutions_catalog import CONTENT_VERSION as SOLUTIONS_VERSION
 from .ai_solutions_catalog import SOLUTION_IDS
+from .agreement_coverage import record_deployment_coverage
 from .domain import DomainError
 from .store import audit, authorize, context, hash_data, load, visible_sql, write
 
@@ -674,6 +675,15 @@ class AIAdoptionPlans:
                 raise DomainError("STATE_TRANSITION_DENIED", 409, reason="SELECTED_SOLUTION_REQUIRED")
             if previous["payload"].get("training_deployment"):
                 raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_ALREADY_ATTESTED")
+            agreement_revision_id = record_deployment_coverage(
+                c,
+                tenant,
+                object_id,
+                body["operation_id"],
+                body["solution_id"],
+                ctx.principal_id,
+                now,
+            )
             payload = deepcopy(previous["payload"])
             payload["training_deployment"] = {
                 "attestation_id": str(UUID(body["operation_id"])),
@@ -682,6 +692,7 @@ class AIAdoptionPlans:
                 "deployment_reference": body["deployment_reference"].strip(),
                 "attested_by": ctx.principal_id,
                 "attested_at": now.isoformat(),
+                "agreement_revision_id": agreement_revision_id,
             }
             receipt = write(c, ctx, KIND, payload, "Completed", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)

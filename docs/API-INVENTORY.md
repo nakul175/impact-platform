@@ -23,6 +23,8 @@
 | GET | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}` | `calculated-results.read` |
 | PATCH | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}/actions/submit` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/agreements` | `subscriptions.read` |
+| POST | `/v1/tenants/{tenant_id}/agreements` | `subscription.admin` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |

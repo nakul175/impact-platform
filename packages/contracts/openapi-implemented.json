@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.68.0",
+    "version": "1.69.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -25450,6 +25450,65 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CommercialInvoiceIssued"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/agreements": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "configure_organisation_agreement",
+        "summary": "Record one master agreement and DPA bundle",
+        "x-capability": "subscription.admin",
+        "x-contract-version": "1.69.0",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationAgreementResult"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationAgreementConfigure"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "read_organisation_agreements",
+        "summary": "Read the single current agreement bundle and covered deployments",
+        "x-capability": "subscriptions.read",
+        "x-contract-version": "1.69.0",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationAgreementView"
                 }
               }
             }
@@ -66578,6 +66637,172 @@
           "issued_at"
         ]
       },
+      "OrganisationAgreementConfigure": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "master_agreement_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "dpa_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "effective_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "partner_terms_flow_down_confirmed": {
+            "const": true
+          }
+        },
+        "required": [
+          "operation_id",
+          "master_agreement_reference",
+          "dpa_reference",
+          "effective_on",
+          "partner_terms_flow_down_confirmed"
+        ]
+      },
+      "OrganisationAgreementResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "master_agreement_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "dpa_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "effective_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "coverage_scope": {
+            "const": "ALL_PLATFORM_SOLUTIONS"
+          },
+          "partner_terms_mode": {
+            "const": "MASTER_AGREEMENT_FLOW_DOWN"
+          },
+          "separate_contract_required": {
+            "const": false
+          },
+          "separate_dpa_required": {
+            "const": false
+          }
+        },
+        "required": [
+          "revision_id",
+          "master_agreement_reference",
+          "dpa_reference",
+          "effective_on",
+          "coverage_scope",
+          "partner_terms_mode",
+          "separate_contract_required",
+          "separate_dpa_required"
+        ]
+      },
+      "OrganisationAgreementView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "master_agreement_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "dpa_reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "effective_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "coverage_scope": {
+            "const": "ALL_PLATFORM_SOLUTIONS"
+          },
+          "partner_terms_mode": {
+            "const": "MASTER_AGREEMENT_FLOW_DOWN"
+          },
+          "separate_contract_required": {
+            "const": false
+          },
+          "separate_dpa_required": {
+            "const": false
+          },
+          "deployments": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "deployment_attestation_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "plan_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "solution_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "agreement_revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "deployment_attestation_id",
+                "plan_id",
+                "solution_id",
+                "agreement_revision_id"
+              ]
+            }
+          }
+        },
+        "required": [
+          "revision_id",
+          "master_agreement_reference",
+          "dpa_reference",
+          "effective_on",
+          "coverage_scope",
+          "partner_terms_mode",
+          "separate_contract_required",
+          "separate_dpa_required",
+          "deployments"
+        ]
+      },
       "MeasurementChangeData": {
         "oneOf": [
           {
@@ -75336,6 +75561,10 @@
           "attested_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "agreement_revision_id": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [

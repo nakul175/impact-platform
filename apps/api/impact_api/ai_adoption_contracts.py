@@ -96,6 +96,7 @@ def augment(spec, policy):
             "deployment_reference": {"type": "string", "minLength": 1, "maxLength": 500},
             "attested_by": {"type": "string", "format": "uuid"},
             "attested_at": {"type": "string", "format": "date-time"},
+            "agreement_revision_id": {"type": "string", "format": "uuid"},
         },
         [
             "attestation_id",

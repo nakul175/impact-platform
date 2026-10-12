@@ -884,5 +884,26 @@
     "contract_version": "1.68.0",
     "draft_schema": "CommercialInvoiceIssue",
     "output_schema": "CommercialInvoiceIssued"
+  },
+  {
+    "entity": "OrganisationAgreementBundle",
+    "route": "agreements",
+    "owner": "C14",
+    "fsd_id": "US-CM-09",
+    "fields": "revision_id:uuid master_agreement_reference:text dpa_reference:text effective_on:date coverage_scope:code partner_terms_mode:code deployments:array",
+    "source_required_fields": "Authorised references to one signed master agreement and one organisation DPA, effective date and explicit flow-down confirmation",
+    "invariant": "One current bundle covers all platform solutions; every new deployment pins the bundle revision and cannot require a separate contract or DPA.",
+    "server_owned": [
+      "revision_id",
+      "coverage_scope",
+      "partner_terms_mode",
+      "separate_contract_required",
+      "separate_dpa_required",
+      "deployment coverage rows"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.69.0",
+    "draft_schema": "OrganisationAgreementConfigure",
+    "output_schema": "OrganisationAgreementView"
   }
 ]

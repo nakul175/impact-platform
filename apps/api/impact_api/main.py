@@ -62,6 +62,7 @@ from .entitlement_view import EntitlementView
 from .service_packages import ServicePackages
 from .tax_invoicing import TaxInvoicing
 from .agreement_coverage import AgreementCoverage
+from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
@@ -152,6 +153,7 @@ def create_app():
     service_packages = ServicePackages(service)
     tax_invoicing = TaxInvoicing(service)
     agreement_coverage = AgreementCoverage(service)
+    ai_trials = AITrials(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     partner_revenue = PartnerRevenue(lifecycle)
@@ -1833,6 +1835,21 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/agreements")
     def organisation_agreement_read(request: Request, tenant: str):
         return agreement_coverage.read(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
+    def ai_trial_list(request: Request, tenant: str, opportunity_id: str):
+        return ai_trials.list(auth.resolve(request), uuid(tenant), opportunity_id)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/trials", status_code=201)
+    async def ai_trial_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            ai_trials.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

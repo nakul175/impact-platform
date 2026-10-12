@@ -905,5 +905,26 @@
     "contract_version": "1.69.0",
     "draft_schema": "OrganisationAgreementConfigure",
     "output_schema": "OrganisationAgreementView"
+  },
+  {
+    "entity": "AIOptionTrial",
+    "route": "ai-enablement/trials",
+    "owner": "C09",
+    "fsd_id": "US-AS-01",
+    "fields": "trial_id:uuid opportunity_id:code solution_id:code starts_on:date ends_on:date duration_days:int data_mode:code evidence_reference:selector sample_id:code success_criteria:text advisor_membership_id:uuid status:code",
+    "source_required_fields": "Current catalogue-mapped opportunity/solution, natural-person advisor,1-28day dates, success criteria, and either one currently permitted exact Evidence revision or the fixed synthetic sample",
+    "invariant": "Trials are immutable, advisor-authored, never longer than28days and disclose own-data selectors only while current Evidence authority remains.",
+    "server_owned": [
+      "trial_id",
+      "catalogue_content_version",
+      "ends_on",
+      "advisor identities",
+      "status",
+      "created_at"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.70.0",
+    "draft_schema": "AITrialCreate",
+    "output_schema": "AITrial"
   }
 ]

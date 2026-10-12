@@ -19,6 +19,7 @@ from impact_api.entitlement_view_contracts import augment as augment_entitlement
 from impact_api.service_package_contracts import augment as augment_service_packages  # noqa: E402
 from impact_api.tax_invoicing_contracts import augment as augment_tax_invoicing  # noqa: E402
 from impact_api.agreement_coverage_contracts import augment as augment_agreement_coverage  # noqa: E402
+from impact_api.ai_trial_contracts import augment as augment_ai_trials  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
 from impact_api.reporting_contracts import augment as augment_reporting  # noqa: E402
@@ -188,6 +189,7 @@ augment_entitlement_view(spec, policy)
 augment_service_packages(spec, policy)
 augment_tax_invoicing(spec, policy)
 augment_agreement_coverage(spec, policy)
+augment_ai_trials(spec, policy)
 augment_changes(spec, policy)
 augment_periods(spec, policy)
 augment_reporting(spec, policy)

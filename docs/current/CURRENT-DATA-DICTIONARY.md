@@ -6965,3 +6965,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0071_organisation_agreement_coverage.sql | e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69 |
+
+
+## Migration0072 — advisor-led option trials (local0.80 coding candidate)
+
+`0072_ai_option_trials.sql` SHA256 `cdf1e2936d220d8f612d30f823425ddab05a9dc2622085915f653e1422b12ebf`. Schema72 adds immutable tenant-fenced advisor-led trials tied to an exact opportunity/solution catalogue edition. A trial lasts1–28days and uses either one exact governed Evidence revision or the fixed synthetic sample; database checks reject any other data shape and application disclosure rechecks current source authority. No update grant exists, so a trial cannot be extended. All0001–0071 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0072_ai_option_trials.sql | cdf1e2936d220d8f612d30f823425ddab05a9dc2622085915f653e1422b12ebf |

@@ -1,5 +1,5 @@
 {
-  "version": "1.69.0",
+  "version": "1.70.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5504,6 +5504,38 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
+    },
+    {
+      "operation_id": "list_ai_option_trials",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_option_trial",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Current natural-person advisor; option is catalogue-mapped; own data is one currently authorised exact Evidence revision or the fixed synthetic sample; duration is1-28days and immutable."
     },
     {
       "operation_id": "list_measurement_changes",

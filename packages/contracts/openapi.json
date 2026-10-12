@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.69.0",
+    "version": "1.70.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39514,6 +39514,86 @@
                 "schema": {
                   "$ref": "#/components/schemas/OrganisationAgreementView"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/trials": {
+      "get": {
+        "operationId": "list_ai_option_trials",
+        "summary": "List advisor-led option trials",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.70.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AITrialList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_ai_option_trial",
+        "summary": "Create a maximum-28-day advisor-led trial",
+        "x-capability": "ai.solution-fit.score",
+        "x-contract-version": "1.70.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AITrial"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AITrialCreate"
               }
             }
           }
@@ -80805,6 +80885,259 @@
           "separate_contract_required",
           "separate_dpa_required",
           "deployments"
+        ]
+      },
+      "AITrialCreate": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "opportunity_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "solution_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "starts_on": {
+                "type": "string",
+                "format": "date"
+              },
+              "duration_days": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 28
+              },
+              "success_criteria": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "data_mode": {
+                "const": "OWN_EVIDENCE"
+              },
+              "evidence_reference": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "object_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "object_id",
+                  "revision_id"
+                ]
+              }
+            },
+            "required": [
+              "operation_id",
+              "opportunity_id",
+              "solution_id",
+              "starts_on",
+              "duration_days",
+              "success_criteria",
+              "data_mode",
+              "evidence_reference"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "opportunity_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "solution_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "starts_on": {
+                "type": "string",
+                "format": "date"
+              },
+              "duration_days": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 28
+              },
+              "success_criteria": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "data_mode": {
+                "const": "SAMPLE"
+              },
+              "sample_id": {
+                "const": "SYNTHETIC_TABULAR_V1"
+              }
+            },
+            "required": [
+              "operation_id",
+              "opportunity_id",
+              "solution_id",
+              "starts_on",
+              "duration_days",
+              "success_criteria",
+              "data_mode",
+              "sample_id"
+            ]
+          }
+        ]
+      },
+      "AITrial": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "trial_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "catalogue_content_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "starts_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "ends_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "duration_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 28
+          },
+          "data_mode": {
+            "enum": [
+              "OWN_EVIDENCE",
+              "SAMPLE"
+            ]
+          },
+          "evidence_reference": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "object_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "revision_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "object_id",
+                  "revision_id"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sample_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "SYNTHETIC_TABULAR_V1",
+              null
+            ]
+          },
+          "success_criteria": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "advisor_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "PLANNED",
+              "ACTIVE",
+              "ENDED"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "trial_id",
+          "opportunity_id",
+          "solution_id",
+          "catalogue_content_version",
+          "starts_on",
+          "ends_on",
+          "duration_days",
+          "data_mode",
+          "evidence_reference",
+          "sample_id",
+          "success_criteria",
+          "advisor_membership_id",
+          "status",
+          "created_at"
+        ]
+      },
+      "AITrialList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AITrial"
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "MeasurementChangeData": {

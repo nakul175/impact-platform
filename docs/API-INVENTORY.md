@@ -115,6 +115,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports/{object_id}` | `publication.download` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.solution-fit.score` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case/export` | `ai.enablement.export` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases` | `ai.value-case.manage` |

@@ -1,5 +1,5 @@
 {
-  "version": "1.94.0",
+  "version": "1.95.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7025,6 +7025,34 @@
       "role_templates": [
         "PROGRAMME_MANAGER",
         "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_report_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/report-drafts",
+      "capability": "reports.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_report_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/report-drafts/{draft_id}/actions/review",
+      "capability": "reports.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

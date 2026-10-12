@@ -4,6 +4,7 @@ import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
 import { AIOpportunityRanking } from "./AIRanking";
 import { AIEvidenceQuestions } from "./AIEvidenceQuestions";
 import { AINumericAnalysis } from "./AINumericAnalysis";
+import { AIReportDrafting } from "./AIReportDrafting";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -242,6 +243,8 @@ export function AIEnablementPanel({
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
   const canAnalyse = capabilities.includes("calculated-results.read");
+  const canDraftReport = capabilities.includes("reports.draft.create");
+  const canReviewReportDraft = capabilities.includes("reports.draft.edit");
   const canDesignIndicator = capabilities.includes(
     "indicator-definitions.draft.create",
   );
@@ -744,6 +747,14 @@ export function AIEnablementPanel({
               base={base}
               policyVersion={policy?.policy_version ?? null}
               canAnalyse={canAnalyse}
+              request={request}
+              explain={explain}
+            />
+            <AIReportDrafting
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canDraft={canDraftReport}
+              canReview={canReviewReportDraft}
               request={request}
               explain={explain}
             />

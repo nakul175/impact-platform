@@ -7086,3 +7086,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0088_ai_numeric_analysis_policy.sql | 7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea |
+
+## Migration0089 — snapshot-bound AI report drafts (local1.05 coding candidate)
+
+`0089_ai_report_drafts.sql` SHA256 `98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626`. Schema89 adds tenant-fenced immutable AI report draft and human review rows. Drafts pin exact locked Snapshot and approved ReportTemplate revisions, policy, requester and operation. Reviews retain exact corrections, final human wording and mandatory caveat codes. No Report, Snapshot, CalculatedResult, Evidence or publication row is changed. All0001–0088 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0089_ai_report_drafts.sql | 98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626 |

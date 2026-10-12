@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.94.0",
+    "version": "1.95.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -32686,7 +32686,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32787,7 +32787,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32865,7 +32865,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32975,7 +32975,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -33076,7 +33076,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33196,7 +33196,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33307,7 +33307,7 @@
         "operationId": "create_ai_indicator_proposal",
         "summary": "create ai indicator proposal",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33418,7 +33418,7 @@
         "operationId": "create_ai_indicator_draft",
         "summary": "create ai indicator draft",
         "x-capability": "indicator-definitions.draft.create",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33547,7 +33547,7 @@
         "operationId": "create_ai_import_proposals",
         "summary": "create ai import proposals",
         "x-capability": "imports.read",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33676,7 +33676,7 @@
         "operationId": "apply_ai_import_proposals",
         "summary": "apply ai import proposals",
         "x-capability": "imports.draft.edit",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33787,7 +33787,7 @@
         "operationId": "answer_ai_evidence_question",
         "summary": "answer evidence question",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33872,6 +33872,237 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/report-drafts": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_report_draft",
+        "summary": "create a snapshot-bound report proposal",
+        "x-capability": "reports.draft.create",
+        "x-contract-version": "1.42.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIReportDraftRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "create a snapshot-bound report proposal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIReportDraft"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/report-drafts/{draft_id}/actions/review": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "draft_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "review_ai_report_draft",
+        "summary": "record human corrections and final wording",
+        "x-capability": "reports.draft.edit",
+        "x-contract-version": "1.42.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIReportDraftReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "record human corrections and final wording",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIReportDraftReview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis": {
       "parameters": [
         {
@@ -33888,7 +34119,7 @@
         "operationId": "execute_ai_numeric_analysis",
         "summary": "execute governed numeric analysis",
         "x-capability": "calculated-results.read",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33999,7 +34230,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34108,7 +34339,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34207,7 +34438,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34306,7 +34537,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34387,7 +34618,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34488,7 +34719,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34599,7 +34830,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34700,7 +34931,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -34811,7 +35042,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -34931,7 +35162,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -35041,7 +35272,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.41.0",
+        "x-contract-version": "1.42.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -80147,6 +80378,246 @@
           "model_recomputed",
           "arbitrary_query_executed",
           "official_claim_matches_tool"
+        ]
+      },
+      "AIReportDraftRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "snapshot_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "template_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "section_inputs": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/ReportSection"
+            }
+          },
+          "prior_draft_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "regenerated_section_codes": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 64
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "snapshot_id",
+          "snapshot_revision_id",
+          "template_revision_id",
+          "language",
+          "policy_version",
+          "section_inputs",
+          "prior_draft_id",
+          "regenerated_section_codes"
+        ]
+      },
+      "AIReportDraft": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "prior_draft_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "proposed_sections": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ReportSection"
+            }
+          },
+          "evidence_gaps": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "section_code": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "reason": {
+                  "enum": [
+                    "REQUIRED_SECTION_MISSING",
+                    "REQUIRED_BINDINGS_MISSING"
+                  ]
+                },
+                "binding_codes": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "string",
+                    "maxLength": 64
+                  }
+                }
+              },
+              "required": [
+                "section_code",
+                "reason"
+              ]
+            }
+          },
+          "mandatory_caveat_codes": {
+            "type": "array",
+            "maxItems": 1000,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 64
+            }
+          },
+          "ai_origin": {
+            "const": true
+          },
+          "domain_objects_changed": {
+            "const": false
+          }
+        },
+        "required": [
+          "draft_id",
+          "generation",
+          "prior_draft_id",
+          "proposed_sections",
+          "evidence_gaps",
+          "mandatory_caveat_codes",
+          "ai_origin",
+          "domain_objects_changed"
+        ]
+      },
+      "AIReportDraftReviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "final_sections": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ReportSection"
+            }
+          },
+          "mandatory_caveat_codes": {
+            "type": "array",
+            "maxItems": 1000,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "maxLength": 64
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "final_sections",
+          "mandatory_caveat_codes"
+        ]
+      },
+      "AIReportDraftReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "draft_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "HUMAN_REVIEWED"
+          },
+          "corrections": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "section_code": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "before": {
+                  "$ref": "#/components/schemas/ReportSection"
+                },
+                "after": {
+                  "$ref": "#/components/schemas/ReportSection"
+                }
+              },
+              "required": [
+                "section_code",
+                "before",
+                "after"
+              ]
+            }
+          },
+          "final_sections": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ReportSection"
+            }
+          },
+          "ai_origin_retained": {
+            "const": true
+          },
+          "domain_objects_changed": {
+            "const": false
+          }
+        },
+        "required": [
+          "draft_id",
+          "state",
+          "corrections",
+          "final_sections",
+          "ai_origin_retained",
+          "domain_objects_changed"
         ]
       },
       "AITaskPracticeData": {

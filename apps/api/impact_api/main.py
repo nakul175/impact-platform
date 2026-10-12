@@ -45,6 +45,7 @@ from .ai_indicator_design import AIIndicatorDesign
 from .ai_import_assistance import AIImportAssistance
 from .ai_evidence_questions import AIEvidenceQuestions
 from .ai_numeric_analysis import AINumericAnalysis
+from .ai_report_drafting import AIReportDrafting
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -161,6 +162,12 @@ def create_app():
     )
     ai_numeric_analysis = AINumericAnalysis(
         service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_report_drafting = AIReportDrafting(
+        service,
+        service.reporting,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
     )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
@@ -1527,6 +1534,18 @@ def create_app():
         body = await strict_body(request)
         validate("AINumericAnalysisRequest", body)
         return ai_numeric_analysis.execute(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/report-drafts")
+    async def create_ai_report_draft(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIReportDraftRequest", body)
+        return ai_report_drafting.create(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/report-drafts/{draft_id}/actions/review")
+    async def review_ai_report_draft(request: Request, tenant: str, draft_id: str):
+        body = await strict_body(request)
+        validate("AIReportDraftReviewRequest", body)
+        return ai_report_drafting.review(auth.resolve(request), uuid(tenant), uuid(draft_id), body)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

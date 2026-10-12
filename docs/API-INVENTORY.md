@@ -126,6 +126,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/report-drafts` | `reports.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/report-drafts/{draft_id}/actions/review` | `reports.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/safety-feedback` | `ai.advisory.request` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns` | `ai.policy.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns` | `ai.policy.manage` |

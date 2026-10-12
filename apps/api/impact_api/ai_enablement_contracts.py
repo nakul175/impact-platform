@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.41.0"
+VERSION = "1.42.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -33,6 +33,8 @@ IMPLEMENTED = [
     ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply"),
     ("post", "ai-enablement/evidence-questions"),
     ("post", "ai-enablement/numeric-analysis"),
+    ("post", "ai-enablement/report-drafts"),
+    ("post", "ai-enablement/report-drafts/{draft_id}/actions/review"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -764,6 +766,133 @@ def augment(spec, policy):
             "official_claim_matches_tool",
         ],
     )
+    report_gap = closed(
+        {
+            "section_code": {"type": "string", "maxLength": 64},
+            "reason": {"enum": ["REQUIRED_SECTION_MISSING", "REQUIRED_BINDINGS_MISSING"]},
+            "binding_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        ["section_code", "reason"],
+    )
+    schemas["AIReportDraftRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "snapshot_id": {"type": "string", "format": "uuid"},
+            "snapshot_revision_id": {"type": "string", "format": "uuid"},
+            "template_revision_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "section_inputs": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "prior_draft_id": {"type": ["string", "null"], "format": "uuid"},
+            "regenerated_section_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        [
+            "operation_id",
+            "snapshot_id",
+            "snapshot_revision_id",
+            "template_revision_id",
+            "language",
+            "policy_version",
+            "section_inputs",
+            "prior_draft_id",
+            "regenerated_section_codes",
+        ],
+    )
+    schemas["AIReportDraft"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "generation": {"type": "integer", "minimum": 1},
+            "prior_draft_id": {"type": ["string", "null"], "format": "uuid"},
+            "proposed_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "evidence_gaps": {"type": "array", "maxItems": 200, "items": report_gap},
+            "mandatory_caveat_codes": {
+                "type": "array",
+                "maxItems": 1000,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+            "ai_origin": {"const": True},
+            "domain_objects_changed": {"const": False},
+        },
+        [
+            "draft_id",
+            "generation",
+            "prior_draft_id",
+            "proposed_sections",
+            "evidence_gaps",
+            "mandatory_caveat_codes",
+            "ai_origin",
+            "domain_objects_changed",
+        ],
+    )
+    schemas["AIReportDraftReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "final_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "mandatory_caveat_codes": {
+                "type": "array",
+                "maxItems": 1000,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        ["operation_id", "final_sections", "mandatory_caveat_codes"],
+    )
+    schemas["AIReportDraftReview"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "state": {"const": "HUMAN_REVIEWED"},
+            "corrections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "section_code": {"type": "string", "maxLength": 64},
+                        "before": {"$ref": "#/components/schemas/ReportSection"},
+                        "after": {"$ref": "#/components/schemas/ReportSection"},
+                    },
+                    ["section_code", "before", "after"],
+                ),
+            },
+            "final_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "ai_origin_retained": {"const": True},
+            "domain_objects_changed": {"const": False},
+        },
+        [
+            "draft_id",
+            "state",
+            "corrections",
+            "final_sections",
+            "ai_origin_retained",
+            "domain_objects_changed",
+        ],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -1104,6 +1233,89 @@ def augment(spec, policy):
             "audit": False,
         }
     )
+    draft_path = "/v1/tenants/{tenant_id}/ai-enablement/report-drafts"
+    review_path = draft_path + "/{draft_id}/actions/review"
+    for method, path, operation, request, response, summary in [
+        (
+            "post",
+            draft_path,
+            "create_ai_report_draft",
+            "AIReportDraftRequest",
+            "AIReportDraft",
+            "create a snapshot-bound report proposal",
+        ),
+        (
+            "post",
+            review_path,
+            "review_ai_report_draft",
+            "AIReportDraftReviewRequest",
+            "AIReportDraftReview",
+            "record human corrections and final wording",
+        ),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{draft_id}" in path:
+            parameters.append(
+                {
+                    "name": "draft_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            method: {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": (
+                    "reports.draft.edit" if operation == "review_ai_report_draft" else "reports.draft.create"
+                ),
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": (
+                    "reports.draft.edit" if operation == "review_ai_report_draft" else "reports.draft.create"
+                ),
+                "role_templates": ["AUTHOR", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
     analysis_path = "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis"
     spec["paths"][analysis_path] = {
         "parameters": [

@@ -1,0 +1,17 @@
+{
+  "release": "1.05.0",
+  "story": "FR-AI-007",
+  "linear_issue": "APL-339",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Snapshot-bound report proposals, human corrections and protected regeneration",
+  "source_snapshot_created": false,
+  "official_result_created": false,
+  "domain_report_changed": false,
+  "bare_numeric_claim_allowed": false,
+  "accepted_human_edits_overwritten": false,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

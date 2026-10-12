@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.57.0",
+    "version": "1.58.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -39798,9 +39798,72 @@
           "geography_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "template_code": {
+            "enum": [
+              "SIMPLE"
+            ]
+          },
+          "setup_defaults": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "unit": {
+                "enum": [
+                  "COUNT",
+                  "DECIMAL",
+                  "PERCENTAGE"
+                ]
+              },
+              "period_basis": {
+                "const": "REPORTING_CALENDAR"
+              },
+              "aggregation_method": {
+                "const": "SUM"
+              },
+              "consent": {
+                "const": "EXPLICIT"
+              },
+              "audience": {
+                "enum": [
+                  "INTERNAL",
+                  "NAMED_RECIPIENTS"
+                ]
+              },
+              "unique_reach": {
+                "const": false
+              },
+              "sharing": {
+                "const": "NONE"
+              }
+            },
+            "required": [
+              "unit",
+              "period_basis",
+              "aggregation_method",
+              "consent",
+              "audience",
+              "unique_reach",
+              "sharing"
+            ]
           }
         },
-        "required": []
+        "required": [],
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "template_code"
+              ]
+            },
+            "then": {
+              "required": [
+                "reporting_calendar_id",
+                "setup_defaults"
+              ]
+            }
+          }
+        ]
       },
       "Programme": {
         "type": "object",
@@ -39863,7 +39926,8 @@
           "revision_id",
           "lifecycle_state",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "ProgrammeList": {
         "type": "object",
@@ -39927,9 +39991,72 @@
           "geography_id": {
             "type": "string",
             "format": "uuid"
+          },
+          "template_code": {
+            "enum": [
+              "SIMPLE"
+            ]
+          },
+          "setup_defaults": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "unit": {
+                "enum": [
+                  "COUNT",
+                  "DECIMAL",
+                  "PERCENTAGE"
+                ]
+              },
+              "period_basis": {
+                "const": "REPORTING_CALENDAR"
+              },
+              "aggregation_method": {
+                "const": "SUM"
+              },
+              "consent": {
+                "const": "EXPLICIT"
+              },
+              "audience": {
+                "enum": [
+                  "INTERNAL",
+                  "NAMED_RECIPIENTS"
+                ]
+              },
+              "unique_reach": {
+                "const": false
+              },
+              "sharing": {
+                "const": "NONE"
+              }
+            },
+            "required": [
+              "unit",
+              "period_basis",
+              "aggregation_method",
+              "consent",
+              "audience",
+              "unique_reach",
+              "sharing"
+            ]
           }
         },
-        "required": []
+        "required": [],
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "template_code"
+              ]
+            },
+            "then": {
+              "required": [
+                "reporting_calendar_id",
+                "setup_defaults"
+              ]
+            }
+          }
+        ]
       },
       "ProgrammeCreate": {
         "type": "object",
@@ -39946,7 +40073,8 @@
         "required": [
           "operation_id",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "ProgrammePatch": {
         "type": "object",
@@ -39974,7 +40102,7 @@
           "expected_revision",
           "data"
         ],
-        "description": "Atomic shallow merge of supplied draft fields. Omitted fields retain value; supplied nested arrays/objects replace the complete field. Null clears only nullable fields. Empty data is rejected."
+        "description": "Atomic shallow merge of supplied draft fields. Omitted fields retain value; supplied nested arrays/objects replace the complete field. Null clears only nullable fields. Empty data is rejected.SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "FrameworkData": {
         "type": "object",
@@ -59762,7 +59890,8 @@
           "revision_id",
           "lifecycle_state",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "MeasurementChangeList": {
         "type": "object",
@@ -59807,7 +59936,8 @@
         "required": [
           "operation_id",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "MeasurementChangePatch": {
         "type": "object",
@@ -59835,7 +59965,7 @@
           "expected_revision",
           "data"
         ],
-        "description": "Atomic shallow merge of supplied draft fields. Omitted fields retain value; supplied nested arrays/objects replace the complete field. Null clears only nullable fields. Empty data is rejected."
+        "description": "Atomic shallow merge of supplied draft fields. Omitted fields retain value; supplied nested arrays/objects replace the complete field. Null clears only nullable fields. Empty data is rejected.SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "PeriodCloseEntry": {
         "type": "object",
@@ -60154,7 +60284,8 @@
           "revision_id",
           "lifecycle_state",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "PeriodCloseList": {
         "type": "object",
@@ -60245,7 +60376,8 @@
           "revision_id",
           "lifecycle_state",
           "data"
-        ]
+        ],
+        "description": "SIMPLE template records carry every calculation, consent and audience default explicitly; no unique-reach or sharing default is inferred."
       },
       "RestatementRequestList": {
         "type": "object",

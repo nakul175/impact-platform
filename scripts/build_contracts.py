@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
 from impact_api.administration_contracts import augment, augment_reference  # noqa: E402
 from impact_api.measurement_contracts import augment as augment_measurement  # noqa: E402
+from impact_api.programme_setup_contracts import augment as augment_programme_setup  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
 from impact_api.reporting_contracts import augment as augment_reporting  # noqa: E402
@@ -164,6 +165,7 @@ event["properties"]["event_type"]["enum"].append("object.changed")
 event["properties"]["schema_version"] = {"const": "1.1"}
 augment(spec, policy)
 augment_measurement(spec, policy)
+augment_programme_setup(spec, policy)
 augment_changes(spec, policy)
 augment_periods(spec, policy)
 augment_reporting(spec, policy)

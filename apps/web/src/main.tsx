@@ -1589,7 +1589,20 @@ function Editor({
     [resources, setResources] = useState<Record<string, RecordRow[]>>({}),
     [candidate, setCandidate] = useState<RecordRow | null>(null),
     [currentTarget, setCurrentTarget] = useState<RecordRow | null>(null),
-    [reportSnapshot, setReportSnapshot] = useState("");
+    [reportSnapshot, setReportSnapshot] = useState(""),
+    [programmeReview, setProgrammeReview] = useState(false),
+    [programmeCalendar, setProgrammeCalendar] = useState(
+      row?.data.reporting_calendar_id || "",
+    ),
+    [programmeDefaults, setProgrammeDefaults] = useState({
+      unit: row?.data.setup_defaults?.unit || "COUNT",
+      period_basis: "REPORTING_CALENDAR",
+      aggregation_method: "SUM",
+      consent: "EXPLICIT",
+      audience: row?.data.setup_defaults?.audience || "INTERNAL",
+      unique_reach: false,
+      sharing: "NONE",
+    });
   const operation = useRef(crypto.randomUUID()),
     captured = useRef(new Date().toISOString());
   useEffect(() => {
@@ -1686,6 +1699,14 @@ function Editor({
           ...(get("ends_at")
             ? { ends_at: new Date(get("ends_at") + "T23:59:59Z").toISOString() }
             : {}),
+          ...(mode === "programme"
+            ? {
+                template_code: "SIMPLE",
+                setup_defaults: programmeDefaults,
+              }
+            : row?.data.template_code
+              ? { template_code: "SIMPLE", setup_defaults: programmeDefaults }
+              : {}),
         },
         row ? "PATCH" : "POST",
         row?.revision_id,
@@ -1838,6 +1859,33 @@ function Editor({
               : row.data
           }
         />
+        {route === "programmes" && row.data.template_code === "SIMPLE" && (
+          <section className="panel" aria-labelledby="saved-programme-rules">
+            <h3 id="saved-programme-rules">Calculation and sharing rules</h3>
+            <dl>
+              <dt>Reporting calendar</dt>
+              <dd>
+                <code>{row.data.reporting_calendar_id}</code>
+              </dd>
+              <dt>First-result rule</dt>
+              <dd>Sum of approved values</dd>
+              <dt>Unit</dt>
+              <dd>{row.data.setup_defaults.unit.toLowerCase()}</dd>
+              <dt>Consent</dt>
+              <dd>Explicit consent required</dd>
+              <dt>Audience</dt>
+              <dd>
+                {row.data.setup_defaults.audience === "INTERNAL"
+                  ? "Internal workspace only"
+                  : "Named recipients only"}
+              </dd>
+              <dt>Unique reach</dt>
+              <dd>Off</dd>
+              <dt>Sharing</dt>
+              <dd>None until separately reviewed</dd>
+            </dl>
+          </section>
+        )}
         {(route === "observations" || route === "calculated-results") && (
           <EvidencePanel
             base={base}
@@ -2092,7 +2140,16 @@ function Editor({
               <select
                 name={key}
                 aria-label={title}
-                defaultValue={row?.data[key] || ""}
+                {...(key === "reporting_calendar_id"
+                  ? {
+                      value: programmeCalendar,
+                      onChange: (event: React.ChangeEvent<HTMLSelectElement>) =>
+                        setProgrammeCalendar(event.target.value),
+                    }
+                  : { defaultValue: row?.data[key] || "" })}
+                required={
+                  mode === "programme" && key === "reporting_calendar_id"
+                }
               >
                 <option value="">Choose before activation</option>
                 {(resources[resource] || [])
@@ -2105,6 +2162,87 @@ function Editor({
               </select>
             </label>
           ))}
+          {(mode === "programme" || row?.data.template_code === "SIMPLE") && (
+            <>
+              <details open={!programmeReview}>
+                <summary>Calculation and sharing defaults</summary>
+                <p className="footnote">
+                  These values are stored explicitly. The template never assumes
+                  unique reach, consent, or broad sharing.
+                </p>
+                <label>
+                  Result unit
+                  <select
+                    value={programmeDefaults.unit}
+                    onChange={(event) =>
+                      setProgrammeDefaults({
+                        ...programmeDefaults,
+                        unit: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="COUNT">Count</option>
+                    <option value="DECIMAL">Decimal</option>
+                    <option value="PERCENTAGE">Percentage</option>
+                  </select>
+                </label>
+                <label>
+                  Initial audience
+                  <select
+                    value={programmeDefaults.audience}
+                    onChange={(event) =>
+                      setProgrammeDefaults({
+                        ...programmeDefaults,
+                        audience: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="INTERNAL">Internal workspace only</option>
+                    <option value="NAMED_RECIPIENTS">
+                      Named recipients only
+                    </option>
+                  </select>
+                </label>
+              </details>
+              <section
+                className="panel"
+                aria-labelledby="programme-default-summary"
+              >
+                <h3 id="programme-default-summary">Final setup summary</h3>
+                <dl>
+                  <dt>Reporting periods</dt>
+                  <dd>
+                    {(resources["reporting-calendars"] || []).find(
+                      (item) => item.object_id === programmeCalendar,
+                    )?.data.title || "Select a reporting calendar"}
+                  </dd>
+                  <dt>First-result rule</dt>
+                  <dd>Sum of approved values</dd>
+                  <dt>Unit</dt>
+                  <dd>{programmeDefaults.unit.toLowerCase()}</dd>
+                  <dt>Consent</dt>
+                  <dd>Explicit consent required</dd>
+                  <dt>Audience</dt>
+                  <dd>
+                    {programmeDefaults.audience === "INTERNAL"
+                      ? "Internal workspace only"
+                      : "Named recipients only"}
+                  </dd>
+                  <dt>Unique reach</dt>
+                  <dd>Off</dd>
+                  <dt>Sharing</dt>
+                  <dd>None until separately reviewed</dd>
+                </dl>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => setProgrammeReview((value) => !value)}
+                >
+                  {programmeReview ? "Edit defaults" : "Review complete"}
+                </button>
+              </section>
+            </>
+          )}
         </>
       )}
       {mode === "observation" && (
@@ -2405,7 +2543,10 @@ function Editor({
         </>
       )}
       <div className="dialog-actions">
-        <button className="primary" disabled={busy}>
+        <button
+          className="primary"
+          disabled={busy || (mode === "programme" && !programmeReview)}
+        >
           {busy
             ? "Saving…"
             : mode === "calculate"

@@ -200,6 +200,7 @@
 | POST | `/v1/tenants/{tenant_id}/geographies` | `reference-data.manage` |
 | GET | `/v1/tenants/{tenant_id}/geographies/{object_id}` | `geographies.read` |
 | GET | `/v1/tenants/{tenant_id}/grants` | `grants.read` |
+| POST | `/v1/tenants/{tenant_id}/grants/{grant_id}/field-policy` | `grant.approve` |
 | GET | `/v1/tenants/{tenant_id}/grants/{object_id}` | `grants.read` |
 | POST | `/v1/tenants/{tenant_id}/grants/{object_id}/actions/revoke` | `grant.revoke` |
 | GET | `/v1/tenants/{tenant_id}/group-change-requests` | `groups.read` |

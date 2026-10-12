@@ -63,6 +63,7 @@ from .service_packages import ServicePackages
 from .tax_invoicing import TaxInvoicing
 from .agreement_coverage import AgreementCoverage
 from .access_checks import AccessChecks
+from .fine_grained_access import FineGrainedAccess
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -155,6 +156,7 @@ def create_app():
     tax_invoicing = TaxInvoicing(service)
     agreement_coverage = AgreementCoverage(service)
     access_checks = AccessChecks(service)
+    fine_grained_access = FineGrainedAccess(service)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -1842,6 +1844,11 @@ def create_app():
     async def access_check_resources(request: Request, tenant: str):
         body = await strict_body(request)
         return await run_in_threadpool(access_checks.permitted, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/grants/{grant_id}/field-policy")
+    async def attach_grant_field_policy(request: Request, tenant: str, grant_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(fine_grained_access.attach, auth.resolve(request), uuid(tenant), str(uuid(grant_id)), body, request.state.correlation)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
     def ai_trial_list(request: Request, tenant: str, opportunity_id: str):

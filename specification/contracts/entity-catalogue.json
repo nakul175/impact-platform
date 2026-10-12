@@ -978,5 +978,23 @@
     "contract_version": "1.73.0",
     "draft_schema": "ResourceAccessBatch",
     "output_schema": "PermittedResourceAccessBatch"
+  },
+  {
+    "entity": "FineGrainedGrantFacet",
+    "route": "grants/{grant_id}/field-policy",
+    "owner": "C03",
+    "fsd_id": "FR-ACC-002",
+    "fields": "grant_id:uuid record_object_ids:uuid[] readable_field_categories:code[] writable_field_categories:code[] attached_at:datetime",
+    "source_required_fields": "Existing active approved grant, one to100 currently visible records within its scope, readable categories and optional writable subset",
+    "invariant": "Facet is attach-once and only narrows the existing action/scope grant. Row conditions apply before list filters and direct object access; writable categories must be readable.",
+    "server_owned": [
+      "grant_id",
+      "attached_by",
+      "attached_at"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.74.0",
+    "draft_schema": "FineGrainedGrantFacetAttach",
+    "output_schema": "FineGrainedGrantFacet"
   }
 ]

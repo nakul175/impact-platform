@@ -1,5 +1,5 @@
 {
-  "version": "1.73.0",
+  "version": "1.74.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5517,6 +5517,19 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Every item is resolved against current tenant, type, availability and requested capability; denied/unknown items emit no row and policy resolution errors fail closed."
+    },
+    {
+      "operation_id": "attach_fine_grained_grant_facets",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/grants/{grant_id}/field-policy",
+      "capability": "grant.approve",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Active existing grant only; selected records remain inside its existing scope; writable categories are a subset of readable categories; the facet is attach-once and can only narrow."
     },
     {
       "operation_id": "list_ai_option_trials",

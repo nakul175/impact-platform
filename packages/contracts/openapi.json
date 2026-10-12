@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.73.0",
+    "version": "1.74.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39554,6 +39554,56 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PermittedResourceAccessBatch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/grants/{grant_id}/field-policy": {
+      "post": {
+        "operationId": "attach_fine_grained_grant_facets",
+        "summary": "Narrow an approved grant by record condition and field category",
+        "x-capability": "grant.approve",
+        "x-contract-version": "1.74.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FineGrainedGrantFacetAttach"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Immutable narrowing facet attached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FineGrainedGrantFacet"
                 }
               }
             }
@@ -81092,6 +81142,117 @@
         },
         "required": [
           "permitted"
+        ]
+      },
+      "FineGrainedGrantFacetAttach": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "record_object_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "readable_field_categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 4,
+            "items": {
+              "enum": [
+                "PUBLIC",
+                "INTERNAL",
+                "SENSITIVE",
+                "DIRECT_IDENTIFIER"
+              ]
+            },
+            "minItems": 1
+          },
+          "writable_field_categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 4,
+            "items": {
+              "enum": [
+                "PUBLIC",
+                "INTERNAL",
+                "SENSITIVE",
+                "DIRECT_IDENTIFIER"
+              ]
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "record_object_ids",
+          "readable_field_categories",
+          "writable_field_categories"
+        ]
+      },
+      "FineGrainedGrantFacet": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "record_object_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "readable_field_categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 4,
+            "items": {
+              "enum": [
+                "PUBLIC",
+                "INTERNAL",
+                "SENSITIVE",
+                "DIRECT_IDENTIFIER"
+              ]
+            },
+            "minItems": 1
+          },
+          "writable_field_categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 4,
+            "items": {
+              "enum": [
+                "PUBLIC",
+                "INTERNAL",
+                "SENSITIVE",
+                "DIRECT_IDENTIFIER"
+              ]
+            }
+          },
+          "grant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "attached_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "record_object_ids",
+          "readable_field_categories",
+          "writable_field_categories",
+          "grant_id",
+          "attached_at"
         ]
       },
       "AITrialCreate": {

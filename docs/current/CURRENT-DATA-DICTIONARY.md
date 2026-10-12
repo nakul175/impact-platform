@@ -6983,3 +6983,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0073_ai_trial_results.sql | fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118 |
+
+
+## Migration0074 — fine-grained grant facets (local0.84 coding candidate)
+
+`0074_fine_grained_grant_facets.sql` SHA256 `bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6`. Schema74 adds an attach-once, tenant-fenced narrowing facet for an existing active grant: exact record allowlist plus separate readable and writable field categories, with writable constrained to a subset of readable. Shared single-record scope checks and pre-filter list visibility apply the record condition. The helper `field_allowed` applies the same row gate before a server-owned field category. All0001–0073 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0074_fine_grained_grant_facets.sql | bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6 |

@@ -51,6 +51,24 @@ export type Catalog = {
   marketplace_status: { status: string; explanation: string };
 };
 type Assessment = {
+  maturity_framework: {
+    framework_id: string;
+    framework_version: string;
+    framework_status: "EDITORIAL_DRAFT";
+    method: "DETERMINISTIC_SELF_REPORT_RULES";
+    scores: {
+      dimension_id: string;
+      score: number;
+      level: string;
+      scale_min: number;
+      scale_max: number;
+      explanation: string;
+      rule_id: string;
+      input_fields: string[];
+      self_reported: true;
+    }[];
+    limitations: string[];
+  };
   readiness: { stage: string; reasons: string[] };
   recommendations: {
     use_case_id: string;
@@ -540,6 +558,41 @@ export function AIEnablementPanel({
                   Readiness assessment · {label(assessment.readiness.stage)}
                 </h3>
                 <Items items={assessment.readiness.reasons} />
+                <h4>Digital maturity and data readiness</h4>
+                <p className="muted">
+                  Framework {assessment.maturity_framework.framework_id} ·
+                  edition {assessment.maturity_framework.framework_version} ·
+                  editorial self-assessment. This is not external certification,
+                  advisor approval or an official impact result.
+                </p>
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Dimension</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Explanation</th>
+                        <th scope="col">Rule and inputs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {assessment.maturity_framework.scores.map((score) => (
+                        <tr key={score.dimension_id}>
+                          <th scope="row">{label(score.dimension_id)}</th>
+                          <td>
+                            {score.score}/{score.scale_max} ·{" "}
+                            {label(score.level)}
+                          </td>
+                          <td>{score.explanation}</td>
+                          <td>
+                            {score.rule_id} · {score.input_fields.join(", ")}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <Items items={assessment.maturity_framework.limitations} />
                 <h4>Next steps</h4>
                 <Items items={assessment.next_steps} />
                 <h4>Capacity gaps</h4>

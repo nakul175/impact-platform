@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.32.0",
+    "version": "1.33.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -27427,7 +27427,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.20.0",
+        "x-contract-version": "1.33.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -27528,7 +27528,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.20.0",
+        "x-contract-version": "1.33.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -27639,7 +27639,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.20.0",
+        "x-contract-version": "1.33.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -27740,7 +27740,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.20.0",
+        "x-contract-version": "1.33.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -60930,12 +60930,277 @@
           "advisory_available"
         ]
       },
+      "AIMaturityScore": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dimension_id": {
+            "enum": [
+              "DATA_FOUNDATION",
+              "PEOPLE_AND_SKILLS",
+              "GOVERNANCE_AND_SAFETY",
+              "WORKFLOW_FIT",
+              "DELIVERY_CAPACITY"
+            ]
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "level": {
+            "enum": [
+              "FOUNDATION_NEEDED",
+              "EARLY",
+              "DEVELOPING",
+              "PREPARED",
+              "ESTABLISHED"
+            ]
+          },
+          "scale_min": {
+            "const": 1
+          },
+          "scale_max": {
+            "const": 5
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "rule_id": {
+            "type": "string",
+            "pattern": "^DR-[A-Z]+-[0-9]{2}$"
+          },
+          "input_fields": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "sector",
+                "team_size",
+                "goal",
+                "data_readiness",
+                "ai_experience",
+                "sensitive_data"
+              ]
+            }
+          },
+          "self_reported": {
+            "const": true
+          }
+        },
+        "required": [
+          "dimension_id",
+          "score",
+          "level",
+          "scale_min",
+          "scale_max",
+          "explanation",
+          "rule_id",
+          "input_fields",
+          "self_reported"
+        ]
+      },
+      "AIMaturityFrameworkResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "framework_id": {
+            "const": "IMPRANA_DIGITAL_READINESS"
+          },
+          "framework_version": {
+            "const": "2026-10-v1-editorial-draft"
+          },
+          "framework_status": {
+            "const": "EDITORIAL_DRAFT"
+          },
+          "method": {
+            "const": "DETERMINISTIC_SELF_REPORT_RULES"
+          },
+          "scores": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/AIMaturityScore"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          }
+        },
+        "required": [
+          "framework_id",
+          "framework_version",
+          "framework_status",
+          "method",
+          "scores",
+          "limitations"
+        ]
+      },
+      "AIEnablementRecommendation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "use_case_id": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "reasons": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "capacity_gaps": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "human_approval_needs": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          }
+        },
+        "required": [
+          "use_case_id",
+          "priority",
+          "status",
+          "reasons",
+          "capacity_gaps",
+          "human_approval_needs"
+        ]
+      },
+      "AIEnablementAssessmentPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string"
+          },
+          "content_version": {
+            "type": "string"
+          },
+          "method": {
+            "const": "DETERMINISTIC_RULES"
+          },
+          "maturity_framework": {
+            "$ref": "#/components/schemas/AIMaturityFrameworkResult"
+          },
+          "readiness": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "stage": {
+                "type": "string"
+              },
+              "reasons": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "string",
+                  "maxLength": 1000
+                }
+              }
+            },
+            "required": [
+              "stage",
+              "reasons"
+            ]
+          },
+          "recommendations": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIEnablementRecommendation"
+            }
+          },
+          "capacity_gaps": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "learning_path_ids": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "next_steps": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "human_approval_needs": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          }
+        },
+        "required": [
+          "schema_version",
+          "content_version",
+          "method",
+          "maturity_framework",
+          "readiness",
+          "recommendations",
+          "capacity_gaps",
+          "learning_path_ids",
+          "next_steps",
+          "human_approval_needs",
+          "limitations"
+        ]
+      },
       "AIEnablementAssessment": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "assessment": {
-            "type": "object"
+            "$ref": "#/components/schemas/AIEnablementAssessmentPayload"
           }
         },
         "required": [

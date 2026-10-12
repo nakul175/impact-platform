@@ -6,6 +6,22 @@ from .ai_learning_content import enrich_learning_paths
 
 SCHEMA_VERSION = "1.0"
 CONTENT_VERSION = "nonprofit-2026-10-05.3"
+MATURITY_FRAMEWORK_ID = "IMPRANA_DIGITAL_READINESS"
+MATURITY_FRAMEWORK_VERSION = "2026-10-v1-editorial-draft"
+MATURITY_SCALE = {
+    1: "FOUNDATION_NEEDED",
+    2: "EARLY",
+    3: "DEVELOPING",
+    4: "PREPARED",
+    5: "ESTABLISHED",
+}
+MATURITY_DIMENSIONS = (
+    "DATA_FOUNDATION",
+    "PEOPLE_AND_SKILLS",
+    "GOVERNANCE_AND_SAFETY",
+    "WORKFLOW_FIT",
+    "DELIVERY_CAPACITY",
+)
 SECTORS = {"GENERAL", "EDUCATION", "HEALTH", "LIVELIHOODS", "ENVIRONMENT"}
 PROFILE_FIELDS = {"sector", "team_size", "goal", "data_readiness", "ai_experience", "sensitive_data"}
 # Organisation-wide capacity gaps assess() reports. Named so the opportunity ranking
@@ -282,6 +298,88 @@ def validate_profile(profile):
         raise ValueError("sensitive_data must be a boolean.")
 
 
+def _maturity_assessment(profile):
+    """Return the complete, ordered draft framework result or fail closed.
+
+    The rules deliberately score only facts present in the bounded self-report.
+    There is no aggregate: the source does not define weights across dimensions.
+    """
+    data_scores = {"NONE": 1, "BASIC": 3, "STRUCTURED": 5}
+    experience_scores = {"NONE": 1, "EXPERIMENTING": 3, "REGULAR": 5}
+    team_score = 1 if profile["team_size"] < 5 else 3 if profile["team_size"] < 15 else 5
+    rules = (
+        (
+            "DATA_FOUNDATION",
+            data_scores[profile["data_readiness"]],
+            "DR-DATA-01",
+            ["data_readiness"],
+            f"Reported data readiness is {profile['data_readiness'].lower()}; this maps to the edition's declared data-foundation level.",
+        ),
+        (
+            "PEOPLE_AND_SKILLS",
+            experience_scores[profile["ai_experience"]],
+            "DR-PEOPLE-01",
+            ["ai_experience"],
+            f"Reported AI experience is {profile['ai_experience'].lower()}; this maps to the edition's declared practice level.",
+        ),
+        (
+            "GOVERNANCE_AND_SAFETY",
+            1 if profile["sensitive_data"] else 2,
+            "DR-GOV-01",
+            ["sensitive_data"],
+            "Sensitive data is reported, so governance preparation is required before live use."
+            if profile["sensitive_data"]
+            else "No sensitive-data use is reported, but this brief does not collect evidence of an approved policy or controls.",
+        ),
+        (
+            "WORKFLOW_FIT",
+            2,
+            "DR-WORKFLOW-01",
+            ["goal", "sector"],
+            "A bounded goal and sector were supplied; this edition does not collect observed workflow evidence, so fit remains early.",
+        ),
+        (
+            "DELIVERY_CAPACITY",
+            team_score,
+            "DR-DELIVERY-01",
+            ["team_size"],
+            f"Reported team size is {profile['team_size']}; this maps to the edition's capacity band and does not prove available staff time.",
+        ),
+    )
+    scores = [
+        {
+            "dimension_id": dimension,
+            "score": score,
+            "level": MATURITY_SCALE[score],
+            "scale_min": 1,
+            "scale_max": 5,
+            "explanation": explanation,
+            "rule_id": rule_id,
+            "input_fields": fields,
+            "self_reported": True,
+        }
+        for dimension, score, rule_id, fields, explanation in rules
+    ]
+    if (
+        tuple(item["dimension_id"] for item in scores) != MATURITY_DIMENSIONS
+        or any(item["score"] not in MATURITY_SCALE for item in scores)
+        or any(not item["explanation"].strip() or not item["rule_id"] for item in scores)
+    ):
+        raise ValueError("The maturity framework is incomplete.")
+    return {
+        "framework_id": MATURITY_FRAMEWORK_ID,
+        "framework_version": MATURITY_FRAMEWORK_VERSION,
+        "framework_status": "EDITORIAL_DRAFT",
+        "method": "DETERMINISTIC_SELF_REPORT_RULES",
+        "scores": scores,
+        "limitations": [
+            "This is a self-reported editorial assessment, not external certification or advisor approval.",
+            "The five dimensions use only the six bounded profile inputs shown in the form.",
+            "No aggregate score is produced because cross-dimension weights are not approved.",
+        ],
+    }
+
+
 def assess(profile):
     """Rank editorial examples without external calls, promises or data persistence.
 
@@ -374,6 +472,7 @@ def assess(profile):
         "schema_version": SCHEMA_VERSION,
         "content_version": CONTENT_VERSION,
         "method": "DETERMINISTIC_RULES",
+        "maturity_framework": _maturity_assessment(profile),
         "readiness": {"stage": stage, "reasons": reasons},
         "recommendations": recommendations,
         "capacity_gaps": gaps,

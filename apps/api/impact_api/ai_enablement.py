@@ -86,7 +86,12 @@ class AIEnablement:
         self._validate(profile)
         with self.service.db.transaction(tenant) as c:
             self._authority(c, identity, tenant, "assess_ai_enablement")
-            return {"assessment": assess(profile)}
+            try:
+                return {"assessment": assess(profile)}
+            except ValueError:
+                raise DomainError(
+                    "SERVICE_UNAVAILABLE", 503, reason="AI_MATURITY_FRAMEWORK_INVALID"
+                ) from None
 
     def solutions(self, identity, tenant):
         with self.service.db.transaction(tenant) as c:
@@ -153,7 +158,12 @@ class AIEnablement:
             raise DomainError("VALIDATION_FAILED", reason="AI_OPERATION_INVALID") from None
         # Bind replay to the submitted body, independent of later catalogue updates.
         # The claimed metadata and sealed outcome retain their original content version.
-        assessment = assess(body["profile"])
+        try:
+            assessment = assess(body["profile"])
+        except ValueError:
+            raise DomainError(
+                "SERVICE_UNAVAILABLE", 503, reason="AI_MATURITY_FRAMEWORK_INVALID"
+            ) from None
         fingerprint = hashlib.sha256(_json(body)).digest()
         keys = self._keys()
         with self.service.db.transaction(tenant) as c:

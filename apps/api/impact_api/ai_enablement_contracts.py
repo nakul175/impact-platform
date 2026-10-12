@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.20.0"
+VERSION = "1.33.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.26.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -107,7 +107,7 @@ def augment(spec, policy):
             "advisory_available",
         ],
     }
-    schemas["AIEnablementAssessment"] = closed({"assessment": {"type": "object"}}, ["assessment"])
+    assessment_schemas(schemas)
     # US-DC-04 (build 0.39.0): closed, and every listing carries a valid commercial disclosure
     # (NONE_KNOWN with no relationship type, or DISCLOSED with at least one and a statement).
     schemas["AISolutionsCatalog"] = catalog_schema()
@@ -208,6 +208,95 @@ def augment(spec, policy):
         )
     policy_paths(spec, policy)
     ranking_paths(spec, policy)
+
+
+def assessment_schemas(schemas):
+    strings = {"type": "array", "maxItems": 100, "items": {"type": "string", "maxLength": 1000}}
+    score = {
+        "dimension_id": {
+            "enum": [
+                "DATA_FOUNDATION",
+                "PEOPLE_AND_SKILLS",
+                "GOVERNANCE_AND_SAFETY",
+                "WORKFLOW_FIT",
+                "DELIVERY_CAPACITY",
+            ]
+        },
+        "score": {"type": "integer", "minimum": 1, "maximum": 5},
+        "level": {
+            "enum": ["FOUNDATION_NEEDED", "EARLY", "DEVELOPING", "PREPARED", "ESTABLISHED"]
+        },
+        "scale_min": {"const": 1},
+        "scale_max": {"const": 5},
+        "explanation": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "rule_id": {"type": "string", "pattern": "^DR-[A-Z]+-[0-9]{2}$"},
+        "input_fields": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "uniqueItems": True,
+            "items": {
+                "enum": [
+                    "sector",
+                    "team_size",
+                    "goal",
+                    "data_readiness",
+                    "ai_experience",
+                    "sensitive_data",
+                ]
+            },
+        },
+        "self_reported": {"const": True},
+    }
+    schemas["AIMaturityScore"] = closed(score, list(score))
+    framework = {
+        "framework_id": {"const": "IMPRANA_DIGITAL_READINESS"},
+        "framework_version": {"const": "2026-10-v1-editorial-draft"},
+        "framework_status": {"const": "EDITORIAL_DRAFT"},
+        "method": {"const": "DETERMINISTIC_SELF_REPORT_RULES"},
+        "scores": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {"$ref": "#/components/schemas/AIMaturityScore"},
+        },
+        "limitations": deepcopy(strings),
+    }
+    schemas["AIMaturityFrameworkResult"] = closed(framework, list(framework))
+    recommendation = {
+        "use_case_id": {"type": "string", "maxLength": 100},
+        "priority": {"type": "integer", "minimum": 1},
+        "status": {"type": "string", "maxLength": 100},
+        "reasons": deepcopy(strings),
+        "capacity_gaps": deepcopy(strings),
+        "human_approval_needs": deepcopy(strings),
+    }
+    schemas["AIEnablementRecommendation"] = closed(recommendation, list(recommendation))
+    payload = {
+        "schema_version": {"type": "string"},
+        "content_version": {"type": "string"},
+        "method": {"const": "DETERMINISTIC_RULES"},
+        "maturity_framework": {"$ref": "#/components/schemas/AIMaturityFrameworkResult"},
+        "readiness": closed(
+            {"stage": {"type": "string"}, "reasons": deepcopy(strings)},
+            ["stage", "reasons"],
+        ),
+        "recommendations": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {"$ref": "#/components/schemas/AIEnablementRecommendation"},
+        },
+        "capacity_gaps": deepcopy(strings),
+        "learning_path_ids": deepcopy(strings),
+        "next_steps": deepcopy(strings),
+        "human_approval_needs": deepcopy(strings),
+        "limitations": deepcopy(strings),
+    }
+    schemas["AIEnablementAssessmentPayload"] = closed(payload, list(payload))
+    schemas["AIEnablementAssessment"] = closed(
+        {"assessment": {"$ref": "#/components/schemas/AIEnablementAssessmentPayload"}},
+        ["assessment"],
+    )
 
 
 def _strings(enum=None, pattern=None, maximum=10, length=None):

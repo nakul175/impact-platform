@@ -1,5 +1,5 @@
 {
-  "version": "1.55.0",
+  "version": "1.56.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6952,6 +6952,30 @@
       "capability": "ai.diagnosis.review",
       "role_templates": [
         "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_next_opportunities",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/next-opportunities",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "take_up_ai_next_opportunity",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": 300,

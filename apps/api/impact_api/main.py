@@ -50,6 +50,7 @@ from .ai_problem_baselines import AIProblemBaselines
 from .ai_outcome_observations import AIOutcomeObservations
 from .ai_sponsor_value_reports import AISponsorValueReports
 from .ai_quarterly_value_reviews import AIQuarterlyValueReviews
+from .ai_next_opportunities import AINextOpportunities
 from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
@@ -133,6 +134,7 @@ def create_app():
     ai_outcome_observations = AIOutcomeObservations(service, ai_diagnoses, ai_problem_baselines)
     ai_sponsor_value_reports = AISponsorValueReports(service, ai_outcome_observations)
     ai_quarterly_value_reviews = AIQuarterlyValueReviews(service, ai_outcome_observations)
+    ai_next_opportunities = AINextOpportunities(service, ai_diagnoses)
     ai_value_cases = AIValueCaseVersions(service)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
@@ -958,6 +960,23 @@ def create_app():
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewComplete", body)
         return await run_in_threadpool(ai_quarterly_value_reviews.complete, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/next-opportunities")
+    def ai_next_opportunity_list(request: Request, tenant: str):
+        return ai_next_opportunities.listing(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up", status_code=201)
+    async def ai_next_opportunity_take_up(request: Request, tenant: str, suggestion_id: str):
+        body = await strict_body(request)
+        validate("AINextOpportunityTakeUp", body)
+        return await run_in_threadpool(
+            ai_next_opportunities.take_up,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(suggestion_id),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
     def ai_opportunity_map_get(

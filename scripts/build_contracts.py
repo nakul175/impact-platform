@@ -39,6 +39,7 @@ from impact_api.ai_problem_baseline_contracts import augment as augment_ai_probl
 from impact_api.ai_outcome_observation_contracts import augment as augment_ai_outcome_observation  # noqa: E402
 from impact_api.ai_sponsor_value_report_contracts import augment as augment_ai_sponsor_value_report  # noqa: E402
 from impact_api.ai_quarterly_value_review_contracts import augment as augment_ai_quarterly_value_review  # noqa: E402
+from impact_api.ai_next_opportunity_contracts import augment as augment_ai_next_opportunity  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import augment as augment_ai_opportunity_mapping  # noqa: E402
 from impact_api.ai_value_case_contracts import augment as augment_ai_value_case  # noqa: E402
 from impact_api.ai_value_case_export_contracts import augment as augment_ai_value_case_export  # noqa: E402
@@ -191,6 +192,7 @@ augment_ai_problem_baseline(spec, policy)
 augment_ai_outcome_observation(spec, policy)
 augment_ai_sponsor_value_report(spec, policy)
 augment_ai_quarterly_value_review(spec, policy)
+augment_ai_next_opportunity(spec, policy)
 augment_ai_opportunity_mapping(spec, policy)
 augment_ai_value_case(spec, policy)
 augment_ai_value_case_export(spec, policy)

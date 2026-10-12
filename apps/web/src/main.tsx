@@ -11,6 +11,7 @@ import { AIProblemBaselinesPanel } from "./AIProblemBaselines";
 import { AIOutcomeDashboardPanel } from "./AIOutcomeDashboard";
 import { AISponsorValueReportPanel } from "./AISponsorValueReport";
 import { AIQuarterlyValueReviewPanel } from "./AIQuarterlyValueReview";
+import { AINextOpportunitiesPanel } from "./AINextOpportunities";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -1059,6 +1060,12 @@ function Workspace({
             />
           ) : route === "ai-enablement" ? (
             <>
+              <AINextOpportunitiesPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
               <AIDiagnosisPanel
                 base={base}
                 principalId={access.principal_id || ""}

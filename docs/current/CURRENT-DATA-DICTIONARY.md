@@ -6859,3 +6859,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0058_ai_quarterly_value_reviews.sql | e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638 |
+
+## Migration0059 — Improve-to-Diagnose cycle binding (local0.65 coding candidate)
+
+`0059_ai_improve_diagnosis_cycles.sql` SHA256 `1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca`. Schema59 adds `AIImproveDiagnosisCycle` and a forced-tenant-RLS immutable binding table. The binding preserves exact completed quarterly-review, prior diagnosis/problem, created Draft diagnosis, current owner membership revision, operation hash and audit correlation. A durable tenant/suggestion uniqueness fence prevents uptake from creating two Diagnose cycles, including after privacy restriction of a generic payload; workers receive no table grant and restrictive policies fence the cycle payload. All0001–0058 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0059_ai_improve_diagnosis_cycles.sql | 1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca |

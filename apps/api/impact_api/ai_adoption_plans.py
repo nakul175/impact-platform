@@ -20,6 +20,25 @@ ROUTE = "ai-enablement/plans"
 READ_CAP = "ai.enablement.read"
 PILOT_ACTIONS = ("DEFINE_GOAL", "SYNTHETIC_TRIAL", "HUMAN_REVIEW", "TRAIN_STAFF", "REVIEW_OUTCOME")
 PLAN_FIELDS = {"title", "profile", "solution_ids", "learning_completed", "procurement", "pilot"}
+DEPLOYMENT_TEMPLATE_VERSION = "accountable-rollout-2026-10-12.1"
+DEPLOYMENT_MILESTONES = (
+    (
+        "PREPARE",
+        "Prepare the workflow and accountable team",
+        "Named owner confirms the workflow, access and training readiness.",
+    ),
+    (
+        "PILOT",
+        "Run the bounded deployment pilot",
+        "Named owner records the pilot outcome and confirms every agreed acceptance check.",
+    ),
+    (
+        "ROLLOUT",
+        "Approve the controlled rollout",
+        "Named owner confirms the rollout decision, support route and review date.",
+    ),
+)
+MILESTONE_PROGRESS = {"NOT_STARTED", "IN_PROGRESS", "BLOCKED", "ACCEPTED"}
 PROCUREMENT_LIMITS = {
     "requirements": 2000,
     "data_boundary": 2000,
@@ -105,6 +124,79 @@ def validate_plan(data):
         ):
             if planning[field] is not None:
                 validator(planning[field])
+
+
+def validate_deployment(value):
+    if not isinstance(value, dict) or set(value) != {"template_version", "state", "milestones"}:
+        _invalid("DEPLOYMENT_PLAN_INVALID")
+    if value["template_version"] != DEPLOYMENT_TEMPLATE_VERSION or value["state"] not in {
+        "ACTIVE",
+        "COMPLETE",
+    }:
+        _invalid("DEPLOYMENT_PLAN_INVALID")
+    milestones = value["milestones"]
+    if not isinstance(milestones, list) or len(milestones) != len(DEPLOYMENT_MILESTONES):
+        _invalid("DEPLOYMENT_PLAN_INVALID")
+    expected = [item[0] for item in DEPLOYMENT_MILESTONES]
+    if [item.get("code") for item in milestones if isinstance(item, dict)] != expected:
+        _invalid("DEPLOYMENT_PLAN_INVALID")
+    for item in milestones:
+        if set(item) != {
+            "code",
+            "title",
+            "owner_principal_id",
+            "acceptance_criteria",
+            "progress",
+            "progress_note",
+        }:
+            _invalid("DEPLOYMENT_PLAN_INVALID")
+        _text(item["title"], 200, required=True)
+        _uuid(item["owner_principal_id"])
+        _text(item["acceptance_criteria"], 1000, required=True)
+        if item["progress"] not in MILESTONE_PROGRESS:
+            _invalid("DEPLOYMENT_PLAN_INVALID")
+        _text(item["progress_note"], 1000)
+
+
+def _deployment_basis(payload):
+    value = deepcopy(payload)
+    value.pop("deployment", None)
+    return value
+
+
+def _principal_can_manage_plan(c, tenant, principal_id, membership_id, object_id):
+    for capability in (READ_CAP, "ai.enablement.manage"):
+        allowed = c.execute(
+            "SELECT 1 FROM ("
+            "SELECT g.scope_id,s.scope_type,g.purpose FROM impact.grant_current g "
+            "JOIN impact.object_registry r ON r.tenant_id=g.tenant_id AND r.object_id=g.object_id "
+            "JOIN impact.scope_definition s ON s.tenant_id=g.tenant_id AND s.scope_id=g.scope_id "
+            "WHERE g.tenant_id=%s AND g.subject_id=%s AND g.capability=%s "
+            "AND r.lifecycle_state='Active' AND g.starts_at<=now() "
+            "AND (g.expires_at IS NULL OR g.expires_at>now()) "
+            "UNION ALL "
+            "SELECT e.scope_id,s.scope_type,NULL FROM impact.group_entitlement e "
+            "JOIN impact.object_registry r ON r.tenant_id=e.tenant_id AND r.object_id=e.group_id "
+            "JOIN impact.scope_definition s ON s.tenant_id=e.tenant_id AND s.scope_id=e.scope_id "
+            "WHERE e.tenant_id=%s AND e.membership_id=%s AND e.capability=%s "
+            "AND e.expires_at>now() AND r.lifecycle_state='Active'"
+            ") grants WHERE purpose IS NULL AND (scope_type='TENANT' OR EXISTS ("
+            "SELECT 1 FROM impact.scope_member sm WHERE sm.tenant_id=%s "
+            "AND sm.scope_id=grants.scope_id AND sm.object_id=%s)) LIMIT 1",
+            (
+                tenant,
+                principal_id,
+                capability,
+                tenant,
+                membership_id,
+                capability,
+                tenant,
+                object_id,
+            ),
+        ).fetchone()
+        if not allowed:
+            return False
+    return True
 
 
 def _request(body, update):
@@ -346,6 +438,8 @@ class AIAdoptionPlans:
                 # Older clients cannot erase optional snapshots they do not understand.
                 # Explicitly supplied null members remain the supported clearing command.
                 payload["planning"] = deepcopy(previous["payload"]["planning"])
+            if previous and "deployment" in previous["payload"]:
+                payload["deployment"] = deepcopy(previous["payload"]["deployment"])
             if payload.get("planning", {}).get("task_practice") is not None:
                 from .ai_task_practice import CONTENT_VERSION as PRACTICE_VERSION
 
@@ -360,9 +454,152 @@ class AIAdoptionPlans:
             payload["learning_completed"] = [
                 canonical_lesson_key(key) for key in body["data"]["learning_completed"]
             ]
+            if (
+                previous
+                and "deployment" in payload
+                and hash_data(_deployment_basis(previous["payload"])) != hash_data(_deployment_basis(payload))
+            ):
+                payload["deployment"]["state"] = "ACTIVE"
+                for milestone in payload["deployment"]["milestones"]:
+                    milestone["progress"] = "NOT_STARTED"
+                    milestone["progress_note"] = ""
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning)
+            audit(c, ctx, operation, receipt, correlation)
+            c.execute(
+                "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
+                (
+                    tenant,
+                    ctx.principal_id,
+                    operation,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(receipt),
+                    now + timedelta(days=7),
+                ),
+            )
+            return receipt
+
+    def deployment(self, identity, tenant, object_id, body, correlation, action, milestone=None):
+        _uuid(object_id)
+        expected = {"operation_id", "expected_revision"}
+        if action == "generate":
+            expected.add("owners")
+        elif action == "progress":
+            expected |= {"progress", "progress_note"}
+        if not isinstance(body, dict) or set(body) != expected:
+            _invalid("DEPLOYMENT_COMMAND_INVALID")
+        _uuid(body.get("operation_id"))
+        _uuid(body.get("expected_revision"))
+        operation = {
+            "generate": "generate_ai_deployment_plan",
+            "progress": "update_ai_deployment_milestone",
+            "complete": "complete_ai_deployment_plan",
+        }[action]
+        fingerprint = hash_data([operation, object_id, milestone, body])
+        now = datetime.now(timezone.utc)
+        with self.service.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            ctx = context(c, identity, tenant, write=True)
+            authorize(c, ctx, operation, object_id, hidden=True)
+            authorize(c, ctx, "get_ai_adoption_plan", object_id, hidden=True)
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,1))", (body["operation_id"],))
+            old = c.execute(
+                "SELECT * FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s "
+                "AND command_type=%s AND operation_id=%s",
+                (tenant, ctx.principal_id, operation, body["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != fingerprint:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= now:
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                load(c, ctx, old["outcome"]["object_id"], KIND, READ_CAP)
+                authorize(c, ctx, operation, old["outcome"]["object_id"], hidden=True)
+                return old["outcome"]
+            previous = load(c, ctx, object_id, KIND, READ_CAP, lock=True)
+            if str(previous["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
+            if previous["lifecycle_state"] != "Draft":
+                raise DomainError("STATE_TRANSITION_DENIED", 409)
+            payload = deepcopy(previous["payload"])
+            if action == "generate":
+                if not payload.get("solution_ids"):
+                    raise DomainError(
+                        "STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_SOLUTION_REQUIRED"
+                    )
+                if "deployment" in payload:
+                    raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_ALREADY_GENERATED")
+                owners = body["owners"]
+                codes = [item[0] for item in DEPLOYMENT_MILESTONES]
+                if not isinstance(owners, dict) or set(owners) != set(codes):
+                    _invalid("DEPLOYMENT_OWNERS_REQUIRED")
+                for owner in owners.values():
+                    _uuid(owner)
+                    active = c.execute(
+                        "SELECT m.object_id AS membership_id FROM impact.tenant_principal p "
+                        "JOIN impact.membership_current m "
+                        "ON m.tenant_id=p.tenant_id AND m.identity_id=p.identity_id "
+                        "JOIN impact.object_registry r ON r.tenant_id=m.tenant_id AND r.object_id=m.object_id "
+                        "WHERE p.tenant_id=%s AND p.principal_id=%s AND p.active "
+                        "AND r.lifecycle_state='Active' AND (m.status IS NULL OR m.status='Active') "
+                        "AND (m.expires_at IS NULL OR m.expires_at>now())",
+                        (tenant, owner),
+                    ).fetchone()
+                    if not active or not _principal_can_manage_plan(
+                        c, tenant, owner, active["membership_id"], object_id
+                    ):
+                        raise DomainError("RESOURCE_UNAVAILABLE", 404)
+                payload["deployment"] = {
+                    "template_version": DEPLOYMENT_TEMPLATE_VERSION,
+                    "state": "ACTIVE",
+                    "milestones": [
+                        {
+                            "code": code,
+                            "title": title,
+                            "owner_principal_id": owners[code],
+                            "acceptance_criteria": acceptance,
+                            "progress": "NOT_STARTED",
+                            "progress_note": "",
+                        }
+                        for code, title, acceptance in DEPLOYMENT_MILESTONES
+                    ],
+                }
+            else:
+                deployment = payload.get("deployment")
+                if not deployment:
+                    raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_REQUIRED")
+                if action == "progress":
+                    if milestone not in {item[0] for item in DEPLOYMENT_MILESTONES}:
+                        raise DomainError("RESOURCE_UNAVAILABLE", 404)
+                    item = next(item for item in deployment["milestones"] if item["code"] == milestone)
+                    if item["owner_principal_id"] != str(ctx.principal_id):
+                        raise DomainError("POLICY_DENIED", 403, reason="MILESTONE_OWNER_REQUIRED")
+                    if body["progress"] not in MILESTONE_PROGRESS:
+                        _invalid("MILESTONE_PROGRESS_INVALID")
+                    _text(body["progress_note"], 1000)
+                    item["progress"] = body["progress"]
+                    item["progress_note"] = body["progress_note"]
+                else:
+                    if not payload.get("solution_ids"):
+                        raise DomainError(
+                            "STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_SOLUTION_REQUIRED"
+                        )
+                    if any(
+                        not item.get("owner_principal_id")
+                        or not str(item.get("acceptance_criteria", "")).strip()
+                        for item in deployment["milestones"]
+                    ):
+                        raise DomainError("STATE_TRANSITION_DENIED", 409, reason="ACCOUNTABILITY_REQUIRED")
+                    if any(item["progress"] != "ACCEPTED" for item in deployment["milestones"]):
+                        raise DomainError("STATE_TRANSITION_DENIED", 409, reason="MILESTONES_NOT_ACCEPTED")
+                    deployment["state"] = "COMPLETE"
+            validate_deployment(payload["deployment"])
+            state = "Completed" if action == "complete" else "Draft"
+            receipt = write(c, ctx, KIND, payload, state, previous=previous)
+            receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
+            ai_content_archives.capture(c, ctx, receipt, payload, previous, retained_planning=True)
             audit(c, ctx, operation, receipt, correlation)
             c.execute(
                 "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",

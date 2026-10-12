@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.49.0",
+    "version": "1.50.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -42999,7 +42999,7 @@
         "operationId": "list_ai_adoption_plans",
         "summary": "list ai adoption plans",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.50.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43125,7 +43125,7 @@
         "operationId": "create_ai_adoption_plan",
         "summary": "create ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.50.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43246,7 +43246,7 @@
         "operationId": "get_ai_adoption_plan",
         "summary": "get ai adoption plan",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.50.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43364,7 +43364,7 @@
         "operationId": "update_ai_adoption_plan",
         "summary": "update ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.50.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -43483,6 +43483,378 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AIAdoptionPlanUpdate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate": {
+      "post": {
+        "operationId": "generate_ai_deployment_plan",
+        "summary": "generate ai deployment plan",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.50.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDeploymentGenerate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Durable deployment-plan revision receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}": {
+      "put": {
+        "operationId": "update_ai_deployment_milestone",
+        "summary": "update ai deployment milestone",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.50.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "milestone_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "PREPARE",
+                "PILOT",
+                "ROLLOUT"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDeploymentProgress"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Durable deployment-plan revision receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete": {
+      "post": {
+        "operationId": "complete_ai_deployment_plan",
+        "summary": "complete ai deployment plan",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.50.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDeploymentComplete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Durable deployment-plan revision receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIAdoptionPlanReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
@@ -80053,6 +80425,81 @@
           "completed_actions"
         ]
       },
+      "AIDeploymentMilestone": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "enum": [
+              "PREPARE",
+              "PILOT",
+              "ROLLOUT"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "owner_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "acceptance_criteria": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "progress": {
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "BLOCKED",
+              "ACCEPTED"
+            ]
+          },
+          "progress_note": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "owner_principal_id",
+          "acceptance_criteria",
+          "progress",
+          "progress_note"
+        ]
+      },
+      "AIDeploymentPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "template_version": {
+            "const": "accountable-rollout-2026-10-12.1"
+          },
+          "state": {
+            "enum": [
+              "ACTIVE",
+              "COMPLETE"
+            ]
+          },
+          "milestones": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/AIDeploymentMilestone"
+            }
+          }
+        },
+        "required": [
+          "template_version",
+          "state",
+          "milestones"
+        ]
+      },
       "AIAdoptionPlanningInputs": {
         "type": "object",
         "additionalProperties": false,
@@ -80221,6 +80668,9 @@
           "planning": {
             "$ref": "#/components/schemas/AIAdoptionPlanningInputs"
           },
+          "deployment": {
+            "$ref": "#/components/schemas/AIDeploymentPlan"
+          },
           "content_versions": {
             "type": "object",
             "additionalProperties": false,
@@ -80265,7 +80715,10 @@
             "format": "uuid"
           },
           "business_state": {
-            "const": "Draft"
+            "enum": [
+              "Draft",
+              "Completed"
+            ]
           },
           "data": {
             "$ref": "#/components/schemas/AIAdoptionPlanStoredData"
@@ -80397,7 +80850,10 @@
             "format": "uuid"
           },
           "business_state": {
-            "const": "Draft"
+            "enum": [
+              "Draft",
+              "Completed"
+            ]
           },
           "saved_at": {
             "type": "string",
@@ -80419,6 +80875,98 @@
           "saved_at",
           "operation_id",
           "correlation_id"
+        ]
+      },
+      "AIDeploymentGenerate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owners": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "PREPARE": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "PILOT": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "ROLLOUT": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "PREPARE",
+              "PILOT",
+              "ROLLOUT"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "owners"
+        ]
+      },
+      "AIDeploymentProgress": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "progress": {
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "BLOCKED",
+              "ACCEPTED"
+            ]
+          },
+          "progress_note": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "progress",
+          "progress_note"
+        ]
+      },
+      "AIDeploymentComplete": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision"
         ]
       },
       "AIDiagnosisError": {

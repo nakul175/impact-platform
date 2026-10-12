@@ -1004,6 +1004,53 @@ def create_app():
             ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation, uuid(obj)
         )
 
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/generate")
+    async def ai_deployment_generate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDeploymentGenerate", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "generate",
+        )
+
+    @app.put(
+        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/milestones/{milestone_code}"
+    )
+    async def ai_deployment_progress(
+        request: Request, tenant: str, obj: str, milestone_code: str
+    ):
+        body = await strict_body(request)
+        validate("AIDeploymentProgress", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "progress",
+            milestone_code,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/complete")
+    async def ai_deployment_complete(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDeploymentComplete", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "complete",
+        )
+
     @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")
     async def ai_impact_reference_save(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

@@ -60,6 +60,9 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate` | `ai.enablement.manage` |
+| PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}` | `ai.enablement.manage` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/impact-reference/result` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | `ai.enablement.read` |

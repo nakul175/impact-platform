@@ -36,6 +36,19 @@ type Planning = {
   pilot_evaluation: PilotInput | null;
   task_practice: TaskPractice | null;
 };
+type DeploymentMilestone = {
+  code: "PREPARE" | "PILOT" | "ROLLOUT";
+  title: string;
+  owner_principal_id: string;
+  acceptance_criteria: string;
+  progress: "NOT_STARTED" | "IN_PROGRESS" | "BLOCKED" | "ACCEPTED";
+  progress_note: string;
+};
+type DeploymentPlan = {
+  template_version: "accountable-rollout-2026-10-12.1";
+  state: "ACTIVE" | "COMPLETE";
+  milestones: DeploymentMilestone[];
+};
 type ContentCompatibility = {
   current_versions: { catalog: string; solutions: string };
   catalog_version_status: "CURRENT" | "STALE" | "UNKNOWN";
@@ -111,14 +124,16 @@ type PlanDraft = {
   };
   pilot: { success_measure: string; completed_actions: string[] };
   planning: Planning;
+  deployment?: DeploymentPlan;
 };
-type PlanData = PlanDraft & { profile: Profile };
+type PlanData = Omit<PlanDraft, "deployment"> & { profile: Profile };
 type Plan = {
   object_id: string;
   revision_id: string;
   business_state: string;
   data: Omit<PlanData, "planning"> & {
     planning?: Planning;
+    deployment?: DeploymentPlan;
     content_versions?: {
       catalog: string;
       solutions: string;
@@ -159,6 +174,7 @@ const blankDraft = (): PlanDraft => ({
     pilot_evaluation: null,
     task_practice: null,
   },
+  deployment: undefined,
 });
 const pilotActions = [
   ["DEFINE_GOAL", "Define the goal and a measurable success criterion"],
@@ -173,6 +189,7 @@ const tabs = [
   ["practice", "Practise a useful task"],
   ["procurement", "Procurement brief"],
   ["pilot", "Pilot tracker"],
+  ["deployment", "Deployment plan"],
 ] as const;
 const categoryLabel = (value: string) =>
   value
@@ -197,7 +214,12 @@ function extractDraft(plan: Plan): PlanDraft {
       completed_actions: [...data.pilot.completed_actions],
     },
     planning: data.planning ? clone(data.planning) : blankDraft().planning,
+    deployment: data.deployment ? clone(data.deployment) : undefined,
   };
+}
+function editablePlanData(draft: PlanDraft, profile: Profile): PlanData {
+  const { deployment: _deployment, ...editable } = draft;
+  return { ...editable, profile };
 }
 export function AIAdoptionWorkspace({
   base,
@@ -265,6 +287,7 @@ export function AIAdoptionWorkspace({
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [hasPendingSave, setHasPendingSave] = useState(false);
+  const [hasDeploymentPending, setHasDeploymentPending] = useState(false);
   const [evidenceMutation, setEvidenceMutation] = useState(false);
   const [adviceMutation, setAdviceMutation] = useState(false);
   const [exportMutation, setExportMutation] = useState(false);
@@ -281,11 +304,19 @@ export function AIAdoptionWorkspace({
     data: PlanData;
     selectedId: string | null;
   } | null>(null);
+  const deploymentPending = useRef<{
+    path: string;
+    method: string;
+    body: string;
+    objectId: string;
+    action: "generate" | "progress" | "complete";
+    milestone?: DeploymentMilestone["code"];
+  } | null>(null);
   const abort = useRef<AbortController | null>(null);
   const latestData = useRef("");
   const latestHead = useRef(head);
   latestHead.current = head;
-  const data: PlanData = { ...draft, profile };
+  const data = editablePlanData(draft, profile);
   const serializedData = JSON.stringify(data);
   const draftGeneration = useRef({ serializedData, generation: 0 });
   if (draftGeneration.current.serializedData !== serializedData) {
@@ -330,8 +361,10 @@ export function AIAdoptionWorkspace({
     const controller = new AbortController();
     abort.current = controller;
     pending.current = null;
+    deploymentPending.current = null;
     busyRef.current = false;
     setHasPendingSave(false);
+    setHasDeploymentPending(false);
     setEvidenceMutation(false);
     setAdviceMutation(false);
     setExportMutation(false);
@@ -406,6 +439,7 @@ export function AIAdoptionWorkspace({
       !planChoice ||
       busyRef.current ||
       pending.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation
@@ -470,7 +504,9 @@ export function AIAdoptionWorkspace({
           : null,
       );
       setCanonicalUnavailable(false);
-      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
+      setSavedSnapshot(
+        JSON.stringify(editablePlanData(nextDraft, nextProfile)),
+      );
       setNotice(
         "Saved plan opened. These are shared draft records for your organisation.",
       );
@@ -491,6 +527,7 @@ export function AIAdoptionWorkspace({
     if (
       busyRef.current ||
       pending.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation
@@ -571,7 +608,9 @@ export function AIAdoptionWorkspace({
       );
       setCanonicalUnavailable(false);
       setPlanChoice(plan.object_id);
-      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
+      setSavedSnapshot(
+        JSON.stringify(editablePlanData(nextDraft, nextProfile)),
+      );
       setSavedContent({
         versions: clone(plan.data.content_versions ?? null) ?? undefined,
         compatibility: plan.content_compatibility
@@ -604,11 +643,139 @@ export function AIAdoptionWorkspace({
       }
     }
   }
+  async function deploymentCommand(
+    event: React.FormEvent<HTMLFormElement>,
+    action: "generate" | "progress" | "complete",
+    milestone?: DeploymentMilestone["code"],
+  ) {
+    event.preventDefault();
+    if (
+      !canManage ||
+      !head ||
+      (dirty && !deploymentPending.current) ||
+      busyRef.current ||
+      pending.current ||
+      evidenceMutation ||
+      adviceMutation ||
+      exportMutation
+    )
+      return;
+    if (
+      deploymentPending.current &&
+      (deploymentPending.current.action !== action ||
+        deploymentPending.current.milestone !== milestone)
+    ) {
+      setError(
+        "Resolve the pending deployment action before starting another milestone action.",
+      );
+      setNotice(
+        "Retry the same deployment action to recover its exact receipt.",
+      );
+      return;
+    }
+    if (!deploymentPending.current) {
+      const values = new FormData(event.currentTarget);
+      const body: Record<string, unknown> = {
+        operation_id: crypto.randomUUID(),
+        expected_revision: head.revision_id,
+      };
+      let path = `${base}ai-enablement/plans/${head.object_id}/deployment/actions/${action}`;
+      let method = "POST";
+      if (action === "generate") {
+        body.owners = Object.fromEntries(
+          (["PREPARE", "PILOT", "ROLLOUT"] as const).map((code) => [
+            code,
+            String(values.get(code) || ""),
+          ]),
+        );
+      } else if (action === "progress" && milestone) {
+        path = `${base}ai-enablement/plans/${head.object_id}/deployment/milestones/${milestone}`;
+        method = "PUT";
+        body.progress = String(values.get("progress") || "");
+        body.progress_note = String(values.get("progress_note") || "");
+      }
+      deploymentPending.current = {
+        path,
+        method,
+        body: JSON.stringify(body),
+        objectId: head.object_id,
+        action,
+        milestone,
+      };
+      setHasDeploymentPending(true);
+    }
+    const captured = deploymentPending.current;
+    if (captured.objectId !== head.object_id) return;
+    const current = epoch.current;
+    const authorityGeneration = readAuthority.current.generation;
+    setEvidenceMutation(true);
+    busyRef.current = true;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      const receipt = await request(captured.path, {
+        method: captured.method,
+        body: captured.body,
+        signal: abort.current?.signal,
+      });
+      if (
+        current !== epoch.current ||
+        authorityGeneration !== readAuthority.current.generation ||
+        latestHead.current?.object_id !== captured.objectId
+      )
+        return;
+      deploymentPending.current = null;
+      setHasDeploymentPending(false);
+      await evidenceSaved(receipt);
+      if (current !== epoch.current) return;
+      setNotice(
+        captured.action === "generate"
+          ? "Accountable deployment plan generated from the fixed template."
+          : captured.action === "complete"
+            ? "Deployment plan completed after every milestone was accepted."
+            : "Milestone progress saved by its named owner.",
+      );
+    } catch (cause) {
+      if (current !== epoch.current) return;
+      const failure = cause as { code?: string };
+      if (
+        failure.code &&
+        [
+          "AUTH_REQUIRED",
+          "ASSURANCE_REQUIRED",
+          "RESOURCE_UNAVAILABLE",
+          "POLICY_DENIED",
+          "VALIDATION_FAILED",
+          "CONFLICT_VERSION",
+          "CONFLICT_OPERATION",
+          "STATE_TRANSITION_DENIED",
+          "LIMIT_EXCEEDED",
+          "IDEMPOTENCY_EXPIRED",
+        ].includes(failure.code)
+      ) {
+        deploymentPending.current = null;
+        setHasDeploymentPending(false);
+      } else {
+        setNotice(
+          "Retry this deployment action to resolve its exact outcome before making another change.",
+        );
+      }
+      setError(explain(cause));
+    } finally {
+      if (current === epoch.current) {
+        busyRef.current = false;
+        setBusy(false);
+        setEvidenceMutation(false);
+      }
+    }
+  }
   async function savePlan(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (
       !canManage ||
       busyRef.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation ||
@@ -780,7 +947,13 @@ export function AIAdoptionWorkspace({
     }
   }
   async function morePlans() {
-    if (!nextCursor || busyRef.current || pending.current) return;
+    if (
+      !nextCursor ||
+      busyRef.current ||
+      pending.current ||
+      deploymentPending.current
+    )
+      return;
     const current = epoch.current;
     busyRef.current = true;
     setBusy(true);
@@ -1113,6 +1286,7 @@ export function AIAdoptionWorkspace({
             disabled={
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -1135,6 +1309,7 @@ export function AIAdoptionWorkspace({
               !planChoice ||
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -1150,6 +1325,7 @@ export function AIAdoptionWorkspace({
               disabled={
                 busy ||
                 hasPendingSave ||
+                hasDeploymentPending ||
                 evidenceMutation ||
                 adviceMutation ||
                 exportMutation
@@ -1166,6 +1342,7 @@ export function AIAdoptionWorkspace({
               disabled={
                 busy ||
                 hasPendingSave ||
+                hasDeploymentPending ||
                 evidenceMutation ||
                 adviceMutation ||
                 exportMutation
@@ -1244,6 +1421,7 @@ export function AIAdoptionWorkspace({
         hasConflictingMutation={
           busy ||
           hasPendingSave ||
+          hasDeploymentPending ||
           evidenceMutation ||
           adviceMutation ||
           exportMutation
@@ -1285,7 +1463,12 @@ export function AIAdoptionWorkspace({
           currentRevision={head.revision_id}
           canManage={canManage}
           hasUnsavedChanges={
-            dirty || busy || hasPendingSave || adviceMutation || exportMutation
+            dirty ||
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            adviceMutation ||
+            exportMutation
           }
           request={request}
           explain={explain}
@@ -1316,7 +1499,11 @@ export function AIAdoptionWorkspace({
           canReadMemberDirectory={capabilities.includes("memberships.read")}
           hasUnsavedChanges={dirty}
           hasConflictingMutation={
-            busy || hasPendingSave || evidenceMutation || exportMutation
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            evidenceMutation ||
+            exportMutation
           }
           request={request}
           explain={explain}
@@ -1346,7 +1533,11 @@ export function AIAdoptionWorkspace({
           canExport={canExport}
           hasUnsavedChanges={dirty}
           hasConflictingMutation={
-            busy || hasPendingSave || evidenceMutation || adviceMutation
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            evidenceMutation ||
+            adviceMutation
           }
           request={request}
           explain={explain}
@@ -1377,6 +1568,16 @@ export function AIAdoptionWorkspace({
         className="ai-plan-form"
         noValidate={hasPendingSave}
       >
+        {hasDeploymentPending && (
+          <p role="status">
+            The {deploymentPending.current?.action}
+            {deploymentPending.current?.milestone
+              ? ` ${deploymentPending.current.milestone} milestone`
+              : ""}{" "}
+            deployment action has an uncertain outcome. Use its Retry button
+            before saving, opening or starting another plan.
+          </p>
+        )}
         <div className="ai-plan-name">
           <label>
             Plan name
@@ -1400,6 +1601,7 @@ export function AIAdoptionWorkspace({
                 busy ||
                 loading ||
                 evidenceMutation ||
+                hasDeploymentPending ||
                 adviceMutation ||
                 exportMutation ||
                 canonicalUnavailable
@@ -1700,6 +1902,7 @@ export function AIAdoptionWorkspace({
             mutationBlocked={
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -1745,6 +1948,7 @@ export function AIAdoptionWorkspace({
               busy ||
               loading ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation ||
@@ -1755,6 +1959,7 @@ export function AIAdoptionWorkspace({
                 !canManage ||
                 busyRef.current ||
                 pending.current ||
+                deploymentPending.current ||
                 loading ||
                 evidenceMutation ||
                 adviceMutation ||
@@ -1873,6 +2078,175 @@ export function AIAdoptionWorkspace({
             onChange={(value) => updatePlanning("pilot_evaluation", value)}
             canManage={canManage}
           />
+        </section>
+      )}
+      {activeTab === "deployment" && (
+        <section aria-labelledby="ai-deployment-plan">
+          <h4 id="ai-deployment-plan">Accountable deployment plan</h4>
+          <p>
+            Generate the fixed rollout template after saving this adoption plan.
+            Each milestone has one named owner and explicit acceptance criteria.
+            Only that owner can record its progress.
+          </p>
+          {!head && (
+            <p role="status">
+              Save the adoption plan before generating its deployment plan.
+            </p>
+          )}
+          {head && dirty && (
+            <p role="status">
+              Save or discard local edits before changing deployment progress.
+            </p>
+          )}
+          {head && !draft.deployment && (
+            <form
+              onSubmit={(event) => void deploymentCommand(event, "generate")}
+            >
+              <fieldset
+                disabled={
+                  !canManage ||
+                  (dirty && !deploymentPending.current) ||
+                  evidenceMutation ||
+                  busy
+                }
+              >
+                <legend>Milestone owners</legend>
+                {(["PREPARE", "PILOT", "ROLLOUT"] as const).map((code) => (
+                  <label key={code}>
+                    {categoryLabel(code)} owner principal ID
+                    <input
+                      name={code}
+                      defaultValue={principalId}
+                      required
+                      pattern="[0-9a-fA-F-]{36}"
+                      aria-label={`${categoryLabel(code)} owner principal ID`}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              <button
+                className="primary"
+                type="submit"
+                disabled={
+                  !canManage ||
+                  (dirty && !deploymentPending.current) ||
+                  evidenceMutation ||
+                  busy
+                }
+              >
+                {hasDeploymentPending &&
+                deploymentPending.current?.action === "generate"
+                  ? "Retry pending template generation"
+                  : "Generate deployment plan"}
+              </button>
+            </form>
+          )}
+          {draft.deployment && (
+            <>
+              <p className="muted">
+                Template {draft.deployment.template_version} ·{" "}
+                {categoryLabel(draft.deployment.state)}
+              </p>
+              <div className="ai-cards">
+                {draft.deployment.milestones.map((milestone) => (
+                  <article key={milestone.code}>
+                    <h5>{milestone.title}</h5>
+                    <p>
+                      <strong>Owner:</strong> {milestone.owner_principal_id}
+                    </p>
+                    <p>
+                      <strong>Acceptance:</strong>{" "}
+                      {milestone.acceptance_criteria}
+                    </p>
+                    <form
+                      key={`${head?.revision_id ?? "unsaved"}:${milestone.code}`}
+                      onSubmit={(event) =>
+                        void deploymentCommand(
+                          event,
+                          "progress",
+                          milestone.code,
+                        )
+                      }
+                    >
+                      <label>
+                        Progress
+                        <select
+                          name="progress"
+                          defaultValue={milestone.progress}
+                          disabled={!canManage}
+                        >
+                          <option value="NOT_STARTED">Not started</option>
+                          <option value="IN_PROGRESS">In progress</option>
+                          <option value="BLOCKED">Blocked</option>
+                          <option value="ACCEPTED">Accepted</option>
+                        </select>
+                      </label>
+                      <label>
+                        Progress note
+                        <textarea
+                          name="progress_note"
+                          defaultValue={milestone.progress_note}
+                          maxLength={1000}
+                          rows={3}
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        className="secondary"
+                        disabled={
+                          !canManage ||
+                          (dirty &&
+                            !(
+                              deploymentPending.current?.action ===
+                                "progress" &&
+                              deploymentPending.current?.milestone ===
+                                milestone.code
+                            )) ||
+                          evidenceMutation ||
+                          busy ||
+                          milestone.owner_principal_id !== principalId ||
+                          draft.deployment?.state === "COMPLETE"
+                        }
+                      >
+                        {hasDeploymentPending &&
+                        deploymentPending.current?.action === "progress" &&
+                        deploymentPending.current?.milestone === milestone.code
+                          ? "Retry pending milestone update"
+                          : "Save milestone progress"}
+                      </button>
+                    </form>
+                  </article>
+                ))}
+              </div>
+              {draft.deployment.state === "ACTIVE" && (
+                <form
+                  onSubmit={(event) =>
+                    void deploymentCommand(event, "complete")
+                  }
+                >
+                  <button
+                    className="primary"
+                    type="submit"
+                    disabled={
+                      !canManage ||
+                      (dirty &&
+                        deploymentPending.current?.action !== "complete") ||
+                      evidenceMutation ||
+                      busy ||
+                      draft.deployment.milestones.some(
+                        (milestone) => milestone.progress !== "ACCEPTED",
+                      )
+                    }
+                  >
+                    {hasDeploymentPending &&
+                    deploymentPending.current?.action === "complete"
+                      ? "Retry pending completion"
+                      : "Complete accountable deployment plan"}
+                  </button>
+                </form>
+              )}
+            </>
+          )}
         </section>
       )}
       {discard && (

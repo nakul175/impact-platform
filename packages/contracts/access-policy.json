@@ -1,5 +1,5 @@
 {
-  "version": "1.49.0",
+  "version": "1.50.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6293,6 +6293,51 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "generate_ai_deployment_plan",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "update_ai_deployment_milestone",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "complete_ai_deployment_plan",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
     },
     {
       "operation_id": "list_ai_diagnoses",

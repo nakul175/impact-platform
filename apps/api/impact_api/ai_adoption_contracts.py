@@ -5,12 +5,15 @@ from copy import deepcopy
 from .ai_enablement_contracts import ROLES
 from .measurement_contracts import closed
 
-VERSION = "1.22.0"
+VERSION = "1.50.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/plans"),
     ("post", "ai-enablement/plans"),
     ("get", "ai-enablement/plans/{object_id}"),
     ("put", "ai-enablement/plans/{object_id}"),
+    ("post", "ai-enablement/plans/{object_id}/deployment/actions/generate"),
+    ("put", "ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}"),
+    ("post", "ai-enablement/plans/{object_id}/deployment/actions/complete"),
 ]
 MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
 
@@ -47,6 +50,38 @@ def augment(spec, policy):
         },
         ["success_measure", "completed_actions"],
     )
+    progress = {"enum": ["NOT_STARTED", "IN_PROGRESS", "BLOCKED", "ACCEPTED"]}
+    schemas["AIDeploymentMilestone"] = closed(
+        {
+            "code": {"enum": ["PREPARE", "PILOT", "ROLLOUT"]},
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "acceptance_criteria": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "progress": progress,
+            "progress_note": {"type": "string", "maxLength": 1000},
+        },
+        [
+            "code",
+            "title",
+            "owner_principal_id",
+            "acceptance_criteria",
+            "progress",
+            "progress_note",
+        ],
+    )
+    schemas["AIDeploymentPlan"] = closed(
+        {
+            "template_version": {"const": "accountable-rollout-2026-10-12.1"},
+            "state": {"enum": ["ACTIVE", "COMPLETE"]},
+            "milestones": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {"$ref": "#/components/schemas/AIDeploymentMilestone"},
+            },
+        },
+        ["template_version", "state", "milestones"],
+    )
     data = {
         "title": {"type": "string", "minLength": 1, "maxLength": 150},
         "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
@@ -77,6 +112,7 @@ def augment(spec, policy):
     schemas["AIAdoptionPlanUpdate"] = closed(update, list(update))
     persisted = {
         **deepcopy(data),
+        "deployment": {"$ref": "#/components/schemas/AIDeploymentPlan"},
         "content_versions": closed(
             {"catalog": {"type": "string"}, "solutions": {"type": "string"}}, ["catalog", "solutions"]
         ),
@@ -86,7 +122,7 @@ def augment(spec, policy):
     result = {
         "object_id": {"type": "string", "format": "uuid"},
         "revision_id": {"type": "string", "format": "uuid"},
-        "business_state": {"const": "Draft"},
+        "business_state": {"enum": ["Draft", "Completed"]},
         "data": {"$ref": "#/components/schemas/AIAdoptionPlanStoredData"},
     }
     schemas["AIAdoptionPlan"] = closed(result, list(result))
@@ -117,7 +153,7 @@ def augment(spec, policy):
     receipt = {
         "object_id": {"type": "string", "format": "uuid"},
         "revision_id": {"type": "string", "format": "uuid"},
-        "business_state": {"const": "Draft"},
+        "business_state": {"enum": ["Draft", "Completed"]},
         "saved_at": {"type": "string", "format": "date-time"},
         "operation_id": {"type": "string", "format": "uuid"},
         "correlation_id": {"type": "string", "format": "uuid"},
@@ -195,5 +231,108 @@ def augment(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": write_access,
+            }
+        )
+
+    base_command = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        "expected_revision": {"type": "string", "format": "uuid"},
+    }
+    schemas["AIDeploymentGenerate"] = closed(
+        {
+            **base_command,
+            "owners": closed(
+                {code: {"type": "string", "format": "uuid"} for code in ["PREPARE", "PILOT", "ROLLOUT"]},
+                ["PREPARE", "PILOT", "ROLLOUT"],
+            ),
+        },
+        [*base_command, "owners"],
+    )
+    schemas["AIDeploymentProgress"] = closed(
+        {
+            **base_command,
+            "progress": progress,
+            "progress_note": {"type": "string", "maxLength": 1000},
+        },
+        [*base_command, "progress", "progress_note"],
+    )
+    schemas["AIDeploymentComplete"] = closed(base_command, list(base_command))
+    for method, suffix, operation, request in [
+        ("post", "/deployment/actions/generate", "generate_ai_deployment_plan", "AIDeploymentGenerate"),
+        (
+            "put",
+            "/deployment/milestones/{milestone_code}",
+            "update_ai_deployment_milestone",
+            "AIDeploymentProgress",
+        ),
+        ("post", "/deployment/actions/complete", "complete_ai_deployment_plan", "AIDeploymentComplete"),
+    ]:
+        path = "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}" + suffix
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            },
+            {
+                "name": "object_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            },
+        ]
+        if "{milestone_code}" in suffix:
+            parameters.append(
+                {
+                    "name": "milestone_code",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"enum": ["PREPARE", "PILOT", "ROLLOUT"]},
+                }
+            )
+        spec["paths"][path] = {
+            method: {
+                "operationId": operation,
+                "summary": operation.replace("_", " "),
+                "x-capability": "ai.enablement.manage",
+                "x-contract-version": VERSION,
+                "parameters": parameters,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": "Durable deployment-plan revision receipt",
+                        "content": {
+                            "application/json": {
+                                "schema": {"$ref": "#/components/schemas/AIAdoptionPlanReceipt"}
+                            }
+                        },
+                    },
+                    **{
+                        refusal: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for refusal in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            }
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.enablement.manage",
+                "role_templates": deepcopy(MANAGERS),
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": True,
+                "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner.",
             }
         )

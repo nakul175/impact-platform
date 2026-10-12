@@ -2,6 +2,9 @@
 
 | Method | Path | Capability |
 |---|---|---|
+| GET | `/v1/platform/outcome-evidence-publications` | `platform.operator` |
+| POST | `/v1/platform/outcome-evidence-publications` | `platform.operator` |
+| POST | `/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}` | `platform.operator` |
 | GET | `/v1/public/ai-solution-disclosures` | `public` |
 | GET | `/v1/public/ai-vetting-criteria` | `public` |
 | GET | `/v1/tenants/{tenant_id}/access-denials` | `access-denials.read` |
@@ -58,6 +61,7 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/next-opportunities` | `ai.diagnosis.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up` | `ai.diagnosis.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/outcome-observations` | `ai.enablement.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/outcome-sharing-consents` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.read` |

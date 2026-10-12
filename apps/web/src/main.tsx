@@ -12,6 +12,7 @@ import { AIOutcomeDashboardPanel } from "./AIOutcomeDashboard";
 import { AISponsorValueReportPanel } from "./AISponsorValueReport";
 import { AIQuarterlyValueReviewPanel } from "./AIQuarterlyValueReview";
 import { AINextOpportunitiesPanel } from "./AINextOpportunities";
+import { AIOutcomeSharingConsentPanel } from "./AIOutcomeEvidence";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -1099,6 +1100,12 @@ function Workspace({
                 capabilities={access.capabilities}
               />
               <AIQuarterlyValueReviewPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIOutcomeSharingConsentPanel
                 base={base}
                 request={api}
                 explain={explain}

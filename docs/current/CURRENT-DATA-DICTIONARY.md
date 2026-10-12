@@ -6867,3 +6867,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0059_ai_improve_diagnosis_cycles.sql | 1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca |
+
+## Migration0060 — anonymised outcome evidence (local0.66 coding candidate)
+
+`0060_ai_anonymised_outcome_evidence.sql` SHA256 `a5f6b23f7e0612490127991b875961a840138c0b4be148097ddcc10f01e63df2`. Schema60 adds immutable tenant-fenced consent decisions, safe platform-visible publication metadata, owner-only fixed source sets, and immutable approval/publish events. Fixed metric/unit/quarter cells reduce to one contribution per organisation. Cells with fewer than five organisations or unsafe small changes against prior publications expose neither value nor count. Shared artifacts exclude tenant identities, source-set fingerprints, notes and actor identifiers. Platform preparation and transitions use security-definer functions with current operator authority, exact retry, natural-person-independent approval, and source-current rechecks. Workers and tenant application roles receive no cross-organisation source authority. All0001–0059 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0060_ai_anonymised_outcome_evidence.sql | a5f6b23f7e0612490127991b875961a840138c0b4be148097ddcc10f01e63df2 |

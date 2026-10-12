@@ -50,6 +50,7 @@ from .ai_problem_baselines import AIProblemBaselines
 from .ai_outcome_observations import AIOutcomeObservations
 from .ai_sponsor_value_reports import AISponsorValueReports
 from .ai_quarterly_value_reviews import AIQuarterlyValueReviews
+from .ai_outcome_evidence import AIOutcomeEvidence
 from .ai_next_opportunities import AINextOpportunities
 from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
@@ -142,6 +143,7 @@ def create_app():
     human_advice = HumanAdviceCases(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
+    ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
     access_upgrade = AccessUpgrade(lifecycle)
@@ -894,6 +896,28 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/outcome-sharing-consents", status_code=201)
+    async def ai_outcome_sharing_consent_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIOutcomeSharingConsentCreate", body)
+        return await run_in_threadpool(ai_outcome_evidence.consent, auth.resolve(request), uuid(tenant), body, request.state.correlation)
+
+    @app.get("/v1/platform/outcome-evidence-publications")
+    def ai_outcome_evidence_publication_list(request: Request):
+        return ai_outcome_evidence.listing(auth.resolve(request))
+
+    @app.post("/v1/platform/outcome-evidence-publications", status_code=201)
+    async def ai_outcome_evidence_publication_prepare(request: Request):
+        body = await strict_body(request)
+        validate("AIOutcomeEvidencePrepare", body)
+        return await run_in_threadpool(ai_outcome_evidence.prepare, auth.resolve(request), body)
+
+    @app.post("/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}", status_code=201)
+    async def ai_outcome_evidence_publication_action(request: Request, publication_id: str, action: str):
+        body = await strict_body(request)
+        validate("AIOutcomeEvidenceAction", body)
+        return await run_in_threadpool(ai_outcome_evidence.action, auth.resolve(request), uuid(publication_id), action, body)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/outcomes-dashboard")
     def ai_outcomes_dashboard_get(

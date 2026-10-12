@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.56.0",
+    "version": "1.57.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -35063,6 +35063,145 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AINextOpportunityTakeUp"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/outcome-sharing-consents": {
+      "post": {
+        "operationId": "record_ai_outcome_sharing_consent",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.57.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIOutcomeSharingConsentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consent decision recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOutcomeSharingConsentReceipt"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/outcome-evidence-publications": {
+      "get": {
+        "operationId": "list_ai_outcome_evidence_publications",
+        "x-capability": "platform.operator",
+        "x-contract-version": "1.57.0",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOutcomeEvidencePublicationList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "prepare_ai_outcome_evidence_publication",
+        "x-capability": "platform.operator",
+        "x-contract-version": "1.57.0",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOutcomeEvidencePublication"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIOutcomeEvidencePrepare"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}": {
+      "post": {
+        "operationId": "act_ai_outcome_evidence_publication",
+        "x-capability": "platform.operator",
+        "x-contract-version": "1.57.0",
+        "parameters": [
+          {
+            "name": "publication_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "approve",
+                "publish"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIOutcomeEvidencePublication"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIOutcomeEvidenceAction"
               }
             }
           }
@@ -72217,6 +72356,445 @@
           "diagnosis_revision",
           "diagnosis_state",
           "saved_at"
+        ]
+      },
+      "AIOutcomeSharingConsentCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "GRANTED",
+              "WITHDRAWN"
+            ]
+          },
+          "allowed_metrics": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "time",
+                "cost",
+                "quality",
+                "reach",
+                "usage"
+              ]
+            }
+          },
+          "notice_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "operation_id",
+          "outcome_observation_id",
+          "outcome_observation_revision",
+          "decision",
+          "allowed_metrics",
+          "notice_version",
+          "reason"
+        ]
+      },
+      "AIOutcomeSharingConsentReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "consent_event_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "GRANTED",
+              "WITHDRAWN"
+            ]
+          },
+          "purpose": {
+            "const": "WHAT_WORKS_AGGREGATION"
+          },
+          "outcome_observation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "notice_version": {
+            "type": "string"
+          },
+          "allowed_metrics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "operation_id",
+          "correlation_id",
+          "consent_event_id",
+          "decision",
+          "purpose",
+          "outcome_observation_id",
+          "outcome_observation_revision",
+          "notice_version",
+          "allowed_metrics",
+          "recorded_at"
+        ]
+      },
+      "AIOutcomeEvidencePrepare": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id"
+        ]
+      },
+      "AIOutcomeEvidenceAction": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision"
+        ]
+      },
+      "AIOutcomeEvidencePublication": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "publication_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "enum": [
+              "PREPARED",
+              "APPROVED",
+              "PUBLISHED"
+            ]
+          },
+          "rule_version": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "manifest_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "artifact": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "rule_version": {
+                "type": "string"
+              },
+              "policy_version": {
+                "type": "string"
+              },
+              "reporting_basis": {
+                "const": "SELF_REPORTED"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "metric": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "period_bucket": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-Q[1-4]$"
+                    },
+                    "status": {
+                      "enum": [
+                        "RELEASABLE",
+                        "WITHHELD"
+                      ]
+                    },
+                    "reason": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "mean_value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "organisation_count": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 5
+                    }
+                  },
+                  "required": [
+                    "metric",
+                    "unit",
+                    "period_bucket",
+                    "status",
+                    "reason",
+                    "mean_value",
+                    "organisation_count"
+                  ]
+                }
+              },
+              "limitations": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "rule_version",
+              "policy_version",
+              "reporting_basis",
+              "items",
+              "limitations"
+            ]
+          },
+          "prepared_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approved_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "published_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "publication_id",
+          "revision_id",
+          "state",
+          "rule_version",
+          "policy_version",
+          "manifest_hash",
+          "artifact",
+          "prepared_at",
+          "approved_at",
+          "published_at"
+        ]
+      },
+      "AIOutcomeEvidencePublicationList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "state": {
+                  "enum": [
+                    "PREPARED",
+                    "APPROVED",
+                    "PUBLISHED"
+                  ]
+                },
+                "rule_version": {
+                  "type": "string"
+                },
+                "policy_version": {
+                  "type": "string"
+                },
+                "manifest_hash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "artifact": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "rule_version": {
+                      "type": "string"
+                    },
+                    "policy_version": {
+                      "type": "string"
+                    },
+                    "reporting_basis": {
+                      "const": "SELF_REPORTED"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "metric": {
+                            "type": "string"
+                          },
+                          "unit": {
+                            "type": "string"
+                          },
+                          "period_bucket": {
+                            "type": "string",
+                            "pattern": "^[0-9]{4}-Q[1-4]$"
+                          },
+                          "status": {
+                            "enum": [
+                              "RELEASABLE",
+                              "WITHHELD"
+                            ]
+                          },
+                          "reason": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "mean_value": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "organisation_count": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
+                            "minimum": 5
+                          }
+                        },
+                        "required": [
+                          "metric",
+                          "unit",
+                          "period_bucket",
+                          "status",
+                          "reason",
+                          "mean_value",
+                          "organisation_count"
+                        ]
+                      }
+                    },
+                    "limitations": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "rule_version",
+                    "policy_version",
+                    "reporting_basis",
+                    "items",
+                    "limitations"
+                  ]
+                },
+                "prepared_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "approved_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                },
+                "published_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "publication_id",
+                "revision_id",
+                "state",
+                "rule_version",
+                "policy_version",
+                "manifest_hash",
+                "artifact",
+                "prepared_at",
+                "approved_at",
+                "published_at"
+              ]
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "AIOpportunityExample": {

@@ -1,5 +1,5 @@
 {
-  "version": "1.56.0",
+  "version": "1.57.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6976,6 +6976,54 @@
       "capability": "ai.diagnosis.manage",
       "role_templates": [
         "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "record_ai_outcome_sharing_consent",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcome-sharing-consents",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_outcome_evidence_publications",
+      "method": "GET",
+      "path": "/v1/platform/outcome-evidence-publications",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "prepare_ai_outcome_evidence_publication",
+      "method": "POST",
+      "path": "/v1/platform/outcome-evidence-publications",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "act_ai_outcome_evidence_publication",
+      "method": "POST",
+      "path": "/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": 300,

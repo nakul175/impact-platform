@@ -26,6 +26,10 @@ from impact_api.ai_outcome_observation_contracts import IMPLEMENTED as AI_OUTCOM
 from impact_api.ai_sponsor_value_report_contracts import IMPLEMENTED as AI_SPONSOR_VALUE_REPORT_ROUTES  # noqa: E402
 from impact_api.ai_quarterly_value_review_contracts import IMPLEMENTED as AI_QUARTERLY_VALUE_REVIEW_ROUTES  # noqa: E402
 from impact_api.ai_next_opportunity_contracts import IMPLEMENTED as AI_NEXT_OPPORTUNITY_ROUTES  # noqa: E402
+from impact_api.ai_outcome_evidence_contracts import (  # noqa: E402
+    TENANT_IMPLEMENTED as AI_OUTCOME_EVIDENCE_TENANT_ROUTES,
+    PLATFORM_IMPLEMENTED as AI_OUTCOME_EVIDENCE_PLATFORM_ROUTES,
+)
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
 )
@@ -73,8 +77,7 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PLANNING
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in LOGFRAME_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in CALCULATION_READS)
 allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in CALCULATION_COMPATIBILITY_ROUTES
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in CALCULATION_COMPATIBILITY_ROUTES
 )
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in FORMS_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EXPORT_READS)
@@ -84,10 +87,20 @@ allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICAT
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE_READS)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EVIDENCE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PRIVACY_ROUTES)
-allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_OUTCOME_OBSERVATION_ROUTES)
-allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_SPONSOR_VALUE_REPORT_ROUTES)
-allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_QUARTERLY_VALUE_REVIEW_ROUTES)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_OUTCOME_OBSERVATION_ROUTES
+)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_SPONSOR_VALUE_REPORT_ROUTES
+)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_QUARTERLY_VALUE_REVIEW_ROUTES
+)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_NEXT_OPPORTUNITY_ROUTES)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_OUTCOME_EVIDENCE_TENANT_ROUTES
+)
+allowed.update(AI_OUTCOME_EVIDENCE_PLATFORM_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AUDIT_EXPORT_ROUTES)
@@ -119,33 +132,19 @@ allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_ADOPTION_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_DIAGNOSIS_ROUTES)
 allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_DIAGNOSIS_CONTRIBUTION_ROUTES
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_DIAGNOSIS_CONTRIBUTION_ROUTES
 )
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_SOLUTION_SHORTLIST_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_SOLUTION_FIT_SCORE_ROUTES)
 allowed.update(AI_VETTING_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_DIAGNOSIS_REVIEW_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_PROBLEM_BASELINE_ROUTES)
 allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_DIAGNOSIS_REVIEW_ROUTES
-)
-allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_PROBLEM_BASELINE_ROUTES
-)
-allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_OPPORTUNITY_MAPPING_ROUTES
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_OPPORTUNITY_MAPPING_ROUTES
 )
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_VALUE_CASE_ROUTES)
-allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_VALUE_CASE_EXPORT_ROUTES
-)
-allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route)
-    for method, route in AI_VALUE_CASE_VERSION_ROUTES
-)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_VALUE_CASE_EXPORT_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_VALUE_CASE_VERSION_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_CONTENT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_IMPACT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in HUMAN_ADVICE_ROUTES)

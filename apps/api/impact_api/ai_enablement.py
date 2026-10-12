@@ -24,7 +24,7 @@ from .ai_solutions_catalog import (
 )
 from .domain import DomainError
 from .keyring import ring
-from .store import audit, authorize, context, write
+from .store import audit, authorize, context, load, write
 
 DISCLAIMER = "AI advisory draft: staff must verify claims and approve decisions. This does not authorise spending, data disclosure or official impact calculations."
 USE_CASE = "ADVISORY_DRAFT"
@@ -32,6 +32,8 @@ USE_CASE = "ADVISORY_DRAFT"
 DRAFT_LANGUAGE = "en"
 REQUEST_FIELDS = {"operation_id", "profile", "consent", "policy_version", "purpose"}
 TOOL = re.compile(TOOL_PATTERN)
+OBJECT_TYPE = re.compile(r"^[A-Z][A-Za-z0-9]{0,99}$")
+CAPABILITY = re.compile(r"^[a-z][a-z0-9.-]{0,99}$")
 LOG = logging.getLogger("impact")
 
 
@@ -206,7 +208,7 @@ class AIEnablement:
         if (
             not isinstance(body, dict)
             or not REQUEST_FIELDS - {"policy_version"} <= set(body)
-            or set(body) - REQUEST_FIELDS - {"tools"}
+            or set(body) - REQUEST_FIELDS - {"tools", "source_dependencies"}
             or body["consent"] is not True
         ):
             raise DomainError("VALIDATION_FAILED", reason="AI_CONSENT_REQUIRED")
@@ -214,6 +216,7 @@ class AIEnablement:
         if type(version) is not int or not 0 <= version <= MAX_POLICY_VERSION:
             raise DomainError("VALIDATION_FAILED", reason="AI_POLICY_VERSION_REQUIRED")
         tools = body.get("tools", [])
+        sources = body.get("source_dependencies", [])
         if (
             not isinstance(tools, list)
             or len(tools) > 10
@@ -221,6 +224,30 @@ class AIEnablement:
             or len(set(tools)) != len(tools)
         ):
             raise DomainError("VALIDATION_FAILED", reason="AI_TOOLS_INVALID")
+        if not isinstance(sources, list) or len(sources) > 20:
+            raise DomainError("VALIDATION_FAILED", reason="AI_SOURCES_INVALID")
+        normalized_sources = []
+        for source in sources:
+            if (
+                not isinstance(source, dict)
+                or set(source) != {"object_id", "revision_id", "object_type", "capability"}
+                or not isinstance(source["object_type"], str)
+                or not OBJECT_TYPE.fullmatch(source["object_type"])
+                or not isinstance(source["capability"], str)
+                or not CAPABILITY.fullmatch(source["capability"])
+            ):
+                raise DomainError("VALIDATION_FAILED", reason="AI_SOURCES_INVALID")
+            try:
+                item = {
+                    **source,
+                    "object_id": str(UUID(source["object_id"])),
+                    "revision_id": str(UUID(source["revision_id"])),
+                }
+            except (ValueError, TypeError, AttributeError):
+                raise DomainError("VALIDATION_FAILED", reason="AI_SOURCES_INVALID") from None
+            normalized_sources.append(item)
+        if len({(x["object_id"], x["revision_id"]) for x in normalized_sources}) != len(normalized_sources):
+            raise DomainError("VALIDATION_FAILED", reason="AI_SOURCES_INVALID")
         self._validate(body["profile"])
         try:
             request = str(UUID(body["operation_id"]))
@@ -247,6 +274,7 @@ class AIEnablement:
                     bytes(existing["fingerprint"]), fingerprint
                 ):
                     raise _error("AI_OPERATION_CHANGED", 409)
+                self._source_access(c, ctx, tenant, request)
                 result = c.execute(
                     "SELECT * FROM impact.ai_advisory_result WHERE tenant_id=%s AND request_id=%s",
                     (tenant, request),
@@ -261,6 +289,8 @@ class AIEnablement:
                     raise _error("AI_RESULT_UNREADABLE") from None
             if not self._available():
                 raise _error("AI_NOT_CONFIGURED")
+            for source in normalized_sources:
+                self._check_source(c, ctx, source)
             # FR-AI-001: the tenant policy in force is read under the tenant lock and checked before
             # any reservation or provider call. An unreadable policy fails the transaction (closed).
             policy = ai_policy.in_force(c, tenant)
@@ -296,6 +326,8 @@ class AIEnablement:
                     "use_case": USE_CASE,
                     "policy_version": policy["version"],
                     "data_handling": handling,
+                    "source_dependencies": normalized_sources,
+                    "permitted_audience": [str(ctx.principal_id)],
                 },
                 "Recorded",
             )
@@ -311,6 +343,19 @@ class AIEnablement:
                     policy["policy_version_id"],
                 ),
             )
+            for ordinal, source in enumerate(normalized_sources, 1):
+                c.execute(
+                    "INSERT INTO impact.ai_advisory_source VALUES(%s,%s,%s,%s,%s,%s,%s)",
+                    (
+                        tenant,
+                        request,
+                        ordinal,
+                        source["object_id"],
+                        source["revision_id"],
+                        source["object_type"],
+                        source["capability"],
+                    ),
+                )
             audit(c, ctx, "create_ai_advisory", receipt, correlation)
             if embedded_attempts:
                 audit(
@@ -362,6 +407,9 @@ class AIEnablement:
             ).fetchone()
             if not metadata:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            # Authority may narrow while the provider is running. Recheck before persistence and
+            # disclosure so a late response cannot reintroduce newly restricted source material.
+            self._source_access(c, ctx, tenant, request)
             sealed = keys.seal(_key, _json(output), _binding(tenant, request)) if output else None
             c.execute(
                 "INSERT INTO impact.ai_advisory_result(tenant_id,request_id,sealed_output,failure_reason,completed_at) VALUES(%s,%s,%s,%s,statement_timestamp())",
@@ -382,3 +430,30 @@ class AIEnablement:
         if failure:
             raise _error(failure)
         return output
+
+    @staticmethod
+    def _check_source(c, ctx, source):
+        load(c, ctx, source["object_id"], source["object_type"], source["capability"])
+        exact = c.execute(
+            "SELECT 1 FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s AND revision_id=%s AND object_type=%s AND restriction_state='AVAILABLE'",
+            (ctx.tenant_id, source["object_id"], source["revision_id"], source["object_type"]),
+        ).fetchone()
+        if not exact:
+            raise DomainError("RESOURCE_UNAVAILABLE", 404)
+
+    def _source_access(self, c, ctx, tenant, request):
+        rows = c.execute(
+            "SELECT source_object_id,source_revision_id,source_object_type,required_capability FROM impact.ai_advisory_source WHERE tenant_id=%s AND request_id=%s ORDER BY ordinal",
+            (tenant, request),
+        ).fetchall()
+        for row in rows:
+            self._check_source(
+                c,
+                ctx,
+                {
+                    "object_id": str(row["source_object_id"]),
+                    "revision_id": str(row["source_revision_id"]),
+                    "object_type": row["source_object_type"],
+                    "capability": row["required_capability"],
+                },
+            )

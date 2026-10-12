@@ -268,6 +268,7 @@ export function AIEnablementPanel({
         profile,
         consent: true,
         purpose: "AI_ADOPTION_ADVISORY",
+        source_dependencies: [],
         policy_version: policy!.policy_version,
       });
     }

@@ -7001,3 +7001,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0078_named_ai_use_cases_and_tools.sql | a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c |
+
+
+## Migration0079 — AI advisory source dependencies (local0.93 coding candidate)
+
+`0079_ai_advisory_sources.sql` SHA256 `5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5`. Schema79 adds immutable tenant-fenced links from an advisory request to at most20 exact source object/revision pairs and the capability required to disclose each source. Composite foreign keys prevent invented revisions; current object authority and exact revision availability are rechecked before reservation and every exact replay. The saved advisory revision records its creator-only permitted audience. All0001–0078 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0079_ai_advisory_sources.sql | 5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5 |

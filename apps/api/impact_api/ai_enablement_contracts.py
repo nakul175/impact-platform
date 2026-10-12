@@ -77,6 +77,20 @@ def augment(spec, policy):
             "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
             "consent": {"const": True},
             "purpose": {"const": "AI_ADOPTION_ADVISORY"},
+            "source_dependencies": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                        "object_type": {"type": "string", "pattern": "^[A-Z][A-Za-z0-9]{0,99}$"},
+                        "capability": {"type": "string", "pattern": "^[a-z][a-z0-9.-]{0,99}$"},
+                    },
+                    ["object_id", "revision_id", "object_type", "capability"],
+                ),
+            },
             # The policy version shown to the requester ("Policy in force"); a request made against
             # any other version is refused with 409 AI_POLICY_CHANGED before any reservation.
             "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},

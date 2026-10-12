@@ -153,6 +153,13 @@ class AIEnablement:
             self._authority(c, identity, tenant, "calculate_ai_value_case")
             return calculate_value_case(body)
 
+    def value_case_export(self, identity, tenant, body):
+        from .ai_value_case_export import export_value_case
+
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "export_ai_value_case")
+            return export_value_case(body)
+
     def pilot_evaluation(self, identity, tenant, body):
         from .ai_pilot_outcomes import evaluate_pilot_outcomes
 

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.45.0",
+    "version": "1.46.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -33328,6 +33328,108 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AIValueCase"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-case/export": {
+      "post": {
+        "operationId": "export_ai_value_case",
+        "summary": "Render a complete board/funder value case as PDF or DOCX",
+        "description": "The server recalculates the complete value case from closed source inputs and renders every submitted assumption. Partial result payloads and omitted assumptions are refused.",
+        "x-capability": "ai.enablement.export",
+        "x-contract-version": "1.46.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseExportRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Complete downloadable artifact with digest manifest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseExport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused without an incomplete artifact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -67433,6 +67535,97 @@
           "sector_benefits",
           "assumptions",
           "disclaimer"
+        ]
+      },
+      "AIValueCaseExportRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "PDF",
+              "DOCX"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          },
+          "value_case": {
+            "$ref": "#/components/schemas/AIValueCaseRequest"
+          }
+        },
+        "required": [
+          "format",
+          "title",
+          "value_case"
+        ]
+      },
+      "AIValueCaseExportManifest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "PDF",
+              "DOCX"
+            ]
+          },
+          "filename": {
+            "type": "string",
+            "pattern": "^impact-value-case-[a-f0-9]{16}[.](?:pdf|docx)$"
+          },
+          "media_type": {
+            "enum": [
+              "application/pdf",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ]
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "renderer_version": {
+            "const": "ai-value-case-export-v1"
+          },
+          "assumption_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          }
+        },
+        "required": [
+          "format",
+          "filename",
+          "media_type",
+          "content_sha256",
+          "size_bytes",
+          "renderer_version",
+          "assumption_count"
+        ]
+      },
+      "AIValueCaseExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "manifest": {
+            "$ref": "#/components/schemas/AIValueCaseExportManifest"
+          },
+          "content_base64": {
+            "type": "string",
+            "contentEncoding": "base64",
+            "maxLength": 13981016
+          }
+        },
+        "required": [
+          "manifest",
+          "content_base64"
         ]
       },
       "AIArchivedCatalogV1": {

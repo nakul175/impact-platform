@@ -19,6 +19,7 @@ type Result = {
   };
   disclaimer: string;
 };
+type ExportFormat = "PDF" | "DOCX";
 const blank = {
   baseline: "",
   trial: "",
@@ -50,8 +51,13 @@ export function AIValueCase(props: {
   const [trialLabel, setTrialLabel] = useState("");
   const [assumption, setAssumption] = useState("");
   const [result, setResult] = useState<Result | null>(null);
+  const [calculatedInput, setCalculatedInput] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [exporting, setExporting] = useState<ExportFormat | null>(null);
   const ready =
     opportunity &&
     baselineLabel.trim() &&
@@ -72,48 +78,122 @@ export function AIValueCase(props: {
       />
     </label>
   );
+  function input() {
+    return {
+      opportunity_id: opportunity,
+      horizon_years: years,
+      currency,
+      baseline: {
+        source_label: baselineLabel,
+        annual_operating_cost: values.baseline,
+        annual_staff_hours: values.baselineHours,
+        annual_beneficiaries: values.baselineBeneficiaries,
+        data_quality_percent: values.baselineQuality,
+        annual_reach: values.baselineReach,
+      },
+      trial: {
+        source_label: trialLabel,
+        annual_operating_cost: values.trial,
+        annual_staff_hours: values.trialHours,
+        annual_beneficiaries: values.trialBeneficiaries,
+        data_quality_percent: values.trialQuality,
+        annual_reach: values.trialReach,
+      },
+      costs: {
+        licences_annual: values.licences,
+        setup_one_off: values.setup,
+        training_one_off: values.training,
+        staff_time_annual: values.staff,
+      },
+      assumptions: [assumption],
+    };
+  }
   async function calculate() {
     setBusy(true);
     setError("");
     setResult(null);
+    setCalculatedInput(null);
     try {
+      const submitted = input();
       setResult(
         (await props.request(`${props.base}/ai-enablement/value-case`, {
           method: "POST",
-          body: JSON.stringify({
-            opportunity_id: opportunity,
-            horizon_years: years,
-            currency,
-            baseline: {
-              source_label: baselineLabel,
-              annual_operating_cost: values.baseline,
-              annual_staff_hours: values.baselineHours,
-              annual_beneficiaries: values.baselineBeneficiaries,
-              data_quality_percent: values.baselineQuality,
-              annual_reach: values.baselineReach,
-            },
-            trial: {
-              source_label: trialLabel,
-              annual_operating_cost: values.trial,
-              annual_staff_hours: values.trialHours,
-              annual_beneficiaries: values.trialBeneficiaries,
-              data_quality_percent: values.trialQuality,
-              annual_reach: values.trialReach,
-            },
-            costs: {
-              licences_annual: values.licences,
-              setup_one_off: values.setup,
-              training_one_off: values.training,
-              staff_time_annual: values.staff,
-            },
-            assumptions: [assumption],
-          }),
+          body: JSON.stringify(submitted),
         })) as Result,
       );
+      setCalculatedInput(submitted);
     } catch (value) {
       setError(props.explain(value));
     } finally {
       setBusy(false);
+    }
+  }
+  async function exportCase(format: ExportFormat) {
+    if (!calculatedInput) return;
+    setExporting(format);
+    setError("");
+    try {
+      const artifact = (await props.request(
+        `${props.base}/ai-enablement/value-case/export`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            format,
+            title: "Board or funder business case",
+            value_case: calculatedInput,
+          }),
+        },
+      )) as {
+        manifest: {
+          format: ExportFormat;
+          filename: string;
+          media_type: string;
+          content_sha256: string;
+          size_bytes: number;
+          renderer_version: string;
+          assumption_count: number;
+        };
+        content_base64: string;
+      };
+      const binary = atob(artifact.content_base64);
+      const bytes = Uint8Array.from(binary, (character) =>
+        character.charCodeAt(0),
+      );
+      const expectedMedia =
+        format === "PDF"
+          ? "application/pdf"
+          : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      const expectedExtension = format === "PDF" ? ".pdf" : ".docx";
+      const digest = Array.from(
+        new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+      )
+        .map((value) => value.toString(16).padStart(2, "0"))
+        .join("");
+      if (
+        artifact.manifest.format !== format ||
+        artifact.manifest.media_type !== expectedMedia ||
+        !new RegExp(
+          `^impact-value-case-[a-f0-9]{16}\\${expectedExtension}$`,
+        ).test(artifact.manifest.filename) ||
+        artifact.manifest.size_bytes !== bytes.byteLength ||
+        artifact.manifest.content_sha256 !== digest ||
+        artifact.manifest.renderer_version !== "ai-value-case-export-v1" ||
+        artifact.manifest.assumption_count !== 1
+      ) {
+        throw new Error("Export artifact integrity check failed.");
+      }
+      const url = URL.createObjectURL(
+        new Blob([bytes], { type: artifact.manifest.media_type }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = artifact.manifest.filename;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    } catch (value) {
+      setError(props.explain(value));
+    } finally {
+      setExporting(null);
     }
   }
   return (
@@ -252,6 +332,25 @@ export function AIValueCase(props: {
             <dd>{result.sector_benefits.reach_change}</dd>
           </dl>
           <p className="muted">{result.disclaimer}</p>
+          <h6>Board or funder export</h6>
+          <p>
+            The export recalculates this business case and lists every submitted
+            assumption.
+          </p>
+          <button
+            type="button"
+            disabled={!calculatedInput || exporting !== null}
+            onClick={() => exportCase("PDF")}
+          >
+            {exporting === "PDF" ? "Preparing PDF…" : "Download PDF"}
+          </button>{" "}
+          <button
+            type="button"
+            disabled={!calculatedInput || exporting !== null}
+            onClick={() => exportCase("DOCX")}
+          >
+            {exporting === "DOCX" ? "Preparing document…" : "Download DOCX"}
+          </button>
         </div>
       )}
     </section>

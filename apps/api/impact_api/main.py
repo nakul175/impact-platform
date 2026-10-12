@@ -1044,6 +1044,14 @@ def create_app():
         validate("AIValueCaseRequest", body)
         return await run_in_threadpool(ai_enablement.value_case, auth.resolve(request), uuid(tenant), body)
 
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-case/export")
+    async def ai_value_case_export(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseExportRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.value_case_export, auth.resolve(request), uuid(tenant), body
+        )
+
     @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
     async def ai_pilot_evaluation(request: Request, tenant: str):
         body = await strict_body(request)
